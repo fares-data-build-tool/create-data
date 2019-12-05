@@ -58,8 +58,16 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  s3hook:
+    handler: handler.s3hook
+    events:
+      - s3: fdbt-test-raw-data
+        event: s3:ObjectCreated:*
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-s3-local
+  - serverless-offline
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
