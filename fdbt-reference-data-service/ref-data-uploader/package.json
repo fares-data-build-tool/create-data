@@ -1,0 +1,23 @@
+{
+  "name": "ref-data-uploader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.36",
+    "@types/node": "^12.12.14",
+    "typescript": "^3.7.3",
+    "xml2js": "^0.4.22"
+  },
+  "devDependencies": {
+    "serverless-offline": "^5.12.1",
+    "serverless-plugin-typescript": "^1.1.9",
+    "serverless-s3-local": "^0.5.3"
+  }
+}
