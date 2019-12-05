@@ -1,4 +1,4 @@
-git # Welcome to Serverless!
+# Welcome to Serverless!
 #
 # This file is the main config file for your service.
 # It's very minimal at this point and uses default values.
@@ -57,9 +57,25 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
+plugins:
+  - serverless-plugin-typescript
+  - serverless-s3-local
+  - serverless-offline
+
 functions:
-  hello:
-    handler: handler.hello
+  s3hook:
+    handler: handler.s3hook
+    events: 
+      - s3: fdbt-test-ref-data
+        event: s3:ObjectCreated:*
+
+
+package:
+  exclude:
+    - node_modules/**/*
+  include:
+    handler.ts
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
