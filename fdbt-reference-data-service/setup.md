@@ -130,5 +130,31 @@ e.g.
 
 `aws --endpoint http://localhost:4569 s3api put-object --bucket fdbt-test-netex-data --key data.csv --body data.csv --profile s3local`
 
-# How to deploy to REAL AWS
+
+# How to install TSConfig and Jsst for Unit Tests
+
+## Install Typescript
+npm install -g typescript
+
+## config tsconfig.json
+tsc --init
+
+## Install the following dependancies
+npm install --save-dev jest @types/jest ts-jest 
+
+## config the ts-jest config
+npx ts-jest config:init
+
+## Add typescript to the package.json so CICD tools can run npm build during a pipeline job
+```
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+```
+
+## run test
+run `npm run test`
+
+  # How to deploy to REAL AWS
 `export SLS_DEBUG='*' && serverless deploy --aws-profile tfn-test`
