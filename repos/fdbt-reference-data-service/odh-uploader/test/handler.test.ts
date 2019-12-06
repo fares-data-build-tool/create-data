@@ -3,7 +3,7 @@ import { Context, Callback } from 'aws-lambda';
 import MockContext from 'aws-lambda-mock-context';
 
 describe('aws handler', () =>{ 
-    it('should calll console.log', () => {
+    it('should call console.log', () => {
         const event = {
             Name: "myName"
         };
