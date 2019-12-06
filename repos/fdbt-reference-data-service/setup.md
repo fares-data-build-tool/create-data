@@ -131,7 +131,7 @@ e.g.
 `aws --endpoint http://localhost:4569 s3api put-object --bucket fdbt-test-netex-data --key data.csv --body data.csv --profile s3local`
 
 
-# How to install TSConfig and Jsst for Unit Tests
+# How to install TSConfig and Jest for Unit Tests
 
 ## Install Typescript
 npm install -g typescript
