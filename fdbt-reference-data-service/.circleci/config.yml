@@ -16,10 +16,10 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache:
-      #     keys:
-      #       - dependencies-cache-{{ checksum "package.json" }}
-      #       - dependencies-cache
+      - restore_cache:
+          keys:
+            - dependencies-cache-{{ checksum "package.json" }}
+            - dependencies-cache
 
       - run:
           name: Install Serverless CLI and dependencies
@@ -35,8 +35,8 @@ jobs:
           name: Deploy application to tfn-test on aws 
           command: sls deploy --aws-profile tfn-test
 
-      # - save_cache:
-      #     paths:
-      #       - node_modules
-      #     key: dependencies-cache-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-cache-{{ checksum "package.json" }}
         
