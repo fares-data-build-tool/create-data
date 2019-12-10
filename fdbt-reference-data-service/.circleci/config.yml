@@ -1,0 +1,42 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+
+    branches:
+      only:
+        - develop
+
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+
+      # - restore_cache:
+      #     keys:
+      #       - dependencies-cache-{{ checksum "package.json" }}
+      #       - dependencies-cache
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            npm install
+      
+      - run: 
+          name: Run tests
+          command: npm run test
+           
+      - run:
+          name: Deploy application to tfn-test on aws 
+          command: sls deploy --aws-profile tfn-test
+
+      # - save_cache:
+      #     paths:
+      #       - node_modules
+      #     key: dependencies-cache-{{ checksum "package.json" }}
+        
