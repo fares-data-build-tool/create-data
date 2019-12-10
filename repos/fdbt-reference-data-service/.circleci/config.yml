@@ -27,7 +27,8 @@ jobs:
           command: |
             sudo npm i -g serverless
             pwd
-            cd fares-data-build-tool/data-aggregator
+            ls -la
+            cd data-aggregator
             sudo npm install
       
       - run: 
