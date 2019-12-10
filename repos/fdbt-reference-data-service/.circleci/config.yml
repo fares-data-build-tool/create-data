@@ -39,9 +39,8 @@ jobs:
 
       - save_cache:
           paths:
-            - node_modules
-          key: 
-            - dependencies-cache-data-aggregator-{{ checksum "fares-data-build-tool/data-aggregator/package.json" }}
+            - fares-data-build-tool/data-aggregator/node_modules
+          key: dependencies-cache-data-aggregator-{{ checksum "fares-data-build-tool/data-aggregator/package.json" }}
       
  # Steps for netex-convertor       
       - restore_cache:
@@ -66,10 +65,9 @@ jobs:
 
       - save_cache:
           paths:
-            - node_modules
+            - fares-data-build-tool/netex-convertor/node_modules
 
-          key: 
-            - dependencies-cache-netex-convertor-{{ checksum "fares-data-build-tool/netex-convertor/package.json" }}
+          key: dependencies-cache-netex-convertor-{{ checksum "fares-data-build-tool/netex-convertor/package.json" }}
 
   # Steps for ref-data-uploader      
       - restore_cache:
@@ -94,9 +92,8 @@ jobs:
 
       - save_cache:
           paths:
-            - node_modules
-          key: 
-            - dependencies-cache-ref-data-uploader-{{ checksum "fares-data-build-tool/ref-data-uploader/package.json" }}
+            - fares-data-build-tool/ref-data-uploader/node_modules
+          key: dependencies-cache-ref-data-uploader-{{ checksum "fares-data-build-tool/ref-data-uploader/package.json" }}
 
   #Steps for odh-uploader      
       - restore_cache:
@@ -121,7 +118,6 @@ jobs:
 
       - save_cache:
           paths:
-            - node_modules
-          key: 
-            - dependencies-cache-odh-uploader-{{ checksum "fares-data-build-tool/odh-uploader/package.json" }}
+            - fares-data-build-tool/odh-uploader/node_modules
+          key: dependencies-cache-odh-uploader-{{ checksum "fares-data-build-tool/odh-uploader/package.json" }}
         
