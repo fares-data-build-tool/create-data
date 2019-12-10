@@ -5,7 +5,6 @@
 version: 2
 jobs:
   build:
-
     branches:
       only:
         - develop
@@ -16,7 +15,7 @@ jobs:
     steps:
       - checkout
 
-# Steps for data-aggregator
+      # Steps for data-aggregator
       - restore_cache:
           keys:
             - dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
@@ -30,21 +29,25 @@ jobs:
             ls -la
             cd data-aggregator
             sudo npm install
-      
-      - run: 
-          name: Run tests
-          command: npm run test
-           
+
       - run:
-          name: Deploy application to tfn-test on aws 
+          name: Run tests
+          command: |
+            pwd
+            ls -la
+            cd data-aggregator
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
           command: sls deploy --aws-profile tfn-test
 
       - save_cache:
           paths:
             - data-aggregator/node_modules
           key: dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
-      
- # Steps for netex-convertor       
+
+      # Steps for netex-convertor
       - restore_cache:
           keys:
             - dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
@@ -56,13 +59,17 @@ jobs:
             sudo npm i -g serverless
             cd netex-convertor
             sudo npm install
-      
-      - run: 
-          name: Run tests
-          command: npm run test
-           
+
       - run:
-          name: Deploy application to tfn-test on aws 
+          name: Run tests
+          command: |
+            pwd
+            ls -la
+            cd netex-convertor
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
           command: sls deploy --aws-profile tfn-test
 
       - save_cache:
@@ -71,25 +78,29 @@ jobs:
 
           key: dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
 
-  # Steps for ref-data-uploader      
+      # Steps for ref-data-uploader
       - restore_cache:
           keys:
             - dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
             - dependencies-cache-ref-data-uploader
-           
+
       - run:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
             cd ref-data-uploader
             sudo npm install
-      
-      - run: 
-          name: Run tests
-          command: npm run test
-           
+
       - run:
-          name: Deploy application to tfn-test on aws 
+          name: Run tests
+          command: |
+            pwd
+            ls -la
+            cd ref-data-uploader
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
           command: sls deploy --aws-profile tfn-test
 
       - save_cache:
@@ -97,7 +108,7 @@ jobs:
             - ref-data-uploader/node_modules
           key: dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
 
-  #Steps for odh-uploader      
+      #Steps for odh-uploader
       - restore_cache:
           keys:
             - dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
@@ -109,17 +120,20 @@ jobs:
             sudo npm i -g serverless
             cd odh-uploader
             sudo npm install
-      
-      - run: 
-          name: Run tests
-          command: npm run test
-           
+
       - run:
-          name: Deploy application to tfn-test on aws 
+          name: Run tests
+          command: |
+            pwd
+            ls -la
+            cd odh-uploader
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
           command: sls deploy --aws-profile tfn-test
 
       - save_cache:
           paths:
             - odh-uploader/node_modules
           key: dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
-        
