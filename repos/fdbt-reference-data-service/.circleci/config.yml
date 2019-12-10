@@ -16,15 +16,17 @@ jobs:
     steps:
       - checkout
 
+# Steps for data-aggregator
       - restore_cache:
           keys:
-            - dependencies-cache-{{ checksum "package.json" }}
-            - dependencies-cache
+            - dependencies-cache-data-aggregator-{{ checksum "fares-data-build-tool/data-aggregator/package.json" }}
+            - dependencies-cache-data-aggregator
 
       - run:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
+            cd fares-data-build-tool/data-aggregator
             npm install
       
       - run: 
@@ -38,5 +40,92 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-cache-{{ checksum "package.json" }}
+          key: 
+            - dependencies-cache-data-aggregator-{{ checksum "fares-data-build-tool/data-aggregator/package.json" }}
+            - dependencies-cache-data-aggregator
+      
+ # Steps for netex-convertor       
+      - restore_cache:
+          keys:
+            - dependencies-cache-netex-convertor-{{ checksum "fares-data-build-tool/netex-convertor/package.json" }}
+            - dependencies-cache-netex-convertor
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd fares-data-build-tool/netex-convertor
+            npm install
+      
+      - run: 
+          name: Run tests
+          command: npm run test
+           
+      - run:
+          name: Deploy application to tfn-test on aws 
+          command: sls deploy --aws-profile tfn-test
+
+      - save_cache:
+          paths:
+            - node_modules
+
+          key: 
+            - dependencies-cache-netex-convertor-{{ checksum "fares-data-build-tool/netex-convertor/package.json" }}
+            - dependencies-cache-netex-convertor
+
+  # Steps for ref-data-uploader      
+      - restore_cache:
+          keys:
+            - dependencies-cache-ref-data-uploader-{{ checksum "fares-data-build-tool/ref-data-uploader/package.json" }}
+            - dependencies-cache-ref-data-uploader
+           
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd fares-data-build-tool/ref-data-uploader
+            npm install
+      
+      - run: 
+          name: Run tests
+          command: npm run test
+           
+      - run:
+          name: Deploy application to tfn-test on aws 
+          command: sls deploy --aws-profile tfn-test
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: 
+            - dependencies-cache-ref-data-uploader-{{ checksum "fares-data-build-tool/ref-data-uploader/package.json" }}
+            - dependencies-cache-ref-data-uploader
+
+  #Steps for odh-uploader      
+      - restore_cache:
+          keys:
+            - dependencies-cache-odh-uploader-{{ checksum "fares-data-build-tool/odh-uploader/package.json" }}
+            - dependencies-cache-odh-uploader
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd fares-data-build-tool/odh-uploader
+            npm install
+      
+      - run: 
+          name: Run tests
+          command: npm run test
+           
+      - run:
+          name: Deploy application to tfn-test on aws 
+          command: sls deploy --aws-profile tfn-test
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: 
+            - dependencies-cache-odh-uploader-{{ checksum "fares-data-build-tool/odh-uploader/package.json" }}
+            - dependencies-cache-odh-uploader
         
