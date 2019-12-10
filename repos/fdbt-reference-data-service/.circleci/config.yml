@@ -19,7 +19,7 @@ jobs:
 # Steps for data-aggregator
       - restore_cache:
           keys:
-            - dependencies-cache-data-aggregator-{{ checksum "fares-data-build-tool/data-aggregator/package.json" }}
+            - dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
             - dependencies-cache-data-aggregator
 
       - run:
@@ -41,20 +41,20 @@ jobs:
 
       - save_cache:
           paths:
-            - fares-data-build-tool/data-aggregator/node_modules
-          key: dependencies-cache-data-aggregator-{{ checksum "fares-data-build-tool/data-aggregator/package.json" }}
+            - data-aggregator/node_modules
+          key: dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
       
  # Steps for netex-convertor       
       - restore_cache:
           keys:
-            - dependencies-cache-netex-convertor-{{ checksum "fares-data-build-tool/netex-convertor/package.json" }}
+            - dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
             - dependencies-cache-netex-convertor
 
       - run:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
-            cd fares-data-build-tool/netex-convertor
+            cd netex-convertor
             sudo npm install
       
       - run: 
@@ -67,21 +67,21 @@ jobs:
 
       - save_cache:
           paths:
-            - fares-data-build-tool/netex-convertor/node_modules
+            - netex-convertor/node_modules
 
-          key: dependencies-cache-netex-convertor-{{ checksum "fares-data-build-tool/netex-convertor/package.json" }}
+          key: dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
 
   # Steps for ref-data-uploader      
       - restore_cache:
           keys:
-            - dependencies-cache-ref-data-uploader-{{ checksum "fares-data-build-tool/ref-data-uploader/package.json" }}
+            - dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
             - dependencies-cache-ref-data-uploader
            
       - run:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
-            cd fares-data-build-tool/ref-data-uploader
+            cd ref-data-uploader
             sudo npm install
       
       - run: 
@@ -94,20 +94,20 @@ jobs:
 
       - save_cache:
           paths:
-            - fares-data-build-tool/ref-data-uploader/node_modules
-          key: dependencies-cache-ref-data-uploader-{{ checksum "fares-data-build-tool/ref-data-uploader/package.json" }}
+            - ref-data-uploader/node_modules
+          key: dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
 
   #Steps for odh-uploader      
       - restore_cache:
           keys:
-            - dependencies-cache-odh-uploader-{{ checksum "fares-data-build-tool/odh-uploader/package.json" }}
+            - dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
             - dependencies-cache-odh-uploader
 
       - run:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
-            cd fares-data-build-tool/odh-uploader
+            cd odh-uploader
             sudo npm install
       
       - run: 
@@ -120,6 +120,6 @@ jobs:
 
       - save_cache:
           paths:
-            - fares-data-build-tool/odh-uploader/node_modules
-          key: dependencies-cache-odh-uploader-{{ checksum "fares-data-build-tool/odh-uploader/package.json" }}
+            - odh-uploader/node_modules
+          key: dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
         
