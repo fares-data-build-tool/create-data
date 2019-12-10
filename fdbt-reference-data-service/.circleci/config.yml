@@ -26,8 +26,9 @@ jobs:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
+            pwd
             cd fares-data-build-tool/data-aggregator
-            npm install
+            sudo npm install
       
       - run: 
           name: Run tests
@@ -53,7 +54,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd fares-data-build-tool/netex-convertor
-            npm install
+            sudo npm install
       
       - run: 
           name: Run tests
@@ -80,7 +81,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd fares-data-build-tool/ref-data-uploader
-            npm install
+            sudo npm install
       
       - run: 
           name: Run tests
@@ -106,7 +107,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd fares-data-build-tool/odh-uploader
-            npm install
+            sudo npm install
       
       - run: 
           name: Run tests
