@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  build-data-aggregator:
     branches:
       only:
         - master
@@ -52,6 +52,17 @@ jobs:
           key: dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
 
       # Steps for netex-convertor
+  build-netex-convertor:
+    branches:
+      only:
+        - master
+
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+
       - restore_cache:
           keys:
             - dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
@@ -87,6 +98,17 @@ jobs:
           key: dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
 
       # Steps for ref-data-uploader
+  build-ref-data-uploader:
+    branches:
+      only:
+        - master
+
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+
       - restore_cache:
           keys:
             - dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
@@ -119,6 +141,17 @@ jobs:
           paths:
             - ref-data-uploader/node_modules
           key: dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
+
+  build-odh-uploader:
+    branches:
+      only:
+        - master
+
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
 
       #Steps for odh-uploader
       - restore_cache:
@@ -153,3 +186,13 @@ jobs:
           paths:
             - odh-uploader/node_modules
           key: dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
+
+
+workflows:
+  version: 2
+  build-and-test-deliverable-one-lambdas:
+    jobs:
+      - build-data-aggregator
+      - build-netex-convertor
+      - build-ref-data-uploader
+      - build-odh-uploader
