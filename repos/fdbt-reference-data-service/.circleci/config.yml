@@ -33,12 +33,12 @@ jobs:
             npm run test
 
       - run:
-          name: Deploy application to tfn-test on aws
+          name: Deploy application to tfn-devops-test on aws
           command: |
             pwd
             ls -la
             cd data-aggregator
-            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-devops-test
 
       # Steps for netex-convertor
   build-netex-convertor:
@@ -68,12 +68,12 @@ jobs:
             npm run test
 
       - run:
-          name: Deploy application to tfn-test on aws
+          name: Deploy application to tfn-devops-test on aws
           command: |
             pwd
             ls -la
             cd netex-convertor
-            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-devops-test
 
       # Steps for ref-data-uploader
   build-ref-data-uploader:
@@ -103,12 +103,12 @@ jobs:
             npm run test
 
       - run:
-          name: Deploy application to tfn-test on aws
+          name: Deploy application to tfn-devops-test on aws
           command: |
             pwd
             ls -la
             cd ref-data-uploader
-            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-devops-test
 
   build-odh-uploader:
     filters:
@@ -137,12 +137,12 @@ jobs:
             npm run test
 
       - run:
-          name: Deploy application to tfn-test on aws
+          name: Deploy application to tfn-devops-test on aws
           command: |
             pwd
             ls -la
             cd odh-uploader
-            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-devops-test
 
 workflows:
   version: 2
