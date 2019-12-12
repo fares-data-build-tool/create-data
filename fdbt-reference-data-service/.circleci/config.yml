@@ -6,20 +6,13 @@ version: 2
 jobs:
   build-data-aggregator:
     branches:
-      only:
-        - master
+      only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
 
     steps:
       - checkout
-
-      # Steps for data-aggregator
-      - restore_cache:
-          keys:
-            - dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
-            - dependencies-cache-data-aggregator
 
       - run:
           name: Install Serverless CLI and dependencies
@@ -38,35 +31,24 @@ jobs:
             cd data-aggregator
             npm run test
 
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd data-aggregator
-      #       sls deploy --aws-profile tfn-test
-
-      - save_cache:
-          paths:
-            - data-aggregator/node_modules
-          key: dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            pwd
+            ls -la
+            cd data-aggregator
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
 
       # Steps for netex-convertor
   build-netex-convertor:
     branches:
-      only:
-        - master
+      only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
 
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-            - dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
-            - dependencies-cache-netex-convertor
 
       - run:
           name: Install Serverless CLI and dependencies
@@ -83,36 +65,24 @@ jobs:
             cd netex-convertor
             npm run test
 
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd netex-convertor
-      #       sls deploy --aws-profile tfn-test
-
-      - save_cache:
-          paths:
-            - netex-convertor/node_modules
-
-          key: dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            pwd
+            ls -la
+            cd netex-convertor
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
 
       # Steps for ref-data-uploader
   build-ref-data-uploader:
     branches:
-      only:
-        - master
+      only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
 
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-            - dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
-            - dependencies-cache-ref-data-uploader
 
       - run:
           name: Install Serverless CLI and dependencies
@@ -129,35 +99,23 @@ jobs:
             cd ref-data-uploader
             npm run test
 
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd ref-data-uploader
-      #       sls deploy --aws-profile tfn-test
-
-      - save_cache:
-          paths:
-            - ref-data-uploader/node_modules
-          key: dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            pwd
+            ls -la
+            cd ref-data-uploader
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
 
   build-odh-uploader:
     branches:
-      only:
-        - master
+      only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
 
     steps:
       - checkout
-
-      #Steps for odh-uploader
-      - restore_cache:
-          keys:
-            - dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
-            - dependencies-cache-odh-uploader
 
       - run:
           name: Install Serverless CLI and dependencies
@@ -174,19 +132,13 @@ jobs:
             cd odh-uploader
             npm run test
 
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd odh-uploader
-      #       sls deploy --aws-profile tfn-test
-
-      - save_cache:
-          paths:
-            - odh-uploader/node_modules
-          key: dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
-
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            pwd
+            ls -la
+            cd odh-uploader
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
 
 workflows:
   version: 2
