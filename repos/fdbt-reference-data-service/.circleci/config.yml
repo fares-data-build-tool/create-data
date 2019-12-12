@@ -4,9 +4,10 @@
 #
 version: 2
 jobs:
-  "build-data-aggregator":
-    branches:
-      only: feature/TFN-84_setup_circleci
+  build-data-aggregator:
+    filters:
+      branches:
+        only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
@@ -40,9 +41,10 @@ jobs:
             export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
 
       # Steps for netex-convertor
-  "build-netex-convertor":
-    branches:
-      only: feature/TFN-84_setup_circleci
+  build-netex-convertor:
+    filters:
+      branches:
+        only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
@@ -74,9 +76,10 @@ jobs:
             export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
 
       # Steps for ref-data-uploader
-  "build-ref-data-uploader":
-    branches:
-      only: feature/TFN-84_setup_circleci
+  build-ref-data-uploader:
+    filters:
+      branches:
+        only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
@@ -107,9 +110,10 @@ jobs:
             cd ref-data-uploader
             export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
 
-  "build-odh-uploader":
-    branches:
-      only: feature/TFN-84_setup_circleci
+  build-odh-uploader:
+    filters:
+      branches:
+        only: feature/TFN-84_setup_circleci
 
     docker:
       - image: circleci/node:latest
@@ -144,7 +148,8 @@ workflows:
   version: 2
   build-and-test-deliverable-one-lambdas:
     jobs:
-      - "build-data-aggregator"
-      - "build-netex-convertor"
-      - "build-ref-data-uploader"
-      - "build-odh-uploader"
+      - build-data-aggregator
+      - build-netex-convertor
+      - build-ref-data-uploader
+      - build-odh-uploader
+      
