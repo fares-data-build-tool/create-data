@@ -157,4 +157,4 @@ npx ts-jest config:init
 run `npm run test`
 
   # How to deploy to REAL AWS
-`export SLS_DEBUG='*' && serverless deploy --aws-profile tfn-test`
+`export SLS_DEBUG='*' && serverless deploy --aws-profile tfn-test -v --stage test`

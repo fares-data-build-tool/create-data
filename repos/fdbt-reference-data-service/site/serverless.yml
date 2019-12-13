@@ -1,0 +1,27 @@
+service: site
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+  stage: ${opt:stage, 'dev'}
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-domain-manager
+  - serverless-offline
+
+custom:
+  customDomain: ${file(./serverless.${self:provider.stage}.yml):custom.customDomain}
+
+functions:
+  index:
+    handler: handler.hello
+    events:
+      - http: ANY /
+
+package:
+  exclude:
+    - node_modules/**/*
+  include:
+    handler.ts

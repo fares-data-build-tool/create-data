@@ -1,0 +1,28 @@
+{
+  "name": "site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.36",
+    "@types/node": "^12.12.14",
+    "typescript": "^3.7.3",
+    "xml2js": "^0.4.22"
+  },
+  "devDependencies": {
+    "@types/aws-lambda-mock-context": "^3.2.0",
+    "@types/jest": "^24.0.23",
+    "aws-lambda-mock-context": "^3.2.1",
+    "jest": "^24.9.0",
+    "serverless-domain-manager": "^3.3.0",
+    "serverless-offline": "^5.12.1",
+    "serverless-plugin-typescript": "^1.1.9",
+    "ts-jest": "^24.2.0"
+  }
+}
