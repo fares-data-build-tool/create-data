@@ -36,10 +36,8 @@ jobs:
       - run:
           name: Deploy application to tfn-test on aws
           command: |
-            echo this is the key
-            echo $AWS_ACCESS_KEY_ID
             cd data-aggregator
-            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            export SLS_DEBUG="*" && serverless config credentials --provider aws --key $AWS_SECRET_ID --secret $AWS_SECRET_KEY && sls deploy tfn-test
 
 workflows:
   version: 2
