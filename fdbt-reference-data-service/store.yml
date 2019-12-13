@@ -1,0 +1,121 @@
+      # Steps for netex-convertor
+  build-netex-convertor:
+    filters:
+      branches:
+        only: feature/TFN-84_setup_circleci
+
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd netex-convertor
+            sudo npm install
+
+      - run:
+          name: Run tests
+          command: |
+            pwd
+            ls -la
+            cd netex-convertor
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            cd ~/.aws
+            ls -la
+            cat config
+            cat credentials
+            cd /home/circleci/project
+            pwd
+            ls -la
+            cd netex-convertor
+            ls -la
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+
+      # Steps for ref-data-uploader
+  build-ref-data-uploader:
+    filters:
+      branches:
+        only: feature/TFN-84_setup_circleci
+
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd ref-data-uploader
+            sudo npm install
+
+      - run:
+          name: Run tests
+          command: |
+            pwd
+            ls -la
+            cd ref-data-uploader
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            cd ~/.aws
+            ls -la
+            cat config
+            cat credentials
+            cd /home/circleci/project
+            pwd
+            ls -la
+            cd ref-data-uploader
+            ls -la
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+
+  build-odh-uploader:
+    filters:
+      branches:
+        only: feature/TFN-84_setup_circleci
+
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd odh-uploader
+            sudo npm install
+
+      - run:
+          name: Run tests
+          command: |
+            pwd
+            ls -la
+            cd odh-uploader
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            cd ~/.aws
+            ls -la
+            cat config
+            cat credentials
+            cd /home/circleci/project
+            pwd
+            ls -la
+            cd odh-uploader
+            ls -la
+            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
