@@ -3,10 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
-jobs:
+jobs: #Steps for build-data-aggregator
   build-data-aggregator:
     filters:
-      branches:
+      branches: #choose which branch you want to trigger the build
         only: feature/TFN-84_setup_circleci
 
     docker:
