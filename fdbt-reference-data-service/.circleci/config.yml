@@ -36,7 +36,9 @@ jobs:
       - run:
           name: Deploy application to tfn-devops-test on aws
           command: |
+            cd
             pwd
+            ls -la
             cd ~/.aws
             ls -la
             cat config
