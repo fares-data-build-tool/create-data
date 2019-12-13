@@ -38,7 +38,7 @@ jobs:
           name: Deploy application to tfn-test on aws
           command: |
             cd data-aggregator
-            export SLS_DEBUG="*" && sls config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY && sls deploy tfn-test
+            export SLS_DEBUG="*" && sls config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY -n tfn-test2 && sls deploy -r eu-west-2 --aws-profile tfn-test2
 
 workflows:
   version: 2
