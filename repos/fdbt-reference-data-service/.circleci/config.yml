@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Install Serverless CLI and dependencies
           command: |
-            sudo npm i -g serverless
+            sudo npm i -g sls
             pwd
             ls -la
             cd data-aggregator
@@ -37,11 +37,8 @@ jobs:
       - run:
           name: Deploy application to tfn-test on aws
           command: |
-            cd ..
-            ls -ltr
-            cat .aws/credentials
             cd data-aggregator
-            export SLS_DEBUG="*" && serverless config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY && sls deploy tfn-test
+            export SLS_DEBUG="*" && sls config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY && sls deploy tfn-test
 
 workflows:
   version: 2
