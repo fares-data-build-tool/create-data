@@ -1,21 +1,25 @@
-import * as handler from '../handler';
-import { Context, Callback } from 'aws-lambda';
-import MockContext from 'aws-lambda-mock-context';
+import * as handler from "../handler";
+import { Context, Callback, APIGatewayEvent } from "aws-lambda";
+import MockContext from "aws-lambda-mock-context";
+const createEvent = require('aws-event-mocks');
 
-describe('aws handler', () =>{
-    it('should call console.log', () =>{
-        const event = {
-            Name: "myName"
-        };
-        const context: Context = MockContext();
-        const callback: Callback = jest.fn();
-        const globalAny: any = global;
-        globalAny.console = {
-            log: jest.fn()
+describe("aws handler", () => {
+  it("should call callback with a response", () => {
+    const response = {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: "Hello World!"
+        })
+      };
+      const event: APIGatewayEvent = createEvent({
+        template: 'aws:apiGateway',
+        merge: {
+          body: {}
         }
-        handler.s3hook(event, context, callback);
-        expect(globalAny.console.log).toHaveBeenCalledWith(
-            JSON.stringify(event)
-        );
-    });
+      });
+    const context: Context = MockContext();
+    const callback: Callback = jest.fn();
+    handler.hello(event, context, callback);
+    expect(callback).toHaveBeenCalledWith(null, response);
+  });
 });
