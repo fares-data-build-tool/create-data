@@ -6,7 +6,7 @@ version: 2
 jobs: #Steps for build-data-aggregator
   build-data-aggregator:
     filters:
-      branches: #choose which branch you want to trigger the build
+      branches: #Choose which branch you want to trigger the build
         only: feature/TFN-84_setup_circleci
 
     docker:
