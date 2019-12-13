@@ -3,7 +3,8 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
-jobs: #Steps for build-data-aggregator
+jobs: 
+  #Steps for build-data-aggregator
   build-data-aggregator:
     filters:
       branches: #Choose which branch you want to trigger the build
@@ -35,6 +36,7 @@ jobs: #Steps for build-data-aggregator
       - run:
           name: Deploy application to tfn-devops-test on aws
           command: |
+            pwd
             cd ~/.aws
             ls -la
             cat config
