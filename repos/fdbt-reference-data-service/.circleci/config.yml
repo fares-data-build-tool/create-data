@@ -12,6 +12,7 @@ jobs:
 
     docker:
       - image: circleci/node:latest
+    working_directory: ~/project
 
     steps:
       - checkout
@@ -36,8 +37,9 @@ jobs:
       - run:
           name: Deploy application to tfn-test on aws
           command: |
-            echo $AWS_SECRET_ID
-            echo $AWS_SECRET_KEY
+            cd ..
+            ls -ltr
+            cat .aws/credentials
             cd data-aggregator
             export SLS_DEBUG="*" && serverless config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY && sls deploy tfn-test
 
