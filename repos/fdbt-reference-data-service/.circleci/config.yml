@@ -36,8 +36,10 @@ jobs:
       - run:
           name: Deploy application to tfn-test on aws
           command: |
+            echo $AWS_SECRET_ID
+            echo $AWS_SECRET_KEY
             cd data-aggregator
-            export SLS_DEBUG="*" && serverless config credentials --provider aws --key $AWS_SECRET_ID --secret $AWS_SECRET_KEY && sls deploy tfn-test
+            export SLS_DEBUG="*" && serverless config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY && sls deploy tfn-test
 
 workflows:
   version: 2
