@@ -20,15 +20,15 @@ jobs:
       - run:
           name: testing if 
           command: |
-             if [ -z "${AWS_SECRET_KEY}" ]; then
+             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
                 echo "Variable is NOT defined" 
               else
                 echo "Variable is set" 
               fi
-             if [ -z "${AWS_SECRET_ID}" ]; then
+             if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
                 echo "Variable is NOT defined" 
               else
-                echo "Variable is set" 
+                echo "Variable is set"
               fi
 
       - run:
@@ -51,8 +51,6 @@ jobs:
       - run:
           name: Deploy application to tfn-test on aws
           command: |
-            if [ "$AWS_SECRET_KEY"=="" ] then echo "Variable is NOT defined" else echo "Variable is set" fi
-            if [ "$AWS_SECRET_ID"=="" ] then echo "Variable is NOT defined" else echo "Variable is set" fi
             cd data-aggregator
             ls -la
             sls config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY -n tfn-test
