@@ -1,22 +1,123 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
-version: 2
-jobs: 
-  #Steps for build-data-aggregator
-  build-data-aggregator:
+# This code is licensed from CircleCI to the user under the MIT license. See
+# https://circleci.com/orbs/registry/licensing for details.
+version: 2.1
+
+description: |
+  Install and configure the AWS command-line interface (awscli).
+
+display:
+  home_url: https://github.com/CircleCI-Public/aws-cli-orb
+
+executors:
+  config:
+
     filters:
       branches: #Choose which branch you want to trigger the build
         only: feature/TFN-84_setup_circleci
 
+    description: |
+      The Node-based Docker container to use when building, 
+      testing and deploying application lambdas
+    
     docker:
       - image: circleci/node:latest
-    working_directory: ~/project
+
+commands:
+  install:
+    description: "Install the AWS CLI via CURL and unzip."
+    steps:
+      - run:
+          name: "Install AWS CLI"
+          command: |
+              cd
+              curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+              unzip awscli-bundle.zip
+              sudo ~/awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+              rm -rf awscli-bundle*
+              cd
+
+  setup:
+    description: |
+      Configure and store AWS credentials in
+      ~/.aws/credentials and ~/.aws/config
+
+    parameters:
+      profile-name:
+        description: Profile name to be configured.
+        type: string
+        default: "default"
+
+      aws_access_key_id:
+        description: |
+          AWS access key id for IAM role. Set this to the name of
+          the environment variable you will use to hold this
+          value, i.e. AWS_ACCESS_KEY.
+        type: env_var_name
+        default: AWS_ACCESS_KEY_ID
+
+      aws_secret_access_key:
+        description: |
+          AWS secret key for IAM role. Set this to the name of
+          the environment variable you will use to hold this
+          value, i.e. $AWS_SECRET_ACCESS_KEY.
+        type: env_var_name
+        default: AWS_SECRET_ACCESS_KEY
+
+      aws_region:
+        description: |
+          Env var of AWS region to operate in
+          (defaults to AWS_DEFAULT_REGION)
+        type: env_var_name
+        default: AWS_DEFAULT_REGION
+
+      configure_default_region:
+        description: |
+          Some AWS actions don't require a region; set this to false if you do not want to store a default region in ~/.aws/config
+        type: boolean
+        default: true
 
     steps:
-      - checkout
+      - install
 
+      - run:
+          name: Configure AWS Access Key ID
+          command: |
+            IF "%aws_access_key_id%"=="" ECHO Variable is NOT defined ELSE ECHO Variable IS set \
+            aws configure set aws_access_key_id \
+            $<<parameters.aws_access_key_id>> \
+            --profile <<parameters.profile-name>> \
+            IF "%aws_access_key_id%"=="" ECHO Variable is NOT defined ELSE ECHO Variable IS set
+
+      - run:
+          name: Configure AWS Secret Access Key
+          command: |
+            IF "%aws_secret_access_key%"=="" ECHO Variable is NOT defined ELSE ECHO Variable IS set \
+            aws configure set aws_secret_access_key \
+            $<<parameters.aws_secret_access_key>> \
+            --profile <<parameters.profile-name>> \
+            IF "%aws_secret_access_key%"=="" ECHO Variable is NOT defined ELSE ECHO Variable IS set
+
+      - when:
+          condition: <<parameters.configure_default_region>>
+          steps:
+            - run:
+                name: Configure AWS default region
+                command: |
+                  IF "%aws_region%"=="" ECHO Variable is NOT defined ELSE ECHO Variable IS set \
+                  aws configure set region $<<parameters.aws_region>> \
+                  --profile <<parameters.profile-name>> \
+                  IF "%aws_region%"=="" ECHO Variable is NOT defined ELSE ECHO Variable IS set
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.18
+
+jobs:
+  build-test-and-deploy-lambda:
+    executor: config
+    steps:
+      - checkout
+      - setup:
+          profile-name: tfn-test
       - run:
           name: Install Serverless CLI and dependencies
           command: |
@@ -25,7 +126,6 @@ jobs:
             ls -la
             cd data-aggregator
             sudo npm install
-
       - run:
           name: Run tests
           command: |
@@ -33,22 +133,16 @@ jobs:
             ls -la
             cd data-aggregator
             npm run test
-
       - run:
           name: Deploy application to tfn-test on aws
           command: |
+            pwd
+            ls -la
             cd data-aggregator
-            ls -la
-            sls config credentials -p aws -k $AWS_SECRET_ID -s $AWS_SECRET_KEY -n tfn-test
-            ls -la
-            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            sls deploy --config serverless.yml --aws-profile tfn-test
 
 workflows:
   version: 2
-  build-and-test-deliverable-one-lambdas:
+  test:
     jobs:
-      - build-data-aggregator
-      # - build-netex-convertor
-      # - build-ref-data-uploader
-      # - build-odh-uploader
-      
+      - build-test-and-deploy-lambda
