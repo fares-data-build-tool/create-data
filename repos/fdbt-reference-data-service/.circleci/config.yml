@@ -108,9 +108,10 @@ orbs:
 
 jobs:
   build-test-and-deploy-lambda:
-    executor: config
-    branches: #Choose which branch you want to trigger the build
+    filters:
+      branches: #Choose which branch you want to trigger the build
         only: feature/TFN-84_setup_circleci
+    executor: config
     steps:
       - checkout
       - setup:
@@ -141,5 +142,5 @@ jobs:
 workflows:
   version: 2
   test:
-    jobs:
+      jobs:
       - build-test-and-deploy-lambda
