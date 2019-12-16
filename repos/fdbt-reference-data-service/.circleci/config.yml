@@ -108,8 +108,6 @@ orbs:
 
 jobs:
   build-test-and-deploy-lambda:
-    branches: 
-      - feature/TFN-84_setup_circleci
     executor: config
     steps:
       - checkout
