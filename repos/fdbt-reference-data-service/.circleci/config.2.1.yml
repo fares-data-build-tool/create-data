@@ -86,6 +86,7 @@ commands:
       - run:
           name: Configure AWS Secret Access Key
           command: |
+            set -e 
             IF "%aws_secret_access_key%"=="" ECHO Variable is NOT defined ELSE ECHO Variable IS set \
             aws configure set aws_secret_access_key \
             $<<parameters.aws_secret_access_key>> \
