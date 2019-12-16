@@ -1,0 +1,137 @@
+# This code is licensed from CircleCI to the user under the MIT license. See
+# https://circleci.com/orbs/registry/licensing for details.
+version: 2.1
+
+description: |
+  Install and configure the AWS command-line interface (awscli).
+
+display:
+  home_url: https://github.com/CircleCI-Public/aws-cli-orb
+
+executors:
+  config:
+    description: |
+      The Node-based Docker container to use when building, 
+      testing and deploying application lambdas
+    
+    docker:
+      - image: circleci/node:latest
+
+commands:
+  install:
+    description: "Install the AWS CLI via CURL and unzip."
+    steps:
+      - run:
+          name: "Install AWS CLI"
+          command: |
+              cd
+              curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+              unzip awscli-bundle.zip
+              sudo ~/awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+              rm -rf awscli-bundle*
+              cd
+
+  setup:
+    description: |
+      Configure and store AWS credentials in
+      ~/.aws/credentials and ~/.aws/config
+
+    parameters:
+      profile-name:
+        description: Profile name to be configured.
+        type: string
+        default: "default"
+
+      aws_access_key_id:
+        description: |
+          AWS access key id for IAM role. Set this to the name of
+          the environment variable you will use to hold this
+          value, i.e. AWS_ACCESS_KEY.
+        type: env_var_name
+        default: AWS_ACCESS_KEY_ID
+
+      aws_secret_access_key:
+        description: |
+          AWS secret key for IAM role. Set this to the name of
+          the environment variable you will use to hold this
+          value, i.e. $AWS_SECRET_ACCESS_KEY.
+        type: env_var_name
+        default: AWS_SECRET_ACCESS_KEY
+
+      aws_region:
+        description: |
+          Env var of AWS region to operate in
+          (defaults to AWS_DEFAULT_REGION)
+        type: env_var_name
+        default: AWS_DEFAULT_REGION
+
+      configure_default_region:
+        description: |
+          Some AWS actions don't require a region; set this to false if you do not want to store a default region in ~/.aws/config
+        type: boolean
+        default: true
+
+    steps:
+      - install
+
+      - run:
+          name: Configure AWS Access Key ID
+          command: |
+            aws configure set aws_access_key_id \
+            $<<parameters.aws_access_key_id>> \
+            --profile <<parameters.profile-name>>
+
+      - run:
+          name: Configure AWS Secret Access Key
+          command: |
+            aws configure set aws_secret_access_key \
+            $<<parameters.aws_secret_access_key>> \
+            --profile <<parameters.profile-name>>
+
+      - when:
+          condition: <<parameters.configure_default_region>>
+          steps:
+            - run:
+                name: Configure AWS default region
+                command: |
+                  aws configure set region $<<parameters.aws_region>> \
+                  --profile <<parameters.profile-name>>
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.18
+
+jobs:
+  build-test-and-deploy-lambda:
+    executor: config
+    steps:
+      - checkout
+      - setup:
+          profile-name: circleci_weekend_testing
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g sls
+            pwd
+            ls -la
+            cd weekend_testing
+            sudo npm install
+      # - run:
+      #     name: Run tests
+      #     command: |
+      #       pwd
+      #       ls -la
+      #       cd weekend_testing
+      #       npm run test
+      - run:
+          name: Deploy application to circleci_weekend_testing on aws
+          command: |
+            pwd
+            ls -la
+            cd weekend_testing
+            sls deploy --config serverless.yml --aws-profile circleci_weekend_testing
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - build-test-and-deploy-lambda
