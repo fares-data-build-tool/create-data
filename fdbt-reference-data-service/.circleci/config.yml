@@ -18,7 +18,7 @@ jobs:
       - checkout
 
       - run:
-          name: testing if 
+          name: Testing if environment variables have been set
           command: |
              if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
                 echo "Variable is NOT defined" 
@@ -52,10 +52,10 @@ jobs:
           name: Deploy application to tfn-test on aws
           command: |
             cd data-aggregator
-            ls -la
             sls config credentials -p aws -k $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -n tfn-test
-            ls -la
+            echo "Finished config, starting deploy"
             export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            echo "Finished deploy"
 
 workflows:
   version: 2
