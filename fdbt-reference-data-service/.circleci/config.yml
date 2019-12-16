@@ -52,9 +52,8 @@ jobs:
           name: Deploy application to tfn-test on aws
           command: |
             cd data-aggregator
-            sls config credentials -p aws -k $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -n tfn-test
             echo "Finished config, starting deploy"
-            export SLS_DEBUG="*" && sls deploy --aws-profile tfn-test
+            export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
 workflows:
