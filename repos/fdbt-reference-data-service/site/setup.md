@@ -71,7 +71,12 @@ npm install uuid @types/uuid axios @types/axios
 next-compose-plugins @zeit/next-sass @zeit/next-css next-images
 
 
+
+
   # How to deploy to REAL AWS
 `export SLS_DEBUG='*' && serverless deploy --aws-profile tfn-test -v --stage test`
 
 `export SLS_DEBUG='*' && serverless remove --aws-profile tfn-test -v --stage test`
+
+
+
