@@ -25,7 +25,7 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   deploymentBucket:
-    name: S3BucketFdbttestrawdata - fdbt-test-raw-data
+    name: fdbt-test-raw-data
 
 # you can overwrite defaults here
 #  stage: dev

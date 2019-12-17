@@ -1,13 +1,8 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs: 
-  #Steps for build-data-aggregator
   build-data-aggregator:
     filters:
-      branches: #Choose which branch you want to trigger the build
+      branches:
         only: feature/TFN-84_setup_circleci
 
     docker:
@@ -21,13 +16,13 @@ jobs:
           name: Testing if environment variables have been set
           command: |
              if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
-                echo "Variable is NOT defined" 
+                echo "Variable is NOT defined, throwing error and ending build pipeline." 
                 exit 1
               else
                 echo "Variable is set" 
               fi
              if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
-                echo "Variable is NOT defined" 
+                echo "Variable is NOT defined, throwing error and ending build pipeline." 
                 exit 1
               else
                 echo "Variable is set"
@@ -41,16 +36,55 @@ jobs:
             sudo npm install
 
       - run:
+          name: Build the code
+          command: |
+            cd data-aggregator
+            npm run build
+
+      - run:
           name: Run tests
           command: |
             cd data-aggregator
             npm run test
 
       - run:
+          name: Tag the build
+          command: |
+            #get highest tag number
+            VERSION=`git describe --abbrev=0 --tags`
+
+            #replace . with space so can split into an array
+            VERSION_BITS=(${VERSION//./ })
+
+            #get number parts and increase last one by 1
+            VNUM1=${VERSION_BITS[0]}
+            VNUM2=${VERSION_BITS[1]}
+            VNUM3=${VERSION_BITS[2]}
+            VNUM3=$((VNUM3+1))
+
+            #create new tag
+            NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
+
+            echo "Updating $VERSION to $NEW_TAG"
+
+            #get current hash and see if it already has a tag
+            GIT_COMMIT=`git rev-parse HEAD`
+            NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
+
+            #only tag if no tag already
+            if [ -z "$NEEDS_TAG" ]; then
+                git tag $NEW_TAG
+                echo "Tagged with $NEW_TAG"
+                git push --tags
+            else
+                echo "Already a tag on this commit"
+            fi
+
+      - run:
           name: Deploy application to tfn-test on aws
           command: |
-            cd data-aggregator
             echo "Finished config, starting deploy"
+            cd data-aggregator 
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
