@@ -16,7 +16,7 @@ describe("aws handler", () => {
     };
 
     Handler.s3hook(event, context, callback);
-    expect(globalAny.console.log).toHaveBeenCalledWith(JSON.stringify("fail"));
+    expect(globalAny.console.log).toHaveBeenCalledWith(JSON.stringify(event));
   });
 
   it("should stringify the event", () => {
