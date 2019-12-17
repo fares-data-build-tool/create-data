@@ -4,14 +4,16 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-2
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'test'}
 
 plugins:
-  - serverless-plugin-typescript
+  - serverless-nextjs-plugin
   - serverless-domain-manager
   - serverless-offline
 
 custom:
+  serverless-nextjs:
+    nextConfigDir: "./"
   customDomain: ${file(./serverless.${self:provider.stage}.yml):custom.customDomain}
 
 functions:
@@ -22,6 +24,4 @@ functions:
 
 package:
   exclude:
-    - node_modules/**/*
-  include:
-    handler.ts
+    - ./**
