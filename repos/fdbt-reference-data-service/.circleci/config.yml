@@ -22,11 +22,13 @@ jobs:
           command: |
              if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
                 echo "Variable is NOT defined" 
+                exit 1
               else
                 echo "Variable is set" 
               fi
              if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
                 echo "Variable is NOT defined" 
+                exit 1
               else
                 echo "Variable is set"
               fi
@@ -35,16 +37,12 @@ jobs:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
-            pwd
-            ls -la
             cd data-aggregator
             sudo npm install
 
       - run:
           name: Run tests
           command: |
-            pwd
-            ls -la
             cd data-aggregator
             npm run test
 
