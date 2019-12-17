@@ -1,9 +1,9 @@
 version: 2
 jobs: 
-  build-data-aggregator:
+  build-site:
     filters:
       branches:
-        only: feature/TFN-84_setup_circleci
+        only: develop
 
     docker:
       - image: circleci/node:latest
@@ -32,67 +32,67 @@ jobs:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
-            cd data-aggregator
+            cd site
             sudo npm install
 
       - run:
           name: Build the code
           command: |
-            cd data-aggregator
+            cd site
             npm run build
 
       - run:
           name: Run tests
           command: |
-            cd data-aggregator
+            cd site
             npm run test
 
-      - run:
-          name: Tag the build
-          command: |
-            #get highest tag number
-            VERSION=`git describe --abbrev=0 --tags`
+      # - run:
+      #     name: Tag the build
+      #     command: |
+      #       #get highest tag number
+      #       VERSION=`git describe --abbrev=0 --tags`
 
-            #replace . with space so can split into an array
-            VERSION_BITS=(${VERSION//./ })
+      #       #replace . with space so can split into an array
+      #       VERSION_BITS=(${VERSION//./ })
 
-            #get number parts and increase last one by 1
-            VNUM1=${VERSION_BITS[0]}
-            VNUM2=${VERSION_BITS[1]}
-            VNUM3=${VERSION_BITS[2]}
-            VNUM3=$((VNUM3+1))
+      #       #get number parts and increase last one by 1
+      #       VNUM1=${VERSION_BITS[0]}
+      #       VNUM2=${VERSION_BITS[1]}
+      #       VNUM3=${VERSION_BITS[2]}
+      #       VNUM3=$((VNUM3+1))
 
-            #create new tag
-            NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
+      #       #create new tag
+      #       NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
 
-            echo "Updating $VERSION to $NEW_TAG"
+      #       echo "Updating $VERSION to $NEW_TAG"
 
-            #get current hash and see if it already has a tag
-            GIT_COMMIT=`git rev-parse HEAD`
-            NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
+      #       #get current hash and see if it already has a tag
+      #       GIT_COMMIT=`git rev-parse HEAD`
+      #       NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
 
-            #only tag if no tag already
-            if [ -z "$NEEDS_TAG" ]; then
-                git tag $NEW_TAG
-                echo "Tagged with $NEW_TAG"
-                git push --tags
-            else
-                echo "Already a tag on this commit"
-            fi
+      #       #only tag if no tag already
+      #       if [ -z "$NEEDS_TAG" ]; then
+      #           git tag $NEW_TAG
+      #           echo "Tagged with $NEW_TAG"
+      #           git push --tags
+      #       else
+      #           echo "Already a tag on this commit"
+      #       fi
 
       - run:
           name: Deploy application to tfn-test on aws
           command: |
             echo "Finished config, starting deploy"
-            cd data-aggregator 
+            cd site 
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
 workflows:
   version: 2
-  build-and-test-deliverable-one-lambdas:
+  build-and-deploy-site:
     jobs:
-      - build-data-aggregator
+      - build-site
       # - build-netex-convertor
       # - build-ref-data-uploader
       # - build-odh-uploader
