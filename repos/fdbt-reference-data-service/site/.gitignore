@@ -7,3 +7,5 @@ jspm_packages
 .build
 buckets
 .idea
+.next
+sls-next-build
