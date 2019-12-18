@@ -141,3 +141,8 @@ svg:not(:root) {
   padding-top: 10px;
   margin-left: -17px;
 }
+
+.no-background-image {
+  background-image: none;
+  padding-top: 0px;
+}
