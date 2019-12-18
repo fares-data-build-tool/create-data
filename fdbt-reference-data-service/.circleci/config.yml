@@ -1,10 +1,6 @@
 version: 2
 jobs: 
-  build-data-aggregator:
-    filters:
-      branches:
-        only: feature/TFN-84_setup_circleci
-
+  netex-convertor:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -13,79 +9,185 @@ jobs:
       - checkout
 
       - run:
-          name: Testing if environment variables have been set
-          command: |
-             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
-                echo "Variable is NOT defined, throwing error and ending build pipeline." 
-                exit 1
-              else
-                echo "Variable is set" 
-              fi
-             if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
-                echo "Variable is NOT defined, throwing error and ending build pipeline." 
-                exit 1
-              else
-                echo "Variable is set"
-              fi
-
-      - run:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
-            cd data-aggregator
+            cd netex-convertor
             sudo npm install
 
       - run:
           name: Build the code
           command: |
-            cd data-aggregator
+            cd netex-convertor
             npm run build
 
       - run:
           name: Run tests
           command: |
-            cd data-aggregator
+            cd netex-convertor
             npm run test
-
-      - run:
-          name: Tag the build
-          command: |
-            #get highest tag number
-            VERSION=`git describe --abbrev=0 --tags`
-
-            #replace . with space so can split into an array
-            VERSION_BITS=(${VERSION//./ })
-
-            #get number parts and increase last one by 1
-            VNUM1=${VERSION_BITS[0]}
-            VNUM2=${VERSION_BITS[1]}
-            VNUM3=${VERSION_BITS[2]}
-            VNUM3=$((VNUM3+1))
-
-            #create new tag
-            NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
-
-            echo "Updating $VERSION to $NEW_TAG"
-            
-            #creating new tag and pushing
-            git tag $NEW_TAG
-            echo "Tagged with $NEW_TAG"
-            git push --tags
 
       - run:
           name: Deploy application to tfn-test on aws
           command: |
             echo "Finished config, starting deploy"
-            cd data-aggregator 
+            cd netex-convertor 
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
+
+  odh-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd odh-uploader
+            sudo npm install
+
+      - run:
+          name: Build the code
+          command: |
+            cd odh-uploader
+            npm run build
+
+      - run:
+          name: Run tests
+          command: |
+            cd odh-uploader
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            echo "Finished config, starting deploy"
+            cd odh-uploader
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+
+  ref-data-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd ref-data-uploader
+            sudo npm install
+
+      - run:
+          name: Build the code
+          command: |
+            cd ref-data-uploader
+            npm run build
+
+      - run:
+          name: Run tests
+          command: |
+            cd ref-data-uploader
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            echo "Finished config, starting deploy"
+            cd ref-data-uploader
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+              
+  site:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd site
+            sudo npm install
+
+      - run:
+          name: Build the code
+          command: |
+            cd site
+            npm run build
+
+      - run:
+          name: Run tests
+          command: |
+            cd site
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            echo "Finished config, starting deploy"
+            cd site
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+
+  # This isnt working as it needs an SSH key generating to be able to push the git tags. The 'Creating a Bitbucket User Key' part of
+  # https://circleci.com/docs/2.0/gh-bb-integration/ is what I think we have to do.
+
+  # git-tag:
+  #   docker:
+  #     - image: circleci/node:latest
+  #   working_directory: ~/project
+
+  #   steps:
+  #     - checkout
+
+      # - run:
+      #     name: Tag the build
+      #     command: |
+      #       #get highest tag number
+      #       VERSION=`git describe --abbrev=0 --tags`
+
+      #       #replace . with space so can split into an array
+      #       VERSION_BITS=(${VERSION//./ })
+
+      #       #get number parts and increase last one by 1
+      #       VNUM1=${VERSION_BITS[0]}
+      #       VNUM2=${VERSION_BITS[1]}
+      #       VNUM3=${VERSION_BITS[2]}
+      #       VNUM3=$((VNUM3+1))
+
+      #       #create new tag
+      #       NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
+
+      #       echo "Updating $VERSION to $NEW_TAG"
+
+      #       #creating new tag and pushing
+      #       git tag $NEW_TAG
+      #       echo "Tagged with $NEW_TAG"
+      #       git push --tags
 
 workflows:
   version: 2
   build-and-test-deliverable-one-lambdas:
     jobs:
-      - build-data-aggregator
-      # - build-netex-convertor
-      # - build-ref-data-uploader
-      # - build-odh-uploader
+      - netex-convertor
+      - odh-uploader
+      - ref-data-uploader
+      - site
+      # - git-tag:
+      #   requires:
+      #     - netex-convertor
+      #     - odh-uploader
+      #     - ref-data-uploader
+      #     - site
       
