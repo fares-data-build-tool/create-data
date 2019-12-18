@@ -1,5 +1,6 @@
 import '../design/Layout.scss'
 import React from "react";
+import img from '../public/assets/images/govuk-crest.png'
 
 export class Footer extends React.Component {
     render() {
@@ -41,7 +42,10 @@ export class Footer extends React.Component {
                 </span>
               </div>
               <div className="govuk-footer__meta-item">
-                <a className="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>
+                <a className="govuk-footer__link govuk-footer__copyright-logo no-background-image" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">
+                  <div><img src={img} /></div>
+                  <div>© Crown copyright</div>
+                </a>
               </div>
             </div>
           </div>

@@ -4,10 +4,10 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "dev": "next -p 5555",
+    "dev": "export NODE_ENV='' && next -p 5555",
     "build": "next build",
     "start": "NODE_ENV=production next start",
-    "deploy": "STAGE=dev sls deploy"
+    "deploy": "export NODE_ENV='test' && npm run build && export SLS_DEBUG='*' && serverless deploy --aws-profile tfn-test -v --stage test"
   },
   "author": "",
   "license": "ISC",

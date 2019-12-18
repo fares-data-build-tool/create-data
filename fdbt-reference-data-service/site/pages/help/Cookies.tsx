@@ -1,6 +1,7 @@
 import '../../design/Pages.scss';
 import React from 'react'
 import Layout from '../../layout/Layout'
+import { NextPageContext } from 'next';
 
 const title = 'Cookies on GOV.UK';
 const description = 'Cookies on GOV.UK';
@@ -36,5 +37,9 @@ const Cookies = () => {
     </Layout>
   )
 }
+
+Cookies.getInitialProps = async (ctx: NextPageContext) => {
+  return{};
+};
 
 export default Cookies
