@@ -19,7 +19,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 const cookies = getCookies(req);
                 const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE])); 
                 const operatorObject = JSON.parse(operatorCookie);
-                console.log(operatorObject);
                 const uuid = operatorObject.uuid;
     
                 const cookieValue = JSON.stringify({service, uuid})
