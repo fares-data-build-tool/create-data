@@ -5,6 +5,7 @@ import AlphaBanner from './AlphaBanner';
 import Footer from './Footer';
 import LogoBanner from './LogoBanner';
 import Head from 'next/head';
+import img from '../public/assets/images/favicon.ico'
 
 export interface LayoutProps {
   title: string;
@@ -15,9 +16,8 @@ export default class Layout extends React.Component <LayoutProps> {
     render() {
         return (
           <div>
-
             <Head>
-              <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+              <link rel="shortcut icon" href={img} />
               <title>{ this.props.title || 'Fares Data Build Tool' }</title>
               <meta name='description' content={this.props.description || 'Fares Data Build Tool'} />
               <meta name='viewport' content='width=device-width, initial-scale=1' />
