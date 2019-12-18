@@ -6,9 +6,7 @@ import { getDomain, setCookiOnResponseObject, getCookies } from './utils';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        console.log("**********************");
         const cookies = getCookies(req);
-        console.log("=====");
         const operatorCookie = cookies[OPERATOR_COOKIE]; 
         if(operatorCookie){
             res.writeHead(302, {
