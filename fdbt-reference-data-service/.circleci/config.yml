@@ -1,62 +1,13 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
-jobs:
-  build:
-    branches:
-      only:
-        - master
-
+jobs: 
+  netex-convertor:
     docker:
       - image: circleci/node:latest
+    working_directory: ~/project
 
     steps:
       - checkout
 
-      # Steps for data-aggregator
-      - restore_cache:
-          keys:
-            - dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
-            - dependencies-cache-data-aggregator
-
-      - run:
-          name: Install Serverless CLI and dependencies
-          command: |
-            sudo npm i -g serverless
-            pwd
-            ls -la
-            cd data-aggregator
-            sudo npm install
-
-      - run:
-          name: Run tests
-          command: |
-            pwd
-            ls -la
-            cd data-aggregator
-            npm run test
-
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd data-aggregator
-      #       sls deploy --aws-profile tfn-test
-
-      - save_cache:
-          paths:
-            - data-aggregator/node_modules
-          key: dependencies-cache-data-aggregator-{{ checksum "data-aggregator/package.json" }}
-
-      # Steps for netex-convertor
-      - restore_cache:
-          keys:
-            - dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
-            - dependencies-cache-netex-convertor
-
       - run:
           name: Install Serverless CLI and dependencies
           command: |
@@ -65,66 +16,32 @@ jobs:
             sudo npm install
 
       - run:
+          name: Build the code
+          command: |
+            cd netex-convertor
+            npm run build
+
+      - run:
           name: Run tests
           command: |
-            pwd
-            ls -la
             cd netex-convertor
             npm run test
 
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd netex-convertor
-      #       sls deploy --aws-profile tfn-test
-
-      - save_cache:
-          paths:
-            - netex-convertor/node_modules
-
-          key: dependencies-cache-netex-convertor-{{ checksum "netex-convertor/package.json" }}
-
-      # Steps for ref-data-uploader
-      - restore_cache:
-          keys:
-            - dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
-            - dependencies-cache-ref-data-uploader
-
       - run:
-          name: Install Serverless CLI and dependencies
+          name: Deploy application to tfn-test on aws
           command: |
-            sudo npm i -g serverless
-            cd ref-data-uploader
-            sudo npm install
+            echo "Finished config, starting deploy"
+            cd netex-convertor 
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
 
-      - run:
-          name: Run tests
-          command: |
-            pwd
-            ls -la
-            cd ref-data-uploader
-            npm run test
+  odh-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
 
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd ref-data-uploader
-      #       sls deploy --aws-profile tfn-test
-
-      - save_cache:
-          paths:
-            - ref-data-uploader/node_modules
-          key: dependencies-cache-ref-data-uploader-{{ checksum "ref-data-uploader/package.json" }}
-
-      #Steps for odh-uploader
-      - restore_cache:
-          keys:
-            - dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
-            - dependencies-cache-odh-uploader
+    steps:
+      - checkout
 
       - run:
           name: Install Serverless CLI and dependencies
@@ -134,22 +51,155 @@ jobs:
             sudo npm install
 
       - run:
+          name: Build the code
+          command: |
+            cd odh-uploader
+            npm run build
+
+      - run:
           name: Run tests
           command: |
-            pwd
-            ls -la
             cd odh-uploader
             npm run test
 
-      # - run:
-      #     name: Deploy application to tfn-test on aws
-      #     command: |
-      #       pwd
-      #       ls -la
-      #       cd odh-uploader
-      #       sls deploy --aws-profile tfn-test
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            echo "Finished config, starting deploy"
+            cd odh-uploader
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
 
-      - save_cache:
-          paths:
-            - odh-uploader/node_modules
-          key: dependencies-cache-odh-uploader-{{ checksum "odh-uploader/package.json" }}
+  ref-data-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd ref-data-uploader
+            sudo npm install
+
+      - run:
+          name: Build the code
+          command: |
+            cd ref-data-uploader
+            npm run build
+
+      - run:
+          name: Run tests
+          command: |
+            cd ref-data-uploader
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            echo "Finished config, starting deploy"
+            cd ref-data-uploader
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+              
+  site:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            cd site
+            sudo npm install
+
+      - run:
+          name: Build the code
+          command: |
+            cd site
+            npm run build
+
+      - run:
+          name: Run tests
+          command: |
+            cd site
+            npm run test
+
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            echo "Finished config, starting deploy"
+            cd site
+            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+
+  # This isnt working as it needs an SSH key generating to be able to push the git tags. The 'Creating a Bitbucket User Key' part of
+  # https://circleci.com/docs/2.0/gh-bb-integration/ is what I think we have to do.
+
+  # git-tag:
+  #   docker:
+  #     - image: circleci/node:latest
+  #   working_directory: ~/project
+
+  #   steps:
+  #     - checkout
+
+      # - run:
+      #     name: Tag the build
+      #     command: |
+      #       #get highest tag number
+      #       VERSION=`git describe --abbrev=0 --tags`
+
+      #       #replace . with space so can split into an array
+      #       VERSION_BITS=(${VERSION//./ })
+
+      #       #get number parts and increase last one by 1
+      #       VNUM1=${VERSION_BITS[0]}
+      #       VNUM2=${VERSION_BITS[1]}
+      #       VNUM3=${VERSION_BITS[2]}
+      #       VNUM3=$((VNUM3+1))
+
+      #       #create new tag
+      #       NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
+
+      #       echo "Updating $VERSION to $NEW_TAG"
+
+      #       #creating new tag and pushing
+      #       git tag $NEW_TAG
+      #       echo "Tagged with $NEW_TAG"
+      #       git push --tags
+
+workflows:
+  version: 2
+  build-and-test-deliverable-one-lambdas:
+    jobs:
+      - netex-convertor:
+          filters:
+            branches:
+              only: develop
+      - odh-uploader:
+          filters:
+            branches:
+              only: develop
+      - ref-data-uploader:
+          filters:
+            branches:
+              only: develop
+      - site:
+          filters:
+            branches:
+              only: develop
+      # - git-tag:
+      #   requires:
+      #     - netex-convertor
+      #     - odh-uploader
+      #     - ref-data-uploader
+      #     - site
+      
