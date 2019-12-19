@@ -1,4 +1,4 @@
-import uuidHandler from "../../pages/api/uuid";
+import uuidHandler from "../../../pages/api/uuid";
 
 describe("uuid handler", () => {
   it("should return a uuid", () => {

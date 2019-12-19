@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages service should render correctly 1`] = `
+<Layout
+  description="Confirmation page of the Fares data build tool"
+  title="Confirmation - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <p
+      className="govuk-body-l"
+    >
+      Welcome operator 
+      Connexions Buses
+    </p>
+    <form
+      action="/api/service"
+      method="post"
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <label
+          className="govuk-label"
+          htmlFor="service"
+        >
+          Please select your service
+        </label>
+        <select
+          className="govuk-select"
+          id="service"
+          name="service"
+        >
+          <option
+            value="N1"
+          >
+            N1
+          </option>
+          <option
+            selected={true}
+            value="13A"
+          >
+            13A
+          </option>
+          <option
+            value="12"
+          >
+            12
+          </option>
+          <option
+            value="3"
+          >
+            3
+          </option>
+        </select>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
