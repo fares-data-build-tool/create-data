@@ -96,6 +96,7 @@ exports[`Footer should render correctly 1`] = `
         className="govuk-footer__meta-item"
       >
         <a
+          alt="gov uk crown image"
           className="govuk-footer__link govuk-footer__copyright-logo no-background-image"
           href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
         >
