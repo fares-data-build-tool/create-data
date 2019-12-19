@@ -1,6 +1,7 @@
 import '../design/Layout.scss'
 import React from "react";
 import img from '../public/assets/images/govuk-crest.png'
+import { GOVUK_LINK } from '../constants';
 
 export class Footer extends React.Component {
     render() {
@@ -38,7 +39,7 @@ export class Footer extends React.Component {
                 </svg>
                 <span className="govuk-footer__licence-description">
                   All content is available under the&nbsp;
-                  <a className="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated
+                  <a className="govuk-footer__link" id="govuk_link" href={GOVUK_LINK} rel="license">Open Government Licence v3.0</a>, except where otherwise stated
                 </span>
               </div>
               <div className="govuk-footer__meta-item">

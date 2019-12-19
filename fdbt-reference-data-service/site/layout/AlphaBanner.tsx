@@ -1,5 +1,6 @@
 import '../design/Layout.scss'
 import React from "react";
+import { FEEDBACK_LINK } from '../constants';
 
 export default class AlphaBanner extends React.Component {
     render() {
@@ -10,7 +11,7 @@ export default class AlphaBanner extends React.Component {
             alpha
           </strong>
               <span className="govuk-phase-banner__text">
-                This is a new service – your <a className="govuk-link" href="mailto:fdbt@transportforthenorth.com">feedback</a> will help us to improve it.
+                This is a new service – your <a className="govuk-link" id="feedback_link" href={FEEDBACK_LINK}>feedback</a> will help us to improve it.
               </span>
             </p>
           </div>

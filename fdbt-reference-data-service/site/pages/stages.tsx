@@ -4,7 +4,7 @@ import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
 import { parseCookies } from 'nookies';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
-import Router from 'next/router';
+import { getHost, isSessionValid } from '../utils';
 
 const title = 'Confirmation - Fares data build tool';
 const description = 'Confirmation page of the Fares data build tool';
@@ -14,7 +14,7 @@ export interface ServiceProps {
   service: string
 }
 
-const Operator = (props: ServiceProps) => {
+const Stages = (props: ServiceProps) => {
     return (
       <Layout title={title} description={description}>
           <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -32,22 +32,32 @@ const Operator = (props: ServiceProps) => {
     );
 }
 
-Operator.getInitialProps = async (ctx: NextPageContext) => {
+Stages.getInitialProps = async (ctx: NextPageContext) => {
+  function redirectOnError() {
+    if (ctx.res) {
+      ctx.res.writeHead(302, {
+        Location: '/error'
+      })
+      ctx.res.end();
+    }  
+  };
+
   const cookies = parseCookies(ctx);
   const operatorCookie = cookies[OPERATOR_COOKIE];
   const serviceCookie = cookies[SERVICE_COOKIE];
-  const operatorObject = JSON.parse(operatorCookie);
-  const serviceObject = JSON.parse(serviceCookie);
-  if(operatorCookie && serviceCookie && operatorObject.uuid == serviceObject.uuid){
-    return {operator: operatorObject.operator, service: serviceObject.service};
-  } else{
-    ctx.res.writeHead(302, {
-      Location: '/error'
-  });
-  ctx.res.end();
-    Router.push('/error')
-    return {};
+  if(operatorCookie && serviceCookie) {
+    const url: string = getHost(ctx.req) + "/api/validate";
+    const isValid = await isSessionValid(url, ctx.req);
+    if (isValid){
+      const operatorObject = JSON.parse(operatorCookie);
+      const serviceObject = JSON.parse(serviceCookie);
+      return {operator: operatorObject.operator, service: serviceObject.service };
+    } else {
+      redirectOnError();
+    }
+  } else {
+    redirectOnError();
   }
 };
 
-export default Operator;
+export default Stages;

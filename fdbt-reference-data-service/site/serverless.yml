@@ -1,4 +1,4 @@
-service: site
+service: fdbt
 
 provider:
   name: aws

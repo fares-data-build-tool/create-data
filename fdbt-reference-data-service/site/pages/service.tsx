@@ -22,22 +22,19 @@ const Operator = (props: ServiceProps) => {
           <form action="/api/service" method="post" >
       
           <div className="govuk-form-group">
-  <label className="govuk-label" htmlFor="service">
-    Please select your service
-  </label>
-  <select className="govuk-select" id="service" name="service">
-    <option value="N1">N1</option>
-    <option value="13A" selected>13A</option>
-    <option value="12">12</option>
-    <option value="3">3</option>
-  </select>
-</div>
-            <input type="submit" value="Continue" className="govuk-button govuk-button--start" />
-
-
+            <label className="govuk-label" htmlFor="service">
+              Please select your service
+            </label>
+            <select className="govuk-select" id="service" name="service">
+              <option value="N1">N1</option>
+              <option value="13A" selected>13A</option>
+              <option value="12">12</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <input type="submit" value="Continue" className="govuk-button govuk-button--start" />
           </form>
-
-          </main>
+        </main>
       </Layout>
     );
 }

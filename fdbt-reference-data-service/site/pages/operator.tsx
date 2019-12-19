@@ -41,13 +41,9 @@ const Operator = () => {
             </fieldset>
             </div>
             <input type="submit" value="Continue" className="govuk-button govuk-button--start">
-
             </input>
-
-
           </form>
-
-          </main>
+        </main>
       </Layout>
     );
 }
