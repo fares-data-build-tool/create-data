@@ -180,10 +180,22 @@ workflows:
   version: 2
   build-and-test-deliverable-one-lambdas:
     jobs:
-      - netex-convertor
-      - odh-uploader
-      - ref-data-uploader
-      - site
+      - netex-convertor:
+          filters:
+            branches:
+              only: develop
+      - odh-uploader:
+          filters:
+            branches:
+              only: develop
+      - ref-data-uploader:
+          filters:
+            branches:
+              only: develop
+      - site:
+          filters:
+            branches:
+              only: develop
       # - git-tag:
       #   requires:
       #     - netex-convertor
