@@ -5,6 +5,8 @@ import Layout from '../layout/Layout';
 import { parseCookies } from 'nookies';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { getHost, isSessionValid } from '../utils';
+import TableForm from '../components/TableForm';
+
 
 const title = 'Confirmation - Fares data build tool';
 const description = 'Confirmation page of the Fares data build tool';
@@ -19,14 +21,12 @@ const Stages = (props: ServiceProps) => {
       <Layout title={title} description={description}>
           <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
           <p className="govuk-body-l">Welcome operator {props.operator}</p>
-          <form action="/api/stages" method="post" >
-          <div className="govuk-form-group">
-            <label className="govuk-label" htmlFor="sort">
-              Please submit your stages for your service {props.service}
-            </label>
-          </div>
-            <input type="submit" value="Submit" className="govuk-button govuk-button--start" />
-          </form>
+            <div className="govuk-form-group">
+              <label className="govuk-label" htmlFor="sort">
+                Please submit your stages for your service {props.service}
+              </label>
+            </div>
+            <TableForm offset={1} />
           </main>
       </Layout>
     );
