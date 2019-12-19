@@ -101,6 +101,7 @@ exports[`Footer should render correctly 1`] = `
         >
           <div>
             <img
+              alt="gov uk crown image"
               src={null}
             />
           </div>
