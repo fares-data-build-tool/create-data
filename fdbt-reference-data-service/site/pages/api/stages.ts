@@ -5,8 +5,8 @@ import { stagesBusinessLogic } from './service/businessLogic';
 export default (req: NextApiRequest, res: NextApiResponse) => {
     if (isSessionValid(req) && isCookiesUUIDMatch(req)){
         try {
-            const stages = req.body.stages;
-            stagesBusinessLogic(stages);
+            
+            stagesBusinessLogic(req);
 
             res.writeHead(302, {
                 Location: '/confirmation'

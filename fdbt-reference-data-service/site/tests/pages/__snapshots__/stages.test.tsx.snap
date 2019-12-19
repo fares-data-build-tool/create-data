@@ -16,27 +16,20 @@ exports[`pages stages should render correctly 1`] = `
       Welcome operator 
       Connexions Buses
     </p>
-    <form
-      action="/api/stages"
-      method="post"
+    <div
+      className="govuk-form-group"
     >
-      <div
-        className="govuk-form-group"
+      <label
+        className="govuk-label"
+        htmlFor="sort"
       >
-        <label
-          className="govuk-label"
-          htmlFor="sort"
-        >
-          Please submit your stages for your service 
-          X70
-        </label>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        type="submit"
-        value="Submit"
-      />
-    </form>
+        Please submit your stages for your service 
+        X70
+      </label>
+    </div>
+    <TableForm
+      offset={1}
+    />
   </main>
 </Layout>
 `;

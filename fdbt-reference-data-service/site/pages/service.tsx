@@ -52,9 +52,8 @@ Operator.getInitialProps = async (ctx: NextPageContext) => {
   } else{
     ctx.res.writeHead(302, {
       Location: '/error'
-  });
-  ctx.res.end();
-    Router.push('/error')
+    });
+    ctx.res.end();
     return {};
   }
 };
