@@ -44,7 +44,7 @@ export class Footer extends React.Component {
               </div>
               <div className="govuk-footer__meta-item">
                 <a className="govuk-footer__link govuk-footer__copyright-logo no-background-image" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">
-                  <div><img src={img} alt="gov uk crown image"/></div>
+                  <div><img src={img} /></div>
                   <div>© Crown copyright</div>
                 </a>
               </div>
