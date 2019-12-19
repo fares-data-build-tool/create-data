@@ -137,7 +137,7 @@ jobs:
           command: |
             echo "Finished config, starting deploy"
             cd site
-            export SLS_DEBUG="*" && sls deploy
+            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
   # This isnt working as it needs an SSH key generating to be able to push the git tags. The 'Creating a Bitbucket User Key' part of
