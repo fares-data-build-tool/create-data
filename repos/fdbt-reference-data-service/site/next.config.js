@@ -14,5 +14,5 @@ const nextConfig = {
 };
 
 module.exports = withPlugins([
-  [withSass],[withFonts, {assetPrefix}],[withImages, { assetPrefix }], [withCss],  nextConfig
+  [withSass],[withFonts, {assetPrefix} ],[withImages, { assetPrefix }], [withCss],  nextConfig
 ]);
