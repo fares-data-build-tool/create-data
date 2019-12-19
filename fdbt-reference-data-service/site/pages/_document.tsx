@@ -1,4 +1,4 @@
-import '../design/pages.scss';
+import '../design/Pages.scss';
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
