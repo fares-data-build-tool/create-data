@@ -6,16 +6,10 @@ import axios, {
 import { NextPageContext } from 'next'
 import Layout from '../layout/Layout'
 
-export interface HomeProps {
-  serverTime: string,
-  uuid: string,
-  name: string
-}
-
 const title = 'Fares data build tool';
 const description = 'Fares data build tool is a service that allows you to generate data in NeTEx format';
 
-const Home = (props: HomeProps) => {
+const Home = () => {
   console.log("debug");
     return (
       <Layout title={title} description={description}>
@@ -42,24 +36,7 @@ const Home = (props: HomeProps) => {
 }
 
 Home.getInitialProps = async (ctx: NextPageContext) => {
-  const { req } = ctx;
-  let host = req.headers['host'];
-  if(host && host.includes('localhost')){
-    host = "http://"+host;
-  }else {
-    host = "https://"+host;
-  }
-  const url = host + '/api/uuid';
-  console.log(url);
-  const uuid = await axios.get(url)
-  .then((response: AxiosResponse) => response.data.uuid)
-  .catch(error => console.log(error.message));
-
-
-  const name = await axios.get( (host + '/api/name') )
-  .then((response: AxiosResponse) => response.data.name)
-  .catch(error => console.log(error.message));
-  return { serverTime: new Date().toUTCString(), uuid, name };
+  return {};
 };
 
 export default Home;
