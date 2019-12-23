@@ -13,7 +13,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd netex-convertor
-            sudo npm install
+            npm install
 
       - run:
           name: Build the code
