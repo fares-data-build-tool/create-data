@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export function getCookies(req: NextApiRequest){
-    var cookies = {};
+    const cookies = {};
     req.headers && req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
-        var parts = cookie.match(/(.*?)=(.*)$/)
+        const parts = cookie.match(/(.*?)=(.*)$/)
         cookies[ parts[1].trim() ] = (parts[2] || '').trim();
     });
     return cookies;
