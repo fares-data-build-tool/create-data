@@ -9,7 +9,7 @@ export function deleteCookieOnServerSide(ctx: NextPageContext, cookieName: strin
     date.setDate(date.getDate() - 1);
     const host = ctx.req.headers.host;
     const domain =  host.split(":")[0];
-    cookies.set(cookieName, "", { overwrite: true, expires: date, domain: domain, path: "/"});
+    cookies.(cookieName, "", { overwrite: true, expires: date, domain: domain, path: "/"});
 }
 
 export function getHost(req: IncomingMessage) {
