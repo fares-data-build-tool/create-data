@@ -1,5 +1,6 @@
-import {getHost} from "../../utils";
+import {getHost, deleteCookieOnServerSide } from "../../utils"; 
 import { IncomingMessage } from "http";
+import { NextPageContext } from "next";
 
 var MockReq = require('mock-req');
 
@@ -24,10 +25,22 @@ describe("utils", () => {
                 }
             });
             const result = getHost(req);
+            console.log(result);
             expect(result).toEqual(expected);
         });
     });
     describe("deleteCookiesOnServerSide", () => {
-        it("should delete ")
-    })
-});
+        it("should delete cookie", () => {
+            const props: NextPageContext = {
+                pathname: “”,
+                query: {},
+                req: req,
+                res: res,
+                AppTree: null
+              };
+              const cookieName = "test";
+            const result = deleteCookieOnServerSide(props, cookieName);  
+            const expected = 
+            expect(result).toEqual(expected);
+        });
+    }
