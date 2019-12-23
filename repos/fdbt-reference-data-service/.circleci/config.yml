@@ -13,7 +13,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd netex-convertor
-            sudo npm install
+            npm install
 
       - run:
           name: Build the code
@@ -48,7 +48,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd odh-uploader
-            sudo npm install
+            npm install
 
       - run:
           name: Build the code
@@ -83,7 +83,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd ref-data-uploader
-            sudo npm install
+            npm install
 
       - run:
           name: Build the code
@@ -118,7 +118,7 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd site
-            sudo npm install
+            npm install
 
       - run:
           name: Build the code
