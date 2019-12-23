@@ -89,13 +89,13 @@ jobs:
           name: Build the code
           command: |
             cd ref-data-uploader
-            npm run build
+            npm install && npm run build
 
       - run:
           name: Run tests
           command: |
             cd ref-data-uploader
-            npm run test
+            npm install && npm run test
 
       - run:
           name: Deploy application to tfn-test on aws
