@@ -89,7 +89,7 @@ jobs:
           name: Build the code
           command: |
             cd ref-data-uploader
-            ls -l ./node-modules
+            ls -l
             npm run build
 
       - run:
