@@ -27,4 +27,7 @@ describe("utils", () => {
             expect(result).toEqual(expected);
         });
     });
+    describe("deleteCookiesOnServerSide", () => {
+        it("should delete ")
+    })
 });
