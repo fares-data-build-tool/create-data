@@ -1,7 +1,7 @@
-import { getHost } from "../../../utils";
-import { getCookies, getDomain } from "../../../pages/api/apiUtils";
-import { mockRequest } from "mock-req-res";
+import { getCookies, getDomain, setCookiOnResponseObject } from "../../../pages/api/apiUtils";
+import { mockRequest, mockResponse } from "mock-req-res";
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from "../../../constants";
+import * as libraryObject from 'set-cookie';
 
 const MockReq = require('mock-req');
 
@@ -20,9 +20,7 @@ describe("apiUtils", () => {
             expect(result[OPERATOR_COOKIE]).toEqual(operatorCookieValue);
         });
     });
-})
 
-describe("apiUtils", () => {
     describe("getDomain", () => {
         it("should return the domain without a port number", () => {
             const expected = "localhost";
@@ -35,4 +33,25 @@ describe("apiUtils", () => {
             expect(result).toEqual(expected);
         });
     });
+
+    describe("setCookiOnResponseObject", () => {
+        it("to call set cookie library", () => {
+            const domain = "localhost";
+            const cookieName = "test";
+            const cookieValue = "cookieValue";
+            const res = mockResponse();
+            jest.mock('set-cookie');
+            const mockSetCookie = require('set-cookie');
+            mockSetCookie.mockImplementation();
+            setCookiOnResponseObject(domain, cookieName, cookieValue, res);
+            expect(mockSetCookie).toBeCalled();
+            expect(mockSetCookie).toBeCalledWith(cookieName, cookieValue, {
+                domain: domain,
+                path: "/",
+                maxAge: (3600 * 24),
+                res: res
+            });
+        });
+    });
+    
 })

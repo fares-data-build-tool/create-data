@@ -1,5 +1,4 @@
 import {getHost} from "../../utils";
-import { IncomingMessage } from "http";
 
 var MockReq = require('mock-req');
 
