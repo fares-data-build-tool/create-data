@@ -89,7 +89,6 @@ jobs:
           name: Build the code
           command: |
             cd ref-data-uploader
-            ls -l node_modules
             npm run build
 
       - run:
@@ -192,7 +191,7 @@ workflows:
       - ref-data-uploader:
           filters:
             branches:
-              only: feature/TFN-58_database_design
+              only: develop
       - site:
           filters:
             branches:
