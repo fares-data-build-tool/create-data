@@ -2,7 +2,7 @@ import { OPERATOR_COOKIE } from '../../constants/index';
 import { NextApiRequest, NextApiResponse } from 'next';
 import v1 from 'uuid';
 import { operatorBusinessLogic } from './service/businessLogic';
-import { getDomain, setCookiOnResponseObject, getCookies } from './utils';
+import { getDomain, setCookiOnResponseObject, getCookies } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
     try {

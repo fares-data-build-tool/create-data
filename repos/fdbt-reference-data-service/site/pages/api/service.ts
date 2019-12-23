@@ -1,7 +1,7 @@
 import { SERVICE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { isSessionValid } from './service/validator';
-import { getDomain, setCookiOnResponseObject, getCookies } from './utils';
+import { getDomain, setCookiOnResponseObject, getCookies } from './apiUtils';
 import { serviceBusinessLogic } from './service/businessLogic';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
