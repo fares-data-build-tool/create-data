@@ -14,7 +14,7 @@ export function getDomain(req: NextApiRequest): string {
     return host.split(":")[0];
 }
 
-export function setCookiOnResponseObject(domain: string, cookieName: string, cookieValue: string, res: NextApiResponse) {
+export function setCookieOnResponseObject(domain: string, cookieName: string, cookieValue: string, res: NextApiResponse) {
     const setCookie = require('set-cookie');
     setCookie(cookieName, cookieValue, {
         domain: domain,
