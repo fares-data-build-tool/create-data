@@ -1,4 +1,4 @@
-import {getHost} from "../../utils";
+import { getHost } from "../../utils";
 
 var MockReq = require('mock-req');
 
