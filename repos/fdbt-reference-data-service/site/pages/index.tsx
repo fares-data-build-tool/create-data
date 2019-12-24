@@ -1,8 +1,5 @@
 import '../design/Pages.scss'
 import React from 'react';
-import axios, {
-  AxiosResponse,
-} from 'axios';
 import { NextPageContext } from 'next'
 import Layout from '../layout/Layout'
 
