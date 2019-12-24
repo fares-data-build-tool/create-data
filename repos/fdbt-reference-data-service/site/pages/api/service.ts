@@ -1,7 +1,7 @@
 import { SERVICE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { isSessionValid } from './service/validator';
-import { getDomain, setCookiOnResponseObject, getCookies } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
 import { serviceBusinessLogic } from './service/businessLogic';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +23,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     
                 const cookieValue = JSON.stringify({service, uuid})
                 const domain = getDomain(req); 
-                setCookiOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
+                setCookieOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
                 res.writeHead(302, {
                     Location: '/stages'
                 });
