@@ -20,7 +20,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE])); 
                 const operatorObject = JSON.parse(operatorCookie);
                 const uuid = operatorObject.uuid;
-    
                 const cookieValue = JSON.stringify({service, uuid})
                 const domain = getDomain(req); 
                 setCookiOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
