@@ -6,7 +6,7 @@ describe('TableForm', () => {
 
   it('should render correctly', () => {
     const tree = shallow(
-      <TableForm />
+      <TableForm offset={1} />
     );
     expect(tree).toMatchSnapshot();
   });
