@@ -40,7 +40,7 @@ class TableForm extends React.Component<TableFormProps> {
               <th scope="col" className="govuk-table__header">Header 10</th>
             </tr>
           </thead>
-          <tbody className="govuk-table__body">
+          <tbody className="govuk-table__body" id="table_form_body">
             {rows}
           </tbody>
         </table>
