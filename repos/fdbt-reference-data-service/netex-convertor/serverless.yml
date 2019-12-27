@@ -61,7 +61,7 @@ functions:
   s3hook:
     handler: handler.s3hook
     events:
-    - s3: fdbt-test-aggregated-data
+    - s3: fdbt-test-user-data
       event: s3:ObjectCreated:*
 
 plugins:
