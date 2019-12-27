@@ -186,7 +186,7 @@ workflows:
       - netex-convertor:
           filters:
             branches:
-              only: develop
+              only: feature/cleanup
       - odh-uploader:
           filters:
             branches:
