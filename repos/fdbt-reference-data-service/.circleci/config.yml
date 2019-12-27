@@ -184,22 +184,18 @@ workflows:
   build-and-test-deliverable-one-lambdas:
     jobs:
       - netex-convertor:
-          context: aws
           filters:
             branches:
               only: develop
       - odh-uploader:
-          context: aws
           filters:
             branches:
               only: develop
       - ref-data-uploader:
-          context: aws
           filters:
             branches:
               only: develop
       - site:
-          context: aws
           filters:
             branches:
               only: develop
