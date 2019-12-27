@@ -5,34 +5,34 @@ import { getDomain, setCookiOnResponseObject, getCookies } from './utils';
 import { serviceBusinessLogic } from './service/businessLogic';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-    if (isSessionValid(req)){
+    if (isSessionValid(req)) {
         try {
             const cookies = getCookies(req);
-            const serviceCookie = cookies[SERVICE_COOKIE]; 
-            if(serviceCookie){
+            const serviceCookie = cookies[SERVICE_COOKIE];
+            if (serviceCookie) {
                 res.writeHead(302, {
                     Location: '/stages'
-                  });
+                });
             } else {
                 const service = req.body.service;
                 serviceBusinessLogic(service);
                 const cookies = getCookies(req);
-                const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE])); 
+                const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
                 const operatorObject = JSON.parse(operatorCookie);
                 const uuid = operatorObject.uuid;
-                const cookieValue = JSON.stringify({service, uuid})
-                const domain = getDomain(req); 
+                const cookieValue = JSON.stringify({ service, uuid })
+                const domain = getDomain(req);
                 setCookiOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
                 res.writeHead(302, {
                     Location: '/stages'
                 });
             }
-        }catch (error) {
+        } catch (error) {
             res.writeHead(302, {
                 Location: '/error'
             });
         }
-    }else{
+    } else {
         res.writeHead(302, {
             Location: '/error'
         });
