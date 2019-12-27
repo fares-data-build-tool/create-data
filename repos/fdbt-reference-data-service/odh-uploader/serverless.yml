@@ -23,7 +23,7 @@ service: odh-uploader
 provider:
   name: aws
   runtime: nodejs10.x
-
+  region: eu-west-2
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
