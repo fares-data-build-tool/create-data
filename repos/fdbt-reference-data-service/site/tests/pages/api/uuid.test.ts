@@ -1,8 +1,9 @@
 import uuidHandler from "../../../pages/api/uuid";
+import { mockRequest } from "mock-req-res";
 
 describe("uuid handler", () => {
   it("should return a uuid", () => {
-    const req = null;
+    const req = mockRequest();
     const val = {
         json: jest.fn()
     }
