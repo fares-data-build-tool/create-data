@@ -57,9 +57,9 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
-functions:
-  hello:
-    handler: handler.hello
+#functions:
+#  hello:
+#    handler: handler.hello
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -147,18 +147,17 @@ resources:
                 -  'lambda:*'
                 -  'acm:ListCertificates'
                 -  'waf-regional:*'
-              Resource: '*'
-       
+              Resource: '*'      
     Keys:
       Type: 'AWS::IAM::AccessKey'
       Properties:
         UserName: tfn
   Outputs:
     AccessKey:
-      Value: !Ref CFNKeys
+      Value: !Ref Keys
       Description: AWSAccessKeyId of new user
     SecretKey:
       Value: !GetAtt 
-        - CFNKeys
+        - Keys
         - SecretAccessKey
       Description: AWSSecretKey of new user
