@@ -16,8 +16,6 @@ describe("operator", () => {
       },
       body: {},
       headers: {
-        "set-cookie": [],
-        "Set-cookie": [],
         host: "localhost:5000",
         cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`
       }
