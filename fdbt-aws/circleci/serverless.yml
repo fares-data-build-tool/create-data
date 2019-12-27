@@ -1,8 +1,9 @@
-service: tfn-aws
+service: circleci
 
 provider:
   name: aws
   region: eu-west-2
+  stage: ${opt:stage, 'test'}
 
 resources: 
   Resources: 
@@ -35,19 +36,19 @@ resources:
     Group:
       Type: 'AWS::IAM::Group'
       Properties:
-        GroupName: 'tfn-group'
+        GroupName: 'cicd'
         ManagedPolicyArns: 
           - !Ref Policy
     User:
       Type: 'AWS::IAM::User'
       Properties:
-        UserName: "tfn"
+        UserName: "circleci"
         Groups: 
           - !Ref Group
     Keys:
       Type: 'AWS::IAM::AccessKey'
       Properties:
-        UserName: tfn
+        UserName: !Ref User
   Outputs:
     AccessKey:
       Value: !Ref Keys
