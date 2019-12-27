@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../../../constants/index';
-import { getCookies } from '../utils';
+import { getCookies } from '../apiUtils';
 
 export function isSessionValid(req: NextApiRequest){
     const cookies = getCookies(req);
