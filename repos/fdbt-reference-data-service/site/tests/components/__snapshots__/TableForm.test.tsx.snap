@@ -87,6 +87,7 @@ exports[`TableForm should render correctly 1`] = `
       </thead>
       <tbody
         className="govuk-table__body"
+        id="table_form_body"
       >
         <tr>
           <td>
