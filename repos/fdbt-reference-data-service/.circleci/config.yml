@@ -24,6 +24,11 @@ jobs:
               else
                 echo "Variable is set"
               fi
+             if [ -z "${NAME}" ]; then
+                echo "Variable is NOT defined" 
+              else
+                echo "Variable is set"
+              fi
 
       - run:
           name: Install Serverless CLI and dependencies
