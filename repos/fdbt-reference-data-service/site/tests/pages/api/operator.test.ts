@@ -51,7 +51,7 @@ describe("operator", () => {
     });
   });
 
-  it("should return 302 redirect to /service when session operator cookie and operator body do not exist", () => {
+  it("should return 302 redirect to /error when session operator cookie and operator body do not exist", () => {
     const writeHeadMock = jest.fn();
     const req = mockRequest({
       connection: {
@@ -67,7 +67,7 @@ describe("operator", () => {
     });
     operator(req, res);
     expect(writeHeadMock).toBeCalledWith(302, {
-      Location: '/service'
+      Location: '/error'
     });
   });
 });
