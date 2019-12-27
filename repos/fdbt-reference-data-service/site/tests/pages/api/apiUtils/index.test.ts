@@ -1,7 +1,6 @@
-import { getCookies, getDomain, setCookieOnResponseObject } from "../../../pages/api/apiUtils";
+import { getCookies, getDomain, setCookieOnResponseObject } from "../../../../pages/api/apiUtils";
 import { mockRequest, mockResponse } from "mock-req-res";
-import { OPERATOR_COOKIE, SERVICE_COOKIE } from "../../../constants";
-import * as libraryObject from 'set-cookie';
+import { OPERATOR_COOKIE, SERVICE_COOKIE } from "../../../../constants";
 
 const MockReq = require('mock-req');
 
