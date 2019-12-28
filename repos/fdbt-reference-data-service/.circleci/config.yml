@@ -56,6 +56,7 @@ jobs:
             else
               echo "Variable is set"
             fi
+            date +%Y%m%d%H%M%S
             export NODE_ENV='test' && export SLS_DEBUG="*" && serverless deploy
             echo "Finished deploy"
 
