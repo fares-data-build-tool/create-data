@@ -24,6 +24,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-2
+  stage: ${opt:stage, 'test'}
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1

@@ -32,7 +32,7 @@ jobs:
           command: |
             echo "starting deploy"
             cd netex-convertor 
-            serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}"
+            serverless config credentials --provider aws --key "$AWS_ACCESS_KEY_ID" --secret "$AWS_SECRET_ACCESS_KEY"
             ls -l ~/.aws
             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
                 echo "Variable is NOT defined" 
@@ -44,13 +44,8 @@ jobs:
               else
                 echo "Variable is set"
               fi
-             if [ -z "${NAME}" ]; then
-                echo "Variable is NOT defined" 
-              else
-                echo "Variable is set"
-              fi
 
-            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
+            export NODE_ENV='test' && export SLS_DEBUG="*" && serverless deploy
             echo "Finished deploy"
 
   odh-uploader:
