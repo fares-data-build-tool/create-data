@@ -32,7 +32,8 @@ jobs:
           command: |
             echo "Finished config, starting deploy"
             cd netex-convertor 
-            export SLS_DEBUG="*" && sls deploy
+            serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}" --profile "circle-ci"
+            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy --aws-profile "circle-ci"
             echo "Finished deploy"
 
   odh-uploader:
