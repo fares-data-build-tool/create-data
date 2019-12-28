@@ -32,7 +32,6 @@ jobs:
           command: |
             echo "starting deploy"
             cd netex-convertor 
-            ls -l ~/.aws
             serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}" --profile "circle-ci"
             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
                 echo "Variable is NOT defined" 
