@@ -30,8 +30,8 @@ jobs:
       - run:
           name: Deploy application to tfn-test on aws
           command: |
-            echo "starting deploy"
-            cd netex-convertor
+            echo "Finished config, starting deploy"
+            cd netex-convertor 
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -137,8 +137,7 @@ jobs:
           command: |
             echo "Finished config, starting deploy"
             cd site
-            serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}" --profile "circle-ci"
-            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy --aws-profile "circle-ci"
+            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
   # This isnt working as it needs an SSH key generating to be able to push the git tags. The 'Creating a Bitbucket User Key' part of
