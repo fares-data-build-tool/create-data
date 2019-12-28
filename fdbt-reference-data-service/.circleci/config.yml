@@ -1,6 +1,4 @@
-version: 2.1
-orbs:
-  aws-cli: circleci/aws-cli@0.1.19
+version: 2
 
 jobs: 
   netex-convertor:
@@ -10,8 +8,6 @@ jobs:
 
     steps:
       - checkout
-      - aws-cli/setup:
-          profile-name: example
       - run:
           name: Testing if environment variables have been set
           command: |
