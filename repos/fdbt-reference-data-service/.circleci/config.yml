@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@x.y
 
 jobs: 
   netex-convertor:
@@ -8,6 +10,26 @@ jobs:
 
     steps:
       - checkout
+      - aws-cli/setup:
+          profile-name: example
+      - run:
+          name: Testing if environment variables have been set
+          command: |
+             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
+                echo "Variable is NOT defined" 
+              else
+                echo "Variable is set" 
+              fi
+             if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
+                echo "Variable is NOT defined" 
+              else
+                echo "Variable is set"
+              fi
+             if [ -z "${NAME}" ]; then
+                echo "Variable is NOT defined" 
+              else
+                echo "Variable is set"
+              fi
 
       - run:
           name: Testing if environment variables have been set
@@ -201,6 +223,7 @@ workflows:
   build-and-test-deliverable-one-lambdas:
     jobs:
       - netex-convertor:
+          context: aws
           filters:
             branches:
               only: feature/cleanup
