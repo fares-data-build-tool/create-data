@@ -223,7 +223,7 @@ workflows:
   build-and-test-deliverable-one-lambdas:
     jobs:
       - netex-convertor:
-          context: aws
+          context: tfn-aws
           filters:
             branches:
               only: feature/cleanup
