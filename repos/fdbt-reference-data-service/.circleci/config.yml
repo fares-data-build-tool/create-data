@@ -1,7 +1,4 @@
-version: 2.1
-orbs:
-  aws-cli: circleci/aws-cli@0.1.19
-
+version: 2
 jobs: 
   netex-convertor:
     docker:
@@ -184,18 +181,22 @@ workflows:
   build-and-test-deliverable-one-lambdas:
     jobs:
       - netex-convertor:
+          context: "tfn-aws"
           filters:
             branches:
-              only: feature/cleanup
+              only: develop
       - odh-uploader:
+          context: "tfn-aws"
           filters:
             branches:
               only: develop
       - ref-data-uploader:
+          context: "tfn-aws"
           filters:
             branches:
               only: develop
       - site:
+          context: "tfn-aws"
           filters:
             branches:
               only: develop
