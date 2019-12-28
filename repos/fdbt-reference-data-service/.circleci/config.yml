@@ -184,7 +184,7 @@ workflows:
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/cleanup
+              only: develop
       - odh-uploader:
           context: "tfn-aws"
           filters:
