@@ -1,5 +1,4 @@
 version: 2
-
 jobs: 
   netex-convertor:
     docker:
@@ -8,43 +7,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: Testing if environment variables have been set
-          command: |
-             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
-                echo "Variable is NOT defined" 
-              else
-                echo "Variable is set" 
-              fi
-             if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
-                echo "Variable is NOT defined" 
-              else
-                echo "Variable is set"
-              fi
-             if [ -z "${NAME}" ]; then
-                echo "Variable is NOT defined" 
-              else
-                echo "Variable is set"
-              fi
-
-      - run:
-          name: Testing if environment variables have been set
-          command: |
-             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
-                echo "Variable is NOT defined" 
-              else
-                echo "Variable is set" 
-              fi
-             if [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
-                echo "Variable is NOT defined" 
-              else
-                echo "Variable is set"
-              fi
-             if [ -z "${NAME}" ]; then
-                echo "Variable is NOT defined" 
-              else
-                echo "Variable is set"
-              fi
 
       - run:
           name: Install Serverless CLI and dependencies
