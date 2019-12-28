@@ -32,7 +32,8 @@ jobs:
           command: |
             echo "starting deploy"
             cd netex-convertor 
-            serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}" --profile "circle-ci"
+            serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}"
+            ls -l ~/.aws
             if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
                 echo "Variable is NOT defined" 
               else
@@ -49,7 +50,7 @@ jobs:
                 echo "Variable is set"
               fi
 
-            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy --aws-profile "circle-ci"
+            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
   odh-uploader:
@@ -199,7 +200,7 @@ workflows:
   build-and-test-deliverable-one-lambdas:
     jobs:
       - netex-convertor:
-          context: tfn-aws
+          context: "tfn-aws"
           filters:
             branches:
               only: feature/cleanup
