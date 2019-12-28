@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 jobs: 
   netex-convertor:
     docker:
@@ -32,7 +32,7 @@ jobs:
           command: |
             echo "starting deploy"
             cd netex-convertor
-            export NODE_ENV='test' && export SLS_DEBUG="*" && serverless deploy
+            export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
   odh-uploader:
@@ -187,14 +187,17 @@ workflows:
             branches:
               only: feature/cleanup
       - odh-uploader:
+          context: "tfn-aws"
           filters:
             branches:
               only: develop
       - ref-data-uploader:
+          context: "tfn-aws"
           filters:
             branches:
               only: develop
       - site:
+          context: "tfn-aws"
           filters:
             branches:
               only: develop
