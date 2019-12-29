@@ -7,9 +7,7 @@ jobs:
   tag-netex-convertor:
     executor: semver-orb/default
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "b3:95:00:db:3e:9b:99:be:3d:04:ff:fe:6d:ac:ac:48"
+      - add_ssh_keys
       - checkout
       - semver-orb/print
       - semver-orb/tagnext
