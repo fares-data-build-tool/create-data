@@ -208,7 +208,7 @@ workflows:
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
 
       - build-netex-convertor:
           requires:
@@ -216,21 +216,21 @@ workflows:
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - test-netex-convertor:
           requires:
             - build-netex-convertor
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - deploy-test-netex-convertor:
           requires:
             - test-netex-convertor
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
 
       - build-odh-uploader:
           requires:
@@ -238,21 +238,21 @@ workflows:
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - test-odh-uploader:
           requires:
             - build-odh-uploader
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - deploy-test-odh-uploader:
           requires:
             - test-odh-uploader
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
 
 
       - build-ref-data-uploader:
@@ -261,21 +261,21 @@ workflows:
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - test-ref-data-uploader:
           requires:
             - build-ref-data-uploader
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - deploy-test-ref-data-uploader:
           requires:
             - test-ref-data-uploader
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
 
       - build-site:
           requires:
@@ -283,21 +283,21 @@ workflows:
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - test-site:
           requires:
             - build-site
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
       - deploy-test-site:
           requires:
             - test-site
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
 
       - tag-test-release:
           requires:
@@ -308,4 +308,4 @@ workflows:
           context: "tfn-aws"
           filters:
             branches:
-              only: feature/TFN-165_circle_git_tag
+              only: develop
