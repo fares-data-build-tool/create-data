@@ -15,17 +15,21 @@ jobs:
             cd netex-convertor
             npm install
             npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "*"
 
   test-netex-convertor:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             cd netex-convertor
-            npm install
             npm run test
 
   deploy-test-netex-convertor:
