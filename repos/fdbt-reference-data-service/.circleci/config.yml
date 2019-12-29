@@ -4,7 +4,162 @@ orbs:
 
 jobs: 
 
-  tag-netex-convertor:
+  build-netex-convertor:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd netex-convertor
+            npm install
+            npm run build
+
+  test-netex-convertor:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd netex-convertor
+            npm install
+            npm run test
+
+  deploy-test-netex-convertor:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            sudo npm i -g serverless
+            cd netex-convertor 
+            npm install
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+
+  build-odh-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd odh-uploader
+            npm install
+            npm run build
+
+  test-odh-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd odh-uploader
+            npm install
+            npm run test
+
+  deploy-test-odh-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            sudo npm i -g serverless
+            cd odh-uploader 
+            npm install
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+
+
+  build-ref-data-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd ref-data-uploader
+            npm install
+            npm run build
+
+  test-ref-data-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd ref-data-uploader
+            npm install
+            npm run test
+
+  deploy-test-ref-data-uploader:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            sudo npm i -g serverless
+            cd ref-data-uploader 
+            npm install
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+
+  build-site:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd site
+            npm install
+            npm run build
+
+  test-site:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: |
+            cd site
+            npm install
+            npm run test
+
+  deploy-test-site:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Deploy application to tfn-test on aws
+          command: |
+            sudo npm i -g serverless
+            cd site
+            npm install
+            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
+
+  tag-test-release:
     executor: semver-orb/default
     steps:
       - add_ssh_keys:
@@ -16,215 +171,98 @@ jobs:
       - semver-orb/export-tag
       - semver-orb/print
 
-  netex-convertor:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-
-    steps:
-      - checkout
-
-      - run:
-          name: Install Serverless CLI and dependencies
-          command: |
-            sudo npm i -g serverless
-            cd netex-convertor
-            npm install
-
-      - run:
-          name: Build the code
-          command: |
-            cd netex-convertor
-            npm run build
-
-      - run:
-          name: Run tests
-          command: |
-            cd netex-convertor
-            npm run test
-
-      - run:
-          name: Deploy application to tfn-test on aws
-          command: |
-            echo "Finished config, starting deploy"
-            cd netex-convertor 
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  odh-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-
-    steps:
-      - checkout
-
-      - run:
-          name: Install Serverless CLI and dependencies
-          command: |
-            sudo npm i -g serverless
-            cd odh-uploader
-            npm install
-
-      - run:
-          name: Build the code
-          command: |
-            cd odh-uploader
-            npm run build
-
-      - run:
-          name: Run tests
-          command: |
-            cd odh-uploader
-            npm run test
-
-      - run:
-          name: Deploy application to tfn-test on aws
-          command: |
-            echo "Finished config, starting deploy"
-            cd odh-uploader
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  ref-data-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-
-    steps:
-      - checkout
-
-      - run:
-          name: Install Serverless CLI and dependencies
-          command: |
-            sudo npm i -g serverless
-            cd ref-data-uploader
-            npm install
-
-      - run:
-          name: Build the code
-          command: |
-            cd ref-data-uploader
-            npm run build
-
-      - run:
-          name: Run tests
-          command: |
-            cd ref-data-uploader
-            npm run test
-
-      - run:
-          name: Deploy application to tfn-test on aws
-          command: |
-            echo "Finished config, starting deploy"
-            cd ref-data-uploader
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-              
-  site:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-
-    steps:
-      - checkout
-
-      - run:
-          name: Install Serverless CLI and dependencies
-          command: |
-            sudo npm i -g serverless
-            cd site
-            npm install
-
-      - run:
-          name: Build the code
-          command: |
-            cd site
-            npm run build
-
-      - run:
-          name: Run tests
-          command: |
-            cd site
-            npm run test
-
-      - run:
-          name: Deploy application to tfn-test on aws
-          command: |
-            echo "Finished config, starting deploy"
-            cd site
-            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  # This isnt working as it needs an SSH key generating to be able to push the git tags. The 'Creating a Bitbucket User Key' part of
-  # https://circleci.com/docs/2.0/gh-bb-integration/ is what I think we have to do.
-
-  # git-tag:
-  #   docker:
-  #     - image: circleci/node:latest
-  #   working_directory: ~/project
-
-  #   steps:
-  #     - checkout
-
-      # - run:
-      #     name: Tag the build
-      #     command: |
-      #       #get highest tag number
-      #       VERSION=`git describe --abbrev=0 --tags`
-
-      #       #replace . with space so can split into an array
-      #       VERSION_BITS=(${VERSION//./ })
-
-      #       #get number parts and increase last one by 1
-      #       VNUM1=${VERSION_BITS[0]}
-      #       VNUM2=${VERSION_BITS[1]}
-      #       VNUM3=${VERSION_BITS[2]}
-      #       VNUM3=$((VNUM3+1))
-
-      #       #create new tag
-      #       NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
-
-      #       echo "Updating $VERSION to $NEW_TAG"
-
-      #       #creating new tag and pushing
-      #       git tag $NEW_TAG
-      #       echo "Tagged with $NEW_TAG"
-      #       git push --tags
-
 workflows:
   version: 2
   build-and-test-deliverable-one-lambdas:
     jobs:
-      - tag-netex-convertor:
+      - build-netex-convertor:
           context: "tfn-aws"
           filters:
             branches:
               only: feature/TFN-165_circle_git_tag
-      - netex-convertor:
+      - test-netex-convertor:
+          requires:
+            - build-netex-convertor
           context: "tfn-aws"
           filters:
             branches:
-              only: develop
-      - odh-uploader:
+              only: feature/TFN-165_circle_git_tag
+      - deploy-test-netex-convertor:
+          requires:
+            - test-netex-convertor
           context: "tfn-aws"
           filters:
             branches:
-              only: develop
-      - ref-data-uploader:
+              only: feature/TFN-165_circle_git_tag
+
+      - build-odh-uploader:
           context: "tfn-aws"
           filters:
             branches:
-              only: develop
-      - site:
+              only: feature/TFN-165_circle_git_tag
+      - test-odh-uploader:
+          requires:
+            - build-odh-uploader
           context: "tfn-aws"
           filters:
             branches:
-              only: develop
-      # - git-tag:
-      #   requires:
-      #     - netex-convertor
-      #     - odh-uploader
-      #     - ref-data-uploader
-      #     - site
-      
+              only: feature/TFN-165_circle_git_tag
+      - deploy-test-odh-uploader:
+          requires:
+            - test-odh-uploader
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+
+
+      - build-ref-data-uploader:
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+      - test-ref-data-uploader:
+          requires:
+            - build-ref-data-uploader
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+      - deploy-test-ref-data-uploader:
+          requires:
+            - test-ref-data-uploader
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+
+      - build-site:
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+      - test-site:
+          requires:
+            - build-site
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+      - deploy-test-site:
+          requires:
+            - test-site
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+
+      - tag-test-release:
+          requires:
+            - deploy-test-netex-convertor
+            - deploy-test-odh-uploader
+            - deploy-test-ref-data-uploader
+            - deploy-test-site
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
