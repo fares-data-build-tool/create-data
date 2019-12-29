@@ -4,21 +4,29 @@ orbs:
 
 jobs: 
 
-  build-netex-convertor:
+  checkout-repo:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
       - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "*"
+
+  build-netex-convertor:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             cd netex-convertor
             npm install
             npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "*"
 
   test-netex-convertor:
     docker:
@@ -37,7 +45,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             sudo npm i -g serverless
@@ -51,7 +60,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             cd odh-uploader
@@ -63,7 +73,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             cd odh-uploader
@@ -75,7 +86,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             sudo npm i -g serverless
@@ -84,13 +96,13 @@ jobs:
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-
   build-ref-data-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             cd ref-data-uploader
@@ -102,7 +114,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             cd ref-data-uploader
@@ -114,7 +127,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             sudo npm i -g serverless
@@ -128,7 +142,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             cd site
@@ -140,7 +155,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           name: Run tests
           command: |
@@ -153,7 +169,8 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/project
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
           name: Deploy application to tfn-test on aws
           command: |
@@ -169,7 +186,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "82:dc:89:ad:e9:41:c9:bd:db:e7:c1:84:68:c6:da:35"
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - semver-orb/print
       - semver-orb/tagnext
       - semver-orb/export-tag
@@ -179,7 +197,15 @@ workflows:
   version: 2
   build-and-test-deliverable-one-lambdas:
     jobs:
+      - checkout-repo:
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
+
       - build-netex-convertor:
+          requires:
+            - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
@@ -200,6 +226,8 @@ workflows:
               only: feature/TFN-165_circle_git_tag
 
       - build-odh-uploader:
+          requires:
+            - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
@@ -221,6 +249,8 @@ workflows:
 
 
       - build-ref-data-uploader:
+          requires:
+            - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
@@ -241,6 +271,8 @@ workflows:
               only: feature/TFN-165_circle_git_tag
 
       - build-site:
+          requires:
+            - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
