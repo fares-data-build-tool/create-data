@@ -1,14 +1,11 @@
 version: 2.1
 orbs:
   semver-orb: tv2norge/semver-orb@0.0.1
-  
+
 jobs: 
 
   tag-netex-convertor:
-    description: ">-
-  Use git tags on repo to find current version, bumps and push new tag. For
-  versioning scheme sementics, see https://github.com/pnikosis/semtag"
-    executor: default
+    executor: semver-orb/default
     steps:
       - setup
       - print
