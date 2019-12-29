@@ -8,8 +8,10 @@ jobs:
     executor: semver-orb/default
     steps:
       - checkout
-      - semver-orb/bump
-
+      - semver-orb/print
+      - semver-orb/tagnext
+      - semver-orb/export-tag
+      - semver-orb/print
 
   netex-convertor:
     docker:
