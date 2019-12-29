@@ -1,5 +1,21 @@
-version: 2
+version: 2.1
+orbs:
+  semver-orb: tv2norge/semver-orb@0.0.1
+  
 jobs: 
+
+  tag-netex-convertor:
+    description: ">-
+  Use git tags on repo to find current version, bumps and push new tag. For
+  versioning scheme sementics, see https://github.com/pnikosis/semtag"
+    executor: default
+    steps:
+      - setup
+      - print
+      - tagnext
+      - export-tag
+      - print
+
   netex-convertor:
     docker:
       - image: circleci/node:latest
@@ -180,6 +196,11 @@ workflows:
   version: 2
   build-and-test-deliverable-one-lambdas:
     jobs:
+      - tag-netex-convertor:
+          context: "tfn-aws"
+          filters:
+            branches:
+              only: feature/TFN-165_circle_git_tag
       - netex-convertor:
           context: "tfn-aws"
           filters:
