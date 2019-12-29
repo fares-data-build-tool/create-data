@@ -7,11 +7,9 @@ jobs:
   tag-netex-convertor:
     executor: semver-orb/default
     steps:
-      - setup
-      - print
-      - tagnext
-      - export-tag
-      - print
+      - checkout
+      - semver-orb/bump
+
 
   netex-convertor:
     docker:
