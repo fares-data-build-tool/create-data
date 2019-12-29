@@ -1,0 +1,42 @@
+image: node:13.3.0
+
+pipelines:
+  default:
+    - step:
+        script:
+          - node --version && npm --version
+    - step:
+        caches:
+        - node-modules-netex-convertor
+        script:
+          - cd netex-convertor
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-odh-uploader
+        script:
+          - cd odh-uploader
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-ref-data-uploader
+        script:
+          - cd ref-data-uploader
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-site
+        script:
+          - cd site
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+
+definitions:
+  caches:
+    - node-modules-netex-convertor: netex-convertor/node_modules
+    - node-modules-odh-uploader: odh-uploader/node_modules
+    - node-modules-ref-data-uploader: ref-data-uploader/node_modules
+    - node-modules-site: site/node_modules
