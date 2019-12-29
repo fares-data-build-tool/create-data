@@ -27,6 +27,10 @@ jobs:
             cd netex-convertor
             npm install
             npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "netex-convertor/node_modules"
 
   test-netex-convertor:
     docker:
@@ -51,7 +55,6 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd netex-convertor 
-            npm install
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -67,6 +70,10 @@ jobs:
             cd odh-uploader
             npm install
             npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "odh-uploader/node_modules"
 
   test-odh-uploader:
     docker:
@@ -78,7 +85,6 @@ jobs:
       - run:
           command: |
             cd odh-uploader
-            npm install
             npm run test
 
   deploy-test-odh-uploader:
@@ -92,7 +98,6 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd odh-uploader 
-            npm install
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -108,6 +113,10 @@ jobs:
             cd ref-data-uploader
             npm install
             npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "ref-data-uploader/node_modules"
 
   test-ref-data-uploader:
     docker:
@@ -119,7 +128,6 @@ jobs:
       - run:
           command: |
             cd ref-data-uploader
-            npm install
             npm run test
 
   deploy-test-ref-data-uploader:
@@ -133,7 +141,6 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd ref-data-uploader 
-            npm install
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -149,6 +156,10 @@ jobs:
             cd site
             npm install
             npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "site/node_modules"
 
   test-site:
     docker:
@@ -158,10 +169,8 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: Run tests
           command: |
             cd site
-            npm install
             npm run test
 
   deploy-test-site:
@@ -172,11 +181,9 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: Deploy application to tfn-test on aws
           command: |
             sudo npm i -g serverless
             cd site
-            npm install
             export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
