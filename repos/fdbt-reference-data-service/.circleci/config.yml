@@ -9,7 +9,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "97:a2:b4:07:b1:0d:ee:45:01:30:d7:f6:0f:ee:58:80"
+            - "82:dc:89:ad:e9:41:c9:bd:db:e7:c1:84:68:c6:da:35"
       - checkout
       - semver-orb/print
       - semver-orb/tagnext
