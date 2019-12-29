@@ -36,7 +36,7 @@ pipelines:
 
 definitions:
   caches:
-    - node-modules-netex-convertor: netex-convertor/node_modules
-    - node-modules-odh-uploader: odh-uploader/node_modules
-    - node-modules-ref-data-uploader: ref-data-uploader/node_modules
-    - node-modules-site: site/node_modules
+    node-modules-netex-convertor: netex-convertor/node_modules
+    node-modules-odh-uploader: odh-uploader/node_modules
+    node-modules-ref-data-uploader: ref-data-uploader/node_modules
+    node-modules-site: site/node_modules
