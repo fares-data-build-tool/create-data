@@ -21,9 +21,30 @@ pipelines:
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-ref-data-uploader
+        - node-modules-naptan-uploader
         script:
-          - cd ref-data-uploader
+          - cd naptan-uploader
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-noc-uploader
+        script:
+          - cd noc-uploader
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-ntpg-uploader
+        script:
+          - cd ntpg-uploader
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-tnds-uploader
+        script:
+          - cd tnds-uploader
           - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
@@ -38,5 +59,8 @@ definitions:
   caches:
     node-modules-netex-convertor: netex-convertor/node_modules
     node-modules-odh-uploader: odh-uploader/node_modules
-    node-modules-ref-data-uploader: ref-data-uploader/node_modules
+    node-modules-naptan-uploader: naptan-uploader/node_modules
+    node-modules-noc-uploader: noc-uploader/node_modules
+    node-modules-ntpg-uploader: ntpg-uploader/node_modules
+    node-modules-tnds-uploader: tnds-uploader/node_modules
     node-modules-site: site/node_modules
