@@ -117,14 +117,54 @@ package:
 #    environment:
 #      variable2: value2
 
-# you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources: # CloudFormation template syntax from here on.
+  Resources:
+    naptan-table: 
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Stops
+        AttributeDefinitions:
+          - AttributeName: "ATCOCode"
+            AttributeType: "N"
+          - AttributeName: "NaptanCode"
+            AttributeType: "S"
+          - AttributeName: "CommonName"
+            AttributeType: "S"
+          - AttributeName: "Street"
+            AttributeType: "S"
+          - AttributeName: "Indicator"
+            AttributeType: "S"
+          - AttributeName: "IndicatorLang"
+            AttributeType: "S"
+          - AttributeName: "Bearing"
+            AttributeType: "S"
+          - AttributeName: "NptgLocalityCode"
+            AttributeType: "S"
+          - AttributeName: "LocalityName"
+            AttributeType: "S"
+          - AttributeName: "ParentLocalityName"
+            AttributeType: "S"
+          - AttributeName: "LocalityCentre"
+            AttributeType: "N"
+          - AttributeName: "GridType"
+            AttributeType: "S"
+          - AttributeName: "Easting"
+            AttributeType: "N"
+          - AttributeName: "Northing"
+            AttributeType: "N"
+          - AttributeName: "Longitude"
+            AttributeType: "N"
+          - AttributeName: "Latitude"
+            AttributeType: "N"
+          - AttributeName: "StopType"
+            AttributeType: "S"
+          - AttributeName: "BusStopType"
+            AttributeType: "S"
+          - AttributeName: "TimingStatus"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "ATCOCode"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
