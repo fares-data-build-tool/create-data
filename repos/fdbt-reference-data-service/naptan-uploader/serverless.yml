@@ -59,6 +59,7 @@ provider:
 #    - exclude-me-dir/**
 
 plugins:
+  - serverless-dynamodb-local
   - serverless-plugin-typescript
   - serverless-s3-local
   - serverless-offline
@@ -126,45 +127,32 @@ resources: # CloudFormation template syntax from here on.
         AttributeDefinitions:
           - AttributeName: "ATCOCode"
             AttributeType: "N"
-          - AttributeName: "NaptanCode"
-            AttributeType: "S"
-          - AttributeName: "CommonName"
-            AttributeType: "S"
-          - AttributeName: "Street"
-            AttributeType: "S"
-          - AttributeName: "Indicator"
-            AttributeType: "S"
-          - AttributeName: "IndicatorLang"
-            AttributeType: "S"
-          - AttributeName: "Bearing"
-            AttributeType: "S"
-          - AttributeName: "NptgLocalityCode"
-            AttributeType: "S"
-          - AttributeName: "LocalityName"
-            AttributeType: "S"
-          - AttributeName: "ParentLocalityName"
-            AttributeType: "S"
-          - AttributeName: "LocalityCentre"
-            AttributeType: "N"
-          - AttributeName: "GridType"
-            AttributeType: "S"
-          - AttributeName: "Easting"
-            AttributeType: "N"
-          - AttributeName: "Northing"
-            AttributeType: "N"
-          - AttributeName: "Longitude"
-            AttributeType: "N"
-          - AttributeName: "Latitude"
-            AttributeType: "N"
-          - AttributeName: "StopType"
-            AttributeType: "S"
-          - AttributeName: "BusStopType"
-            AttributeType: "S"
-          - AttributeName: "TimingStatus"
-            AttributeType: "S"
         KeySchema:
           - AttributeName: "ATCOCode"
             KeyType: "HASH"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+
+custom:
+  dynamodb:
+  # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - test
+    start:
+      port: 9100
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+    
+    seed:
+      domain:
+        sources:
+          - table: Stops
+            sources: [./.dynamodb/table_data.json]
+
+      convertEmptyValues: true
+    # Uncomment only if you already have a DynamoDB running locally
+    # noStart: true

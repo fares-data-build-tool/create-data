@@ -1,0 +1,23 @@
+[
+  {
+    "ATCOCode": 100053316,
+    "NaptanCode": "bstjpdm",
+    "CommonName": "Broad Walk Shops",
+    "Street": "",
+    "Indicator": "Stop B",
+    "IndicatorLang": "en",
+    "Bearing": "SW",
+    "NptgLocalityCode": "N0076879",
+    "LocalityName": "Bristol City Centre",
+    "ParentLocalityName": "Bristol",
+    "LocalityCentre": 0,
+    "GridType": "U",
+    "Easting": 359268,
+    "Northing": 173148,
+    "Longitude": -2.58761784,
+    "Latitude": 51.45583822,
+    "StopType": "BCT",
+    "BusStopType": "MKD",
+    "TimingStatus": "OTH"
+  }
+]
