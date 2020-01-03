@@ -139,9 +139,21 @@ resources: # CloudFormation template syntax from here on.
         AttributeDefinitions:
           - AttributeName: "NOCCode"
             AttributeType: "S"
+          - AttributeName: "PubNmId"
+            AttributeType: "N"
         KeySchema:
           - AttributeName: "NOCCode"
             KeyType: "HASH"
+        GlobalSecondaryIndexes:
+          - IndexName: "PubNmId"
+            KeySchema: 
+              - AttributeName: "PubNmId"
+                KeyType: "HASH"
+            Projection:
+              ProjectionType: "KEYS_ONLY"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
