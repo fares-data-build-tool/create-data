@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages confirmation should render correctly 1`] = `
+<Layout
+  description="Confirmation page of the Fares data build tool"
+  title="Confirmation - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <h1
+      className="govuk-heading-xl"
+    >
+      Confirmation
+    </h1>
+    <p
+      className="govuk-body-l"
+    >
+      Thank you 
+      operator
+      , for submitting data for service 
+      service
+      .
+    </p>
+  </main>
+</Layout>
+`;

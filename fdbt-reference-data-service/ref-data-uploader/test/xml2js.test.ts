@@ -1,4 +1,4 @@
-import X2JS from 'X2JS';
+import X2JS from 'x2js';
 import omitEmpty from 'omit-empty';
 const util = require('util');
 

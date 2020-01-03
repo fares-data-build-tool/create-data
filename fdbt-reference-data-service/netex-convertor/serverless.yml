@@ -23,7 +23,8 @@ service: netex-convertor
 provider:
   name: aws
   runtime: nodejs12.x
-
+  region: eu-west-2
+  stage: ${opt:stage, 'test'}
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -61,7 +62,7 @@ functions:
   s3hook:
     handler: handler.s3hook
     events:
-    - s3: fdbt-test-aggregated-data
+    - s3: fdbt-test-user-data
       event: s3:ObjectCreated:*
 
 plugins:

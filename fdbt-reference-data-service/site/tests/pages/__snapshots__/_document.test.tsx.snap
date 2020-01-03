@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`_document should render correctly 1`] = `
+<Html
+  className="govuk-template app-html-class flexbox no-flexboxtweener"
+  lang="en"
+>
+  <Head />
+  <body
+    className="govuk-template__body app-body-class"
+  >
+    <Main />
+    <NextScript />
+  </body>
+</Html>
+`;
