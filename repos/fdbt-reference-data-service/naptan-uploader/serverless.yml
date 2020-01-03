@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: ref-data-uploader
+service: naptan-uploader
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -67,7 +67,7 @@ functions:
   s3hook:
     handler: handler.s3hook
     events: 
-      - s3: fdbt-test-ref-data
+      - s3: fdbt-test-naptan-data
         event: s3:ObjectCreated:*
 
 
