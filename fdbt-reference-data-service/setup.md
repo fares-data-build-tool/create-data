@@ -225,6 +225,22 @@ export SLS_DEBUG="*" && sls dynamodb start --seed=domain
 ```
 [NOTE - The '--seed=domain' is referencing the name given to the seed in the custom serverless.yml section.]
 
+# How to query in the DynamoDB JavaScript Shell
+Once you have run dynamodb local following the above step, visit the DynamoDB Local Javacript Shell (e.g. http://localhost:9100/shell). 
+Clicking on the `</>` icon allows you to select commands which will query your local dynamodb table. 
+Alternatively, the below command will run a simple SELECT ALL query for your table.
+```
+var params = {
+    TableName: 'xxxx',
+    Limit: 100,
+    Select: 'ALL_ATTRIBUTES'
+};
+dynamodb.scan(params, function(err, data) {
+    if (err) ppJson(err);
+    else ppJson(data);
+});
+```
+
 # How to install TSConfig and Jest for Unit Tests
 
 ## Install Typescript

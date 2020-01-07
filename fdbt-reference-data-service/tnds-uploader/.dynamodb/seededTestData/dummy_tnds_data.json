@@ -1,0 +1,89 @@
+[
+    {
+        "StopPoints": {
+          "AnnotatedStopPointRef": [
+            { "StopPointRef": "2290YHA01586", "CommonName": "Hull Interchange" },
+            { "StopPointRef": "2290YHA01512", "CommonName": "Carr Lane A" }
+          ]
+        },
+        "RouteSections": {
+          "RouteSection": {
+            "RouteLink": {
+              "From": { "StopPointRef": "2290YHA01586" },
+              "To": { "StopPointRef": "2290YHA01512" },
+              "Direction": "outbound",
+              "id": "YHAO999_001_28549"
+            },
+            "id": "YHAO999_001"
+          }
+        },
+        "Routes": {
+          "Route": {
+            "Description": "Hull Interchange - Monument Bridge",
+            "RouteSectionRef": "YHAO999_001",
+            "id": "YHAO999_001"
+          }
+        },
+        "JourneyPatternSections": {
+          "JourneyPatternSection": {
+            "JourneyPatternTimingLink": {
+              "From": { "StopPointRef": "2290YHA01586", "TimingStatus": "PTP" },
+              "To": { "StopPointRef": "2290YHA01512", "TimingStatus": "PTP" },
+              "RouteLinkRef": "YHAO999_001_28549",
+              "Direction": "outbound",
+              "RunTime": "PT300S",
+              "id": "JPS_YHAO999-2_28549"
+            },
+            "id": "JPS_YHAO999-2"
+          }
+        },
+        "Operators": {
+          "Operator": {
+            "NationalOperatorCode": "CLTL",
+            "OperatorCode": "SCH",
+            "OperatorShortName": "Stagecoach in Hull",
+            "id": "SCH"
+          }
+        },
+        "Services": {
+          "Service": {
+            "ServiceCode": "YHAO999",
+            "Lines": { "Line": { "LineName": "999", "id": "0" } },
+            "OperatingPeriod": { "StartDate": "2019-11-21" },
+            "RegisteredOperatorRef": "SCH",
+            "Mode": "bus",
+            "Description": "Hull Interchange - Monument Bridge",
+            "StandardService": {
+              "Origin": "Hull Interchange",
+              "Destination": "Monument Bridge",
+              "JourneyPattern": {
+                "Direction": "outbound",
+                "JourneyPatternSectionRefs": "JPS_YHAO999-2",
+                "id": "JPS_YHAO999-2"
+              }
+            }
+          }
+        },
+        "VehicleJourneys": {
+          "VehicleJourney": {
+            "OperatorRef": "SCH",
+            "VehicleJourneyCode": "6139",
+            "ServiceRef": "YHAO999",
+            "LineRef": "0",
+            "JourneyPatternRef": "JPS_YHAO999-2",
+            "DepartureTime": "15:00:00"
+          }
+        },
+        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "xsi:schemaLocation": "http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd",
+        "CreationDateTime": "2019-11-26T10:18:00-00:00",
+        "ModificationDateTime": "2019-11-26T10:18:00-00:00",
+        "Modification": "new",
+        "RevisionNumber": "0",
+        "FileName": "SVRYHAO999.xml",
+        "SchemaVersion": "2.5",
+        "RegistrationDocument": "true",
+        "xmlns": "http://www.transxchange.org.uk/"
+    }
+]
