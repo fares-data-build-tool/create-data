@@ -61,6 +61,7 @@ provider:
 plugins:
   - serverless-plugin-typescript
   - serverless-s3-local
+  - serverless-dynamodb-local
   - serverless-offline
 
 functions:
