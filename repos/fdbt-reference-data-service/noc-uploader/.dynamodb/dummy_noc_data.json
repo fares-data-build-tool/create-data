@@ -1,0 +1,14 @@
+[
+  {
+    "NOCCode": "3ABC",
+    "OperatorPublicName": "Big Bus Ltd",
+    "OpId": 123456,
+    "PubNmId": 54321,
+    "mode": "Bus",
+    "VOSA_PSVLicenseName": "Big Bus Ltd",
+    "TTRteEnq": "info@bigbusltd.co.uk",
+    "FareEnq": "1554759888",
+    "ComplEnq": "The Transport Depot, Sandy Road, Leeds, LS1",
+    "Website": "www.bigbus.co.uk"
+  }
+]
