@@ -150,6 +150,22 @@ resources: # CloudFormation template syntax from here on.
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
+    tnds-table: 
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TNDS
+        AttributeDefinitions:
+          - AttributeName: "FileName"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "FileName"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+
+# The below custom section is for local testing using serverless-dynamodb-local.
 custom:
   dynamodb:
   # If you only want to use DynamoDB Local in some stages, declare them here
@@ -167,7 +183,9 @@ custom:
       domain:
         sources:
           - table: Services
-            sources: [./.dynamodb/dummy_services_data.json]
+            sources: [./.dynamodb/seededTestData/dummy_services_data.json]
+          - table: TNDS
+            sources: [./.dynamodb/seededTestData/dummy_tnds_data.json]
 
       convertEmptyValues: true
     # Uncomment only if you already have a DynamoDB running locally
