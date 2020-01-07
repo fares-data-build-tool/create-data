@@ -59,9 +59,9 @@ provider:
 #    - exclude-me-dir/**
 
 plugins:
-  - serverless-dynamodb-local
   - serverless-plugin-typescript
   - serverless-s3-local
+  - serverless-dynamodb-local
   - serverless-offline
 
 functions:
@@ -151,7 +151,7 @@ custom:
       domain:
         sources:
           - table: Stops
-            sources: [./.dynamodb/table_data.json]
+            sources: [./.dynamodb/dummy_naptan_data.json]
 
       convertEmptyValues: true
     # Uncomment only if you already have a DynamoDB running locally
