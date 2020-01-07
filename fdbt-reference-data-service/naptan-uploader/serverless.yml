@@ -67,9 +67,12 @@ functions:
   s3hook:
     handler: handler.s3hook
     events: 
-      - s3: fdbt-test-naptan-data
+      - s3: 
+        bucket: bucketrefdata
         event: s3:ObjectCreated:*
-
+        rules:
+          - prefix: NaPTAN/
+        existing: true
 
 package:
   exclude:

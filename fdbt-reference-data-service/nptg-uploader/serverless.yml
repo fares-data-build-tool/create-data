@@ -67,9 +67,12 @@ functions:
   s3hook:
     handler: handler.s3hook
     events: 
-      - s3: fdbt-test-ntpg-data
+      - s3: 
+        bucket: bucketrefdata
         event: s3:ObjectCreated:*
-
+        rules:
+          - prefix: NPTG/
+        existing: true
 
 package:
   exclude:
