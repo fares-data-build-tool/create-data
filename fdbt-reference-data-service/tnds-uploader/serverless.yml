@@ -129,3 +129,46 @@ package:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+resources: # CloudFormation template syntax from here on.
+  Resources:
+    services-table: 
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Services
+        AttributeDefinitions:
+          - AttributeName: "NationalOperatorCode"
+            AttributeType: "S"
+          - AttributeName: "LineName"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "NationalOperatorCode"
+            KeyType: "HASH"
+          - AttributeName: "LineName"
+            KeyType: "RANGE"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+custom:
+  dynamodb:
+  # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - test
+    start:
+      port: 9100
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+    
+    seed:
+      domain:
+        sources:
+          - table: Services
+            sources: [./.dynamodb/dummy_services_data.json]
+
+      convertEmptyValues: true
+    # Uncomment only if you already have a DynamoDB running locally
+    # noStart: true
