@@ -1,0 +1,12 @@
+service: ref-data-retriever
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+resources:
+ Resources:
+   S3BucketRefData:
+     Type: AWS::S3::Bucket
+     Properties:
+       BucketName: fdbt-test-ref-data
