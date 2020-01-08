@@ -67,9 +67,11 @@ functions:
   s3hook:
     handler: handler.s3hook
     events: 
-      - s3: fdbt-test-tnds-data
+      - s3: fdbt-test-ref-data
         event: s3:ObjectCreated:*
-
+        existing: true
+        rules:
+          prefix: tnds/
 
 package:
   exclude:
