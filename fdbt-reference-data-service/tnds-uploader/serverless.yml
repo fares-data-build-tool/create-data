@@ -12,19 +12,23 @@
 # Happy Coding!
 
 service: tnds-uploader
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
 
 provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-2
   stage: ${opt:stage, 'test'}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+      - dynamodb: Query
+      - dynamodb: Scan
+      - dynamodb: GetItem
+      - dynamodb: PutItem
+      - dynamodb: UpdateItem
+      - dynamodb: DeleteItem
+      Resource: "<arn>"
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -67,11 +71,8 @@ functions:
   s3hook:
     handler: handler.s3hook
     events: 
-      - s3: fdbt-test-ref-data
+      - s3: fdbt-test-tnds-data
         event: s3:ObjectCreated:*
-        existing: true
-        rules:
-          prefix: tnds/
 
 package:
   exclude:
