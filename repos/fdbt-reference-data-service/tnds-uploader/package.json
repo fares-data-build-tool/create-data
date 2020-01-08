@@ -17,6 +17,7 @@
     "@types/xml-js": "^1.0.0",
     "@types/xml2js": "^0.4.5",
     "aws-sdk": "^2.594.0",
+    "express": "^4.17.1",
     "omit-empty": "^1.0.0",
     "ping": "^0.2.2",
     "typescript": "^3.7.3"
