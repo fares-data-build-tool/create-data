@@ -183,9 +183,9 @@ custom:
       domain:
         sources:
           - table: Services
-            sources: [./seededTestData/dummy_services_data.json]
+            sources: [./.dynamodb/seededTestData/dummy_services_data.json]
           - table: TNDS
-            sources: [./seededTestData/dummy_tnds_data.json]
+            sources: [./.dynamodb/seededTestData/dummy_tnds_data.json]
 
       convertEmptyValues: true
     # Uncomment only if you already have a DynamoDB running locally

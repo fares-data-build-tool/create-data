@@ -175,7 +175,7 @@ custom:
       domain:
         sources:
           - table: Operators
-            sources: [./dummy_noc_data.json]
+            sources: [./.dynamodb/dummy_noc_data.json]
 
       convertEmptyValues: true
     # Uncomment only if you already have a DynamoDB running locally
