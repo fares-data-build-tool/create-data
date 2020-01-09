@@ -71,7 +71,7 @@ functions:
   s3hook:
     handler: handler.s3hook
     events: 
-      - s3: fdbt-test-tnds-data
+      - s3: fdbt-${self:provider.stage}-tnds-ref-data
         event: s3:ObjectCreated:*
 
 package:
