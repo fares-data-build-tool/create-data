@@ -31,7 +31,7 @@ package:
 
 resources:
   Resources:
-    naptan-table: 
+    noc-table: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: Operators
