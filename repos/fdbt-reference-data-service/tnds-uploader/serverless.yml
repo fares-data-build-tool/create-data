@@ -67,7 +67,7 @@ resources:
 
 # The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
 custom:
-  dynamodb:
+  dynamodb:S
     stages:
       - test
     start:
