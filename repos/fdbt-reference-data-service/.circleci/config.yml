@@ -273,7 +273,6 @@ jobs:
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-
   build-site:
     docker:
       - image: circleci/node:latest
@@ -384,7 +383,6 @@ workflows:
             branches:
               only: develop
 
-
       - build-naptan-uploader:
           requires:
             - checkout-repo
@@ -472,7 +470,7 @@ workflows:
           filters:
             branches:
               only: develop
-
+              
       - build-site:
           requires:
             - checkout-repo
