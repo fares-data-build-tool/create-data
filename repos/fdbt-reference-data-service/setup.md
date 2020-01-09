@@ -9,7 +9,7 @@ e.g.
 `serverless invoke local --function function_name`
 
 
-# How to convert my js lamnda to Typescript
+# How to convert my JS lambda to Typescript
 
 ## Initialise npm package manager for the JavaScript programming language. 
 `npm init`
