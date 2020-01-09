@@ -31,7 +31,7 @@ package:
 
 resources: 
   Resources:
-    naptan-table: 
+    naptanTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: Stops

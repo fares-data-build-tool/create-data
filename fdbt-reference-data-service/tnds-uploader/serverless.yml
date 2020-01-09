@@ -32,7 +32,7 @@ package:
 
 resources:
   Resources:
-    services-table: 
+    servicesTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: Services
@@ -50,7 +50,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
-    tnds-table: 
+    tndsTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: TNDS
@@ -67,7 +67,7 @@ resources:
 
 # The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
 custom:
-  dynamodb:S
+  dynamodb:
     stages:
       - test
     start:
