@@ -32,7 +32,7 @@ package:
 
 resources:
   Resources:
-    services-table: 
+    servicesTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: Services
@@ -50,7 +50,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
-    tnds-table: 
+    tndsTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: TNDS
