@@ -9,7 +9,7 @@ e.g.
 `serverless invoke local --function function_name`
 
 
-# How to convert my js lamnda to Typescript
+# How to convert my JS lambda to Typescript
 
 ## Initialise npm package manager for the JavaScript programming language. 
 `npm init`
@@ -130,6 +130,116 @@ e.g.
 
 `aws --endpoint http://localhost:4569 s3api put-object --bucket fdbt-test-netex-data --key data.csv --body data.csv --profile s3local`
 
+# How to setup and test dynamodb using serverless.yml locally
+
+[Follow steps outlined in https://github.com/99xt/serverless-dynamodb-local]
+
+# Install serverless-dynamodb-local and add to dev
+`npm install --save-dev serverless-dynamodb-local`
+
+# Add this to the serverless.yml
+Add the below to the serverless.yml in the 'plugins' section:
+```
+plugins:
+  - serverless-dynamodb-local
+```
+
+# Install dynamodb local using the plugin
+`sls dynamodb install`
+
+# Add dynamodb resource definitions to serverless.yml
+Add the below to the serverless.yml in the 'resources' section:
+```
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: usersTable
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+```
+
+# Create a dummy data file in the .dynamodb directory
+Within the .dynamodb folder that was created by installing dynamodb local, create a file named 'dummy_xxxxx_data.json' and populate it with example json data.
+```
+e.g.
+[
+  {
+    "NOCCode": "3ABC",
+    "OperatorPublicName": "Big Bus Ltd",
+    "OpId": 123456,
+    "PubNmId": 54321,
+    "mode": "Bus",
+    "VOSA_PSVLicenseName": "Big Bus Ltd",
+    "TTRteEnq": "info@bigbusltd.co.uk",
+    "FareEnq": "1554759888",
+    "ComplEnq": "The Transport Depot, Sandy Road, Leeds, LS1",
+    "Website": "www.bigbus.co.uk"
+  }
+]
+```
+
+# Add a custom seeding option to the serverless.yml
+Add the below to the bottom of the serverless.yml (if a custom section does not already exist):
+```
+custom:
+  dynamodb:
+    stages:
+      - test
+    start:
+      port: 8080
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+    
+    seed:
+      domain:
+        sources:
+          - table: Operators
+            sources: [./.dynamodb/dummy_xxxxx_data.json]
+
+      convertEmptyValues: true
+```
+
+# Install Java SE Development Kit
+Visit the below link and follow the instructions to install the JDK:
+```
+https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html
+```
+[NOTE - There might be a more up to date version]
+
+# How to run dynamodb local
+Run the following command within the directory that you have installed and setup dynamodb local:
+```
+export SLS_DEBUG="*" && sls dynamodb start --seed=domain
+```
+[NOTE - The '--seed=domain' is referencing the name given to the seed in the custom serverless.yml section.]
+
+# How to query in the DynamoDB JavaScript Shell
+Once you have run dynamodb local following the above step, visit the DynamoDB Local Javacript Shell (e.g. http://localhost:9100/shell). 
+Clicking on the `</>` icon allows you to select commands which will query your local dynamodb table. 
+Alternatively, the below command will run a simple SELECT ALL query for your table.
+```
+var params = {
+    TableName: 'xxxx',
+    Limit: 100,
+    Select: 'ALL_ATTRIBUTES'
+};
+dynamodb.scan(params, function(err, data) {
+    if (err) ppJson(err);
+    else ppJson(data);
+});
+```
 
 # How to install TSConfig and Jest for Unit Tests
 
