@@ -1,5 +1,5 @@
 {
-  "name": "ntpg-uploader",
+  "name": "nptg-uploader",
   "version": "1.0.0",
   "description": "",
   "main": "handler.ts",
@@ -22,9 +22,9 @@
     "typescript": "^3.7.3"
   },
   "devDependencies": {
-    "@types/x2js": "^3.1.0",
     "@types/aws-lambda-mock-context": "^3.2.0",
     "@types/jest": "^24.0.23",
+    "@types/x2js": "^3.1.0",
     "aws-lambda-mock-context": "^3.2.1",
     "jest": "^24.9.0",
     "serverless-offline": "^5.12.1",
