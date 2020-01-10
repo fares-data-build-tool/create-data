@@ -7,4 +7,3 @@ jspm_packages
 .build
 buckets
 .idea
-.dynamodb
