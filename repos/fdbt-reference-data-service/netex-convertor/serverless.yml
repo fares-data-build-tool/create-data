@@ -62,8 +62,12 @@ functions:
   s3hook:
     handler: handler.s3hook
     events:
-    - s3: fdbt-test-user-data
-      event: s3:ObjectCreated:*
+      - s3: 
+          bucket: fdbt-${self:provider.stage}-user-data
+          event: s3:ObjectCreated:*
+          rules: 
+            - prefix: matching/
+            - suffix: .json
 
 plugins:
    - serverless-plugin-typescript
