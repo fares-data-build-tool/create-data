@@ -2,8 +2,7 @@ version: 2.1
 orbs:
   semver-orb: tv2norge/semver-orb@0.0.1
 
-jobs: 
-
+jobs:
   checkout-repo:
     docker:
       - image: circleci/node:latest
@@ -187,7 +186,7 @@ jobs:
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-  build-ntpg-uploader:
+  build-nptg-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -196,15 +195,15 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd ntpg-uploader
+            cd nptg-uploader
             npm install
             npm run build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "ntpg-uploader/node_modules"
+            - "nptg-uploader/node_modules"
 
-  test-ntpg-uploader:
+  test-nptg-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -213,10 +212,10 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd ntpg-uploader
+            cd nptg-uploader
             npm run test
 
-  deploy-test-ntpg-uploader:
+  deploy-test-nptg-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -226,7 +225,7 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd ntpg-uploader 
+            cd nptg-uploader 
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -272,7 +271,6 @@ jobs:
             cd tnds-uploader 
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
-
 
   build-site:
     docker:
@@ -384,7 +382,6 @@ workflows:
             branches:
               only: develop
 
-
       - build-naptan-uploader:
           requires:
             - checkout-repo
@@ -429,23 +426,23 @@ workflows:
             branches:
               only: develop
 
-      - build-ntpg-uploader:
+      - build-nptg-uploader:
           requires:
             - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - test-ntpg-uploader:
+      - test-nptg-uploader:
           requires:
-            - build-ntpg-uploader
+            - build-nptg-uploader
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - deploy-test-ntpg-uploader:
+      - deploy-test-nptg-uploader:
           requires:
-            - test-ntpg-uploader
+            - test-nptg-uploader
           context: "tfn-aws"
           filters:
             branches:
@@ -472,7 +469,7 @@ workflows:
           filters:
             branches:
               only: develop
-
+              
       - build-site:
           requires:
             - checkout-repo
@@ -501,7 +498,7 @@ workflows:
             - deploy-test-odh-uploader
             - deploy-test-naptan-uploader
             - deploy-test-noc-uploader
-            - deploy-test-ntpg-uploader
+            - deploy-test-nptg-uploader
             - deploy-test-tnds-uploader
             - deploy-test-site
           context: "tfn-aws"
