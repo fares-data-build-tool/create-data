@@ -1,8 +1,7 @@
 {
-  "name": "tnds-uploader",
+  "name": "reference-data-service",
   "version": "1.0.0",
   "description": "",
-  "main": "handler.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc"
