@@ -209,7 +209,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "82:dc:89:ad:e9:41:c9:bd:db:e7:c1:84:68:c6:da:35"
+            - "ae:c4:4d:60:42:28:19:e4:d3:c0:02:5e:98:96:cc:3b"
       - attach_workspace:
           at: ~/project
       - semver-orb/print
