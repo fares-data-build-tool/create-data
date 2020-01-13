@@ -1,6 +1,7 @@
 {
-  "name": "odh-uploader",
+  "name": "netex-convertor",
   "version": "1.0.0",
+  "main": "handler.js",
   "scripts": {
     "build": "tsc",
     "test": "jest"
@@ -10,8 +11,7 @@
   "dependencies": {
     "@types/aws-lambda": "^8.10.36",
     "@types/node": "^12.12.14",
-    "typescript": "^3.7.3",
-    "xml2js": "^0.4.22"
+    "typescript": "^3.7.3"
   },
   "devDependencies": {
     "@types/aws-lambda-mock-context": "^3.2.0",
@@ -20,7 +20,11 @@
     "jest": "^24.9.0",
     "serverless-offline": "^5.12.1",
     "serverless-plugin-typescript": "^1.1.9",
-    "serverless-s3-local": "^0.5.3",
+    "serverless-s3-local": "^0.5.4",
     "ts-jest": "^24.2.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
 }

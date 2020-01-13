@@ -1,7 +1,8 @@
 {
-  "name": "nptg-uploader",
+  "name": "naptan-uploader",
   "version": "1.0.0",
   "description": "",
+  "main": "handler.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc"
@@ -29,7 +30,7 @@
     "serverless-dynamodb-local": "^0.2.38",
     "serverless-offline": "^5.12.1",
     "serverless-plugin-typescript": "^1.1.9",
-    "serverless-s3-local": "^0.5.3",
+    "serverless-s3-local": "^0.5.4",
     "ts-jest": "^24.2.0",
     "x2js": "3.4.0"
   }
