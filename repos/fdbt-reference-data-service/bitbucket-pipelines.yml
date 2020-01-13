@@ -7,50 +7,16 @@ pipelines:
           - node --version && npm --version
     - step:
         caches:
-        - node-modules-netex-convertor
-        script:
-          - cd netex-output
-          - cd netex-convertor          
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-        - node-modules-odh-uploader
+        - node-modules-netex-output-resources
         script:
           - cd netex-output        
-          - cd odh-uploader
           - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-naptan-uploader
+        - node-modules-reference-data-resources
         script:
           - cd reference-data
-          - cd naptan-uploader
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-        - node-modules-noc-uploader
-        script:
-          - cd reference-data
-          - cd noc-uploader
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-        - node-modules-nptg-uploader
-        script:
-          - cd reference-data
-          - cd nptg-uploader
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-        - node-modules-tnds-uploader
-        script:
-          - cd reference-data
-          - cd tnds-uploader
           - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
@@ -63,10 +29,6 @@ pipelines:
 
 definitions:
   caches:
-    node-modules-netex-convertor: netex-output/netex-convertor/node_modules
-    node-modules-odh-uploader: netex-output/odh-uploader/node-modules
-    node-modules-naptan-uploader: reference-data/naptan-uploader/node-modules
-    node-modules-noc-uploader: reference-data/noc-uploader/node-modules
-    node-modules-nptg-uploader: reference-data/nptg-uploader/node-modules
-    node-modules-tnds-uploader: reference-data/tnds-uploader/node-modules
+    node-modules-netex-output-resources: netex-output/node_modules
+    node-modules-reference-data-resources: reference-data/node-modules
     node-modules-site: site/node_modules
