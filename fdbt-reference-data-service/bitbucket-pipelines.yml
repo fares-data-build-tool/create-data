@@ -12,6 +12,7 @@ pipelines:
           - cd netex-output
           - cd netex-convertor          
           - npm ci
+          - npm run build
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -20,6 +21,7 @@ pipelines:
           - cd netex-output        
           - cd odh-uploader
           - npm ci
+          - npm run build
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -28,6 +30,7 @@ pipelines:
           - cd reference-data
           - cd naptan-uploader
           - npm ci
+          - npm run build
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -36,6 +39,7 @@ pipelines:
           - cd reference-data
           - cd noc-uploader
           - npm ci
+          - npm run build
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -44,6 +48,7 @@ pipelines:
           - cd reference-data
           - cd nptg-uploader
           - npm ci
+          - npm run build
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -52,6 +57,7 @@ pipelines:
           - cd reference-data
           - cd tnds-uploader
           - npm ci
+          - npm run build
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -59,6 +65,7 @@ pipelines:
         script:
           - cd site
           - npm ci
+          - npm run build
           - CI=true npm test -- --coverage --detectOpenHandles
 
 definitions:
