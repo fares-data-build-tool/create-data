@@ -8,13 +8,13 @@ provider:
 
 functions:
   netexConvertor:
-    netex-convertor/handler: handler.s3hook
+    handler: netex-convertor/handler.s3hook
     events:
     - s3: fdbt-test-user-data
       event: s3:ObjectCreated:*
 
   odhUploader:
-    odhUploader/handler: handler.s3hook
+    handler: odhUploader/handler.s3hook
     events:
       - s3: fdbt-test-netex-data
         event: s3:ObjectCreated:*
