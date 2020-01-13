@@ -320,7 +320,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "70:b4:b6:e3:67:fe:1a:e3:87:1f:fe:27:41:5a:7c:a1"
+            - "ae:c4:4d:60:42:28:19:e4:d3:c0:02:5e:98:96:cc:3b"
       - attach_workspace:
           at: ~/project
       - semver-orb/print
