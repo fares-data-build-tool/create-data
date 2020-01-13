@@ -11,6 +11,15 @@ pipelines:
         script:
           - cd netex-output
           - npm ci
+          - cd netex-convertor          
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-netex-output
+        script:
+          - cd netex-output        
+          - npm ci
+          - cd odh-uploader
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -18,6 +27,31 @@ pipelines:
         script:
           - cd reference-data
           - npm ci
+          - cd naptan-uploader
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-reference-data
+        script:
+          - cd reference-data
+          - npm ci
+          - cd noc-uploader
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-reference-data
+        script:
+          - cd reference-data
+          - npm ci
+          - cd nptg-uploader
+          - CI=true npm test -- --coverage --detectOpenHandles
+    - step:
+        caches:
+        - node-modules-reference-data
+        script:
+          - cd reference-data
+          - npm ci
+          - cd tnds-uploader
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
