@@ -1,0 +1,79 @@
+service: noc-uploader
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+  stage: ${opt:stage, 'test'}
+
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-s3-local
+  - serverless-dynamodb-local
+  - serverless-offline
+
+
+functions:
+  s3hook:
+    handler: handler.s3hook
+    events: 
+    - s3: fdbt-${self:provider.stage}-noc-ref-data
+      event: s3:ObjectCreated:*
+
+package:
+  exclude:
+    - node_modules/**/*
+  include:
+    handler.ts
+
+
+resources:
+  Resources:
+    nocTable: 
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Operators
+        AttributeDefinitions:
+          - AttributeName: "NOCCode"
+            AttributeType: "S"
+          - AttributeName: "PubNmId"
+            AttributeType: "N"
+        KeySchema:
+          - AttributeName: "NOCCode"
+            KeyType: "HASH"
+        GlobalSecondaryIndexes:
+          - IndexName: "PubNmId"
+            KeySchema: 
+              - AttributeName: "PubNmId"
+                KeyType: "HASH"
+            Projection:
+              ProjectionType: "KEYS_ONLY"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+
+# The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
+custom:
+  dynamodb:
+    stages:
+      - test
+    start:
+      port: 9100
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+    
+    seed:
+      domain:
+        sources:
+          - table: Operators
+            sources: [./.dynamodb/dummy_noc_data.json]
+
+      convertEmptyValues: true
