@@ -16,25 +16,25 @@ plugins:
 
 functions:
   naptanUploader:
-    naptan-uploader/handler: handler.s3hook
+    handler: naptan-uploader/handler.s3hook
     events: 
       - s3: fdbt-test-naptan-data
         event: s3:ObjectCreated:*
 
   nocUploader:
-    noc-uploader/handler: handler.s3hook
+    handler: noc-uploader/handler.s3hook
     events: 
       - s3: fdbt-test-noc-data
         event: s3:ObjectCreated:*
 
   nptgUploader:
-    nptg-uploader/handler: handler.s3hook
+    handler: nptg-uploader/handler.s3hook
     events: 
       - s3: fdbt-test-ntpg-data
         event: s3:ObjectCreated:*
 
   tndsUploader:
-    tnds-uploader/handler: handler.s3hook
+    handler: tnds-uploader/handler.s3hook
     events: 
       - s3: fdbt-test-tnds-data
         event: s3:ObjectCreated:*
