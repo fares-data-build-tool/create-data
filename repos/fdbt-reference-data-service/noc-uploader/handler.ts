@@ -1,5 +1,30 @@
 import { Handler } from 'aws-lambda';
 import AWS from 'aws-sdk';
+import CsvToJson from 'csvtojson'; 
+
+const s3 = new AWS.S3();
+
+async function getListOfS3ObjectKeys () {
+
+    const s3 = new AWS.S3();
+
+    const params = {
+        Bucket: 'fdbt_test_ref_data'
+    };
+
+    const objectsData = s3.listObjects(params);
+
+    let keysList = [];
+
+    for (var o in objectsData) {
+        keysList.push(Contents.Key);
+    };
+
+    const objectKey1 = keysList[0];
+    const objectKey2 = keysList[1];
+    const objectKey3 = keysList[2];
+       
+};
 
 async function fetchDataFromS3AsString(bucketName: string, eventKey: string): Promise<string> {
     const s3 = new AWS.S3();
@@ -29,21 +54,22 @@ function csvToJsonParse(csvData: string){
 
 export const s3hook: Handler = async (event: any) => {
 
-    // Could pass in dynamodb connection string here (localhost / )
-    const { TNDS_CSV_TABLE = "", TNDS_XML_TABLE = "", IS_OFFLINE = "" } = process.env;
     const eventKey = event.Records[0].s3.object.key;
+
     const bucketName = event.Records[0].s3.bucket.name;
-    let parsedS3Data = null;
+
+    const params = {
+        Bucket: bucketName,
+        Key : eventKey
+     }; 
 
     const filePath = JSON.stringify(eventKey);
 
     const stringifiedS3Data = await fetchDataFromS3AsString(bucketName, filePath);
 
-    const table = 
-
     const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-    const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
+    const dynamodbparams: AWS.DynamoDB.DocumentClient.PutItemInput = {
         TableName: table,
         Key: eventKey,
         UpdateExpression: 'DYNAMO-DB QUERY',

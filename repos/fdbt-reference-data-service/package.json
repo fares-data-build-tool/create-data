@@ -12,5 +12,8 @@
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/infinityworksconsulting/fares-data-build-tool#readme"
+  "homepage": "https://bitbucket.org/infinityworksconsulting/fares-data-build-tool#readme",
+  "dependencies": {
+    "@types/csvtojson": "^1.1.5"
+  }
 }
