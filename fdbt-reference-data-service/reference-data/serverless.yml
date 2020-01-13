@@ -42,10 +42,7 @@ functions:
 
 package:
   exclude:
-    - naptan-uploader/node_modules/**/*
-    - noc-uploader/node_modules/**/*
-    - nptg-uploader/node_modules/**/*
-    - tnds-uploader/node_modules/**/*
+    - node_modules/**/*
   include:
     - naptan-uploader/handler.ts
     - noc-uploader/handler.ts
