@@ -14,7 +14,7 @@ jobs:
           paths:
             - "*"
 
-  build-and-test-netex-convertor:
+  build-and-test-netex-output-resources:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -25,7 +25,6 @@ jobs:
           command: |
             echo "Starting build"
             cd netex-output
-            cd netex-convertor
             npm install
             npm run build
             echo "Running tests"
@@ -33,28 +32,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "netex-output/netex-convertor/node_modules"
-
-  build-and-test-odh-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            cd netex-output
-            cd odh-uploader
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test          
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "netex-output/odh-uploader/node_modules"
+            - "netex-output/node_modules"
 
   deploy-netex-output-resources:
     docker:
@@ -71,7 +49,7 @@ jobs:
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-  build-and-test-naptan-uploader:
+  build-and-test-reference-data-resources:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -82,70 +60,6 @@ jobs:
           command: |
             echo "Starting build"
             cd reference-data
-            cd naptan-uploader
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "reference-data/napta/uploader/node_modules"
-
-  build-and-test-noc-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            cd reference-data
-            cd noc-uploader
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "reference-data/node_modules"
-
-  build-and-test-nptg-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            cd reference-data
-            cd nptg-uploader
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "reference-data/node_modules"
-
-  build-and-test-tnds-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            cd reference-data
-            cd tnds-uploader
             npm install
             npm run build
             echo "Running tests"
@@ -227,14 +141,7 @@ workflows:
             branches:
               only: develop
 
-      - build-and-test-netex-convertor:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - build-and-test-odh-uploader:
+      - build-and-test-netex-output-resources:
           requires:
             - checkout-repo
           context: "tfn-aws"
@@ -243,35 +150,13 @@ workflows:
               only: develop
       - deploy-netex-output-resources:
           requires:
-            - build-and-test-netex-convertor
-            - build-and-test-odh-uploader
+            - build-and-test-netex-output-resources
           context: "tfn-aws"
           filters:
             branches:
               only: develop              
 
-      - build-and-test-naptan-uploader:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - build-and-test-noc-uploader:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - build-and-test-nptg-uploader:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - build-and-test-tnds-uploader:
+      - build-and-test-reference-data-resources:
           requires:
             - checkout-repo
           context: "tfn-aws"
@@ -280,10 +165,7 @@ workflows:
               only: develop
       - deploy-reference-data-resources:
           requires:
-            - build-and-test-naptan-uploader
-            - build-and-test-noc-uploader
-            - build-and-test-nptg-uploader
-            - build-and-test-tnds-uploader
+            - build-and-test-reference-data-resources
           context: "tfn-aws"
           filters:
             branches:
