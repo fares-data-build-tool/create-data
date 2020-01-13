@@ -7,51 +7,51 @@ pipelines:
           - node --version && npm --version
     - step:
         caches:
-        - node-modules-netex-output
+        - node-modules-netex-convertor
         script:
           - cd netex-output
-          - npm ci
           - cd netex-convertor          
+          - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-netex-output
+        - node-modules-odh-uploader
         script:
           - cd netex-output        
-          - npm ci
           - cd odh-uploader
+          - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-reference-data
+        - node-modules-naptan-uploader
         script:
           - cd reference-data
-          - npm ci
           - cd naptan-uploader
+          - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-reference-data
+        - node-modules-noc-uploader
         script:
           - cd reference-data
-          - npm ci
           - cd noc-uploader
+          - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-reference-data
+        - node-modules-nptg-uploader
         script:
           - cd reference-data
-          - npm ci
           - cd nptg-uploader
+          - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-reference-data
+        - node-modules-tnds-uploader
         script:
           - cd reference-data
-          - npm ci
           - cd tnds-uploader
+          - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
@@ -63,6 +63,10 @@ pipelines:
 
 definitions:
   caches:
-    node-modules-netex-output: netex-output/node_modules
-    node-modules-reference-data: reference-data/node_modules
+    node-modules-netex-convertor: netex-output/netex-convertor/node_modules
+    node-modules-odh-uploader: netex-output/odh-uploader/node-modules
+    node-modules-naptan-uploader: reference-data/naptan-uploader/node-modules
+    node-modules-noc-uploader: reference-data/noc-uploader/node-modules
+    node-modules-nptg-uploader: reference-data/nptg-uploader/node-modules
+    node-modules-tnds-uploader: reference-data/tnds-uploader/node-modules
     node-modules-site: site/node_modules
