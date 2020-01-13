@@ -21,8 +21,7 @@ functions:
 
 package:
   exclude:
-    - netex-convertor/node_modules/**/*
-    - odh-uploader/node_modules/**/*    
+    - node_modules/**/*
   include:
     - netex-convertor/handler.ts
     - odh-uploader/handler.ts
