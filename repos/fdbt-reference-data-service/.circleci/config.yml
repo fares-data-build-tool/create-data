@@ -2,8 +2,7 @@ version: 2.1
 orbs:
   semver-orb: tv2norge/semver-orb@0.0.1
 
-jobs: 
-
+jobs:
   checkout-repo:
     docker:
       - image: circleci/node:latest
@@ -291,7 +290,6 @@ jobs:
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-
   build-site:
     docker:
       - image: circleci/node:latest
@@ -402,7 +400,6 @@ workflows:
             branches:
               only: develop
 
-
       - build-naptan-uploader:
           requires:
             - checkout-repo
@@ -490,7 +487,7 @@ workflows:
           filters:
             branches:
               only: develop
-
+              
       - build-site:
           requires:
             - checkout-repo
