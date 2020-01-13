@@ -1,0 +1,33 @@
+service: netex-output-service
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+  stage: ${opt:stage, 'test'}
+
+functions:
+  netexConvertor:
+    netex-convertor/handler: handler.s3hook
+    events:
+    - s3: fdbt-test-user-data
+      event: s3:ObjectCreated:*
+
+  odhUploader:
+    odhUploader/handler: handler.s3hook
+    events:
+      - s3: fdbt-test-netex-data
+        event: s3:ObjectCreated:*
+
+package:
+  exclude:
+    - netex-convertor/node_modules/**/*
+    - odh-uploader/node_modules/**/*    
+  include:
+    - netex-convertor/handler.ts
+    - odh-uploader/handler.ts
+
+plugins:
+   - serverless-plugin-typescript
+   - serverless-s3-local
+   - serverless-offline
