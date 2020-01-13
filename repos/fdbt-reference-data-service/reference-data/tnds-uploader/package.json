@@ -2,7 +2,6 @@
   "name": "tnds-uploader",
   "version": "1.0.0",
   "description": "",
-  "main": "handler.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc"
