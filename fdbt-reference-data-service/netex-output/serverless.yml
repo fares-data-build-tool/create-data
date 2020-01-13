@@ -14,7 +14,7 @@ functions:
       event: s3:ObjectCreated:*
 
   odhUploader:
-    handler: odhUploader/handler.s3hook
+    handler: odh-uploader/handler.s3hook
     events:
       - s3: fdbt-test-netex-data
         event: s3:ObjectCreated:*
