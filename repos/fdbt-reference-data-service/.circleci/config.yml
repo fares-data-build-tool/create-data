@@ -24,13 +24,14 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd netex-output
             cd netex-convertor
             npm install
             npm run build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "netex-convertor/node_modules"
+            - "netex-output/node_modules"
 
   test-netex-convertor:
     docker:
@@ -41,10 +42,11 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd netex-output
             cd netex-convertor
             npm run test
 
-  deploy-test-netex-convertor:
+  deploy-netex-convertor:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -54,7 +56,8 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd netex-convertor 
+            cd netex-output
+            cd netex-convertor
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -67,13 +70,14 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd netex-output
             cd odh-uploader
             npm install
             npm run build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "odh-uploader/node_modules"
+            - "netex-output/node_modules"
 
   test-odh-uploader:
     docker:
@@ -84,10 +88,11 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd netex-output
             cd odh-uploader
             npm run test
 
-  deploy-test-odh-uploader:
+  deploy-odh-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -97,7 +102,8 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd odh-uploader 
+            cd netex-output
+            cd odh-uploader
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -110,13 +116,14 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd reference-data
             cd naptan-uploader
             npm install
             npm run build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "naptan-uploader/node_modules"
+            - "reference-data/node_modules"
 
   test-naptan-uploader:
     docker:
@@ -127,10 +134,11 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd reference-data
             cd naptan-uploader
             npm run test
 
-  deploy-test-naptan-uploader:
+  deploy-naptan-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -140,7 +148,8 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd naptan-uploader 
+            cd reference-data
+            cd naptan-uploader
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -153,13 +162,14 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd reference-data
             cd noc-uploader
             npm install
             npm run build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "noc-uploader/node_modules"
+            - "reference-data/node_modules"
 
   test-noc-uploader:
     docker:
@@ -170,10 +180,11 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd reference-data
             cd noc-uploader
             npm run test
 
-  deploy-test-noc-uploader:
+  deploy-noc-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -183,11 +194,12 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd noc-uploader 
+            cd reference-data
+            cd noc-uploader
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-  build-ntpg-uploader:
+  build-nptg-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -196,15 +208,16 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd ntpg-uploader
+            cd reference-data
+            cd nptg-uploader
             npm install
             npm run build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "ntpg-uploader/node_modules"
+            - "reference-data/node_modules"
 
-  test-ntpg-uploader:
+  test-nptg-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -213,10 +226,11 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd ntpg-uploader
+            cd reference-data
+            cd nptg-uploader
             npm run test
 
-  deploy-test-ntpg-uploader:
+  deploy-nptg-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -226,7 +240,8 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd ntpg-uploader 
+            cd reference-data
+            cd nptg-uploader
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -239,13 +254,14 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd reference-data
             cd tnds-uploader
             npm install
             npm run build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "tnds-uploader/node_modules"
+            - "reference-data/node_modules"
 
   test-tnds-uploader:
     docker:
@@ -256,10 +272,11 @@ jobs:
           at: ~/project
       - run:
           command: |
+            cd reference-data
             cd tnds-uploader
             npm run test
 
-  deploy-test-tnds-uploader:
+  deploy-tnds-uploader:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -269,7 +286,8 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd tnds-uploader 
+            cd reference-data
+            cd tnds-uploader
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
@@ -303,7 +321,7 @@ jobs:
             cd site
             npm run test
 
-  deploy-test-site:
+  deploy-site:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -332,7 +350,7 @@ jobs:
 
 workflows:
   version: 2
-  build-and-test-deliverable-one-lambdas:
+  build-test-and-deploy-deliverable-one-lambdas:
     jobs:
       - checkout-repo:
           context: "tfn-aws"
@@ -354,7 +372,7 @@ workflows:
           filters:
             branches:
               only: develop
-      - deploy-test-netex-convertor:
+      - deploy-netex-convertor:
           requires:
             - test-netex-convertor
           context: "tfn-aws"
@@ -376,7 +394,7 @@ workflows:
           filters:
             branches:
               only: develop
-      - deploy-test-odh-uploader:
+      - deploy-odh-uploader:
           requires:
             - test-odh-uploader
           context: "tfn-aws"
@@ -399,7 +417,7 @@ workflows:
           filters:
             branches:
               only: develop
-      - deploy-test-naptan-uploader:
+      - deploy-naptan-uploader:
           requires:
             - test-naptan-uploader
           context: "tfn-aws"
@@ -421,7 +439,7 @@ workflows:
           filters:
             branches:
               only: develop
-      - deploy-test-noc-uploader:
+      - deploy-noc-uploader:
           requires:
             - test-noc-uploader
           context: "tfn-aws"
@@ -429,23 +447,23 @@ workflows:
             branches:
               only: develop
 
-      - build-ntpg-uploader:
+      - build-nptg-uploader:
           requires:
             - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - test-ntpg-uploader:
+      - test-nptg-uploader:
           requires:
-            - build-ntpg-uploader
+            - build-nptg-uploader
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - deploy-test-ntpg-uploader:
+      - deploy-nptg-uploader:
           requires:
-            - test-ntpg-uploader
+            - test-nptg-uploader
           context: "tfn-aws"
           filters:
             branches:
@@ -465,7 +483,7 @@ workflows:
           filters:
             branches:
               only: develop
-      - deploy-test-tnds-uploader:
+      - deploy-tnds-uploader:
           requires:
             - test-tnds-uploader
           context: "tfn-aws"
@@ -487,7 +505,7 @@ workflows:
           filters:
             branches:
               only: develop
-      - deploy-test-site:
+      - deploy-site:
           requires:
             - test-site
           context: "tfn-aws"
@@ -497,13 +515,13 @@ workflows:
 
       - tag-test-release:
           requires:
-            - deploy-test-netex-convertor
-            - deploy-test-odh-uploader
-            - deploy-test-naptan-uploader
-            - deploy-test-noc-uploader
-            - deploy-test-ntpg-uploader
-            - deploy-test-tnds-uploader
-            - deploy-test-site
+            - deploy-netex-convertor
+            - deploy-odh-uploader
+            - deploy-naptan-uploader
+            - deploy-noc-uploader
+            - deploy-nptg-uploader
+            - deploy-tnds-uploader
+            - deploy-site
           context: "tfn-aws"
           filters:
             branches:
