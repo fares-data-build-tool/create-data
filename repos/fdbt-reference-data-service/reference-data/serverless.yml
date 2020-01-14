@@ -142,11 +142,11 @@ custom:
         sources:
           - table: Stops
             sources: [./.dynamodb/dummy_naptan_data.json]
-          - table: Operators
-            sources: [./.dynamodb/dummy_noc_data.json]
-          - table: Services
-            sources: [./.dynamodb/seededTestData/dummy_services_data.json]
+          # - table: Operators
+          #   sources: [./.dynamodb/dummy_noc_data.json]
+          # - table: Services
+          #   sources: [./.dynamodb/seededTestData/dummy_services_data.json]
           - table: TNDS
-            sources: [./.dynamodb/seededTestData/dummy_tnds_data.json]
+            sources: [./.dynamodb/dummy_tnds_data.json]
 
       convertEmptyValues: true
