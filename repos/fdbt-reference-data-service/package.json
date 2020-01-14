@@ -14,6 +14,11 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/infinityworksconsulting/fares-data-build-tool#readme",
   "dependencies": {
+<<<<<<< HEAD
     "@types/csvtojson": "^1.1.5"
+=======
+    "@types/csvtojson": "^1.1.5",
+    "csvtojson": "^2.0.10"
+>>>>>>> feature/TFN-140_tdns_dynamo_insert
   }
 }
