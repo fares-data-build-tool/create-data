@@ -3,6 +3,7 @@ import AWS from 'aws-sdk';
 import X2JS from 'x2js';
 var util = require('util');
 import omitEmpty from 'omit-empty';
+import Papa from 'papaparse';
 
 async function fetchDataFromS3AsString(bucketName: string, eventKey: string): Promise<string> {
     const s3 = new AWS.S3();
@@ -81,10 +82,30 @@ function xmlToJsonParse(xmlData: string){
 }
 
 function csvToJsonParse(csvData: string){
-    let csv = csvData;
-    let json;
+    const csv = csvData;
+    const lines = csv.split("\n");
+    const headerLine = lines[0].split(",");
+    const newCsvLines = [];
 
-    return json;
+    for(let i=1;i<lines.length;i++){ // this starts at 1 to avoid the header line
+        const newCsvLine = headerLine + "\n" + lines[i];
+        newCsvLines.push(newCsvLine);
+    }
+    // newCsvLines should have ~20k lines in it now, with a header for each.
+
+    const parsedLines = [];
+
+    for(let j=0;j<newCsvLines.length;j++){
+        const parsedLine = Papa.parse(newCsvLines[j]);
+        parsedLines.push(parsedLine)
+    }
+    // parsedLines should now have ~20k parsed JSON objects in it.
+
+    
+    
+
+
+    
 }
 
 export const s3hook: Handler = async (event: any, context: Context, callback: Callback) => {
@@ -123,6 +144,7 @@ export const s3hook: Handler = async (event: any, context: Context, callback: Ca
         } else {
             callback("Database update complete.")
             console.log("Database update complete for : " + data)
+            return;
         }
     })
 }
