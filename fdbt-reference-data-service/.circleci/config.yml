@@ -118,18 +118,18 @@ jobs:
             export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-  tag-test-release:
-    executor: semver-orb/default
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "da:2d:f9:70:e0:cd:35:fc:1f:e6:06:0f:a3:8f:c2:e0"
-      - attach_workspace:
-          at: ~/project
-      - semver-orb/print
-      - semver-orb/tagnext
-      - semver-orb/export-tag
-      - semver-orb/print
+  # tag-test-release:
+  #   executor: semver-orb/default
+  #   steps:
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "da:2d:f9:70:e0:cd:35:fc:1f:e6:06:0f:a3:8f:c2:e0"
+  #     - attach_workspace:
+  #         at: ~/project
+  #     - semver-orb/print
+  #     - semver-orb/tagnext
+  #     - semver-orb/export-tag
+  #     - semver-orb/print
 
 workflows:
   version: 2
@@ -186,12 +186,12 @@ workflows:
             branches:
               only: develop
 
-      - tag-test-release:
-          requires:
-            - deploy-netex-output-resources
-            - deploy-reference-data-resources
-            - deploy-site
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
+      # - tag-test-release:
+      #     requires:
+      #       - deploy-netex-output-resources
+      #       - deploy-reference-data-resources
+      #       - deploy-site
+      #     context: "tfn-aws"
+      #     filters:
+      #       branches:
+      #         only: develop
