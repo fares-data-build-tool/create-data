@@ -1,6 +1,6 @@
 import X2JS from 'x2js';
 import omitEmpty from 'omit-empty';
-const util = require('util');
+import util from 'util';
 
 // This example shows how to convert the TNDS file from xml to JSON
 // To run this unit test you must 
