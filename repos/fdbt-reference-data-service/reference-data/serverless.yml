@@ -5,6 +5,22 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   stage: ${opt:stage, 'test'}
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:ListBucket'
+      Resource: 'arn:aws:s3:::fdbt-test-tnds-data'
+    - Effect: 'Allow'
+      Action:
+        - 'dynamodb:BatchWriteItem'
+        - 'dynamodb:PutItem'
+        - 'dynamodb:UpdateItem'
+      Resource:
+        Fn::GetAtt:
+        - tndsTable
+        - Arn
+      
 
 
 plugins:
