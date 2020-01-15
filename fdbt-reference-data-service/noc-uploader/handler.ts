@@ -69,7 +69,7 @@ function fetchDataFromS3AsString(bucketName: string, eventKey: string): Promise<
             Key: eventKey
         }).createReadStream();
 
-        CsvToJson().fromStream(s3Stream).on('data', (row) =>
+        CsvToJson().fromStream(s3Stream).on('data', (row) => 
             let jsonContent = JSON.parse(row);
             console.log(JSON.stringify(jsonContent));
 
