@@ -84,7 +84,8 @@ function xmlToJsonParse(xmlData: string){
 function csvToJsonParse(csvData: string){
     const csv = csvData;
     const lines = csv.split("\n");
-    const headerLine = lines[0].split(",");
+    const headerLine = lines[0];
+    
     const newCsvLines = [];
 
     for(let i=1;i<lines.length;i++){ // this starts at 1 to avoid the header line
@@ -97,11 +98,9 @@ function csvToJsonParse(csvData: string){
 
     for(let j=0;j<newCsvLines.length;j++){
         const parsedLine = Papa.parse(newCsvLines[j]);
-        parsedLines.push(parsedLine)
+        parsedLines.push(parsedLine);
     }
     // parsedLines should now have ~20k parsed JSON objects in it.
-
-    
     
 
 
