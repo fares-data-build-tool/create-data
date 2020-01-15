@@ -14,7 +14,7 @@ jobs:
           paths:
             - "*"
 
-  build-netex-convertor:
+  build-and-test-netex-output-resources:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -23,15 +23,18 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd netex-convertor
+            echo "Starting build"
+            cd netex-output
             npm install
             npm run build
+            echo "Running tests"
+            npm run test
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "netex-convertor/node_modules"
+            - "netex-output/node_modules"
 
-  test-netex-convertor:
+  deploy-netex-output-resources:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -40,10 +43,33 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd netex-convertor
-            npm run test
+            echo "Deploying..."
+            sudo npm i -g serverless
+            cd netex-output
+            export SLS_DEBUG="*" && sls deploy
+            echo "Finished deploy"
 
-  deploy-test-netex-convertor:
+  build-and-test-reference-data-resources:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Starting build"
+            cd reference-data
+            npm install
+            npm run build
+            echo "Running tests"
+            npm run test
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "reference-data/node_modules"
+
+  deploy-reference-data-resources:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -53,11 +79,11 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd netex-convertor 
+            cd reference-data
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-  build-odh-uploader:
+  build-and-test-site:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -66,230 +92,18 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd odh-uploader
-            npm install
-            npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "odh-uploader/node_modules"
-
-  test-odh-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd odh-uploader
-            npm run test
-
-  deploy-test-odh-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            sudo npm i -g serverless
-            cd odh-uploader 
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  build-naptan-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd naptan-uploader
-            npm install
-            npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "naptan-uploader/node_modules"
-
-  test-naptan-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd naptan-uploader
-            npm run test
-
-  deploy-test-naptan-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            sudo npm i -g serverless
-            cd naptan-uploader 
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  build-noc-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd noc-uploader
-            npm install
-            npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "noc-uploader/node_modules"
-
-  test-noc-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd noc-uploader
-            npm run test
-
-  deploy-test-noc-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            sudo npm i -g serverless
-            cd noc-uploader 
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  build-nptg-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd nptg-uploader
-            npm install
-            npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "nptg-uploader/node_modules"
-
-  test-nptg-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd nptg-uploader
-            npm run test
-
-  deploy-test-nptg-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            sudo npm i -g serverless
-            cd nptg-uploader 
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  build-tnds-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd tnds-uploader
-            npm install
-            npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "tnds-uploader/node_modules"
-
-  test-tnds-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd tnds-uploader
-            npm run test
-
-  deploy-test-tnds-uploader:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            sudo npm i -g serverless
-            cd tnds-uploader 
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  build-site:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
+            echo "Starting build"
             cd site
             npm install
             npm run build
+            echo "Running tests"
+            npm run test
       - persist_to_workspace:
           root: ~/project
           paths:
             - "site/node_modules"
 
-  test-site:
+  deploy-site:
     docker:
       - image: circleci/node:latest
     working_directory: ~/project
@@ -298,39 +112,28 @@ jobs:
           at: ~/project
       - run:
           command: |
-            cd site
-            npm run test
-
-  deploy-test-site:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
+            echo "Deploying..."
             sudo npm i -g serverless
             cd site
             export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-  tag-test-release:
-    executor: semver-orb/default
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "82:dc:89:ad:e9:41:c9:bd:db:e7:c1:84:68:c6:da:35"
-      - attach_workspace:
-          at: ~/project
-      - semver-orb/print
-      - semver-orb/tagnext
-      - semver-orb/export-tag
-      - semver-orb/print
+  # tag-test-release:
+  #   executor: semver-orb/default
+  #   steps:
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "da:2d:f9:70:e0:cd:35:fc:1f:e6:06:0f:a3:8f:c2:e0"
+  #     - attach_workspace:
+  #         at: ~/project
+  #     - semver-orb/print
+  #     - semver-orb/tagnext
+  #     - semver-orb/export-tag
+  #     - semver-orb/print
 
 workflows:
   version: 2
-  build-and-test-deliverable-one-lambdas:
+  build-test-and-deploy-deliverable-one-lambdas:
     jobs:
       - checkout-repo:
           context: "tfn-aws"
@@ -338,170 +141,57 @@ workflows:
             branches:
               only: develop
 
-      - build-netex-convertor:
+      - build-and-test-netex-output-resources:
           requires:
             - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - test-netex-convertor:
+      - deploy-netex-output-resources:
           requires:
-            - build-netex-convertor
+            - build-and-test-netex-output-resources
           context: "tfn-aws"
           filters:
             branches:
-              only: develop
-      - deploy-test-netex-convertor:
-          requires:
-            - test-netex-convertor
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
+              only: develop              
 
-      - build-odh-uploader:
+      - build-and-test-reference-data-resources:
           requires:
             - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - test-odh-uploader:
+      - deploy-reference-data-resources:
           requires:
-            - build-odh-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-test-odh-uploader:
-          requires:
-            - test-odh-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-
-      - build-naptan-uploader:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - test-naptan-uploader:
-          requires:
-            - build-naptan-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-test-naptan-uploader:
-          requires:
-            - test-naptan-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-
-      - build-noc-uploader:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - test-noc-uploader:
-          requires:
-            - build-noc-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-test-noc-uploader:
-          requires:
-            - test-noc-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-
-      - build-nptg-uploader:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - test-nptg-uploader:
-          requires:
-            - build-nptg-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-test-nptg-uploader:
-          requires:
-            - test-nptg-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-
-      - build-tnds-uploader:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - test-tnds-uploader:
-          requires:
-            - build-tnds-uploader
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-test-tnds-uploader:
-          requires:
-            - test-tnds-uploader
+            - build-and-test-reference-data-resources
           context: "tfn-aws"
           filters:
             branches:
               only: develop
               
-      - build-site:
+      - build-and-test-site:
           requires:
             - checkout-repo
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - test-site:
+      - deploy-site:
           requires:
-            - build-site
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-test-site:
-          requires:
-            - test-site
+            - build-and-test-site
           context: "tfn-aws"
           filters:
             branches:
               only: develop
 
-      - tag-test-release:
-          requires:
-            - deploy-test-netex-convertor
-            - deploy-test-odh-uploader
-            - deploy-test-naptan-uploader
-            - deploy-test-noc-uploader
-            - deploy-test-nptg-uploader
-            - deploy-test-tnds-uploader
-            - deploy-test-site
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
+      # - tag-test-release:
+      #     requires:
+      #       - deploy-netex-output-resources
+      #       - deploy-reference-data-resources
+      #       - deploy-site
+      #     context: "tfn-aws"
+      #     filters:
+      #       branches:
+      #         only: develop
