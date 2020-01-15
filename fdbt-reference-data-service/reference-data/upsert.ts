@@ -1,7 +1,12 @@
-function upsert(tableName, partitionKey, sortKey, data) {
+var dynamodbUpdateExpression = require ('dynamodb-update-expression');
+import AWS from 'aws-sdk';
+
+const docClient = new AWS.DynamoDB.DocumentClient();
+
+export default (tableName:string, partitionKey:string , sortKey:string, data:object ) => {
  
-    function _get(partitionKey, sortKey) {
-      var params = {
+    function _get(partitionKey:string, sortKey:string) {
+      const params = {
         TableName: tableName,
         Key: {
           partitionKey: partitionKey,
@@ -12,7 +17,8 @@ function upsert(tableName, partitionKey, sortKey, data) {
       return docClient.get(params).promise();
     }
    
-    function _update(data, original) {
+    function _update(data: object, original: object) {
+      // generates an object by comparing the exisiting data with the new data //
       var updateExpression = dynamodbUpdateExpression.getUpdateExpression({ data: original }, { data: data });
       var params = Object.assign({
         TableName: tableName,
@@ -20,14 +26,17 @@ function upsert(tableName, partitionKey, sortKey, data) {
           partitionKey: partitionKey,
           sortKey:      sortKey
         },
+        // returns item as it appears after the updte //
         ReturnValues: 'ALL_NEW',
+        // updates only if partition key and sort key exist //
         ConditionExpression: 'attribute_exists(partitionKey) AND attribute_exists(sortKey)'
       }, updateExpression);
-   
+
+      // ensures a value is assigned to UpdateExpression? //
       if (params.UpdateExpression === '') {
         return Promise.resolve();
       }
-   
+      // ???? //
       return new Promise(function (resolve, reject) {
         return docClient.update(params).promise()
           .then(function (result) { resolve(result.Attributes.data); })
@@ -35,7 +44,7 @@ function upsert(tableName, partitionKey, sortKey, data) {
       });
     }
    
-    function _put(data) {
+    function _put(data:object) {
       var params = {
         TableName: tableName,
         Item: {
@@ -50,7 +59,7 @@ function upsert(tableName, partitionKey, sortKey, data) {
     }
    
     // 1. Get the original item
-    return _get(partitionKey, sortKey).the(function (original) {
+    return _get(partitionKey, sortKey).then(function (original) {
       if (Object.keys(original).length > 0) {
         // 2. Update if item already exists
         return _update(data, original);
