@@ -7,44 +7,16 @@ pipelines:
           - node --version && npm --version
     - step:
         caches:
-          - node-modules-netex-convertor
+        - node-modules-netex-output-resources
         script:
-          - cd netex-convertor
+          - cd netex-output        
           - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-          - node-modules-odh-uploader
+        - node-modules-reference-data-resources
         script:
-          - cd odh-uploader
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-          - node-modules-naptan-uploader
-        script:
-          - cd naptan-uploader
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-          - node-modules-noc-uploader
-        script:
-          - cd noc-uploader
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-          - node-modules-nptg-uploader
-        script:
-          - cd nptg-uploader
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-          - node-modules-tnds-uploader
-        script:
-          - cd tnds-uploader
+          - cd reference-data
           - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
@@ -57,10 +29,6 @@ pipelines:
 
 definitions:
   caches:
-    node-modules-netex-convertor: netex-convertor/node_modules
-    node-modules-odh-uploader: odh-uploader/node_modules
-    node-modules-naptan-uploader: naptan-uploader/node_modules
-    node-modules-noc-uploader: noc-uploader/node_modules
-    node-modules-nptg-uploader: nptg-uploader/node_modules
-    node-modules-tnds-uploader: tnds-uploader/node_modules
+    node-modules-netex-output-resources: netex-output/node_modules
+    node-modules-reference-data-resources: reference-data/node-modules
     node-modules-site: site/node_modules
