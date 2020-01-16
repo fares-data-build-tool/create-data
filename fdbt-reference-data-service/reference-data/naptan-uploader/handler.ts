@@ -1,15 +1,12 @@
 import { Handler, Context, Callback } from "aws-lambda";
 import AWS from "aws-sdk";
-import parseCsv from "csv-parse";
+import util from "util";
+import csvParse from "csv-parse/lib/sync";
+import { parse } from "path";
 
 interface s3ObjectParameters {
   Bucket: string;
   Key: string;
-}
-
-interface dynamoDBParamsToPush {
-  TableName: string;
-  Item: dynamoDBData;
 }
 
 interface dynamoDBData {
@@ -34,137 +31,98 @@ interface dynamoDBData {
   TimingStatus: string;
 }
 
-async function fetchDataFromS3AsString(parameters: s3ObjectParameters) {
+export async function fetchDataFromS3AsString(
+  parameters: s3ObjectParameters
+): Promise<string> {
   const s3 = new AWS.S3();
-  const parser = parseCsv({ delimiter: ",", columns: true })
-  s3.getObject(parameters).createReadStream().pipe(parser)
-
-  const dynamoDoc = new AWS.DynamoDB.DocumentClient();
-  const tableName = "Stops";
-  let items = [];
-  let count = 0;
-
-  let record: dynamoDBData;
-
-  function clean(obj) {
-    for (var propName in obj) {
-      if (!obj[propName]) {
-        delete obj[propName];
-      }
-    }
-  }  
-
-  const transformToWrite = (input: dynamoDBData) => {
-    clean(input);
-    (input as any).pk = input.ATCOCode;
-    delete input.ATCOCode;
-    return { PutRequest: { Item: input } };
-  };
-
-
-  parser.on("readable", async function() {
-    while ((record = parser.read())) {
-      count++;
-      if (items.length < 25) {
-        items.push(transformToWrite(record));
+  const data = await s3
+    .getObject(parameters, function(err, data) {
+      if (err) {
+        console.log(
+          "Failed to retrieve object from S3 with response code: " +
+            err.statusCode +
+            " and error message: " +
+            err.message
+        );
       } else {
-        console.log(`Writing batch to DynamoDB...`);
-
-        async () => {
-          await dynamoDoc
-            .batchWrite({ RequestItems: { [tableName]: [...items] as any } })
-            .promise()
-            .catch(() => console.error("Failed to write to DynamoDB"));
-        };
-
-        // Reset to start a new batch
-        items = [];
+        console.log("Object returned from S3: " + data.Body?.toString("utf-8"));
       }
-    }
-  });
-
-  parser.on("error", function(err) {
-    console.error(err.message);
-  });
-
-  parser.on("end", async () => {
-    console.log(
-      `End of stream reached, flushing remaining ${items.length} items to table...`
-    );
-    if (items.length) {
-      await dynamoDoc
-        .batchWrite({ RequestItems: { [tableName]: items as any } })
-        .promise();
-      console.log(`Wrote a total of ${count} items to the table`);
-    }
-  });
+    })
+    .promise();
+  const dataAsString = data.Body?.toString("utf-8")!;
+  return dataAsString;
 }
 
-// async function pushDataToDynamoDB(data: any) {
-//     const dynamodb = new AWS.DynamoDB();
-// }
+export function csvParser(csvData: string) {
+  const parsedData = csvParse(csvData, {
+    columns: true,
+    skip_empty_lines: true,
+    delimiter: ","
+  });
+  console.log("parsedData is: ", parsedData);
+  return parsedData;
+}
 
-export const s3hook: Handler = (
+export function pushToDynamo(parsedLines: any[]) {
+  const dynamodb = new AWS.DynamoDB.DocumentClient({
+    convertEmptyValues: true
+  });
+  let count = 0;
+  console.log("parsedLines length before our while loop is: ", parsedLines.length)
+  while (parsedLines.length > 25) {
+    console.log("parsedLines length inside the while loop is: ", parsedLines.length)
+    let arrayToPushToDynamo = [];
+    for (let i = 0; i < 25; i++) {
+      arrayToPushToDynamo.push(parsedLines[i]);
+      parsedLines.shift();
+      console.log("parsedLines after shift is ", parsedLines.length)
+    }
+    console.log("arrayToPushToDynamo should be 25 items. arrayToPushToDynamo and its length is: ", arrayToPushToDynamo.length, arrayToPushToDynamo)
+    dynamodb.batchWrite({
+      RequestItems: {
+        Stops: arrayToPushToDynamo
+      }
+    });
+    count+= 25;
+  }
+  count+= parsedLines.length;
+  console.log("parsedLines should now be <25 items. parsedLines and its length is: ", parsedLines.length, parsedLines)
+  dynamodb.batchWrite({
+    RequestItems: {
+      Stops: parsedLines
+    }
+  });
+  return count;
+}
+
+export const s3hook: Handler = async (
   event: any,
   context: Context,
   callback: Callback
 ) => {
+  console.log(
+    "Reading options from event:\n",
+    util.inspect(event, { depth: 5 })
+  );
+
   const s3BucketName: string = event.Records[0].s3.bucket.name;
-  const s3FileName: string = event.Records[0].s3.object.key; // Object key may have spaces or unicode non-ASCII characters
-  const params: s3ObjectParameters = { Bucket: s3BucketName, Key: s3FileName };
+  const s3FileName: string = decodeURIComponent(
+    event.Records[0].s3.object.key.replace(/\+/g, " ")
+  ); // Object key may have spaces or unicode non-ASCII characters
   console.log("s3BucketName is: ", s3BucketName);
   console.log("s3FileName is: ", s3FileName);
-  const s3DataAsString = fetchDataFromS3AsString(params);
-  console.log("s3DataAsString is: ", s3DataAsString);
-  // const dynamodbResponse = pushDataToDynamoDB(data);
+
+  const params: s3ObjectParameters = {
+    Bucket: s3BucketName,
+    Key: s3FileName
+  };
+  console.log("params is: ", params);
+
+  const stringifiedData = await fetchDataFromS3AsString(params);
+  console.log("s3DataAsString is: ", stringifiedData);
+
+  const parsedCsvData = csvParser(stringifiedData);
+
+  const itemsWrittenToDynamo = pushToDynamo(parsedCsvData);
+  console.log(itemsWrittenToDynamo);
 };
-
-// function addDataToDynamo(parameters: dynamoDBParamsToPush) {
-//     console.log("Adding a new item.")
-//     const docClient = new DocumentClient()
-//     docClient.put(parameters, function(err, data) {
-//         if (err) {
-//             console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-//         } else {
-//             console.log("Added item:", JSON.stringify(parameters.Item, null, 2))
-//         }
-//     });
-// }
-
-// const s3 = new AWS.S3();
-// console.log("s3 set as: ", s3)
-// const s3Stream = s3.getObject(params).createReadStream()
-// console.log("s3stream set as: ", s3Stream)
-// csv().fromStream(s3Stream).on('data', (row) => {
-//     let jsonContent = JSON.parse(row);
-//     console.log(JSON.stringify(jsonContent));
-
-//     let data: dynamoDBData = {
-//         "ATCOCode": jsonContent.ATCOCode,
-//         "NaptanCode": jsonContent.NaptanCode,
-//         "CommonName": jsonContent.CommonName,
-//         "Street": jsonContent.Street,
-//         "Indicator": jsonContent.Indicator,
-//         "IndicatorLang": jsonContent.IndicatorLang,
-//         "Bearing": jsonContent.Bearing,
-//         "NptgLocalityCode": jsonContent.NptgLocalityCode,
-//         "LocalityName": jsonContent.LocalityName,
-//         "ParentLocalityName": jsonContent.ParentLocalityName,
-//         "LocalityCentre": jsonContent.LocalityCentre,
-//         "GridType": jsonContent.GridType,
-//         "Easting": jsonContent.Easting,
-//         "Northing": jsonContent.Northing,
-//         "Longitude": jsonContent.Longitude,
-//         "Latitude": jsonContent.Latitude,
-//         "StopType": jsonContent.StopType,
-//         "BusStopType": jsonContent.BusStopType,
-//         "TimingStatus": jsonContent.TimingStatus
-//     };
-//     let paramsToPush = {
-//         TableName: tableName,
-//         Item: data
-//     };
-//     addDataToDynamo(paramsToPush);
-// })
-
-// const tableName = "Stops";

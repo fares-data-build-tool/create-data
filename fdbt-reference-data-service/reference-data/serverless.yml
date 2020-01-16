@@ -14,11 +14,11 @@ provider:
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - fdbt-test-tnds-data
+            - ${self:provider.stage}-fdbt-test-naptan-data
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - fdbt-test-tnds-data
+            - ${self:provider.stage}-fdbt-test-naptan-data
             - "/*"          
     - Effect: 'Allow'
       Action:
@@ -30,11 +30,9 @@ provider:
         - dynamodb:BatchWriteItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource:
-        Fn::GetAtt:
-        - tndsTable
-        - Arn
+      Resource: arn:aws:dynamodb:eu-west-2:442445088537:table/danny-Stops
 
+      
 plugins:
   - serverless-plugin-typescript
   - serverless-s3-local
@@ -91,21 +89,21 @@ resources:
         AttributeDefinitions:
           - AttributeName: "NOCCode"
             AttributeType: "S"
-          - AttributeName: "PubNmId"
-            AttributeType: "N"
+          # - AttributeName: "PubNmId"
+          #   AttributeType: "N"
         KeySchema:
           - AttributeName: "NOCCode"
             KeyType: "HASH"
-        GlobalSecondaryIndexes:
-          - IndexName: "PubNmId"
-            KeySchema: 
-              - AttributeName: "PubNmId"
-                KeyType: "HASH"
-            Projection:
-              ProjectionType: "KEYS_ONLY"
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
+        # GlobalSecondaryIndexes:
+        #   - IndexName: "PubNmId"
+        #     KeySchema: 
+        #       - AttributeName: "PubNmId"
+        #         KeyType: "HASH"
+        #     Projection:
+        #       ProjectionType: "KEYS_ONLY"
+        #     ProvisionedThroughput:
+        #       ReadCapacityUnits: 1
+        #       WriteCapacityUnits: 1
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
