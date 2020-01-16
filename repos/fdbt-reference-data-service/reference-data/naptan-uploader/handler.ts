@@ -1,8 +1,11 @@
-import { Handler, Context, Callback } from "aws-lambda";
+import { Handler, Context, Callback, S3Handler } from "aws-lambda";
 import AWS from "aws-sdk";
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
 import { parse } from "path";
+import { WriteRequest } from "aws-sdk/clients/dynamodb";
+
+type ParsedData = dynamoDBData;
 
 interface s3ObjectParameters {
   Bucket: string;
@@ -10,7 +13,7 @@ interface s3ObjectParameters {
 }
 
 interface dynamoDBData {
-  ATCOCode: number;
+  ATCOCode: string;
   NaptanCode: string;
   CommonName: string;
   Street: string;
@@ -31,98 +34,96 @@ interface dynamoDBData {
   TimingStatus: string;
 }
 
+interface PushToDyanmoInput {
+  parsedLines: ParsedData[];
+  tableName: string;
+}
+
 export async function fetchDataFromS3AsString(
   parameters: s3ObjectParameters
 ): Promise<string> {
   const s3 = new AWS.S3();
-  const data = await s3
-    .getObject(parameters, function(err, data) {
-      if (err) {
-        console.log(
-          "Failed to retrieve object from S3 with response code: " +
-            err.statusCode +
-            " and error message: " +
-            err.message
-        );
-      } else {
-        console.log("Object returned from S3: " + data.Body?.toString("utf-8"));
-      }
-    })
-    .promise();
+  const data = await s3.getObject(parameters).promise();
   const dataAsString = data.Body?.toString("utf-8")!;
   return dataAsString;
 }
 
 export function csvParser(csvData: string) {
-  const parsedData = csvParse(csvData, {
+  const parsedData: ParsedData[] = csvParse(csvData, {
     columns: true,
     skip_empty_lines: true,
     delimiter: ","
   });
-  console.log("parsedData is: ", parsedData);
   return parsedData;
 }
 
-export function pushToDynamo(parsedLines: any[]) {
+export async function pushToDynamo({
+  parsedLines,
+  tableName
+}: PushToDyanmoInput) {
   const dynamodb = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
   });
-  let count = 0;
-  console.log("parsedLines length before our while loop is: ", parsedLines.length)
-  while (parsedLines.length > 25) {
-    console.log("parsedLines length inside the while loop is: ", parsedLines.length)
-    let arrayToPushToDynamo = [];
-    for (let i = 0; i < 25; i++) {
-      arrayToPushToDynamo.push(parsedLines[i]);
-      parsedLines.shift();
-      console.log("parsedLines after shift is ", parsedLines.length)
-    }
-    console.log("arrayToPushToDynamo should be 25 items. arrayToPushToDynamo and its length is: ", arrayToPushToDynamo.length, arrayToPushToDynamo)
-    dynamodb.batchWrite({
-      RequestItems: {
-        Stops: arrayToPushToDynamo
-      }
-    });
-    count+= 25;
-  }
-  count+= parsedLines.length;
-  console.log("parsedLines should now be <25 items. parsedLines and its length is: ", parsedLines.length, parsedLines)
-  dynamodb.batchWrite({
-    RequestItems: {
-      Stops: parsedLines
-    }
+  const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
+    PutRequest: { Item: parsedDataItem as any }
   });
-  return count;
+  const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
+
+  const emptyBatch: WriteRequest[][] = [];
+  const batchSize = 25;
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
+    result,
+    _value,
+    index,
+    array
+  ) {
+    if (index % batchSize === 0)
+      result.push(array.slice(index, index + batchSize));
+    return result;
+  },
+  emptyBatch);
+
+  for (const batch of dynamoWriteRequestBatches) {
+    console.log("Writing to DynamoDB...");
+    console.log(
+      "Reading options from event:\n",
+      util.inspect(batch, { depth: 5 })
+    );
+    await dynamodb
+      .batchWrite({
+        RequestItems: {
+          [tableName]: batch
+        }
+      })
+      .promise();
+    console.log(`Wrote batch of ${batch.length} items to Dynamo DB.`);
+  }
+  console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB`);
 }
 
-export const s3hook: Handler = async (
-  event: any,
-  context: Context,
-  callback: Callback
-) => {
+export const s3hook: S3Handler = async (event, context) => {
   console.log(
     "Reading options from event:\n",
     util.inspect(event, { depth: 5 })
   );
 
+  const tableName = process.env.TABLE_NAME;
+  if (!tableName) {
+    throw new Error("TABLE_NAME environment variable not set.");
+  }
+
   const s3BucketName: string = event.Records[0].s3.bucket.name;
   const s3FileName: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
   ); // Object key may have spaces or unicode non-ASCII characters
-  console.log("s3BucketName is: ", s3BucketName);
-  console.log("s3FileName is: ", s3FileName);
 
   const params: s3ObjectParameters = {
     Bucket: s3BucketName,
     Key: s3FileName
   };
-  console.log("params is: ", params);
 
   const stringifiedData = await fetchDataFromS3AsString(params);
-  console.log("s3DataAsString is: ", stringifiedData);
 
   const parsedCsvData = csvParser(stringifiedData);
-
-  const itemsWrittenToDynamo = pushToDynamo(parsedCsvData);
-  console.log(itemsWrittenToDynamo);
+  await pushToDynamo({ parsedLines: parsedCsvData, tableName });
 };

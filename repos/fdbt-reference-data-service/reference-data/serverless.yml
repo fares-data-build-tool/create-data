@@ -30,7 +30,11 @@ provider:
         - dynamodb:BatchWriteItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:eu-west-2:442445088537:table/danny-Stops
+      Resource:
+        - !GetAtt naptanTable.Arn
+  environment:
+    TABLE_NAME: !Ref naptanTable
+  
 
       
 plugins:
@@ -74,14 +78,12 @@ resources:
         TableName: ${self:provider.stage}-Stops
         AttributeDefinitions:
           - AttributeName: "ATCOCode"
-            AttributeType: "N"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "ATCOCode"
             KeyType: "HASH"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    
+        BillingMode: PAY_PER_REQUEST
+
     nocTable: 
       Type: AWS::DynamoDB::Table
       Properties:
@@ -104,9 +106,7 @@ resources:
         #     ProvisionedThroughput:
         #       ReadCapacityUnits: 1
         #       WriteCapacityUnits: 1
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
     
     servicesTable: 
       Type: AWS::DynamoDB::Table
@@ -122,9 +122,7 @@ resources:
             KeyType: "HASH"
           - AttributeName: "LineName"
             KeyType: "RANGE"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
 
     tndsTable: 
       Type: AWS::DynamoDB::Table
@@ -136,9 +134,7 @@ resources:
         KeySchema:
           - AttributeName: "FileName"
             KeyType: "HASH"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
 
 
 # The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
