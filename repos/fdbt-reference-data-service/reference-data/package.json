@@ -19,12 +19,8 @@
     "@types/xml-js": "^1.0.0",
     "@types/xml2js": "^0.4.5",
     "aws-sdk": "^2.594.0",
-<<<<<<< HEAD
-    "dynamodb-update-expression": "^0.1.21",
-=======
     "csv-parse": "^4.8.5",
     "csvtojson": "^2.0.10",
->>>>>>> feature/TFN-139_naptan_uploader_lambda
     "omit-empty": "^1.0.0",
     "papaparse": "^5.1.1",
     "ping": "^0.2.2",
