@@ -2,7 +2,6 @@ import { Handler, Context, Callback, S3Handler } from "aws-lambda";
 import AWS from "aws-sdk";
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
-import { parse } from "path";
 import { WriteRequest } from "aws-sdk/clients/dynamodb";
 
 type ParsedData = dynamoDBData;
@@ -71,17 +70,11 @@ export async function pushToDynamo({
 
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
-  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
-    result,
-    _value,
-    index,
-    array
-  ) {
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(result, _value, index, array) {
     if (index % batchSize === 0)
       result.push(array.slice(index, index + batchSize));
     return result;
-  },
-  emptyBatch);
+  }, emptyBatch);
 
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
@@ -107,7 +100,7 @@ export const s3hook: S3Handler = async (event, context) => {
     util.inspect(event, { depth: 5 })
   );
 
-  const tableName = process.env.TABLE_NAME;
+  const tableName = process.env.NAPTAN_TABLE_NAME;
   if (!tableName) {
     throw new Error("TABLE_NAME environment variable not set.");
   }
@@ -125,5 +118,5 @@ export const s3hook: S3Handler = async (event, context) => {
   const stringifiedData = await fetchDataFromS3AsString(params);
 
   const parsedCsvData = csvParser(stringifiedData);
-  await pushToDynamo({ parsedLines: parsedCsvData, tableName });
+  await pushToDynamo({ tableName: tableName, parsedLines: parsedCsvData });
 };
