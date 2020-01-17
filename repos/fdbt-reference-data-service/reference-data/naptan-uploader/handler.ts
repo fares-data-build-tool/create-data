@@ -1,4 +1,4 @@
-import { Handler, Context, Callback, S3Handler } from "aws-lambda";
+import { Handler, Context, Callback, S3Handler, S3Event } from "aws-lambda";
 import AWS from "aws-sdk";
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
@@ -70,11 +70,17 @@ export async function pushToDynamo({
 
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
-  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(result, _value, index, array) {
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
+    result,
+    _value,
+    index,
+    array
+  ) {
     if (index % batchSize === 0)
       result.push(array.slice(index, index + batchSize));
     return result;
-  }, emptyBatch);
+  },
+  emptyBatch);
 
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
@@ -94,6 +100,18 @@ export async function pushToDynamo({
   console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB`);
 }
 
+export function setS3ObjectParams (event: S3Event) {
+  const s3BucketName: string = event.Records[0].s3.bucket.name;
+  const s3FileName: string = decodeURIComponent(
+    event.Records[0].s3.object.key.replace(/\+/g, " ")
+  ); // Object key may have spaces or unicode non-ASCII characters
+  const params: s3ObjectParameters = {
+    Bucket: s3BucketName,
+    Key: s3FileName
+  };
+  return params;
+}
+
 export const s3hook: S3Handler = async (event, context) => {
   console.log(
     "Reading options from event:\n",
@@ -105,18 +123,8 @@ export const s3hook: S3Handler = async (event, context) => {
     throw new Error("TABLE_NAME environment variable not set.");
   }
 
-  const s3BucketName: string = event.Records[0].s3.bucket.name;
-  const s3FileName: string = decodeURIComponent(
-    event.Records[0].s3.object.key.replace(/\+/g, " ")
-  ); // Object key may have spaces or unicode non-ASCII characters
-
-  const params: s3ObjectParameters = {
-    Bucket: s3BucketName,
-    Key: s3FileName
-  };
-
+  const params = setS3ObjectParams(event);
   const stringifiedData = await fetchDataFromS3AsString(params);
-
   const parsedCsvData = csvParser(stringifiedData);
   await pushToDynamo({ tableName: tableName, parsedLines: parsedCsvData });
 };
