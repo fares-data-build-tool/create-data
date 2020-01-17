@@ -1,6 +1,7 @@
 import { Handler, Context, Callback } from 'aws-lambda';
 import AWS from 'aws-sdk';
 import X2JS from 'x2js';
+// TODO: Change var to import util from 'util';
 var util = require('util');
 import omitEmpty from 'omit-empty';
 
