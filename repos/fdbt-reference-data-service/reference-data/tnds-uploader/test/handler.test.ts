@@ -1,6 +1,8 @@
-import * as handler from '../handler';
 import { Context, Callback } from 'aws-lambda';
 import MockContext from 'aws-lambda-mock-context';
+const {testEvent} = require('../__mocks__/testEventData')
+jest.mock('../__mocks__/handler.ts')
+const handler = require('../__mocks__/handler')
 
 describe('aws handler', () =>{
     it('should call console.log', () =>{
@@ -20,25 +22,29 @@ describe('aws handler', () =>{
     });
 
     it('should send an async request for data using the bucket name and event key', () =>{
-        const event = {
-            Name: "myName"
-        };
-        
+        const event = testEvent;
+        const context: Context = MockContext();
+        const callback: Callback = jest.fn();
+        handler.s3hook(event, context, callback);
+        expect().toHaveBeenCalledWith({
+            Bucket:'fdbt-test-tnds-data',
+            Key: 'data.csv'
+        })
     })
 
-    it('should convert the data to a string using utf-8', () =>{
-
-    })
-
-    it('should log out the data it gets back from the request', () =>{
-
-    })
-
-    it('should return the dataAsAString variable, and it should be a string', () =>{
+    it('', () =>{
 
     })
 
-    it('should catch the error when one is thrown and print out the error message', () =>{
+    it('', () =>{
+
+    })
+
+    it('', () =>{
+
+    })
+
+    it('', () =>{
 
     })
 });

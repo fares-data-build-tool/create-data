@@ -77,6 +77,8 @@ resources:
         KeySchema:
           - AttributeName: "ATCOCode"
             KeyType: "HASH"
+         ## Need to look at on demand for this
+         ## BillingMode: PAY_PER_REQUEST
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
