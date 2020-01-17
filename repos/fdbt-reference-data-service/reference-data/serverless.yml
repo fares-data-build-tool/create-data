@@ -5,8 +5,40 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   stage: ${opt:stage, 'test'}
+  timeout: 900
+  memorySize: 2048
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:ListBucket'
+      Resource: 
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${self:provider.stage}-fdbt-test-naptan-data
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${self:provider.stage}-fdbt-test-naptan-data
+            - "/*"          
+    - Effect: 'Allow'
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - !GetAtt naptanTable.Arn
+  environment:
+    NAPTAN_TABLE_NAME: !Ref naptanTable
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
-
+      
 plugins:
   - serverless-plugin-typescript
   - serverless-s3-local
@@ -18,83 +50,70 @@ functions:
   naptanUploader:
     handler: naptan-uploader/handler.s3hook
     events: 
-      - s3: fdbt-test-naptan-data
+      - s3: ${self:provider.stage}-fdbt-test-naptan-data
         event: s3:ObjectCreated:*
 
   nocUploader:
     handler: noc-uploader/handler.s3hook
     events: 
-      - s3: fdbt-test-noc-data
+      - s3: ${self:provider.stage}-fdbt-test-noc-data
         event: s3:ObjectCreated:*
 
   nptgUploader:
     handler: nptg-uploader/handler.s3hook
     events: 
-      - s3: fdbt-test-ntpg-data
+      - s3: ${self:provider.stage}-fdbt-test-nptg-data
         event: s3:ObjectCreated:*
 
   tndsUploader:
     handler: tnds-uploader/handler.s3hook
     events: 
-      - s3: fdbt-test-tnds-data
+      - s3: ${self:provider.stage}-fdbt-test-tnds-data
         event: s3:ObjectCreated:*
 
-
-package:
-  exclude:
-    - node_modules/**/*
-  include:
-    - naptan-uploader/handler.ts
-    - noc-uploader/handler.ts
-    - nptg-uploader/handler.ts
-    - tnds-uploader/handler.ts
 
 resources: 
   Resources:
     naptanTable: 
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Stops
+        TableName: ${self:provider.stage}-Stops
         AttributeDefinitions:
           - AttributeName: "ATCOCode"
-            AttributeType: "N"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "ATCOCode"
             KeyType: "HASH"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    
+        BillingMode: PAY_PER_REQUEST
+
     nocTable: 
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Operators
+        TableName: ${self:provider.stage}-Operators
         AttributeDefinitions:
           - AttributeName: "NOCCode"
             AttributeType: "S"
-          - AttributeName: "PubNmId"
-            AttributeType: "N"
+          # - AttributeName: "PubNmId"
+          #   AttributeType: "N"
         KeySchema:
           - AttributeName: "NOCCode"
             KeyType: "HASH"
-        GlobalSecondaryIndexes:
-          - IndexName: "PubNmId"
-            KeySchema: 
-              - AttributeName: "PubNmId"
-                KeyType: "HASH"
-            Projection:
-              ProjectionType: "KEYS_ONLY"
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        # GlobalSecondaryIndexes:
+        #   - IndexName: "PubNmId"
+        #     KeySchema: 
+        #       - AttributeName: "PubNmId"
+        #         KeyType: "HASH"
+        #     Projection:
+        #       ProjectionType: "KEYS_ONLY"
+        #     ProvisionedThroughput:
+        #       ReadCapacityUnits: 1
+        #       WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
     
     servicesTable: 
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Services
+        TableName: ${self:provider.stage}-Services
         AttributeDefinitions:
           - AttributeName: "NationalOperatorCode"
             AttributeType: "S"
@@ -105,48 +124,44 @@ resources:
             KeyType: "HASH"
           - AttributeName: "LineName"
             KeyType: "RANGE"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
 
     tndsTable: 
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: TNDS
+        TableName: ${self:provider.stage}-TNDS
         AttributeDefinitions:
           - AttributeName: "FileName"
             AttributeType: "S"
         KeySchema:
           - AttributeName: "FileName"
             KeyType: "HASH"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
 
 
 # The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
-custom:
-  dynamodb:
-    stages:
-      - test
-    start:
-      port: 9100
-      inMemory: true
-      heapInitial: 200m
-      heapMax: 1g
-      migrate: true
-      seed: true
+# custom:
+#   dynamodb:
+#     stages:
+#       - test
+#     start:
+#       port: 9100
+#       inMemory: true
+#       heapInitial: 200m
+#       heapMax: 1g
+#       migrate: true
+#       seed: true
     
-    seed:
-      domain:
-        sources:
-          - table: Stops
-            sources: [./.dynamodb/dummy_naptan_data.json]
-          - table: Operators
-            sources: [./.dynamodb/dummy_noc_data.json]
-          - table: Services
-            sources: [./.dynamodb/seededTestData/dummy_services_data.json]
-          - table: TNDS
-            sources: [./.dynamodb/seededTestData/dummy_tnds_data.json]
+#     seed:
+#       domain:
+#         sources:
+#           - table: Stops
+#             sources: [./.dynamodb/dummy_naptan_data.json]
+#           # - table: Operators
+#           #   sources: [./.dynamodb/dummy_noc_data.json]
+#           # - table: Services
+#           #   sources: [./.dynamodb/seededTestData/dummy_services_data.json]
+#           - table: TNDS
+#             sources: [./.dynamodb/dummy_tnds_data.json]
 
-      convertEmptyValues: true
+#       convertEmptyValues: true
