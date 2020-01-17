@@ -37,7 +37,6 @@ provider:
   environment:
     NAPTAN_TABLE_NAME: !Ref naptanTable
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
-
       
 plugins:
   - serverless-plugin-typescript

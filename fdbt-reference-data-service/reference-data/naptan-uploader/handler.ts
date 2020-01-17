@@ -1,4 +1,4 @@
-import { Handler, Context, Callback, S3Handler, S3Event } from "aws-lambda";
+import { S3Handler, S3Event } from "aws-lambda";
 import AWS from "aws-sdk";
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
@@ -56,13 +56,7 @@ export function csvParser(csvData: string) {
   return parsedData;
 }
 
-export async function pushToDynamo({
-  parsedLines,
-  tableName
-}: PushToDyanmoInput) {
-  const dynamodb = new AWS.DynamoDB.DocumentClient({
-    convertEmptyValues: true
-  });
+export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]) {
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
@@ -81,7 +75,18 @@ export async function pushToDynamo({
     return result;
   },
   emptyBatch);
+  return dynamoWriteRequestBatches;
+}
 
+export async function writeBatchesToDynamo({
+  parsedLines,
+  tableName
+}: PushToDyanmoInput) {
+  const dynamodb = new AWS.DynamoDB.DocumentClient({
+    convertEmptyValues: true
+  });
+  const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedLines);
+  let count = 0;
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
     console.log(
@@ -95,12 +100,15 @@ export async function pushToDynamo({
         }
       })
       .promise();
-    console.log(`Wrote batch of ${batch.length} items to Dynamo DB.`);
+      let batchLength = batch.length;
+    console.log(`Wrote batch of ${batchLength} items to Dynamo DB.`);
+    count += batchLength;
   }
-  console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB`);
+  console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB.`);
+  console.log(`Wrote ${count} total items to DynamoDB.`);
 }
 
-export function setS3ObjectParams (event: S3Event) {
+export function setS3ObjectParams(event: S3Event) {
   const s3BucketName: string = event.Records[0].s3.bucket.name;
   const s3FileName: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
@@ -117,7 +125,7 @@ export const s3hook: S3Handler = async (event, context) => {
     "Reading options from event:\n",
     util.inspect(event, { depth: 5 })
   );
-
+  
   const tableName = process.env.NAPTAN_TABLE_NAME;
   if (!tableName) {
     throw new Error("TABLE_NAME environment variable not set.");
@@ -126,5 +134,8 @@ export const s3hook: S3Handler = async (event, context) => {
   const params = setS3ObjectParams(event);
   const stringifiedData = await fetchDataFromS3AsString(params);
   const parsedCsvData = csvParser(stringifiedData);
-  await pushToDynamo({ tableName: tableName, parsedLines: parsedCsvData });
+  await writeBatchesToDynamo({
+    tableName: tableName,
+    parsedLines: parsedCsvData
+  });
 };
