@@ -34,8 +34,10 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - !GetAtt naptanTable.Arn
+        - !GetAtt nocTable.Arn
   environment:
     NAPTAN_TABLE_NAME: !Ref naptanTable
+    NOC_TABLE_NAME: !Ref nocTable
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
       
