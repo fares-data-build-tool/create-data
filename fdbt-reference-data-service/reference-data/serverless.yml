@@ -5,6 +5,8 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   stage: ${opt:stage, 'test'}
+  timeout: 900
+  memorySize: 2048
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
@@ -33,8 +35,8 @@ provider:
       Resource:
         - !GetAtt naptanTable.Arn
   environment:
-    TABLE_NAME: !Ref naptanTable
-  
+    NAPTAN_TABLE_NAME: !Ref naptanTable
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
       
 plugins:
