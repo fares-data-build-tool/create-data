@@ -12,6 +12,7 @@ interface s3ObjectParameters {
 }
 
 interface dynamoDBData {
+  id: any;
   NCOCODE: string;
   OperatorPublicName: string;
   VOSA_PSVLicenseName: string;
@@ -47,10 +48,16 @@ export function csvParser(csvData: string) {
   return parsedData;
 }
 
-export function mergeArray (objectArray1: ParsedData[], objectArray2: ParsedData[]) {
-    let findMatchingProperty = (objectProperty: any) => objectArray2.find(property => property.objectProperty === objectProperty);
-    objectArray1.forEach(property => Object.assign(property, findMatchingProperty(property.objectProperty)));
-    return objectArray1;
+ export function mergeArrayObjects(objectArray1: ParsedData[], objectArray2: ParsedData []) {
+    let start = 0;
+    let merge = [];
+    while(start < objectArray1.length){
+      if(objectArray1[start].id === objectArray1[start].id){
+          merge.push({...objectArray1[start],...objectArray2[start]})
+      }
+      start = start+1
+    }
+    return merge;
   }
 
 export async function pushToDynamo({

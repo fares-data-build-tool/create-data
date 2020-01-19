@@ -1,4 +1,5 @@
-let nocTable = [
+
+ let nocTable = [
     { NOCCODE: "AD1T", OperatorPublicname: "Metrobus", PubNmId: 3214556 },
     { NOCCODE: "FC3R", OperatorPublicname: "First", PubNmId: 758463 }
 ];
@@ -13,18 +14,21 @@ let publicName = [
     { Website: "abab.com", PubNmId: 758463 }
 ];
 
-let propKey = "NOCODE";
-
-function mergeArray (array1, array2) {
-    let findMatchingProperty = objectProperty => array2.find(property => property.objectProperty === objectProperty);
-    array1.forEach(property => Object.assign(property, findMatchingProperty(property.objectProperty)));
+function mergeArrayObjects(arr1,arr2) {
+    let start = 0;
+    let merge = [];
+  
+    while(start < arr1.length){
+      if(arr1[start].id === arr2[start].id){
+          merge.push({...arr1[start],...arr2[start]})
+      }
+      start = start+1
+    }
+    return merge;
   }
 
-mergeArray(nocTable, nocLines);
-
-console.log(nocTable);
-
-mergeArray(nocTable, publicName);
-
-console.log(nocTable);
-
+  const merger1 = mergeArrayObjects(nocTable, nocLines);
+  console.log(merger1);
+  
+  const merger2 = mergeArrayObjects(merger1, publicName);
+  console.log(merger2);
