@@ -1,70 +1,67 @@
-import { Handler, Context, Callback } from 'aws-lambda';
-import AWS from 'aws-sdk';
-import X2JS from 'x2js';
-import util from 'util';
 import omitEmpty from 'omit-empty';
-import Papa from 'papaparse';
+import { Context, S3Handler } from 'aws-lambda';
+import AWS from 'aws-sdk';
+import util from 'util';
+import csvParse from "csv-parse/lib/sync";
+import { WriteRequest, PutRequest } from 'aws-sdk/clients/dynamodb';
+import { parseString } from 'xml2js';
 
-const awsTest: any = {
-    "accessKeyId": "S3RVER",
-    "secretAccessKey": "S3RVER",
-    "region": "eu-west-2",
-    "endpoint": "http://localhost:4569",
-    "sslEnabled": false,
-    "s3ForcePathStyle": true
-}
+type ParsedXmlData = tndsDynamoDBData;
+type ParsedCsvData = servicesDynamoDBData;
 
 interface s3ObjectParameters {
     Bucket: string;
     Key: string;
 }
 
-export function convertDataForDDB(data:any){
+interface tndsDynamoDBData {
+    Filename: string
+}
 
-    const options:AWS.DynamoDB.Converter.ConverterOptions = {
-        convertEmptyValues: true,
-        wrapNumbers: true
-    }
+interface servicesDynamoDBData {
+    NationalOperatorCode: string,
+    LineName: string,
+    RegionCode: string,
+    RegionOperatorCode: string,
+    ServiceCode: string,
+    Description: string,
+    StartDate: string
+}
 
-    const convertedData = AWS.DynamoDB.Converter.marshall(data, options);
+interface PushToDynamoXmlInput {
+    parsedXmlLines: ParsedXmlData;
+    tableName: string;
+}
 
-    return convertedData;
-
+interface PushToDynamoCsvInput {
+    parsedCsvLines: ParsedCsvData[];
+    tableName: string;
 }
 
 
 export async function fetchDataFromS3AsString(parameters: s3ObjectParameters): Promise<string> {
-
-    if (process.env.IS_OFFLINE) { AWS.config.update(awsTest); }
-    
     const s3 = new AWS.S3();
-
-    const data = await s3.getObject(parameters, function (err, data) {
-        if (err) {
-            console.log("Failed to retrieve object from S3 with response code: " + err.statusCode + " and error message: " + err.message);
-        } else {
-            console.log("Object returned from S3: " + data.Body?.toString("utf-8"))
-        }
-    }).promise();
-
-    const dataAsString = data.Body?.toString('utf-8')!;
-
+    const data = await s3.getObject(parameters).promise();
+    const dataAsString = data.Body?.toString("utf-8")!;
     return dataAsString;
 }
 
-export function fileExtensionCheck(fileExtension: string, xmlTableName: string, csvTableName: string) {
+export function fileExtensionGetter(fileName: string) {
+    return fileName.split('.').pop();
+}
 
-    let table = "";
+export function tableChooser(fileExtension: string) {
 
-    if (!fileExtension) {
-        console.error("Could not determine the file type.");
-        return;
+    if (!process.env.SERVICES_TABLE_NAME || !process.env.TNDS_TABLE_NAME) {
+        throw new Error("Environment variables for table names have not been set or received.")
     }
 
+    let tableName = "";
+
     if (fileExtension === "csv") {
-        return table = csvTableName;
+        return tableName = process.env.SERVICES_TABLE_NAME;
     } else if (fileExtension === "xml") {
-        return table = xmlTableName;
+        return tableName = process.env.TNDS_TABLE_NAME;
     } else {
         console.error(`File is not of a supported format type (${fileExtension})`);
         throw new Error(`Unsupported file type ${fileExtension}`);
@@ -72,107 +69,124 @@ export function fileExtensionCheck(fileExtension: string, xmlTableName: string, 
 
 }
 
-export function xmlToJsonParse(xmlData: string) {
-    const xml = xmlData;
+export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
+    return new Promise((resolve, reject) => {
+        parseString(xmlData, function (err, result) {
+            if (err) {
+                return reject("Parsing xml failed.")
+            } else {
+                const noEmptyResult = omitEmpty(result);
+                const stringified = JSON.stringify(noEmptyResult) as any;;
+                return resolve(stringified);
+            }
+        });
+    });
+}
 
-    const x2js = new X2JS({
-        attributeConverters: [],
-        attributePrefix: "", useDoubleQuotes: true, ignoreRoot: true, skipEmptyTextNodesForObj: true, emptyNodeForm: 'object'
+export function csvParser(csvData: string) {
+    const parsedData: ParsedCsvData[] = csvParse(csvData, {
+        columns: true,
+        skip_empty_lines: true,
+        delimiter: ","
+    });
+    return parsedData;
+}
+
+export async function writeCsvBatchesToDynamo({ parsedCsvLines, tableName }: PushToDynamoCsvInput) {
+    const dynamodb = new AWS.DynamoDB.DocumentClient({
+        convertEmptyValues: true
+    });
+    const parsedDataMapper = (parsedDataItem: ParsedCsvData): WriteRequest => ({
+        PutRequest: { Item: parsedDataItem as any }
+    });
+    const dynamoWriteRequests = parsedCsvLines.map(parsedDataMapper);
+
+    const emptyBatch: WriteRequest[][] = [];
+    const batchSize = 25;
+    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function (result, _value, index, array) {
+        if (index % batchSize === 0)
+            result.push(array.slice(index, index + batchSize));
+        return result;
+    }, emptyBatch);
+
+    for (const batch of dynamoWriteRequestBatches) {
+        console.log("Writing to DynamoDB...");
+        console.log(
+            "Reading options from event:\n",
+            util.inspect(batch, { depth: 5 })
+        );
+        await dynamodb
+            .batchWrite({
+                RequestItems: {
+                    [tableName]: batch
+                }
+            })
+            .promise();
+        console.log(`Wrote batch of ${batch.length} items to Dynamo DB.`);
+    }
+    console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB`);
+}
+
+export async function writeXmlToDynamo({ parsedXmlLines, tableName }: PushToDynamoXmlInput) {
+
+    const dynamodb = new AWS.DynamoDB.DocumentClient({
+        convertEmptyValues: true
     });
 
-    const document: any = x2js.xml2js(xml);
+    console.log("Writing entries to dynamo DB.")
 
-    const noEmptyDocument = omitEmpty(document);
-    console.log(util.inspect(noEmptyDocument, { showHidden: false, depth: null }))
+    dynamodb.put(
+        {
+            TableName: tableName,
+            Item: parsedXmlLines
+        }
+    );
 
-    const convertedFormatData = convertDataForDDB(noEmptyDocument);
-    console.log(util.inspect(convertedFormatData.M, { showHidden: false, depth: null }))
-
-    if (!convertedFormatData.M) {
-        throw console.error("Data conversion failed");
-    }
-
-    const dataToCommit = convertedFormatData.M;
-
-    const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-        TableName: "TNDS",
-        Item: dataToCommit
-    };
-
-    if (params) {
-        return params;
-    } else {
-        throw console.error("XML to JSON converstion failed.");
-    }
-}
-
-export function csvToJsonParse(csvData: string) {
-    const csv = csvData;
-    const lines = csv.split("\n");
-    const headerLine = lines[0];
-
-    const newCsvLines = [];
-
-    for (let i = 1; i < lines.length; i++) { // this starts at 1 to avoid the header line
-        const newCsvLine = headerLine + "\n" + lines[i];
-        newCsvLines.push(newCsvLine);
-    }
-    // newCsvLines should have ~20k lines in it now, with a header for each.
-
-    const parsedLines = [];
-
-    for (let j = 0; j < newCsvLines.length; j++) {
-        const parsedLine = Papa.parse(newCsvLines[j]);
-        parsedLines.push(parsedLine);
-    }
-    // parsedLines should now have ~20k parsed JSON objects in it.
-
-    
-
-    }
+    console.log("Dynamo DB put request complete.")
 
 }
 
-export const s3hook: Handler = async (event: any, context: Context, callback: Callback) => {
+export const s3hook: S3Handler = async (event: any, context: Context) => {
 
     console.log("Reading options from event:\n", util.inspect(event, { depth: 5 }));
 
-    const TNDS_CSV_TABLE = "Services"; 
-    const TNDS_XML_TABLE = "TNDS";
+    const s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
+    const s3BucketName = event.Records[0].s3.bucket.name;
 
-    const eventKey = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " ")); // Object key may have spaces or unicode non-ASCII characters
-    const bucketName = event.Records[0].s3.bucket.name;
+    console.log(`Got S3 event for key '${s3FileName}' in bucket '${s3BucketName}'`);
 
-    console.log(`Got S3 event for key '${eventKey}' in bucket '${bucketName}'`);
+    const fileExtension = fileExtensionGetter(s3FileName);
 
-    let dynamoDbParams = null;
-    const filePath = eventKey;
-    const parameters: s3ObjectParameters = { Bucket: bucketName, Key: filePath };
-    const fileExtension = filePath.split('.').pop()!;
-
-    const stringifiedS3Data = await fetchDataFromS3AsString(parameters);
-
-    const table = fileExtensionCheck(fileExtension, TNDS_XML_TABLE, TNDS_CSV_TABLE);
-
-    if (table === TNDS_XML_TABLE) {
-        dynamoDbParams = xmlToJsonParse(stringifiedS3Data);
-    } else if (table === TNDS_CSV_TABLE) {
-        dynamoDbParams = csvToJsonParse(stringifiedS3Data);
+    if (!fileExtension) {
+        throw Error("File Extension could not be retrieved");
     }
 
-    const dynamoDb = new AWS.DynamoDB.DocumentClient();
+    const params: s3ObjectParameters = {
+        Bucket: s3BucketName,
+        Key: s3FileName
+    };
 
-    if (!dynamoDbParams) throw new Error('Unable to parse dynamodb params.');
+    const stringifiedS3Data = await fetchDataFromS3AsString(params);
 
-    dynamoDb.put(dynamoDbParams, function (err, data){
-        if (err){
-            callback("Failed to add data to database.")
-            console.error("Failed to add data to database due to: " + err.message)
-            return;
-        } else {
-            callback("Database update complete.")
-            console.log("Database update complete for : " + data.Attributes)
-            return;
+    const tableName = tableChooser(fileExtension);
+
+    let parsedData;
+
+    if (tableName === process.env.TNDS_TABLE_NAME) {
+        parsedData = await xmlParser(stringifiedS3Data);
+
+        if (!parsedData) {
+            throw Error("Data parsing has failed, stopping before database writing occurs.")
         }
-    })
+        await writeXmlToDynamo({ tableName: tableName, parsedXmlLines: parsedData });
+
+    } else if (tableName === process.env.SERVICES_TABLE_NAME) {
+        parsedData = csvParser(stringifiedS3Data);
+
+        if (!parsedData) {
+            throw Error("Data parsing has failed, stopping before database writing occurs.")
+        }
+        await writeCsvBatchesToDynamo({ tableName: tableName, parsedCsvLines: parsedData });
+    }
+
 }
