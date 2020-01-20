@@ -1,6 +1,6 @@
 import { Context, Callback } from 'aws-lambda';
 import MockContext from 'aws-lambda-mock-context';
-import {s3hook, xmlParser} from '../../tnds-uploader/handler';
+import {s3hook, xmlParser, cleanParsedXmlData} from '../../tnds-uploader/handler';
 
 describe('aws handler', () =>{
     it('', async () =>{
@@ -123,6 +123,8 @@ describe('aws handler', () =>{
         const result = await xmlParser(xmlToParse);
 
         console.log(result);
+
+        console.log(JSON.stringify(cleanParsedXmlData(result)));
 
     })
 
