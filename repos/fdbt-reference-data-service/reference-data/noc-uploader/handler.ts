@@ -1,4 +1,4 @@
-import { Handler, Context, Callback, S3Handler } from "aws-lambda";
+import { S3Event, S3Handler } from "aws-lambda";
 import AWS from "aws-sdk";
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
@@ -28,6 +28,42 @@ interface dynamoDBData {
 interface PushToDyanmoInput {
   parsedLines: ParsedData[];
   tableName: string;
+}
+
+interface lists3ObjectsParameters {
+  Bucket: string;
+  Prefix: string;
+}
+
+export async function lists3Objects(parameters: lists3ObjectsParameters): Promise<Object>{
+  let objlist: [] = [];
+  const s3 = new AWS.S3();
+  const data = await s3.listObjectsV2(parameters, function(err, data) {
+    if (err) {
+      throw new Error("Could not list objects");
+    } else {
+      return data
+    }
+    }).promise();
+  const contents = data.Contents;
+  contents?.forEach(function (content: any) {
+    objlist.push(content.Key)
+  })
+
+
+
+
+  if (!obj) {
+    throw new Error("Undedined. No data response available.");
+  }
+  const objContents: [] = obj["Contents"]
+  for (let i = 0; i < objContents.length; i++) {
+    objlist.push(objContents[i])
+  }
+  objContents.forEach(item => {
+    objlist.push(item.Key);
+  })
+  return objlist;
 }
 
 export async function fetchDataFromS3AsString(
@@ -98,7 +134,7 @@ export async function pushToDynamo({
   console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB`);
 }
 
-export const s3hook: S3Handler = async (event, context) => {
+export const s3hook: S3Handler = async (event: S3Event) => {
   console.log(
     "Reading options from event:\n",
     util.inspect(event, { depth: 5 })
@@ -114,39 +150,32 @@ export const s3hook: S3Handler = async (event, context) => {
   const s3FileName1: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
   );
-  const s3FileName2: string = decodeURIComponent(
-    event.Records[1].s3.object.key.replace(/\+/g, " ")
-  );
-  const s3FileName3: string = decodeURIComponent(
-    event.Records[2].s3.object.key.replace(/\+/g, " ")
-  );
 
-  const params1: s3ObjectParameters = {
+  const s3FileName1SubStringArray: string [] = s3FileName1.split("/");
+  
+  const s3FileName1SubStringArrayFirstElement: string = s3FileName1SubStringArray[0];
+
+  const lists3ObjectsParameters: lists3ObjectsParameters = {
     Bucket: s3BucketName,
-    Key: s3FileName1
-  };
-  const params2: s3ObjectParameters = {
-    Bucket: s3BucketName,
-    Key: s3FileName2
-  };
-  const params3: s3ObjectParameters = {
-    Bucket: s3BucketName,
-    Key: s3FileName3
-  };
+    Prefix: s3FileName1SubStringArrayFirstElement
+  }
+  
+  const s3ObjectsList = await lists3Objects(lists3ObjectsParameters);
+  for (let i = 0; i < 3; i++) {
+    if (Object.keys(s3ObjectsList).length === 3) {
+    let s3FileName = s3ObjectsList[i];
+    let params: s3ObjectParameters = {
+      Bucket: s3BucketName,
+      Key: s3FileName
+    };
+    let stringifiedData = await fetchDataFromS3AsString(params);
+    let parsedCsvData = csvParser(stringifiedData);
+  } else {
+  return;
+  }
 
-  const stringifiedData1 = await fetchDataFromS3AsString(params1);
-  const stringifiedData2 = await fetchDataFromS3AsString(params2);
-  const stringifiedData3 = await fetchDataFromS3AsString(params3);
+  const mergeArray1 = mergeArrayObjects(parsedCsvData1, parsedCsvData2);
+  const mergeArray2 = mergeArrayObjects(mergeArray1, parsedCsvData3);
 
-  const parsedCsvData1 = csvParser(stringifiedData1);
-  const parsedCsvData2 = csvParser(stringifiedData2);
-  const parsedCsvData3 = csvParser(stringifiedData3);
-
-
-
-  await pushToDynamo({ tableName: tableName, parsedLines: parsedCsvData });
+  await pushToDynamo({ tableName: tableName, parsedLines: mergeArray2 });
 };
-
-
-
-
