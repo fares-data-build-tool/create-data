@@ -1,6 +1,9 @@
-import * as handler from '../handler';
-import { Context, Callback } from 'aws-lambda';
-import MockContext from 'aws-lambda-mock-context';
+import { S3Handler, S3Event } from "aws-lambda";
+import AWS from "aws-sdk";
+import { WriteRequest } from "aws-sdk/clients/dynamodb";
+
+import util from "util";
+import csvParse from "csv-parse/lib/sync";
 
 describe('aws handler', () =>{
     it('should call console.log', () =>{
