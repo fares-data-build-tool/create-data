@@ -1,8 +1,9 @@
 import { S3Handler, S3Event } from "aws-lambda";
 import AWS from "aws-sdk";
+import { WriteRequest, PutRequest } from "aws-sdk/clients/dynamodb";
+
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
-import { WriteRequest } from "aws-sdk/clients/dynamodb";
 
 type ParsedData = dynamoDBData;
 
@@ -55,6 +56,10 @@ export function csvParser(csvData: string) {
   });
   return parsedData;
 }
+
+const parsedDataMapper = (parsedDataItem: ParsedData): PutRequest => (
+  { Item: parsedDataItem as any }
+);
 
 export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]) {
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
