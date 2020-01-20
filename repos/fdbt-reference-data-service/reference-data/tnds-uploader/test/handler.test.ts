@@ -124,7 +124,7 @@ describe('aws handler', () =>{
 
         console.log(result);
 
-        console.log(JSON.stringify(cleanParsedXmlData(result)));
+        console.log((cleanParsedXmlData(result)));
 
     })
 

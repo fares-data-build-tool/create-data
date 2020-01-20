@@ -10,11 +10,12 @@ type ParsedXmlData = tndsDynamoDBData;
 type ParsedCsvData = servicesDynamoDBData;
 
 interface s3ObjectParameters {
-    Bucket: string;
+    Bucket: string,
     Key: string;
 }
 
 interface tndsDynamoDBData {
+    Data: {},
     FileName: string
 }
 
@@ -149,14 +150,17 @@ export async function writeXmlToDynamo({ parsedXmlLines, tableName }: PushToDyna
 
 }
 
-export function cleanParsedXmlData(parsedXmlData: any) {
+export function cleanParsedXmlData(parsedXmlData: any) : tndsDynamoDBData{
     const parsedJson = JSON.parse(parsedXmlData);
     let extractedFilename = parsedJson["TransXChange"]["$"]["FileName"];
     extractedFilename = extractedFilename.split(".");
     extractedFilename = extractedFilename[0];
     const creationDateTime = new Date().toISOString().slice(0, 19); // 19 characters limits this to just date and time
-    parsedJson["FileName"] = extractedFilename + "_" + creationDateTime;
-    return parsedJson;
+
+    return {
+        FileName: extractedFilename + "_" + creationDateTime,
+        Data: parsedXmlData
+    }
 }
 
 export const s3hook: S3Handler = async (event: any, context: Context) => {
