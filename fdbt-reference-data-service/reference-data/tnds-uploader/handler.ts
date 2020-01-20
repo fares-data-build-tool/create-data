@@ -15,7 +15,7 @@ interface s3ObjectParameters {
 }
 
 interface tndsDynamoDBData {
-    Filename: string
+    FileName: string
 }
 
 interface servicesDynamoDBData {
@@ -70,10 +70,13 @@ export function tableChooser(fileExtension: string) {
 }
 
 export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
+
+    let xmlWithoutFirstLine = xmlData.substring(xmlData.indexOf("\n") + 1);
+
     return new Promise((resolve, reject) => {
-        parseString(xmlData, function (err, result) {
+        parseString(xmlWithoutFirstLine, function (err, result) {
             if (err) {
-                return reject("Parsing xml failed.")
+                return reject("Parsing xml failed. Error message: " + err.message + " and error name: " + err.name)
             } else {
                 const noEmptyResult = omitEmpty(result);
                 const stringified = JSON.stringify(noEmptyResult) as any;;
@@ -135,15 +138,25 @@ export async function writeXmlToDynamo({ parsedXmlLines, tableName }: PushToDyna
 
     console.log("Writing entries to dynamo DB.")
 
-    dynamodb.put(
+    await dynamodb.put(
         {
             TableName: tableName,
             Item: parsedXmlLines
         }
-    );
+    ).promise();
 
     console.log("Dynamo DB put request complete.")
 
+}
+
+export function cleanParsedXmlData(parsedXmlData: any) {
+    const parsedJson = JSON.parse(parsedXmlData);
+    let extractedFilename = parsedJson["TransXChange"]["$"]["FileName"];
+    extractedFilename = extractedFilename.split(".");
+    extractedFilename = extractedFilename[0];
+    const creationDateTime = new Date().toISOString().slice(0, 19); // 19 characters limits this to just date and time
+    parsedJson["FileName"] = extractedFilename + "_" + creationDateTime;
+    return parsedJson;
 }
 
 export const s3hook: S3Handler = async (event: any, context: Context) => {
@@ -178,6 +191,9 @@ export const s3hook: S3Handler = async (event: any, context: Context) => {
         if (!parsedData) {
             throw Error("Data parsing has failed, stopping before database writing occurs.")
         }
+
+        parsedData = cleanParsedXmlData(parsedData);
+
         await writeXmlToDynamo({ tableName: tableName, parsedXmlLines: parsedData });
 
     } else if (tableName === process.env.SERVICES_TABLE_NAME) {
