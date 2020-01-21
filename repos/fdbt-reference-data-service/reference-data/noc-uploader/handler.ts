@@ -35,33 +35,23 @@ interface lists3ObjectsParameters {
   Prefix: string;
 }
 
+function notUndefined<T> (x: T | undefined): x is T {
+  return x !== undefined;
+}
+
 export async function lists3Objects(parameters: lists3ObjectsParameters): Promise<Object>{
   let objlist: [] = [];
   const s3 = new AWS.S3();
   const data = await s3.listObjectsV2(parameters, function(err, data) {
     if (err) {
       throw new Error("Could not list objects");
-    } else {
-      return data
-    }
+      } else {
+      return data;
+      }
     }).promise();
   const contents = data.Contents;
-  contents?.forEach(function (content: any) {
+  contents.forEach(function (content: any) {
     objlist.push(content.Key)
-  })
-
-
-
-
-  if (!obj) {
-    throw new Error("Undedined. No data response available.");
-  }
-  const objContents: [] = obj["Contents"]
-  for (let i = 0; i < objContents.length; i++) {
-    objlist.push(objContents[i])
-  }
-  objContents.forEach(item => {
-    objlist.push(item.Key);
   })
   return objlist;
 }
@@ -147,21 +137,21 @@ export const s3hook: S3Handler = async (event: S3Event) => {
 
   const s3BucketName: string = event.Records[0].s3.bucket.name;
 
-  const s3FileName1: string = decodeURIComponent(
+  const s3FileName: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
   );
-
-  const s3FileName1SubStringArray: string [] = s3FileName1.split("/");
-  
-  const s3FileName1SubStringArrayFirstElement: string = s3FileName1SubStringArray[0];
+  const s3FileNameSubStringArray: string [] = s3FileName.split("/");
+  const s3FileNameSubStringArrayFirstElement: string = s3FileNameSubStringArray[0];
 
   const lists3ObjectsParameters: lists3ObjectsParameters = {
     Bucket: s3BucketName,
-    Prefix: s3FileName1SubStringArrayFirstElement
+    Prefix: s3FileNameSubStringArrayFirstElement
   }
   
   const s3ObjectsList = await lists3Objects(lists3ObjectsParameters);
+  
   for (let i = 0; i < 3; i++) {
+    
     if (Object.keys(s3ObjectsList).length === 3) {
     let s3FileName = s3ObjectsList[i];
     let params: s3ObjectParameters = {
@@ -170,12 +160,13 @@ export const s3hook: S3Handler = async (event: S3Event) => {
     };
     let stringifiedData = await fetchDataFromS3AsString(params);
     let parsedCsvData = csvParser(stringifiedData);
-  } else {
-  return;
+
+    // Need to push parsedCsvData to an array and then iterate through array using mergeArrayObjects. 
+
+    await pushToDynamo({ tableName: tableName, parsedLines: });
+
+    } else {
+    return;
+    }
   }
-
-  const mergeArray1 = mergeArrayObjects(parsedCsvData1, parsedCsvData2);
-  const mergeArray2 = mergeArrayObjects(mergeArray1, parsedCsvData3);
-
-  await pushToDynamo({ tableName: tableName, parsedLines: mergeArray2 });
-};
+}
