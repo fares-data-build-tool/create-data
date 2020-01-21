@@ -56,16 +56,14 @@ export async function lists3Objects(parameters: lists3ObjectsParameters): Promis
   return objlist;
 }
 
-export async function fetchDataFromS3AsString(
-  parameters: s3ObjectParameters
-): Promise<string> {
+export async function fetchDataFromS3AsString(parameters: s3ObjectParameters): Promise<string> {
   const s3 = new AWS.S3();
   const data = await s3.getObject(parameters).promise();
   const dataAsString = data.Body?.toString("utf-8")!;
   return dataAsString;
 }
 
-export function csvParser(csvData: string) {
+export function csvParser(csvData: string): ParsedData[] {
   const parsedData: ParsedData[] = csvParse(csvData, {
     columns: true,
     skip_empty_lines: true,
@@ -74,38 +72,45 @@ export function csvParser(csvData: string) {
   return parsedData;
 }
 
- export function mergeArrayObjects(objectArray1: ParsedData[], objectArray2: ParsedData []) {
-    let start = 0;
-    let merge = [];
-    while(start < objectArray1.length){
-      if(objectArray1[start].id === objectArray1[start].id){
-          merge.push({...objectArray1[start],...objectArray2[start]})
-      }
-      start = start+1
+export function mergeArrayObjects(objectArray1: ParsedData[], objectArray2: ParsedData []) {
+  let start = 0;
+  let merge = [];
+  while(start < objectArray1.length){
+    if(objectArray1[start].id === objectArray1[start].id){
+        merge.push({...objectArray1[start],...objectArray2[start]})
     }
-    return merge;
+    start = start+1
   }
+  return merge;
+}
 
-export async function pushToDynamo({
-  parsedLines,
-  tableName
-}: PushToDyanmoInput) {
-  const dynamodb = new AWS.DynamoDB.DocumentClient({
-    convertEmptyValues: true
-  });
+export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest [][] {
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
   const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
-
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
-  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(result, _value, index, array) {
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
+    result,
+    _value,
+    index,
+    array
+  ) {
     if (index % batchSize === 0)
       result.push(array.slice(index, index + batchSize));
     return result;
-  }, emptyBatch);
+  },
+  emptyBatch);
+  return dynamoWriteRequestBatches;
+}
 
+export async function writeBatchesToDynamo({parsedLines,tableName}: PushToDyanmoInput) {
+  const dynamodb = new AWS.DynamoDB.DocumentClient({
+    convertEmptyValues: true
+  });
+  const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedLines);
+  let count = 0;
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
     console.log(
@@ -119,16 +124,27 @@ export async function pushToDynamo({
         }
       })
       .promise();
-    console.log(`Wrote batch of ${batch.length} items to Dynamo DB.`);
+      let batchLength = batch.length;
+    console.log(`Wrote batch of ${batchLength} items to Dynamo DB.`);
+    count += batchLength;
   }
-  console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB`);
+  console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB.`);
+  console.log(`Wrote ${count} total items to DynamoDB.`);
 }
 
+export function setS3ObjectParams(event: S3Event) : s3ObjectParameters {
+  const s3BucketName: string = event.Records[0].s3.bucket.name;
+  const s3FileName: string = decodeURIComponent(
+    event.Records[0].s3.object.key.replace(/\+/g, " ")
+  ); // Object key may have spaces or unicode non-ASCII characters
+  const params: s3ObjectParameters = {
+    Bucket: s3BucketName,
+    Key: s3FileName
+  };
+  return params;
+}
 export const s3hook: S3Handler = async (event: S3Event) => {
-  console.log(
-    "Reading options from event:\n",
-    util.inspect(event, { depth: 5 })
-  );
+  console.log("Reading options from event:\n", util.inspect(event, { depth: 5 }))
 
   const tableName = process.env.NOC_TABLE_NAME;
   if (!tableName) {
@@ -146,7 +162,7 @@ export const s3hook: S3Handler = async (event: S3Event) => {
   const lists3ObjectsParameters: lists3ObjectsParameters = {
     Bucket: s3BucketName,
     Prefix: s3FileNameSubStringArrayFirstElement
-  }
+  };
   
   const s3ObjectsList = await lists3Objects(lists3ObjectsParameters);
   
