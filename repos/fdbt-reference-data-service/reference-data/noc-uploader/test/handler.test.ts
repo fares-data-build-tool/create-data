@@ -1,45 +1,97 @@
-import * as handler from '../handler';
+import { S3Event, S3Handler } from "aws-lambda";
+import AWS from "aws-sdk";
+import { setS3ObjectParams } from "../handler";
 import { Context, Callback } from 'aws-lambda';
 import MockContext from 'aws-lambda-mock-context';
+import AWSMock from 'aws-sdk-mock';
 
-describe('aws handler', () =>{
-    it('should call console.log', () =>{
-        const event = {
-            Name: "myName"
-        };
-        const context: Context = MockContext();
-        const callback: Callback = jest.fn();
-        const globalAny: any = global;
-        globalAny.console = {
-            log: jest.fn()
-        }
-        handler.s3hook(event, context, callback);
-        expect(globalAny.console.log).toHaveBeenCalledWith(
-            JSON.stringify(event)
-        );
+describe('formatDynamoWriteRequest', () =>{
+    it('should return data in correct format as a DynamoDB WriteEquest', () =>{
+
+
+
+
+
+
+    expect().toBe();    
+    }); 
+    it('should return a batch of DynamoDB WriteRequests', () =>{
+
+
+
+    expect().toBe();    
     });
-    
-    it('should send an async request for data using the bucket name and event key', () =>{
-        const event = {
-            Name: "myName"
-        };
-        
-    })
+    it('should return empty an array when given zero items', () =>{
 
-    it('should convert the data to a string using utf-8', () =>{
 
-    })
 
-    it('should log out the data it gets back from the request', () =>{
 
-    })
+    expect().toBe();
+    });
+    it('should return an array when given between less then 25 items', () =>{
 
-    it('should return the dataAsAString variable, and it should be a string', () =>{
 
-    })
 
-    it('should catch the error when one is thrown and print out the error message', () =>{
+    expect().toBe();
+    });
+    it('should return an array when given more than 25 items', () =>{
 
-    })
 
+
+
+    expect().toBe();
+    });
+});
+
+describe('setS3ObjectParams', () =>{
+    it('should assign S3FileName and S3BucketName from the S3 Event', () =>{
+    const expected = {
+        Bucket: "fdbt-test-bucket",
+        Key: "fdbt-test-key"
+    };
+
+    const testEvent: S3Event = {Records:[  
+               {  
+                  s3:{  
+                     bucket:{  
+                         name: "fdbt-test-bucket",
+                         ownerIdentity: {
+                            principalId: "abab";
+                        };
+                        arn: "abab";
+                    }
+                     },
+                     object:{  
+                        key:"fdbt-test-key",
+                     }
+                  },
+               }
+            ]
+         };
+
+    const result 
+
+
+
+
+
+    expect(result).toBe(expected);
+    }); 
+});
+
+describe('S3 Host', () =>{
+    it('should set tableName when environment variable is set', () =>{
+
+
+
+
+    expect().toBe();
+    }); 
+    it('should error when environment variable is not set', () =>{
+
+
+
+
+    expect().toBe();
+    });
 });
