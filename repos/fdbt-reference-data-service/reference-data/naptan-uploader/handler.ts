@@ -1,6 +1,6 @@
 import { S3Handler, S3Event } from "aws-lambda";
 import AWS from "aws-sdk";
-import { WriteRequest, PutRequest } from "aws-sdk/clients/dynamodb";
+import { WriteRequest } from "aws-sdk/clients/dynamodb";
 
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
@@ -48,7 +48,7 @@ export async function fetchDataFromS3AsString(
   return dataAsString;
 }
 
-export function csvParser(csvData: string) {
+export function csvParser(csvData: string): ParsedData[] {
   const parsedData: ParsedData[] = csvParse(csvData, {
     columns: true,
     skip_empty_lines: true,
@@ -57,11 +57,7 @@ export function csvParser(csvData: string) {
   return parsedData;
 }
 
-const parsedDataMapper = (parsedDataItem: ParsedData): PutRequest => (
-  { Item: parsedDataItem as any }
-);
-
-export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]) {
+export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
@@ -105,7 +101,7 @@ export async function writeBatchesToDynamo({
         }
       })
       .promise();
-      let batchLength = batch.length;
+    let batchLength = batch.length;
     console.log(`Wrote batch of ${batchLength} items to Dynamo DB.`);
     count += batchLength;
   }
@@ -113,11 +109,11 @@ export async function writeBatchesToDynamo({
   console.log(`Wrote ${count} total items to DynamoDB.`);
 }
 
-export function setS3ObjectParams(event: S3Event) {
+export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
   const s3BucketName: string = event.Records[0].s3.bucket.name;
   const s3FileName: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
-  ); // Object key may have spaces or unicode non-ASCII characters
+  );
   const params: s3ObjectParameters = {
     Bucket: s3BucketName,
     Key: s3FileName
@@ -130,7 +126,7 @@ export const s3hook: S3Handler = async (event, context) => {
     "Reading options from event:\n",
     util.inspect(event, { depth: 5 })
   );
-  
+
   const tableName = process.env.NAPTAN_TABLE_NAME;
   if (!tableName) {
     throw new Error("TABLE_NAME environment variable not set.");
