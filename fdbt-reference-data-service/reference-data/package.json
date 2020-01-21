@@ -33,6 +33,7 @@
     "@types/jest": "^24.0.23",
     "@types/x2js": "^3.1.0",
     "aws-lambda-mock-context": "^3.2.1",
+    "aws-sdk-mock": "^5.0.0",
     "jest": "^24.9.0",
     "serverless-dynamodb-local": "^0.2.38",
     "serverless-offline": "^5.12.1",
