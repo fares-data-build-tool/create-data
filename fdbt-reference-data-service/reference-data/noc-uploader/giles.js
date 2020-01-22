@@ -45,41 +45,82 @@
 
 // console.log(s3FileName1SubStringArrayFirstElement);
 
-data = {
-    Contents: [
-       {
-      ETag: "\"70ee1738b6b21e2c8a43f3a5ab0eee71\"", 
-      Key: "example1.jpg", 
-      LastModified: "11.01.10", 
-      Owner: {
-       DisplayName: "myname", 
-       ID: "12345example25102679df27bb0ae12b3f85be6f290b936c4393484be31bebcc"
-      }, 
-      Size: 11, 
-      StorageClass: "STANDARD"
-     }, 
-       {
-      ETag: "\"9c8af9a76df052144598c115ef33e511\"", 
-      Key: "example2.jpg", 
-      LastModified: "11.01.2010", 
-      Owner: {
-       DisplayName: "myname", 
-       ID: "12345example25102679df27bb0ae12b3f85be6f290b936c4393484be31bebcc"
-      }, 
-      Size: 713193, 
-      StorageClass: "STANDARD"
-     }
-    ], 
-    NextMarker: "eyJNYXJrZXIiOiBudWxsLCAiYm90b190cnVuY2F0ZV9hbW91bnQiOiAyfQ=="
-   };
+// data = {
+//     Contents: [
+//        {
+//       ETag: "\"70ee1738b6b21e2c8a43f3a5ab0eee71\"", 
+//       Key: "example1.jpg", 
+//       LastModified: "11.01.10", 
+//       Owner: {
+//        DisplayName: "myname", 
+//        ID: "12345example25102679df27bb0ae12b3f85be6f290b936c4393484be31bebcc"
+//       }, 
+//       Size: 11, 
+//       StorageClass: "STANDARD"
+//      }, 
+//        {
+//       ETag: "\"9c8af9a76df052144598c115ef33e511\"", 
+//       Key: "example2.jpg", 
+//       LastModified: "11.01.2010", 
+//       Owner: {
+//        DisplayName: "myname", 
+//        ID: "12345example25102679df27bb0ae12b3f85be6f290b936c4393484be31bebcc"
+//       }, 
+//       Size: 713193, 
+//       StorageClass: "STANDARD"
+//      }
+//     ], 
+//     NextMarker: "eyJNYXJrZXIiOiBudWxsLCAiYm90b190cnVuY2F0ZV9hbW91bnQiOiAyfQ=="
+//    };
 
-let objlist = [];
-const objContents = data.Contents;
-objContents.forEach(item => {
-    objlist.push(item.Key);
-});
-console.log(objlist);
-console.log(objContents.length);
+// let objlist = [];
+// const objContents = data.Contents;
+// objContents.forEach(item => {
+//     objlist.push(item.Key);
+// });
+// console.log(objlist);
+// console.log(objContents.length);
+
+var dynamodb = require ('aws-sdk/clients/dynamodb');
+
+function formatDynamoWriteRequest(parsedLines) {
+    const parsedDataMapper = (parsedDataItem) => ({
+      DynamoDB.WriteRequest.PutRequest: { Item: parsedDataItem }
+    });
+    const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
+    const emptyBatch = [];
+    const batchSize = 25;
+    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
+      result,
+      _value,
+      index,
+      array
+    ) {
+      if (index % batchSize === 0)
+        result.push(array.slice(index, index + batchSize));
+      return result;
+    },
+    emptyBatch);
+    return dynamoWriteRequestBatches;
+  }
+  
+  const test = {
+    id: 123,
+    NCOCODE: "sdfg",
+    OperatorPublicName: "fdsg",
+    VOSA_PSVLicenseName: "fdgt",
+    OpId: 1234,
+    PubNmId: 1234,
+    Mode: "string",
+    TTRteEnq: "string",
+    FareEnq: "sdgf",
+    ComplEnq: "string",
+    Website: "string",
+  }
+
+  const result = formatDynamoWriteRequest(test);
+  
+  console.log(result);
 
 
 
