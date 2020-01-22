@@ -1,97 +1,106 @@
-import { S3Event, S3Handler } from "aws-lambda";
-import AWS from "aws-sdk";
+import { S3Event } from "aws-lambda";
 import { setS3ObjectParams } from "../handler";
-import { Context, Callback } from 'aws-lambda';
-import MockContext from 'aws-lambda-mock-context';
-import AWSMock from 'aws-sdk-mock';
 
-describe('formatDynamoWriteRequest', () =>{
-    it('should return data in correct format as a DynamoDB WriteEquest', () =>{
+
+// describe('formatDynamoWriteRequest', () =>{
+//     it('should return data in correct format as a DynamoDB WriteRequest', () =>{
 
 
 
 
 
 
-    expect().toBe();    
-    }); 
-    it('should return a batch of DynamoDB WriteRequests', () =>{
+       
+//     }); 
+//     it('should return a batch of DynamoDB WriteRequests', () =>{
 
 
 
-    expect().toBe();    
-    });
-    it('should return empty an array when given zero items', () =>{
-
-
-
-
-    expect().toBe();
-    });
-    it('should return an array when given between less then 25 items', () =>{
-
-
-
-    expect().toBe();
-    });
-    it('should return an array when given more than 25 items', () =>{
+        
+//     });
+//     it('should return empty an array when given zero items', () =>{
 
 
 
 
-    expect().toBe();
-    });
-});
+    
+//     });
+//     it('should return an array when given between less then 25 items', () =>{
 
-describe('setS3ObjectParams', () =>{
-    it('should assign S3FileName and S3BucketName from the S3 Event', () =>{
-    const expected = {
+
+
+    
+//     });
+//     it('should return an array when given more than 25 items', () =>{
+
+
+
+
+    
+//     });
+// });
+
+describe("setS3ObjectParams", () =>{
+    it("should assign S3FileName and S3BucketName from the S3 Event", () =>{
+        const expected = {
         Bucket: "fdbt-test-bucket",
         Key: "fdbt-test-key"
-    };
-
-    const testEvent: S3Event = {Records:[  
-               {  
-                  s3:{  
-                     bucket:{  
-                         name: "fdbt-test-bucket",
-                         ownerIdentity: {
-                            principalId: "abab";
-                        };
-                        arn: "abab";
-                    }
-                     },
-                     object:{  
-                        key:"fdbt-test-key",
-                     }
-                  },
-               }
+        };
+        const testEvent: S3Event = {Records:[  
+            {
+                eventVersion: "string",
+                eventSource: "string",
+                awsRegion: "string",
+                eventTime: "string",
+                eventName: "string",
+                userIdentity: {
+                    principalId: "string",
+                },
+                requestParameters: {
+                    sourceIPAddress: "string",
+                },
+                responseElements: {
+                    'x-amz-request-id': "string",
+                    'x-amz-id-2': "string",
+                },
+                s3: {
+                    s3SchemaVersion: "string",
+                    configurationId: "string",
+                    bucket: {
+                        name: "fdbt-test-bucket",
+                        ownerIdentity: {
+                            principalId: "string",
+                        },
+                        arn: "string",
+                    },
+                    object: {
+                        key: "fdbt-test-key",
+                        size: 1234,
+                        eTag: "string",
+                        sequencer: "string",
+                    },
+                },
+            },
             ]
          };
-
-    const result 
-
-
-
-
-
-    expect(result).toBe(expected);
+        const result = setS3ObjectParams(testEvent);
+        expect(result).toEqual(expected);
     }); 
 });
 
-describe('S3 Host', () =>{
-    it('should set tableName when environment variable is set', () =>{
+// describe('S3 Host', () =>{
+//     it('should set tableName when environment variable is set', () =>{
 
 
 
 
-    expect().toBe();
-    }); 
-    it('should error when environment variable is not set', () =>{
+    
+//     }); 
+//     it('should error when environment variable is not set', () =>{
 
 
 
 
-    expect().toBe();
-    });
-});
+    
+//     });
+// });
