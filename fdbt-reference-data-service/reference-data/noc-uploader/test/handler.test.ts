@@ -55,12 +55,6 @@ describe('formatDynamoWriteRequest', () =>{
     expect(result).toEqual(expected);
        
     }); 
-//     it('should return a batch of DynamoDB WriteRequests', () =>{
-
-
-
-        
-//     });
 //     it('should return empty an array when given zero items', () =>{
 
 
