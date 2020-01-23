@@ -1,4 +1,4 @@
-import { formatDynamoWriteRequest } from "../handler";
+import { formatDynamoWriteRequest, setDBTableEnvVariable } from "../handler";
 import { createArrayOfDBDataItems, createBatchOfWriteRequests } from "./mocks.test";
 
 interface dynamoDBData {
@@ -64,21 +64,21 @@ describe('formatDynamoWriteRequest', () =>{
 
 });
 
-describe('S3 Host', () =>{
-    it('should set tableName when environment variable is set', () =>{
-    
-    const expected: string = "naptanTable";
-    
-    const result: string | undefined = process.env.NOC_TABLE_NAME; 
+describe('setDBTableEnvVariable', () =>{
+    it('should error when no environment variable is set', () => {
 
-    expect(result).toEqual(expected);
+    const TABLE_NAME = "xxxx"
 
+    expect.assertions(1);
+
+    try {
+
+        setDBTableEnvVariable(TABLE_NAME);
+
+    } catch (error) {
+    
+        expect(setDBTableEnvVariable).toThrow("TABLE_NAME environment variable not set.");
+    
+    }
     }); 
-
-//     it('should error when environment variable is not set', () =>{
-
-
-
-//   expect(result).toEqual(expected);
-//     });
 });
