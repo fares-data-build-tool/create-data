@@ -143,6 +143,15 @@ export function setS3ObjectParams(event: S3Event) : s3ObjectParameters {
   };
   return params;
 }
+
+export function setDBTableEnvVariable (dbTable: string) : string {
+  const tableName: string | undefined = process.env.dbTable;
+  if (!tableName) {
+    throw new Error("TABLE_NAME environment variable not set.");
+  };
+  return tableName;
+}
+
 // export const s3hook: S3Handler = async (event: S3Event) => {
 //   console.log("Reading options from event:\n", util.inspect(event, { depth: 5 }))
 
