@@ -35,24 +35,30 @@ interface lists3ObjectsParameters {
   Prefix: string;
 }
 
-export function notUndefined<T> (x: T | undefined): x is T {
+export function notUndefined<T>(x: T | undefined): x is T {
   return x !== undefined;
 }
 
-export async function lists3Objects(parameters: lists3ObjectsParameters): Promise<Object>{
-  let objlist: [] = [];
+export async function lists3Objects(parameters: lists3ObjectsParameters): Promise<string[]> {
+  let objlist: string[] = [];
   const s3 = new AWS.S3();
-  const data = await s3.listObjectsV2(parameters, function(err, data) {
+  const data = await s3.listObjectsV2(parameters, function (err, data) {
     if (err) {
       throw new Error("Could not list objects");
-      } else {
+    } else {
       return data;
-      }
-    }).promise();
-  const contents = data.Contents;
-  contents.forEach(function (content: any) {
-    objlist.push(content.Key)
-  });
+    }
+  }).promise();
+  const contents = data.Contents!;
+  const itemOne = contents[0]["Key"];
+  const itemTwo = contents[1]["Key"];
+  const itemThree = contents[2]["Key"];
+  if (
+    !itemOne || itemOne === undefined || !itemTwo || itemTwo === undefined || !itemThree || itemThree === undefined
+  ) {
+    return [];
+  }
+  objlist.push(itemOne, itemTwo, itemThree);
   return objlist;
 }
 
@@ -72,26 +78,26 @@ export function csvParser(csvData: string): ParsedData[] {
   return parsedData;
 }
 
-export function mergeArrayObjects(objectArray1: ParsedData[], objectArray2: ParsedData []) {
+export function mergeArrayObjects(objectArray1: ParsedData[], objectArray2: ParsedData[]): ParsedData[] {
   let start = 0;
   let merge = [];
-  while(start < objectArray1.length){
-    if(objectArray1[start].id === objectArray1[start].id){
-        merge.push({...objectArray1[start],...objectArray2[start]})
+  while (start < objectArray1.length) {
+    if (objectArray1[start].id === objectArray1[start].id) {
+      merge.push({ ...objectArray1[start], ...objectArray2[start] })
     };
-    start = start+1;
+    start = start + 1;
   };
   return merge;
 }
 
-export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest [][] {
+export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
   const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
-  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function (
     result,
     _value,
     index,
@@ -101,11 +107,11 @@ export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.Dynam
       result.push(array.slice(index, index + batchSize));
     return result;
   },
-  emptyBatch);
+    emptyBatch);
   return dynamoWriteRequestBatches;
 }
 
-export async function writeBatchesToDynamo({parsedLines,tableName}: PushToDyanmoInput) {
+export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDyanmoInput) {
   const dynamodb = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
   });
@@ -124,7 +130,7 @@ export async function writeBatchesToDynamo({parsedLines,tableName}: PushToDyanmo
         }
       })
       .promise();
-      let batchLength = batch.length;
+    let batchLength = batch.length;
     console.log(`Wrote batch of ${batchLength} items to Dynamo DB.`);
     count += batchLength;
   }
@@ -132,7 +138,7 @@ export async function writeBatchesToDynamo({parsedLines,tableName}: PushToDyanmo
   console.log(`Wrote ${count} total items to DynamoDB.`);
 }
 
-export function setS3ObjectParams(event: S3Event) : s3ObjectParameters {
+export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
   const s3BucketName: string = event.Records[0].s3.bucket.name;
   const s3FileName: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
@@ -144,7 +150,7 @@ export function setS3ObjectParams(event: S3Event) : s3ObjectParameters {
   return params;
 }
 
-export function setDBTableEnvVariable (dbTable: string) : string {
+export function setDBTableEnvVariable(dbTable: string): string {
   const tableName: string | undefined = process.env.dbTable;
   if (!tableName) {
     throw new Error("TABLE_NAME environment variable not set.");
@@ -165,35 +171,48 @@ export const s3hook: S3Handler = async (event: S3Event) => {
   const s3FileName: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
   );
-  const s3FileNameSubStringArray: string [] = s3FileName.split("/");
+  const s3FileNameSubStringArray: string[] = s3FileName.split("/");
   const s3FileNameSubStringArrayFirstElement: string = s3FileNameSubStringArray[0];
 
   const lists3ObjectsParameters: lists3ObjectsParameters = {
     Bucket: s3BucketName,
     Prefix: s3FileNameSubStringArrayFirstElement
   };
-  
+
   const s3ObjectsList = await lists3Objects(lists3ObjectsParameters);
-  
-  for (let i = 0; i < 3; i++) {
-    
-    if (Object.keys(s3ObjectsList).length === 3) {
-    let s3FileName = s3ObjectsList[i];
-    let params: s3ObjectParameters = {
-      Bucket: s3BucketName,
-      Key: s3FileName
-    };
-    let stringifiedData = await fetchDataFromS3AsString(params);
-    let parsedCsvData = csvParser(stringifiedData);
 
-    // Need to push parsedCsvData to an array and then iterate through array using mergeArrayObjects. 
-
-    const arrayOfBatches = formatDynamoWriteRequest(parsedLines);
-
-    await writeBatchesToDynamo ({arrayOfBatches, tableName});
-
-    } else {
-    return;
-    }
+  if (!s3ObjectsList) {
+    throw new Error("Key(s) not available or undefined");
   }
+
+  const s3KeyOne: string = s3ObjectsList[0];
+  const s3KeyTwo: string = s3ObjectsList[1];
+  const s3KeyThree: string = s3ObjectsList[2];
+
+  const paramsOne: s3ObjectParameters = {
+    Bucket: s3BucketName,
+    Key: s3KeyOne
+  };
+  const paramsTwo: s3ObjectParameters = {
+    Bucket: s3BucketName,
+    Key: s3KeyTwo
+  };
+  const paramsThree: s3ObjectParameters = {
+    Bucket: s3BucketName,
+    Key: s3KeyThree
+  };
+
+  const stringifiedDataOne = await fetchDataFromS3AsString(paramsOne);
+  const stringifiedDataTwo = await fetchDataFromS3AsString(paramsTwo);
+  const stringifiedDataThree = await fetchDataFromS3AsString(paramsThree);
+
+  const parsedCsvDataOne = csvParser(stringifiedDataOne);
+  const parsedCsvDataTwo = csvParser(stringifiedDataTwo);
+  const parsedCsvDataThree = csvParser(stringifiedDataThree);
+
+  const mergedArrayOne = mergeArrayObjects(parsedCsvDataOne, parsedCsvDataTwo);
+  const fullyMergedArray = mergeArrayObjects(mergedArrayOne, parsedCsvDataThree);
+
+  await writeBatchesToDynamo({ parsedLines: fullyMergedArray, tableName: tableName });
+
 }
