@@ -33,7 +33,7 @@ dynamoDBData[] {
 
     for (let x=0; x < numberOfItems; x++) {
         arrayOfDBDataItems.push(sampleItem);
-    }
+    };
 
     return arrayOfDBDataItems;
 }

@@ -79,6 +79,6 @@ describe('setDBTableEnvVariable', () =>{
     
         expect(setDBTableEnvVariable).toThrow("TABLE_NAME environment variable not set.");
     
-    }
+        }
     }); 
 });
