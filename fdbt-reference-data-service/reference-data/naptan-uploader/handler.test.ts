@@ -1,9 +1,56 @@
 import * as mocks from "./mocks/mock-data";
 import AWS from "aws-sdk";
-import { setS3ObjectParams, writeBatchesToDynamo } from "./handler";
-import { ParsedData } from "./handler";
+import { setS3ObjectParams, writeBatchesToDynamo, fetchDataFromS3AsString, csvParser } from "./handler";
+import { ParsedData, s3ObjectParameters } from "./handler";
 
 jest.mock("aws-sdk");
+
+describe("fetchDataFromS3AsAString", () => {
+  const mockS3GetObject = jest.fn();
+  const s3Params: s3ObjectParameters = {
+    Bucket: "thisIsMyBucket",
+    Key: "andThisIsTheNameOfTheThing"
+  };
+
+  beforeEach(() => {
+    mockS3GetObject.mockReset();
+
+    (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+      return {
+        getObject: mockS3GetObject
+      };
+    });
+
+    mockS3GetObject.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({ Body: mocks.testCsv });
+      }
+    }));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("returns a string", async () => {
+    const fetchedData = await fetchDataFromS3AsString(s3Params);
+    expect(fetchedData).toBe(mocks.testCsv);
+  });
+
+  it("calls get object from S3 using params provided", async () => {
+    await fetchDataFromS3AsString(s3Params);
+    expect(mockS3GetObject).toHaveBeenCalledWith(s3Params);
+  });
+});
+
+
+describe("csvParser", () => {
+  it("parses CSV into JSON", () => {
+    const returnedValue = csvParser(mocks.testCsv);
+    expect(mocks.isJSON(returnedValue)).toBeTruthy;
+  });
+});
+
 
 describe("setS3ObjectParams", () => {
   // Arrange
@@ -39,6 +86,7 @@ describe("setS3ObjectParams", () => {
     expect(s3ObjectParameters).toEqual(params);
   });
 });
+
 
 describe("writeBatchesToDynamo", () => {
   // Arrange
