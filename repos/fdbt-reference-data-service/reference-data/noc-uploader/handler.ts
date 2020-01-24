@@ -4,16 +4,16 @@ import util from "util";
 import csvParse from "csv-parse/lib/sync";
 import { WriteRequest } from "aws-sdk/clients/dynamodb";
 
-type ParsedData = dynamoDBData;
+export type ParsedData = dynamoDBData;
 
-interface s3ObjectParameters {
+export interface s3ObjectParameters {
   Bucket: string;
   Key: string;
 }
 
 interface dynamoDBData {
-  id: any;
-  NCOCODE: string;
+  id: string;
+  NOCCODE: string;
   OperatorPublicName: string;
   VOSA_PSVLicenseName: string;
   OpId: number;
@@ -119,6 +119,7 @@ export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDya
       "Reading options from event:\n",
       util.inspect(batch, { depth: 5 })
     );
+    try {
     await dynamodb
       .batchWrite({
         RequestItems: {
@@ -126,6 +127,10 @@ export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDya
         }
       })
       .promise();
+    } catch {
+      console.log("Throwing error....")
+      throw new Error("Could not write batch to DynamoDB")
+    }
     let batchLength = batch.length;
     console.log(`Wrote batch of ${batchLength} items to Dynamo DB.`);
     count += batchLength;
@@ -146,8 +151,8 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
   return params;
 }
 
-export function setDBTableEnvVariable(dbTable: string): string {
-  const tableName: string | undefined = process.env.dbTable;
+export function setDbTableEnvVariable(): string {
+  const tableName: string | undefined = process.env.NOC_TABLE_NAME;
   if (!tableName) {
     throw new Error("TABLE_NAME environment variable not set.");
   };
@@ -157,10 +162,7 @@ export function setDBTableEnvVariable(dbTable: string): string {
 export const s3hook: S3Handler = async (event: S3Event) => {
   console.log("Reading options from event:\n", util.inspect(event, { depth: 5 }))
 
-  const tableName = process.env.NOC_TABLE_NAME;
-  if (!tableName) {
-    throw new Error("TABLE_NAME environment variable not set.");
-  }
+  const tableName = setDbTableEnvVariable();
 
   const s3BucketName: string = event.Records[0].s3.bucket.name;
 
