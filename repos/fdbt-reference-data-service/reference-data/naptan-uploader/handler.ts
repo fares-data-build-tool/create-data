@@ -7,7 +7,7 @@ import csvParse from "csv-parse/lib/sync";
 
 export type ParsedData = dynamoDBData;
 
-interface s3ObjectParameters {
+export interface s3ObjectParameters {
   Bucket: string;
   Key: string;
 }
