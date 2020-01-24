@@ -1,4 +1,4 @@
-import { ParsedData } from "./../handler";
+import { ParsedData } from "../handler";
 
 export const mockS3Event = (bucketName: string, fileName: string) => ({
   Records: [
@@ -92,12 +92,26 @@ export const mockNaptanData = {
   Status: "act"
 };
 
-export const createArray = (index: number, mockNaptanData: ParsedData) => {
-  const array = [];
+export const createArray = (index: number, mockNaptanData: ParsedData): ParsedData[] => {
+  const array: ParsedData[] = [];
   for (let i = 0; i < index; i++) {
     array.push(mockNaptanData);
   };
   return array;
+};
+
+export const createBatchOfWriteRequests = (index: number, mockNaptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
+  const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
+  for (let i = 0; i < index; i++) {
+    batchOfWriteRequests.push(
+      {
+        PutRequest: {
+          Item: mockNaptanData as any
+        }
+      }
+    );
+  };
+  return batchOfWriteRequests;
 };
 
 export const testCsv: string = "RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n" +
