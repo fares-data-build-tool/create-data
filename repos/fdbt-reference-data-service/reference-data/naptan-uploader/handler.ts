@@ -126,16 +126,21 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
   return params;
 }
 
-export const s3hook: S3Handler = async (event, context) => {
+export function setDbTableEnvVariable () : string {
+  const tableName: string | undefined = process.env.NAPTAN_TABLE_NAME;
+  if (!tableName) {
+    throw new Error("TABLE_NAME environment variable not set.");
+  };
+  return tableName;
+}
+
+export const s3hook: S3Handler = async (event) => {
   console.log(
     "Reading options from event:\n",
     util.inspect(event, { depth: 5 })
   );
 
-  const tableName = process.env.NAPTAN_TABLE_NAME;
-  if (!tableName) {
-    throw new Error("TABLE_NAME environment variable not set.");
-  }
+  const tableName = setDbTableEnvVariable();
 
   const params = setS3ObjectParams(event);
   const stringifiedData = await fetchDataFromS3AsString(params);

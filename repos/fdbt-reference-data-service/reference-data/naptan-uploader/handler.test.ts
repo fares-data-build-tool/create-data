@@ -1,6 +1,13 @@
-import * as mocks from "./mocks/mock-data";
+import * as mocks from "./test-data/test-data";
 import AWS from "aws-sdk";
-import { setS3ObjectParams, writeBatchesToDynamo, fetchDataFromS3AsString, csvParser } from "./handler";
+import {
+  setS3ObjectParams,
+  writeBatchesToDynamo,
+  fetchDataFromS3AsString,
+  csvParser,
+  formatDynamoWriteRequest,
+  setDbTableEnvVariable
+} from "./handler";
 import { ParsedData, s3ObjectParameters } from "./handler";
 
 jest.mock("aws-sdk");
@@ -14,13 +21,11 @@ describe("fetchDataFromS3AsAString", () => {
 
   beforeEach(() => {
     mockS3GetObject.mockReset();
-
     (AWS.S3 as any) = jest.fn().mockImplementation(() => {
       return {
         getObject: mockS3GetObject
       };
     });
-
     mockS3GetObject.mockImplementation(() => ({
       promise() {
         return Promise.resolve({ Body: mocks.testCsv });
@@ -43,14 +48,12 @@ describe("fetchDataFromS3AsAString", () => {
   });
 });
 
-
 describe("csvParser", () => {
   it("parses CSV into JSON", () => {
     const returnedValue = csvParser(mocks.testCsv);
     expect(mocks.isJSON(returnedValue)).toBeTruthy;
   });
 });
-
 
 describe("setS3ObjectParams", () => {
   // Arrange
@@ -87,6 +90,56 @@ describe("setS3ObjectParams", () => {
   });
 });
 
+describe("formatDynamoWriteRequest", () => {
+  it("should return data in correct format as a DynamoDB WriteRequest", () => {
+    const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
+      1,
+      mocks.mockNaptanData
+    );
+    const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
+    arrayOfBatches.push(batch);
+    const testArrayOfItems: ParsedData[] = mocks.createArray(
+      1,
+      mocks.mockNaptanData
+    );
+    const result = formatDynamoWriteRequest(testArrayOfItems);
+    expect(result).toEqual(arrayOfBatches);
+  });
+
+  it("should return an array of <25 when given <25 items", () => {
+    const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
+      23,
+      mocks.mockNaptanData
+    );
+    const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
+    arrayOfBatches.push(batch);
+    const testArrayOfItems: ParsedData[] = mocks.createArray(
+      23,
+      mocks.mockNaptanData
+    );
+    const result = formatDynamoWriteRequest(testArrayOfItems);
+    expect(result).toEqual(arrayOfBatches);
+  });
+
+  it("should return an array of >25 when given >25 items", () => {
+    const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
+      25,
+      mocks.mockNaptanData
+    );
+    const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
+      7,
+      mocks.mockNaptanData
+    );
+    const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
+    arrayOfBatches.push(batch1, batch2);
+    const testArrayOfItems: ParsedData[] = mocks.createArray(
+      32,
+      mocks.mockNaptanData
+    );
+    const result = formatDynamoWriteRequest(testArrayOfItems);
+    expect(result).toEqual(arrayOfBatches);
+  });
+});
 
 describe("writeBatchesToDynamo", () => {
   // Arrange
@@ -142,6 +195,21 @@ describe("writeBatchesToDynamo", () => {
     }));
     // Act & Assert
     expect.assertions(1);
-    await expect(writeBatchesToDynamo({ parsedLines, tableName })).rejects.toThrow("Could not write batch to DynamoDB")
+    await expect(
+      writeBatchesToDynamo({ parsedLines, tableName })
+    ).rejects.toThrow("Could not write batch to DynamoDB");
+  });
+});
+
+describe("setDbTableEnvVariable", () => {
+  it("should error when no environment variable is set", () => {
+    expect.assertions(1);
+    try {
+      setDbTableEnvVariable();
+    } catch {
+      expect(setDbTableEnvVariable).toThrow(
+        "TABLE_NAME environment variable not set."
+      );
+    }
   });
 });
