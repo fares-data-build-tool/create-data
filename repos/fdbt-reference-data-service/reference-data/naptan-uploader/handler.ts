@@ -5,7 +5,7 @@ import { WriteRequest } from "aws-sdk/clients/dynamodb";
 import util from "util";
 import csvParse from "csv-parse/lib/sync";
 
-type ParsedData = dynamoDBData;
+export type ParsedData = dynamoDBData;
 
 interface s3ObjectParameters {
   Bucket: string;
@@ -57,7 +57,9 @@ export function csvParser(csvData: string): ParsedData[] {
   return parsedData;
 }
 
-export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
+export function formatDynamoWriteRequest(
+  parsedLines: dynamoDBData[]
+): AWS.DynamoDB.WriteRequest[][] {
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
@@ -86,14 +88,13 @@ export async function writeBatchesToDynamo({
   const dynamodb = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
   });
+
   const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedLines);
+
   let count = 0;
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
-    console.log(
-      "Reading options from event:\n",
-      util.inspect(batch, { depth: 5 })
-    );
+    try {
     await dynamodb
       .batchWrite({
         RequestItems: {
@@ -101,6 +102,10 @@ export async function writeBatchesToDynamo({
         }
       })
       .promise();
+    } catch {
+      console.log("Throwing error....")
+      throw new Error("Could not write batch to DynamoDB")
+    }
     let batchLength = batch.length;
     console.log(`Wrote batch of ${batchLength} items to Dynamo DB.`);
     count += batchLength;

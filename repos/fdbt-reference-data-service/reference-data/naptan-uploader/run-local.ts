@@ -11,12 +11,11 @@ The <PATH_TO_CSV_FILE> will need to be relative to the location of run-local.ts.
 */
 
 const streamOutputToCommandLine = async () => {
-  const data = fs.readFileSync(path.join(__dirname, "<PATH_TO_CSV_FILE>"));
+  const data = fs.readFileSync(path.join(__dirname, "./data.csv"));
   const stringifiedData = data.toString();
 
-  console.log(stringifiedData);
-
   const parsedCsvData = csvParser(stringifiedData);
+  console.log(parsedCsvData)
 
   await writeBatchesToDynamo({ parsedLines: parsedCsvData, tableName: "danny-Stops" });
 };
