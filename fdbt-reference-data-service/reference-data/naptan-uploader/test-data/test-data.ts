@@ -1,4 +1,4 @@
-import { ParsedData } from "../handler";
+import { ParsedData } from "./../handler";
 
 export const mockS3Event = (bucketName: string, fileName: string) => ({
   Records: [

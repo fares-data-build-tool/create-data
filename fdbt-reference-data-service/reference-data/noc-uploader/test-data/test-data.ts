@@ -1,4 +1,86 @@
-import { s3ObjectParameters } from './../handler';
+import { ParsedData } from "../handler";
+
+export const mockS3Event = (bucketName: string, fileName: string) => ({
+  Records: [
+    {
+      eventVersion: "",
+      eventSource: "",
+      awsRegion: "",
+      eventTime: "",
+      eventName: "",
+      userIdentity: {
+        principalId: ""
+      },
+      requestParameters: {
+        sourceIPAddress: ""
+      },
+      responseElements: {
+        "x-amz-request-id": "",
+        "x-amz-id-2": ""
+      },
+      s3: {
+        s3SchemaVersion: "",
+        configurationId: "",
+        bucket: {
+          name: bucketName,
+          ownerIdentity: {
+            principalId: ""
+          },
+          arn: ""
+        },
+        object: {
+          key: fileName,
+          size: 1,
+          eTag: "",
+          versionId: "",
+          sequencer: ""
+        }
+      },
+      glacierEventData: {
+        restoreEventData: {
+          lifecycleRestorationExpiryTime: "",
+          lifecycleRestoreStorageClass: ""
+        }
+      }
+    }
+  ]
+});
+
+export const mockNocData = {
+  id: "",
+  NOCCODE: "",
+  OperatorPublicName: "",
+  VOSA_PSVLicenseName: "",
+  OpId: 1,
+  PubNmId: 1,
+  Mode: "",
+  TTRteEnq: "",
+  FareEnq: "",
+  ComplEnq: "",
+  Website: ""
+};
+
+export const createArray = (index: number, mockNaptanData: ParsedData): ParsedData[] => {
+  const array: ParsedData[] = [];
+  for (let i = 0; i < index; i++) {
+    array.push(mockNaptanData);
+  };
+  return array;
+};
+
+export const createBatchOfWriteRequests = (index: number, mockNaptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
+  const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
+  for (let i = 0; i < index; i++) {
+    batchOfWriteRequests.push(
+      {
+        PutRequest: {
+          Item: mockNaptanData as any
+        }
+      }
+    );
+  };
+  return batchOfWriteRequests;
+};
 
 export const testCsv: string = "RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n" +
     "1,EA,703BE,9-91-_-y08-11,91,Ipswich - Hadleigh - Sudbury,2019-12-03,BEES\n" +
@@ -6,11 +88,6 @@ export const testCsv: string = "RowId,RegionCode,RegionOperatorCode,ServiceCode,
     "3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n" +
     "4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n" +
     "5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR"
-
-export const s3Params: s3ObjectParameters = {
-    Bucket: "thisIsMyBucket",
-    Key: "andThisIsTheNameOfTheThing"
-}
 
 export function isJSON(str:any) {
     try {
