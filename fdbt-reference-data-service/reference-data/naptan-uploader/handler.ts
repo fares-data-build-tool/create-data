@@ -70,7 +70,7 @@ export async function pushToDynamo({
 
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
-  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(result, _value, index, array) {
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function (result, _value, index, array) {
     if (index % batchSize === 0)
       result.push(array.slice(index, index + batchSize));
     return result;
