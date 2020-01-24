@@ -1,25 +1,24 @@
 import omitEmpty from 'omit-empty';
-import { Context, S3Handler } from 'aws-lambda';
+import { S3Handler, S3Event } from 'aws-lambda';
 import AWS from 'aws-sdk';
 import util from 'util';
-import csvParse from "csv-parse/lib/sync";
-import { WriteRequest, PutRequest } from 'aws-sdk/clients/dynamodb';
+import csvParse from 'csv-parse/lib/sync';
+import { WriteRequest } from 'aws-sdk/clients/dynamodb';
 import { parseString } from 'xml2js';
 
-type ParsedXmlData = tndsDynamoDBData;
-type ParsedCsvData = servicesDynamoDBData;
+export type ParsedXmlData = tndsDynamoDBData;
+export type ParsedCsvData = servicesDynamoDBData;
 
-interface s3ObjectParameters {
+export interface s3ObjectParameters {
     Bucket: string,
     Key: string;
 }
-
-interface tndsDynamoDBData {
+export interface tndsDynamoDBData {
     Data: {},
     FileName: string
 }
 
-interface servicesDynamoDBData {
+export interface servicesDynamoDBData {
     NationalOperatorCode: string,
     LineName: string,
     RegionCode: string,
@@ -70,9 +69,12 @@ export function tableChooser(fileExtension: string) {
 
 }
 
-export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
+export function removeFirstLineOfString(xmlData: string): string{
+    return xmlData.substring(xmlData.indexOf("\n") + 1);
+}
 
-    let xmlWithoutFirstLine = xmlData.substring(xmlData.indexOf("\n") + 1);
+export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
+    const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
     return new Promise((resolve, reject) => {
         parseString(xmlWithoutFirstLine, function (err, result) {
@@ -87,7 +89,7 @@ export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
     });
 }
 
-export function csvParser(csvData: string) {
+export function csvParser(csvData: string): ParsedCsvData[] {    
     const parsedData: ParsedCsvData[] = csvParse(csvData, {
         columns: true,
         skip_empty_lines: true,
@@ -96,22 +98,34 @@ export function csvParser(csvData: string) {
     return parsedData;
 }
 
+export function formatDynamoWriteRequest(parsedLines: servicesDynamoDBData[]) : AWS.DynamoDB.WriteRequest[][] {
+    const parsedDataMapper = (parsedDataItem: ParsedCsvData): WriteRequest => ({
+        PutRequest: { Item: parsedDataItem as any }
+    });
+    const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
+    const emptyBatch: WriteRequest[][] = [];
+    const batchSize = 25;
+    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function (
+        result,
+        _value,
+        index,
+        array
+    ) {
+        if (index % batchSize === 0)
+            result.push(array.slice(index, index + batchSize));
+        return result;
+    },
+        emptyBatch);
+    return dynamoWriteRequestBatches;
+}
+
 export async function writeCsvBatchesToDynamo({ parsedCsvLines, tableName }: PushToDynamoCsvInput) {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true
     });
-    const parsedDataMapper = (parsedDataItem: ParsedCsvData): WriteRequest => ({
-        PutRequest: { Item: parsedDataItem as any }
-    });
-    const dynamoWriteRequests = parsedCsvLines.map(parsedDataMapper);
 
-    const emptyBatch: WriteRequest[][] = [];
-    const batchSize = 25;
-    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function (result, _value, index, array) {
-        if (index % batchSize === 0)
-            result.push(array.slice(index, index + batchSize));
-        return result;
-    }, emptyBatch);
+    const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedCsvLines);
+    let count = 0;
 
     for (const batch of dynamoWriteRequestBatches) {
         console.log("Writing to DynamoDB...");
@@ -126,9 +140,12 @@ export async function writeCsvBatchesToDynamo({ parsedCsvLines, tableName }: Pus
                 }
             })
             .promise();
+        let batchLength = batch.length;
         console.log(`Wrote batch of ${batch.length} items to Dynamo DB.`);
+        count += batchLength;
     }
     console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB`);
+    console.log(`Wrote ${count} total items to DynamoDB.`);
 }
 
 export async function writeXmlToDynamo({ parsedXmlLines, tableName }: PushToDynamoXmlInput) {
@@ -150,7 +167,7 @@ export async function writeXmlToDynamo({ parsedXmlLines, tableName }: PushToDyna
 
 }
 
-export function cleanParsedXmlData(parsedXmlData: any) : tndsDynamoDBData{
+export function cleanParsedXmlData(parsedXmlData: any): tndsDynamoDBData {
     const parsedJson = JSON.parse(parsedXmlData);
     let extractedFilename = parsedJson["TransXChange"]["$"]["FileName"];
     extractedFilename = extractedFilename.split(".");
@@ -163,25 +180,31 @@ export function cleanParsedXmlData(parsedXmlData: any) : tndsDynamoDBData{
     }
 }
 
-export const s3hook: S3Handler = async (event: any, context: Context) => {
+export function setS3ObjectParams(event: S3Event) : s3ObjectParameters {
+    const s3BucketName: string = event.Records[0].s3.bucket.name;
+    const s3FileName: string = decodeURIComponent(
+      event.Records[0].s3.object.key.replace(/\+/g, " ")
+    ); // Object key may have spaces or unicode non-ASCII characters
+    const params: s3ObjectParameters = {
+      Bucket: s3BucketName,
+      Key: s3FileName
+    };
+    return params;
+  }
+
+export const s3hook: S3Handler = async (event: S3Event) => {
 
     console.log("Reading options from event:\n", util.inspect(event, { depth: 5 }));
 
-    const s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
-    const s3BucketName = event.Records[0].s3.bucket.name;
+    const params = setS3ObjectParams(event);
 
-    console.log(`Got S3 event for key '${s3FileName}' in bucket '${s3BucketName}'`);
+    console.log(`Got S3 event for key '${params.Key}' in bucket '${params.Bucket}'`);
 
-    const fileExtension = fileExtensionGetter(s3FileName);
+    const fileExtension = fileExtensionGetter(params.Key);
 
     if (!fileExtension) {
         throw Error("File Extension could not be retrieved");
     }
-
-    const params: s3ObjectParameters = {
-        Bucket: s3BucketName,
-        Key: s3FileName
-    };
 
     const stringifiedS3Data = await fetchDataFromS3AsString(params);
 

@@ -1,146 +1,148 @@
-import { Context, Callback } from 'aws-lambda';
-import MockContext from 'aws-lambda-mock-context';
-import {s3hook, xmlParser, cleanParsedXmlData} from '../../tnds-uploader/handler';
+import { testXml, isJSON } from './helperMethods';
+import { xmlParser, fetchDataFromS3AsString, servicesDynamoDBData, ParsedCsvData, fileExtensionGetter, tableChooser, removeFirstLineOfString, writeXmlToDynamo, cleanParsedXmlData } from '../../tnds-uploader/handler';
+import { csvParser } from '../../naptan-uploader/handler';
+let AWS = require('aws-sdk');
+let { csvParse } = require('csv-parse/lib/sync');
+const { testCsv } = require('../test/helperMethods');
+const { s3Params } = require('../test/helperMethods');
 
-describe('aws handler', () =>{
-    it('', async () =>{
-        const xmlToParse = `<?xml version="1.0" encoding="utf-8"?>
-        <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
-        <StopPoints>
-            <AnnotatedStopPointRef>
-              <StopPointRef>2290YHA01586</StopPointRef>
-              <CommonName>Hull Interchange</CommonName>
-            </AnnotatedStopPointRef>
-            <AnnotatedStopPointRef>
-              <StopPointRef>2290YHA01512</StopPointRef>
-              <CommonName>Carr Lane A</CommonName>
-            </AnnotatedStopPointRef>
-          </StopPoints>
-          <RouteSections>
-            <RouteSection id="YHAO999_001">
-              <RouteLink id="YHAO999_001_28549">
-                <From>
-                  <StopPointRef>2290YHA01586</StopPointRef>
-                </From>
-                <To>
-                  <StopPointRef>2290YHA01512</StopPointRef>
-                </To>
-                <Direction>outbound</Direction>
-              </RouteLink>
-            </RouteSection>
-          </RouteSections>
-          <Routes>
-            <Route id="YHAO999_001">
-              <Description>Hull Interchange - Monument Bridge
-        </Description>
-              <RouteSectionRef>YHAO999_001</RouteSectionRef>
-            </Route>
-          </Routes>
-          <JourneyPatternSections>
-            <JourneyPatternSection id="JPS_YHAO999-2">
-              <JourneyPatternTimingLink id="JPS_YHAO999-2_28549">
-                <From>
-                  <StopPointRef>2290YHA01586</StopPointRef>
-                  <TimingStatus>PTP</TimingStatus>
-                </From>
-                <To>
-                  <StopPointRef>2290YHA01512</StopPointRef>
-                  <TimingStatus>PTP</TimingStatus>
-                </To>
-                <RouteLinkRef>YHAO999_001_28549</RouteLinkRef>
-                <Direction>outbound</Direction>
-                <RunTime>PT300S</RunTime>
-              </JourneyPatternTimingLink>
-            </JourneyPatternSection>
-          </JourneyPatternSections>
-          <Operators>
-            <Operator id="SCH">
-              <NationalOperatorCode>CLTL</NationalOperatorCode>
-              <OperatorCode>SCH</OperatorCode>
-              <OperatorShortName>Stagecoach in Hull</OperatorShortName>
-            </Operator>
-          </Operators>
-          <Services>
-            <Service>
-              <ServiceCode>YHAO999</ServiceCode>
-              <Lines>
-                <Line id="0">
-                  <LineName>999</LineName>
-                </Line>
-              </Lines>
-              <OperatingPeriod>
-                <StartDate>2019-11-21</StartDate>
-              </OperatingPeriod>
-              <RegisteredOperatorRef>SCH</RegisteredOperatorRef>
-              <StopRequirements>
-                <NoNewStopsRequired />
-              </StopRequirements>
-              <Mode>bus</Mode>
-              <Description>Hull Interchange - Monument Bridge</Description>
-              <StandardService>
-                <Origin>Hull Interchange</Origin>
-                <Destination>Monument Bridge</Destination>
-                <JourneyPattern id="JPS_YHAO999-2">
-                  <Direction>outbound</Direction>
-                  <JourneyPatternSectionRefs>JPS_YHAO999-2</JourneyPatternSectionRefs>
-                </JourneyPattern>
-              </StandardService>
-            </Service>
-          </Services>
-          <VehicleJourneys>
-            <VehicleJourney>
-              <OperatorRef>SCH</OperatorRef>
-              <OperatingProfile>
-                <RegularDayType>
-                  <DaysOfWeek>
-                    <Monday />
-                    <Tuesday />
-                    <Wednesday />
-                    <Thursday />
-                    <Friday />
-                    <Saturday />
-                    <Sunday />
-                  </DaysOfWeek>
-                </RegularDayType>
-                <BankHolidayOperation>
-                  <DaysOfNonOperation>
-                    <ChristmasDay />
-                    <BoxingDay />
-                    <NewYearsDay />
-                  </DaysOfNonOperation>
-                </BankHolidayOperation>
-              </OperatingProfile>
-              <VehicleJourneyCode>6139</VehicleJourneyCode>
-              <ServiceRef>YHAO999</ServiceRef>
-              <LineRef>0</LineRef>
-              <JourneyPatternRef>JPS_YHAO999-2</JourneyPatternRef>
-              <DepartureTime>15:00:00</DepartureTime>
-            </VehicleJourney>
-          </VehicleJourneys>
-          <ADE></ADE>
-        </TransXChange>`
 
-        const result = await xmlParser(xmlToParse);
+describe('fetchDataFromS3AsAString', () => {
+    const mockS3GetObject = jest.fn();
 
-        console.log(result);
+    beforeEach(() => {
+        mockS3GetObject.mockReset();
 
-        console.log((cleanParsedXmlData(result)));
+        AWS.S3 = jest.fn().mockImplementation(() => {
+            return {
+                getObject: mockS3GetObject
+            }
+        });
+
+        mockS3GetObject.mockImplementation(() => ({
+            promise() {
+                return Promise.resolve({ Body: testCsv })
+            }
+        }));
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    })
+
+    it('returns a string', async () => {
+        const fetchedData = await fetchDataFromS3AsString(s3Params);
+        expect(fetchedData).toBe(testCsv);
+    })
+
+    it('calls get object from S3 using params provided', async () => {
+        await fetchDataFromS3AsString(s3Params);
+        expect(mockS3GetObject).toHaveBeenCalledWith(s3Params);
+    })
+})
+
+describe('csvParser and xmlParsers', () => {
+
+    it('parses CSV into JSON', () => {
+        const returnedValue = csvParser(testCsv);
+        expect(isJSON(returnedValue)).toBeTruthy;
+    })
+
+
+    it('parses XML into JSON', async () => {
+        const result = await xmlParser(testXml);
+        expect(isJSON(result)).toBeTruthy;
+    })
+})
+
+describe('fileExtensionGetter', () => {
+
+    it('returns a file extension', () => {
+        const resultOne = fileExtensionGetter('thisIsAFileName.xml');
+        const resultTwo = fileExtensionGetter('thisIsAFileName.csv');
+
+        expect(resultOne).toBe('xml');
+        expect(resultTwo).toBe('csv');
+    })
+})
+
+describe('tableChooser', () => {
+
+    it('sets the table name according to the file extension', () => {
+        expect(() => {
+            tableChooser("xml")
+        }).toThrow(Error)
+    })
+
+    it('sets the table name according to the file extension', () => {
+
+        process.env.SERVICES_TABLE_NAME = "TestServicesTable"
+        process.env.TNDS_TABLE_NAME = "TestTndsTable"
+
+        const xmlResult = tableChooser("xml");
+        const csvResult = tableChooser("csv");
+
+        expect(xmlResult).toBe(process.env.TNDS_TABLE_NAME);
+        expect(csvResult).toBe(process.env.SERVICES_TABLE_NAME);
 
     })
 
-    it('', () =>{
+    it('sets the table name according to the file extension', () => {
+        process.env.SERVICES_TABLE_NAME = "TestServicesTable"
+        process.env.TNDS_TABLE_NAME = "TestTndsTable"
 
+        expect(() => {
+            tableChooser("pdf")
+        }).toThrow(Error)
     })
 
-    it('', () =>{
+})
 
+describe('xmlFirstLineRemover', () => {
+    it('removes the first line of a string', () => {
+        const result = removeFirstLineOfString("A\n" + "B\n" + "C\n" + "D\n");
+        expect(result).toBe("B\n" + "C\n" + "D\n");
     })
+})
 
-    it('', () =>{
+describe('XML to dynamo writer', () => {
+    const mockDynamoPut = jest.fn();
 
+    beforeEach(() => {
+        mockDynamoPut.mockReset();
+        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+            return { put: mockDynamoPut };
+        });
+        mockDynamoPut.mockImplementation(() => ({
+            promise() {
+                return Promise.resolve({});
+            }
+        }));
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('sends a put request to dynamo', async () => {
+        const parsedData = cleanParsedXmlData(await xmlParser(testXml));
+
+        writeXmlToDynamo({ tableName: "tableName", parsedXmlLines: parsedData });
+
+        expect(mockDynamoPut).toBeCalled();
     })
+})
 
-    it('', () =>{
+describe('XML data cleaner', () => {
+    it('changes the XML to be of the format required', async () => {
 
+        const xmlToBeCleaned = await xmlParser(testXml);
+
+        const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
+
+        expect(cleanedXml.FileName).toContain("SVRYHAO999"+"_");
+        expect(!!cleanedXml.Data && cleanedXml.Data).toBe(xmlToBeCleaned);
     })
-});
+})
+
+
