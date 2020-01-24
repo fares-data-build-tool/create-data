@@ -21,7 +21,16 @@ provider:
           - ""
           - - "arn:aws:s3:::"
             - ${self:provider.stage}-fdbt-test-naptan-data
-            - "/*"          
+            - "/*"         
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${self:provider.stage}-fdbt-test-tnds-data
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${self:provider.stage}-fdbt-test-tnds-data
+            - "/*"     
     - Effect: 'Allow'
       Action:
         - dynamodb:DescribeTable
@@ -34,8 +43,13 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - !GetAtt naptanTable.Arn
+        - !GetAtt tndsTable.Arn
+        - !GetAtt servicesTable.Arn
+
   environment:
     NAPTAN_TABLE_NAME: !Ref naptanTable
+    TNDS_TABLE_NAME: !Ref tndsTable
+    SERVICES_TABLE_NAME: !Ref servicesTable
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
       
 plugins:
