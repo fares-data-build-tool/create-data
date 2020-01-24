@@ -1,5 +1,5 @@
 import { formatDynamoWriteRequest, setDBTableEnvVariable } from "../handler";
-import { createArrayOfDBDataItems, createBatchOfWriteRequests } from "./mocks.test";
+import { createArrayOfDBDataItems, createBatchOfWriteRequests } from "./testHelper";
 
 interface dynamoDBData {
     id: any;
