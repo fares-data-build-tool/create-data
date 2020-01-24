@@ -16,11 +16,11 @@ provider:
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - ${self:provider.stage}-fdbt-test-naptan-data
+            - ${self:provider.stage}-fdbt-test-noc-data
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - ${self:provider.stage}-fdbt-test-naptan-data
+            - ${self:provider.stage}-fdbt-test-noc-data
             - "/*"          
     - Effect: 'Allow'
       Action:
@@ -93,23 +93,11 @@ resources:
       Properties:
         TableName: ${self:provider.stage}-Operators
         AttributeDefinitions:
-          - AttributeName: "NOCCode"
+          - AttributeName: "NOCCODE"
             AttributeType: "S"
-          # - AttributeName: "PubNmId"
-          #   AttributeType: "N"
         KeySchema:
-          - AttributeName: "NOCCode"
+          - AttributeName: "NOCCODE"
             KeyType: "HASH"
-        # GlobalSecondaryIndexes:
-        #   - IndexName: "PubNmId"
-        #     KeySchema: 
-        #       - AttributeName: "PubNmId"
-        #         KeyType: "HASH"
-        #     Projection:
-        #       ProjectionType: "KEYS_ONLY"
-        #     ProvisionedThroughput:
-        #       ReadCapacityUnits: 1
-        #       WriteCapacityUnits: 1
         BillingMode: PAY_PER_REQUEST
     
     servicesTable: 

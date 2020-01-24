@@ -35,16 +35,12 @@ interface lists3ObjectsParameters {
   Prefix: string;
 }
 
-export function notUndefined<T>(x: T | undefined): x is T {
-  return x !== undefined;
-}
-
 export async function lists3Objects(parameters: lists3ObjectsParameters): Promise<string[]> {
   let objlist: string[] = [];
   const s3 = new AWS.S3();
   const data = await s3.listObjectsV2(parameters, function (err, data) {
     if (err) {
-      throw new Error("Could not list objects");
+      throw new Error("Could not list objects, error message: " +err.message + " error name: " +err.name);
     } else {
       return data;
     }
