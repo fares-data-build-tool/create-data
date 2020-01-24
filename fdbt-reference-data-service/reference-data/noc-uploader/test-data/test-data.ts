@@ -1,5 +1,39 @@
 import { ParsedData } from "../handler";
 
+export const mockS3ListThreeKeys = [
+  {
+    ETag: '"70ee1738b6b21e2c8a43f3a5ab0eee71"',
+    Key: "happyface.jpg",
+    LastModified: "<Date Representation>",
+    Size: 11,
+    StorageClass: "STANDARD"
+  },
+  {
+    ETag: '"becf17f89c30367a9a44495d62ed521a-1"',
+    Key: "test.jpg",
+    LastModified: "<Date Representation>",
+    Size: 4192256,
+    StorageClass: "STANDARD"
+  },
+  {
+    ETag: '"becf17f89c30367a9a44495d62ed521a-1"',
+    Key: "bus.jpg",
+    LastModified: "<Date Representation>",
+    Size: 44444,
+    StorageClass: "STANDARD"
+  }
+];
+
+export const mockS3ListOneKey = [
+  {
+    ETag: '"becf17f89c30367a9a44495d62ed521a-1"',
+    Key: "bus.jpg",
+    LastModified: "<Date Representation>",
+    Size: 44444,
+    StorageClass: "STANDARD"
+  }
+];
+
 export const mockS3Event = (bucketName: string, fileName: string) => ({
   Records: [
     {
@@ -60,41 +94,46 @@ export const mockNocData = {
   Website: ""
 };
 
-export const createArray = (index: number, mockNaptanData: ParsedData): ParsedData[] => {
+export const createArray = (
+  index: number,
+  mockNaptanData: ParsedData
+): ParsedData[] => {
   const array: ParsedData[] = [];
   for (let i = 0; i < index; i++) {
     array.push(mockNaptanData);
-  };
+  }
   return array;
 };
 
-export const createBatchOfWriteRequests = (index: number, mockNaptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
+export const createBatchOfWriteRequests = (
+  index: number,
+  mockNaptanData: ParsedData
+): AWS.DynamoDB.WriteRequest[] => {
   const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
   for (let i = 0; i < index; i++) {
-    batchOfWriteRequests.push(
-      {
-        PutRequest: {
-          Item: mockNaptanData as any
-        }
+    batchOfWriteRequests.push({
+      PutRequest: {
+        Item: mockNaptanData as any
       }
-    );
-  };
+    });
+  }
   return batchOfWriteRequests;
 };
 
-export const testCsv: string = "RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n" +
-    "1,EA,703BE,9-91-_-y08-11,91,Ipswich - Hadleigh - Sudbury,2019-12-03,BEES\n" +
-    "2,EA,753BDR,26-SJL-8-y08-2,SJL8,Blundeston - Sir John Leman School,2019-12-03,BDRB\n" +
-    "3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n" +
-    "4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n" +
-    "5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR"
+export const testCsv: string =
+  "RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n" +
+  "1,EA,703BE,9-91-_-y08-11,91,Ipswich - Hadleigh - Sudbury,2019-12-03,BEES\n" +
+  "2,EA,753BDR,26-SJL-8-y08-2,SJL8,Blundeston - Sir John Leman School,2019-12-03,BDRB\n" +
+  "3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n" +
+  "4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n" +
+  "5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR";
 
-export function isJSON(str:any) {
-    try {
-        return (JSON.parse(str) && !!str);
-    } catch (e) {
-        return false;
-    }
+export function isJSON(str: any) {
+  try {
+    return JSON.parse(str) && !!str;
+  } catch (e) {
+    return false;
+  }
 }
 
 export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
@@ -211,4 +250,4 @@ export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
     </VehicleJourney>
   </VehicleJourneys>
   <ADE></ADE>
-</TransXChange>`
+</TransXChange>`;

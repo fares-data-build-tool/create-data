@@ -30,7 +30,7 @@ interface PushToDyanmoInput {
   tableName: string;
 }
 
-interface lists3ObjectsParameters {
+export interface lists3ObjectsParameters {
   Bucket: string;
   Prefix: string;
 }
@@ -46,12 +46,14 @@ export async function lists3Objects(parameters: lists3ObjectsParameters): Promis
     }
   }).promise();
   const contents = data.Contents!;
-  const itemOne = contents[0]["Key"];
-  const itemTwo = contents[1]["Key"];
-  const itemThree = contents[2]["Key"];
-  if (
-    !itemOne || itemOne === undefined || !itemTwo || itemTwo === undefined || !itemThree || itemThree === undefined
-  ) {
+  let itemOne = "";
+  let itemTwo = "";
+  let itemThree = "";
+  try {
+  itemOne = contents[0]["Key"]!;
+  itemTwo = contents[1]["Key"]!;
+  itemThree = contents[2]["Key"]!;
+  } catch (Error) {
     return [];
   }
   objlist.push(itemOne, itemTwo, itemThree);
@@ -137,18 +139,6 @@ export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDya
   }
   console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB.`);
   console.log(`Wrote ${count} total items to DynamoDB.`);
-}
-
-export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
-  const s3BucketName: string = event.Records[0].s3.bucket.name;
-  const s3FileName: string = decodeURIComponent(
-    event.Records[0].s3.object.key.replace(/\+/g, " ")
-  );
-  const params: s3ObjectParameters = {
-    Bucket: s3BucketName,
-    Key: s3FileName
-  };
-  return params;
 }
 
 export function setDbTableEnvVariable(): string {
