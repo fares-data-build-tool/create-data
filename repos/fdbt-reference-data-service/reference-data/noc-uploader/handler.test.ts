@@ -5,7 +5,9 @@ import {
   fetchDataFromS3AsString,
   csvParser,
   formatDynamoWriteRequest,
-  setDbTableEnvVariable
+  setDbTableEnvVariable,
+  lists3Objects,
+  lists3ObjectsParameters
 } from "./handler";
 import { ParsedData, s3ObjectParameters } from "./handler";
 
@@ -53,41 +55,6 @@ describe("csvParser", () => {
     expect(mocks.isJSON(returnedValue)).toBeTruthy;
   });
 });
-
-// describe("setS3ObjectParams", () => {
-//   // Arrange
-//   const bucketName = "fdbt-test-naptan-s3-bucket";
-//   const fileName = "fdbt-test-naptan.csv";
-//   const s3Event = mocks.mockS3Event(bucketName, fileName);
-
-//   it("sets s3BucketName from S3Event", () => {
-//     // Act
-//     const s3ObjectParameters = setS3ObjectParams(s3Event);
-//     // Assert
-//     expect(s3ObjectParameters.Bucket).toEqual(bucketName);
-//   });
-
-//   it("sets S3FileName from S3Event", () => {
-//     // Act
-//     const s3ObjectParameters = setS3ObjectParams(s3Event);
-//     // Assert
-//     expect(s3ObjectParameters.Key).toEqual(fileName);
-//   });
-
-//   it("removes spaces and unicode non-ASCII characters in the S3FileName", () => {
-//     // Arrange
-//     const fileName = "fdbt%2Ftest+%3A+naptan.csv";
-//     const S3Event = mocks.mockS3Event(bucketName, fileName);
-//     const params = {
-//       Bucket: bucketName,
-//       Key: "fdbt/test : naptan.csv"
-//     };
-//     // Act
-//     const s3ObjectParameters = setS3ObjectParams(S3Event);
-//     // Arrange
-//     expect(s3ObjectParameters).toEqual(params);
-//   });
-// });
 
 describe("formatDynamoWriteRequest", () => {
   it("should return data in correct format as a DynamoDB WriteRequest", () => {
@@ -212,3 +179,41 @@ describe("setDbTableEnvVariable", () => {
     }
   });
 });
+
+describe("listS3Objects", () => {
+
+  const listS3ObjectsParameters: lists3ObjectsParameters = {
+    Bucket: "thisIsMyBucket",
+    Prefix: "andThisIsThePrefixOfTheThing"
+  };
+  const mockS3ListObjectsV2 = jest.fn();
+
+  beforeEach(() => {
+    mockS3ListObjectsV2.mockReset();
+    (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+      return {
+        listObjectsV2: mockS3ListObjectsV2
+      };
+    });
+  });
+
+  it("should return an empty array if not 3 keys present", async () => {
+    mockS3ListObjectsV2.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({ Contents: mocks.mockS3ListOneKey });
+      }
+    }));
+    expect(await lists3Objects(listS3ObjectsParameters)).toHaveLength(0);
+    
+  });
+  it("should return a string array of 3 if 3 keys present", async () => {
+    mockS3ListObjectsV2.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({ Contents: mocks.mockS3ListThreeKeys });
+      }
+    }));
+    const objList = await lists3Objects(listS3ObjectsParameters);
+    expect(objList).toHaveLength(3);
+  });
+});
+
