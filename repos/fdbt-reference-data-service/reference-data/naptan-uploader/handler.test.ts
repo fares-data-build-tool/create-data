@@ -2,7 +2,6 @@ import * as mocks from "./mocks/mock-data";
 import AWS from "aws-sdk";
 import { setS3ObjectParams, writeBatchesToDynamo } from "./handler";
 import { ParsedData } from "./handler";
-import { write } from "fs";
 
 jest.mock("aws-sdk");
 
