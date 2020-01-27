@@ -134,12 +134,7 @@ export function setDbTableEnvVariable () : string {
   return tableName;
 }
 
-export const s3hook: S3Handler = async (event) => {
-  console.log(
-    "Reading options from event:\n",
-    util.inspect(event, { depth: 5 })
-  );
-
+export const s3NaptanHandler = async (event: S3Event) => {
   const tableName = setDbTableEnvVariable();
 
   const params = setS3ObjectParams(event);
