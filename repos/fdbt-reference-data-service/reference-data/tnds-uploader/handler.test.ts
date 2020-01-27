@@ -1,5 +1,5 @@
 import { mockS3Event } from './../noc-uploader/test-data/test-data';
-import { s3hook } from './handler';
+import { s3TndsHandler } from './handler';
 let AWS = require("aws-sdk");
 import * as mocks from "./test-data/test-data";
 
@@ -45,7 +45,7 @@ describe("s3 handler with csv event", () => {
     it("sends the data to dynamo when an csv is created", async () => {
         const event = mockS3Event("thisIsMyBucket", "andThisIsTheNameOfTheThing.csv");
 
-        await s3hook(event);
+        await s3TndsHandler(event);
 
         expect(mockDynamoBatchWrite).toHaveBeenCalledTimes(1);
 
@@ -95,7 +95,7 @@ describe("s3 handler with xml event", () => {
     it("sends the data to dynamo when an xml is created", async () => {
         const event = mockS3Event("thisIsMyBucket", "andThisIsTheNameOfTheThing.xml");
 
-        await s3hook(event);
+        await s3TndsHandler(event);
 
         expect(mockDynamoPut).toHaveBeenCalledTimes(1);
 
