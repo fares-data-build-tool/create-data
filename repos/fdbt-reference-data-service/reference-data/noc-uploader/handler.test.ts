@@ -7,15 +7,16 @@ import {
   formatDynamoWriteRequest,
   setDbTableEnvVariable,
   lists3Objects,
-  lists3ObjectsParameters
+  Lists3ObjectsParameters,
+  mergeArrayObjects
 } from "./handler";
-import { ParsedData, s3ObjectParameters } from "./handler";
+import { ParsedData, S3ObjectParameters } from "./handler";
 
 jest.mock("aws-sdk");
 
 describe("fetchDataFromS3AsAString", () => {
   const mockS3GetObject = jest.fn();
-  const s3Params: s3ObjectParameters = {
+  const s3Params: S3ObjectParameters = {
     Bucket: "thisIsMyBucket",
     Key: "andThisIsTheNameOfTheThing"
   };
@@ -181,8 +182,7 @@ describe("setDbTableEnvVariable", () => {
 });
 
 describe("listS3Objects", () => {
-
-  const listS3ObjectsParameters: lists3ObjectsParameters = {
+  const ListS3ObjectsParameters: Lists3ObjectsParameters = {
     Bucket: "thisIsMyBucket",
     Prefix: "andThisIsThePrefixOfTheThing"
   };
@@ -203,8 +203,7 @@ describe("listS3Objects", () => {
         return Promise.resolve({ Contents: mocks.mockS3ListOneKey });
       }
     }));
-    expect(await lists3Objects(listS3ObjectsParameters)).toHaveLength(0);
-    
+    expect(await lists3Objects(ListS3ObjectsParameters)).toHaveLength(0);
   });
   it("should return a string array of 3 if 3 keys present", async () => {
     mockS3ListObjectsV2.mockImplementation(() => ({
@@ -212,8 +211,14 @@ describe("listS3Objects", () => {
         return Promise.resolve({ Contents: mocks.mockS3ListThreeKeys });
       }
     }));
-    const objList = await lists3Objects(listS3ObjectsParameters);
+    const objList = await lists3Objects(ListS3ObjectsParameters);
     expect(objList).toHaveLength(3);
   });
 });
 
+describe("mergeArrayObjects", () => {
+  it("should join nocLine, nocTable and publicName objects on respective matching keys", () => {
+    const mergedArray = mergeArrayObjects(mocks.mockNocLineArray, mocks.mockNocTableArray, mocks.mockPublicNameArray);
+    expect(mergedArray).toEqual(mocks.mockExpectedMergedArray);
+  });
+});

@@ -140,10 +140,6 @@ export async function writeCsvBatchesToDynamo({
 
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
-    console.log(
-      "Reading options from event:\n",
-      util.inspect(batch, { depth: 5 })
-    );
     try {
       await dynamodb
         .batchWrite({
@@ -209,12 +205,7 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
   return params;
 }
 
-export const s3hook: S3Handler = async (event: S3Event) => {
-  console.log(
-    "Reading options from event:\n",
-    util.inspect(event, { depth: 5 })
-  );
-
+export const s3TndsHandler = async (event: S3Event) => {
   const params = setS3ObjectParams(event);
 
   console.log(

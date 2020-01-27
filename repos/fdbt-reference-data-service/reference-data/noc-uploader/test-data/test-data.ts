@@ -1,5 +1,77 @@
 import { ParsedData } from "../handler";
 
+export const mockNocLineArray = [
+  {
+    NOCCODE: "dannynoc",
+    Mode: "dannymode"
+  },
+  {
+    NOCCODE: "robnoc",
+    Mode: "robmode"
+  }
+];
+
+export const mockNocTableArray = [
+  {
+    NOCCODE: "dannynoc",
+    OperatorPublicName: "dannyop",
+    VOSA_PSVLicenseName: "dannyvosa",
+    OpId: 3,
+    PubNmId: 3
+  },
+  {
+    NOCCODE: "robnoc",
+    OperatorPublicName: "robop",
+    VOSA_PSVLicenseName: "robvosa",
+    OpId: 4,
+    PubNmId: 4
+  }
+];
+
+export const mockPublicNameArray = [
+  {
+    PubNmId: 3,
+    TTRteEnq: "dannyenq",
+    FareEnq: "dannyfarreenq",
+    ComplEnq: "dannycomplenq",
+    Website: "dannyweb"
+  },
+  {
+    PubNmId: 4,
+    TTRteEnq: "robttrenq",
+    FareEnq: "robfareenq",
+    ComplEnq: "robcomplenq",
+    Website: "robweb"
+  }
+];
+
+export const mockExpectedMergedArray = [
+  {
+    NOCCODE: "dannynoc",
+    Mode: "dannymode",
+    OperatorPublicName: "dannyop",
+    VOSA_PSVLicenseName: "dannyvosa",
+    OpId: 3,
+    PubNmId: 3,
+    TTRteEnq: "dannyenq",
+    FareEnq: "dannyfarreenq",
+    ComplEnq: "dannycomplenq",
+    Website: "dannyweb"
+  },
+  {
+    NOCCODE: "robnoc",
+    Mode: "robmode",
+    OperatorPublicName: "robop",
+    VOSA_PSVLicenseName: "robvosa",
+    OpId: 4,
+    PubNmId: 4,
+    TTRteEnq: "robttrenq",
+    FareEnq: "robfareenq",
+    ComplEnq: "robcomplenq",
+    Website: "robweb"
+  }
+];
+
 export const mockS3ListThreeKeys = [
   {
     ETag: '"70ee1738b6b21e2c8a43f3a5ab0eee71"',
