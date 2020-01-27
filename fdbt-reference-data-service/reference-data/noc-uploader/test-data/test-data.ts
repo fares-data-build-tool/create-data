@@ -199,6 +199,37 @@ export const testCsv: string =
   "3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n" +
   "4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n" +
   "5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR";
+  
+
+export const publicNameCsvData: string =
+  "PubNmId,OperatorPublicName,PubNmQual,TTRteEnq,FareEnq,LostPropEnq,DisruptEnq,ComplEnq,Twitter,Facebook,LinkedIn,YouTube,ChangeDate,ChangeAgent,ChangeComment,CeasedDate,DataOwner,Website\n" +
+  "93088,1st Bus Stop Minibus,,cliff1stbusstop@aol.com,01474 326777,,,16 Lyndhurst Way, Istead Rise, Gravesend, Kent DA13 9EW,,,,,,,,,,\n" +
+  "93089,1st Choice Transport Ltd,,info@1stchoiceltd.co.uk,01554759888,,,The Transport Depot, Sandy Road, Llanelli SA15 4DP,,,,,,,,,,www.1stchoiceltdcoachhire.co.uk#http://www.1stchoiceltdcoachhire.co.uk#\n" +
+  "93090,2 Way Transport,,,01724 289399,,,29-30 High Santon Villas, High Santon , Scunthorpe DN15 0DG,,,,,,,,,,www.2waytransport-scunthorpe.co.uk/#http://www.2waytransport-scunthorpe.co.uk/#\n" +
+  "93091,24-7 Recruitment Services,,darren247cars@btinternet.com,01603 782247,,,1 New Cottage, Norwich Road, Horstead NR12 7BA,,,,,,,,,,#http://247taxiswroxham.tel#\n" +
+  "93093,A & A Coach Travel (Yorkshire),,info@a-atravel.co.uk,01423325300,,,The Control Tower offices, The Airfield, Fleet Lane, Tockwith York YO26 7QF,,,,,,,,,,#http://www.a-atravel.co.uk/#\n"
+  "93096,A & G Minibuses,,agminibusesltd@hotmail.com,01985218754,,,Paddock Wood, Bradley Road, Warminster BA12 7JY,,,,,,,,,,#http://www.aandgminibuses.com/index.html#"
+
+export const nocTableCsvData:string = 
+  "NOCCODE,OperatorPublicName,VOSA_PSVLicenseName,OpId,PubNmId,NOCCdQual,ChangeDate,ChangeAgent,ChangeComment,DateCeased,DataOwner\n" +
+  "1CTL,1st Choice Transport Ltd,1St Choice Transport Ltd,135427,93089,,,,,,\n" +
+  "247T,247 Taxis,,138133,95943,,2016-07-26 00:00:00,Steven Penn,Created for Stuart Reynolds,,\n" +
+  "2WTR,2 Way Transport,2 Way Transport,135428,93090,,,,,,\n" +
+  "3DCO,3D Coaches,Peter Kermeen & Elaine Fletcher,137388,93092,,,,,,\n" +
+  "5STR,Five Star International Travel,Philip Riley,137408,94084,,,,,,\n" +
+  "8H,Highland Airways,Highland Airways,136620,94334,,,,,,\n"
+
+export const nocLinesCsvData: string =
+"NOCLineNo,NOCCODE,PubNm,RefNm,Licence,Mode,TLRegOwn,EBSRAgent,LO,SW,WM,WA,YO,NW,NE,SC,SE,EA,EM,NI,NX,Megabus,New Bharat,Terravision,NCSD,Easybus,Yorks_RT,Travel Enq,Comment,AuditDate,AuditEditor,AuditComment,Duplicate,Date Ceased,Cessation Comment\n" +
+"9080,=AW,Transport for Wales,Transport for Wales (ATOC),,Rail,Admin,,,,=AW,=AW,,,AW,,=AW,=AW,=AW,,,,,,,,,,,2018-11-06 00:00:00,Amy Brown,Updated public name,OK,,\n" +
+"9081,=CC,c2c,c2c (ATOC),,Rail,Admin,,,,=CC,=CC,,,CC,,=CC,=CC,=CC,,,,,,,,,,,2010-03-31 00:00:00,Mark Fell,Intial NOC Build,OK,,\n" +
+"9082,=CH,Chiltern Railways,Chiltern Railways (ATOC),,Rail,Admin,,,,=CH,=CH,,,CH,,=CH,=CH,=CH,,,,,,,,,,,2010-03-31 00:00:00,Mark Fell,Intial NOC Build,OK,,\n" +
+"9083,=CS,Caledonian Sleeper,Caledonian Sleeper (ATOC),,Rail,Admin,,,,=CS,=CS,,,CS,,=CS,=CS,=CS,,,,,,,,,,,2015-02-03 00:00:00,John Prince,Added for Roger Slevin,OK,,\n" +
+"9084,=EM,East Midlands Railway,East Midlands Railway (ATOC),,Rail,Admin,Stagecoach,,,=EM,=EM,,,EM,,=EM,=EM,=EM,,,,,,,,,,,2019-08-21 00:00:00,Amy Brown,Updated name and group info,OK,,\n" +
+"9085,=ES,Eurostar,Eurostar (ATOC),,Rail,Admin,,,,=EP,=ES,,,ES,,=ES,=ES,=ES,,,,,,,,,,,2010-03-31 00:00:00,Mark Fell,Intial NOC Build,OK,,\n" +
+"9086,=FC,First Capital Connect,,,Rail,Admin,,,,=FC,=FC,,,FC,,=FC,=FC,=FC,,,,,,,,,,,2015-06-09 00:00:00,John Prince,Strikethrough SE code,OK,2014-09-13 00:00:00,\n" +
+"9087,=GC,Grand Central,Grand Central Trains (ATOC),,Rail,Admin,,,,=GC,=GC,,,GC,,=GC,=GC,=GC,,,,,,,,,,,2010-03-31 00:00:00,Mark Fell,Intial NOC Build,OK,,\n"
+
 
 export function isJSON(str: any) {
   try {
@@ -208,7 +239,7 @@ export function isJSON(str: any) {
   }
 }
 
-export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
+export const testXml: string = `<?xml version=1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
 <StopPoints>
     <AnnotatedStopPointRef>

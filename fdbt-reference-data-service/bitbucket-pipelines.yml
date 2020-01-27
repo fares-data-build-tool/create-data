@@ -11,6 +11,7 @@ pipelines:
         script:
           - cd netex-output        
           - npm ci
+          
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
