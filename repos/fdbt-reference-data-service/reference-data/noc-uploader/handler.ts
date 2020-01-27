@@ -1,6 +1,5 @@
 import { S3Event, S3Handler } from "aws-lambda";
 import AWS from "aws-sdk";
-import util from "util";
 import csvParse from "csv-parse/lib/sync";
 import { WriteRequest } from "aws-sdk/clients/dynamodb";
 
@@ -99,9 +98,7 @@ export async function fetchDataFromS3AsString(
   return dataAsString;
 }
 
-export function csvParser(
-  csvData: string
-): any {
+export function csvParser(csvData: string): any {
   const parsedData: any = csvParse(csvData, {
     columns: true,
     skip_empty_lines: true,
@@ -215,7 +212,11 @@ export const s3NocHandler = async (event: S3Event) => {
     throw new Error("Key(s) not available or undefined");
   }
 
-  const filenameKeys = ["NOCLines.csv", "NOCTable.csv", "PublicName.csv"];
+  const filenameKeys = [
+    s3FileNameSubStringArrayFirstElement + "/NOCLines.csv",
+    s3FileNameSubStringArrayFirstElement + "/NOCTable.csv",
+    s3FileNameSubStringArrayFirstElement + "/PublicName.csv"
+  ];
 
   const nocLineParams: S3ObjectParameters = {
     Bucket: s3BucketName,
