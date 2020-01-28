@@ -13,7 +13,7 @@ describe('aws handler', () => {
         globalAny.console = {
             log: jest.fn()
         };
-        handler.s3hook(event,context,callback);
+        handler.s3NetexConvertorHandler(event,context,callback);
         expect(globalAny.console.log).toHaveBeenCalledWith(JSON.stringify(event));
     })
 });
