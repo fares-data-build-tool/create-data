@@ -5,6 +5,7 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   stage: ${opt:stage, 'test'}
+  stackName: ${self:service}-${self:provider.stage}
   timeout: 900
   memorySize: 2048
   iamRoleStatements:
@@ -151,27 +152,39 @@ resources:
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
-Outputs:
-  NaptanTableName:
-    Value:
-      Ref: NaptanTable
-    Export:
-      Name: ${AWS::StackName}-NaptanTableName
-  NocTableName:
-    Value:
-      Ref: NocTable
-    Export:
-      Name: ${AWS::StackName}-NocTableName
-  ServicesTableName:
-    Value:
-      Ref: ServicesTable
-    Export:
-      Name: ${AWS::StackName}-ServicesTableName
-  TndsTableName:
-    Value:
-      Ref: TndsTable
-    Export:
-      Name: ${AWS::StackName}-TndsTableName
+  Outputs:
+    NaptanTableName:
+      Value: !Ref NaptanTable
+      Export:
+        Name: ${self:service}:${self:provider.stage}:NaptanTableName
+    NocTableName:
+      Value: !Ref NocTable
+      Export:
+        Name: ${self:service}:${self:provider.stage}:NocTableName
+    ServicesTableName:
+      Value: !Ref ServicesTable
+      Export:
+        Name: ${self:service}:${self:provider.stage}:ServicesTableName
+    TndsTableName:
+      Value: !Ref TndsTable
+      Export:
+        Name: ${self:service}:${self:provider.stage}:TndsTableName
+    NaptanTableArn:
+      Value: !GetAtt NaptanTable.Arn
+      Export:
+        Name: ${self:service}:${self:provider.stage}:NaptanTableArn
+    NocTableArn:
+      Value: !GetAtt NocTable.Arn
+      Export:
+        Name: ${self:service}:${self:provider.stage}:NocTableArn
+    ServicesTableArn:
+      Value: !GetAtt ServicesTable.Arn
+      Export:
+        Name: ${self:service}:${self:provider.stage}:ServicesTableArn
+    TndsTableArn:
+      Value: !GetAtt TndsTable.Arn
+      Export:
+        Name: ${self:service}:${self:provider.stage}:TndsTableArn
 
 # The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
 # custom:
