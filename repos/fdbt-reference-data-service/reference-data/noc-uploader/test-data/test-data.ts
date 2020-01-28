@@ -203,12 +203,12 @@ export const testCsv: string =
 
 export const publicNameCsvData: string =
   "PubNmId,OperatorPublicName,PubNmQual,TTRteEnq,FareEnq,LostPropEnq,DisruptEnq,ComplEnq,Twitter,Facebook,LinkedIn,YouTube,ChangeDate,ChangeAgent,ChangeComment,CeasedDate,DataOwner,Website\n" +
-  "93088,1st Bus Stop Minibus,,cliff1stbusstop@aol.com,01474 326777,,,16 Lyndhurst Way, Istead Rise, Gravesend, Kent DA13 9EW,,,,,,,,,,\n" +
-  "93089,1st Choice Transport Ltd,,info@1stchoiceltd.co.uk,01554759888,,,The Transport Depot, Sandy Road, Llanelli SA15 4DP,,,,,,,,,,www.1stchoiceltdcoachhire.co.uk#http://www.1stchoiceltdcoachhire.co.uk#\n" +
-  "93090,2 Way Transport,,,01724 289399,,,29-30 High Santon Villas, High Santon , Scunthorpe DN15 0DG,,,,,,,,,,www.2waytransport-scunthorpe.co.uk/#http://www.2waytransport-scunthorpe.co.uk/#\n" +
-  "93091,24-7 Recruitment Services,,darren247cars@btinternet.com,01603 782247,,,1 New Cottage, Norwich Road, Horstead NR12 7BA,,,,,,,,,,#http://247taxiswroxham.tel#\n" +
-  "93093,A & A Coach Travel (Yorkshire),,info@a-atravel.co.uk,01423325300,,,The Control Tower offices, The Airfield, Fleet Lane, Tockwith York YO26 7QF,,,,,,,,,,#http://www.a-atravel.co.uk/#\n"
-  "93096,A & G Minibuses,,agminibusesltd@hotmail.com,01985218754,,,Paddock Wood, Bradley Road, Warminster BA12 7JY,,,,,,,,,,#http://www.aandgminibuses.com/index.html#"
+  "93088,1st Bus Stop Minibus,,cliff1stbusstop@aol.com,01474 326777,,,16 Lyndhurst Way Istead Rise Gravesend Kent DA13 9EW,,,,,,,,,,\n" +
+  "93089,1st Choice Transport Ltd,,info@1stchoiceltd.co.uk,01554759888,,,The Transport Depot Sandy Road Llanelli SA15 4DP,,,,,,,,,,www.1stchoiceltdcoachhire.co.uk#http://www.1stchoiceltdcoachhire.co.uk#\n" +
+  "93090,2 Way Transport,,,01724 289399,,,29-30 High Santon Villas High Santon  Scunthorpe DN15 0DG,,,,,,,,,,www.2waytransport-scunthorpe.co.uk/#http://www.2waytransport-scunthorpe.co.uk/#\n" +
+  "93091,24-7 Recruitment Services,,darren247cars@btinternet.com,01603 782247,,,1 New Cottage Norwich Road Horstead NR12 7BA,,,,,,,,,,#http://247taxiswroxham.tel#\n" +
+  "93093,A & A Coach Travel (Yorkshire),,info@a-atravel.co.uk,01423325300,,,The Control Tower offices The Airfield Fleet Lane Tockwith York YO26 7QF,,,,,,,,,,#http://www.a-atravel.co.uk/#\n"
+  "93096,A & G Minibuses,,agminibusesltd@hotmail.com,01985218754,,,Paddock Wood Bradley Road Warminster BA12 7JY,,,,,,,,,,#http://www.aandgminibuses.com/index.html#"
 
 export const nocTableCsvData:string = 
   "NOCCODE,OperatorPublicName,VOSA_PSVLicenseName,OpId,PubNmId,NOCCdQual,ChangeDate,ChangeAgent,ChangeComment,DateCeased,DataOwner\n" +
