@@ -13,7 +13,7 @@ describe('aws handler', () =>{
         globalAny.console = {
             log: jest.fn()
         }
-        Handler.s3hook(event, context, callback);
+        Handler.s3OdhUploaderHandler(event, context, callback);
         expect(globalAny.console.log).toHaveBeenCalledWith(JSON.stringify(event));
     });
 });
