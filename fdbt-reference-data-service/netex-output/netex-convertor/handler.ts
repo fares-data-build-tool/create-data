@@ -31,10 +31,9 @@ export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Pro
   } else {
     throw Error("No data to return.")
   }
-
 }
 
-export const s3hook: Handler = async (event: S3Event) => {
+export const s3NetexHandler = async (event: S3Event) => {
   const params = setS3ObjectParams(event);
-  const stringifiedData = await fetchDataFromS3AsString(params);
+  const stringifiedData = await fetchDataFromS3AsJSON(params);
 };
