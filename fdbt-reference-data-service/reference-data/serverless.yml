@@ -16,21 +16,30 @@ provider:
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - ${self:provider.stage}-fdbt-test-naptan-data
+            - fdbt-naptan-data-${self:provider.stage}
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - ${self:provider.stage}-fdbt-test-naptan-data
+            - fdbt-naptan-data-${self:provider.stage}
             - "/*"         
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - ${self:provider.stage}-fdbt-test-tnds-data
+            - fdbt-noc-data-${self:provider.stage}
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - ${self:provider.stage}-fdbt-test-tnds-data
-            - "/*"     
+            - fdbt-noc-data-${self:provider.stage}
+            - "/*"
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - fdbt-tnds-data-${self:provider.stage}
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - fdbt-tnds-data-${self:provider.stage}
+            - "/*"
     - Effect: 'Allow'
       Action:
         - dynamodb:DescribeTable
@@ -42,16 +51,19 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - !GetAtt naptanTable.Arn
-        - !GetAtt tndsTable.Arn
-        - !GetAtt servicesTable.Arn
+        - !GetAtt NaptanTable.Arn
+        - !GetAtt NocTable.Arn
+        - !GetAtt ServicesTable.Arn
+        - !GetAtt TndsTable.Arn
 
   environment:
-    NAPTAN_TABLE_NAME: !Ref naptanTable
-    TNDS_TABLE_NAME: !Ref tndsTable
-    SERVICES_TABLE_NAME: !Ref servicesTable
+    NAPTAN_TABLE_NAME: !Ref NaptanTable
+    NOC_TABLE_NAME: !Ref NocTable
+    TNDS_TABLE_NAME: !Ref ServicesTable
+    SERVICES_TABLE_NAME: !Ref TndsTable
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
-      
+
+
 plugins:
   - serverless-plugin-typescript
   - serverless-s3-local
@@ -60,34 +72,34 @@ plugins:
 
 
 functions:
-  naptanUploader:
-    handler: naptan-uploader/handler.s3hook
+  NaptanUploader:
+    handler: naptan-uploader/handler.s3NaptanHandler
     events: 
-      - s3: ${self:provider.stage}-fdbt-test-naptan-data
+      - s3: fdbt-naptan-data-${self:provider.stage}
         event: s3:ObjectCreated:*
 
-  nocUploader:
-    handler: noc-uploader/handler.s3hook
+  NocUploader:
+    handler: noc-uploader/handler.s3NocHandler
     events: 
-      - s3: ${self:provider.stage}-fdbt-test-noc-data
+      - s3: fdbt-noc-data-${self:provider.stage}
         event: s3:ObjectCreated:*
 
-  nptgUploader:
-    handler: nptg-uploader/handler.s3hook
+  NptgUploader:
+    handler: nptg-uploader/handler.s3NptgHandler
     events: 
-      - s3: ${self:provider.stage}-fdbt-test-nptg-data
+      - s3: fdbt-nptg-data-${self:provider.stage}
         event: s3:ObjectCreated:*
 
-  tndsUploader:
-    handler: tnds-uploader/handler.s3hook
+  TndsUploader:
+    handler: tnds-uploader/handler.s3TndsHandler
     events: 
-      - s3: ${self:provider.stage}-fdbt-test-tnds-data
+      - s3: fdbt-tnds-data-${self:provider.stage}
         event: s3:ObjectCreated:*
 
 
 resources: 
   Resources:
-    naptanTable: 
+    NaptanTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:provider.stage}-Stops
@@ -99,31 +111,19 @@ resources:
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
-    nocTable: 
+    NocTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:provider.stage}-Operators
         AttributeDefinitions:
           - AttributeName: "NOCCode"
             AttributeType: "S"
-          # - AttributeName: "PubNmId"
-          #   AttributeType: "N"
         KeySchema:
           - AttributeName: "NOCCode"
             KeyType: "HASH"
-        # GlobalSecondaryIndexes:
-        #   - IndexName: "PubNmId"
-        #     KeySchema: 
-        #       - AttributeName: "PubNmId"
-        #         KeyType: "HASH"
-        #     Projection:
-        #       ProjectionType: "KEYS_ONLY"
-        #     ProvisionedThroughput:
-        #       ReadCapacityUnits: 1
-        #       WriteCapacityUnits: 1
         BillingMode: PAY_PER_REQUEST
     
-    servicesTable: 
+    ServicesTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:provider.stage}-Services
@@ -139,7 +139,7 @@ resources:
             KeyType: "RANGE"
         BillingMode: PAY_PER_REQUEST
 
-    tndsTable: 
+    TndsTable: 
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:provider.stage}-TNDS
@@ -151,6 +151,27 @@ resources:
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
+Outputs:
+  NaptanTableName:
+    Value:
+      Ref: NaptanTable
+    Export:
+      Name: ${AWS::StackName}-NaptanTableName
+  NocTableName:
+    Value:
+      Ref: NocTable
+    Export:
+      Name: ${AWS::StackName}-NocTableName
+  ServicesTableName:
+    Value:
+      Ref: ServicesTable
+    Export:
+      Name: ${AWS::StackName}-ServicesTableName
+  TndsTableName:
+    Value:
+      Ref: TndsTable
+    Export:
+      Name: ${AWS::StackName}-TndsTableName
 
 # The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
 # custom:

@@ -5,28 +5,81 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   stage: ${opt:stage, 'test'}
+  timeout: 900
+  memorySize: 2048
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:ListBucket'
+      Resource: 
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - fdbt-user-data-${self:provider.stage}
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - fdbt-user-data-${self:provider.stage}
+            - "/*"         
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - fdbt-netex-data-${self:provider.stage}
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - fdbt-netex-data-${self:provider.stage}
+            - "/*"
+    - Effect: 'Allow'
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - Fn::ImportValue:
+          - Fn::Sub:
+            - ${ReferenceDataStackName}-NaptanTableName
+            - ${ReferenceDataStackName}-NocTableName
+            - ${ReferenceDataStackName}-ServicesTableName
+            - ${ReferenceDataStackName}-TndsTableName
+
+  environment:
+    NAPTAN_TABLE_NAME: !Ref ${ReferenceDataStackName}-NaptanTableName
+    NOC_TABLE_NAME: !Ref ${ReferenceDataStackName}-NocTablename
+    SERVICES_TABLE_NAME: !Ref ${ReferenceDataStackName}-ServicesTableName
+    TNDS_TABLE_NAME: !Ref ${ReferenceDataStackName}-TndsTableName
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+
 
 functions:
-  netexConvertor:
-    handler: netex-convertor/handler.s3hook
+  NetexConvertor:
+    handler: netex-convertor/handler.s3NetexConvertorHandler
     events:
-    - s3: fdbt-test-user-data
+    - s3: fdbt-user-data-${self:provider.stage}
       event: s3:ObjectCreated:*
 
-  odhUploader:
-    handler: odh-uploader/handler.s3hook
+  OdhUploader:
+    handler: odh-uploader/handler.s3OdhUploaderHandler
     events:
-      - s3: fdbt-test-netex-data
+      - s3: fdbt-netex-data-${self:provider.stage}
         event: s3:ObjectCreated:*
 
-package:
-  exclude:
-    - node_modules/**/*
-  include:
-    - netex-convertor/handler.ts
-    - odh-uploader/handler.ts
 
 plugins:
    - serverless-plugin-typescript
    - serverless-s3-local
+   - serverless-dynamodb-local
    - serverless-offline
+
+resources:
+  Parameters:
+    ReferenceDataStackName:
+      Description: "Name of the reference-data-service stack which creates Dynamo DB tables"
+      Default: reference-data-service-${self:provider.stage}
+      Type: string
