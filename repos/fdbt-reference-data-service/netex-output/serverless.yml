@@ -42,20 +42,28 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - Fn::ImportValue:
-          - Fn::Sub:
-            - ${ReferenceDataStackName}-NaptanTableName
-            - ${ReferenceDataStackName}-NocTableName
-            - ${ReferenceDataStackName}-ServicesTableName
-            - ${ReferenceDataStackName}-TndsTableName
+        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NaptanTableArn"
+        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NocTableArn"
+        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:ServicesTableArn"
+        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:TndsTableArn"
 
   environment:
-    NAPTAN_TABLE_NAME: !Ref ${ReferenceDataStackName}-NaptanTableName
-    NOC_TABLE_NAME: !Ref ${ReferenceDataStackName}-NocTablename
-    SERVICES_TABLE_NAME: !Ref ${ReferenceDataStackName}-ServicesTableName
-    TNDS_TABLE_NAME: !Ref ${ReferenceDataStackName}-TndsTableName
+    NAPTAN_TABLE_NAME: NaptanTableName
+    NOC_TABLE_NAME: NocTablename
+    SERVICES_TABLE_NAME: ServicesTableName
+    TNDS_TABLE_NAME: TndsTableName
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
+
+custom:
+  NaptanTableName:
+    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NaptanTableName"
+  NocTableName:
+    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NocTableName"
+  ServicesTableName:
+    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:ServicesTableName"
+  TndsTableName:
+    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:TndsTableName"
 
 functions:
   NetexConvertor:
@@ -76,10 +84,3 @@ plugins:
    - serverless-s3-local
    - serverless-dynamodb-local
    - serverless-offline
-
-resources:
-  Parameters:
-    ReferenceDataStackName:
-      Description: "Name of the reference-data-service stack which creates Dynamo DB tables"
-      Default: reference-data-service-${self:provider.stage}
-      Type: string
