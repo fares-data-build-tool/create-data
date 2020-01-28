@@ -7,15 +7,14 @@ pipelines:
           - node --version && npm --version
     - step:
         caches:
-        - node-modules-netex-output-resources
+          - node-modules-netex-output-resources
         script:
-          - cd netex-output        
+          - cd netex-output
           - npm ci
-          
           - CI=true npm test -- --coverage --detectOpenHandles
     - step:
         caches:
-        - node-modules-reference-data-resources
+          - node-modules-reference-data-resources
         script:
           - cd reference-data
           - npm ci
