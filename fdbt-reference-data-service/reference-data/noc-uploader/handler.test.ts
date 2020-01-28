@@ -56,7 +56,7 @@ describe("s3 handler with csv event", () => {
   it("sends the data to dynamo when a csv is created", async () => {
     const event = mocks.mockS3Event(
       "bucketName",
-      "prefix/fileName.csv"
+      "fileName.csv"
     );
 
     await s3NocHandler(event);
