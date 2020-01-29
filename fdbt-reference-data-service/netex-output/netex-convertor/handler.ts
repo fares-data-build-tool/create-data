@@ -1,9 +1,13 @@
-import { Handler, S3Event } from 'aws-lambda';
+import { S3Event } from 'aws-lambda';
 import AWS from "aws-sdk";
 
 export interface s3ObjectParameters {
   Bucket: string;
   Key: string;
+}
+
+export interface fetchedData {
+  Data: {};
 }
 
 export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
@@ -22,7 +26,7 @@ export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Pro
   const s3 = new AWS.S3();
   let data;
   try {
-    data = (await s3.getObject(parameters).promise()).Body?.valueOf;
+    data = (await s3.getObject(parameters).promise()).Body;
   } catch (err) {
     throw Error(`Error in retrieving data. Error: ${err.message}`);
   }
@@ -35,5 +39,8 @@ export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Pro
 
 export const s3NetexHandler = async (event: S3Event) => {
   const params = setS3ObjectParams(event);
-  const stringifiedData = await fetchDataFromS3AsJSON(params);
+  const s3Key: string = params.Key;
+  const uuid = s3Key.split("_")[0];
+  const JsonData = await fetchDataFromS3AsJSON(params);
+  return JsonData;
 };
