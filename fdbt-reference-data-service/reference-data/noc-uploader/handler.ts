@@ -75,6 +75,8 @@ export async function lists3Objects(
     })
     .promise();
   const contents = data.Contents!;
+  console.log({data})
+  console.log({contents})
   let itemOne = "";
   let itemTwo = "";
   let itemThree = "";
@@ -157,7 +159,9 @@ export async function writeBatchesToDynamo({
   const dynamodb = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
   });
+  console.log({parsedLines})
   const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedLines);
+  console.log({dynamoWriteRequestBatches})
   let count = 0;
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
@@ -169,8 +173,8 @@ export async function writeBatchesToDynamo({
           }
         })
         .promise();
-    } catch {
-      console.log("Throwing error....");
+    } catch (err) {
+      console.log("Throwing error...." + err.name + " : " + err.message);
       throw new Error("Could not write batch to DynamoDB");
     }
     let batchLength = batch.length;
@@ -193,22 +197,24 @@ export const s3NocHandler = async (event: S3Event) => {
   const tableName = setDbTableEnvVariable();
 
   const s3BucketName: string = event.Records[0].s3.bucket.name;
-
+  console.log({s3BucketName})
   const s3FileName: string = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
   );
+  console.log({s3FileName})
   const s3FileNameSubStringArray: string[] = s3FileName.split("/");
   const s3FileNameSubStringArrayFirstElement: string =
     s3FileNameSubStringArray[0];
-
+  console.log({s3FileNameSubStringArray})
+  console.log({s3FileNameSubStringArrayFirstElement})
   const Lists3ObjectsParameters: Lists3ObjectsParameters = {
     Bucket: s3BucketName,
     Prefix: s3FileNameSubStringArrayFirstElement
   };
 
   const s3ObjectsList = await lists3Objects(Lists3ObjectsParameters);
-
-  if (!s3ObjectsList) {
+  console.log({s3ObjectsList})
+  if (s3ObjectsList.length < 3) {
     throw new Error("Key(s) not available or undefined");
   }
 
@@ -217,7 +223,7 @@ export const s3NocHandler = async (event: S3Event) => {
     s3FileNameSubStringArrayFirstElement + "/NOCTable.csv",
     s3FileNameSubStringArrayFirstElement + "/PublicName.csv"
   ];
-
+  console.log({filenameKeys})
   const nocLineParams: S3ObjectParameters = {
     Bucket: s3BucketName,
     Key: filenameKeys[0]
@@ -249,6 +255,8 @@ export const s3NocHandler = async (event: S3Event) => {
     publicNameParsedCsv
   );
 
+  console.log({mergedArray})
+  console.log({tableName})
   await writeBatchesToDynamo({
     parsedLines: mergedArray,
     tableName: tableName
