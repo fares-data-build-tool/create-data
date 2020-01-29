@@ -1,0 +1,148 @@
+@import "../node_modules/govuk-frontend/govuk/all";
+
+.crownPadding {
+  padding-left:5px
+}
+
+
+.dftlogo{
+  margin-top: 10px
+}
+
+.govuk-grid-row {
+  margin-right: -15px;
+  margin-left: -15px
+}
+
+.govuk-grid-column-two-thirds {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 15px
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-grid-column-two-thirds {
+      width:16%;
+      float: left
+  }
+}
+
+.gem-c-organisation-logo {
+  font-size: 13px;
+  line-height: 1.1538461538;
+  font-weight: 400
+}
+
+@media (min-width: 40.0625em) {
+  .gem-c-organisation-logo {
+      font-size:18px;
+      line-height: 20px
+  }
+}
+
+.brand--department-for-transport .brand__color {
+  color: #398373
+}
+
+.brand--department-for-transport .brand__color:link,.brand--department-for-transport .brand__color:visited,.brand--department-for-transport .brand__color:active {
+  color: #398373
+}
+
+.brand--department-for-transport .brand__color:hover,.brand--department-for-transport .brand__color:focus {
+  color: #0b0c0c
+}
+
+.brand--department-for-transport.brand__border-color,.brand--department-for-transport .brand__border-color {
+  border-color: #006c56
+}
+
+.gem-c-organisation-logo__container {
+  text-transform: none;
+  text-decoration: none;
+  display: block;
+  color: #0b0c0c;
+  height: auto;
+  width: auto;
+  direction: ltr
+}
+
+.gem-c-organisation-logo__crest {
+  border-left: 2px solid #0b0c0c;
+  padding-top: 20px;
+  padding-left: 6px
+}
+
+@media (min-width: 40.0625em) {
+  .gem-c-organisation-logo__crest {
+      padding-top:25px;
+      padding-left: 7px
+  }
+}
+
+.brand--executive-office .gem-c-organisation-logo__crest {
+  border-left-width: 0;
+  padding-left: 0;
+  background-position: 0 0
+}
+
+.gem-c-organisation-logo__crest--single-identity,.gem-c-organisation-logo__crest--eo,.gem-c-organisation-logo__crest--org {
+  background: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_13px-3b807e54b8b177b209fc8d880ffc3687f7a634991d74038faaca9e4b4b487424.png) no-repeat 5px 0;
+  background-size: auto 20px
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .gem-c-organisation-logo__crest--single-identity,.gem-c-organisation-logo__crest--eo,.gem-c-organisation-logo__crest--org {
+      background-image:url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_13px_x2-24eb94ac833fa04e95dc43b876e6e78e502d1b8fdc4476f253faf8ea74ce1670.png)
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .gem-c-organisation-logo__crest--single-identity,.gem-c-organisation-logo__crest--eo,.gem-c-organisation-logo__crest--org {
+      background:url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px-7026afebba9918a0830ebf68cf496cbb0b81f3514b884dc2c32904780baa3368.png) no-repeat 6px 0;
+      background-size: auto 26px
+  }
+}
+
+@media only screen and (min-width: 40.0625em) and (-webkit-min-device-pixel-ratio: 2), only screen and (min-width: 40.0625em) and (min-device-pixel-ratio: 2), only screen and (min-width: 40.0625em) and (min-resolution: 192dpi), only screen and (min-width: 40.0625em) and (min-resolution: 2dppx) {
+  .gem-c-organisation-logo__crest--single-identity,.gem-c-organisation-logo__crest--eo,.gem-c-organisation-logo__crest--org {
+      background-image:url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px_x2-b4af7a6d71fbd9bfb3b9550bc0e1d856e01e5b388ad8e18717b4ad60e73705ff.png)
+  }
+}
+
+.brand--department-for-transport.brand__border-color,.brand--department-for-transport .brand__border-color {
+  border-color: #006c56
+}
+
+.gem-c-organisation-logo__name {
+  position: relative;
+  top: 3px;
+  font-family: "HelveticaNeue", "Helvetica Neue", "Arial", "Helvetica", sans-serif
+}
+
+
+.cls-1 {
+  fill: #49499e;
+}
+.cls-2 {
+  fill: #00bdd0;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+
+.logo {
+  width: 20%;
+  max-width: 160px;
+  display: inline-block;
+  margin-top: 18px;
+  vertical-align: top;
+  padding-top: 10px;
+  margin-left: -17px;
+}
+
+.no-background-image {
+  background-image: none;
+  padding-top: 0px;
+}
