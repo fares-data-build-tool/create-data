@@ -117,10 +117,10 @@ resources:
       Properties:
         TableName: ${self:provider.stage}-Operators
         AttributeDefinitions:
-          - AttributeName: "NOCCode"
+          - AttributeName: "NOCCODE"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "NOCCode"
+          - AttributeName: "NOCCODE"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
     
