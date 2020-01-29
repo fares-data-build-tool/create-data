@@ -2,7 +2,7 @@
   "name": "netex-convertor",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --noEmit",
     "test": "jest"
   },
   "author": "",
