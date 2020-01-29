@@ -56,37 +56,6 @@ workflows:
           filters:
             branches:
               only: develop
-
-      - build-and-test-netex-output-resources:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-netex-output-resources:
-          requires:
-            - build-and-test-netex-output-resources
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-
-      - build-and-test-reference-data-resources:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-reference-data-resources:
-          requires:
-            - build-and-test-reference-data-resources
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-
       - build-and-test-site:
           requires:
             - checkout-repo
@@ -101,12 +70,3 @@ workflows:
           filters:
             branches:
               only: develop
-      # - tag-test-release:
-      #     requires:
-      #       - deploy-netex-output-resources
-      #       - deploy-reference-data-resources
-      #       - deploy-site
-      #     context: "tfn-aws"
-      #     filters:
-      #       branches:
-      #         only: develop
