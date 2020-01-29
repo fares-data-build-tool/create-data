@@ -1,4 +1,4 @@
-image: node:13.3.0
+image: node:12
 
 pipelines:
   default:
@@ -7,28 +7,11 @@ pipelines:
           - node --version && npm --version
     - step:
         caches:
-          - node-modules-netex-output-resources
-        script:
-          - cd netex-output
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
           - node-modules-reference-data-resources
         script:
-          - cd reference-data
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
-    - step:
-        caches:
-          - node-modules-site
-        script:
-          - cd site
           - npm ci
           - CI=true npm test -- --coverage --detectOpenHandles
 
 definitions:
   caches:
-    node-modules-netex-output-resources: netex-output/node_modules
-    node-modules-reference-data-resources: reference-data/node-modules
-    node-modules-site: site/node_modules
+    node-modules-reference-data-resources: node-modules
