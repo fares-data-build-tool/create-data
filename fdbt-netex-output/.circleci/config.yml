@@ -31,7 +31,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "netex-output/node_modules"
+            - "./node_modules"
 
   deploy-netex-output-resources:
     docker:
