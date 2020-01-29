@@ -60,8 +60,8 @@ provider:
   environment:
     NAPTAN_TABLE_NAME: !Ref NaptanTable
     NOC_TABLE_NAME: !Ref NocTable
-    TNDS_TABLE_NAME: !Ref ServicesTable
-    SERVICES_TABLE_NAME: !Ref TndsTable
+    TNDS_TABLE_NAME: !Ref TndsTable
+    SERVICES_TABLE_NAME: !Ref ServicesTable
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
 
@@ -117,10 +117,10 @@ resources:
       Properties:
         TableName: ${self:provider.stage}-Operators
         AttributeDefinitions:
-          - AttributeName: "NOCCode"
+          - AttributeName: "NOCCODE"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "NOCCode"
+          - AttributeName: "NOCCODE"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
     
