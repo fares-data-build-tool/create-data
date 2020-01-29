@@ -1,0 +1,18 @@
+image: node:12
+
+pipelines:
+  default:
+    - step:
+        script:
+          - node --version && npm --version
+    - step:
+        caches:
+          - node-modules-netex-output-resources
+        script:
+          - cd netex-output
+          - npm ci
+          - CI=true npm test -- --coverage --detectOpenHandles
+
+definitions:
+  caches:
+    node-modules-netex-output-resources: netex-output/node_modules
