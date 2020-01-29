@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc --noEmit"
   },
   "author": "",
   "license": "ISC",
