@@ -14,8 +14,12 @@ export interface s3ObjectParameters {
   Key: string;
 }
 export interface tndsDynamoDBData {
-  Data: {};
-  FileName: string;
+  FileName: string,
+  OperatorShortname: string,
+  StopPoints:{
+    StopPointRef: string,
+    CommonName: string
+  }
 }
 
 export interface servicesDynamoDBData {
@@ -78,13 +82,13 @@ export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
   const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
   return new Promise((resolve, reject) => {
-    parseString(xmlWithoutFirstLine, function(err, result) {
+    parseString(xmlWithoutFirstLine, function (err, result) {
       if (err) {
         return reject(
           "Parsing xml failed. Error message: " +
-            err.message +
-            " and error name: " +
-            err.name
+          err.message +
+          " and error name: " +
+          err.name
         );
       } else {
         const noEmptyResult = omitEmpty(result);
@@ -113,7 +117,7 @@ export function formatDynamoWriteRequest(
   const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
-  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function (
     result,
     _value,
     index,
@@ -123,7 +127,7 @@ export function formatDynamoWriteRequest(
       result.push(array.slice(index, index + batchSize));
     return result;
   },
-  emptyBatch);
+    emptyBatch);
   return dynamoWriteRequestBatches;
 }
 
@@ -184,14 +188,25 @@ export async function writeXmlToDynamo({
 
 export function cleanParsedXmlData(parsedXmlData: any): tndsDynamoDBData {
   const parsedJson = JSON.parse(parsedXmlData);
+
   let extractedFilename = parsedJson["TransXChange"]["$"]["FileName"];
   extractedFilename = extractedFilename.split(".");
   extractedFilename = extractedFilename[0];
   const creationDateTime = new Date().toISOString().slice(0, 19); // 19 characters limits this to just date and time
 
+  const extractedOperatorShortname = parsedJson["TransXChange"]["$"][]
+  
+  const extractedStopPointRef = parsedJson["TransXChange"]["$"][]
+  const extractedCommonName = parsedJson["TransXChange"]["$"][]
+
   return {
-    FileName: extractedFilename + "_" + creationDateTime,
-    Data: parsedXmlData
+    FileName: extractedFilename + creationDateTime,
+    OperatorShortname: extractedOperatorShortname,
+    StopPoints:
+    {
+      StopPointRef: extractedStopPointRef,
+      CommonName: extractedCommonName
+    }
   };
 }
 
