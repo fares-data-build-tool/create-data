@@ -1,9 +1,9 @@
-import * as handler from '../handler';
+import * as Handler from '../handler';
 import { Context, Callback } from 'aws-lambda';
 import MockContext from 'aws-lambda-mock-context';
 
-describe('aws handler', () =>{
-    it('should call console.log', () =>{
+describe('aws handler', () =>{ 
+    it('should call console.log', () => {
         const event = {
             Name: "myName"
         };
@@ -13,9 +13,7 @@ describe('aws handler', () =>{
         globalAny.console = {
             log: jest.fn()
         }
-        handler.s3hook(event, context, callback);
-        expect(globalAny.console.log).toHaveBeenCalledWith(
-            JSON.stringify(event)
-        );
+        Handler.s3OdhUploaderHandler(event, context, callback);
+        expect(globalAny.console.log).toHaveBeenCalledWith(JSON.stringify(event));
     });
 });

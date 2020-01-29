@@ -173,7 +173,7 @@ Within the .dynamodb folder that was created by installing dynamodb local, creat
 e.g.
 [
   {
-    "NOCCode": "3ABC",
+    "NOCCODE": "3ABC",
     "OperatorPublicName": "Big Bus Ltd",
     "OpId": 123456,
     "PubNmId": 54321,
