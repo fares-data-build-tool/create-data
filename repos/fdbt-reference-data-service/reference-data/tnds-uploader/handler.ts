@@ -242,7 +242,7 @@ export function cleanParsedXmlData(parsedXmlData: string): any {
   }
 
   const cleanedXmlData = {
-    Filename: extractedFilename + creationDateTime,
+    FileName: extractedFilename + creationDateTime,
     OperatorShortName: extractedOperatorShortNames,
     StopPoints: stopPointsCollection
   };

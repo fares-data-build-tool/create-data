@@ -99,7 +99,7 @@ export function isJSON(str: any) {
 }
 
 export const mockCleanedXmlData: {} = {
-  Filename: "ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z",
+  FileName: "ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z",
   OperatorShortName: ["Dews Coaches", "Dannys Coaches"],
   StopPoints: [
     { StopPointRef: "0500SBARH011", CommonName: "Superstore" },
