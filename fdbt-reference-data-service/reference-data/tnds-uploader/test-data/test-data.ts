@@ -99,15 +99,84 @@ export function isJSON(str: any) {
 }
 
 export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
-<TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
-<StopPoints>
+<TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-12-20T12:27:45.5656Z" ModificationDateTime="2019-12-20T12:27:45.5656Z" Modification="new" RevisionNumber="3" FileName="ea_20-2-A-y08-1.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
+  <StopPoints>
     <AnnotatedStopPointRef>
-      <StopPointRef>2290YHA01586</StopPointRef>
-      <CommonName>Hull Interchange</CommonName>
+      <StopPointRef>0500CCITY541</StopPointRef>
+      <CommonName>Cambridge North Railway Station</CommonName>
+      <Indicator>Stop 2</Indicator>
+      <LocalityName>Cambridge (Cambs)</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
     </AnnotatedStopPointRef>
     <AnnotatedStopPointRef>
-      <StopPointRef>2290YHA01512</StopPointRef>
-      <CommonName>Carr Lane A</CommonName>
+      <StopPointRef>0500CCITY538</StopPointRef>
+      <CommonName>Driving Test Centre</CommonName>
+      <Indicator>o/s</Indicator>
+      <LocalityName>Cambridge (Cambs)</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY307</StopPointRef>
+      <CommonName>Milton Road</CommonName>
+      <Indicator>SW-bound</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY473</StopPointRef>
+      <CommonName>Scarsdale Close</CommonName>
+      <Indicator>opp</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY298</StopPointRef>
+      <CommonName>Sherbourne Close</CommonName>
+      <Indicator>opp</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY323</StopPointRef>
+      <CommonName>Franks Lane</CommonName>
+      <Indicator>adj</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY218</StopPointRef>
+      <CommonName>Ashfield Road</CommonName>
+      <Indicator>opp</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY090</StopPointRef>
+      <CommonName>Water Lane</CommonName>
+      <Indicator>nr</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY138</StopPointRef>
+      <CommonName>Thrift's Walk</CommonName>
+      <Indicator>nr</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY088</StopPointRef>
+      <CommonName>Chapel Street</CommonName>
+      <Indicator>nr</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
+    </AnnotatedStopPointRef>
+    <AnnotatedStopPointRef>
+      <StopPointRef>0500CCITY032</StopPointRef>
+      <CommonName>Chesterton Road</CommonName>
+      <Indicator>nr</Indicator>
+      <LocalityName>Chesterton/C'bridge</LocalityName>
+      <LocalityQualifier>Cambridgeshire</LocalityQualifier>
     </AnnotatedStopPointRef>
   </StopPoints>
   <RouteSections>
@@ -125,8 +194,7 @@ export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
   </RouteSections>
   <Routes>
     <Route id="YHAO999_001">
-      <Description>Hull Interchange - Monument Bridge
-</Description>
+      <Description>Hull Interchange - Monument Bridge</Description>
       <RouteSectionRef>YHAO999_001</RouteSectionRef>
     </Route>
   </Routes>

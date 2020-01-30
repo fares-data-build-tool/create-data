@@ -145,9 +145,10 @@ describe("XML data cleaner", () => {
     const xmlToBeCleaned = await xmlParser(testXml);
 
     const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
-
+    console.log({cleanedXml})
+    console.log(JSON.stringify(cleanedXml))
     expect(cleanedXml.FileName).toContain("SVRYHAO999" + "_");
-    expect(!!cleanedXml.Data && cleanedXml.Data).toBe(xmlToBeCleaned);
+    expect(!!cleanedXml.OperatorShortname && cleanedXml.OperatorShortname).toBe(xmlToBeCleaned);
   });
 });
 
