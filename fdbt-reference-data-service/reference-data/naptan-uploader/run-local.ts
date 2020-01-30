@@ -11,14 +11,14 @@ The <PATH_TO_CSV_FILE> will need to be relative to the location of run-local.ts.
 */
 
 const streamOutputToCommandLine = async () => {
-  const data = fs.readFileSync(path.join(__dirname, "./../../../reference-data/TNDSV2.5/EA/ea_20-1A-A-y08-1.xml"));
+  const data = fs.readFileSync(path.join(__dirname, "./../tnds-uploader/test-data/test-data.xml"));
   const stringifiedData = data.toString();
 
   const parsedXmlData = await xmlParser(stringifiedData);
-  console.log(parsedXmlData)
-
+  console.log(JSON.parse(parsedXmlData)["TransXChange"]["Operators"][0]["Operator"][CHANGE THIS ONE]["OperatorShortName"][0])
+  console.log("-----------------------------------------")
   const cleanedXmlData = cleanParsedXmlData(parsedXmlData);
-  console.log(cleanedXmlData);
+  console.log({cleanedXmlData});
 
 };
 

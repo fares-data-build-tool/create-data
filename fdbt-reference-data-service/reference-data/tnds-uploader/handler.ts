@@ -9,9 +9,26 @@ import { parseString } from "xml2js";
 export type ParsedXmlData = tndsDynamoDBData;
 export type ParsedCsvData = servicesDynamoDBData;
 
-interface StopPointsObject {
-  StopPointRef: string;
-  CommonName: string;
+interface ExtractedStopPoint {
+  StopPointRef: string[];
+  CommonName: string[];
+  Indicator: string[];
+  LocalityName: string[];
+  LocalityQualifier: string[];
+}
+
+interface ExtractedOperators {
+  '$': {};
+  NationalOperatorCode: string[];
+  OperatorCode: string[];
+  OperatorShortName: string[];
+  OperatorNameOnLicence: string[];
+  TradingName: string[];
+}
+
+interface StopPointObject {
+  StopPointRef: string,
+  CommonName: string
 }
 
 export interface s3ObjectParameters {
@@ -67,12 +84,12 @@ export function tableChooser(fileExtension: string) {
     );
   }
 
-  let tableName = "";
-
   if (fileExtension === "csv") {
-    return (tableName = process.env.SERVICES_TABLE_NAME);
+    let tableName = process.env.SERVICES_TABLE_NAME;
+    return tableName;
   } else if (fileExtension === "xml") {
-    return (tableName = process.env.TNDS_TABLE_NAME);
+    let tableName = process.env.TNDS_TABLE_NAME;
+    return tableName;
   } else {
     console.error(`File is not of a supported format type (${fileExtension})`);
     throw new Error(`Unsupported file type ${fileExtension}`);
@@ -199,33 +216,37 @@ export function cleanParsedXmlData(parsedXmlData: string): any {
   extractedFilename = extractedFilename[0];
   const creationDateTime = new Date().toISOString().slice(0, 19); // 19 characters limits this to just date and time
 
-  const extractedOperatorShortName =
-    parsedJson["TransXChange"]["Operators"]["Operator"]["OperatorShortName"];
-  const extractedStopPoints = parsedJson["TransXChange"]["StopPoints"];
+  const extractedOperators: ExtractedOperators[] =
+    parsedJson["TransXChange"]["Operators"][0]["Operator"];
+  console.log({extractedOperators})
+  const extractedStopPoints: ExtractedStopPoint[] =
+    parsedJson["TransXChange"]["StopPoints"][0]["AnnotatedStopPointRef"];
 
-  let stopPointsCollection = {};
-  let index = 0;
-  for (let item in extractedStopPoints) {
-    const extractedStopPointRef = extractedStopPoints[item]["StopPointRef"];
-    const extractedCommonName = extractedStopPoints[item]["CommonName"];
-    Object.assign(stopPointsCollection, {
-      index: {
-        StopPointRef: extractedStopPointRef,
-        CommonName: extractedCommonName
-      }
-    });
-    index++;
+  let extractedOperatorShortNames: string[] = [];
+  for (let i = 0; i< extractedOperators.length; i++) {
+    let operator = extractedOperators[i]
+    let operatorShortName: string = operator["OperatorShortName"][0];
+    extractedOperatorShortNames.push(operatorShortName);
   }
-  console.log({index})
-  console.log({stopPointsCollection})
-  console.log({extractedFilename})
-  console.log({extractedOperatorShortName})
+
+  let stopPointsCollection: {}[] = [];
+  for (let i = 0; i < extractedStopPoints.length; i++) {
+    let stopPointItem: ExtractedStopPoint = extractedStopPoints[i];
+    let stopPointRef = stopPointItem["StopPointRef"][0];
+    let commonName = stopPointItem["CommonName"][0];
+    let stopPointObject: StopPointObject = {
+      StopPointRef: stopPointRef,
+      CommonName: commonName
+    }
+    stopPointsCollection.push(stopPointObject);
+  }
+
   const cleanedXmlData = {
     Filename: extractedFilename + creationDateTime,
-    OperatorShortName: extractedOperatorShortName,
+    OperatorShortName: extractedOperatorShortNames,
     StopPoints: stopPointsCollection
   };
-  console.log({cleanedXmlData})
+  console.log({ cleanedXmlData });
   return cleanedXmlData;
 }
 
