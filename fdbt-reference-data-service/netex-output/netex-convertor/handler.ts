@@ -26,10 +26,11 @@ export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Pro
   const s3: AWS.S3 = new AWS.S3();
   try {
     let dataAsString: string = (await s3.getObject(parameters).promise()).Body?.toString("utf-8")!;
+    console.log({dataAsString})
     const dataAsJson: JSON = JSON.parse(dataAsString);
     return dataAsJson;
   } catch (err) {
-    throw Error(`Error in retrieving data. Error: ${err.message}`);
+    throw new Error("Error in retrieving data.");
   }
 }
 
