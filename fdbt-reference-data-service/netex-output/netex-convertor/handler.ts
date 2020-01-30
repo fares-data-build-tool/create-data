@@ -35,8 +35,10 @@ export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Pro
 
 export const s3NetexHandler = async (event: S3Event) => {
   const params = setS3ObjectParams(event);
+  console.log("S3ObjectParameters obtained from S3 Event are: ", params)
   const s3Key: string = params.Key;
   const uuid = s3Key.split("_")[0];
-  const JsonData = await fetchDataFromS3AsJSON(params);
-  return JsonData;
+  const jsonData = await fetchDataFromS3AsJSON(params);
+  console.log("JSON data received from S3 Object received as: ", jsonData)
+  return jsonData;
 };
