@@ -17,7 +17,7 @@ describe("s3 handler with csv event", () => {
 
         mockS3GetObject.mockImplementation(() => ({
             promise() {
-                return Promise.resolve({ Body: { data: "This is the data abcdefghijklmnop" }});
+                return Promise.resolve({ Body: mocks.mockS3ObjectDataAsString});
             }
         }));
 
@@ -35,6 +35,6 @@ describe("s3 handler with csv event", () => {
 
         const result = await s3NetexHandler(event);
         
-        expect(JSON.stringify(result)).toContain("abcdefghijklmnop");
+        expect(result).toStrictEqual(mocks.mockS3ObjectDataAsJson);
     });
 });
