@@ -211,10 +211,10 @@ export async function writeXmlToDynamo({
 export function cleanParsedXmlData(parsedXmlData: string): any {
   const parsedJson = JSON.parse(parsedXmlData);
 
-  let extractedFilename = parsedJson["TransXChange"]["$"]["FileName"];
-  extractedFilename = extractedFilename.split(".");
-  extractedFilename = extractedFilename[0];
-  const creationDateTime = new Date().toISOString().slice(0, 19); // 19 characters limits this to just date and time
+  let extractedFilename: string = parsedJson["TransXChange"]["$"]["FileName"];
+  let arrayOfExtractedFilename: string[] = extractedFilename.split(".");
+  extractedFilename = arrayOfExtractedFilename[0];
+  const creationDateTime: string = parsedJson["TransXChange"]["$"]["CreationDateTime"];
 
   const extractedOperators: ExtractedOperators[] =
     parsedJson["TransXChange"]["Operators"][0]["Operator"];
