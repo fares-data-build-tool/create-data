@@ -9,17 +9,22 @@ import { parseString } from "xml2js";
 export type ParsedXmlData = tndsDynamoDBData;
 export type ParsedCsvData = servicesDynamoDBData;
 
+interface StopPointsObject {
+  StopPointRef: string;
+  CommonName: string;
+}
+
 export interface s3ObjectParameters {
   Bucket: string;
   Key: string;
 }
 export interface tndsDynamoDBData {
-  FileName: string,
-  OperatorShortname: string,
-  StopPoints:{
-    StopPointRef: string,
-    CommonName: string
-  }
+  FileName: string;
+  OperatorShortname: string;
+  StopPoints: {
+    StopPointRef: string;
+    CommonName: string;
+  };
 }
 
 export interface servicesDynamoDBData {
@@ -78,17 +83,17 @@ export function removeFirstLineOfString(xmlData: string): string {
   return xmlData.substring(xmlData.indexOf("\n") + 1);
 }
 
-export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
+export async function xmlParser(xmlData: string): Promise<string> {
   const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
   return new Promise((resolve, reject) => {
-    parseString(xmlWithoutFirstLine, function (err, result) {
+    parseString(xmlWithoutFirstLine, function(err, result) {
       if (err) {
         return reject(
           "Parsing xml failed. Error message: " +
-          err.message +
-          " and error name: " +
-          err.name
+            err.message +
+            " and error name: " +
+            err.name
         );
       } else {
         const noEmptyResult = omitEmpty(result);
@@ -117,7 +122,7 @@ export function formatDynamoWriteRequest(
   const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
-  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function (
+  const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
     result,
     _value,
     index,
@@ -127,7 +132,7 @@ export function formatDynamoWriteRequest(
       result.push(array.slice(index, index + batchSize));
     return result;
   },
-    emptyBatch);
+  emptyBatch);
   return dynamoWriteRequestBatches;
 }
 
@@ -186,7 +191,7 @@ export async function writeXmlToDynamo({
   console.log("Dynamo DB put request complete.");
 }
 
-export function cleanParsedXmlData(parsedXmlData: any): tndsDynamoDBData {
+export function cleanParsedXmlData(parsedXmlData: string): any {
   const parsedJson = JSON.parse(parsedXmlData);
 
   let extractedFilename = parsedJson["TransXChange"]["$"]["FileName"];
@@ -194,20 +199,34 @@ export function cleanParsedXmlData(parsedXmlData: any): tndsDynamoDBData {
   extractedFilename = extractedFilename[0];
   const creationDateTime = new Date().toISOString().slice(0, 19); // 19 characters limits this to just date and time
 
-  const extractedOperatorShortname = parsedJson["TransXChange"]["$"][]
-  
-  const extractedStopPointRef = parsedJson["TransXChange"]["$"][]
-  const extractedCommonName = parsedJson["TransXChange"]["$"][]
+  const extractedOperatorShortName =
+    parsedJson["TransXChange"]["Operators"]["Operator"]["OperatorShortName"];
+  const extractedStopPoints = parsedJson["TransXChange"]["StopPoints"];
 
-  return {
-    FileName: extractedFilename + creationDateTime,
-    OperatorShortname: extractedOperatorShortname,
-    StopPoints:
-    {
-      StopPointRef: extractedStopPointRef,
-      CommonName: extractedCommonName
-    }
+  let stopPointsCollection = {};
+  let index = 0;
+  for (let item in extractedStopPoints) {
+    const extractedStopPointRef = extractedStopPoints[item]["StopPointRef"];
+    const extractedCommonName = extractedStopPoints[item]["CommonName"];
+    Object.assign(stopPointsCollection, {
+      index: {
+        StopPointRef: extractedStopPointRef,
+        CommonName: extractedCommonName
+      }
+    });
+    index++;
+  }
+  console.log({index})
+  console.log({stopPointsCollection})
+  console.log({extractedFilename})
+  console.log({extractedOperatorShortName})
+  const cleanedXmlData = {
+    Filename: extractedFilename + creationDateTime,
+    OperatorShortName: extractedOperatorShortName,
+    StopPoints: stopPointsCollection
   };
+  console.log({cleanedXmlData})
+  return cleanedXmlData;
 }
 
 export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
@@ -240,7 +259,6 @@ export const s3TndsHandler = async (event: S3Event) => {
   const tableName = tableChooser(fileExtension);
 
   let parsedData;
-
   if (tableName === process.env.TNDS_TABLE_NAME) {
     parsedData = await xmlParser(stringifiedS3Data);
 
