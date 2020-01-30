@@ -1,4 +1,4 @@
-import { S3Event } from 'aws-lambda';
+import { S3Event } from "aws-lambda";
 import AWS from "aws-sdk";
 
 export interface s3ObjectParameters {
@@ -22,18 +22,14 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
   return params;
 }
 
-export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Promise<Object> {
-  const s3 = new AWS.S3();
-  let data;
+export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Promise<JSON> {
+  const s3: AWS.S3 = new AWS.S3();
   try {
-    data = (await s3.getObject(parameters).promise()).Body;
+    let dataAsString: string = (await s3.getObject(parameters).promise()).Body?.toString("utf-8")!;
+    const dataAsJson: JSON = JSON.parse(dataAsString);
+    return dataAsJson;
   } catch (err) {
     throw Error(`Error in retrieving data. Error: ${err.message}`);
-  }
-  if (data) {
-    return data;
-  } else {
-    throw Error("No data to return.")
   }
 }
 
