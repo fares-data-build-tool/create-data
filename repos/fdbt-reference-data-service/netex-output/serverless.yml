@@ -67,7 +67,7 @@ custom:
 
 functions:
   NetexConvertor:
-    handler: netex-convertor/handler.s3NetexConvertorHandler
+    handler: netex-convertor/handler.s3NetexHandler
     events:
     - s3: fdbt-user-data-${self:provider.stage}
       event: s3:ObjectCreated:*
