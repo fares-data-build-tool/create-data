@@ -1,5 +1,11 @@
 import AWS from "aws-sdk";
-import { fetchDataFromS3AsJSON, setS3ObjectParams } from "./handler";
+import {
+  fetchDataFromS3AsJSON, setS3ObjectParams, getItemFromDynamoDBTableWithPartitionKey,
+  getItemFromDynamoDBTableWithPartitionKeyAndSortKey,
+  getAttributeValueFromDynamoDBItemAsAString,
+  getAttributeValueFromDynamoDBItemAsAStringArray,
+  getAttributeValueFromDynamoDBItemAsAnObjectArray
+} from "./handler";
 import { s3ObjectParameters } from "./handler";
 import * as mocks from "./test-data/test-data";
 
@@ -56,31 +62,177 @@ describe("fetchDataFromS3AsJSON", () => {
     await fetchDataFromS3AsJSON(s3Params);
     expect(mockS3GetObject).toHaveBeenCalledWith(s3Params);
   });
+});
 
-  describe("setS3ObjectParams", () => {
-    const bucketName = "fdbt-test-matchingdata-s3-bucket";
-    const fileName = "fdbt-test-matchingdata.json";
-    const s3Event = mocks.mockS3Event(bucketName, fileName);
+describe("setS3ObjectParams", () => {
+  const bucketName = "fdbt-test-matchingdata-s3-bucket";
+  const fileName = "fdbt-test-matchingdata.json";
+  const s3Event = mocks.mockS3Event(bucketName, fileName);
 
-    it("sets s3BucketName from S3Event", () => {
-      const s3ObjectParameters = setS3ObjectParams(s3Event);
-      expect(s3ObjectParameters.Bucket).toEqual(bucketName);
-    });
+  it("sets s3BucketName from S3Event", () => {
+    const s3ObjectParameters = setS3ObjectParams(s3Event);
+    expect(s3ObjectParameters.Bucket).toEqual(bucketName);
+  });
 
-    it("sets S3FileName from S3Event", () => {
-      const s3ObjectParameters = setS3ObjectParams(s3Event);
-      expect(s3ObjectParameters.Key).toEqual(fileName);
-    });
+  it("sets S3FileName from S3Event", () => {
+    const s3ObjectParameters = setS3ObjectParams(s3Event);
+    expect(s3ObjectParameters.Key).toEqual(fileName);
+  });
 
-    it("removes spaces and unicode non-ASCII characters in the S3FileName", () => {
-      const fileName = "fdbt%2Ftest+%3A+matchingdata.json";
-      const S3Event = mocks.mockS3Event(bucketName, fileName);
-      const params = {
-        Bucket: bucketName,
-        Key: "fdbt/test : matchingdata.json"
-      };
-      const s3ObjectParameters = setS3ObjectParams(S3Event);
-      expect(s3ObjectParameters).toEqual(params);
-    });
+  it("removes spaces and unicode non-ASCII characters in the S3FileName", () => {
+    const fileName = "fdbt%2Ftest+%3A+matchingdata.json";
+    const S3Event = mocks.mockS3Event(bucketName, fileName);
+    const params = {
+      Bucket: bucketName,
+      Key: "fdbt/test : matchingdata.json"
+    };
+    const s3ObjectParameters = setS3ObjectParams(S3Event);
+    expect(s3ObjectParameters).toEqual(params);
   });
 });
+
+describe("get item data from DynamoDB table with partition key", () => {
+  const mockDynamoBatchWrite = jest.fn();
+
+  beforeEach(() => {
+    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+
+    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+      return { batchWrite: mockDynamoBatchWrite };
+    });
+
+    mockDynamoBatchWrite.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({});
+      }
+    }));
+  });
+
+  afterEach(() => {
+    mockDynamoBatchWrite.mockReset();
+  });
+
+  it("gets data for an item from DynamoDB using partition key", async () => {
+
+
+
+    expect().toBe();
+  });
+});
+
+describe("get item data from DynamoDB table with partition key and sort key", () => {
+  const mockDynamoBatchWrite = jest.fn();
+
+  beforeEach(() => {
+    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+
+    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+      return { batchWrite: mockDynamoBatchWrite };
+    });
+
+    mockDynamoBatchWrite.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({});
+      }
+    }));
+  });
+
+  afterEach(() => {
+    mockDynamoBatchWrite.mockReset();
+  });
+
+  it("gets data for an item from DynamoDB using partition key and sort key", async () => {
+
+
+
+    expect().toBe();
+  });
+});
+
+describe("get attribute value from DynamoDB item as a string", () => {
+  const mockDynamoBatchWrite = jest.fn();
+
+  beforeEach(() => {
+    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+
+    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+      return { batchWrite: mockDynamoBatchWrite };
+    });
+
+    mockDynamoBatchWrite.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({});
+      }
+    }));
+  });
+
+  afterEach(() => {
+    mockDynamoBatchWrite.mockReset();
+  });
+
+  it("gets value for an item from DynamoDB as a string", async () => {
+
+
+
+    expect().toBe();
+  });
+});
+
+describe("get attribute value from DynamoDB item as a string array", () => {
+  const mockDynamoBatchWrite = jest.fn();
+
+  beforeEach(() => {
+    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+
+    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+      return { batchWrite: mockDynamoBatchWrite };
+    });
+
+    mockDynamoBatchWrite.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({});
+      }
+    }));
+  });
+
+  afterEach(() => {
+    mockDynamoBatchWrite.mockReset();
+  });
+
+  it("gets all the data for an item from DynamoDB as a string array", async () => {
+
+
+
+    expect().toBe();
+  });
+});
+
+describe("get attribute value from DynamoDB item as an object array", () => {
+  const mockDynamoBatchWrite = jest.fn();
+
+  beforeEach(() => {
+    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+
+    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+      return { batchWrite: mockDynamoBatchWrite };
+    });
+
+    mockDynamoBatchWrite.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve({});
+      }
+    }));
+  });
+
+  afterEach(() => {
+    mockDynamoBatchWrite.mockReset();
+  });
+
+  it("gets all the data for an item from DynamoDB as an object array", async () => {
+
+
+
+    expect().toBe();
+  });
+});
+
