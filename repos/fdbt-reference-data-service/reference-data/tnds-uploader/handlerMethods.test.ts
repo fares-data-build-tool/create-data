@@ -140,15 +140,39 @@ describe("XML to dynamo writer", () => {
   });
 });
 
-describe("XML data cleaner", () => {
+describe("cleanParsedXmlData", () => {
   it("changes the XML to be of the format required", async () => {
     const xmlToBeCleaned = await xmlParser(testXml);
 
     const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
-
-    expect(cleanedXml.FileName).toContain("SVRYHAO999" + "_");
-    expect(!!cleanedXml.Data && cleanedXml.Data).toBe(xmlToBeCleaned);
+    expect(cleanedXml).toEqual(mocks.mockCleanedXmlData);
   });
+});
+
+it("returns cleanedXmlData which contains the right OperatorShortNames", async () => {
+  const expectedOperatorShortNames = ["Dews Coaches", "Dannys Coaches"];
+  const xmlToBeCleaned = await xmlParser(testXml);
+  const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
+  const operatorShortNames = cleanedXml["OperatorShortName"];
+  expect.assertions(2);
+  expect(operatorShortNames).toHaveLength(2);
+  expect(operatorShortNames).toEqual(expectedOperatorShortNames);
+});
+
+it("returns cleanedXmlData which contains the right StopPointRefs and CommonNames", async () => {
+  const expectedStopPoints = [
+    { StopPointRef: "0500SBARH011", CommonName: "Superstore" },
+    { StopPointRef: "0500HFENS007", CommonName: "Rookery Way" },
+    { StopPointRef: "0500HFENS006", CommonName: "Swan Road" },
+    { StopPointRef: "0500HFENS003", CommonName: "Chequer Street" },
+    { StopPointRef: "0500SSWAV013", CommonName: "The Farm" }
+  ];
+  const xmlToBeCleaned = await xmlParser(testXml);
+  const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
+  const stopPoints = cleanedXml["StopPoints"];
+  expect.assertions(2);
+  expect(stopPoints).toHaveLength(5);
+  expect(stopPoints).toEqual(expectedStopPoints);
 });
 
 describe("formatDynamoWriteRequest", () => {
