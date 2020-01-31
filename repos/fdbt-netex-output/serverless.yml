@@ -48,10 +48,10 @@ provider:
         - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:TndsTableArn"
 
   environment:
-    NAPTAN_TABLE_NAME: NaptanTableName
-    NOC_TABLE_NAME: NocTablename
-    SERVICES_TABLE_NAME: ServicesTableName
-    TNDS_TABLE_NAME: TndsTableName
+    NAPTAN_TABLE_NAME: ${self:custom.NaptanTableName}
+    NOC_TABLE_NAME: ${self:custom.NocTableName}
+    SERVICES_TABLE_NAME: ${self:custom.ServicesTableName}
+    TNDS_TABLE_NAME: ${self:custom.TndsTableName}
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
 
