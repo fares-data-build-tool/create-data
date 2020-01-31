@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- NEED TO CLARIFY WITH NICK KNOWLES WHERE THE PublicationDelivery TAGS COME FROM -->
+<PublicationDelivery version="1.1" xsi:schemaLocation="http://netex.uk/netex/schema.htm http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd" xmlns="http://netex.uk/netex" xmlns:siri="http://www.transmodel-cen.eu/standards/siri/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    <Description>Example NeTEx for simple point-to-point single fares</Description>
+    <dataObjects>
+        <CompositeFrame version="1.0" id="mb:Metrobus@Products@Trip@Line_1" dataSourceRef="mb:metrobus" responsibilitySetRef="mb:tariffs">
+			<ValidBetween>
+				<FromDate>2017-01-01T00:00:00</FromDate>
+				<ToDate>2020-12-31T12:00:00</ToDate>
+			</ValidBetween>
+			<Name>MetroBus 1 0 - Fares Example</Name>
+			<Description>This is an example showing how one might encode the Metrobus 1 fare table tin NeTEx.  It includes some</Description>
+			<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@composite" version="fxc:v1.0"/>
+			<!--==== CODESPACEs ==== -->
+			<codespaces>
+				<CodespaceRef ref="napt"/>
+				<CodespaceRef ref="naptStop"/>
+				<CodespaceRef ref="nptgUkLocality"/>
+				<CodespaceRef ref="nptgUkAdministrativeArea"/>
+				<CodespaceRef ref="noc"/>
+				<CodespaceRef ref="mb"/>
+			</codespaces>
+			<!--==== FRAME DEFAULTS ==== -->
+			<FrameDefaults>
+				<!---  The default means that actually we could leave off all ids that belong to the mb: namespace. -->
+				<DefaultCodespaceRef ref="mb"/>
+				<DefaultDataSourceRef ref="mb:metrobus" version="1.0"/>
+				<DefaultCurrency>GBP</DefaultCurrency>
+            </FrameDefaults>
+			<frames>
+    </dataObjects>
