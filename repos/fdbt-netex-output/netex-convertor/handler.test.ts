@@ -1,4 +1,4 @@
-import { s3NetexHandler } from "./handler";
+import { s3NetexConvertorHandler } from "./handler";
 import AWS from "aws-sdk";
 import * as mocks from "./test-data/test-data";
 
@@ -33,7 +33,7 @@ describe("s3 handler with csv event", () => {
             "andThisIsTheNameOfTheThing.csv"
         );
 
-        const result = await s3NetexHandler(event);
+        const result = await s3NetexConvertorHandler(event);
         
         expect(result).toStrictEqual(mocks.mockS3ObjectDataAsJson);
     });
