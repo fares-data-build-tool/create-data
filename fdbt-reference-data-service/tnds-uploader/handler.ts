@@ -9,13 +9,39 @@ import { parseString } from "xml2js";
 export type ParsedXmlData = tndsDynamoDBData;
 export type ParsedCsvData = servicesDynamoDBData;
 
+interface ExtractedStopPoint {
+  StopPointRef: string[];
+  CommonName: string[];
+  Indicator: string[];
+  LocalityName: string[];
+  LocalityQualifier: string[];
+}
+
+interface ExtractedOperators {
+  '$': {};
+  NationalOperatorCode: string[];
+  OperatorCode: string[];
+  OperatorShortName: string[];
+  OperatorNameOnLicence: string[];
+  TradingName: string[];
+}
+
+interface StopPointObject {
+  StopPointRef: string,
+  CommonName: string
+}
+
 export interface s3ObjectParameters {
   Bucket: string;
   Key: string;
 }
 export interface tndsDynamoDBData {
-  Data: {};
   FileName: string;
+  OperatorShortname: string;
+  StopPoints: {
+    StopPointRef: string;
+    CommonName: string;
+  };
 }
 
 export interface servicesDynamoDBData {
@@ -58,12 +84,12 @@ export function tableChooser(fileExtension: string) {
     );
   }
 
-  let tableName = "";
-
   if (fileExtension === "csv") {
-    return (tableName = process.env.SERVICES_TABLE_NAME);
+    let tableName = process.env.SERVICES_TABLE_NAME;
+    return tableName;
   } else if (fileExtension === "xml") {
-    return (tableName = process.env.TNDS_TABLE_NAME);
+    let tableName = process.env.TNDS_TABLE_NAME;
+    return tableName;
   } else {
     console.error(`File is not of a supported format type (${fileExtension})`);
     throw new Error(`Unsupported file type ${fileExtension}`);
@@ -74,7 +100,7 @@ export function removeFirstLineOfString(xmlData: string): string {
   return xmlData.substring(xmlData.indexOf("\n") + 1);
 }
 
-export async function xmlParser(xmlData: string): Promise<ParsedXmlData> {
+export async function xmlParser(xmlData: string): Promise<string> {
   const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
   return new Promise((resolve, reject) => {
@@ -182,17 +208,46 @@ export async function writeXmlToDynamo({
   console.log("Dynamo DB put request complete.");
 }
 
-export function cleanParsedXmlData(parsedXmlData: any): tndsDynamoDBData {
+export function cleanParsedXmlData(parsedXmlData: string): any {
   const parsedJson = JSON.parse(parsedXmlData);
-  let extractedFilename = parsedJson["TransXChange"]["$"]["FileName"];
-  extractedFilename = extractedFilename.split(".");
-  extractedFilename = extractedFilename[0];
-  const creationDateTime = new Date().toISOString().slice(0, 19); // 19 characters limits this to just date and time
 
-  return {
-    FileName: extractedFilename + "_" + creationDateTime,
-    Data: parsedXmlData
+  let extractedFilename: string = parsedJson["TransXChange"]["$"]["FileName"];
+  let arrayOfExtractedFilename: string[] = extractedFilename.split(".");
+  extractedFilename = arrayOfExtractedFilename[0];
+  const creationDateTime: string = parsedJson["TransXChange"]["$"]["CreationDateTime"];
+
+  const extractedOperators: ExtractedOperators[] =
+    parsedJson["TransXChange"]["Operators"][0]["Operator"];
+  console.log({extractedOperators})
+  const extractedStopPoints: ExtractedStopPoint[] =
+    parsedJson["TransXChange"]["StopPoints"][0]["AnnotatedStopPointRef"];
+
+  let extractedOperatorShortNames: string[] = [];
+  for (let i = 0; i< extractedOperators.length; i++) {
+    let operator = extractedOperators[i]
+    let operatorShortName: string = operator["OperatorShortName"][0];
+    extractedOperatorShortNames.push(operatorShortName);
+  }
+
+  let stopPointsCollection: {}[] = [];
+  for (let i = 0; i < extractedStopPoints.length; i++) {
+    let stopPointItem: ExtractedStopPoint = extractedStopPoints[i];
+    let stopPointRef = stopPointItem["StopPointRef"][0];
+    let commonName = stopPointItem["CommonName"][0];
+    let stopPointObject: StopPointObject = {
+      StopPointRef: stopPointRef,
+      CommonName: commonName
+    }
+    stopPointsCollection.push(stopPointObject);
+  }
+
+  const cleanedXmlData = {
+    FileName: extractedFilename + creationDateTime,
+    OperatorShortName: extractedOperatorShortNames,
+    StopPoints: stopPointsCollection
   };
+  console.log({ cleanedXmlData });
+  return cleanedXmlData;
 }
 
 export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
@@ -225,7 +280,6 @@ export const s3TndsHandler = async (event: S3Event) => {
   const tableName = tableChooser(fileExtension);
 
   let parsedData;
-
   if (tableName === process.env.TNDS_TABLE_NAME) {
     parsedData = await xmlParser(stringifiedS3Data);
 
