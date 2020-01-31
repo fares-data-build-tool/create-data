@@ -5,7 +5,7 @@ orbs:
 jobs:
   checkout-repo:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:12
     working_directory: ~/project
     steps:
       - checkout
@@ -14,44 +14,9 @@ jobs:
           paths:
             - "*"
 
-  build-and-test-netex-output-resources:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            cd netex-output
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "netex-output/node_modules"
-
-  deploy-netex-output-resources:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            sudo npm i -g serverless
-            cd netex-output
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
   build-and-test-reference-data-resources:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:12
     working_directory: ~/project
     steps:
       - attach_workspace:
@@ -59,7 +24,6 @@ jobs:
       - run:
           command: |
             echo "Starting build"
-            cd reference-data
             npm install
             npm run build
             echo "Running tests"
@@ -67,11 +31,11 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "reference-data/node_modules"
+            - "node_modules"
 
   deploy-reference-data-resources:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:12
     working_directory: ~/project
     steps:
       - attach_workspace:
@@ -79,83 +43,18 @@ jobs:
       - run:
           command: |
             sudo npm i -g serverless
-            cd reference-data
             export SLS_DEBUG="*" && sls deploy
             echo "Finished deploy"
 
-  build-and-test-site:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            cd site
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "site/node_modules"
-
-  deploy-site:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            sudo npm i -g serverless
-            cd site
-            export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
-
-  # tag-test-release:
-  #   executor: semver-orb/default
-  #   steps:
-  #     - add_ssh_keys:
-  #         fingerprints:
-  #           - "da:2d:f9:70:e0:cd:35:fc:1f:e6:06:0f:a3:8f:c2:e0"
-  #     - attach_workspace:
-  #         at: ~/project
-  #     - semver-orb/print
-  #     - semver-orb/tagnext
-  #     - semver-orb/export-tag
-  #     - semver-orb/print
-
 workflows:
   version: 2
-  build-test-and-deploy-deliverable-one-lambdas:
+  build-test-and-deploy-reference-data-lambdas:
     jobs:
       - checkout-repo:
           context: "tfn-aws"
           filters:
             branches:
               only: develop
-
-      - build-and-test-netex-output-resources:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-netex-output-resources:
-          requires:
-            - build-and-test-netex-output-resources
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop              
-
       - build-and-test-reference-data-resources:
           requires:
             - checkout-repo
@@ -170,28 +69,3 @@ workflows:
           filters:
             branches:
               only: develop
-              
-      - build-and-test-site:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-site:
-          requires:
-            - build-and-test-site
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-
-      # - tag-test-release:
-      #     requires:
-      #       - deploy-netex-output-resources
-      #       - deploy-reference-data-resources
-      #       - deploy-site
-      #     context: "tfn-aws"
-      #     filters:
-      #       branches:
-      #         only: develop
