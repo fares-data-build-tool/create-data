@@ -12,6 +12,8 @@ provider:
       Action:
         - 's3:GetObject'
         - 's3:ListBucket'
+        - 'se:ListObjectsV2'
+        - 'se:PutObject'
       Resource: 
         - Fn::Join:
           - ""
@@ -35,12 +37,7 @@ provider:
       Action:
         - dynamodb:DescribeTable
         - dynamodb:Query
-        - dynamodb:Scan
         - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:BatchWriteItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
       Resource:
         - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NaptanTableArn"
         - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NocTableArn"
