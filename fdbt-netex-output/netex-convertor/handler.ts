@@ -103,17 +103,18 @@ export function getAttributeValueFromDynamoDBItemAsAnObjectArray(data: AWS.Dynam
   return requiredAttAsAnObjectArray;
 }
 
-export const s3NetexHandler = async (event: S3Event) => {
+export const netexConvertorHandler = async (event: S3Event) => {
 
   try {
-    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey("test-Stops", "ATCOCode", "0100BRP90168");
+    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey("giles-Stops", "ATCOCode", "0170SGB20303");
     console.log({ stopsItemData });
-    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey("test-Operators", "NOCODE", "");
+    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey("giles-Operators", "NOCCODE", "AVRO");
     console.log({ operatorsItemData });
-    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey("test-Services", "NationalOperatorCode", "", "LineName", "");
+    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey("giles-Services", "NationalOperatorCode", "BDRB", "LineName", "580");
     console.log({ servicesItemData });
-    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKey("test-TNDS", "Filename", "");
+    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKey("giles-TNDS", "FileName", "ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z");
     console.log({ tndsItemData });
+
     const ntpgLocalityCode = getAttributeValueFromDynamoDBItemAsAString(stopsItemData, "NtgpLocalityCode");
     console.log({ ntpgLocalityCode });
     const localityName = getAttributeValueFromDynamoDBItemAsAString(stopsItemData, "LocalityName");
@@ -151,11 +152,11 @@ export const s3NetexHandler = async (event: S3Event) => {
     throw new Error(error.message)
   }
 
-  const params = setS3ObjectParams(event);
-  console.log("S3ObjectParameters obtained from S3 Event are: ", params)
-  const s3Key: string = params.Key;
-  const uuid = s3Key.split("_")[0];
-  const jsonData = await fetchDataFromS3AsJSON(params);
-  console.log("JSON data received from S3 Object received as: ", jsonData)
-  return jsonData;
+  // const params = setS3ObjectParams(event);
+  // console.log("S3ObjectParameters obtained from S3 Event are: ", params)
+  // const s3Key: string = params.Key;
+  // const uuid = s3Key.split("_")[0];
+  // const jsonData = await fetchDataFromS3AsJSON(params);
+  // console.log("JSON data received from S3 Object received as: ", jsonData)
+  // return jsonData;
 };
