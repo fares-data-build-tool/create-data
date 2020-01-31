@@ -51,17 +51,6 @@ provider:
     TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
-
-custom:
-  NaptanTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NaptanTableName"
-  NocTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NocTableName"
-  ServicesTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:ServicesTableName"
-  TndsTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:TndsTableName"
-
 functions:
   NetexConvertor:
     handler: netex-convertor/handler.s3NetexConvertorHandler
