@@ -89,8 +89,12 @@ exports[`TableForm should render correctly 1`] = `
         className="govuk-table__body"
         id="table_form_body"
       >
-        <tr>
-          <td>
+        <tr
+          key="1"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row1col1"
@@ -98,7 +102,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row1col2"
@@ -106,7 +112,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row1col3"
@@ -114,7 +122,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row1col4"
@@ -122,7 +132,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row1col5"
@@ -130,7 +142,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row1col6"
@@ -138,7 +152,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row1col7"
@@ -146,7 +162,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row1col8"
@@ -154,7 +172,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row1col9"
@@ -162,7 +182,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row1col10"
@@ -171,8 +193,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="2"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row2col1"
@@ -180,7 +206,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row2col2"
@@ -188,7 +216,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row2col3"
@@ -196,7 +226,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row2col4"
@@ -204,7 +236,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row2col5"
@@ -212,7 +246,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row2col6"
@@ -220,7 +256,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row2col7"
@@ -228,7 +266,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row2col8"
@@ -236,7 +276,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row2col9"
@@ -244,7 +286,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row2col10"
@@ -253,8 +297,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="3"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row3col1"
@@ -262,7 +310,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row3col2"
@@ -270,7 +320,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row3col3"
@@ -278,7 +330,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row3col4"
@@ -286,7 +340,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row3col5"
@@ -294,7 +350,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row3col6"
@@ -302,7 +360,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row3col7"
@@ -310,7 +370,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row3col8"
@@ -318,7 +380,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row3col9"
@@ -326,7 +390,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row3col10"
@@ -335,8 +401,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="4"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row4col1"
@@ -344,7 +414,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row4col2"
@@ -352,7 +424,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row4col3"
@@ -360,7 +434,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row4col4"
@@ -368,7 +444,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row4col5"
@@ -376,7 +454,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row4col6"
@@ -384,7 +464,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row4col7"
@@ -392,7 +474,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row4col8"
@@ -400,7 +484,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row4col9"
@@ -408,7 +494,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row4col10"
@@ -417,8 +505,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="5"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row5col1"
@@ -426,7 +518,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row5col2"
@@ -434,7 +528,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row5col3"
@@ -442,7 +538,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row5col4"
@@ -450,7 +548,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row5col5"
@@ -458,7 +558,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row5col6"
@@ -466,7 +568,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row5col7"
@@ -474,7 +578,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row5col8"
@@ -482,7 +588,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row5col9"
@@ -490,7 +598,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row5col10"
@@ -499,8 +609,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="6"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row6col1"
@@ -508,7 +622,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row6col2"
@@ -516,7 +632,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row6col3"
@@ -524,7 +642,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row6col4"
@@ -532,7 +652,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row6col5"
@@ -540,7 +662,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row6col6"
@@ -548,7 +672,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row6col7"
@@ -556,7 +682,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row6col8"
@@ -564,7 +692,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row6col9"
@@ -572,7 +702,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row6col10"
@@ -581,8 +713,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="7"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row7col1"
@@ -590,7 +726,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row7col2"
@@ -598,7 +736,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row7col3"
@@ -606,7 +746,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row7col4"
@@ -614,7 +756,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row7col5"
@@ -622,7 +766,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row7col6"
@@ -630,7 +776,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row7col7"
@@ -638,7 +786,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row7col8"
@@ -646,7 +796,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row7col9"
@@ -654,7 +806,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row7col10"
@@ -663,8 +817,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="8"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row8col1"
@@ -672,7 +830,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row8col2"
@@ -680,7 +840,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row8col3"
@@ -688,7 +850,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row8col4"
@@ -696,7 +860,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row8col5"
@@ -704,7 +870,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row8col6"
@@ -712,7 +880,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row8col7"
@@ -720,7 +890,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row8col8"
@@ -728,7 +900,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row8col9"
@@ -736,7 +910,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row8col10"
@@ -745,8 +921,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="9"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row9col1"
@@ -754,7 +934,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row9col2"
@@ -762,7 +944,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row9col3"
@@ -770,7 +954,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row9col4"
@@ -778,7 +964,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row9col5"
@@ -786,7 +974,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row9col6"
@@ -794,7 +984,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row9col7"
@@ -802,7 +994,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row9col8"
@@ -810,7 +1004,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row9col9"
@@ -818,7 +1014,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row9col10"
@@ -827,8 +1025,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="10"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row10col1"
@@ -836,7 +1038,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row10col2"
@@ -844,7 +1048,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row10col3"
@@ -852,7 +1058,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row10col4"
@@ -860,7 +1068,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row10col5"
@@ -868,7 +1078,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row10col6"
@@ -876,7 +1088,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row10col7"
@@ -884,7 +1098,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row10col8"
@@ -892,7 +1108,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row10col9"
@@ -900,7 +1118,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row10col10"
@@ -909,8 +1129,12 @@ exports[`TableForm should render correctly 1`] = `
             />
           </td>
         </tr>
-        <tr>
-          <td>
+        <tr
+          key="11"
+        >
+          <td
+            key="1"
+          >
             <input
               className="govuk-input"
               id="row11col1"
@@ -918,7 +1142,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="2"
+          >
             <input
               className="govuk-input"
               id="row11col2"
@@ -926,7 +1152,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="3"
+          >
             <input
               className="govuk-input"
               id="row11col3"
@@ -934,7 +1162,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="4"
+          >
             <input
               className="govuk-input"
               id="row11col4"
@@ -942,7 +1172,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="5"
+          >
             <input
               className="govuk-input"
               id="row11col5"
@@ -950,7 +1182,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="6"
+          >
             <input
               className="govuk-input"
               id="row11col6"
@@ -958,7 +1192,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="7"
+          >
             <input
               className="govuk-input"
               id="row11col7"
@@ -966,7 +1202,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="8"
+          >
             <input
               className="govuk-input"
               id="row11col8"
@@ -974,7 +1212,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="9"
+          >
             <input
               className="govuk-input"
               id="row11col9"
@@ -982,7 +1222,9 @@ exports[`TableForm should render correctly 1`] = `
               type="text"
             />
           </td>
-          <td>
+          <td
+            key="10"
+          >
             <input
               className="govuk-input"
               id="row11col10"
