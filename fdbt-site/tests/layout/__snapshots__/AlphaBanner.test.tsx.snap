@@ -15,7 +15,8 @@ exports[`AlphaBanner should render correctly 1`] = `
     <span
       className="govuk-phase-banner__text"
     >
-      This is a new service – your 
+      This is a new service – your
+       
       <a
         className="govuk-link"
         href="mailto:fdbt@transportforthenorth.com"
@@ -23,7 +24,8 @@ exports[`AlphaBanner should render correctly 1`] = `
       >
         feedback
       </a>
-       will help us to improve it.
+       
+      will help us to improve it.
     </span>
   </p>
 </div>

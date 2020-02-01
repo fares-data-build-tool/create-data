@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import Operator from "../../pages/operator";
+import Operator from '../../src/pages/operator';
 
 describe('pages', () => {
-  describe('operator', () => {
-    
-    it('should render correctly', () => {
-      const tree = shallow(
-        <Operator />
-      );
-      expect(tree).toMatchSnapshot();
+    describe('operator', () => {
+        it('should render correctly', () => {
+            const tree = shallow(<Operator />);
+            expect(tree).toMatchSnapshot();
+        });
     });
-  });
 });
