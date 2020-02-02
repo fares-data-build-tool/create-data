@@ -369,3 +369,33 @@ export const mockS3ObjectDataAsJson = [
     fareStage: 'Piccadilly (York)'
   }
 ]
+
+export const mockDynamoDBItemDataObjectWithAttributeValueAsString:
+ AWS.DynamoDB.DocumentClient.QueryOutput = {
+  Items: [
+    {testattribute: "test"
+    }
+  ],
+  Count: 1,
+  ScannedCount: 1
+};
+
+export const mockDynamoDBItemDataObjectWithAttributeValueAsStringArray:
+ AWS.DynamoDB.DocumentClient.QueryOutput = {
+  Items: [
+    {testattribute: ["test1", "test2"]
+    }
+  ],
+  Count: 1,
+  ScannedCount: 1
+};
+
+export const mockDynamoDBItemDataObjectWithAttributeValueAsObjectArray:
+ AWS.DynamoDB.DocumentClient.QueryOutput = {
+  Items: [
+    {testattribute: [{test1: "aaaa", test2:"bbbb"}]
+    }
+  ],
+  Count: 1,
+  ScannedCount: 1
+};
