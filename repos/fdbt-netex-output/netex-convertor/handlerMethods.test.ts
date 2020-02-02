@@ -91,63 +91,70 @@ describe("setS3ObjectParams", () => {
   });
 });
 
-// describe("get item data from DynamoDB table with partition key", () => {
-//   const mockDynamoBatchWrite = jest.fn();
+describe("get item data from DynamoDB table with partition key", () => {
+  const tableName = "mockTableName";
+  const partitionKey = "mockPartitionKey";
+  const partitionKeyValue = "mockPartitionKeyValue";
+  const mockDynamoQuery = jest.fn();
 
-//   beforeEach(() => {
-//     process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+  beforeEach(() => {
+    mockDynamoQuery.mockReset();
+    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+      return { query: mockDynamoQuery };
+    });
 
-//     (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
-//       return { batchWrite: mockDynamoBatchWrite };
-//     });
+    mockDynamoQuery.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve(mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString);
+      }
+    }));
+  });
 
-//     mockDynamoBatchWrite.mockImplementation(() => ({
-//       promise() {
-//         return Promise.resolve({});
-//       }
-//     }));
-//   });
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
-//   afterEach(() => {
-//     mockDynamoBatchWrite.mockReset();
-//   });
+  it("gets data for an item from DynamoDB using partition key", async () => {
+    const fetchedData = await getItemFromDynamoDBTableWithPartitionKey
+      (tableName, partitionKey, partitionKeyValue);
+    
+    expect(fetchedData).toBe(mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString);
+  });
+});
 
-//   it("gets data for an item from DynamoDB using partition key", async () => {
+describe("get item data from DynamoDB table with partition key and sort key", () => {
 
+  const tableName = "mockTableName";
+  const partitionKey = "mockPartitionKey";
+  const partitionKeyValue = "mockPartitionKeyValue";
+  const sortKey = "mockSortKey";
+  const sortKeyValue = "mockSortKeyValue";
+  const mockDynamoQuery = jest.fn();
 
+  beforeEach(() => {
+    mockDynamoQuery.mockReset();
+    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+      return { query: mockDynamoQuery };
+    });
 
-//     expect().toBe();
-//   });
-// });
+    mockDynamoQuery.mockImplementation(() => ({
+      promise() {
+        return Promise.resolve(mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString);
+      }
+    }));
+  });
 
-// describe("get item data from DynamoDB table with partition key and sort key", () => {
-//   const mockDynamoBatchWrite = jest.fn();
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
-//   beforeEach(() => {
-//     process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
-
-//     (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
-//       return { batchWrite: mockDynamoBatchWrite };
-//     });
-
-//     mockDynamoBatchWrite.mockImplementation(() => ({
-//       promise() {
-//         return Promise.resolve({});
-//       }
-//     }));
-//   });
-
-//   afterEach(() => {
-//     mockDynamoBatchWrite.mockReset();
-//   });
-
-//   it("gets data for an item from DynamoDB using partition key and sort key", async () => {
-
-
-
-//     expect().toBe();
-//   });
-// });
+  it("gets data for an item from DynamoDB using partition key", async () => {
+    const fetchedData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey
+      (tableName, partitionKey, partitionKeyValue, sortKey, sortKeyValue);
+    
+    expect(fetchedData).toBe(mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString);
+  });
+});
 
 describe("get attribute value from DynamoDB item as a string", () => {
 
@@ -175,6 +182,6 @@ describe("get attribute value from DynamoDB item as object array", () => {
     const result = getAttributeValueFromDynamoDBItemAsObjectArray
       (mocks.mockDynamoDBItemDataObjectWithAttributeValueAsObjectArray, "testattribute");
 
-    expect(result).toStrictEqual([{test1: "aaaa", test2: "bbbb"}]);   
+    expect(result).toStrictEqual([{ test1: "aaaa", test2: "bbbb" }]);
   });
 });
