@@ -3,8 +3,8 @@ import {
   fetchDataFromS3AsJSON, setS3ObjectParams, getItemFromDynamoDBTableWithPartitionKey,
   getItemFromDynamoDBTableWithPartitionKeyAndSortKey,
   getAttributeValueFromDynamoDBItemAsAString,
-  getAttributeValueFromDynamoDBItemAsAStringArray,
-  getAttributeValueFromDynamoDBItemAsAnObjectArray
+  getAttributeValueFromDynamoDBItemAsStringArray,
+  getAttributeValueFromDynamoDBItemAsObjectArray
 } from "./handler";
 import { s3ObjectParameters } from "./handler";
 import * as mocks from "./test-data/test-data";
@@ -91,148 +91,90 @@ describe("setS3ObjectParams", () => {
   });
 });
 
-describe("get item data from DynamoDB table with partition key", () => {
-  const mockDynamoBatchWrite = jest.fn();
+// describe("get item data from DynamoDB table with partition key", () => {
+//   const mockDynamoBatchWrite = jest.fn();
 
-  beforeEach(() => {
-    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+//   beforeEach(() => {
+//     process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
 
-    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
-      return { batchWrite: mockDynamoBatchWrite };
-    });
+//     (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+//       return { batchWrite: mockDynamoBatchWrite };
+//     });
 
-    mockDynamoBatchWrite.mockImplementation(() => ({
-      promise() {
-        return Promise.resolve({});
-      }
-    }));
-  });
+//     mockDynamoBatchWrite.mockImplementation(() => ({
+//       promise() {
+//         return Promise.resolve({});
+//       }
+//     }));
+//   });
 
-  afterEach(() => {
-    mockDynamoBatchWrite.mockReset();
-  });
+//   afterEach(() => {
+//     mockDynamoBatchWrite.mockReset();
+//   });
 
-  it("gets data for an item from DynamoDB using partition key", async () => {
-
-
-
-    expect().toBe();
-  });
-});
-
-describe("get item data from DynamoDB table with partition key and sort key", () => {
-  const mockDynamoBatchWrite = jest.fn();
-
-  beforeEach(() => {
-    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
-
-    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
-      return { batchWrite: mockDynamoBatchWrite };
-    });
-
-    mockDynamoBatchWrite.mockImplementation(() => ({
-      promise() {
-        return Promise.resolve({});
-      }
-    }));
-  });
-
-  afterEach(() => {
-    mockDynamoBatchWrite.mockReset();
-  });
-
-  it("gets data for an item from DynamoDB using partition key and sort key", async () => {
+//   it("gets data for an item from DynamoDB using partition key", async () => {
 
 
 
-    expect().toBe();
-  });
-});
+//     expect().toBe();
+//   });
+// });
+
+// describe("get item data from DynamoDB table with partition key and sort key", () => {
+//   const mockDynamoBatchWrite = jest.fn();
+
+//   beforeEach(() => {
+//     process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+
+//     (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+//       return { batchWrite: mockDynamoBatchWrite };
+//     });
+
+//     mockDynamoBatchWrite.mockImplementation(() => ({
+//       promise() {
+//         return Promise.resolve({});
+//       }
+//     }));
+//   });
+
+//   afterEach(() => {
+//     mockDynamoBatchWrite.mockReset();
+//   });
+
+//   it("gets data for an item from DynamoDB using partition key and sort key", async () => {
+
+
+
+//     expect().toBe();
+//   });
+// });
 
 describe("get attribute value from DynamoDB item as a string", () => {
-  const mockDynamoBatchWrite = jest.fn();
 
-  beforeEach(() => {
-    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+  it("gets attribute value as a string", async () => {
+    const result = getAttributeValueFromDynamoDBItemAsAString
+      (mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString, "testattribute");
 
-    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
-      return { batchWrite: mockDynamoBatchWrite };
-    });
-
-    mockDynamoBatchWrite.mockImplementation(() => ({
-      promise() {
-        return Promise.resolve({});
-      }
-    }));
-  });
-
-  afterEach(() => {
-    mockDynamoBatchWrite.mockReset();
-  });
-
-  it("gets value for an item from DynamoDB as a string", async () => {
-
-
-
-    expect().toBe();
+    expect(result).toBe("test");
   });
 });
 
 describe("get attribute value from DynamoDB item as a string array", () => {
-  const mockDynamoBatchWrite = jest.fn();
 
-  beforeEach(() => {
-    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+  it("gets attribute value as string array", async () => {
+    const result = getAttributeValueFromDynamoDBItemAsStringArray
+      (mocks.mockDynamoDBItemDataObjectWithAttributeValueAsStringArray, "testattribute");
 
-    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
-      return { batchWrite: mockDynamoBatchWrite };
-    });
-
-    mockDynamoBatchWrite.mockImplementation(() => ({
-      promise() {
-        return Promise.resolve({});
-      }
-    }));
-  });
-
-  afterEach(() => {
-    mockDynamoBatchWrite.mockReset();
-  });
-
-  it("gets all the data for an item from DynamoDB as a string array", async () => {
-
-
-
-    expect().toBe();
+    expect(result).toStrictEqual(["test1", "test2"]);
   });
 });
 
-describe("get attribute value from DynamoDB item as an object array", () => {
-  const mockDynamoBatchWrite = jest.fn();
+describe("get attribute value from DynamoDB item as object array", () => {
 
-  beforeEach(() => {
-    process.env.NAPTAN_TABLE_NAME = "TestNaptanTable";
+  it("gets attribute value as object array", async () => {
+    const result = getAttributeValueFromDynamoDBItemAsObjectArray
+      (mocks.mockDynamoDBItemDataObjectWithAttributeValueAsObjectArray, "testattribute");
 
-    (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
-      return { batchWrite: mockDynamoBatchWrite };
-    });
-
-    mockDynamoBatchWrite.mockImplementation(() => ({
-      promise() {
-        return Promise.resolve({});
-      }
-    }));
-  });
-
-  afterEach(() => {
-    mockDynamoBatchWrite.mockReset();
-  });
-
-  it("gets all the data for an item from DynamoDB as an object array", async () => {
-
-
-
-    expect().toBe();
+    expect(result).toStrictEqual([{test1: "aaaa", test2: "bbbb"}]);   
   });
 });
-

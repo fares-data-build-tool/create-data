@@ -86,7 +86,7 @@ export function getAttributeValueFromDynamoDBItemAsAString(data: AWS.DynamoDB.Do
   return requiredAttAsAString;
 }
 
-export function getAttributeValueFromDynamoDBItemAsAStringArray(data: AWS.DynamoDB.DocumentClient.QueryOutput, attribute: string):
+export function getAttributeValueFromDynamoDBItemAsStringArray(data: AWS.DynamoDB.DocumentClient.QueryOutput, attribute: string):
   string[] {
   if (!data || !data.Items) {
     throw new Error("No data!")
@@ -95,7 +95,7 @@ export function getAttributeValueFromDynamoDBItemAsAStringArray(data: AWS.Dynamo
   return requiredAttAsAStringArray;
 }
 
-export function getAttributeValueFromDynamoDBItemAsAnObjectArray(data: AWS.DynamoDB.DocumentClient.QueryOutput, attribute: string): {}[] {
+export function getAttributeValueFromDynamoDBItemAsObjectArray(data: AWS.DynamoDB.DocumentClient.QueryOutput, attribute: string): {}[] {
   if (!data || !data.Items) {
     throw new Error("No data!")
   }
@@ -141,11 +141,11 @@ export const netexConvertorHandler = async (event: S3Event) => {
 
     const commonName = getAttributeValueFromDynamoDBItemAsAString(tndsItemData, "CommonName");
     console.log({ commonName });
-    const operatorShortnameArray = getAttributeValueFromDynamoDBItemAsAStringArray(tndsItemData, "OperatorShortName");
+    const operatorShortnameArray = getAttributeValueFromDynamoDBItemAsStringArray(tndsItemData, "OperatorShortName");
     console.log({ operatorShortnameArray });
     const operatorShortname = operatorShortnameArray[0];
     console.log({ operatorShortname });
-    const stopPointsArray = getAttributeValueFromDynamoDBItemAsAnObjectArray(tndsItemData, "StopPoints");
+    const stopPointsArray = getAttributeValueFromDynamoDBItemAsObjectArray(tndsItemData, "StopPoints");
     console.log({ stopPointsArray });
   }
   catch (error) {
