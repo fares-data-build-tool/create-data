@@ -152,11 +152,11 @@ export const netexConvertorHandler = async (event: S3Event) => {
     throw new Error(error.message)
   }
 
-  // const params = setS3ObjectParams(event);
-  // console.log("S3ObjectParameters obtained from S3 Event are: ", params)
-  // const s3Key: string = params.Key;
-  // const uuid = s3Key.split("_")[0];
-  // const jsonData = await fetchDataFromS3AsJSON(params);
-  // console.log("JSON data received from S3 Object received as: ", jsonData)
-  // return jsonData;
+  const params = setS3ObjectParams(event);
+  console.log("S3ObjectParameters obtained from S3 Event are: ", params)
+  const s3Key: string = params.Key;
+  const uuid = s3Key.split("_")[0];
+  const jsonData = await fetchDataFromS3AsJSON(params);
+  console.log("JSON data received from S3 Object received as: ", jsonData)
+  return jsonData;
 };
