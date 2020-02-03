@@ -18,7 +18,7 @@ interface ExtractedStopPoint {
 }
 
 interface ExtractedOperators {
-  '$': {};
+  $: {};
   NationalOperatorCode: string[];
   OperatorCode: string[];
   OperatorShortName: string[];
@@ -27,8 +27,8 @@ interface ExtractedOperators {
 }
 
 interface StopPointObject {
-  StopPointRef: string,
-  CommonName: string
+  StopPointRef: string;
+  CommonName: string;
 }
 
 export interface s3ObjectParameters {
@@ -36,12 +36,11 @@ export interface s3ObjectParameters {
   Key: string;
 }
 export interface tndsDynamoDBData {
-  FileName: string;
-  OperatorShortname: string;
-  StopPoints: {
-    StopPointRef: string;
-    CommonName: string;
-  };
+  NationalOperatorCode: string;
+  LineName_ServiceCode: string;
+  OperatorShortName: string;
+  Description: string;
+  StopPoints: StopPointObject[];
 }
 
 export interface servicesDynamoDBData {
@@ -55,7 +54,7 @@ export interface servicesDynamoDBData {
 }
 
 interface PushToDynamoXmlInput {
-  parsedXmlLines: ParsedXmlData;
+  parsedXmlLines: ParsedXmlData[];
   tableName: string;
 }
 
@@ -198,38 +197,36 @@ export async function writeXmlToDynamo({
 
   console.log("Writing entries to dynamo DB.");
 
-  await dynamodb
-    .put({
-      TableName: tableName,
-      Item: parsedXmlLines
-    })
-    .promise();
-
+  for (let i = 0; i < parsedXmlLines.length; i++) {
+    await dynamodb
+      .put({
+        TableName: tableName,
+        Item: parsedXmlLines[i]
+      })
+      .promise();
+  }
   console.log("Dynamo DB put request complete.");
 }
 
-export function cleanParsedXmlData(parsedXmlData: string): any {
+export function cleanParsedXmlData(parsedXmlData: string): tndsDynamoDBData[] {
   const parsedJson = JSON.parse(parsedXmlData);
 
-  let extractedFilename: string = parsedJson["TransXChange"]["$"]["FileName"];
-  let arrayOfExtractedFilename: string[] = extractedFilename.split(".");
-  extractedFilename = arrayOfExtractedFilename[0];
-  const creationDateTime: string = parsedJson["TransXChange"]["$"]["CreationDateTime"];
+  const extractedLineName: string =
+    parsedJson["TransXChange"]["Services"][0]["Service"][0]["Lines"][0][
+      "Line"
+    ][0]["LineName"][0];
+  const extractedServiceCode: string =
+    parsedJson["TransXChange"]["Services"][0]["Service"][0]["ServiceCode"][0];
+  const extractedDescription: string =
+    parsedJson["TransXChange"]["Services"][0]["Service"][0]["Description"][0];
 
   const extractedOperators: ExtractedOperators[] =
     parsedJson["TransXChange"]["Operators"][0]["Operator"];
-  console.log({extractedOperators})
+  console.log({ extractedOperators });
   const extractedStopPoints: ExtractedStopPoint[] =
     parsedJson["TransXChange"]["StopPoints"][0]["AnnotatedStopPointRef"];
 
-  let extractedOperatorShortNames: string[] = [];
-  for (let i = 0; i< extractedOperators.length; i++) {
-    let operator = extractedOperators[i]
-    let operatorShortName: string = operator["OperatorShortName"][0];
-    extractedOperatorShortNames.push(operatorShortName);
-  }
-
-  let stopPointsCollection: {}[] = [];
+  let stopPointsCollection: StopPointObject[] = [];
   for (let i = 0; i < extractedStopPoints.length; i++) {
     let stopPointItem: ExtractedStopPoint = extractedStopPoints[i];
     let stopPointRef = stopPointItem["StopPointRef"][0];
@@ -237,15 +234,25 @@ export function cleanParsedXmlData(parsedXmlData: string): any {
     let stopPointObject: StopPointObject = {
       StopPointRef: stopPointRef,
       CommonName: commonName
-    }
+    };
     stopPointsCollection.push(stopPointObject);
   }
 
-  const cleanedXmlData = {
-    FileName: extractedFilename + creationDateTime,
-    OperatorShortName: extractedOperatorShortNames,
-    StopPoints: stopPointsCollection
-  };
+  let cleanedXmlData: tndsDynamoDBData[] = [];
+  for (let i = 0; i < extractedOperators.length; i++) {
+    let operator = extractedOperators[i];
+    let nationalOperatorCode: string = operator["NationalOperatorCode"][0];
+    let operatorShortName: string = operator["OperatorShortName"][0];
+    let operatorInfo: tndsDynamoDBData = {
+      NationalOperatorCode: nationalOperatorCode,
+      LineName_ServiceCode: extractedLineName + extractedServiceCode,
+      OperatorShortName: operatorShortName,
+      Description: extractedDescription,
+      StopPoints: stopPointsCollection
+    };
+    cleanedXmlData.push(operatorInfo);
+  }
+
   console.log({ cleanedXmlData });
   return cleanedXmlData;
 }
@@ -279,33 +286,32 @@ export const s3TndsHandler = async (event: S3Event) => {
 
   const tableName = tableChooser(fileExtension);
 
-  let parsedData;
   if (tableName === process.env.TNDS_TABLE_NAME) {
-    parsedData = await xmlParser(stringifiedS3Data);
+    const parsedXmlData: string = await xmlParser(stringifiedS3Data);
 
-    if (!parsedData) {
+    if (!parsedXmlData) {
       throw Error(
         "Data parsing has failed, stopping before database writing occurs."
       );
     }
 
-    parsedData = cleanParsedXmlData(parsedData);
+    const cleanedXmlData = cleanParsedXmlData(parsedXmlData);
 
     await writeXmlToDynamo({
       tableName: tableName,
-      parsedXmlLines: parsedData
+      parsedXmlLines: cleanedXmlData
     });
   } else if (tableName === process.env.SERVICES_TABLE_NAME) {
-    parsedData = csvParser(stringifiedS3Data);
+    const parsedCsvData = csvParser(stringifiedS3Data);
 
-    if (!parsedData) {
+    if (!parsedCsvData) {
       throw Error(
         "Data parsing has failed, stopping before database writing occurs."
       );
     }
     await writeCsvBatchesToDynamo({
       tableName: tableName,
-      parsedCsvLines: parsedData
+      parsedCsvLines: parsedCsvData
     });
   }
 };

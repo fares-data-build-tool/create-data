@@ -15,11 +15,10 @@ const streamOutputToCommandLine = async () => {
   const stringifiedData = data.toString();
 
   const parsedXmlData = await xmlParser(stringifiedData);
-  console.log(JSON.parse(parsedXmlData)["TransXChange"]["Operators"][0]["Operator"][0]["OperatorShortName"][0])
+  console.log(JSON.parse(parsedXmlData)["TransXChange"]["Services"][0]["Service"][0]["Description"][0])
   console.log("-----------------------------------------")
   const cleanedXmlData = cleanParsedXmlData(parsedXmlData);
   console.log({cleanedXmlData});
-  console.log(cleanedXmlData["StopPoints"])
 
 };
 
