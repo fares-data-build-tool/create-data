@@ -1,4 +1,5 @@
 import { ParsedCsvData } from "./../handler";
+import { tndsDynamoDBData } from "./../handler";
 
 export const mockS3Event = (bucketName: string, fileName: string) => ({
   Records: [
@@ -98,17 +99,34 @@ export function isJSON(str: any) {
   }
 }
 
-export const mockCleanedXmlData: {} = {
-  FileName: "ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z",
-  OperatorShortName: ["Dews Coaches", "Dannys Coaches"],
-  StopPoints: [
-    { StopPointRef: "0500SBARH011", CommonName: "Superstore" },
-    { StopPointRef: "0500HFENS007", CommonName: "Rookery Way" },
-    { StopPointRef: "0500HFENS006", CommonName: "Swan Road" },
-    { StopPointRef: "0500HFENS003", CommonName: "Chequer Street" },
-    { StopPointRef: "0500SSWAV013", CommonName: "The Farm" }
-  ]
-};
+export const mockCleanedXmlData: tndsDynamoDBData[] = [
+  {
+    NationalOperatorCode: "DEWS",
+    LineName_ServiceCode: "1A20-1A-A-y08-1",
+    OperatorShortName: "Dews Coaches",
+    Description: "St Ives - Bar Hill",
+    StopPoints: [
+      { StopPointRef: "0500SBARH011", CommonName: "Superstore" },
+      { StopPointRef: "0500HFENS007", CommonName: "Rookery Way" },
+      { StopPointRef: "0500HFENS006", CommonName: "Swan Road" },
+      { StopPointRef: "0500HFENS003", CommonName: "Chequer Street" },
+      { StopPointRef: "0500SSWAV013", CommonName: "The Farm" }
+    ]
+  },
+  {
+    NationalOperatorCode: "Dannys",
+    LineName_ServiceCode: "1A20-1A-A-y08-1",
+    OperatorShortName: "Dannys Coaches",
+    Description: "St Ives - Bar Hill",
+    StopPoints: [
+      { StopPointRef: "0500SBARH011", CommonName: "Superstore" },
+      { StopPointRef: "0500HFENS007", CommonName: "Rookery Way" },
+      { StopPointRef: "0500HFENS006", CommonName: "Swan Road" },
+      { StopPointRef: "0500HFENS003", CommonName: "Chequer Street" },
+      { StopPointRef: "0500SSWAV013", CommonName: "The Farm" }
+    ]
+  }
+];
 
 export const testXml: string = `
 <?xml version="1.0" encoding="utf-8"?>
