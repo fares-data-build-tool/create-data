@@ -152,40 +152,26 @@ export const mockS3Event = (bucketName: string, fileName: string) => ({
   ]
 });
 
-export const mockNocData = {
-  id: "",
-  NOCCODE: "",
-  OperatorPublicName: "",
-  VOSA_PSVLicenseName: "",
-  OpId: 1,
-  PubNmId: 1,
-  Mode: "",
-  TTRteEnq: "",
-  FareEnq: "",
-  ComplEnq: "",
-  Website: ""
-};
-
 export const createArray = (
   index: number,
-  mockNaptanData: ParsedData
+  mockNocData: ParsedData
 ): ParsedData[] => {
   const array: ParsedData[] = [];
   for (let i = 0; i < index; i++) {
-    array.push(mockNaptanData);
+    array.push(mockNocData);
   }
   return array;
 };
 
 export const createBatchOfWriteRequests = (
   index: number,
-  mockNaptanData: ParsedData
+  mockNocData: ParsedData
 ): AWS.DynamoDB.WriteRequest[] => {
   const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
   for (let i = 0; i < index; i++) {
     batchOfWriteRequests.push({
       PutRequest: {
-        Item: mockNaptanData as any
+        Item: mockNocData as any
       }
     });
   }

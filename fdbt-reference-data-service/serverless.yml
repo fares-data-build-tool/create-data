@@ -105,10 +105,10 @@ resources:
       Properties:
         TableName: ${self:provider.stage}-Stops
         AttributeDefinitions:
-          - AttributeName: "ATCOCode"
+          - AttributeName: "Partition"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "ATCOCode"
+          - AttributeName: "Partition"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
@@ -117,10 +117,10 @@ resources:
       Properties:
         TableName: ${self:provider.stage}-Operators
         AttributeDefinitions:
-          - AttributeName: "NOCCODE"
+          - AttributeName: "Partition"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "NOCCODE"
+          - AttributeName: "Partition"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
     
