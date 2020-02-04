@@ -13,16 +13,21 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             });
         } else {
             const { faretype } = req.body;
+            const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
+            const operatorObject = JSON.parse(operatorCookie);
+            const { uuid } = operatorObject;
+
+            if (!uuid) {
+                throw new Error('No UUID found');
+            }
 
             if (!faretype) {
                 res.writeHead(302, {
                     Location: '/faretype',
                 });
+                res.end();
+                return;
             }
-
-            const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
-            const operatorObject = JSON.parse(operatorCookie);
-            const { uuid } = operatorObject;
 
             const cookieValue = JSON.stringify({ faretype, uuid });
             const domain = getDomain(req);

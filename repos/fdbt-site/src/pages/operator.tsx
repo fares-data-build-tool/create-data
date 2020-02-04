@@ -19,7 +19,7 @@ const hardCodedOperators: Operator[] = [
     // TODO: Find correct NOC
     { operatorName: 'Lancashire County Council', nocCode: 'PLACEHOLDERLANCASHIRE' },
     { operatorName: 'Manchester Community Transport', nocCode: 'MCTR' },
-    { operatorName: 'Pilkington Bus', nocCode: 'KNGT' },
+    { operatorName: 'Pilkington Bus', nocCode: 'NWBT' },
     { operatorName: 'TLC Travel', nocCode: 'TLCT' },
     // TODO: Find correct NOC
     { operatorName: 'Transport for Greater Manchester', nocCode: 'PLACEHOLDERTFGM' },
@@ -37,7 +37,7 @@ const Operator: NextPage = () => (
                         <div className="govuk-radios">
                             {hardCodedOperators.map(
                                 (operator, index): ReactElement => (
-                                    <div className="govuk-radios__item">
+                                    <div className="govuk-radios__item" key={operator.operatorName}>
                                         <input
                                             className="govuk-radios__input"
                                             id={`operator-name${index}`}
