@@ -14,10 +14,10 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         } else {
             const { faretype } = req.body;
 
-            if(!faretype){
-                res.writeHead(302,{
-                    Location: '/faretype'
-                })
+            if (!faretype) {
+                res.writeHead(302, {
+                    Location: '/faretype',
+                });
             }
 
             const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
