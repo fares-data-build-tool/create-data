@@ -27,7 +27,7 @@
     },
     "lint-staged": {
         "*.{js,jsx,.ts,.tsx}": [
-            "pretty-quick --staged",
+            "pretty-quick",
             "eslint --fix"
         ]
     },
