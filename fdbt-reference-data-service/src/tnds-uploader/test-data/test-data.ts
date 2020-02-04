@@ -87,13 +87,13 @@ export const testCsv: string =
     '4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n' +
     '5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR';
 
-export function isJSON(str: any) {
+export const isJSON = (str: any) => {
     try {
         return JSON.parse(str) && !!str;
     } catch (e) {
         return false;
     }
-}
+};
 
 export const mockCleanedXmlData: {} = {
     FileName: 'ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z',

@@ -38,23 +38,23 @@ interface PushToDyanmoInput {
     tableName: string;
 }
 
-export async function fetchDataFromS3AsString(parameters: s3ObjectParameters): Promise<string> {
+export const fetchDataFromS3AsString = async (parameters: s3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
-}
+};
 
-export function csvParser(csvData: string): ParsedData[] {
+export const csvParser = (csvData: string): ParsedData[] => {
     const parsedData: ParsedData[] = csvParse(csvData, {
         columns: true,
         skip_empty_lines: true,
         delimiter: ',',
     });
     return parsedData;
-}
+};
 
-export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
+export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
         PutRequest: { Item: parsedDataItem as any },
     });
@@ -67,9 +67,9 @@ export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.Dynam
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
-}
+};
 
-export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDyanmoInput) {
+export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -115,9 +115,9 @@ export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDya
         console.log(`Throwing error.... ${err.name} : ${err.message}`);
         throw new Error('Could not write batch to DynamoDB');
     }
-}
+};
 
-export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
+export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
     const params: s3ObjectParameters = {
@@ -125,15 +125,15 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
         Key: s3FileName,
     };
     return params;
-}
+};
 
-export function setDbTableEnvVariable(): string {
+export const setDbTableEnvVariable = (): string => {
     const tableName: string | undefined = process.env.NAPTAN_TABLE_NAME;
     if (!tableName) {
         throw new Error('TABLE_NAME environment variable not set.');
     }
     return tableName;
-}
+};
 
 export const s3NaptanHandler = async (event: S3Event) => {
     const tableName = setDbTableEnvVariable();

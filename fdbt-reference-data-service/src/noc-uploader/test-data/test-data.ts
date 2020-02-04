@@ -223,13 +223,13 @@ export const nocLinesCsvData: string =
     '9086,=FC,First Capital Connect,,,Rail,Admin,,,,=FC,=FC,,,FC,,=FC,=FC,=FC,,,,,,,,,,,2015-06-09 00:00:00,John Prince,Strikethrough SE code,OK,2014-09-13 00:00:00,\n' +
     '9087,=GC,Grand Central,Grand Central Trains (ATOC),,Rail,Admin,,,,=GC,=GC,,,GC,,=GC,=GC,=GC,,,,,,,,,,,2010-03-31 00:00:00,Mark Fell,Intial NOC Build,OK,,\n';
 
-export function isJSON(str: any) {
+export const isJSON = (str: any) => {
     try {
         return JSON.parse(str) && !!str;
     } catch (e) {
         return false;
     }
-}
+};
 
 export const testXml: string = `<?xml version=1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
