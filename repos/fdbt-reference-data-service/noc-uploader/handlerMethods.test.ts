@@ -59,49 +59,133 @@ describe("csvParser", () => {
 
 describe("formatDynamoWriteRequest", () => {
   it("should return data in correct format as a DynamoDB WriteRequest", () => {
+    const mockNocData = {
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
+    const reformattedMockNocData = {
+      Partition: "dan",
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
     const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       1,
-      mocks.mockNocData
+      reformattedMockNocData
     );
     const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
     arrayOfBatches.push(batch);
     const testArrayOfItems: ParsedData[] = mocks.createArray(
       1,
-      mocks.mockNocData
+      mockNocData
     );
+    console.log({testArrayOfItems})
     const result = formatDynamoWriteRequest(testArrayOfItems);
+    console.log({result})
+    console.log({arrayOfBatches})
     expect(result).toEqual(arrayOfBatches);
   });
 
   it("should return an array of <25 when given <25 items", () => {
+    const mockNocData = {
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
+    const reformattedMockNocData = {
+      Partition: "dan",
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
     const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       23,
-      mocks.mockNocData
+      reformattedMockNocData
     );
     const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
     arrayOfBatches.push(batch);
     const testArrayOfItems: ParsedData[] = mocks.createArray(
       23,
-      mocks.mockNocData
+      mockNocData
     );
     const result = formatDynamoWriteRequest(testArrayOfItems);
     expect(result).toEqual(arrayOfBatches);
   });
 
   it("should return an array of >25 when given >25 items", () => {
+    const mockNocData = {
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
+    const reformattedMockNocData = {
+      Partition: "dan",
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
     const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       25,
-      mocks.mockNocData
+      reformattedMockNocData
     );
     const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       7,
-      mocks.mockNocData
+      reformattedMockNocData
     );
     const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
     arrayOfBatches.push(batch1, batch2);
     const testArrayOfItems: ParsedData[] = mocks.createArray(
       32,
-      mocks.mockNocData
+      mockNocData
     );
     const result = formatDynamoWriteRequest(testArrayOfItems);
     expect(result).toEqual(arrayOfBatches);
@@ -110,8 +194,22 @@ describe("formatDynamoWriteRequest", () => {
 
 describe("writeBatchesToDynamo", () => {
   // Arrange
+  const mockNocData = {
+    id: "",
+    NOCCODE: "dan",
+    OperatorPublicName: "",
+    VOSA_PSVLicenseName: "",
+    OpId: 1,
+    PubNmId: 1,
+    Mode: "",
+    TTRteEnq: "",
+    FareEnq: "",
+    ComplEnq: "",
+    Website: ""
+  };
+  
   const tableName = "mockTableName";
-  const parsedLines: ParsedData[] = [mocks.mockNocData];
+  const parsedLines: ParsedData[] = [mockNocData];
   const mockDynamoDbBatchWrite = jest.fn();
 
   beforeEach(() => {
@@ -140,12 +238,25 @@ describe("writeBatchesToDynamo", () => {
 
   it("calls dynamodb.batchwrite() more than once for a batch size greater than 25", async () => {
     // Arrange
+    const mockNocData = {
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
     mockDynamoDbBatchWrite.mockImplementation(() => ({
       promise() {
         return Promise.resolve({});
       }
     }));
-    const parsedLines = mocks.createArray(26, mocks.mockNocData);
+    const parsedLines = mocks.createArray(26, mockNocData);
     // Act
     await writeBatchesToDynamo({ parsedLines, tableName });
     // Assert
@@ -154,7 +265,20 @@ describe("writeBatchesToDynamo", () => {
 
   it("throws an error if it cannot write to DynamoDB", async () => {
     // Arrange
-    const parsedLines = mocks.createArray(2, mocks.mockNocData);
+    const mockNocData = {
+      id: "",
+      NOCCODE: "dan",
+      OperatorPublicName: "",
+      VOSA_PSVLicenseName: "",
+      OpId: 1,
+      PubNmId: 1,
+      Mode: "",
+      TTRteEnq: "",
+      FareEnq: "",
+      ComplEnq: "",
+      Website: ""
+    };
+    const parsedLines = mocks.createArray(2, mockNocData);
     mockDynamoDbBatchWrite.mockImplementation(() => ({
       promise() {
         return Promise.reject({});

@@ -35,8 +35,8 @@ export interface s3ObjectParameters {
   Key: string;
 }
 export interface tndsDynamoDBData {
-  Partition: string;
-  Sort: string;
+  Partition?: string;
+  Sort?: string;
   LineName: string;
   OperatorShortName: string;
   Description: string;
@@ -139,6 +139,7 @@ export function formatDynamoWriteRequest(
   ): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
+
   let reformattedParsedLines: servicesDynamoDBData[] = [];
   for (let i = 0; i < parsedLines.length; i++) {
     let item = parsedLines[i];
@@ -147,10 +148,9 @@ export function formatDynamoWriteRequest(
       item["Sort"] = lineNameServiceCode;
       item["Partition"] = item["NationalOperatorCode"]
       reformattedParsedLines.push(item);
-    } else {
-      // pass
     }
   };
+  
   const dynamoWriteRequests = reformattedParsedLines.map(
     parsedDataToWriteRequest
   );

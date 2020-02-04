@@ -11,6 +11,7 @@ export interface S3ObjectParameters {
 }
 
 interface DynamoDBData {
+  Partition?: string;
   NOCCODE: string;
   OperatorPublicName: string;
   VOSA_PSVLicenseName: string;
@@ -135,7 +136,17 @@ export function formatDynamoWriteRequest(
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
-  const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
+
+  let reformattedParsedLines: ParsedData[] = [];
+  for (let i = 0; i < parsedLines.length; i++) {
+    let item = parsedLines[i];
+    if (item["NOCCODE"]) {
+      item["Partition"] = item["NOCCODE"]
+      reformattedParsedLines.push(item);
+    }
+  };
+
+  const dynamoWriteRequests = reformattedParsedLines.map(parsedDataMapper);
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
   const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
