@@ -14,7 +14,7 @@ jobs:
           paths:
             - "*"
 
-  build-and-test-site:
+  build-site:
     docker:
       - image: circleci/node:12
     working_directory: ~/project
@@ -26,14 +26,36 @@ jobs:
             echo "Starting build"
             npm install
             npm run build
-            echo "Running tests"
-            npm run test
       - persist_to_workspace:
           root: ~/project
           paths:
             - "node_modules"
 
-  deploy-site:
+  test-site:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Running tests"
+            npm run test:ci
+
+  lint-site:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Linting site"
+            npm run lint
+
+  deploy-site-to-test:
     docker:
       - image: circleci/node:12
     working_directory: ~/project
@@ -52,20 +74,31 @@ workflows:
   build-test-and-deploy-site:
     jobs:
       - checkout-repo:
-          context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - build-and-test-site:
+      - build-site:
           requires:
             - checkout-repo
-          context: "tfn-aws"
           filters:
             branches:
               only: develop
-      - deploy-site:
+      - test-site:
           requires:
-            - build-and-test-site
+            - build-site
+          filters:
+            branches:
+              only: develop
+      - lint-site:
+          requires:
+            - build-site
+          filters:
+            branches:
+              only: develop
+      - deploy-site-to-test:
+          requires:
+            - test-site
+            - lint-site
           context: "tfn-aws"
           filters:
             branches:

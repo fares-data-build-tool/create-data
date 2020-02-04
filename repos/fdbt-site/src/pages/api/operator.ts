@@ -14,7 +14,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 
         if (operatorCookie) {
             res.writeHead(302, {
-                Location: '/service',
+                Location: '/faretype',
             });
         } else {
 
@@ -33,7 +33,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             const domain = getDomain(req);
             setCookieOnResponseObject(domain, OPERATOR_COOKIE, cookieValue, res);
             res.writeHead(302, {
-                Location: '/service',
+                Location: '/faretype',
             });
         }
     } catch (error) {
