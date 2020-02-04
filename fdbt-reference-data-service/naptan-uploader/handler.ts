@@ -2,7 +2,6 @@ import { S3Handler, S3Event } from "aws-lambda";
 import AWS from "aws-sdk";
 import { WriteRequest } from "aws-sdk/clients/dynamodb";
 
-import util from "util";
 import csvParse from "csv-parse/lib/sync";
 
 export type ParsedData = dynamoDBData;
@@ -13,6 +12,7 @@ export interface s3ObjectParameters {
 }
 
 interface dynamoDBData {
+  Partition?: string;
   ATCOCode: string;
   NaptanCode: string;
   CommonName: string;
@@ -63,7 +63,17 @@ export function formatDynamoWriteRequest(
   const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
-  const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
+
+  let reformattedParsedLines: ParsedData[] = [];
+  for (let i = 0; i < parsedLines.length; i++) {
+    let item = parsedLines[i];
+    if (item["ATCOCode"]) {
+      item["Partition"] = item["ATCOCode"]
+      reformattedParsedLines.push(item);
+    }
+  };
+
+  const dynamoWriteRequests = reformattedParsedLines.map(parsedDataMapper);
 
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
