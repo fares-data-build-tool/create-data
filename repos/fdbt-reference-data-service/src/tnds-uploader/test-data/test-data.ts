@@ -111,19 +111,19 @@ export const mockCleanedXmlData: {} = [
         ],
     },
     {
-      Description: 'St Ives - Bar Hill',
-      LineName: '1A',
-      OperatorShortName: 'Dannys Coaches',
-      Partition: 'Dannys',
-      Sort: '1A_20-1A-A-y08-1',
-      StopPoints: [
-          { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
-          { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
-          { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
-          { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
-          { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
-      ],
-  }
+        Description: 'St Ives - Bar Hill',
+        LineName: '1A',
+        OperatorShortName: 'Dannys Coaches',
+        Partition: 'Dannys',
+        Sort: '1A_20-1A-A-y08-1',
+        StopPoints: [
+            { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
+            { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
+            { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
+            { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
+            { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
+        ],
+    }
 ];
 
 export const testXml: string = `
