@@ -9,7 +9,7 @@
 				<ToDate>2020-12-31T12:00:00</ToDate>
 			</ValidBetween>
 			<Name>MetroBus 1 0 - Fares Example</Name>
-			<Description>This is an example showing how one might encode the Metrobus 1 fare table tin NeTEx.  It includes some</Description>
+			<Description>Point to point fare</Description>
 			<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@composite" version="fxc:v1.0"/>
 			<!--==== CODESPACEs ==== -->
 			<codespaces>
@@ -28,4 +28,77 @@
 				<DefaultCurrency>GBP</DefaultCurrency>
             </FrameDefaults>
 			<frames>
+				
+				<!--==== STEP 1:: Define some data regarding the operator - OPERATOR COMMON RESOURCES ====-->
+				<ResourceFrame version="1.0" id="mb:Metrobus" dataSourceRef="mb:metrobus" responsibilitySetRef="mb:network_data">
+					<Name>Opeartor specific  common resources</Name>
+					<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@operator_resources" version="fxc:v1.0"/>
+					<codespaces>
+						<Codespace id="mb">
+							<Xmlns>mb</Xmlns>
+							<XmlnsUrl>#################</XmlnsUrl>
+							<Description>Metrobus data</Description>
+						</Codespace>
+					</codespaces>
+					<dataSources>
+						<DataSource id="mb:metrobus" version="1.0">
+							<Email>feedback@metrobus.co.uk</Email>
+						</DataSource>
+					</dataSources>
+					<!-- ========Responsibility Sets========== -->
+					<responsibilitySets>
+						<ResponsibilitySet version="1.0" id="mb:tariffs">
+							<Name>Opeartor Tariffs</Name>
+							<roles>
+								<ResponsibilityRoleAssignment version="1.0" id="mb:tariff_data@creates">
+									<DataRoleType>creates</DataRoleType>
+									<StakeholderRoleType>FareManagement</StakeholderRoleType>
+									<ResponsibleOrganisationRef ref="noc:137122" version="1.0">Metrobus</ResponsibleOrganisationRef>
+								</ResponsibilityRoleAssignment>
+							</roles>
+						</ResponsibilitySet>
+						<ResponsibilitySet version="1.0" id="mb:network_data">
+							<Name>Operator data</Name>
+							<roles>
+								<ResponsibilityRoleAssignment version="1.0" id="mb:network_data@creates">
+									<DataRoleType>creates</DataRoleType>
+									<StakeholderRoleType>Planning</StakeholderRoleType>
+										<ResponsibleOrganisationRef ref="noc:137122" version="1.0">Metrobus</ResponsibleOrganisationRef>
+								</ResponsibilityRoleAssignment>
+							</roles>
+						</ResponsibilitySet>
+					</responsibilitySets>
+					<!--==== CODE VALUES  ==== -->
+					<typesOfValue>
+						<ValueSet version="1.0" id="mb:Branding" classOfValues="Branding">
+							<Name>Operator Branding</Name>
+							<values>
+								<Branding version="1.0" id="mb:Metrobus@brand">
+									<Name>Metrobus</Name>
+									<Url>https://www.metrobus.co.uk/static/images/colorways/metrobus/logo.png</Url>
+								</Branding>
+							</values>
+						</ValueSet>
+					</typesOfValue>
+					<organisations>
+						<!-- ==== ORGANISATIONS ==== -->
+						<Operator version="1.0" id="noc:137122">
+							<PublicCode>METR</PublicCode>
+							<Name>Metrobus</Name>
+							<ShortName>Metrobus</ShortName>
+							<TradingName>Metrobus Ltd</TradingName>
+							<ContactDetails>
+								<Phone>01293 449191</Phone>
+							</ContactDetails>
+							<OrganisationType>operator</OrganisationType>
+							<Address>
+								<Street>Wheatstone Close</Street>
+								<Town>Crawley</Town>
+								<PostCode>RH10 9UA</PostCode>
+								<PostalRegion>West Sussex</PostalRegion>
+							</Address>
+							<PrimaryMode>bus</PrimaryMode>
+						</Operator>
+					</organisations>
+                </ResourceFrame>
     </dataObjects>
