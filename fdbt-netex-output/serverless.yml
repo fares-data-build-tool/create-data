@@ -8,32 +8,32 @@ provider:
   timeout: 900
   memorySize: 2048
   iamRoleStatements:
-    - Effect: 'Allow'
+    - Effect: "Allow"
       Action:
-        - 's3:GetObject'
-        - 's3:ListBucket'
-        - 'se:ListObjectsV2'
-        - 'se:PutObject'
-      Resource: 
+        - "s3:GetObject"
+        - "s3:ListBucket"
+        - "se:ListObjectsV2"
+        - "se:PutObject"
+      Resource:
         - Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - fdbt-user-data-${self:provider.stage}
+            - ""
+            - - "arn:aws:s3:::"
+              - fdbt-user-data-${self:provider.stage}
         - Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - fdbt-user-data-${self:provider.stage}
-            - "/*"         
+            - ""
+            - - "arn:aws:s3:::"
+              - fdbt-user-data-${self:provider.stage}
+              - "/*"
         - Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - fdbt-netex-data-${self:provider.stage}
+            - ""
+            - - "arn:aws:s3:::"
+              - fdbt-netex-data-${self:provider.stage}
         - Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - fdbt-netex-data-${self:provider.stage}
-            - "/*"
-    - Effect: 'Allow'
+            - ""
+            - - "arn:aws:s3:::"
+              - fdbt-netex-data-${self:provider.stage}
+              - "/*"
+    - Effect: "Allow"
       Action:
         - dynamodb:DescribeTable
         - dynamodb:Query
@@ -51,7 +51,6 @@ provider:
     TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
-
 custom:
   NaptanTableName:
     - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NaptanTableName"
@@ -64,20 +63,19 @@ custom:
 
 functions:
   NetexConvertor:
-    handler: netex-convertor/handler.s3NetexConvertorHandler
+    handler: src/netex-convertor/handler.s3NetexConvertorHandler
     events:
-    - s3: fdbt-user-data-${self:provider.stage}
-      event: s3:ObjectCreated:*
+      - s3: fdbt-user-data-${self:provider.stage}
+        event: s3:ObjectCreated:*
 
   OdhUploader:
-    handler: odh-uploader/handler.s3OdhUploaderHandler
+    handler: src/odh-uploader/handler.s3OdhUploaderHandler
     events:
       - s3: fdbt-netex-data-${self:provider.stage}
         event: s3:ObjectCreated:*
 
-
 plugins:
-   - serverless-plugin-typescript
-   - serverless-s3-local
-   - serverless-dynamodb-local
-   - serverless-offline
+  - serverless-plugin-typescript
+  - serverless-s3-local
+  - serverless-dynamodb-local
+  - serverless-offline
