@@ -55,7 +55,7 @@ export interface Lists3ObjectsParameters {
     Prefix: string;
 }
 
-export async function lists3Objects(parameters: Lists3ObjectsParameters): Promise<string[]> {
+export const lists3Objects = async (parameters: Lists3ObjectsParameters): Promise<string[]> => {
     const objList: string[] = [];
     const s3 = new AWS.S3();
     const s3Data = await s3
@@ -81,29 +81,29 @@ export async function lists3Objects(parameters: Lists3ObjectsParameters): Promis
     }
     objList.push(itemOne, itemTwo, itemThree);
     return objList;
-}
+};
 
-export async function fetchDataFromS3AsString(parameters: S3ObjectParameters): Promise<string> {
+export const fetchDataFromS3AsString = async (parameters: S3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
-}
+};
 
-export function csvParser(csvData: string): any {
+export const csvParser = (csvData: string): any => {
     const parsedData: any = csvParse(csvData, {
         columns: true,
         skip_empty_lines: true,
         delimiter: ',',
     });
     return parsedData;
-}
+};
 
-export function mergeArrayObjects(
+export const mergeArrayObjects = (
     nocLinesArray: NocLinesData[],
     nocTableArray: NocTableData[],
     publicNameArray: PublicNameData[],
-): ParsedData[] {
+): ParsedData[] => {
     const firstMerge: (NocLinesData & NocTableData)[] = nocTableArray.map(x =>
         Object.assign(
             x,
@@ -117,9 +117,9 @@ export function mergeArrayObjects(
         ),
     );
     return secondMerge;
-}
+};
 
-export function formatDynamoWriteRequest(parsedLines: DynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
+export const formatDynamoWriteRequest = (parsedLines: DynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
         PutRequest: { Item: parsedDataItem as any },
     });
@@ -131,9 +131,9 @@ export function formatDynamoWriteRequest(parsedLines: DynamoDBData[]): AWS.Dynam
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
-}
+};
 
-export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDyanmoInput) {
+export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -179,15 +179,15 @@ export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDya
         console.log(`Throwing error.... ${err.name} : ${err.message}`);
         throw new Error('Could not write batch to DynamoDB');
     }
-}
+};
 
-export function setDbTableEnvVariable(): string {
+export const setDbTableEnvVariable = (): string => {
     const tableName: string | undefined = process.env.NOC_TABLE_NAME;
     if (!tableName) {
         throw new Error('TABLE_NAME environment variable not set.');
     }
     return tableName;
-}
+};
 
 export const s3NocHandler = async (event: S3Event) => {
     const tableName = setDbTableEnvVariable();

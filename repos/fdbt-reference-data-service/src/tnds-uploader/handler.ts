@@ -63,18 +63,18 @@ interface PushToDynamoCsvInput {
     tableName: string;
 }
 
-export async function fetchDataFromS3AsString(parameters: s3ObjectParameters): Promise<string> {
+export const fetchDataFromS3AsString = async (parameters: s3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
-}
+};
 
-export function fileExtensionGetter(fileName: string) {
+export const fileExtensionGetter = (fileName: string) => {
     return fileName.split('.').pop();
-}
+};
 
-export function tableChooser(fileExtension: string) {
+export const tableChooser = (fileExtension: string) => {
     if (!process.env.SERVICES_TABLE_NAME || !process.env.TNDS_TABLE_NAME) {
         throw new Error('Environment variables for table names have not been set or received.');
     }
@@ -89,13 +89,13 @@ export function tableChooser(fileExtension: string) {
 
     console.error(`File is not of a supported format type (${fileExtension})`);
     throw new Error(`Unsupported file type ${fileExtension}`);
-}
+};
 
-export function removeFirstLineOfString(xmlData: string): string {
+export const removeFirstLineOfString = (xmlData: string): string => {
     return xmlData.substring(xmlData.indexOf('\n') + 1);
-}
+};
 
-export async function xmlParser(xmlData: string): Promise<string> {
+export const xmlParser = async (xmlData: string): Promise<string> => {
     const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
     return new Promise((resolve, reject) => {
@@ -111,18 +111,18 @@ export async function xmlParser(xmlData: string): Promise<string> {
             return resolve(stringified);
         });
     });
-}
+};
 
-export function csvParser(csvData: string): ParsedCsvData[] {
+export const csvParser = (csvData: string): ParsedCsvData[] => {
     const parsedData: ParsedCsvData[] = csvParse(csvData, {
         columns: true,
         skip_empty_lines: true,
         delimiter: ',',
     });
     return parsedData;
-}
+};
 
-export function formatDynamoWriteRequest(parsedLines: servicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
+export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataMapper = (parsedDataItem: ParsedCsvData): WriteRequest => ({
         PutRequest: { Item: parsedDataItem as any },
     });
@@ -134,9 +134,9 @@ export function formatDynamoWriteRequest(parsedLines: servicesDynamoDBData[]): A
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
-}
+};
 
-export async function writeCsvBatchesToDynamo({ parsedCsvLines, tableName }: PushToDynamoCsvInput) {
+export const writeCsvBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushToDynamoCsvInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -182,9 +182,9 @@ export async function writeCsvBatchesToDynamo({ parsedCsvLines, tableName }: Pus
         console.log(`Throwing error.... ${err.name} : ${err.message}`);
         throw new Error('Could not write batch to DynamoDB');
     }
-}
+};
 
-export async function writeXmlToDynamo({ parsedXmlLines, tableName }: PushToDynamoXmlInput) {
+export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDynamoXmlInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -199,9 +199,9 @@ export async function writeXmlToDynamo({ parsedXmlLines, tableName }: PushToDyna
         .promise();
 
     console.log('Dynamo DB put request complete.');
-}
+};
 
-export function cleanParsedXmlData(parsedXmlData: string): any {
+export const cleanParsedXmlData = (parsedXmlData: string): any => {
     const parsedJson = JSON.parse(parsedXmlData);
 
     let extractedFilename: string = parsedJson?.TransXChange?.$?.FileName;
@@ -238,9 +238,9 @@ export function cleanParsedXmlData(parsedXmlData: string): any {
     };
 
     return cleanedXmlData;
-}
+};
 
-export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
+export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')); // Object key may have spaces or unicode non-ASCII characters
     const params: s3ObjectParameters = {
@@ -248,7 +248,7 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
         Key: s3FileName,
     };
     return params;
-}
+};
 
 export const s3TndsHandler = async (event: S3Event) => {
     const params = setS3ObjectParams(event);
