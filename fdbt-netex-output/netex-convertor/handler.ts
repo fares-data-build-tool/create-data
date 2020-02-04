@@ -106,47 +106,25 @@ export function getAttributeValueFromDynamoDBItemAsObjectArray(data: AWS.DynamoD
 export const netexConvertorHandler = async (event: S3Event) => {
 
   try {
-    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey("giles-Stops", "ATCOCode", "0170SGB20303");
-    console.log({ stopsItemData });
-    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey("giles-Operators", "NOCCODE", "AVRO");
-    console.log({ operatorsItemData });
-    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey("giles-Services", "NationalOperatorCode", "BDRB", "LineName", "580");
-    console.log({ servicesItemData });
-    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKey("giles-TNDS", "FileName", "ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z");
-    console.log({ tndsItemData });
-
+    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey("Stops", "ATCOCode", "0170SGB20303");
+    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey("Operators", "NOCCODE", "AVRO");
+    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey("Services", "NationalOperatorCode", "BDRB", "LineName", "580");
+    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKey("TNDS", "FileName", "ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z");
     const ntpgLocalityCode = getAttributeValueFromDynamoDBItemAsAString(stopsItemData, "NtgpLocalityCode");
-    console.log({ ntpgLocalityCode });
     const localityName = getAttributeValueFromDynamoDBItemAsAString(stopsItemData, "LocalityName");
-    console.log({ localityName });
-
     const website = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "Website");
-    console.log({ website });
     const ttrteEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "TTRteEnq");
-    console.log({ ttrteEnq });
     const OperatorPublicName = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "OperatorPublicName");
-    console.log({ OperatorPublicName });
     const opId = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "OpId");
-    console.log({ opId });
     const vosaPSVLicenseName = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "VOSA_PSVLicenseName");
-    console.log({ vosaPSVLicenseName });
     const fareEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "FareEnq");
-    console.log({ fareEnq });
     const complEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "ComplEnq");
-    console.log({ complEnq });
     const mode = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, "Mode");
-    console.log({ mode });
     const description = getAttributeValueFromDynamoDBItemAsAString(servicesItemData, "Description");
-    console.log({ description });
-
     const commonName = getAttributeValueFromDynamoDBItemAsAString(tndsItemData, "CommonName");
-    console.log({ commonName });
     const operatorShortnameArray = getAttributeValueFromDynamoDBItemAsStringArray(tndsItemData, "OperatorShortName");
-    console.log({ operatorShortnameArray });
     const operatorShortname = operatorShortnameArray[0];
-    console.log({ operatorShortname });
     const stopPointsArray = getAttributeValueFromDynamoDBItemAsObjectArray(tndsItemData, "StopPoints");
-    console.log({ stopPointsArray });
   }
   catch (error) {
     throw new Error(error.message)
