@@ -1,133 +1,132 @@
-import { ParsedData } from "./../handler";
+import { ParsedData } from '../handler';
 
 export const mockS3Event = (bucketName: string, fileName: string) => ({
-  Records: [
-    {
-      eventVersion: "",
-      eventSource: "",
-      awsRegion: "",
-      eventTime: "",
-      eventName: "",
-      userIdentity: {
-        principalId: ""
-      },
-      requestParameters: {
-        sourceIPAddress: ""
-      },
-      responseElements: {
-        "x-amz-request-id": "",
-        "x-amz-id-2": ""
-      },
-      s3: {
-        s3SchemaVersion: "",
-        configurationId: "",
-        bucket: {
-          name: bucketName,
-          ownerIdentity: {
-            principalId: ""
-          },
-          arn: ""
+    Records: [
+        {
+            eventVersion: '',
+            eventSource: '',
+            awsRegion: '',
+            eventTime: '',
+            eventName: '',
+            userIdentity: {
+                principalId: '',
+            },
+            requestParameters: {
+                sourceIPAddress: '',
+            },
+            responseElements: {
+                'x-amz-request-id': '',
+                'x-amz-id-2': '',
+            },
+            s3: {
+                s3SchemaVersion: '',
+                configurationId: '',
+                bucket: {
+                    name: bucketName,
+                    ownerIdentity: {
+                        principalId: '',
+                    },
+                    arn: '',
+                },
+                object: {
+                    key: fileName,
+                    size: 1,
+                    eTag: '',
+                    versionId: '',
+                    sequencer: '',
+                },
+            },
+            glacierEventData: {
+                restoreEventData: {
+                    lifecycleRestorationExpiryTime: '',
+                    lifecycleRestoreStorageClass: '',
+                },
+            },
         },
-        object: {
-          key: fileName,
-          size: 1,
-          eTag: "",
-          versionId: "",
-          sequencer: ""
-        }
-      },
-      glacierEventData: {
-        restoreEventData: {
-          lifecycleRestorationExpiryTime: "",
-          lifecycleRestoreStorageClass: ""
-        }
-      }
-    }
-  ]
+    ],
 });
 
 export const mockNaptanData = {
-  ATCOCode: "0100BRP90171",
-  NaptanCode: "bstjwja",
-  PlateCode: "",
-  CleardownCode: "",
-  CommonName: "Glen Park",
-  CommonNameLang: "en",
-  ShortCommonName: "",
-  ShortCommonNameLang: "",
-  Landmark: "",
-  LandmarkLang: "",
-  Street: "",
-  StreetLang: "",
-  Crossing: "",
-  CrossingLang: "",
-  Indicator: "NE-bound",
-  IndicatorLang: "en",
-  Bearing: "NE",
-  NptgLocalityCode: "E0035600",
-  LocalityName: "Eastville",
-  ParentLocalityName: "Bristol",
-  GrandParentLocalityName: "",
-  Town: "",
-  TownLang: "",
-  Suburb: "",
-  SuburbLang: "",
-  LocalityCentre: 0,
-  GridType: "U",
-  Easting: 361180,
-  Northing: 174902,
-  Longitude: -2.5602943871,
-  Latitude: 51.4717433191,
-  StopType: "BCT",
-  BusStopType: "MKD",
-  TimingStatus: "OTH",
-  DefaultWaitTime: "",
-  Notes: "",
-  NotesLang: "",
-  AdministrativeAreaCode: "009",
-  CreationDateTime: "2020-01-07T13:51:40",
-  ModificationDateTime: "2018-07-12T14:12:08",
-  RevisionNumber: "37",
-  Modification: "new",
-  Status: "act"
+    ATCOCode: '0100BRP90171',
+    NaptanCode: 'bstjwja',
+    PlateCode: '',
+    CleardownCode: '',
+    CommonName: 'Glen Park',
+    CommonNameLang: 'en',
+    ShortCommonName: '',
+    ShortCommonNameLang: '',
+    Landmark: '',
+    LandmarkLang: '',
+    Street: '',
+    StreetLang: '',
+    Crossing: '',
+    CrossingLang: '',
+    Indicator: 'NE-bound',
+    IndicatorLang: 'en',
+    Bearing: 'NE',
+    NptgLocalityCode: 'E0035600',
+    LocalityName: 'Eastville',
+    ParentLocalityName: 'Bristol',
+    GrandParentLocalityName: '',
+    Town: '',
+    TownLang: '',
+    Suburb: '',
+    SuburbLang: '',
+    LocalityCentre: 0,
+    GridType: 'U',
+    Easting: 361180,
+    Northing: 174902,
+    Longitude: -2.5602943871,
+    Latitude: 51.4717433191,
+    StopType: 'BCT',
+    BusStopType: 'MKD',
+    TimingStatus: 'OTH',
+    DefaultWaitTime: '',
+    Notes: '',
+    NotesLang: '',
+    AdministrativeAreaCode: '009',
+    CreationDateTime: '2020-01-07T13:51:40',
+    ModificationDateTime: '2018-07-12T14:12:08',
+    RevisionNumber: '37',
+    Modification: 'new',
+    Status: 'act',
 };
 
-export const createArray = (index: number, mockNaptanData: ParsedData): ParsedData[] => {
-  const array: ParsedData[] = [];
-  for (let i = 0; i < index; i++) {
-    array.push(mockNaptanData);
-  };
-  return array;
+export const createArray = (index: number, naptanData: ParsedData): ParsedData[] => {
+    const array: ParsedData[] = [];
+    for (let i = 0; i < index; i += 1) {
+        array.push(naptanData);
+    }
+    return array;
 };
 
-export const createBatchOfWriteRequests = (index: number, mockNaptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
-  const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
-  for (let i = 0; i < index; i++) {
-    batchOfWriteRequests.push(
-      {
-        PutRequest: {
-          Item: mockNaptanData as any
-        }
-      }
-    );
-  };
-  return batchOfWriteRequests;
+export const createBatchOfWriteRequests = (index: number, naptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
+    const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
+    for (let i = 0; i < index; i += 1) {
+        batchOfWriteRequests.push({
+            PutRequest: {
+                Item: naptanData as any,
+            },
+        });
+    }
+    return batchOfWriteRequests;
 };
 
-export const testCsv: string = "RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n" +
-    "1,EA,703BE,9-91-_-y08-11,91,Ipswich - Hadleigh - Sudbury,2019-12-03,BEES\n" +
-    "2,EA,753BDR,26-SJL-8-y08-2,SJL8,Blundeston - Sir John Leman School,2019-12-03,BDRB\n" +
-    "3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n" +
-    "4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n" +
-    "5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR"
+export const testCsv: string =
+    'RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n' +
+    '1,EA,703BE,9-91-_-y08-11,91,Ipswich - Hadleigh - Sudbury,2019-12-03,BEES\n' +
+    '2,EA,753BDR,26-SJL-8-y08-2,SJL8,Blundeston - Sir John Leman School,2019-12-03,BDRB\n' +
+    '3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n' +
+    '4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n' +
+    '5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR';
 
-export function isJSON(str:any) {
+export const isJSON = (str: any) => {
     try {
-        return (JSON.parse(str) && !!str);
+        return JSON.parse(str) && !!str;
     } catch (e) {
         return false;
     }
-}
+};
 
 export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
@@ -243,4 +242,4 @@ export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
     </VehicleJourney>
   </VehicleJourneys>
   <ADE></ADE>
-</TransXChange>`
+</TransXChange>`;
