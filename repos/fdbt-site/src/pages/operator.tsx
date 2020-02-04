@@ -8,39 +8,22 @@ import { deleteCookieOnServerSide } from '../utils';
 const title = 'Operator - Fares data build tool';
 const description = 'Operator selection page of the Fares data build tool';
 
-const hardCodedOperators = [
-    { OperatorName: 'Connexions Buses', NOCCode: 'HCTY' },
-    { OperatorName: 'Durham County Council', NOCCode: 'DCCL' },
-    // TODO: Find correct NOC
-    { OperatorName: 'Lancashire County Council', NOCCode: 'PLACEHOLDERLANCASHIRE' },
-    { OperatorName: 'Manchester Community Transport', NOCCode: 'MCTR' },
-    { OperatorName: 'Pilkington Bus', NOCCode: 'KNGT' },
-    { OperatorName: 'TLC Travel', NOCCode: 'TLCT' },
-    // TODO: Find correct NOC
-    { OperatorName: 'Transport for Greater Manchester', NOCCode: 'PLACEHOLDERTFGM' },
-];
-
-const getOperators = (operators: any[]): ReactElement[] => {
-    const operatorsDivs: any[] = [];
-    for (let operator = 0; operator < operators.length; operator += 1) {
-        operatorsDivs.push(
-            <div className="govuk-radios__item">
-                <input
-                    className="govuk-radios__input"
-                    id={`operator-name${operator}`}
-                    name="operator"
-                    type="radio"
-                    value={JSON.stringify(operators[operator])}
-                />
-                <label className="govuk-label govuk-radios__label" htmlFor={`operator-name${operator}`}>
-                    {`${operators[operator].OperatorName}`}
-                </label>
-            </div>,
-        );
-    }
-
-    return operatorsDivs;
+type Operator = {
+    operatorName: string;
+    nocCode: string;
 };
+
+const hardCodedOperators: Operator[] = [
+    { operatorName: 'Connexions Buses', nocCode: 'HCTY' },
+    { operatorName: 'Durham County Council', nocCode: 'DCCL' },
+    // TODO: Find correct NOC
+    { operatorName: 'Lancashire County Council', nocCode: 'PLACEHOLDERLANCASHIRE' },
+    { operatorName: 'Manchester Community Transport', nocCode: 'MCTR' },
+    { operatorName: 'Pilkington Bus', nocCode: 'KNGT' },
+    { operatorName: 'TLC Travel', nocCode: 'TLCT' },
+    // TODO: Find correct NOC
+    { operatorName: 'Transport for Greater Manchester', nocCode: 'PLACEHOLDERTFGM' },
+];
 
 const Operator: NextPage = () => (
     <Layout title={title} description={description}>
@@ -51,7 +34,27 @@ const Operator: NextPage = () => (
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading">Which operator are you representing?</h1>
                         </legend>
-                        <div className="govuk-radios">{getOperators(hardCodedOperators)}</div>
+                        <div className="govuk-radios">
+                            {hardCodedOperators.map(
+                                (operator, index): ReactElement => (
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id={`operator-name${index}`}
+                                            name="operator"
+                                            type="radio"
+                                            value={JSON.stringify(operator)}
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor={`operator-name${operator}`}
+                                        >
+                                            {`${operator.operatorName}`}
+                                        </label>
+                                    </div>
+                                ),
+                            )}
+                        </div>
                     </fieldset>
                 </div>
                 <input

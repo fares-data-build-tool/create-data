@@ -22,12 +22,10 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
-            const { OperatorName, NOCCode } = JSON.parse(req.body.operator);
-            operatorBusinessLogic(OperatorName);
+            const { operatorName, nocCode } = JSON.parse(req.body.operator);
+            operatorBusinessLogic(operatorName);
             const uuid = v1();
-            console.log(OperatorName);
-            console.log(NOCCode);
-            const cookieValue = JSON.stringify({ operator: OperatorName, uuid, NOCCode });
+            const cookieValue = JSON.stringify({ operator: operatorName, uuid, nocCode });
             const domain = getDomain(req);
             setCookieOnResponseObject(domain, OPERATOR_COOKIE, cookieValue, res);
             res.writeHead(302, {
