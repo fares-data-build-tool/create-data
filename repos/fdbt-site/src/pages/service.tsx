@@ -11,6 +11,7 @@ const description = 'Confirmation page of the Fares data build tool';
 
 type ServiceProps = {
     operator: string;
+    nocCode: string;
 };
 
 const Operator = ({ operator }: ServiceProps) => (
