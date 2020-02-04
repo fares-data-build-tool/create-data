@@ -11,6 +11,7 @@ const description = 'Confirmation page of the Fares data build tool';
 
 type ServiceProps = {
     operator: string;
+    nocCode: string;
 };
 
 const Operator = ({ operator }: ServiceProps) => (
@@ -31,7 +32,12 @@ const Operator = ({ operator }: ServiceProps) => (
                         </select>
                     </label>
                 </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button govuk-button--start" />
+                <input
+                    type="submit"
+                    value="Continue"
+                    id="continue-button"
+                    className="govuk-button govuk-button--start"
+                />
             </form>
         </main>
     </Layout>
