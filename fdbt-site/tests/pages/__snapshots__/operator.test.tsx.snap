@@ -18,7 +18,7 @@ exports[`pages operator should render correctly 1`] = `
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="changed-name-hint"
+          aria-describedby="operator-name-hint"
           className="govuk-fieldset"
         >
           <legend
@@ -27,33 +27,33 @@ exports[`pages operator should render correctly 1`] = `
             <h1
               className="govuk-fieldset__heading"
             >
-              Please select the bus operator that you are representing
+              Which operator are you representing?
             </h1>
           </legend>
           <span
             className="govuk-hint"
-            id="changed-name-hint"
+            id="operator-name-hint"
           >
-            Select an operator.
+            Select one option.
           </span>
           <div
-            className="govuk-radios govuk-radios--inline"
+            className="govuk-radios"
           >
             <div
               className="govuk-radios__item"
             >
               <input
                 className="govuk-radios__input"
-                id="changed-name"
+                id="operator-name0"
                 name="operator"
                 type="radio"
-                value="MCT"
+                value="{\\"OperatorName\\":\\"Connexions Buses\\",\\"NOCCode\\":\\"HCTY\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="changed-name"
+                htmlFor="operator-name0"
               >
-                MCT
+                Connexions Buses
               </label>
             </div>
             <div
@@ -61,16 +61,101 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="changed-name-2"
+                id="operator-name1"
                 name="operator"
                 type="radio"
-                value="FirstBus"
+                value="{\\"OperatorName\\":\\"Durham County Council\\",\\"NOCCode\\":\\"DCCL\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="changed-name-2"
+                htmlFor="operator-name1"
               >
-                FirstBus
+                Durham County Council
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name2"
+                name="operator"
+                type="radio"
+                value="{\\"OperatorName\\":\\"Lancashire County Council\\",\\"NOCCode\\":\\"PLACEHOLDERLANCASHIRE\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name2"
+              >
+                Lancashire County Council
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name3"
+                name="operator"
+                type="radio"
+                value="{\\"OperatorName\\":\\"Manchester Community Transport\\",\\"NOCCode\\":\\"MCTR\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name3"
+              >
+                Manchester Community Transport
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name4"
+                name="operator"
+                type="radio"
+                value="{\\"OperatorName\\":\\"Pilkington Bus\\",\\"NOCCode\\":\\"KNGT\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name4"
+              >
+                Pilkington Bus
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name5"
+                name="operator"
+                type="radio"
+                value="{\\"OperatorName\\":\\"TLC Travel\\",\\"NOCCode\\":\\"TLCT\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name5"
+              >
+                TLC Travel
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name6"
+                name="operator"
+                type="radio"
+                value="{\\"OperatorName\\":\\"Transport for Greater Manchester\\",\\"NOCCode\\":\\"PLACEHOLDERTFGM\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name6"
+              >
+                Transport for Greater Manchester
               </label>
             </div>
           </div>

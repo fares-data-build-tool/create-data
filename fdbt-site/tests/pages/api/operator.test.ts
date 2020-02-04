@@ -34,7 +34,7 @@ describe('operator', () => {
             connection: {
                 encrypted: false,
             },
-            body: { operator: 'test_operator' },
+            body: {operator:'{"OperatorName":"Connexions Buses","NOCCode":"HCTY"}'},
             headers: {
                 host: 'localhost:5000',
             },
