@@ -2,13 +2,15 @@ import AWS from 'aws-sdk';
 import {
     fetchDataFromS3AsJSON,
     setS3ObjectParams,
-    s3ObjectParameters,
+    s3ObjectParameters
+} from './handler';
+import { 
     getItemFromDynamoDBTableWithPartitionKey,
     getItemFromDynamoDBTableWithPartitionKeyAndSortKey,
     getAttributeValueFromDynamoDBItemAsAString,
     getAttributeValueFromDynamoDBItemAsStringArray,
     getAttributeValueFromDynamoDBItemAsObjectArray,
-} from './handler';
+} from './dynamoDBService';
 import * as mocks from './test-data/test-data';
 
 jest.mock('aws-sdk');
