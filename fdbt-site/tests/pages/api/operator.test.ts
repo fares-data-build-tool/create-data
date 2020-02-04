@@ -34,7 +34,7 @@ describe('operator', () => {
             connection: {
                 encrypted: false,
             },
-            body: { operator: 'test_operator' },
+            body: { operator: '{"operatorName":"Connexions Buses","nocCode":"HCTY"}' },
             headers: {
                 host: 'localhost:5000',
             },
@@ -48,7 +48,7 @@ describe('operator', () => {
         });
     });
 
-    it('should return 302 redirect to /error when session operator cookie and operator body do not exist', () => {
+    it('should return 302 redirect to /operator when session operator cookie and operator body do not exist', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
@@ -64,7 +64,8 @@ describe('operator', () => {
         });
         operator(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/operator',
         });
+        expect(writeHeadMock).toBeCalledTimes(1);
     });
 });
