@@ -1,16 +1,12 @@
 import { S3Event } from 'aws-lambda';
 import AWS from 'aws-sdk';
 
-export interface s3ObjectParameters {
+export type s3ObjectParameters = {
     Bucket: string;
     Key: string;
-}
+};
 
-export interface fetchedData {
-    Data: {};
-}
-
-export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
+export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
     const params: s3ObjectParameters = {
@@ -18,9 +14,9 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
         Key: s3FileName,
     };
     return params;
-}
+};
 
-export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Promise<JSON> {
+export const fetchDataFromS3AsJSON = async (parameters: s3ObjectParameters): Promise<JSON> => {
     const s3: AWS.S3 = new AWS.S3();
     try {
         const dataAsString: string = (await s3.getObject(parameters).promise()).Body?.toString('utf-8')!;
@@ -30,13 +26,13 @@ export async function fetchDataFromS3AsJSON(parameters: s3ObjectParameters): Pro
     } catch (err) {
         throw new Error('Error in retrieving data.');
     }
-}
+};
 
-export async function getItemFromDynamoDBTableWithPartitionKey(
+export const getItemFromDynamoDBTableWithPartitionKey = async (
     tableName: string,
     partitionKey: string,
     partitionKeyValue: string,
-): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> {
+): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> => {
     const docClient = new AWS.DynamoDB.DocumentClient();
 
     const params: AWS.DynamoDB.DocumentClient.QueryInput = {
@@ -52,15 +48,15 @@ export async function getItemFromDynamoDBTableWithPartitionKey(
     console.log('params we have set for dynamodb query are as follows:', params);
 
     return docClient.query(params).promise();
-}
+};
 
-export async function getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
+export const getItemFromDynamoDBTableWithPartitionKeyAndSortKey = async (
     tableName: string,
     partitionKey: string,
     partitionKeyValue: string,
     sortKey: string,
     sortKeyValue: string,
-): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> {
+): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> => {
     const docClient = new AWS.DynamoDB.DocumentClient();
 
     const params: AWS.DynamoDB.DocumentClient.QueryInput = {
@@ -78,40 +74,40 @@ export async function getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
     console.log('params we have set for dynamodb query are as follows:', params);
 
     return docClient.query(params).promise();
-}
+};
 
-export function getAttributeValueFromDynamoDBItemAsAString(
+export const getAttributeValueFromDynamoDBItemAsAString = (
     data: AWS.DynamoDB.DocumentClient.QueryOutput,
     attribute: string,
-): string {
+): string => {
     if (!data || !data.Items) {
         throw new Error('No data!');
     }
     const requiredAttAsAString: string = data.Items[0][attribute];
     return requiredAttAsAString;
-}
+};
 
-export function getAttributeValueFromDynamoDBItemAsStringArray(
+export const getAttributeValueFromDynamoDBItemAsStringArray = (
     data: AWS.DynamoDB.DocumentClient.QueryOutput,
     attribute: string,
-): string[] {
+): string[] => {
     if (!data || !data.Items) {
         throw new Error('No data!');
     }
     const requiredAttAsAStringArray: [string] = data.Items[0][attribute];
     return requiredAttAsAStringArray;
-}
+};
 
-export function getAttributeValueFromDynamoDBItemAsObjectArray(
+export const getAttributeValueFromDynamoDBItemAsObjectArray = (
     data: AWS.DynamoDB.DocumentClient.QueryOutput,
     attribute: string,
-): {}[] {
+): {}[] => {
     if (!data || !data.Items) {
         throw new Error('No data!');
     }
     const requiredAttAsAnObjectArray: [object] = data.Items[0][attribute];
     return requiredAttAsAnObjectArray;
-}
+};
 
 export const netexConvertorHandler = async (event: S3Event) => {
     try {
