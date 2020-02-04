@@ -6,8 +6,6 @@ import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
 
-    console.log(req.body.operator)
-
     try {
         const cookies = getCookies(req);
         const operatorCookie = cookies[OPERATOR_COOKIE];
