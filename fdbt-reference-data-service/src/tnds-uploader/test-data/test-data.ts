@@ -1,124 +1,111 @@
-import { ParsedCsvData } from "./../handler";
-import { tndsDynamoDBData } from "./../handler";
+import { ParsedCsvData } from '../handler';
 
 export const mockS3Event = (bucketName: string, fileName: string) => ({
-  Records: [
-    {
-      eventVersion: "",
-      eventSource: "",
-      awsRegion: "",
-      eventTime: "",
-      eventName: "",
-      userIdentity: {
-        principalId: ""
-      },
-      requestParameters: {
-        sourceIPAddress: ""
-      },
-      responseElements: {
-        "x-amz-request-id": "",
-        "x-amz-id-2": ""
-      },
-      s3: {
-        s3SchemaVersion: "",
-        configurationId: "",
-        bucket: {
-          name: bucketName,
-          ownerIdentity: {
-            principalId: ""
-          },
-          arn: ""
+    Records: [
+        {
+            eventVersion: '',
+            eventSource: '',
+            awsRegion: '',
+            eventTime: '',
+            eventName: '',
+            userIdentity: {
+                principalId: '',
+            },
+            requestParameters: {
+                sourceIPAddress: '',
+            },
+            responseElements: {
+                'x-amz-request-id': '',
+                'x-amz-id-2': '',
+            },
+            s3: {
+                s3SchemaVersion: '',
+                configurationId: '',
+                bucket: {
+                    name: bucketName,
+                    ownerIdentity: {
+                        principalId: '',
+                    },
+                    arn: '',
+                },
+                object: {
+                    key: fileName,
+                    size: 1,
+                    eTag: '',
+                    versionId: '',
+                    sequencer: '',
+                },
+            },
+            glacierEventData: {
+                restoreEventData: {
+                    lifecycleRestorationExpiryTime: '',
+                    lifecycleRestoreStorageClass: '',
+                },
+            },
         },
-        object: {
-          key: fileName,
-          size: 1,
-          eTag: "",
-          versionId: "",
-          sequencer: ""
-        }
-      },
-      glacierEventData: {
-        restoreEventData: {
-          lifecycleRestorationExpiryTime: "",
-          lifecycleRestoreStorageClass: ""
-        }
-      }
-    }
-  ]
+    ],
 });
 
-export const createArray = (
-  index: number,
-  mockBatchOfData: ParsedCsvData
-): ParsedCsvData[] => {
-  const array: ParsedCsvData[] = [];
-  for (let i = 0; i < index; i++) {
-    array.push(mockBatchOfData);
-  }
-  return array;
+export const mockServicesData = {
+    NationalOperatorCode: '',
+    LineName: '',
+    RegionCode: '',
+    RegionOperatorCode: '',
+    ServiceCode: '',
+    Description: '',
+    StartDate: '',
+};
+
+export const createArray = (index: number, mockNaptanData: ParsedCsvData): ParsedCsvData[] => {
+    const array: ParsedCsvData[] = [];
+    for (let i = 0; i < index; i += 1) {
+        array.push(mockNaptanData);
+    }
+    return array;
 };
 
 export const createBatchOfWriteRequests = (
-  index: number,
-  mockBatchOfData: {}
+    index: number,
+    mockNaptanData: ParsedCsvData,
 ): AWS.DynamoDB.WriteRequest[] => {
-  const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
-  for (let i = 0; i < index; i++) {
-    batchOfWriteRequests.push({
-      PutRequest: {
-        Item: mockBatchOfData
-      }
-    });
-  }
-  return batchOfWriteRequests;
+    const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
+    for (let i = 0; i < index; i += 1) {
+        batchOfWriteRequests.push({
+            PutRequest: {
+                Item: mockNaptanData as any,
+            },
+        });
+    }
+    return batchOfWriteRequests;
 };
 
 export const testCsv: string =
-  "RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n" +
-  "1,EA,703BE,9-91-_-y08-11,91,Ipswich - Hadleigh - Sudbury,2019-12-03,BEES\n" +
-  "2,EA,753BDR,26-SJL-8-y08-2,SJL8,Blundeston - Sir John Leman School,2019-12-03,BDRB\n" +
-  "3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n" +
-  "4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n" +
-  "5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR";
+    'RowId,RegionCode,RegionOperatorCode,ServiceCode,LineName,Description,StartDate,NationalOperatorCode\n' +
+    '1,EA,703BE,9-91-_-y08-11,91,Ipswich - Hadleigh - Sudbury,2019-12-03,BEES\n' +
+    '2,EA,753BDR,26-SJL-8-y08-2,SJL8,Blundeston - Sir John Leman School,2019-12-03,BDRB\n' +
+    '3,EA,767STEP,7-985-_-y08-4,985,Bury St Edmunds Schools - Risby,2019-12-03,SESX\n' +
+    '4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n' +
+    '5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR';
 
-export function isJSON(str: any) {
-  try {
-    return JSON.parse(str) && !!str;
-  } catch (e) {
-    return false;
-  }
-}
+export const isJSON = (str: any) => {
+    try {
+        return JSON.parse(str) && !!str;
+    } catch (e) {
+        return false;
+    }
+};
 
-export const mockCleanedXmlData: tndsDynamoDBData[] = [
-  {
-    Partition: "DEWS",
-    Sort: "1A_20-1A-A-y08-1",
-    LineName: "1A",
-    OperatorShortName: "Dews Coaches",
-    Description: "St Ives - Bar Hill",
+export const mockCleanedXmlData: {} = {
+    FileName: 'ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z',
+    OperatorShortName: ['Dews Coaches', 'Dannys Coaches'],
     StopPoints: [
-      { StopPointRef: "0500SBARH011", CommonName: "Superstore" },
-      { StopPointRef: "0500HFENS007", CommonName: "Rookery Way" },
-      { StopPointRef: "0500HFENS006", CommonName: "Swan Road" },
-      { StopPointRef: "0500HFENS003", CommonName: "Chequer Street" },
-      { StopPointRef: "0500SSWAV013", CommonName: "The Farm" }
-    ]
-  },
-  {
-    Partition: "Dannys",
-    Sort: "1A_20-1A-A-y08-1",
-    LineName: "1A",
-    OperatorShortName: "Dannys Coaches",
-    Description: "St Ives - Bar Hill",
-    StopPoints: [
-      { StopPointRef: "0500SBARH011", CommonName: "Superstore" },
-      { StopPointRef: "0500HFENS007", CommonName: "Rookery Way" },
-      { StopPointRef: "0500HFENS006", CommonName: "Swan Road" },
-      { StopPointRef: "0500HFENS003", CommonName: "Chequer Street" },
-      { StopPointRef: "0500SSWAV013", CommonName: "The Farm" }
-    ]
-  }
-];
+        { StopPointRef: '0500SBARH011', CommonName: 'Superstore' },
+        { StopPointRef: '0500HFENS007', CommonName: 'Rookery Way' },
+        { StopPointRef: '0500HFENS006', CommonName: 'Swan Road' },
+        { StopPointRef: '0500HFENS003', CommonName: 'Chequer Street' },
+        { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
+    ],
+};
 
 export const testXml: string = `
 <?xml version="1.0" encoding="utf-8"?>

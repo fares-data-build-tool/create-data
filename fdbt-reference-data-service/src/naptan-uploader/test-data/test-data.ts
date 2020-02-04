@@ -1,95 +1,95 @@
-import { ParsedData } from "./../handler";
+import { ParsedData } from '../handler';
 
 export const mockS3Event = (bucketName: string, fileName: string) => ({
-  Records: [
-    {
-      eventVersion: "",
-      eventSource: "",
-      awsRegion: "",
-      eventTime: "",
-      eventName: "",
-      userIdentity: {
-        principalId: ""
-      },
-      requestParameters: {
-        sourceIPAddress: ""
-      },
-      responseElements: {
-        "x-amz-request-id": "",
-        "x-amz-id-2": ""
-      },
-      s3: {
-        s3SchemaVersion: "",
-        configurationId: "",
-        bucket: {
-          name: bucketName,
-          ownerIdentity: {
-            principalId: ""
-          },
-          arn: ""
+    Records: [
+        {
+            eventVersion: '',
+            eventSource: '',
+            awsRegion: '',
+            eventTime: '',
+            eventName: '',
+            userIdentity: {
+                principalId: '',
+            },
+            requestParameters: {
+                sourceIPAddress: '',
+            },
+            responseElements: {
+                'x-amz-request-id': '',
+                'x-amz-id-2': '',
+            },
+            s3: {
+                s3SchemaVersion: '',
+                configurationId: '',
+                bucket: {
+                    name: bucketName,
+                    ownerIdentity: {
+                        principalId: '',
+                    },
+                    arn: '',
+                },
+                object: {
+                    key: fileName,
+                    size: 1,
+                    eTag: '',
+                    versionId: '',
+                    sequencer: '',
+                },
+            },
+            glacierEventData: {
+                restoreEventData: {
+                    lifecycleRestorationExpiryTime: '',
+                    lifecycleRestoreStorageClass: '',
+                },
+            },
         },
-        object: {
-          key: fileName,
-          size: 1,
-          eTag: "",
-          versionId: "",
-          sequencer: ""
-        }
-      },
-      glacierEventData: {
-        restoreEventData: {
-          lifecycleRestorationExpiryTime: "",
-          lifecycleRestoreStorageClass: ""
-        }
-      }
-    }
-  ]
+    ],
 });
 
 export const mockNaptanData = {
-  ATCOCode: "0100BRP90171",
-  NaptanCode: "bstjwja",
-  PlateCode: "",
-  CleardownCode: "",
-  CommonName: "Glen Park",
-  CommonNameLang: "en",
-  ShortCommonName: "",
-  ShortCommonNameLang: "",
-  Landmark: "",
-  LandmarkLang: "",
-  Street: "",
-  StreetLang: "",
-  Crossing: "",
-  CrossingLang: "",
-  Indicator: "NE-bound",
-  IndicatorLang: "en",
-  Bearing: "NE",
-  NptgLocalityCode: "E0035600",
-  LocalityName: "Eastville",
-  ParentLocalityName: "Bristol",
-  GrandParentLocalityName: "",
-  Town: "",
-  TownLang: "",
-  Suburb: "",
-  SuburbLang: "",
-  LocalityCentre: 0,
-  GridType: "U",
-  Easting: 361180,
-  Northing: 174902,
-  Longitude: -2.5602943871,
-  Latitude: 51.4717433191,
-  StopType: "BCT",
-  BusStopType: "MKD",
-  TimingStatus: "OTH",
-  DefaultWaitTime: "",
-  Notes: "",
-  NotesLang: "",
-  AdministrativeAreaCode: "009",
-  CreationDateTime: "2020-01-07T13:51:40",
-  ModificationDateTime: "2018-07-12T14:12:08",
-  RevisionNumber: "37",
-  Modification: "new",
-  Status: "act"
+    ATCOCode: '0100BRP90171',
+    NaptanCode: 'bstjwja',
+    PlateCode: '',
+    CleardownCode: '',
+    CommonName: 'Glen Park',
+    CommonNameLang: 'en',
+    ShortCommonName: '',
+    ShortCommonNameLang: '',
+    Landmark: '',
+    LandmarkLang: '',
+    Street: '',
+    StreetLang: '',
+    Crossing: '',
+    CrossingLang: '',
+    Indicator: 'NE-bound',
+    IndicatorLang: 'en',
+    Bearing: 'NE',
+    NptgLocalityCode: 'E0035600',
+    LocalityName: 'Eastville',
+    ParentLocalityName: 'Bristol',
+    GrandParentLocalityName: '',
+    Town: '',
+    TownLang: '',
+    Suburb: '',
+    SuburbLang: '',
+    LocalityCentre: 0,
+    GridType: 'U',
+    Easting: 361180,
+    Northing: 174902,
+    Longitude: -2.5602943871,
+    Latitude: 51.4717433191,
+    StopType: 'BCT',
+    BusStopType: 'MKD',
+    TimingStatus: 'OTH',
+    DefaultWaitTime: '',
+    Notes: '',
+    NotesLang: '',
+    AdministrativeAreaCode: '009',
+    CreationDateTime: '2020-01-07T13:51:40',
+    ModificationDateTime: '2018-07-12T14:12:08',
+    RevisionNumber: '37',
+    Modification: 'new',
+    Status: 'act',
 };
 
 export const mockReformattedNaptanData = {
@@ -147,18 +147,16 @@ export const createArray = (index: number, mockNaptanData: ParsedData): ParsedDa
   return array;
 };
 
-export const createBatchOfWriteRequests = (index: number, mockNaptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
-  const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
-  for (let i = 0; i < index; i++) {
-    batchOfWriteRequests.push(
-      {
-        PutRequest: {
-          Item: mockNaptanData as any
-        }
-      }
-    );
-  };
-  return batchOfWriteRequests;
+export const createBatchOfWriteRequests = (index: number, naptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
+    const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
+    for (let i = 0; i < index; i += 1) {
+        batchOfWriteRequests.push({
+            PutRequest: {
+                Item: naptanData as any,
+            },
+        });
+    }
+    return batchOfWriteRequests;
 };
 
 export const testCsv: string = "ATCOCode,NaptanCode,PlateCode,CleardownCode,CommonName,CommonNameLang,ShortCommonName,ShortCommonNameLang,Landmark,LandmarkLang,Street,StreetLang,Crossing,CrossingLang,Indicator,IndicatorLang,Bearing,NptgLocalityCode,LocalityName,ParentLocalityName,GrandParentLocalityName,Town,TownLang,Suburb,SuburbLang,LocalityCentre,GridType,Easting,Northing,Longitude,Latitude,StopType,BusStopType,TimingStatus,DefaultWaitTime,Notes,NotesLang,AdministrativeAreaCode,CreationDateTime,ModificationDateTime,RevisionNumber,Modification,Status\n" +
@@ -184,13 +182,13 @@ export const testCsv: string = "ATCOCode,NaptanCode,PlateCode,CleardownCode,Comm
 "0100053262,bstjpwd,,,Ikea Car Park,en,,,,,Eastgate Road,en,,,N-bound,en,N,N0076879,Bristol City Centre,Bristol,,,,,,0,U,359264,173135,-2.5876739040,51.4557210446,BCT,MKD,OTH,,,,009,2017-07-25T15:33:15,2017-07-17T14:38:42,14,del,del\n" +
 "0100BRP90168,bstjpad,,,Warwick Road,en,,,,,Stapleton Road,en,,,N-bound,en,N,E0035600,Eastville,Bristol,,,,,,0,U,360594,174345,-2.5686684729,51.4666946645,BCT,MKD,OTH,,,,009,2020-01-07T13:51:40,2017-04-21T17:26:03,10,new,act";
 
-export function isJSON(str:any) {
+export const isJSON = (str: any) => {
     try {
-        return (JSON.parse(str) && !!str);
+        return JSON.parse(str) && !!str;
     } catch (e) {
         return false;
     }
-}
+};
 
 export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
@@ -306,4 +304,4 @@ export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
     </VehicleJourney>
   </VehicleJourneys>
   <ADE></ADE>
-</TransXChange>`
+</TransXChange>`;
