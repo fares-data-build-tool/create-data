@@ -129,14 +129,14 @@ resources:
       Properties:
         TableName: ${self:provider.stage}-Services
         AttributeDefinitions:
-          - AttributeName: "NationalOperatorCode"
+          - AttributeName: "Partition"
             AttributeType: "S"
-          - AttributeName: "LineName#FileName"
+          - AttributeName: "Sort"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "NationalOperatorCode"
+          - AttributeName: "Partition"
             KeyType: "HASH"
-          - AttributeName: "LineName#FileName"
+          - AttributeName: "Sort"
             KeyType: "RANGE"
         BillingMode: PAY_PER_REQUEST
 
@@ -145,14 +145,14 @@ resources:
       Properties:
         TableName: ${self:provider.stage}-TNDS
         AttributeDefinitions:
-          - AttributeName: "NationalOperatorCode"
+          - AttributeName: "Partition"
             AttributeType: "S"
-          - AttributeName: "LineName#ServiceCode"
+          - AttributeName: "Sort"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "NationalOperatorCode"
+          - AttributeName: "Partition"
             KeyType: "HASH"
-          - AttributeName: "LineName#ServiceCode"
+          - AttributeName: "Sort"
             KeyType: "RANGE"
         BillingMode: PAY_PER_REQUEST
 

@@ -47,36 +47,26 @@ export const mockS3Event = (bucketName: string, fileName: string) => ({
   ]
 });
 
-export const mockServicesData = {
-  NationalOperatorCode: "",
-  LineName: "",
-  RegionCode: "",
-  RegionOperatorCode: "",
-  ServiceCode: "",
-  Description: "",
-  StartDate: ""
-};
-
 export const createArray = (
   index: number,
-  mockNaptanData: ParsedCsvData
+  mockBatchOfData: ParsedCsvData
 ): ParsedCsvData[] => {
   const array: ParsedCsvData[] = [];
   for (let i = 0; i < index; i++) {
-    array.push(mockNaptanData);
+    array.push(mockBatchOfData);
   }
   return array;
 };
 
 export const createBatchOfWriteRequests = (
   index: number,
-  mockNaptanData: ParsedCsvData
+  mockBatchOfData: {}
 ): AWS.DynamoDB.WriteRequest[] => {
   const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
   for (let i = 0; i < index; i++) {
     batchOfWriteRequests.push({
       PutRequest: {
-        Item: mockNaptanData as any
+        Item: mockBatchOfData
       }
     });
   }
@@ -101,8 +91,9 @@ export function isJSON(str: any) {
 
 export const mockCleanedXmlData: tndsDynamoDBData[] = [
   {
-    NationalOperatorCode: "DEWS",
-    LineName_ServiceCode: "1A20-1A-A-y08-1",
+    Partition: "DEWS",
+    Sort: "1A_20-1A-A-y08-1",
+    LineName: "1A",
     OperatorShortName: "Dews Coaches",
     Description: "St Ives - Bar Hill",
     StopPoints: [
@@ -114,8 +105,9 @@ export const mockCleanedXmlData: tndsDynamoDBData[] = [
     ]
   },
   {
-    NationalOperatorCode: "Dannys",
-    LineName_ServiceCode: "1A20-1A-A-y08-1",
+    Partition: "Dannys",
+    Sort: "1A_20-1A-A-y08-1",
+    LineName: "1A",
     OperatorShortName: "Dannys Coaches",
     Description: "St Ives - Bar Hill",
     StopPoints: [
