@@ -7,7 +7,7 @@ describe('operator', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /service when session operator cookie exists', () => {
+    it('should return 302 redirect to /faretype when session operator cookie exists', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
@@ -24,11 +24,11 @@ describe('operator', () => {
         });
         operator(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/service',
+            Location: '/faretype',
         });
     });
 
-    it('should return 302 redirect to /service when session operator cookie does not exist but req has operator', () => {
+    it('should return 302 redirect to /faretype when session operator cookie does not exist but req has operator', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
@@ -44,7 +44,7 @@ describe('operator', () => {
         });
         operator(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/service',
+            Location: '/faretype',
         });
     });
 

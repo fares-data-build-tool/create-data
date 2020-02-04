@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages operator should render correctly 1`] = `
+exports[`pages faretype should render correctly 1`] = `
 <Layout
-  description="Operator selection page of the Fares data build tool"
-  title="Operator - Fares data build tool"
+  description="Fare Type selection page of the Fares data build tool"
+  title="FareType - Fares data build tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -11,7 +11,7 @@ exports[`pages operator should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/operator"
+      action="/api/faretype"
       method="post"
     >
       <div
@@ -27,50 +27,65 @@ exports[`pages operator should render correctly 1`] = `
             <h1
               className="govuk-fieldset__heading"
             >
-              Please select the bus operator that you are representing
+              What type of fare?
             </h1>
           </legend>
-          <span
-            className="govuk-hint"
-            id="changed-name-hint"
-          >
-            Select an operator.
-          </span>
           <div
-            className="govuk-radios govuk-radios--inline"
+            className="govuk-radios"
           >
             <div
               className="govuk-radios__item"
             >
               <input
                 className="govuk-radios__input"
-                id="changed-name"
-                name="operator"
+                id="faretype"
+                name="faretype"
                 type="radio"
-                value="MCT"
+                value="single"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="changed-name"
+                htmlFor="faretype"
               >
-                MCT
+                Single
               </label>
             </div>
             <div
               className="govuk-radios__item"
             >
               <input
+                aria-disabled="true"
                 className="govuk-radios__input"
-                id="changed-name-2"
-                name="operator"
+                disabled={true}
+                id="faretype-2"
+                name="faretype"
                 type="radio"
-                value="FirstBus"
+                value="return"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="changed-name-2"
+                htmlFor="faretype-2"
               >
-                FirstBus
+                Return
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                aria-disabled="true"
+                className="govuk-radios__input"
+                disabled={true}
+                id="faretype-3"
+                name="faretype"
+                type="radio"
+                value="period"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="faretype-3"
+              >
+                Period Tickets
               </label>
             </div>
           </div>
