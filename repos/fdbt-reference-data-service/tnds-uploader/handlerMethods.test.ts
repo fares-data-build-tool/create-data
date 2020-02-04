@@ -149,14 +149,20 @@ describe("cleanParsedXmlData", () => {
   });
 });
 
-it("returns cleanedXmlData which contains the right OperatorShortNames", async () => {
-  const expectedOperatorShortNames = ["Dews Coaches", "Dannys Coaches"];
+it("returns cleanedXmlData which contains the right primary and sort keys", async () => {
+  const expectedPartitionKey1 = "DEWS";
+  const expectedPartitionKey2 = "Dannys";
+  const expectedSortKey = "1A_20-1A-A-y08-1";
   const xmlToBeCleaned = await xmlParser(testXml);
   const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
-  const operatorShortNames = cleanedXml["OperatorShortName"];
-  expect.assertions(2);
-  expect(operatorShortNames).toHaveLength(2);
-  expect(operatorShortNames).toEqual(expectedOperatorShortNames);
+  const partition1 = cleanedXml[0]["Partition"];
+  const partition2 = cleanedXml[1]["Partition"];
+  const sort = cleanedXml[0]["Sort"]
+  expect.assertions(4);
+  expect(cleanedXml).toHaveLength(2);
+  expect(partition1).toEqual(expectedPartitionKey1);
+  expect(partition2).toEqual(expectedPartitionKey2);
+  expect(sort).toEqual(expectedSortKey);
 });
 
 it("returns cleanedXmlData which contains the right StopPointRefs and CommonNames", async () => {
@@ -169,7 +175,7 @@ it("returns cleanedXmlData which contains the right StopPointRefs and CommonName
   ];
   const xmlToBeCleaned = await xmlParser(testXml);
   const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
-  const stopPoints = cleanedXml["StopPoints"];
+  const stopPoints = cleanedXml[0]["StopPoints"];
   expect.assertions(2);
   expect(stopPoints).toHaveLength(5);
   expect(stopPoints).toEqual(expectedStopPoints);
@@ -177,49 +183,111 @@ it("returns cleanedXmlData which contains the right StopPointRefs and CommonName
 
 describe("formatDynamoWriteRequest", () => {
   it("should return data in correct format as a DynamoDB WriteRequest", () => {
+    const mockServicesData = {
+      NationalOperatorCode: "dan",
+      LineName: "dannys",
+      RegionCode: "",
+      RegionOperatorCode: "",
+      Description: "",
+      ServiceCode: "service",
+      StartDate: ""
+    };
+    const mockReformattedServicesData = {
+      NationalOperatorCode: "dan",
+      Partition: "dan",
+      Sort: "dannys_service",
+      LineName: "dannys",
+      RegionCode: "",
+      RegionOperatorCode: "",
+      Description: "",
+      ServiceCode: "service",
+      StartDate: "",
+    };
     const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       1,
-      mocks.mockServicesData
+      mockReformattedServicesData
     );
     const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
     arrayOfBatches.push(batch);
     const testArrayOfItems: ParsedCsvData[] = mocks.createArray(
       1,
-      mocks.mockServicesData
+      mockServicesData
     );
+    console.log({testArrayOfItems});;
     const result = formatDynamoWriteRequest(testArrayOfItems);
+    console.log({result});
     expect(result).toEqual(arrayOfBatches);
   });
 
   it("should return an array of <25 when given <25 items", () => {
+    const mockServicesData = {
+      NationalOperatorCode: "dan",
+      LineName: "dannys",
+      RegionCode: "",
+      RegionOperatorCode: "",
+      Description: "",
+      ServiceCode: "service",
+      StartDate: ""
+    };
+    const mockReformattedServicesData = {
+      NationalOperatorCode: "dan",
+      Partition: "dan",
+      Sort: "dannys_service",
+      LineName: "dannys",
+      RegionCode: "",
+      RegionOperatorCode: "",
+      Description: "",
+      ServiceCode: "service",
+      StartDate: "",
+    };
     const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       23,
-      mocks.mockServicesData
+      mockReformattedServicesData
     );
     const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
     arrayOfBatches.push(batch);
     const testArrayOfItems: ParsedCsvData[] = mocks.createArray(
       23,
-      mocks.mockServicesData
+      mockServicesData
     );
     const result = formatDynamoWriteRequest(testArrayOfItems);
     expect(result).toEqual(arrayOfBatches);
   });
 
   it("should return an array of >25 when given >25 items", () => {
+    const mockServicesData = {
+      NationalOperatorCode: "dan",
+      LineName: "dannys",
+      RegionCode: "",
+      RegionOperatorCode: "",
+      Description: "",
+      ServiceCode: "service",
+      StartDate: ""
+    };
+    const mockReformattedServicesData = {
+      NationalOperatorCode: "dan",
+      Partition: "dan",
+      Sort: "dannys_service",
+      LineName: "dannys",
+      RegionCode: "",
+      RegionOperatorCode: "",
+      Description: "",
+      ServiceCode: "service",
+      StartDate: "",
+    };
     const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       25,
-      mocks.mockServicesData
+      mockReformattedServicesData
     );
     const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(
       7,
-      mocks.mockServicesData
+      mockReformattedServicesData
     );
     const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
     arrayOfBatches.push(batch1, batch2);
     const testArrayOfItems: ParsedCsvData[] = mocks.createArray(
       32,
-      mocks.mockServicesData
+      mockServicesData
     );
     const result = formatDynamoWriteRequest(testArrayOfItems);
     expect(result).toEqual(arrayOfBatches);
@@ -228,8 +296,17 @@ describe("formatDynamoWriteRequest", () => {
 
 describe("writeCsvBatchesToDynamo", () => {
   // Arrange
+  const mockServicesData = {
+    NationalOperatorCode: "dan",
+    LineName: "dannys",
+    RegionCode: "",
+    RegionOperatorCode: "",
+    Description: "",
+    ServiceCode: "service",
+    StartDate: ""
+  };
   const tableName = "mockTableName";
-  const parsedCsvLines: ParsedCsvData[] = [mocks.mockServicesData];
+  const parsedCsvLines: ParsedCsvData[] = [mockServicesData];
   const mockDynamoDbBatchWrite = jest.fn();
 
   beforeEach(() => {
@@ -263,7 +340,7 @@ describe("writeCsvBatchesToDynamo", () => {
         return Promise.resolve({});
       }
     }));
-    const parsedCsvLines = mocks.createArray(26, mocks.mockServicesData);
+    const parsedCsvLines = mocks.createArray(26, mockServicesData);
     // Act
     await writeCsvBatchesToDynamo({ parsedCsvLines, tableName });
     // Assert
@@ -272,7 +349,7 @@ describe("writeCsvBatchesToDynamo", () => {
 
   it("throws an error if it cannot write to DynamoDB", async () => {
     // Arrange
-    const parsedCsvLines = mocks.createArray(2, mocks.mockServicesData);
+    const parsedCsvLines = mocks.createArray(2, mockServicesData);
     mockDynamoDbBatchWrite.mockImplementation(() => ({
       promise() {
         return Promise.reject({});

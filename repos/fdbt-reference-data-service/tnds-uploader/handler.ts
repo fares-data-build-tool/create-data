@@ -1,7 +1,6 @@
 import omitEmpty from "omit-empty";
 import { S3Handler, S3Event } from "aws-lambda";
 import AWS from "aws-sdk";
-import util from "util";
 import csvParse from "csv-parse/lib/sync";
 import { WriteRequest } from "aws-sdk/clients/dynamodb";
 import { parseString } from "xml2js";
@@ -36,8 +35,9 @@ export interface s3ObjectParameters {
   Key: string;
 }
 export interface tndsDynamoDBData {
-  NationalOperatorCode: string;
-  LineName_ServiceCode: string;
+  Partition: string;
+  Sort: string;
+  LineName: string;
   OperatorShortName: string;
   Description: string;
   StopPoints: StopPointObject[];
@@ -45,6 +45,8 @@ export interface tndsDynamoDBData {
 
 export interface servicesDynamoDBData {
   NationalOperatorCode: string;
+  Partition?: string;
+  Sort?: string;
   LineName: string;
   RegionCode: string;
   RegionOperatorCode: string;
@@ -132,10 +134,26 @@ export function csvParser(csvData: string): ParsedCsvData[] {
 export function formatDynamoWriteRequest(
   parsedLines: servicesDynamoDBData[]
 ): AWS.DynamoDB.WriteRequest[][] {
-  const parsedDataMapper = (parsedDataItem: ParsedCsvData): WriteRequest => ({
+  const parsedDataToWriteRequest = (
+    parsedDataItem: ParsedCsvData
+  ): WriteRequest => ({
     PutRequest: { Item: parsedDataItem as any }
   });
-  const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
+  let reformattedParsedLines: servicesDynamoDBData[] = [];
+  for (let i = 0; i < parsedLines.length; i++) {
+    let item = parsedLines[i];
+    if (item["NationalOperatorCode"] && item["LineName"] && item["ServiceCode"]) {
+      let lineNameServiceCode = item["LineName"] + "_" + item["ServiceCode"];
+      item["Sort"] = lineNameServiceCode;
+      item["Partition"] = item["NationalOperatorCode"]
+      reformattedParsedLines.push(item);
+    } else {
+      // pass
+    }
+  };
+  const dynamoWriteRequests = reformattedParsedLines.map(
+    parsedDataToWriteRequest
+  );
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
   const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(
@@ -244,8 +262,9 @@ export function cleanParsedXmlData(parsedXmlData: string): tndsDynamoDBData[] {
     let nationalOperatorCode: string = operator["NationalOperatorCode"][0];
     let operatorShortName: string = operator["OperatorShortName"][0];
     let operatorInfo: tndsDynamoDBData = {
-      NationalOperatorCode: nationalOperatorCode,
-      LineName_ServiceCode: extractedLineName + extractedServiceCode,
+      Partition: nationalOperatorCode,
+      Sort: extractedLineName + "_" + extractedServiceCode,
+      LineName: extractedLineName,
       OperatorShortName: operatorShortName,
       Description: extractedDescription,
       StopPoints: stopPointsCollection
@@ -253,7 +272,6 @@ export function cleanParsedXmlData(parsedXmlData: string): tndsDynamoDBData[] {
     cleanedXmlData.push(operatorInfo);
   }
 
-  console.log({ cleanedXmlData });
   return cleanedXmlData;
 }
 

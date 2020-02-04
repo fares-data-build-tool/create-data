@@ -1,4 +1,4 @@
-import { xmlParser, cleanParsedXmlData } from "./../tnds-uploader/handler";
+import { csvParser, formatDynamoWriteRequest, writeCsvBatchesToDynamo } from "./../tnds-uploader/handler";
 import fs from "fs";
 import path from "path";
 
@@ -11,14 +11,13 @@ The <PATH_TO_CSV_FILE> will need to be relative to the location of run-local.ts.
 */
 
 const streamOutputToCommandLine = async () => {
-  const data = fs.readFileSync(path.join(__dirname, "./../tnds-uploader/test-data/data.xml"));
+  const data = fs.readFileSync(path.join(__dirname, "./../tnds-uploader/test-data/data.csv"));
   const stringifiedData = data.toString();
 
-  const parsedXmlData = await xmlParser(stringifiedData);
-  console.log(JSON.parse(parsedXmlData)["TransXChange"]["Services"][0]["Service"][0]["Description"][0])
+  const parsedCsvData = await csvParser(stringifiedData);
+  console.log(parsedCsvData)
   console.log("-----------------------------------------")
-  const cleanedXmlData = cleanParsedXmlData(parsedXmlData);
-  console.log({cleanedXmlData});
+  const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedCsvData);
 
 };
 
