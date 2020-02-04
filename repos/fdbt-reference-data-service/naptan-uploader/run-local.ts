@@ -1,4 +1,4 @@
-import { csvParser } from "./../naptan-uploader/handler";
+import { csvParser, mergeArrayObjects, formatDynamoWriteRequest } from "./../noc-uploader/handler";
 import fs from "fs";
 import path from "path";
 
@@ -11,11 +11,28 @@ The <PATH_TO_CSV_FILE> will need to be relative to the location of run-local.ts.
 */
 
 const streamOutputToCommandLine = async () => {
-  const data = fs.readFileSync(path.join(__dirname, "./../naptan-uploader/test-data/data.csv"));
-  const stringifiedData = data.toString();
-  const parsedData = csvParser(stringifiedData)
-  console.log({parsedData})
+  const nocLinesData = fs.readFileSync(path.join(__dirname, "./../noc-uploader/test-data/nocLines.csv"));
+  const nocLineStringifiedData = nocLinesData.toString();
 
+  const nocTablesData = fs.readFileSync(path.join(__dirname, "./../noc-uploader/test-data/nocTables.csv"));
+  const nocTableStringifiedData = nocTablesData.toString();
+
+  const publicNameData = fs.readFileSync(path.join(__dirname, "./../noc-uploader/test-data/publicName.csv"));
+  const publicNameStringifiedData = publicNameData.toString();
+  
+  const nocLineParsedCsv = csvParser(nocLineStringifiedData);
+  const nocTableParsedCsv = csvParser(nocTableStringifiedData);
+  const publicNameParsedCsv = csvParser(
+    publicNameStringifiedData
+  );
+
+  const mergedArray = mergeArrayObjects(
+    nocLineParsedCsv,
+    nocTableParsedCsv,
+    publicNameParsedCsv
+  );
+  const writeRequestBatches = formatDynamoWriteRequest(mergedArray);
+  console.log(writeRequestBatches[0][0])
 };
 
 streamOutputToCommandLine();
