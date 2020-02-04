@@ -1,25 +1,16 @@
 {
     "compilerOptions": {
-      "esModuleInterop": true,
-      "module": "commonjs",
-      "target": "esnext",
-      "jsx": "react",
-      "sourceMap": false,
-      "experimentalDecorators": true,
-      "noImplicitUseStrict": true,
-      "removeComments": true,
-      "moduleResolution": "node",
-      "lib": [
-       "es2017",
-       "dom"
-      ],
-      "typeRoots": [
-       "node_modules/@types"
-      ]
+        "esModuleInterop": true,
+        "module": "commonjs",
+        "target": "es2019",
+        "jsx": "react",
+        "sourceMap": false,
+        "experimentalDecorators": true,
+        "noImplicitUseStrict": true,
+        "removeComments": true,
+        "moduleResolution": "node",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "typeRoots": ["node_modules/@types"]
     },
-     "exclude": [
-      "node_modules",
-      "out",
-      ".next"
-     ]
-    }
+    "exclude": ["node_modules", "out", ".next"]
+}

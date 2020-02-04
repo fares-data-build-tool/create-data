@@ -1,107 +1,129 @@
-import validateHandler from "../../../pages/api/validate";
-import * as validator from '../../../pages/api/service/validator';
-import { mockRequest } from "mock-req-res";
+import { mockRequest } from 'mock-req-res';
+import validateHandler from '../../../src/pages/api/validate';
+import * as validator from '../../../src/pages/api/service/validator';
 
-describe("validate handler", () => {
+describe('validate handler', () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+    });
 
-  beforeEach(  () => { 
-    jest.resetAllMocks() 
-  });
+    it('should return a 200 with valid = true when session is valid and uuids match', () => {
+        const spyIsSessionValid = jest
+            .spyOn(validator, 'isSessionValid')
+            .mockImplementation()
+            .mockReturnValue(true);
+        const spyIsCookiesUUIDMatch = jest
+            .spyOn(validator, 'isCookiesUUIDMatch')
+            .mockImplementation()
+            .mockReturnValue(true);
 
-  it("should return a 200 with valid = true when session is valid and uuids match", () => {
-    const spyIsSessionValid = jest.spyOn(validator, "isSessionValid").mockImplementation().mockReturnValue(true);
-    const spyIsCookiesUUIDMatch = jest.spyOn(validator, "isCookiesUUIDMatch").mockImplementation().mockReturnValue(true);
+        const req = mockRequest();
 
-    const req = mockRequest();
+        const mockJson = jest.fn();
+        const val = {
+            json: mockJson,
+        };
 
-    const mockJson = jest.fn();
-    const val = {
-        json: mockJson
-    }
+        const mockStatus = jest.fn().mockReturnValue(val);
+        const res: any = {
+            status: mockStatus,
+        };
+        validateHandler(req, res);
 
-    const mockStatus = jest.fn().mockReturnValue(val);
-    const res : any  = {
-        status: mockStatus
-    };
-    validateHandler(req, res);
-    
-    expect(spyIsSessionValid).toHaveBeenCalled();
-    expect(spyIsCookiesUUIDMatch).toHaveBeenCalled();
+        expect(spyIsSessionValid).toHaveBeenCalled();
+        expect(spyIsCookiesUUIDMatch).toHaveBeenCalled();
 
-    expect(mockStatus).toHaveBeenCalledWith(200);
-    expect(mockJson).toHaveBeenCalledWith({ Valid: true });
-  });
+        expect(mockStatus).toHaveBeenCalledWith(200);
+        expect(mockJson).toHaveBeenCalledWith({ Valid: true });
+    });
 
-  it("should return a 401 with valid = false when session is not valid", () => {
-    const spyIsSessionValid = jest.spyOn(validator, "isSessionValid").mockImplementation().mockReturnValue(false);
-    const spyIsCookiesUUIDMatch = jest.spyOn(validator, "isCookiesUUIDMatch").mockImplementation().mockReturnValue(true);
+    it('should return a 401 with valid = false when session is not valid', () => {
+        const spyIsSessionValid = jest
+            .spyOn(validator, 'isSessionValid')
+            .mockImplementation()
+            .mockReturnValue(false);
+        const spyIsCookiesUUIDMatch = jest
+            .spyOn(validator, 'isCookiesUUIDMatch')
+            .mockImplementation()
+            .mockReturnValue(true);
 
-    const req = mockRequest();
+        const req = mockRequest();
 
-    const mockJson = jest.fn();
-    const val = {
-        json: mockJson
-    }
+        const mockJson = jest.fn();
+        const val = {
+            json: mockJson,
+        };
 
-    const mockStatus = jest.fn().mockReturnValue(val);
-    const res : any  = {
-        status: mockStatus
-    };
-    validateHandler(req, res);
-    
-    expect(spyIsSessionValid).toHaveBeenCalled();
-    expect(spyIsCookiesUUIDMatch).not.toHaveBeenCalled();
+        const mockStatus = jest.fn().mockReturnValue(val);
+        const res: any = {
+            status: mockStatus,
+        };
+        validateHandler(req, res);
 
-    expect(mockStatus).toHaveBeenCalledWith(401);
-    expect(mockJson).toHaveBeenCalledWith({ Valid: false });
-  });
+        expect(spyIsSessionValid).toHaveBeenCalled();
+        expect(spyIsCookiesUUIDMatch).not.toHaveBeenCalled();
 
-  it("should return a 401 with valid = false when session is valid but uuids do not match", () => {
-    const spyIsSessionValid = jest.spyOn(validator, "isSessionValid").mockImplementation().mockReturnValue(true);
-    const spyIsCookiesUUIDMatch = jest.spyOn(validator, "isCookiesUUIDMatch").mockImplementation().mockReturnValue(false);
+        expect(mockStatus).toHaveBeenCalledWith(401);
+        expect(mockJson).toHaveBeenCalledWith({ Valid: false });
+    });
 
-    const req = mockRequest();
+    it('should return a 401 with valid = false when session is valid but uuids do not match', () => {
+        const spyIsSessionValid = jest
+            .spyOn(validator, 'isSessionValid')
+            .mockImplementation()
+            .mockReturnValue(true);
+        const spyIsCookiesUUIDMatch = jest
+            .spyOn(validator, 'isCookiesUUIDMatch')
+            .mockImplementation()
+            .mockReturnValue(false);
 
-    const mockJson = jest.fn();
-    const val = {
-        json: mockJson
-    }
+        const req = mockRequest();
 
-    const mockStatus = jest.fn().mockReturnValue(val);
-    const res : any  = {
-        status: mockStatus
-    };
-    validateHandler(req, res);
-    
-    expect(spyIsSessionValid).toHaveBeenCalled();
-    expect(spyIsCookiesUUIDMatch).toHaveBeenCalled();
+        const mockJson = jest.fn();
+        const val = {
+            json: mockJson,
+        };
 
-    expect(mockStatus).toHaveBeenCalledWith(401);
-    expect(mockJson).toHaveBeenCalledWith({ Valid: false });
-  });
+        const mockStatus = jest.fn().mockReturnValue(val);
+        const res: any = {
+            status: mockStatus,
+        };
+        validateHandler(req, res);
 
-  it("should return a 401 with valid = false when session is not valid and uuids do not match", () => {
-    const spyIsSessionValid = jest.spyOn(validator, "isSessionValid").mockImplementation().mockReturnValue(false);
-    const spyIsCookiesUUIDMatch = jest.spyOn(validator, "isCookiesUUIDMatch").mockImplementation().mockReturnValue(false);
+        expect(spyIsSessionValid).toHaveBeenCalled();
+        expect(spyIsCookiesUUIDMatch).toHaveBeenCalled();
 
-    const req = mockRequest();
+        expect(mockStatus).toHaveBeenCalledWith(401);
+        expect(mockJson).toHaveBeenCalledWith({ Valid: false });
+    });
 
-    const mockJson = jest.fn();
-    const val = {
-        json: mockJson
-    }
+    it('should return a 401 with valid = false when session is not valid and uuids do not match', () => {
+        const spyIsSessionValid = jest
+            .spyOn(validator, 'isSessionValid')
+            .mockImplementation()
+            .mockReturnValue(false);
+        const spyIsCookiesUUIDMatch = jest
+            .spyOn(validator, 'isCookiesUUIDMatch')
+            .mockImplementation()
+            .mockReturnValue(false);
 
-    const mockStatus = jest.fn().mockReturnValue(val);
-    const res : any  = {
-        status: mockStatus
-    };
-    validateHandler(req, res);
-    
-    expect(spyIsSessionValid).toHaveBeenCalled();
-    expect(spyIsCookiesUUIDMatch).not.toHaveBeenCalled();
+        const req = mockRequest();
 
-    expect(mockStatus).toHaveBeenCalledWith(401);
-    expect(mockJson).toHaveBeenCalledWith({ Valid: false });
-  });
+        const mockJson = jest.fn();
+        const val = {
+            json: mockJson,
+        };
 
+        const mockStatus = jest.fn().mockReturnValue(val);
+        const res: any = {
+            status: mockStatus,
+        };
+        validateHandler(req, res);
+
+        expect(spyIsSessionValid).toHaveBeenCalled();
+        expect(spyIsCookiesUUIDMatch).not.toHaveBeenCalled();
+
+        expect(mockStatus).toHaveBeenCalledWith(401);
+        expect(mockJson).toHaveBeenCalledWith({ Valid: false });
+    });
 });
