@@ -59,6 +59,7 @@ exports[`pages service should render correctly 1`] = `
       </div>
       <input
         className="govuk-button govuk-button--start"
+        id="continue-button"
         type="submit"
         value="Continue"
       />
