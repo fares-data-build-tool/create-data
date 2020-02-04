@@ -14,10 +14,18 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 Location: '/faretype',
             });
         } else {
-            const { operator } = req.body;
-            operatorBusinessLogic(operator);
+            if (!req.body.operator) {
+                res.writeHead(302, {
+                    Location: '/operator',
+                });
+                res.end();
+                return;
+            }
+
+            const { operatorName, nocCode } = JSON.parse(req.body.operator);
+            operatorBusinessLogic(operatorName);
             const uuid = v1();
-            const cookieValue = JSON.stringify({ operator, uuid });
+            const cookieValue = JSON.stringify({ operator: operatorName, uuid, nocCode });
             const domain = getDomain(req);
             setCookieOnResponseObject(domain, OPERATOR_COOKIE, cookieValue, res);
             res.writeHead(302, {
