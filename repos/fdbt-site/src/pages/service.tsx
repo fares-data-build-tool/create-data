@@ -5,16 +5,17 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
+import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
 
 const title = 'Confirmation - Fares data build tool';
 const description = 'Confirmation page of the Fares data build tool';
 
 type ServiceProps = {
     operator: string;
-    nocCode: string;
+    services: ServiceType[];
 };
 
-const Operator = ({ operator }: ServiceProps) => (
+const Operator = ({ operator, services }: ServiceProps) => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <p className="govuk-body-l">Welcome operator {operator}</p>
@@ -22,15 +23,12 @@ const Operator = ({ operator }: ServiceProps) => (
                 <div className="govuk-form-group">
                     <label className="govuk-label" htmlFor="service">
                         Please select your service
-                        <select className="govuk-select" id="service" name="service">
-                            <option value="N1">N1</option>
-                            <option value="13A" selected>
-                                13A
-                            </option>
-                            <option value="12">12</option>
-                            <option value="3">3</option>
-                        </select>
                     </label>
+                    <select className="govuk-select" id="service" name="service">
+                        {services.map(service => (
+                            <option value={service.lineName}>{service.lineName}</option>
+                        ))}
+                    </select>
                 </div>
                 <input
                     type="submit"
@@ -51,7 +49,15 @@ Operator.getInitialProps = async (ctx: NextPageContext) => {
 
     if (operatorCookie) {
         const operatorObject = JSON.parse(operatorCookie);
-        return { operator: operatorObject.operator };
+        let services: ServiceType[] = [];
+
+        try {
+            services = await getServicesByNocCode(operatorObject?.nocCode);
+        } catch (err) {
+            console.error(err.message);
+        }
+
+        return { operator: operatorObject.operator, services };
     }
 
     if (ctx.res) {
