@@ -13,8 +13,11 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             });
         } else {
             const { faretype } = req.body;
+
             if (!faretype) {
-                throw new Error('No faretype found');
+                res.writeHead(302, {
+                    Location: '/faretype',
+                });
             }
 
             const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
