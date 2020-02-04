@@ -16,10 +16,23 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 });
             } else {
                 const { service } = req.body;
+                console.log(service);
+                if (!service) {
+                    res.writeHead(302, {
+                        Location: '/service',
+                    });
+                    res.end();
+                    return;
+                }
+
                 serviceBusinessLogic(service);
                 const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
                 const operatorObject = JSON.parse(operatorCookie);
                 const { uuid } = operatorObject;
+
+                if (!uuid) {
+                    throw new Error('No UUID found');
+                }
 
                 const cookieValue = JSON.stringify({ service, uuid });
                 const domain = getDomain(req);

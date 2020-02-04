@@ -28,34 +28,38 @@ exports[`pages service should render correctly 1`] = `
           htmlFor="service"
         >
           Please select your service
-          <select
-            className="govuk-select"
-            id="service"
-            name="service"
-          >
-            <option
-              value="N1"
-            >
-              N1
-            </option>
-            <option
-              selected={true}
-              value="13A"
-            >
-              13A
-            </option>
-            <option
-              value="12"
-            >
-              12
-            </option>
-            <option
-              value="3"
-            >
-              3
-            </option>
-          </select>
         </label>
+        <select
+          className="govuk-select"
+          id="service"
+          name="service"
+        >
+          <option
+            disabled={true}
+            selected={true}
+            value=""
+          >
+            ---Select One---
+          </option>
+          <option
+            key="123"
+            value="123"
+          >
+            123
+          </option>
+          <option
+            key="X1"
+            value="X1"
+          >
+            X1
+          </option>
+          <option
+            key="Infinity Line"
+            value="Infinity Line"
+          >
+            Infinity Line
+          </option>
+        </select>
       </div>
       <input
         className="govuk-button govuk-button--start"

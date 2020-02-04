@@ -3,6 +3,7 @@ module.exports = {
         browser: true,
         es6: true,
         jest: true,
+        node: true,
     },
     extends: ['plugin:react/recommended', 'airbnb', 'prettier', 'prettier/react', 'plugin:jsx-a11y/recommended'],
     globals: {
