@@ -30,12 +30,6 @@ exports[`pages operator should render correctly 1`] = `
               Which operator are you representing?
             </h1>
           </legend>
-          <span
-            className="govuk-hint"
-            id="operator-name-hint"
-          >
-            Select one option.
-          </span>
           <div
             className="govuk-radios"
           >

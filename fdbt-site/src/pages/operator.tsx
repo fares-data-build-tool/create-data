@@ -59,9 +59,6 @@ const Operator: NextPage = () => (
                                 Which operator are you representing?
                             </h1>
                         </legend>
-                        <span id="operator-name-hint" className="govuk-hint">
-                            Select one option.
-                        </span>
                         <div className="govuk-radios">
                             {getOperators(hardCodedOperators)}
                         </div>
