@@ -95,17 +95,36 @@ export const isJSON = (str: any) => {
     }
 };
 
-export const mockCleanedXmlData: {} = {
-    FileName: 'ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z',
-    OperatorShortName: ['Dews Coaches', 'Dannys Coaches'],
-    StopPoints: [
-        { StopPointRef: '0500SBARH011', CommonName: 'Superstore' },
-        { StopPointRef: '0500HFENS007', CommonName: 'Rookery Way' },
-        { StopPointRef: '0500HFENS006', CommonName: 'Swan Road' },
-        { StopPointRef: '0500HFENS003', CommonName: 'Chequer Street' },
-        { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
-    ],
-};
+export const mockCleanedXmlData: {} = [
+    {
+        Description: 'St Ives - Bar Hill',
+        LineName: '1A',
+        OperatorShortName: 'Dews Coaches',
+        Partition: 'DEWS',
+        Sort: '1A_20-1A-A-y08-1',
+        StopPoints: [
+            { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
+            { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
+            { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
+            { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
+            { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
+        ],
+    },
+    {
+      Description: 'St Ives - Bar Hill',
+      LineName: '1A',
+      OperatorShortName: 'Dannys Coaches',
+      Partition: 'Dannys',
+      Sort: '1A_20-1A-A-y08-1',
+      StopPoints: [
+          { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
+          { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
+          { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
+          { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
+          { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
+      ],
+  }
+];
 
 export const testXml: string = `
 <?xml version="1.0" encoding="utf-8"?>
