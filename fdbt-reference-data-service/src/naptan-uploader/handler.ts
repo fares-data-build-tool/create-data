@@ -80,35 +80,53 @@ export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.Dynam
     return dynamoWriteRequestBatches;
 }
 
-export async function writeBatchesToDynamo({ parsedLines, tableName }: PushToDyanmoInput) {
+export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
-
     const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedLines);
-
+    console.log('Number of batches to write to DynamoDB is: ', dynamoWriteRequestBatches.length);
     let count = 0;
+
+    let writePromises = [];
+
+    /* eslint-disable-next-line no-restricted-syntax */
     for (const batch of dynamoWriteRequestBatches) {
-        console.log('Writing to DynamoDB...');
-        try {
-            await dynamodb
+        writePromises.push(
+            dynamodb
                 .batchWrite({
                     RequestItems: {
                         [tableName]: batch,
                     },
                 })
-                .promise();
-        } catch {
-            console.log('Throwing error....');
-            throw new Error('Could not write batch to DynamoDB');
+                .promise(),
+        );
+
+        count += batch.length;
+
+        if (writePromises.length === 100) {
+            try {
+                await Promise.all(writePromises); // eslint-disable-line no-await-in-loop
+                writePromises = [];
+
+                console.log(`Wrote ${count} items to DynamoDB.`);
+            } catch (err) {
+                console.log(`Throwing error.... ${err.name} : ${err.message}`);
+                throw new Error('Could not write batch to DynamoDB');
+            }
         }
-        const batchLength = batch.length;
-        console.log(`Wrote batch of ${batchLength} items to Dynamo DB.`);
-        count += batchLength;
     }
-    console.log(`Wrote ${dynamoWriteRequestBatches.length} batches to DynamoDB.`);
-    console.log(`Wrote ${count} total items to DynamoDB.`);
-}
+
+    try {
+        await Promise.all(writePromises);
+
+        console.log(`Wrote ${dynamoWriteRequestBatches.length} total batches to DynamoDB`);
+        console.log(`Wrote ${count} total items to DynamoDB.`);
+    } catch (err) {
+        console.log(`Throwing error.... ${err.name} : ${err.message}`);
+        throw new Error('Could not write batch to DynamoDB');
+    }
+};
 
 export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
@@ -135,7 +153,7 @@ export const s3NaptanHandler = async (event: S3Event) => {
     const stringifiedData = await fetchDataFromS3AsString(params);
     const parsedCsvData = csvParser(stringifiedData);
     await writeBatchesToDynamo({
-        tableName: tableName,
+        tableName,
         parsedLines: parsedCsvData,
     });
 };
