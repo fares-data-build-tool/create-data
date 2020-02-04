@@ -12,7 +12,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 
             if (serviceCookie) {
                 res.writeHead(302, {
-                    Location: '/stages',
+                    Location: '/inputMethod',
                 });
             } else {
                 const { service } = req.body;
@@ -25,7 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 const domain = getDomain(req);
                 setCookieOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
                 res.writeHead(302, {
-                    Location: '/stages',
+                    Location: '/inputMethod',
                 });
             }
         } catch (error) {
