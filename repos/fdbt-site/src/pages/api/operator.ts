@@ -20,6 +20,8 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 res.writeHead(302,{
                     Location: '/operator'
                 })
+                res.end();
+                return;
             }
             
             const { OperatorName, NOCCode } = JSON.parse(req.body.operator);

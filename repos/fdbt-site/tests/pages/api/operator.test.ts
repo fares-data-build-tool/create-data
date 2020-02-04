@@ -66,5 +66,6 @@ describe('operator', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/operator',
         });
+        expect(writeHeadMock).toBeCalledTimes(1);
     });
 });
