@@ -53,17 +53,8 @@ describe('csvParser', () => {
     it('parses CSV into JSON', () => {
         const returnedValue = csvParser(mocks.testCsv);
 
-        expect(returnedValue.length).toBe(5);
-        expect(returnedValue[0]).toEqual({
-            RowId: '1',
-            RegionCode: 'EA',
-            RegionOperatorCode: '703BE',
-            ServiceCode: '9-91-_-y08-11',
-            LineName: '91',
-            Description: 'Ipswich - Hadleigh - Sudbury',
-            StartDate: '2019-12-03',
-            NationalOperatorCode: 'BEES',
-        });
+        expect(returnedValue.length).toBe(22);
+        expect(returnedValue[0]).toEqual(mocks.mockNaptanData);
     });
 });
 

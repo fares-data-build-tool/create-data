@@ -9,11 +9,6 @@
         "lint": "eslint . --ext .js,.ts",
         "lint:fix": "eslint --fix . --ext .js,.ts"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci"
-        }
-    },
     "lint-staged": {
         "*.{js,jsx,.ts,.tsx}": [
             "pretty-quick --staged",
