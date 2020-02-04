@@ -15,9 +15,7 @@ const inputMethod: NextPage = () => (
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">
-                                Please select your preferred input method
-                            </h1>
+                            <h1 className="govuk-fieldset__heading">Please select your preferred input method</h1>
                         </legend>
                         <div className="govuk-radios">
                             <div className="govuk-radios__item">
@@ -59,7 +57,12 @@ const inputMethod: NextPage = () => (
                         </div>
                     </fieldset>
                 </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button govuk-button--start" />
+                <input
+                    type="submit"
+                    value="Continue"
+                    id="continue-button"
+                    className="govuk-button govuk-button--start"
+                />
             </form>
         </main>
     </Layout>
