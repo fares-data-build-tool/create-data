@@ -27,8 +27,8 @@
     },
     "lint-staged": {
         "*.{js,jsx,.ts,.tsx}": [
-            "pretty-quick",
-            "eslint --fix"
+            "eslint --fix",
+            "pretty-quick --staged"
         ]
     },
     "author": "",

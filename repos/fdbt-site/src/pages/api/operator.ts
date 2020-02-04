@@ -5,7 +5,6 @@ import { operatorBusinessLogic } from './service/businessLogic';
 import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-
     try {
         const cookies = getCookies(req);
         const operatorCookie = cookies[OPERATOR_COOKIE];
@@ -15,21 +14,20 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 Location: '/faretype',
             });
         } else {
-
-            if(!req.body.operator){
-                res.writeHead(302,{
-                    Location: '/operator'
-                })
+            if (!req.body.operator) {
+                res.writeHead(302, {
+                    Location: '/operator',
+                });
                 res.end();
                 return;
             }
-            
+
             const { OperatorName, NOCCode } = JSON.parse(req.body.operator);
             operatorBusinessLogic(OperatorName);
             const uuid = v1();
             console.log(OperatorName);
             console.log(NOCCode);
-            const cookieValue = JSON.stringify({ operator:OperatorName, uuid , NOCCode});
+            const cookieValue = JSON.stringify({ operator: OperatorName, uuid, NOCCode });
             const domain = getDomain(req);
             setCookieOnResponseObject(domain, OPERATOR_COOKIE, cookieValue, res);
             res.writeHead(302, {

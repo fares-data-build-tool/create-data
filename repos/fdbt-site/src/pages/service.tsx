@@ -32,7 +32,12 @@ const Operator = ({ operator }: ServiceProps) => (
                         </select>
                     </label>
                 </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button govuk-button--start" />
+                <input
+                    type="submit"
+                    value="Continue"
+                    id="continue-button"
+                    className="govuk-button govuk-button--start"
+                />
             </form>
         </main>
     </Layout>
