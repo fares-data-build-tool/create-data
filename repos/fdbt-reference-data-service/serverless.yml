@@ -183,28 +183,27 @@ resources:
             Export:
                 Name: ${self:service}:${self:provider.stage}:TndsTableArn
 # The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
-# custom:
-#   dynamodb:
-#     stages:
-#       - test
-#     start:
-#       port: 9100
-#       inMemory: true
-#       heapInitial: 200m
-#       heapMax: 1g
-#       migrate: true
-#       seed: true
+custom:
+    dynamodb:
+        stages:
+            - dev
+            - test
+        start:
+            port: 9100
+            inMemory: true
+            heapInitial: 200m
+            heapMax: 1g
+            migrate: true
+            seed: true
 
-#     seed:
-#       domain:
-#         sources:
-#           - table: Stops
-#             sources: [./.dynamodb/dummy_naptan_data.json]
-#           # - table: Operators
-#           #   sources: [./.dynamodb/dummy_noc_data.json]
-#           # - table: Services
-#           #   sources: [./.dynamodb/seededTestData/dummy_services_data.json]
-#           - table: TNDS
-#             sources: [./.dynamodb/dummy_tnds_data.json]
-
-#       convertEmptyValues: true
+        seed:
+            domain:
+                sources:
+                    - table: ${self:provider.stage}-Stops
+                      sources: [./dev/seeddata/stops.json]
+                    - table: Operators
+                      sources: [./dev/seeddata/operators.json]
+                    - table: ${self:provider.stage}-Services
+                      sources: [./dev/seeddata/services.json]
+                    - table: ${self:provider.stage}-TNDS
+                      sources: [./dev/seeddata/tnds.json]
