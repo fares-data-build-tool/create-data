@@ -2,6 +2,7 @@ import { S3Event, S3Handler } from "aws-lambda";
 import AWS from "aws-sdk";
 import csvParse from "csv-parse/lib/sync";
 import { WriteRequest } from "aws-sdk/clients/dynamodb";
+import { ConfigurationServicePlaceholders } from "aws-sdk/lib/config_service_placeholders";
 
 export type ParsedData = DynamoDBData;
 
@@ -145,7 +146,6 @@ export function formatDynamoWriteRequest(
       reformattedParsedLines.push(item);
     }
   };
-
   const dynamoWriteRequests = reformattedParsedLines.map(parsedDataMapper);
   const emptyBatch: WriteRequest[][] = [];
   const batchSize = 25;
@@ -176,6 +176,7 @@ export async function writeBatchesToDynamo({
     dynamoWriteRequestBatches.length
   );
   let count = 0;
+  console.log({dynamoWriteRequestBatches})
   for (const batch of dynamoWriteRequestBatches) {
     console.log("Writing to DynamoDB...");
     try {
