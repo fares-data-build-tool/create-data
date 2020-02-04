@@ -7,7 +7,7 @@ describe('service', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /stages when the session is valid AND a service cookie exists', () => {
+    it('should return 302 redirect to /inputMethod when the session is valid AND a service cookie exists', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
@@ -24,11 +24,11 @@ describe('service', () => {
         });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/stages',
+            Location: '/inputMethod',
         });
     });
 
-    it('should return 302 redirect to /stages when the session is valid, there is no service cookie BUT one can be set', () => {
+    it('should return 302 redirect to /inputMethod when the session is valid, there is no service cookie BUT one can be set', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
@@ -45,7 +45,7 @@ describe('service', () => {
         });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/stages',
+            Location: '/inputMethod',
         });
     });
 
