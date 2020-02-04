@@ -1,0 +1,1002 @@
+[
+    {
+        "NationalOperatorCode": "A2BR",
+        "LineName": 117,
+        "Description": "City Centre - Fen Estate",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "A2BR",
+        "RowId": 142,
+        "ServiceCode": "20-117-C-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "A2BR",
+        "LineName": 127,
+        "Description": "Royston - Bassingbourn - Guilden Morden",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "A2BR",
+        "RowId": 40,
+        "ServiceCode": "20-127-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "A2BR",
+        "LineName": 18,
+        "Description": "Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "A2BR",
+        "RowId": 4,
+        "ServiceCode": "20-18-A-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "A2BR",
+        "LineName": 31,
+        "Description": "Cambridge - Fowlmere - Barley",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "A2BR",
+        "RowId": 41,
+        "ServiceCode": "20-31-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "A2BR",
+        "LineName": 32,
+        "Description": "Trumpington P & R - Hauxton",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "A2BR",
+        "RowId": 5,
+        "ServiceCode": "20-32-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "A2BR",
+        "LineName": 75,
+        "Description": "Cambridge - Orwell - Wrestlingworth",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "A2BR",
+        "RowId": 60,
+        "ServiceCode": "20-75-A-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "A2BR",
+        "LineName": "7A",
+        "Description": "Trumpington Park & Ride - Whittlesford - Trumpington Park & Ride",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "A2BR",
+        "RowId": 6,
+        "ServiceCode": "20-7A-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": 521,
+        "Description": "Aldeburgh - Leiston - Saxmundham - Halesworth",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 137,
+        "ServiceCode": "26-521-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": 524,
+        "Description": "Southwold - Halesworth - Beccles - Bungay",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 35,
+        "ServiceCode": "26-524-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": 580,
+        "Description": "Bungay - Beccles - Great Yarmouth",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 36,
+        "ServiceCode": "26-580-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "Beccles Town Service",
+        "Description": "Beccles - Worlingham - Beccles Town Centre",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 37,
+        "ServiceCode": "26-BT1-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL1",
+        "Description": "Kessingland - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 38,
+        "ServiceCode": "26-SJL-1-y08-6",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL2",
+        "Description": "Lowestoft - Carlton Colville - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 83,
+        "ServiceCode": "26-SJL-2-y08-7",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL3",
+        "Description": "Oulton Broad - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 84,
+        "ServiceCode": "26-SJL-3-y08-5",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL4",
+        "Description": "Carlton Colville - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 58,
+        "ServiceCode": "26-SJL-4-y08-5",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL5",
+        "Description": "Carlton Colville - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 59,
+        "ServiceCode": "26-SJL-5-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL6",
+        "Description": "Carlton Colville - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 138,
+        "ServiceCode": "26-SJL-6-y08-5",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL7",
+        "Description": "Oulton Broad - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 85,
+        "ServiceCode": "26-SJL-7-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL8",
+        "Description": "Blundeston - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 2,
+        "ServiceCode": "26-SJL-8-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BDRB",
+        "LineName": "SJL9",
+        "Description": "Southwold - Wrentham - Sir John Leman School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "753BDR",
+        "RowId": 86,
+        "ServiceCode": "26-SJL-9-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BEES",
+        "LineName": 91,
+        "Description": "Ipswich - Hadleigh - Sudbury",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "703BE",
+        "RowId": 101,
+        "ServiceCode": "9-91-_-y08-12",
+        "StartDate": "2019-12-23"
+    },
+    {
+        "NationalOperatorCode": "BEES",
+        "LineName": "OC7",
+        "Description": "Felixstowe - Woodbridge - Otley College",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "703BE",
+        "RowId": 102,
+        "ServiceCode": "9-OC7-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 110,
+        "Description": "Ely - Cottenham - Impington",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 42,
+        "ServiceCode": "20-110-A-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 19,
+        "Description": "Haverhill - Linton - Burrough Green",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 43,
+        "ServiceCode": "20-19-A-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 204,
+        "Description": "Isleham - Snailwell - Newmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 110,
+        "ServiceCode": "20-204-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 46,
+        "Description": "Streetly End - Dullingham - Newmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 111,
+        "ServiceCode": "20-46-C-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 47,
+        "Description": "Brinkley - Dullingham - Newmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 61,
+        "ServiceCode": "20-47-A-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 901,
+        "Description": "Ashley - Cheveley - Newmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 88,
+        "ServiceCode": "20-901-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 902,
+        "Description": "Newmarket - Kirtling - Cheveley - Newmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 62,
+        "ServiceCode": "20-902-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 903,
+        "Description": "Dullingham - Newmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 63,
+        "ServiceCode": "20-903-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BGBC",
+        "LineName": 904,
+        "Description": "Newmarket - Dullingham - Brinkley - Newmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BGBC",
+        "RowId": 64,
+        "ServiceCode": "20-904-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BLCO",
+        "LineName": "558A",
+        "Description": "Lowestoft - Beccles - Norwich Shopper",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BLCO",
+        "RowId": 89,
+        "ServiceCode": "20-558-A-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BLCO",
+        "LineName": "558B",
+        "Description": "Lound - Oulton - Beccles - Norwich",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BLCO",
+        "RowId": 143,
+        "ServiceCode": "20-558-B-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "BLCO",
+        "LineName": "558C",
+        "Description": "Hopton - Gunton - Beccles - Norwich",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "BLCO",
+        "RowId": 112,
+        "ServiceCode": "20-558-C-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "CSVC",
+        "LineName": 200,
+        "Description": "Mildenhall - Beck Row - Lakenheath - Brandon - Thetford",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "712CS",
+        "RowId": 126,
+        "ServiceCode": "12-200-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "CSVC",
+        "LineName": 201,
+        "Description": "Mildenhall - Lakenheath - Brandon - Thetford",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "712CS",
+        "RowId": 26,
+        "ServiceCode": "12-201-_-y08-9",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "CSVC",
+        "LineName": 84,
+        "Description": "Thetford - Barnham - Ingham - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "712CS",
+        "RowId": 127,
+        "ServiceCode": "12-84-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "CSVC",
+        "LineName": 86,
+        "Description": "Brandon - Thetford - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "712CS",
+        "RowId": 77,
+        "ServiceCode": "12-86-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "CSVC",
+        "LineName": "86A",
+        "Description": "Brandon - Thetford - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "712CS",
+        "RowId": 52,
+        "ServiceCode": "12-86A-_-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "FABC",
+        "LineName": 319,
+        "Description": "Syleham - Hoxne - Denham - Eye",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "719FA",
+        "RowId": 54,
+        "ServiceCode": "42-319-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "FABC",
+        "LineName": 320,
+        "Description": "Bury St Edmunds - Norton - Bacton - Eye",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "719FA",
+        "RowId": 129,
+        "ServiceCode": "42-320-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "FABC",
+        "LineName": 475,
+        "Description": "Eye - Brome - Diss",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "719FA",
+        "RowId": 130,
+        "ServiceCode": "42-475-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "FECS",
+        "LineName": 101,
+        "Description": "Gunton Estate - Lowestoft - Carlton Colville",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "FECS",
+        "RowId": 47,
+        "ServiceCode": "1-101-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "FECS",
+        "LineName": 102,
+        "Description": "Lowestoft Town Centre - Oulton - Town Centre",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "FECS",
+        "RowId": 48,
+        "ServiceCode": "1-102-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "FECS",
+        "LineName": 103,
+        "Description": "Lowestoft - Pakefield",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "FECS",
+        "RowId": 70,
+        "ServiceCode": "1-103-_-y08-12",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "GECL",
+        "LineName": 119,
+        "Description": "Ipswich - Witnesham - Earl Soham - Framlingham",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "723GEC",
+        "RowId": 80,
+        "ServiceCode": "8-119-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "GECL",
+        "LineName": 384,
+        "Description": "Stowmarket - Woolpit - Beyton - Thurston - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "723GEC",
+        "RowId": 81,
+        "ServiceCode": "8-384-_-y08-13",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "GECL",
+        "LineName": 385,
+        "Description": "Stowmarket - Woolpit - Norton - Thurston - Bury St  Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "723GEC",
+        "RowId": 104,
+        "ServiceCode": "8-385-_-y08-13",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "GOCT",
+        "LineName": "Sudbury Health Centre",
+        "Description": "Great Cornard - Health Centre - Glemsford",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "GOCT",
+        "RowId": 17,
+        "ServiceCode": "17-SHC-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HACT",
+        "LineName": 511,
+        "Description": "Halesworth - Holton",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "HACT",
+        "RowId": 123,
+        "ServiceCode": "17-511-_-y08-5",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HADC",
+        "LineName": 461,
+        "Description": "Stowmarket - Bildeston - Hadleigh",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "728HADC",
+        "RowId": 131,
+        "ServiceCode": "17-461-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HADC",
+        "LineName": 462,
+        "Description": "Stowmarket - Wattisham - Hadleigh",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "728HADC",
+        "RowId": 30,
+        "ServiceCode": "17-462-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HADC",
+        "LineName": "Connecting Communities Babergh - Hadleigh Area",
+        "Description": "Connecting Communities Babergh - Hadleigh Area",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "728HADC",
+        "RowId": 105,
+        "ServiceCode": "17-B2-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HADC",
+        "LineName": "Connecting Communities Babergh - Lavenham Area",
+        "Description": "Connecting Communities Babergh - Lavenham Area",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "728HADC",
+        "RowId": 82,
+        "ServiceCode": "17-B1-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HADC",
+        "LineName": "Connecting Communities Babergh - Shotley Area",
+        "Description": "Connecting Communities Babergh - Shotley Area",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "728HADC",
+        "RowId": 55,
+        "ServiceCode": "17-B3-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HSCT",
+        "LineName": 1,
+        "Description": "Southolt - Worlingworth - Monk Soham - Framlingham",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "730HS",
+        "RowId": 106,
+        "ServiceCode": "17-1-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HSCT",
+        "LineName": 2,
+        "Description": "Southolt - Kenton - Westthorpe - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "730HS",
+        "RowId": 132,
+        "ServiceCode": "17-2-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HSCT",
+        "LineName": 3,
+        "Description": "Redlingfield - Worlingworth - Debenham - Stowmarket",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "730HS",
+        "RowId": 133,
+        "ServiceCode": "17-3-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "HSCT",
+        "LineName": 6,
+        "Description": "Bedingfield - Stowupland - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "730HS",
+        "RowId": 134,
+        "ServiceCode": "17-6-_-y08-2",
+        "StartDate": "2019-12-07"
+    },
+    {
+        "NationalOperatorCode": "HSCT",
+        "LineName": 7,
+        "Description": "Bedingfield - Ipswich",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "730HS",
+        "RowId": 135,
+        "ServiceCode": "17-7-A-y08-5",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 10,
+        "Description": "Ipswich Town Centre - Castle Hill - Whitton - Town Centre",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 124,
+        "ServiceCode": "2-10-_-y08-10",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 115,
+        "Description": "Ipswich - Coddenham - Debenham - Mendlesham",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 18,
+        "ServiceCode": "2-115-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": "11A",
+        "Description": "Whitton - Ipswich Town Centre - Northgate High School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 95,
+        "ServiceCode": "2-11A-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": "11B",
+        "Description": "St Albans High School - Norwich Road",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 125,
+        "ServiceCode": "2-11B-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 12,
+        "Description": "Ipswich Town Centre - Chantry (Cambridge Drive)",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 96,
+        "ServiceCode": "2-12-_-y08-12",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 174,
+        "Description": "Woodbridge/Kesgrave - Kirton - Trimley - Old Felixstowe",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 19,
+        "ServiceCode": "2-174-_-y08-7",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 3,
+        "Description": "Ipswich Town Centre - Nacton Road - Futura Park",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 20,
+        "ServiceCode": "2-3-_-y08-9",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 464,
+        "Description": "Great Blakenham - Needham Market - Stowmarket High School",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 97,
+        "ServiceCode": "2-464-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": "5E",
+        "Description": "Ipswich Town Centre - Foxhall Rd - Hospital - Sidegate Lane",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 21,
+        "ServiceCode": "2-5E-_-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 6,
+        "Description": "Ipswich Town Centre - Northgate - Ipswich Hospital",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 98,
+        "ServiceCode": "2-6-_-y08-14",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 7,
+        "Description": "Ipswich Town Centre - Dale Hall - Castle Hill - Anglia Retail Park",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 22,
+        "ServiceCode": "2-7-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 93,
+        "Description": "Ipswich - Capel St Mary - East Bergholt - Colchester",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 23,
+        "ServiceCode": "2-93-_-y08-13",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 97,
+        "Description": "Ipswich - Chelmondiston - Shotley Gate",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 99,
+        "ServiceCode": "2-97-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "IPSW",
+        "LineName": 98,
+        "Description": "Ipswich - Holbrook - Shotley Gate",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "IPSW",
+        "RowId": 24,
+        "ServiceCode": "2-98-_-y08-9",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "LTEA",
+        "LineName": 203,
+        "Description": "Newmarket - Isleham",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "LTEA",
+        "RowId": 25,
+        "ServiceCode": "20-203-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "MULM",
+        "LineName": 358,
+        "Description": "West Row - Mildenhall",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "MULM",
+        "RowId": 100,
+        "ServiceCode": "5-358-_-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": 107,
+        "Description": "Lowestoft - Gunton St Peter - Lowestoft",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 27,
+        "ServiceCode": "14-107-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": 163,
+        "Description": "Bucklesham - Levington - Nacton - Ipswich",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 128,
+        "ServiceCode": "14-163-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": 173,
+        "Description": "Woodbridge - Kirton - Trimley - Felixstowe",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 78,
+        "ServiceCode": "14-173-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": 179,
+        "Description": "Woodbridge - Kirton - Bucklesham - Ipswich",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 28,
+        "ServiceCode": "14-179-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": 310,
+        "Description": "Bury St Edmunds - Newmarket - Exning",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 29,
+        "ServiceCode": "14-310-_-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": "311A",
+        "Description": "Newmarket - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 53,
+        "ServiceCode": "14-311-A-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": 615,
+        "Description": "Whitehouse ASDA - Chantry - Tattingstone - Holbrook",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 79,
+        "ServiceCode": "14-615-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SCCT",
+        "LineName": 929,
+        "Description": "Bury St Edmunds - Stowmarket - Otley College",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "716TS",
+        "RowId": 103,
+        "ServiceCode": "14-929-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SESX",
+        "LineName": 14,
+        "Description": "Bury St Edmunds - Haverhill",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "767STEP",
+        "RowId": 140,
+        "ServiceCode": "7-14-_-y08-10",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SESX",
+        "LineName": "14B",
+        "Description": "Bury St Edmunds - Haverhill",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "767STEP",
+        "RowId": 141,
+        "ServiceCode": "7-14B-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SESX",
+        "LineName": "15A",
+        "Description": "Bury St Edmunds - Haverhill",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "767STEP",
+        "RowId": 109,
+        "ServiceCode": "7-15A-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SESX",
+        "LineName": 384,
+        "Description": "Stowmarket - Woolpit - Beyton - Thurston - Bury St Edmunds",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "767STEP",
+        "RowId": 87,
+        "ServiceCode": "7-384-_-y08-1",
+        "StartDate": "2019-12-30"
+    },
+    {
+        "NationalOperatorCode": "SESX",
+        "LineName": 985,
+        "Description": "Bury St Edmunds Schools - Risby",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "767STEP",
+        "RowId": 3,
+        "ServiceCode": "7-985-_-y08-4",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SESX",
+        "LineName": "Breeze 1",
+        "Description": "Bury St Edmunds Town Service",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "767STEP",
+        "RowId": 139,
+        "ServiceCode": "7-1-_-y08-7",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SESX",
+        "LineName": "Breeze 2",
+        "Description": "Bury St Edmunds Town Service",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "767STEP",
+        "RowId": 39,
+        "ServiceCode": "7-2-_-y08-6",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 110,
+        "Description": "Diss- Eye",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 31,
+        "ServiceCode": "11-110-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 112,
+        "Description": "Diss - Eye",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 56,
+        "ServiceCode": "11-112-_-y08-1",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 113,
+        "Description": "Eye - Mendlesham - Ipswich",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 136,
+        "ServiceCode": "11-113-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 114,
+        "Description": "Eye - Debenham - Ipswich",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 32,
+        "ServiceCode": "11-114-_-y08-3",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 304,
+        "Description": "Bury St Edmunds - Stanton - Diss",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 107,
+        "ServiceCode": "11-304-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 338,
+        "Description": "Bury St Edmunds - Stanton - Garboldisham",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 108,
+        "ServiceCode": "11-338-_-y08-8",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 552,
+        "Description": "Metfield - Fressingfield - Worlingworth - Framlingham",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 57,
+        "ServiceCode": "11-552-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": 581,
+        "Description": "Beccles - Bungay - Harleston - Diss",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 34,
+        "ServiceCode": "11-581-_-y08-2",
+        "StartDate": "2019-12-03"
+    },
+    {
+        "NationalOperatorCode": "SIMO",
+        "LineName": "EE310",
+        "Description": "Palgrave - Rickinghall - Yaxley - Eye",
+        "RegionCode": "EA",
+        "RegionOperatorCode": "744SIM",
+        "RowId": 33,
+        "ServiceCode": "11-310-_-y08-1",
+        "StartDate": "2019-12-03"
+    }
+]
