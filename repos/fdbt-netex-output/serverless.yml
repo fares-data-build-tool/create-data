@@ -1,81 +1,81 @@
 service: netex-output-service
 
 provider:
-  name: aws
-  runtime: nodejs12.x
-  region: eu-west-2
-  stage: ${opt:stage, 'test'}
-  timeout: 900
-  memorySize: 2048
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "s3:GetObject"
-        - "s3:ListBucket"
-        - "se:ListObjectsV2"
-        - "se:PutObject"
-      Resource:
-        - Fn::Join:
-            - ""
-            - - "arn:aws:s3:::"
-              - fdbt-user-data-${self:provider.stage}
-        - Fn::Join:
-            - ""
-            - - "arn:aws:s3:::"
-              - fdbt-user-data-${self:provider.stage}
-              - "/*"
-        - Fn::Join:
-            - ""
-            - - "arn:aws:s3:::"
-              - fdbt-netex-data-${self:provider.stage}
-        - Fn::Join:
-            - ""
-            - - "arn:aws:s3:::"
-              - fdbt-netex-data-${self:provider.stage}
-              - "/*"
-    - Effect: "Allow"
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:GetItem
-      Resource:
-        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NaptanTableArn"
-        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NocTableArn"
-        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:ServicesTableArn"
-        - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:TndsTableArn"
+    name: aws
+    runtime: nodejs12.x
+    region: eu-west-2
+    stage: ${opt:stage, 'test'}
+    timeout: 900
+    memorySize: 2048
+    iamRoleStatements:
+        - Effect: 'Allow'
+          Action:
+              - 's3:GetObject'
+              - 's3:ListBucket'
+              - 'se:ListObjectsV2'
+              - 'se:PutObject'
+          Resource:
+              - Fn::Join:
+                    - ''
+                    - - 'arn:aws:s3:::'
+                      - fdbt-user-data-${self:provider.stage}
+              - Fn::Join:
+                    - ''
+                    - - 'arn:aws:s3:::'
+                      - fdbt-user-data-${self:provider.stage}
+                      - '/*'
+              - Fn::Join:
+                    - ''
+                    - - 'arn:aws:s3:::'
+                      - fdbt-netex-data-${self:provider.stage}
+              - Fn::Join:
+                    - ''
+                    - - 'arn:aws:s3:::'
+                      - fdbt-netex-data-${self:provider.stage}
+                      - '/*'
+        - Effect: 'Allow'
+          Action:
+              - dynamodb:DescribeTable
+              - dynamodb:Query
+              - dynamodb:GetItem
+          Resource:
+              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NaptanTableArn'
+              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NocTableArn'
+              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:ServicesTableArn'
+              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:TndsTableArn'
 
-  environment:
-    NAPTAN_TABLE_NAME: ${self:provider.stage}-Stops
-    NOC_TABLE_NAME: ${self:provider.stage}-Operators
-    SERVICES_TABLE_NAME: ${self:provider.stage}-Services
-    TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
-    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+    environment:
+        NAPTAN_TABLE_NAME: ${self:provider.stage}-Stops
+        NOC_TABLE_NAME: ${self:provider.stage}-Operators
+        SERVICES_TABLE_NAME: ${self:provider.stage}-Services
+        TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
 
 custom:
-  NaptanTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NaptanTableName"
-  NocTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:NocTableName"
-  ServicesTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:ServicesTableName"
-  TndsTableName:
-    - "Fn::ImportValue": "reference-data-service:${self:provider.stage}:TndsTableName"
+    NaptanTableName:
+        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NaptanTableName'
+    NocTableName:
+        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NocTableName'
+    ServicesTableName:
+        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:ServicesTableName'
+    TndsTableName:
+        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:TndsTableName'
 
 functions:
-  NetexConvertor:
-    handler: src/netex-convertor/handler.s3NetexConvertorHandler
-    events:
-      - s3: fdbt-user-data-${self:provider.stage}
-        event: s3:ObjectCreated:*
+    NetexConvertor:
+        handler: src/netex-convertor/handler.netexConvertorHandler
+        events:
+            - s3: fdbt-user-data-${self:provider.stage}
+              event: s3:ObjectCreated:*
 
-  OdhUploader:
-    handler: src/odh-uploader/handler.s3OdhUploaderHandler
-    events:
-      - s3: fdbt-netex-data-${self:provider.stage}
-        event: s3:ObjectCreated:*
+    OdhUploader:
+        handler: src/odh-uploader/handler.s3OdhUploaderHandler
+        events:
+            - s3: fdbt-netex-data-${self:provider.stage}
+              event: s3:ObjectCreated:*
 
 plugins:
-  - serverless-plugin-typescript
-  - serverless-s3-local
-  - serverless-dynamodb-local
-  - serverless-offline
+    - serverless-plugin-typescript
+    - serverless-s3-local
+    - serverless-dynamodb-local
+    - serverless-offline
