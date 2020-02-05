@@ -69,8 +69,6 @@ export const lists3Objects = async (parameters: Lists3ObjectsParameters): Promis
         })
         .promise();
     const contents = s3Data.Contents!;
-    console.log({ s3Data });
-    console.log({ contents });
     let itemOne = '';
     let itemTwo = '';
     let itemThree = '';
