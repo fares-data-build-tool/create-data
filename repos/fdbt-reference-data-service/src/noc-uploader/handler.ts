@@ -53,7 +53,6 @@ interface PushToDyanmoInput {
 
 export interface Lists3ObjectsParameters {
     Bucket: string;
-    Prefix: string;
 }
 
 export const lists3Objects = async (parameters: Lists3ObjectsParameters): Promise<string[]> => {
@@ -198,18 +197,8 @@ export const s3NocHandler = async (event: S3Event) => {
 
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     console.log('s3BucketName retrieved from S3 Event is: ', s3BucketName);
-    const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-    console.log('s3FileName retrieved from S3 Event is: ', s3FileName);
-    const s3FileNameSubStringArray: string[] = s3FileName.split('/');
-    const s3FileNameSubStringArrayFirstElement: string = s3FileNameSubStringArray[0];
-    console.log('s3FileNameSubStringArray retrieved from s3FileName is: ', s3FileNameSubStringArray);
-    console.log(
-        's3FileNameSubStringArrayFirstElement retrieved from s3FileName is: ',
-        s3FileNameSubStringArrayFirstElement,
-    );
     const Lists3ObjectsParameters: Lists3ObjectsParameters = {
-        Bucket: s3BucketName,
-        Prefix: s3FileNameSubStringArrayFirstElement,
+        Bucket: s3BucketName
     };
 
     const s3ObjectsList = await lists3Objects(Lists3ObjectsParameters);
