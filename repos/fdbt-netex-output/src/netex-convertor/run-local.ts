@@ -18,11 +18,7 @@ const streamOutputToCommandLine = async () => {
     console.log(json);
     var stringified = JSON.stringify(json);
     var xml = parser.toXml(stringified);
-    fs.writeFile("test-updated.xml", xml, err => {
-      
-    }
-    );   
-  };
-)};
-
+    console.log(xml); 
+  });
+}
 streamOutputToCommandLine();
