@@ -1,10 +1,10 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
-import operator from '../../../src/pages/api/operator';
-import { OPERATOR_COOKIE } from '../../../src/constants';
+import inputMethod from '../../../src/pages/api/inputMethod';
 
-describe('operator', () => {
+describe('inputMethod', () => {
     let res: mockReqRes.ResponseOutput;
     let writeHeadMock: jest.Mock<any>;
+
     beforeEach(() => {
         jest.resetAllMocks();
         writeHeadMock = jest.fn();
@@ -13,7 +13,7 @@ describe('operator', () => {
         });
     });
 
-    it('should return 302 redirect to /faretype when session operator cookie exists', () => {
+    it('should return 302 redirect to /inputMethod when no input method is selected', () => {
         const req = mockRequest({
             connection: {
                 encrypted: false,
@@ -21,45 +21,51 @@ describe('operator', () => {
             body: {},
             headers: {
                 host: 'localhost:5000',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`,
+                cookie: '',
             },
         });
-        operator(req, res);
+        inputMethod(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/faretype',
+            Location: '/inputMethod',
         });
     });
 
-    it('should return 302 redirect to /faretype when session operator cookie does not exist but req has operator', () => {
+    it('should return 302 redirect to /error when an input method value we dont expect is passed', () => {
         const req = mockRequest({
             connection: {
                 encrypted: false,
             },
-            body: { operator: '{"operatorName":"Connexions Buses","nocCode":"HCTY"}' },
+            body: { uploadType: 'pdf' },
             headers: {
                 host: 'localhost:5000',
+                cookie: '',
             },
         });
-        operator(req, res);
+
+        inputMethod(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/faretype',
+            Location: '/error',
         });
     });
 
-    it('should return 302 redirect to /operator when session operator cookie and operator body do not exist', () => {
+    it('should return 302 redirect to /csvUpload when csv is the passed input method', () => {
         const req = mockRequest({
             connection: {
                 encrypted: false,
             },
-            body: {},
+            body: { uploadType: 'csv' },
             headers: {
                 host: 'localhost:5000',
+                cookie: '',
             },
         });
-        operator(req, res);
+
+        inputMethod(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/operator',
+            Location: '/csvUpload',
         });
-        expect(writeHeadMock).toBeCalledTimes(1);
     });
 });

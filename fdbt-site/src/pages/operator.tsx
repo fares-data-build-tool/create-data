@@ -37,7 +37,7 @@ const Operator: NextPage = () => (
                         <div className="govuk-radios">
                             {hardCodedOperators.map(
                                 (operator, index): ReactElement => (
-                                    <div className="govuk-radios__item">
+                                    <div className="govuk-radios__item" key={operator.operatorName}>
                                         <input
                                             className="govuk-radios__input"
                                             id={`operator-name${index}`}
