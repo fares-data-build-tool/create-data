@@ -5,7 +5,7 @@
     "scripts": {
         "build": "tsc --noEmit",
         "test": "jest --testRegex src/**/*.test.ts",
-        "test:ci": "CI=true jest --testRegex src/**/*.test.ts",
+        "test:ci": "CI=true jest --testRegex src/**/*.test.ts -w 1",
         "lint": "eslint . --ext .js,.ts",
         "lint:fix": "eslint --fix . --ext .js,.ts"
     },
