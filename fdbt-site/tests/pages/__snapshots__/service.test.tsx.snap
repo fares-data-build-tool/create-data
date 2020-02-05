@@ -10,12 +10,6 @@ exports[`pages service should render correctly 1`] = `
     id="main-content"
     role="main"
   >
-    <p
-      className="govuk-body-l"
-    >
-      Welcome operator 
-      Connexions Buses
-    </p>
     <form
       action="/api/service"
       method="post"
@@ -23,43 +17,62 @@ exports[`pages service should render correctly 1`] = `
       <div
         className="govuk-form-group"
       >
-        <label
-          className="govuk-label"
-          htmlFor="service"
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
         >
-          Please select your service
-        </label>
-        <select
-          className="govuk-select"
-          id="service"
-          name="service"
-        >
-          <option
-            disabled={true}
-            selected={true}
-            value=""
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
           >
-            ---Select One---
-          </option>
-          <option
-            key="123"
-            value="123"
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              Please select your bus service
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="service"
+            id="service-operator-label"
           >
-            123
-          </option>
-          <option
-            key="X1"
-            value="X1"
+            Connexions Buses
+          </label>
+          <select
+            className="govuk-select"
+            id="service"
+            name="service"
           >
-            X1
-          </option>
-          <option
-            key="Infinity Line"
-            value="Infinity Line"
-          >
-            Infinity Line
-          </option>
-        </select>
+            <option
+              disabled={true}
+              selected={true}
+              value=""
+            >
+              ---Select One---
+            </option>
+            <option
+              className="service-option"
+              key="123"
+              value="123"
+            >
+              123
+            </option>
+            <option
+              className="service-option"
+              key="X1"
+              value="X1"
+            >
+              X1
+            </option>
+            <option
+              className="service-option"
+              key="Infinity Line"
+              value="Infinity Line"
+            >
+              Infinity Line
+            </option>
+          </select>
+        </fieldset>
       </div>
       <input
         className="govuk-button govuk-button--start"
