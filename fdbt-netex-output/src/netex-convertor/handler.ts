@@ -32,51 +32,40 @@ export const fetchDataFromS3AsJSON = async (parameters: s3ObjectParameters): Pro
 export const netexConvertorHandler = async (event: S3Event) => {
     try {
         const nocCode = "METR";
-        const lineName = "233";
+        const lineServiceName = "233";
         const atcoCode = "0100BRP90313";
-        const fileName = "ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z";
-
-        const operatorsItem = await dynamodbservices.getOperatorsItem(nocCode);
-        const operatorsWebsite = dynamodbservices.getOperatorsWebsiteValue(operatorsItem);
-        console.log (operatorsWebsite);
-        const operatorsTtrteEnq = dynamodbservices.getOperatorsTtrteEnqValue(operatorsItem);
+        const operatorsWebsite = dynamodbservices.getOperatorsWebsiteValue(nocCode);
+        console.log(operatorsWebsite);
+        const operatorsTtrteEnq = dynamodbservices.getOperatorsTtrteEnqValue(nocCode);
         console.log (operatorsTtrteEnq);
-        const operatorsOperatorPublicName = dynamodbservices.getOperatorsOperatorPublicNameValue(operatorsItem);
+        const operatorsOperatorPublicName = dynamodbservices.getOperatorsOperatorPublicNameValue(nocCode);
         console.log (operatorsOperatorPublicName);
-        const operatorsOpId = dynamodbservices.getOperatorsOpIdValue(operatorsItem);
+        const operatorsOpId = dynamodbservices.getOperatorsOpIdValue(nocCode);
         console.log (operatorsOpId);
-        const operatorsVosaPSVLicenseName = dynamodbservices.getOperatorsVosaPSVLicenseNameValue(operatorsItem);
+        const operatorsVosaPSVLicenseName = dynamodbservices.getOperatorsVosaPSVLicenseNameValue(nocCode);
         console.log (operatorsVosaPSVLicenseName);
-        const operatorsFareEnq = dynamodbservices.getOperatorsFareEnqValue(operatorsItem);
+        const operatorsFareEnq = dynamodbservices.getOperatorsFareEnqValue(nocCode);
         console.log (operatorsFareEnq);
-        const operatorsComplEnq = dynamodbservices.getOperatorsComplEnqValue(operatorsItem);
+        const operatorsComplEnq = dynamodbservices.getOperatorsComplEnqValue(nocCode);
         console.log (operatorsComplEnq);
-        const operatorsMode = dynamodbservices.getOperatorsModeValue(operatorsItem);
+        const operatorsMode = dynamodbservices.getOperatorsModeValue(nocCode);
         console.log (operatorsMode);
-
-        const stopsItem = await dynamodbservices.getStopsItem(atcoCode);
-        const stopsNtpgLocalityCode = dynamodbservices.getStopsLocalityNameValue(stopsItem);
+        const stopsNtpgLocalityCode = dynamodbservices.getStopsLocalityNameValue(atcoCode);
         console.log (stopsNtpgLocalityCode);
-        const stopsLocalityName = dynamodbservices.getStopsLocalityNameValue(stopsItem);
+        const stopsLocalityName = dynamodbservices.getStopsLocalityNameValue(atcoCode);
         console.log (stopsLocalityName);
-    
-        const servicesItem = await dynamodbservices.getServicesItem(nocCode, lineName);
-        const servicesDescription = dynamodbservices.getServicesDescriptionValue(servicesItem);
+        const servicesDescription = dynamodbservices.getServicesDescriptionValue(nocCode, lineServiceName);
         console.log (servicesDescription);
-        const servicesCommonName = dynamodbservices.getServicesCommonNameValue(servicesItem);
+        const servicesCommonName = dynamodbservices.getServicesCommonNameValue(nocCode, lineServiceName);
         console.log (servicesCommonName);
-
-
-        const tndsItem = await dynamodbservices.getTNDSItem(fileName, lineName);
-        const tndsOperatorShortName = dynamodbservices.getOperatorShortNameValue(tndsItem);
+        const tndsOperatorShortName = dynamodbservices.getOperatorShortNameValue(nocCode, lineServiceName);
         console.log (tndsOperatorShortName);
-        const tndsStopsPointsArray = dynamodbservices.getStopsLocalityNameValue(tndsItem);
+        const tndsStopsPointsArray = dynamodbservices.getStopPointsArray(nocCode, lineServiceName);
         console.log (tndsStopsPointsArray);
     } 
     catch (error) {
         throw new Error(error.message);
     }
-
     const params = setS3ObjectParams(event);
     console.log('S3ObjectParameters obtained from S3 Event are: ', params);
     const jsonData = await fetchDataFromS3AsJSON(params);
