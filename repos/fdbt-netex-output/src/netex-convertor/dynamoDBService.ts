@@ -81,101 +81,107 @@ export const getAttributeValueFromDynamoDBItemAsObjectArray = (
     return requiredAttAsAnObjectArray;
 };
 
-export const getOperatorsItem = (nocCode: string): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> => {
-    const operatorsItemData = getItemFromDynamoDBTableWithPartitionKey('Operators', 'Partition', nocCode);
+export const getOperatorsItem = async (nocCode: string) => {
+    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey('Operators', 'Partition', nocCode);
     return operatorsItemData;
 };
 
-export const getOperatorsWebsiteValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const website = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'Website');
+export const getOperatorsWebsiteValue = async (nocCode:string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const website = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'Website');
     return website;
 };
 
-export const getOperatorsTtrteEnqValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const ttrteEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'TTRteEnq');
+export const getOperatorsTtrteEnqValue = async (nocCode: string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const ttrteEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'TTRteEnq');
     return ttrteEnq;
 };
 
-export const getOperatorsOperatorPublicNameValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const operatorPublicName = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'OperatorPublicName');
+export const getOperatorsOperatorPublicNameValue = async (nocCode: string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const operatorPublicName = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'OperatorPublicName');
     return operatorPublicName;
 };
 
-export const getOperatorsOpIdValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const opId = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'OpId');
+export const getOperatorsOpIdValue = async (nocCode: string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const opId = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'OpId');
     return opId;
 };
 
-export const getOperatorsVosaPSVLicenseNameValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const vosaPSVLicenseName = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'VOSA_PSVLicenseName');
+export const getOperatorsVosaPSVLicenseNameValue = async (nocCode: string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const vosaPSVLicenseName = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'VOSA_PSVLicenseName');
     return vosaPSVLicenseName;
 };
 
-export const getOperatorsFareEnqValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const fareEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'FareEnq');
+export const getOperatorsFareEnqValue = async (nocCode: string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const fareEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'FareEnq');
     return fareEnq;
 };
 
-export const getOperatorsComplEnqValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const complEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'ComplEnq');
+export const getOperatorsComplEnqValue = async (nocCode: string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const complEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'ComplEnq');
     return complEnq;
 };
 
-export const getOperatorsModeValue = (operatorsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const mode = getAttributeValueFromDynamoDBItemAsAString(operatorsItemData, 'Mode');
+export const getOperatorsModeValue = async (nocCode: string) => {
+    const operatorsItem = await getOperatorsItem(nocCode);
+    const mode = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'Mode');
     return mode;
 };
 
-export const getStopsItem = (atcoCode: string) => {
-    const stopsItemData = getItemFromDynamoDBTableWithPartitionKey('Stops', 'Partition', atcoCode);
+export const getStopsItem = async (atcoCode: string) => {
+    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey('Stops', 'Partition', atcoCode);
     return stopsItemData;
 };
 
-export const getStopsNtpgLocalityCodeValue = (stopsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const ntpgLocalityCode = getAttributeValueFromDynamoDBItemAsAString(stopsItemData, 'NtgpLocalityCode');
+export const getStopsNtpgLocalityCodeValue = async (atcoCode: string) => {
+    const stopsItem = await getStopsItem(atcoCode);
+    const ntpgLocalityCode = getAttributeValueFromDynamoDBItemAsAString(stopsItem, 'NtgpLocalityCode');
     return ntpgLocalityCode;
 };
 
-export const getStopsLocalityNameValue = (stopsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const localityName = getAttributeValueFromDynamoDBItemAsAString(stopsItemData, 'LocalityName');
+export const getStopsLocalityNameValue = async (atcoCode: string) => {
+    const stopsItem = await getStopsItem(atcoCode);
+    const localityName = getAttributeValueFromDynamoDBItemAsAString(stopsItem, 'LocalityName');
     return localityName;
 };
 
-export const getServicesItem = async (nocCode: string, line_ServiceName: string) => {
-    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey('Services',
-    'Partition',
-    nocCode,
-    'Sort',
-    line_ServiceName);
+export const getServicesItem = async (nocCode: string, lineServiceName: string) => {
+    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey('Services', 'Partition', nocCode, 'Sort', lineServiceName);
     return servicesItemData;
 };
 
-export const getServicesDescriptionValue = (servicesItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-const description = getAttributeValueFromDynamoDBItemAsAString(servicesItemData, 'Description');
-return description;
+export const getServicesDescriptionValue = async (nocCode: string, lineServiceName: string) => {
+    const servicesItem = await getServicesItem(nocCode, lineServiceName);
+    const description = getAttributeValueFromDynamoDBItemAsAString(servicesItem, 'Description');
+    return description;
 };
 
-export const getServicesCommonNameValue = (servicesItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-const commonName = getAttributeValueFromDynamoDBItemAsAString(servicesItemData, 'CommonName');
-return commonName;
+export const getServicesCommonNameValue = async (nocCode: string, lineServiceName: string) => {
+    const servicesItem = await getServicesItem(nocCode, lineServiceName);
+    const commonName = getAttributeValueFromDynamoDBItemAsAString(servicesItem, 'CommonName');
+    return commonName;
 };
 
-export const getTNDSItem = async (nocCode: string, line_ServiceName: string) => {
-    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey('TNDS',
-    'Partition',
-    nocCode,
-    'Sort',
-    line_ServiceName);
+export const getTNDSItem = async (nocCode: string, lineServiceName: string) => {
+    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey('TNDS', 'Partition', nocCode, 'Sort', lineServiceName);
     return tndsItemData;
 };
 
-export const getOperatorShortNameValue = (tndsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const operatorShortNameArray = getAttributeValueFromDynamoDBItemAsStringArray(tndsItemData, 'OperatorShortName');
+export const getOperatorShortNameValue = async (nocCode: string, lineServiceName: string) => {
+    const tndsItem = await getTNDSItem(nocCode, lineServiceName);
+    const operatorShortNameArray = getAttributeValueFromDynamoDBItemAsStringArray(tndsItem, 'OperatorShortName');
     const operatorShortName = operatorShortNameArray[0];
     return operatorShortName;
-    };
+};
 
-export const getStopPointsArray = (tndsItemData: AWS.DynamoDB.DocumentClient.QueryOutput) => {
-    const stopPointsArray = getAttributeValueFromDynamoDBItemAsObjectArray(tndsItemData, 'StopPoints');
+export const getStopPointsArray = async (nocCode: string, lineServiceName: string) => {
+    const tndsItem = await getTNDSItem(nocCode, lineServiceName);
+    const stopPointsArray = getAttributeValueFromDynamoDBItemAsObjectArray(tndsItem, 'StopPoints');
     return stopPointsArray;
 };
