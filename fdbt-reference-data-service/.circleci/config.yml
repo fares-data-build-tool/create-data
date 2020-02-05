@@ -85,13 +85,13 @@ workflows:
             - test-reference-data-resources:
                   requires:
                       - build-reference-data-resources
-                  filter:
+                  filters:
                       branches:
                           only: develop
             - lint-reference-data-resources:
                   requires:
                       - build-reference-data-resources
-                  filter:
+                  filters:
                       branches:
                           only: develop
             - deploy-reference-data-resources:
