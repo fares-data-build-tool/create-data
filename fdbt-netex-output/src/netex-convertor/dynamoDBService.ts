@@ -52,7 +52,7 @@ export const getAttributeValueFromDynamoDBItemAsAString = (
     data: AWS.DynamoDB.DocumentClient.QueryOutput,
     attribute: string,
 ): string => {
-    if (!data || !data.Items) {
+    if (!data?.Items) {
         throw new Error('No data!');
     }
     const requiredAttAsAString: string = data.Items[0][attribute];
@@ -63,7 +63,7 @@ export const getAttributeValueFromDynamoDBItemAsStringArray = (
     data: AWS.DynamoDB.DocumentClient.QueryOutput,
     attribute: string,
 ): string[] => {
-    if (!data || !data.Items) {
+    if (!data?.Items) {
         throw new Error('No data!');
     }
     const requiredAttAsAStringArray: [string] = data.Items[0][attribute];
@@ -74,7 +74,7 @@ export const getAttributeValueFromDynamoDBItemAsObjectArray = (
     data: AWS.DynamoDB.DocumentClient.QueryOutput,
     attribute: string,
 ): {}[] => {
-    if (!data || !data.Items) {
+    if (!data?.Items) {
         throw new Error('No data!');
     }
     const requiredAttAsAnObjectArray: [object] = data.Items[0][attribute];
@@ -82,11 +82,11 @@ export const getAttributeValueFromDynamoDBItemAsObjectArray = (
 };
 
 export const getOperatorsItem = async (nocCode: string) => {
-    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey('Operators', 'Partition', nocCode);
+    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey('test-Operators', 'Partition', nocCode);
     return operatorsItemData;
 };
 
-export const getOperatorsWebsiteValue = async (nocCode:string) => {
+export const getOperatorsWebsiteValue = async (nocCode: string) => {
     const operatorsItem = await getOperatorsItem(nocCode);
     const website = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'Website');
     return website;
@@ -135,14 +135,14 @@ export const getOperatorsModeValue = async (nocCode: string) => {
 };
 
 export const getStopsItem = async (atcoCode: string) => {
-    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey('Stops', 'Partition', atcoCode);
+    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey('test-Stops', 'Partition', atcoCode);
     return stopsItemData;
 };
 
-export const getStopsNtpgLocalityCodeValue = async (atcoCode: string) => {
+export const getStopsNptgLocalityCodeValue = async (atcoCode: string) => {
     const stopsItem = await getStopsItem(atcoCode);
-    const ntpgLocalityCode = getAttributeValueFromDynamoDBItemAsAString(stopsItem, 'NtgpLocalityCode');
-    return ntpgLocalityCode;
+    const nptgLocalityCode = getAttributeValueFromDynamoDBItemAsAString(stopsItem, 'NptgLocalityCode');
+    return nptgLocalityCode;
 };
 
 export const getStopsLocalityNameValue = async (atcoCode: string) => {
@@ -152,7 +152,13 @@ export const getStopsLocalityNameValue = async (atcoCode: string) => {
 };
 
 export const getServicesItem = async (nocCode: string, lineServiceName: string) => {
-    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey('Services', 'Partition', nocCode, 'Sort', lineServiceName);
+    const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
+        'test-Services',
+        'Partition',
+        nocCode,
+        'Sort',
+        lineServiceName,
+    );
     return servicesItemData;
 };
 
@@ -169,7 +175,13 @@ export const getServicesCommonNameValue = async (nocCode: string, lineServiceNam
 };
 
 export const getTNDSItem = async (nocCode: string, lineServiceName: string) => {
-    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey('TNDS', 'Partition', nocCode, 'Sort', lineServiceName);
+    const tndsItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
+        'test-TNDS',
+        'Partition',
+        nocCode,
+        'Sort',
+        lineServiceName,
+    );
     return tndsItemData;
 };
 

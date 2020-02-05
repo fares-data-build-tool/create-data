@@ -21,7 +21,6 @@ export const fetchDataFromS3AsJSON = async (parameters: s3ObjectParameters): Pro
     const s3: AWS.S3 = new AWS.S3();
     try {
         const dataAsString: string = (await s3.getObject(parameters).promise()).Body?.toString('utf-8')!;
-        console.log({ dataAsString });
         const dataAsJson: JSON = JSON.parse(dataAsString);
         return dataAsJson;
     } catch (err) {
@@ -31,39 +30,38 @@ export const fetchDataFromS3AsJSON = async (parameters: s3ObjectParameters): Pro
 
 export const netexConvertorHandler = async (event: S3Event) => {
     try {
-        const nocCode = "METR";
-        const lineServiceName = "233";
-        const atcoCode = "0100BRP90313";
+        const nocCode = 'METR';
+        const lineServiceName = '233';
+        const atcoCode = '0100BRP90313';
         const operatorsWebsite = dynamodbservices.getOperatorsWebsiteValue(nocCode);
         console.log(operatorsWebsite);
         const operatorsTtrteEnq = dynamodbservices.getOperatorsTtrteEnqValue(nocCode);
-        console.log (operatorsTtrteEnq);
+        console.log(operatorsTtrteEnq);
         const operatorsOperatorPublicName = dynamodbservices.getOperatorsOperatorPublicNameValue(nocCode);
-        console.log (operatorsOperatorPublicName);
+        console.log(operatorsOperatorPublicName);
         const operatorsOpId = dynamodbservices.getOperatorsOpIdValue(nocCode);
-        console.log (operatorsOpId);
+        console.log(operatorsOpId);
         const operatorsVosaPSVLicenseName = dynamodbservices.getOperatorsVosaPSVLicenseNameValue(nocCode);
-        console.log (operatorsVosaPSVLicenseName);
+        console.log(operatorsVosaPSVLicenseName);
         const operatorsFareEnq = dynamodbservices.getOperatorsFareEnqValue(nocCode);
-        console.log (operatorsFareEnq);
+        console.log(operatorsFareEnq);
         const operatorsComplEnq = dynamodbservices.getOperatorsComplEnqValue(nocCode);
-        console.log (operatorsComplEnq);
+        console.log(operatorsComplEnq);
         const operatorsMode = dynamodbservices.getOperatorsModeValue(nocCode);
-        console.log (operatorsMode);
-        const stopsNtpgLocalityCode = dynamodbservices.getStopsLocalityNameValue(atcoCode);
-        console.log (stopsNtpgLocalityCode);
+        console.log(operatorsMode);
+        const stopsNptgLocalityCode = dynamodbservices.getStopsLocalityNameValue(atcoCode);
+        console.log(stopsNptgLocalityCode);
         const stopsLocalityName = dynamodbservices.getStopsLocalityNameValue(atcoCode);
-        console.log (stopsLocalityName);
+        console.log(stopsLocalityName);
         const servicesDescription = dynamodbservices.getServicesDescriptionValue(nocCode, lineServiceName);
-        console.log (servicesDescription);
+        console.log(servicesDescription);
         const servicesCommonName = dynamodbservices.getServicesCommonNameValue(nocCode, lineServiceName);
-        console.log (servicesCommonName);
+        console.log(servicesCommonName);
         const tndsOperatorShortName = dynamodbservices.getOperatorShortNameValue(nocCode, lineServiceName);
-        console.log (tndsOperatorShortName);
+        console.log(tndsOperatorShortName);
         const tndsStopsPointsArray = dynamodbservices.getStopPointsArray(nocCode, lineServiceName);
-        console.log (tndsStopsPointsArray);
-    } 
-    catch (error) {
+        console.log(tndsStopsPointsArray);
+    } catch (error) {
         throw new Error(error.message);
     }
     const params = setS3ObjectParams(event);

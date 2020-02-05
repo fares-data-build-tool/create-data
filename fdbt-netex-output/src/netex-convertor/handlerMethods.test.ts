@@ -1,10 +1,6 @@
 import AWS from 'aws-sdk';
+import { fetchDataFromS3AsJSON, setS3ObjectParams, s3ObjectParameters } from './handler';
 import {
-    fetchDataFromS3AsJSON,
-    setS3ObjectParams,
-    s3ObjectParameters
-} from './handler';
-import { 
     getItemFromDynamoDBTableWithPartitionKey,
     getItemFromDynamoDBTableWithPartitionKeyAndSortKey,
     getAttributeValueFromDynamoDBItemAsAString,
