@@ -35,6 +35,8 @@ module.exports = {
                 ts: 'never',
             },
         ],
+        'func-style': [2, 'expression'],
+        curly: [2, 'all'],
     },
     settings: {
         'import/resolver': {
