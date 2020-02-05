@@ -42,9 +42,5 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         .query(queryInput)
         .promise();
 
-    if (!Items?.length) {
-        throw new Error('No services found');
-    }
-
-    return Items?.map((item): ServiceType => ({ lineName: item.LineName }));
+    return Items?.map((item): ServiceType => ({ lineName: item.LineName })) || [];
 };

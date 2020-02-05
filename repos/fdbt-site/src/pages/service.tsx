@@ -18,22 +18,28 @@ type ServiceProps = {
 const Service = ({ operator, services }: ServiceProps) => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <p className="govuk-body-l">Welcome operator {operator}</p>
             <form action="/api/service" method="post">
                 <div className="govuk-form-group">
-                    <label className="govuk-label" htmlFor="service">
-                        Please select your service
-                    </label>
-                    <select className="govuk-select" id="service" name="service">
-                        <option value="" disabled selected>
-                            ---Select One---
-                        </option>
-                        {services.map(service => (
-                            <option key={service.lineName} value={service.lineName}>
-                                {service.lineName}
+                    <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                            <h1 className="govuk-fieldset__heading" id="page-heading">
+                                Please select your bus service
+                            </h1>
+                        </legend>
+                        <label className="govuk-label" id="service-operator-label" htmlFor="service">
+                            {operator}
+                        </label>
+                        <select className="govuk-select" id="service" name="service">
+                            <option value="" disabled selected>
+                                ---Select One---
                             </option>
-                        ))}
-                    </select>
+                            {services.map(service => (
+                                <option key={service.lineName} value={service.lineName} className="service-option">
+                                    {service.lineName}
+                                </option>
+                            ))}
+                        </select>
+                    </fieldset>
                 </div>
                 <input
                     type="submit"
@@ -47,6 +53,15 @@ const Service = ({ operator, services }: ServiceProps) => (
 );
 
 Service.getInitialProps = async (ctx: NextPageContext) => {
+    const redirectOnError = () => {
+        if (ctx.res) {
+            ctx.res.writeHead(302, {
+                Location: '/error',
+            });
+            ctx.res.end();
+        }
+    };
+
     deleteCookieOnServerSide(ctx, SERVICE_COOKIE);
 
     const cookies = parseCookies(ctx);
@@ -57,20 +72,22 @@ Service.getInitialProps = async (ctx: NextPageContext) => {
         let services: ServiceType[] = [];
 
         try {
-            services = await getServicesByNocCode(operatorObject.nocCode);
+            if (ctx.req) {
+                services = await getServicesByNocCode(operatorObject.nocCode);
+            }
+
+            if (services.length === 0) {
+                redirectOnError();
+                return {};
+            }
 
             return { operator: operatorObject.operator, services };
         } catch (err) {
-            console.error(err);
+            throw new Error(err.message);
         }
     }
 
-    if (ctx.res) {
-        ctx.res.writeHead(302, {
-            Location: '/error',
-        });
-        ctx.res.end();
-    }
+    redirectOnError();
 
     return {};
 };

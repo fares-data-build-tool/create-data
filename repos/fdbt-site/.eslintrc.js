@@ -3,7 +3,6 @@ module.exports = {
         browser: true,
         es6: true,
         jest: true,
-        node: true,
     },
     extends: ['plugin:react/recommended', 'airbnb', 'prettier', 'prettier/react', 'plugin:jsx-a11y/recommended'],
     globals: {
@@ -70,6 +69,8 @@ module.exports = {
                 assert: 'htmlFor',
             },
         ],
+        'func-style': [2, 'expression'],
+        curly: [2, 'all'],
     },
     settings: {
         'import/resolver': {
