@@ -10,7 +10,11 @@ The <PATH_TO_CSV_FILE> will need to be relative to the location of run-local.ts.
 */
 
 const streamOutputToCommandLine = async () => {
-  fs.readFile("./test.xml", {encoding: "utf8"},function(err, data) {
+  fs.readFile("./netexTemplate.xml", {encoding: "utf8"}, function(err, data) {
+    if (err) {
+      console.log(err)
+    }
+    else {
     const message = "Hello!"
     var json = JSON.parse(parser.toJson(data, {reversible: true}));
     console.log(json);
@@ -19,6 +23,7 @@ const streamOutputToCommandLine = async () => {
     var stringified = JSON.stringify(json);
     var xml = parser.toXml(stringified);
     console.log(xml); 
+  }
   });
 }
 streamOutputToCommandLine();
