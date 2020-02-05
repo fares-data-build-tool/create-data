@@ -59,12 +59,13 @@ describe('fetchDataFromS3AsAString', () => {
 describe('csvParser and xmlParsers', () => {
     it('parses CSV into JSON', () => {
         const returnedValue = csvParser(mocks.testCsv);
-        expect(mocks.isJSON(returnedValue)).toBeTruthy; // eslint-disable-line no-unused-expressions
+        expect(returnedValue.length).toBe(5);
+        expect(returnedValue[4]).toEqual({ ...mocks.mockServicesData });
     });
 
     it('parses XML into JSON', async () => {
-        const result = await xmlParser(mocks.testXml);
-        expect(mocks.isJSON(result)).toBeTruthy; // eslint-disable-line no-unused-expressions
+        const returnedValue = await xmlParser(mocks.testXml);
+        expect(mocks.isParseableToJSON(returnedValue)).toBeTruthy();
     });
 });
 
@@ -153,7 +154,7 @@ describe('cleanParsedXmlData', () => {
 it('returns cleanedXmlData which contains the right primary and sort keys', async () => {
     const expectedPartitionKey1 = 'DEWS';
     const expectedPartitionKey2 = 'Dannys';
-    const expectedSortKey = '1A_20-1A-A-y08-1';
+    const expectedSortKey = '1A#ea_20-1A-A-y08-1.xml';
     const xmlToBeCleaned = await xmlParser(mocks.testXml);
     const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
     const partition1 = cleanedXml[0].Partition;
@@ -202,7 +203,7 @@ describe('formatDynamoWriteRequest', () => {
         });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(23, {...mocks.mockServicesData});
+        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(23, { ...mocks.mockServicesData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
@@ -216,7 +217,7 @@ describe('formatDynamoWriteRequest', () => {
         });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch1, batch2);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(32, {...mocks.mockServicesData});
+        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(32, { ...mocks.mockServicesData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
@@ -240,7 +241,7 @@ describe('writeBatchesToDynamo', () => {
 
     it('calls dynamodb.batchwrite() only once for a batch size of 25 or less', async () => {
         // Arrange
-        const parsedCsvLines: ParsedCsvData[] = [{...mocks.mockServicesData}];
+        const parsedCsvLines: ParsedCsvData[] = [{ ...mocks.mockServicesData }];
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise() {
                 return Promise.resolve({});
@@ -259,7 +260,7 @@ describe('writeBatchesToDynamo', () => {
                 return Promise.resolve({});
             },
         }));
-        const parsedCsvLines = mocks.createArray(26, {...mocks.mockServicesData});
+        const parsedCsvLines = mocks.createArray(26, { ...mocks.mockServicesData });
         // Act
         await writeBatchesToDynamo({ parsedCsvLines, tableName });
         // Assert
@@ -268,7 +269,7 @@ describe('writeBatchesToDynamo', () => {
 
     it('throws an error if it cannot write to DynamoDB', async () => {
         // Arrange
-        const parsedCsvLines = mocks.createArray(2, {...mocks.mockServicesData});
+        const parsedCsvLines = mocks.createArray(2, { ...mocks.mockServicesData });
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise() {
                 return Promise.reject(Error);

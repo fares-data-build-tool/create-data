@@ -54,8 +54,8 @@ describe('fetchDataFromS3AsAString', () => {
 describe('csvParser', () => {
     it('parses CSV into JSON', () => {
         const returnedValue = csvParser(mocks.testCsv);
-        const isTrue = mocks.isJSON(returnedValue);
-        expect(isTrue).toBeTruthy;
+        expect(returnedValue.length).toBe(5);
+        expect(returnedValue[4]).toEqual({ ...mocks.mockServicesData });
     });
 });
 

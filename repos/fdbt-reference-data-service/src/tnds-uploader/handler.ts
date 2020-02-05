@@ -44,6 +44,7 @@ export interface tndsDynamoDBData {
 }
 
 export interface servicesDynamoDBData {
+    RowId: string;
     NationalOperatorCode: string;
     Partition?: string;
     Sort?: string;
@@ -82,12 +83,10 @@ export const tableChooser = (fileExtension: string) => {
     }
 
     if (fileExtension === 'csv') {
-        const tableName = process.env.SERVICES_TABLE_NAME;
-        return tableName;
+        return process.env.SERVICES_TABLE_NAME;
     }
     if (fileExtension === 'xml') {
-        const tableName = process.env.TNDS_TABLE_NAME;
-        return tableName;
+        return process.env.TNDS_TABLE_NAME;
     }
     console.error(`File is not of a supported format type (${fileExtension})`);
     throw new Error(`Unsupported file type ${fileExtension}`);
@@ -124,22 +123,17 @@ export const csvParser = (csvData: string): ParsedCsvData[] => {
 };
 
 export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
-    const parsedDataToWriteRequest = (parsedDataItem: ParsedCsvData): WriteRequest => ({
-        PutRequest: { Item: parsedDataItem as any },
+    const parsedDataToWriteRequest = (parsedDataItem: ParsedCsvData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
+        PutRequest: {
+            Item: {
+                ...parsedDataItem,
+                Partition: parsedDataItem.NationalOperatorCode,
+                Sort: `${parsedDataItem.LineName}#${parsedDataItem.RowId}`,
+            },
+        },
     });
 
-    const reformattedParsedLines: servicesDynamoDBData[] = [];
-    for (let i = 0; i < parsedLines.length; i += 1) {
-        const item = parsedLines[i];
-        if (item.NationalOperatorCode && item.LineName && item.ServiceCode) {
-            const lineNameServiceCode = `${item.LineName}_${item.ServiceCode}`;
-            item.Sort = lineNameServiceCode;
-            item.Partition = item.NationalOperatorCode;
-            reformattedParsedLines.push(item);
-        }
-    }
-
-    const dynamoWriteRequests = reformattedParsedLines.map(parsedDataToWriteRequest);
+    const dynamoWriteRequests = parsedLines.map(parsedDataToWriteRequest);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
@@ -201,16 +195,19 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
-
     console.log('Writing entries to dynamo DB.');
-
-    for (let i = 0; i < parsedXmlLines.length; i += 1) {
-        await dynamodb // eslint-disable-line no-await-in-loop
+    const putPromises = parsedXmlLines.map(item => {
+        dynamodb
             .put({
                 TableName: tableName,
-                Item: parsedXmlLines[i],
+                Item: item,
             })
             .promise();
+    });
+    try {
+        await Promise.all(putPromises);
+    } catch (err) {
+        throw new Error(`Could not write to Dynamo: ${err.name} ${err.message}`);
     }
     console.log('Dynamo DB put request complete.');
 };
@@ -219,11 +216,10 @@ export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] =>
     const parsedJson = JSON.parse(parsedXmlData);
 
     const extractedLineName: string = parsedJson.TransXChange.Services[0].Service[0].Lines[0].Line[0].LineName[0];
-    const extractedServiceCode: string = parsedJson.TransXChange.Services[0].Service[0].ServiceCode[0];
+    const extractedFileName: string = parsedJson.TransXChange.$.FileName;
     const extractedDescription: string = parsedJson.TransXChange.Services[0].Service[0].Description[0];
 
     const extractedOperators: ExtractedOperators[] = parsedJson.TransXChange.Operators[0].Operator;
-    console.log({ extractedOperators });
     const extractedStopPoints: ExtractedStopPoint[] = parsedJson.TransXChange.StopPoints[0].AnnotatedStopPointRef;
 
     const stopPointsCollection: StopPointObject[] = [];
@@ -245,7 +241,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] =>
         const operatorShortName: string = operator.OperatorShortName[0];
         const operatorInfo: tndsDynamoDBData = {
             Partition: nationalOperatorCode,
-            Sort: `${extractedLineName}_${extractedServiceCode}`,
+            Sort: `${extractedLineName}#${extractedFileName}`,
             LineName: extractedLineName,
             OperatorShortName: operatorShortName,
             Description: extractedDescription,

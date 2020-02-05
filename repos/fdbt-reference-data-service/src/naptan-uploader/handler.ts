@@ -44,7 +44,7 @@ export const fetchDataFromS3AsString = async (parameters: s3ObjectParameters): P
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
-}
+};
 
 export const csvParser = (csvData: string): ParsedData[] => {
     const parsedData: ParsedData[] = csvParse(csvData, {
@@ -53,14 +53,16 @@ export const csvParser = (csvData: string): ParsedData[] => {
         delimiter: ',',
     });
     return parsedData;
-}
+};
 
 export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataMapper = (parsedDataItem: ParsedData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
-        PutRequest: { Item: {
-            ...parsedDataItem, 
-            Partition: parsedDataItem.ATCOCode
-        } },
+        PutRequest: {
+            Item: {
+                ...parsedDataItem,
+                Partition: parsedDataItem.ATCOCode,
+            },
+        },
     });
 
     const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
@@ -72,7 +74,7 @@ export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.Dynam
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
-}
+};
 
 export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
@@ -130,7 +132,7 @@ export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
         Key: s3FileName,
     };
     return params;
-}
+};
 
 export const setDbTableEnvVariable = (): string => {
     const tableName: string | undefined = process.env.NAPTAN_TABLE_NAME;
@@ -138,7 +140,7 @@ export const setDbTableEnvVariable = (): string => {
         throw new Error('TABLE_NAME environment variable not set.');
     }
     return tableName;
-}
+};
 
 export const s3NaptanHandler = async (event: S3Event) => {
     const tableName = setDbTableEnvVariable();
