@@ -47,26 +47,27 @@ export const mockS3Event = (bucketName: string, fileName: string) => ({
 });
 
 export const mockServicesData = {
-    NationalOperatorCode: 'dan',
-    Sort: 'dannys_service',
-    LineName: 'dannys',
-    RegionCode: '',
-    RegionOperatorCode: '',
-    Description: '',
-    ServiceCode: 'service',
-    StartDate: '',
+    RowId: '5',
+    NationalOperatorCode: 'A2BR',
+    LineName: '32',
+    RegionCode: 'EA',
+    RegionOperatorCode: 'A2BR',
+    Description: 'Trumpington P & R - Hauxton',
+    ServiceCode: '20-32-_-y08-1',
+    StartDate: '2019-12-03',
 };
 
 export const mockReformattedServicesData = {
-    NationalOperatorCode: 'dan',
-    Partition: 'dan',
-    Sort: 'dannys_service',
-    LineName: 'dannys',
-    RegionCode: '',
-    RegionOperatorCode: '',
-    Description: '',
-    ServiceCode: 'service',
-    StartDate: '',
+    RowId: '5',
+    NationalOperatorCode: 'A2BR',
+    Partition: 'A2BR',
+    Sort: '32#5',
+    LineName: '32',
+    RegionCode: 'EA',
+    RegionOperatorCode: 'A2BR',
+    Description: 'Trumpington P & R - Hauxton',
+    ServiceCode: '20-32-_-y08-1',
+    StartDate: '2019-12-03',
 };
 
 export const createArray = (index: number, mockNaptanData: ParsedCsvData): ParsedCsvData[] => {
@@ -100,7 +101,7 @@ export const testCsv: string =
     '4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n' +
     '5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR';
 
-export const isJSON = (str: any) => {
+export const isParseableToJSON = (str: any) => {
     try {
         return JSON.parse(str) && !!str;
     } catch (e) {
@@ -114,7 +115,7 @@ export const mockCleanedXmlData: {} = [
         LineName: '1A',
         OperatorShortName: 'Dews Coaches',
         Partition: 'DEWS',
-        Sort: '1A_20-1A-A-y08-1',
+        Sort: '1A#ea_20-1A-A-y08-1.xml',
         StopPoints: [
             { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
             { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
@@ -128,7 +129,7 @@ export const mockCleanedXmlData: {} = [
         LineName: '1A',
         OperatorShortName: 'Dannys Coaches',
         Partition: 'Dannys',
-        Sort: '1A_20-1A-A-y08-1',
+        Sort: '1A#ea_20-1A-A-y08-1.xml',
         StopPoints: [
             { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
             { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },

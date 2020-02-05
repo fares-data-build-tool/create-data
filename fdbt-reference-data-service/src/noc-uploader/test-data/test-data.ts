@@ -178,7 +178,7 @@ export const reformattedMockNocData = {
     FareEnq: '',
     ComplEnq: '',
     Website: '',
-    Partition: 'dan'
+    Partition: 'dan',
 };
 
 export const createArray = (index: number, mockNaptanData: ParsedData): ParsedData[] => {
@@ -209,6 +209,17 @@ export const testCsv: string =
     '4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n' +
     '5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR';
 
+export const mockServicesData = {
+    RowId: '5',
+    NationalOperatorCode: 'A2BR',
+    LineName: '32',
+    RegionCode: 'EA',
+    RegionOperatorCode: 'A2BR',
+    Description: 'Trumpington P & R - Hauxton',
+    ServiceCode: '20-32-_-y08-1',
+    StartDate: '2019-12-03',
+};
+
 export const publicNameCsvData: string =
     'PubNmId,OperatorPublicName,PubNmQual,TTRteEnq,FareEnq,LostPropEnq,DisruptEnq,ComplEnq,Twitter,Facebook,LinkedIn,YouTube,ChangeDate,ChangeAgent,ChangeComment,CeasedDate,DataOwner,Website\n' +
     '93088,1st Bus Stop Minibus,,cliff1stbusstop@aol.com,01474 326777,,,16 Lyndhurst Way Istead Rise Gravesend Kent DA13 9EW,,,,,,,,,,\n' +
@@ -237,17 +248,6 @@ export const nocLinesCsvData: string =
     '9085,=ES,Eurostar,Eurostar (ATOC),,Rail,Admin,,,,=EP,=ES,,,ES,,=ES,=ES,=ES,,,,,,,,,,,2010-03-31 00:00:00,Mark Fell,Intial NOC Build,OK,,\n' +
     '9086,=FC,First Capital Connect,,,Rail,Admin,,,,=FC,=FC,,,FC,,=FC,=FC,=FC,,,,,,,,,,,2015-06-09 00:00:00,John Prince,Strikethrough SE code,OK,2014-09-13 00:00:00,\n' +
     '9087,=GC,Grand Central,Grand Central Trains (ATOC),,Rail,Admin,,,,=GC,=GC,,,GC,,=GC,=GC,=GC,,,,,,,,,,,2010-03-31 00:00:00,Mark Fell,Intial NOC Build,OK,,\n';
-
-export const isJSON = (str: any) => {
-    try {
-        if (JSON.parse(str) && !!str) {
-            return true;
-        }
-        return false;
-    } catch (e) {
-        return false;
-    }
-};
 
 export const testXml: string = `<?xml version=1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">

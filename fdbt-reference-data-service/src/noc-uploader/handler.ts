@@ -120,19 +120,14 @@ export const mergeArrayObjects = (
 }
 
 export const formatDynamoWriteRequest = (parsedLines: DynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
-    const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
-        PutRequest: { Item: parsedDataItem as any },
+    const parsedDataMapper = (parsedDataItem: ParsedData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
+        PutRequest: { Item: {
+            ...parsedDataItem,
+            Partition: parsedDataItem.NOCCODE
+        } },
     });
 
-    const reformattedParsedLines: ParsedData[] = [];
-    for (let i = 0; i < parsedLines.length; i+=1) {
-        const item = parsedLines[i];
-        if (item.NOCCODE) {
-            item.Partition = item.NOCCODE;
-            reformattedParsedLines.push(item);
-        }
-    }
-    const dynamoWriteRequests = reformattedParsedLines.map(parsedDataMapper);
+    const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
