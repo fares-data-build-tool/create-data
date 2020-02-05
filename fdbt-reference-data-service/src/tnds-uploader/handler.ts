@@ -70,11 +70,11 @@ export const fetchDataFromS3AsString = async (parameters: s3ObjectParameters): P
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
-}
+};
 
 export const fileExtensionGetter = (fileName: string) => {
     return fileName.split('.').pop();
-}
+};
 
 export const tableChooser = (fileExtension: string) => {
     if (!process.env.SERVICES_TABLE_NAME || !process.env.TNDS_TABLE_NAME) {
@@ -91,11 +91,11 @@ export const tableChooser = (fileExtension: string) => {
     }
     console.error(`File is not of a supported format type (${fileExtension})`);
     throw new Error(`Unsupported file type ${fileExtension}`);
-}
+};
 
 export const removeFirstLineOfString = (xmlData: string): string => {
     return xmlData.substring(xmlData.indexOf('\n') + 1);
-}
+};
 
 export const xmlParser = (xmlData: string): Promise<string> => {
     const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
@@ -103,14 +103,16 @@ export const xmlParser = (xmlData: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         parseString(xmlWithoutFirstLine, (err, result) => {
             if (err) {
-                return reject(new Error(`Parsing xml failed. Error message: ${err.message} and error name: ${err.name}`));
+                return reject(
+                    new Error(`Parsing xml failed. Error message: ${err.message} and error name: ${err.name}`),
+                );
             }
             const noEmptyResult = omitEmpty(result);
             const stringified = JSON.stringify(noEmptyResult) as any;
             return resolve(stringified);
         });
     });
-}
+};
 
 export const csvParser = (csvData: string): ParsedCsvData[] => {
     const parsedData: ParsedCsvData[] = csvParse(csvData, {
@@ -119,7 +121,7 @@ export const csvParser = (csvData: string): ParsedCsvData[] => {
         delimiter: ',',
     });
     return parsedData;
-}
+};
 
 export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataToWriteRequest = (parsedDataItem: ParsedCsvData): WriteRequest => ({
@@ -145,7 +147,7 @@ export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): A
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
-}
+};
 
 export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushToDynamoCsvInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
@@ -202,8 +204,8 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
 
     console.log('Writing entries to dynamo DB.');
 
-    for (let i = 0; i < parsedXmlLines.length; i+=1) {
-        await dynamodb
+    for (let i = 0; i < parsedXmlLines.length; i += 1) {
+        await dynamodb // eslint-disable-line no-await-in-loop
             .put({
                 TableName: tableName,
                 Item: parsedXmlLines[i],
@@ -211,7 +213,7 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
             .promise();
     }
     console.log('Dynamo DB put request complete.');
-}
+};
 
 export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] => {
     const parsedJson = JSON.parse(parsedXmlData);
@@ -225,7 +227,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] =>
     const extractedStopPoints: ExtractedStopPoint[] = parsedJson.TransXChange.StopPoints[0].AnnotatedStopPointRef;
 
     const stopPointsCollection: StopPointObject[] = [];
-    for (let i = 0; i < extractedStopPoints.length; i+=1) {
+    for (let i = 0; i < extractedStopPoints.length; i += 1) {
         const stopPointItem: ExtractedStopPoint = extractedStopPoints[i];
         const stopPointRef = stopPointItem.StopPointRef[0];
         const commonName = stopPointItem.CommonName[0];
@@ -237,7 +239,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] =>
     }
 
     const cleanedXmlData: tndsDynamoDBData[] = [];
-    for (let i = 0; i < extractedOperators.length; i+=1) {
+    for (let i = 0; i < extractedOperators.length; i += 1) {
         const operator = extractedOperators[i];
         const nationalOperatorCode: string = operator.NationalOperatorCode[0];
         const operatorShortName: string = operator.OperatorShortName[0];
@@ -253,7 +255,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] =>
     }
 
     return cleanedXmlData;
-}
+};
 
 export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
@@ -263,7 +265,7 @@ export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
         Key: s3FileName,
     };
     return params;
-}
+};
 
 export const s3TndsHandler = async (event: S3Event) => {
     const params = setS3ObjectParams(event);
