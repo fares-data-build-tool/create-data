@@ -47,12 +47,25 @@ export const mockS3Event = (bucketName: string, fileName: string) => ({
 });
 
 export const mockServicesData = {
-    NationalOperatorCode: '',
-    LineName: '',
+    NationalOperatorCode: 'dan',
+    Sort: 'dannys_service',
+    LineName: 'dannys',
     RegionCode: '',
     RegionOperatorCode: '',
-    ServiceCode: '',
     Description: '',
+    ServiceCode: 'service',
+    StartDate: '',
+};
+
+export const mockReformattedServicesData = {
+    NationalOperatorCode: 'dan',
+    Partition: 'dan',
+    Sort: 'dannys_service',
+    LineName: 'dannys',
+    RegionCode: '',
+    RegionOperatorCode: '',
+    Description: '',
+    ServiceCode: 'service',
     StartDate: '',
 };
 
@@ -123,7 +136,7 @@ export const mockCleanedXmlData: {} = [
             { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
             { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
         ],
-    }
+    },
 ];
 
 export const testXml: string = `
