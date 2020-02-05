@@ -1,9 +1,7 @@
 import '../design/Pages.scss';
 import React from 'react';
-import { NextPageContext, NextPage } from 'next';
+import { NextPage } from 'next';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
 
 const title = 'Input Method - Fares data build tool';
 const description = 'Input method selection page of the Fares data build tool';
@@ -11,7 +9,7 @@ const description = 'Input method selection page of the Fares data build tool';
 const inputMethod: NextPage = () => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <form action="/api/operator" method="post">
+            <form action="/api/inputMethod" method="post">
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -21,22 +19,10 @@ const inputMethod: NextPage = () => (
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="manual-entry"
-                                    name="operator"
-                                    type="radio"
-                                    value="MCT"
-                                />
-                                <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
-                                    Manual Table Entry
-                                </label>
-                            </div>
-                            <div className="govuk-radios__item">
-                                <input
-                                    className="govuk-radios__input"
                                     id="csv-upload"
-                                    name="operator"
+                                    name="uploadType"
                                     type="radio"
-                                    value="FirstBus"
+                                    value="csv"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="csv-upload">
                                     Upload (csv)
@@ -45,10 +31,26 @@ const inputMethod: NextPage = () => (
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="interactive-map"
-                                    name="operator"
+                                    id="manual-entry"
+                                    name="uploadType"
                                     type="radio"
-                                    value="FirstBus"
+                                    value="manual"
+                                    disabled
+                                    aria-disabled="true"
+                                />
+                                <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
+                                    Manual Table Entry
+                                </label>
+                            </div>
+                            <div className="govuk-radios__item">
+                                <input
+                                    className="govuk-radios__input"
+                                    id="interactive-map"
+                                    name="uploadType"
+                                    type="radio"
+                                    value="interactiveMap"
+                                    disabled
+                                    aria-disabled="true"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="interactive-map">
                                     Interactive Map (Beta - requires JavaScript)
@@ -68,8 +70,7 @@ const inputMethod: NextPage = () => (
     </Layout>
 );
 
-inputMethod.getInitialProps = async (ctx: NextPageContext) => {
-    deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
+inputMethod.getInitialProps = async () => {
     return {};
 };
 

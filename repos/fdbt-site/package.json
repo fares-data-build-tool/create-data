@@ -6,7 +6,7 @@
         "test": "jest --runInBand",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage --watchAll",
-        "test:ci": "CI=true jest",
+        "test:ci": "CI=true jest -w 1",
         "test:updateSnapshots": "jest --updateSnapshot",
         "dev": "export NODE_ENV='' && next -p 5555",
         "build": "next build",
@@ -22,7 +22,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test"
         }
     },
     "lint-staged": {
