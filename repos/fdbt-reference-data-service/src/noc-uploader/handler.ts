@@ -56,11 +56,11 @@ export interface Lists3ObjectsParameters {
     Prefix: string;
 }
 
-export async function lists3Objects(parameters: Lists3ObjectsParameters): Promise<string[]> {
+export const lists3Objects = async (parameters: Lists3ObjectsParameters): Promise<string[]> => {
     const objlist: string[] = [];
     const s3 = new AWS.S3();
     const s3Data = await s3
-        .listObjectsV2(parameters, function(err, data) {
+        .listObjectsV2(parameters, (err, data) => {
             if (err) {
                 throw new Error(`Could not list objects, error message: ${err.message} error name: ${err.name}`);
             } else {
@@ -85,14 +85,14 @@ export async function lists3Objects(parameters: Lists3ObjectsParameters): Promis
     return objlist;
 }
 
-export async function fetchDataFromS3AsString(parameters: S3ObjectParameters): Promise<string> {
+export const fetchDataFromS3AsString = async (parameters: S3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
 }
 
-export function csvParser(csvData: string): any {
+export const csvParser = (csvData: string): any => {
     const parsedData: any = csvParse(csvData, {
         columns: true,
         skip_empty_lines: true,
@@ -101,27 +101,27 @@ export function csvParser(csvData: string): any {
     return parsedData;
 }
 
-export function mergeArrayObjects(
+export const mergeArrayObjects = (
     nocLinesArray: NocLinesData[],
     nocTableArray: NocTableData[],
     publicNameArray: PublicNameData[],
-): ParsedData[] {
+): ParsedData[] => {
     const firstMerge: (NocLinesData & NocTableData)[] = nocTableArray.map(x =>
         Object.assign(
             x,
-            nocLinesArray.find(y => y.NOCCODE == x.NOCCODE),
+            nocLinesArray.find(y => y.NOCCODE === x.NOCCODE),
         ),
     );
     const secondMerge: ParsedData[] = firstMerge.map(x =>
         Object.assign(
             x,
-            publicNameArray.find(y => y.PubNmId == x.PubNmId),
+            publicNameArray.find(y => y.PubNmId === x.PubNmId),
         ),
     );
     return secondMerge;
 }
 
-export function formatDynamoWriteRequest(parsedLines: DynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
+export const formatDynamoWriteRequest = (parsedLines: DynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
         PutRequest: { Item: parsedDataItem as any },
     });
@@ -137,7 +137,7 @@ export function formatDynamoWriteRequest(parsedLines: DynamoDBData[]): AWS.Dynam
     const dynamoWriteRequests = reformattedParsedLines.map(parsedDataMapper);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
-    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(result, _value, index, array) {
+    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
         if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
         return result;
     }, emptyBatch);
@@ -192,7 +192,7 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
     }
 };
 
-export function setDbTableEnvVariable(): string {
+export const setDbTableEnvVariable = (): string => {
     const tableName: string | undefined = process.env.NOC_TABLE_NAME;
     if (!tableName) {
         throw new Error('TABLE_NAME environment variable not set.');

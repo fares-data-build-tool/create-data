@@ -39,14 +39,14 @@ interface PushToDyanmoInput {
     tableName: string;
 }
 
-export async function fetchDataFromS3AsString(parameters: s3ObjectParameters): Promise<string> {
+export const fetchDataFromS3AsString = async (parameters: s3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
 }
 
-export function csvParser(csvData: string): ParsedData[] {
+export const csvParser = (csvData: string): ParsedData[] => {
     const parsedData: ParsedData[] = csvParse(csvData, {
         columns: true,
         skip_empty_lines: true,
@@ -55,25 +55,19 @@ export function csvParser(csvData: string): ParsedData[] {
     return parsedData;
 }
 
-export function formatDynamoWriteRequest(parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] {
-    const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
-        PutRequest: { Item: parsedDataItem as any },
+export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
+    const parsedDataMapper = (parsedDataItem: ParsedData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
+        PutRequest: { Item: {
+            ...parsedDataItem, 
+            Partition: parsedDataItem.ATCOCode
+        } },
     });
 
-    const reformattedParsedLines: ParsedData[] = [];
-    for (let i = 0; i < parsedLines.length; i += 1) {
-        const item = parsedLines[i];
-        if (item.ATCOCode) {
-            item.Partition = item.ATCOCode;
-            reformattedParsedLines.push(item);
-        }
-    }
-
-    const dynamoWriteRequests = reformattedParsedLines.map(parsedDataMapper);
+    const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
 
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
-    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce(function(result, _value, index, array) {
+    const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
         if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
         return result;
     }, emptyBatch);
@@ -128,7 +122,7 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
     }
 };
 
-export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
+export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
     const params: s3ObjectParameters = {
@@ -138,7 +132,7 @@ export function setS3ObjectParams(event: S3Event): s3ObjectParameters {
     return params;
 }
 
-export function setDbTableEnvVariable(): string {
+export const setDbTableEnvVariable = (): string => {
     const tableName: string | undefined = process.env.NAPTAN_TABLE_NAME;
     if (!tableName) {
         throw new Error('TABLE_NAME environment variable not set.');

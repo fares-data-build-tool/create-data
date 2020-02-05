@@ -154,7 +154,7 @@ export const mockS3Event = (bucketName: string, fileName: string) => ({
 
 export const mockNocData = {
     id: '',
-    NOCCODE: '',
+    NOCCODE: 'dan',
     OperatorPublicName: '',
     VOSA_PSVLicenseName: '',
     OpId: 1,
@@ -164,6 +164,21 @@ export const mockNocData = {
     FareEnq: '',
     ComplEnq: '',
     Website: '',
+};
+
+export const reformattedMockNocData = {
+    id: '',
+    NOCCODE: 'dan',
+    OperatorPublicName: '',
+    VOSA_PSVLicenseName: '',
+    OpId: 1,
+    PubNmId: 1,
+    Mode: '',
+    TTRteEnq: '',
+    FareEnq: '',
+    ComplEnq: '',
+    Website: '',
+    Partition: 'dan'
 };
 
 export const createArray = (index: number, mockNaptanData: ParsedData): ParsedData[] => {
@@ -225,7 +240,10 @@ export const nocLinesCsvData: string =
 
 export const isJSON = (str: any) => {
     try {
-        return JSON.parse(str) && !!str;
+        if (JSON.parse(str) && !!str) {
+            return true;
+        }
+        return false;
     } catch (e) {
         return false;
     }
