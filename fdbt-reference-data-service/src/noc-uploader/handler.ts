@@ -218,9 +218,9 @@ export const s3NocHandler = async (event: S3Event) => {
     }
 
     const filenameKeys = [
-        `${s3FileNameSubStringArrayFirstElement} /NOCLines.csv`,
-        `${s3FileNameSubStringArrayFirstElement} /NOCTable.csv`,
-        `${s3FileNameSubStringArrayFirstElement} /PublicName.csv`,
+        `NOCLines.csv`,
+        `NOCTable.csv`,
+        `PublicName.csv`,
     ];
     console.log('filenameKeys being used to retrieve data are: ', filenameKeys);
     const nocLineParams: S3ObjectParameters = {
