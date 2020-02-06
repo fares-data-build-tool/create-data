@@ -100,6 +100,6 @@ describe("s3 handler with xml event", () => {
 
         await s3TndsHandler(event);
 
-        expect(mockDynamoPut).toHaveBeenCalledTimes(1);
+        expect(mockDynamoPut).toHaveBeenCalledTimes(2);
     });
 });

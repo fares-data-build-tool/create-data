@@ -9,39 +9,39 @@ provider:
     timeout: 900
     memorySize: 2048
     iamRoleStatements:
-        - Effect: "Allow"
+        - Effect: 'Allow'
           Action:
-              - "s3:GetObject"
-              - "s3:ListBucket"
+              - 's3:GetObject'
+              - 's3:ListBucket'
           Resource:
               - Fn::Join:
-                    - ""
-                    - - "arn:aws:s3:::"
+                    - ''
+                    - - 'arn:aws:s3:::'
                       - fdbt-naptan-data-${self:provider.stage}
               - Fn::Join:
-                    - ""
-                    - - "arn:aws:s3:::"
+                    - ''
+                    - - 'arn:aws:s3:::'
                       - fdbt-naptan-data-${self:provider.stage}
-                      - "/*"
+                      - '/*'
               - Fn::Join:
-                    - ""
-                    - - "arn:aws:s3:::"
+                    - ''
+                    - - 'arn:aws:s3:::'
                       - fdbt-noc-data-${self:provider.stage}
               - Fn::Join:
-                    - ""
-                    - - "arn:aws:s3:::"
+                    - ''
+                    - - 'arn:aws:s3:::'
                       - fdbt-noc-data-${self:provider.stage}
-                      - "/*"
+                      - '/*'
               - Fn::Join:
-                    - ""
-                    - - "arn:aws:s3:::"
+                    - ''
+                    - - 'arn:aws:s3:::'
                       - fdbt-tnds-data-${self:provider.stage}
               - Fn::Join:
-                    - ""
-                    - - "arn:aws:s3:::"
+                    - ''
+                    - - 'arn:aws:s3:::'
                       - fdbt-tnds-data-${self:provider.stage}
-                      - "/*"
-        - Effect: "Allow"
+                      - '/*'
+        - Effect: 'Allow'
           Action:
               - dynamodb:DescribeTable
               - dynamodb:Query
@@ -62,7 +62,7 @@ provider:
         NOC_TABLE_NAME: !Ref NocTable
         TNDS_TABLE_NAME: !Ref TndsTable
         SERVICES_TABLE_NAME: !Ref ServicesTable
-        AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
 
 plugins:
     - serverless-plugin-typescript
@@ -102,11 +102,11 @@ resources:
             Properties:
                 TableName: ${self:provider.stage}-Stops
                 AttributeDefinitions:
-                    - AttributeName: "ATCOCode"
-                      AttributeType: "S"
+                    - AttributeName: 'Partition'
+                      AttributeType: 'S'
                 KeySchema:
-                    - AttributeName: "ATCOCode"
-                      KeyType: "HASH"
+                    - AttributeName: 'Partition'
+                      KeyType: 'HASH'
                 BillingMode: PAY_PER_REQUEST
 
         NocTable:
@@ -114,11 +114,11 @@ resources:
             Properties:
                 TableName: ${self:provider.stage}-Operators
                 AttributeDefinitions:
-                    - AttributeName: "NOCCODE"
-                      AttributeType: "S"
+                    - AttributeName: 'Partition'
+                      AttributeType: 'S'
                 KeySchema:
-                    - AttributeName: "NOCCODE"
-                      KeyType: "HASH"
+                    - AttributeName: 'Partition'
+                      KeyType: 'HASH'
                 BillingMode: PAY_PER_REQUEST
 
         ServicesTable:
@@ -126,15 +126,15 @@ resources:
             Properties:
                 TableName: ${self:provider.stage}-Services
                 AttributeDefinitions:
-                    - AttributeName: "NationalOperatorCode"
-                      AttributeType: "S"
-                    - AttributeName: "LineName"
-                      AttributeType: "S"
+                    - AttributeName: 'Partition'
+                      AttributeType: 'S'
+                    - AttributeName: 'Sort'
+                      AttributeType: 'S'
                 KeySchema:
-                    - AttributeName: "NationalOperatorCode"
-                      KeyType: "HASH"
-                    - AttributeName: "LineName"
-                      KeyType: "RANGE"
+                    - AttributeName: 'Partition'
+                      KeyType: 'HASH'
+                    - AttributeName: 'Sort'
+                      KeyType: 'RANGE'
                 BillingMode: PAY_PER_REQUEST
 
         TndsTable:
@@ -142,11 +142,15 @@ resources:
             Properties:
                 TableName: ${self:provider.stage}-TNDS
                 AttributeDefinitions:
-                    - AttributeName: "FileName"
-                      AttributeType: "S"
+                    - AttributeName: 'Partition'
+                      AttributeType: 'S'
+                    - AttributeName: 'Sort'
+                      AttributeType: 'S'
                 KeySchema:
-                    - AttributeName: "FileName"
-                      KeyType: "HASH"
+                    - AttributeName: 'Partition'
+                      KeyType: 'HASH'
+                    - AttributeName: 'Sort'
+                      KeyType: 'RANGE'
                 BillingMode: PAY_PER_REQUEST
 
     Outputs:
