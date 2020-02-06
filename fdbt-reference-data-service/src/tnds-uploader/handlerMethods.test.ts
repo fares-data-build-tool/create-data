@@ -1,4 +1,6 @@
+import AWS from 'aws-sdk';
 import {
+    csvParser,
     xmlParser,
     fetchDataFromS3AsString,
     formatDynamoWriteRequest,
@@ -9,13 +11,12 @@ import {
     writeXmlToDynamo,
     cleanParsedXmlData,
     s3ObjectParameters,
-    writeCsvBatchesToDynamo,
+    writeBatchesToDynamo,
     setS3ObjectParams,
 } from './handler';
-import { csvParser } from '../naptan-uploader/handler';
 import * as mocks from './test-data/test-data';
 
-const AWS = require('aws-sdk');
+jest.mock('aws-sdk');
 
 describe('fetchDataFromS3AsAString', () => {
     const mockS3GetObject = jest.fn();
@@ -27,7 +28,7 @@ describe('fetchDataFromS3AsAString', () => {
     beforeEach(() => {
         mockS3GetObject.mockReset();
 
-        AWS.S3 = jest.fn().mockImplementation(() => {
+        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
             };
@@ -58,23 +59,13 @@ describe('fetchDataFromS3AsAString', () => {
 describe('csvParser and xmlParsers', () => {
     it('parses CSV into JSON', () => {
         const returnedValue = csvParser(mocks.testCsv);
-
         expect(returnedValue.length).toBe(5);
-        expect(returnedValue[0]).toEqual({
-            RowId: '1',
-            RegionCode: 'EA',
-            RegionOperatorCode: '703BE',
-            ServiceCode: '9-91-_-y08-11',
-            LineName: '91',
-            Description: 'Ipswich - Hadleigh - Sudbury',
-            StartDate: '2019-12-03',
-            NationalOperatorCode: 'BEES',
-        });
+        expect(returnedValue[4]).toEqual({ ...mocks.mockServicesData });
     });
 
     it('parses XML into JSON', async () => {
-        const result = await xmlParser(mocks.testXml);
-        expect(mocks.isJSON(result)).toBeTruthy();
+        const returnedValue = await xmlParser(mocks.testXml);
+        expect(mocks.isParseableToJSON(returnedValue)).toBeTruthy();
     });
 });
 
@@ -118,8 +109,8 @@ describe('tableChooser', () => {
 
 describe('xmlFirstLineRemover', () => {
     it('removes the first line of a string', () => {
-        const result = removeFirstLineOfString('A\nB\nC\nD\n');
-        expect(result).toBe('B\nC\nD\n');
+        const result = removeFirstLineOfString(`A\n B\n C\n D\n`);
+        expect(result).toBe(` B\n C\n D\n`);
     });
 });
 
@@ -160,14 +151,20 @@ describe('cleanParsedXmlData', () => {
     });
 });
 
-it('returns cleanedXmlData which contains the right OperatorShortNames', async () => {
-    const expectedOperatorShortNames = ['Dews Coaches', 'Dannys Coaches'];
+it('returns cleanedXmlData which contains the right primary and sort keys', async () => {
+    const expectedPartitionKey1 = 'DEWS';
+    const expectedPartitionKey2 = 'Dannys';
+    const expectedSortKey = '1A#ea_20-1A-A-y08-1.xml';
     const xmlToBeCleaned = await xmlParser(mocks.testXml);
     const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
-    const operatorShortNames = cleanedXml.OperatorShortName;
-    expect.assertions(2);
-    expect(operatorShortNames).toHaveLength(2);
-    expect(operatorShortNames).toEqual(expectedOperatorShortNames);
+    const partition1 = cleanedXml[0].Partition;
+    const partition2 = cleanedXml[1].Partition;
+    const sort = cleanedXml[0].Sort;
+    expect.assertions(4);
+    expect(cleanedXml).toHaveLength(2);
+    expect(partition1).toEqual(expectedPartitionKey1);
+    expect(partition2).toEqual(expectedPartitionKey2);
+    expect(sort).toEqual(expectedSortKey);
 });
 
 it('returns cleanedXmlData which contains the right StopPointRefs and CommonNames', async () => {
@@ -180,7 +177,7 @@ it('returns cleanedXmlData which contains the right StopPointRefs and CommonName
     ];
     const xmlToBeCleaned = await xmlParser(mocks.testXml);
     const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
-    const stopPoints = cleanedXml.StopPoints;
+    const stopPoints = cleanedXml[0].StopPoints;
     expect.assertions(2);
     expect(stopPoints).toHaveLength(5);
     expect(stopPoints).toEqual(expectedStopPoints);
@@ -188,38 +185,47 @@ it('returns cleanedXmlData which contains the right StopPointRefs and CommonName
 
 describe('formatDynamoWriteRequest', () => {
     it('should return data in correct format as a DynamoDB WriteRequest', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1, mocks.mockServicesData);
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1, {
+            ...mocks.mockReformattedServicesData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(1, mocks.mockServicesData);
+        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(1, { ...mocks.mockServicesData });
+        console.log({ testArrayOfItems });
         const result = formatDynamoWriteRequest(testArrayOfItems);
+        console.log({ result });
         expect(result).toEqual(arrayOfBatches);
     });
 
     it('should return an array of <25 when given <25 items', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23, mocks.mockServicesData);
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23, {
+            ...mocks.mockReformattedServicesData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(23, mocks.mockServicesData);
+        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(23, { ...mocks.mockServicesData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
 
     it('should return an array of >25 when given >25 items', () => {
-        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25, mocks.mockServicesData);
-        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7, mocks.mockServicesData);
+        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25, {
+            ...mocks.mockReformattedServicesData,
+        });
+        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7, {
+            ...mocks.mockReformattedServicesData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch1, batch2);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(32, mocks.mockServicesData);
+        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(32, { ...mocks.mockServicesData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
 });
 
-describe('writeCsvBatchesToDynamo', () => {
+describe('writeBatchesToDynamo', () => {
     // Arrange
     const tableName = 'mockTableName';
-    const parsedCsvLines: ParsedCsvData[] = [mocks.mockServicesData];
     const mockDynamoDbBatchWrite = jest.fn();
 
     beforeEach(() => {
@@ -235,13 +241,14 @@ describe('writeCsvBatchesToDynamo', () => {
 
     it('calls dynamodb.batchwrite() only once for a batch size of 25 or less', async () => {
         // Arrange
+        const parsedCsvLines: ParsedCsvData[] = [{ ...mocks.mockServicesData }];
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise() {
                 return Promise.resolve({});
             },
         }));
         // Act
-        await writeCsvBatchesToDynamo({ parsedCsvLines, tableName });
+        await writeBatchesToDynamo({ parsedCsvLines, tableName });
         // Assert
         expect(mockDynamoDbBatchWrite).toHaveBeenCalledTimes(1);
     });
@@ -253,24 +260,24 @@ describe('writeCsvBatchesToDynamo', () => {
                 return Promise.resolve({});
             },
         }));
-        const csvLines = mocks.createArray(26, mocks.mockServicesData);
+        const parsedCsvLines = mocks.createArray(26, { ...mocks.mockServicesData });
         // Act
-        await writeCsvBatchesToDynamo({ parsedCsvLines: csvLines, tableName });
+        await writeBatchesToDynamo({ parsedCsvLines, tableName });
         // Assert
         expect(mockDynamoDbBatchWrite).toHaveBeenCalledTimes(2);
     });
 
     it('throws an error if it cannot write to DynamoDB', async () => {
         // Arrange
-        const lines = mocks.createArray(2, mocks.mockServicesData);
+        const parsedCsvLines = mocks.createArray(2, { ...mocks.mockServicesData });
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise() {
-                return Promise.reject(new Error());
+                return Promise.reject(Error);
             },
         }));
         // Act & Assert
         expect.assertions(1);
-        await expect(writeCsvBatchesToDynamo({ parsedCsvLines: lines, tableName })).rejects.toThrow(
+        await expect(writeBatchesToDynamo({ parsedCsvLines, tableName })).rejects.toThrow(
             'Could not write batch to DynamoDB',
         );
     });
@@ -284,29 +291,29 @@ describe('setS3ObjectParams', () => {
 
     it('sets s3BucketName from S3Event', () => {
         // Act
-        const params = setS3ObjectParams(s3Event);
+        const s3ObjectParams = setS3ObjectParams(s3Event);
         // Assert
-        expect(params.Bucket).toEqual(bucketName);
+        expect(s3ObjectParams.Bucket).toEqual(bucketName);
     });
 
     it('sets S3FileName from S3Event', () => {
         // Act
-        const params = setS3ObjectParams(s3Event);
+        const s3ObjectParams = setS3ObjectParams(s3Event);
         // Assert
-        expect(params.Key).toEqual(fileName);
+        expect(s3ObjectParams.Key).toEqual(fileName);
     });
 
     it('removes spaces and unicode non-ASCII characters in the S3FileName', () => {
         // Arrange
-        const file = 'fdbt%2Ftest+%3A+naptan.csv';
-        const S3Event = mocks.mockS3Event(bucketName, file);
-        const expectedParams = {
+        const mockFileName = 'fdbt%2Ftest+%3A+naptan.csv';
+        const S3Event = mocks.mockS3Event(bucketName, mockFileName);
+        const params = {
             Bucket: bucketName,
             Key: 'fdbt/test : naptan.csv',
         };
         // Act
-        const params = setS3ObjectParams(S3Event);
+        const s3ObjectParams = setS3ObjectParams(S3Event);
         // Arrange
-        expect(params).toEqual(expectedParams);
+        expect(s3ObjectParams).toEqual(params);
     });
 });

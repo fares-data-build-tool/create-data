@@ -12,6 +12,7 @@ export interface s3ObjectParameters {
 }
 
 interface dynamoDBData {
+    Partition?: string;
     ATCOCode: string;
     NaptanCode: string;
     CommonName: string;
@@ -22,12 +23,12 @@ interface dynamoDBData {
     NptgLocalityCode: string;
     LocalityName: string;
     ParentLocalityName: string;
-    LocalityCentre: number;
+    LocalityCentre: string;
     GridType: string;
-    Easting: number;
-    Northing: number;
-    Longitude: number;
-    Latitude: number;
+    Easting: string;
+    Northing: string;
+    Longitude: string;
+    Latitude: string;
     StopType: string;
     BusStopType: string;
     TimingStatus: string;
@@ -55,9 +56,15 @@ export const csvParser = (csvData: string): ParsedData[] => {
 };
 
 export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
-    const parsedDataMapper = (parsedDataItem: ParsedData): WriteRequest => ({
-        PutRequest: { Item: parsedDataItem as any },
+    const parsedDataMapper = (parsedDataItem: ParsedData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
+        PutRequest: {
+            Item: {
+                ...parsedDataItem,
+                Partition: parsedDataItem.ATCOCode,
+            },
+        },
     });
+
     const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
 
     const emptyBatch: WriteRequest[][] = [];
