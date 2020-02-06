@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        if (!req.body.uploadType) {
+        if (!req.body.inputMethod) {
             res.writeHead(302, {
                 Location: '/inputMethod',
             });
@@ -10,7 +10,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             return;
         }
 
-        switch (req.body.uploadType) {
+        switch (req.body.inputMethod) {
             case 'csv':
                 res.writeHead(302, {
                     Location: '/csvUpload',
