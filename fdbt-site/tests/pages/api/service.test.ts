@@ -49,7 +49,7 @@ describe('service', () => {
         });
     });
 
-    it('should return 302 redirect to /error when session is valid but there is neither a service cookie nor can one be set', () => {
+    it('should return 302 redirect to /service when session is valid but there is neither a service cookie nor can one be set', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
@@ -66,7 +66,7 @@ describe('service', () => {
         });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/service',
         });
     });
 

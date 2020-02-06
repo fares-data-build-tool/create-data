@@ -49,7 +49,7 @@ describe('faretype', () => {
         });
     });
 
-    it('should return 302 redirect to /error when session is valid but there is neither a service cookie nor has one been set', () => {
+    it('should return 302 redirect to /faretype when session is valid but there is neither a service cookie nor has one been set', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
