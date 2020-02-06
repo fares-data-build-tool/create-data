@@ -13,9 +13,11 @@ const FareType: NextPage = () => (
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/faretype" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
+                    <fieldset className="govuk-fieldset" aria-describedby="faretype-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">What type of fare?</h1>
+                            <h1 className="govuk-fieldset__heading" id="faretype-page-heading">
+                                What type of fare?
+                            </h1>
                         </legend>
                         <div className="govuk-radios">
                             <div className="govuk-radios__item">

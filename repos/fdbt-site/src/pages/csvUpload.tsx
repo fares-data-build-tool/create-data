@@ -6,7 +6,7 @@ import Layout from '../layout/Layout';
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
 
-const inputMethod: NextPage = () => (
+const CsvUpload: NextPage = () => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/csvUpload" method="post">
@@ -35,8 +35,8 @@ const inputMethod: NextPage = () => (
     </Layout>
 );
 
-inputMethod.getInitialProps = async () => {
+CsvUpload.getInitialProps = async () => {
     return {};
 };
 
-export default inputMethod;
+export default CsvUpload;

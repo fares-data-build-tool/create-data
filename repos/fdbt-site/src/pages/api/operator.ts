@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import v1 from 'uuid';
 import { OPERATOR_COOKIE } from '../../constants/index';
-import { operatorBusinessLogic } from './service/businessLogic';
 import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +22,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             const { operatorName, nocCode } = JSON.parse(req.body.operator);
-            operatorBusinessLogic(operatorName);
             const uuid = v1();
             const cookieValue = JSON.stringify({ operator: operatorName, uuid, nocCode });
             const domain = getDomain(req);
