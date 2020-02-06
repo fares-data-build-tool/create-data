@@ -25,7 +25,7 @@ describe('pages', () => {
 
         it('shows operator name above the select box', () => {
             const wrapper = shallow(<Service operator="Connexions Buses" services={mockServices} />);
-            const operatorWelcome = wrapper.find('#service-operator-label').first();
+            const operatorWelcome = wrapper.find('#service-operator-hint').first();
 
             expect(operatorWelcome.text()).toBe('Connexions Buses');
         });
