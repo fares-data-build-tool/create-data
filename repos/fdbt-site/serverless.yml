@@ -32,6 +32,26 @@ custom:
         nextConfigDir: './'
     customDomain: ${file(./serverless.${self:provider.stage}.yml):custom.customDomain}
 
-package:
-    exclude:
-        - ./**
+resources:
+    Resources:
+        UnvalidatedUserData:
+            Type: AWS::S3::Bucket
+            Properties:
+                BucketName: fdbt-raw-user-data-${self:provider.stage}
+                LifecycleConfiguration:
+                    Rules:
+                        - Id: ExpiryRule
+                          ExpirationInDays: 30
+                          Status: Enabled
+
+    Outputs:
+        UnvalidatedUserDataBucketName:
+            Description: The name of the S3 bucket for Unvalidated User Data
+            Value: !Ref UnvalidatedUserData
+            Export:
+                Name: ${self:service}:${self:provider.stage}:UnvalidatedUserDataBucketName
+        UnvalidatedUserDataBucketArn:
+            Description: The Arn of the S3 bucket for Unvalidated User Data
+            Value: !GetAtt UnvalidatedUserData.Arn
+            Export:
+                Name: ${self:service}:${self:provider.stage}:UnvalidatedUserDataBucketArn
