@@ -132,7 +132,9 @@ export const formatDynamoWriteRequest = (parsedLines: DynamoDBData[]): AWS.Dynam
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
-        if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
+        if (index % batchSize === 0) {
+            result.push(array.slice(index, index + batchSize));
+        }
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
@@ -159,10 +161,11 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
                 })
                 .promise(),
         );
-
+        console.log(`writePromises before if statement is ${writePromises}`)
         count += batch.length;
 
         if (writePromises.length === 100) {
+            console.log(`writePromises inside if statement is ${writePromises}`)
             try {
                 await Promise.all(writePromises); // eslint-disable-line no-await-in-loop
                 writePromises = [];
