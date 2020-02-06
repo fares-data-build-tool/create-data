@@ -30,9 +30,11 @@ export const fetchDataFromS3AsJSON = async (parameters: s3ObjectParameters): Pro
 
 export const netexConvertorHandler = async (event: S3Event) => {
     try {
-        const nocCode = 'METR';
-        const lineServiceName = '233';
-        const atcoCode = '0100BRP90313';
+        const nocCode = 'CARD';
+        const dummynocCode = 'DEWS';
+        const dummyLineFile = 'reference-data-service-g-serverlessdeploymentbuck-hizve7nwjfl8'
+        const lineServiceName = '619#8528';
+        const atcoCode = '0100053331';
         const operatorsWebsite = dynamodbservices.getOperatorsWebsiteValue(nocCode);
         console.log(operatorsWebsite);
         const operatorsTtrteEnq = dynamodbservices.getOperatorsTtrteEnqValue(nocCode);
@@ -57,9 +59,9 @@ export const netexConvertorHandler = async (event: S3Event) => {
         console.log(servicesDescription);
         const servicesCommonName = dynamodbservices.getServicesCommonNameValue(nocCode, lineServiceName);
         console.log(servicesCommonName);
-        const tndsOperatorShortName = dynamodbservices.getOperatorShortNameValue(nocCode, lineServiceName);
+        const tndsOperatorShortName = dynamodbservices.getOperatorShortNameValue(dummynocCode, dummyLineFile);
         console.log(tndsOperatorShortName);
-        const tndsStopsPointsArray = dynamodbservices.getStopPointsArray(nocCode, lineServiceName);
+        const tndsStopsPointsArray = dynamodbservices.getStopPointsArray(dummynocCode, dummyLineFile);
         console.log(tndsStopsPointsArray);
     } catch (error) {
         throw new Error(error.message);

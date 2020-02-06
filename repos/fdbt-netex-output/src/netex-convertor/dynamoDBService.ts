@@ -33,7 +33,7 @@ export const getItemFromDynamoDBTableWithPartitionKeyAndSortKey = async (
 
     const params: AWS.DynamoDB.DocumentClient.QueryInput = {
         TableName: tableName,
-        KeyConditionExpression: '#pkAttNm = :pkAttVal and #skAttNm = :skAttVal',
+        KeyConditionExpression: '#pkAttNm = :pkAttVal and begins_with (#skAttNm, :skAttVal)',
         ExpressionAttributeNames: {
             '#pkAttNm': partitionKey,
             '#skAttNm': sortKey,
@@ -82,7 +82,7 @@ export const getAttributeValueFromDynamoDBItemAsObjectArray = (
 };
 
 export const getOperatorsItem = async (nocCode: string) => {
-    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey('test-Operators', 'Partition', nocCode);
+    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey('giles-Operators', 'Partition', nocCode);
     return operatorsItemData;
 };
 
@@ -135,7 +135,7 @@ export const getOperatorsModeValue = async (nocCode: string) => {
 };
 
 export const getStopsItem = async (atcoCode: string) => {
-    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey('test-Stops', 'Partition', atcoCode);
+    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey('giles-Stops', 'Partition', atcoCode);
     return stopsItemData;
 };
 
@@ -153,7 +153,7 @@ export const getStopsLocalityNameValue = async (atcoCode: string) => {
 
 export const getServicesItem = async (nocCode: string, lineServiceName: string) => {
     const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
-        'test-Services',
+        'giles-Services',
         'Partition',
         nocCode,
         'Sort',
@@ -176,7 +176,7 @@ export const getServicesCommonNameValue = async (nocCode: string, lineServiceNam
 
 export const getTNDSItem = async (nocCode: string, lineServiceName: string) => {
     const tndsItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
-        'test-TNDS',
+        'giles-TNDS',
         'Partition',
         nocCode,
         'Sort',
