@@ -72,12 +72,12 @@ export const mockNaptanData = {
     TownLang: '',
     Suburb: '',
     SuburbLang: '',
-    LocalityCentre: "0",
+    LocalityCentre: '0',
     GridType: 'U',
-    Easting: "361180",
-    Northing: "174902",
-    Longitude: "-2.5602943871",
-    Latitude: "51.4717433191",
+    Easting: '361180',
+    Northing: '174902',
+    Longitude: '-2.5602943871',
+    Latitude: '51.4717433191',
     StopType: 'BCT',
     BusStopType: 'MKD',
     TimingStatus: 'OTH',
@@ -119,12 +119,12 @@ export const mockReformattedNaptanData = {
     TownLang: '',
     Suburb: '',
     SuburbLang: '',
-    LocalityCentre: "0",
+    LocalityCentre: '0',
     GridType: 'U',
-    Easting: "361180",
-    Northing: "174902",
-    Longitude: "-2.5602943871",
-    Latitude: "51.4717433191",
+    Easting: '361180',
+    Northing: '174902',
+    Longitude: '-2.5602943871',
+    Latitude: '51.4717433191',
     StopType: 'BCT',
     BusStopType: 'MKD',
     TimingStatus: 'OTH',
@@ -141,7 +141,7 @@ export const mockReformattedNaptanData = {
 
 export const createArray = (index: number, mockData: ParsedData): ParsedData[] => {
     const array: ParsedData[] = [];
-    for (let i = 0; i < index; i+=1) {
+    for (let i = 0; i < index; i += 1) {
         array.push(mockData);
     }
     return array;
@@ -182,7 +182,7 @@ export const testCsv: string =
     '0100053325,bstatjw,,,Swiss Road,en,,,,,South Liberty Lane,en,,,NE-bound,en,NE,N0076879,Bristol City Centre,Bristol,,,,,,0,U,359270,173137,-2.5875877863,51.4557394596,BCT,CUS,OTH,,,,009,2017-07-25T15:33:15,2017-07-17T15:55:24,15,del,del\n' +
     '0100053344,bstamwp,,,Ashton Park School,en,,,,,,,,,NW-bound,en,NW,N0076879,Bristol City Centre,Bristol,,,,,,0,U,359266,173140,-2.5876456986,51.4557661442,BCT,MKD,OTH,,,,009,2017-07-25T15:33:15,2017-07-17T15:30:50,30,del,del\n' +
     '0100053262,bstjpwd,,,Ikea Car Park,en,,,,,Eastgate Road,en,,,N-bound,en,N,N0076879,Bristol City Centre,Bristol,,,,,,0,U,359264,173135,-2.5876739040,51.4557210446,BCT,MKD,OTH,,,,009,2017-07-25T15:33:15,2017-07-17T14:38:42,14,del,del\n' +
-    '0100BRP90168,bstjpad,,,Warwick Road,en,,,,,Stapleton Road,en,,,N-bound,en,N,E0035600,Eastville,Bristol,,,,,,0,U,360594,174345,-2.5686684729,51.4666946645,BCT,MKD,OTH,,,,009,2020-01-07T13:51:40,2017-04-21T17:26:03,10,new,act'
+    '0100BRP90168,bstjpad,,,Warwick Road,en,,,,,Stapleton Road,en,,,N-bound,en,N,E0035600,Eastville,Bristol,,,,,,0,U,360594,174345,-2.5686684729,51.4666946645,BCT,MKD,OTH,,,,009,2020-01-07T13:51:40,2017-04-21T17:26:03,10,new,act';
 
 export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">

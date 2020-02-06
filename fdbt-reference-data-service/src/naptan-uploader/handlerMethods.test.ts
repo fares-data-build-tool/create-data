@@ -54,7 +54,7 @@ describe('csvParser', () => {
         const returnedValue = csvParser(mocks.testCsv);
 
         expect(returnedValue.length).toBe(22);
-        expect(returnedValue[0]).toEqual({...mocks.mockNaptanData});
+        expect(returnedValue[0]).toEqual({ ...mocks.mockNaptanData });
     });
 });
 
@@ -95,29 +95,37 @@ describe('setS3ObjectParams', () => {
 
 describe('formatDynamoWriteRequest', () => {
     it('should return data in correct format as a DynamoDB WriteRequest', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1, {...mocks.mockReformattedNaptanData});
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1, {
+            ...mocks.mockReformattedNaptanData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedData[] = mocks.createArray(1, {...mocks.mockNaptanData});
+        const testArrayOfItems: ParsedData[] = mocks.createArray(1, { ...mocks.mockNaptanData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
 
     it('should return an array of <25 when given <25 items', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23, {...mocks.mockReformattedNaptanData});
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23, {
+            ...mocks.mockReformattedNaptanData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedData[] = mocks.createArray(23, {...mocks.mockNaptanData});
+        const testArrayOfItems: ParsedData[] = mocks.createArray(23, { ...mocks.mockNaptanData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
 
     it('should return an array of >25 when given >25 items', () => {
-        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25, {...mocks.mockReformattedNaptanData});
-        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7, {...mocks.mockReformattedNaptanData});
+        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25, {
+            ...mocks.mockReformattedNaptanData,
+        });
+        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7, {
+            ...mocks.mockReformattedNaptanData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch1, batch2);
-        const testArrayOfItems: ParsedData[] = mocks.createArray(32, {...mocks.mockNaptanData});
+        const testArrayOfItems: ParsedData[] = mocks.createArray(32, { ...mocks.mockNaptanData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
@@ -126,7 +134,7 @@ describe('formatDynamoWriteRequest', () => {
 describe('writeBatchesToDynamo', () => {
     // Arrange
     const tableName = 'mockTableName';
-    const parsedLines: ParsedData[] = [{...mocks.mockNaptanData}];
+    const parsedLines: ParsedData[] = [{ ...mocks.mockNaptanData }];
     const mockDynamoDbBatchWrite = jest.fn();
 
     beforeEach(() => {
@@ -160,7 +168,7 @@ describe('writeBatchesToDynamo', () => {
                 return Promise.resolve({});
             },
         }));
-        const lines = mocks.createArray(26, {...mocks.mockNaptanData});
+        const lines = mocks.createArray(26, { ...mocks.mockNaptanData });
         // Act
         await writeBatchesToDynamo({ parsedLines: lines, tableName });
         // Assert
@@ -169,7 +177,7 @@ describe('writeBatchesToDynamo', () => {
 
     it('throws an error if it cannot write to DynamoDB', async () => {
         // Arrange
-        const lines = mocks.createArray(2, {...mocks.mockNaptanData});
+        const lines = mocks.createArray(2, { ...mocks.mockNaptanData });
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise() {
                 return Promise.reject(new Error());
