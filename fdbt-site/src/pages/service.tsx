@@ -26,9 +26,9 @@ const Service = ({ operator, services }: ServiceProps) => (
                                 Please select your bus service
                             </h1>
                         </legend>
-                        <label className="govuk-label" id="service-operator-label" htmlFor="service">
+                        <span className="govuk-hint" id="service-operator-hint">
                             {operator}
-                        </label>
+                        </span>
                         <select className="govuk-select" id="service" name="service">
                             <option value="" disabled selected>
                                 ---Select One---

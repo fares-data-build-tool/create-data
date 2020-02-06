@@ -31,13 +31,12 @@ exports[`pages service should render correctly 1`] = `
               Please select your bus service
             </h1>
           </legend>
-          <label
-            className="govuk-label"
-            htmlFor="service"
-            id="service-operator-label"
+          <span
+            className="govuk-hint"
+            id="service-operator-hint"
           >
             Connexions Buses
-          </label>
+          </span>
           <select
             className="govuk-select"
             id="service"
