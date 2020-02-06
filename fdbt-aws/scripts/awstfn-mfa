@@ -1,0 +1,87 @@
+#!/bin/bash
+AWSCLI=`which aws`
+JQCLI=`which jq`
+IAMUSERNAME=$2
+MYUSER=${IAMUSERNAME:=`whoami`}
+# The master acct where IAM identities are managed
+MASTER_ACCT=infinityworks
+MASTER_ACCT_ID=386676700885
+MASTER_ACCT_PROFILE=iw
+VALID_ACCOUNTS=( tfn-test )
+
+# Script should be run in current environment not forked
+if [[ ${BASH_SOURCE[0]} = "${0}" ]]; then
+  echo "Assume AWS role"
+  echo "Exiting as script ${BASH_SOURCE[0]} should be sourced to run within current environment : ( source ${BASH_SOURCE[0]} ) ..."
+  exit 1
+fi
+
+if [ -z "$1" ]; then
+	echo "Error - must pass valid target aws account:"
+  for i in ${VALID_ACCOUNTS[*]}; do
+		echo $i
+	done
+  return
+else
+	case "$1" in
+        tfn-test) AWSID=442445088537
+             export DEVOPS_ROLE=tfn-devops-test
+             export AWS_REGION=eu-west-2
+             ;;
+ 		*)	echo "Invalid AWS Account"
+            echo "Valid accounts are: ${VALID_ACCOUNTS[*]}"
+			return
+			;;
+    esac
+
+	MFA_ARN="arn:aws:iam::"$MASTER_ACCT_ID":mfa/"$MYUSER
+
+	unset AWS_ACCESS_KEY_ID
+	unset AWS_SECRET_ACCESS_KEY
+	unset AWS_SESSION_TOKEN
+
+	echo "Enter MFA code:"
+	read MFACODE
+	CREDS=`$AWSCLI sts get-session-token --serial-number $MFA_ARN --token-code $MFACODE --profile $MASTER_ACCT_PROFILE --output json | $JQCLI -r '.Credentials'`
+  if [ ! -z "$CREDS" ]; then
+		export AWS_ACCESS_KEY_ID=`echo $CREDS | $JQCLI -r '.AccessKeyId'`
+		export AWS_SECRET_ACCESS_KEY=`echo $CREDS | $JQCLI -r '.SecretAccessKey'`
+		export AWS_SESSION_TOKEN=`echo $CREDS | $JQCLI -r '.SessionToken'`
+		# If any other target account - assume role
+		if [ "$1" != $MASTER_ACCT ]; then
+			ARN="arn:aws:iam::"$AWSID":role/"$DEVOPS_ROLE
+			AWSREGION="us-east-1"
+			SESSIONNAME=$MYUSER"AssumeRole"
+			ROLECREDS=`$AWSCLI sts assume-role --role-arn $ARN --role-session-name $SESSIONNAME --region $AWSREGION --output json | $JQCLI -r '.Credentials'`
+      if [ ! -z "$ROLECREDS" ]; then
+				export AWS_ACCESS_KEY_ID=`echo $ROLECREDS | $JQCLI -r '.AccessKeyId'`
+				export AWS_SECRET_ACCESS_KEY=`echo $ROLECREDS | $JQCLI -r '.SecretAccessKey'`
+				export AWS_SESSION_TOKEN=`echo $ROLECREDS | $JQCLI -r '.SessionToken'`
+				echo "AWS Environment Variables set for Assumed Devops Role in Account: $1"
+      else
+        echo "Failed RoleCreds Value --> $TESTCREDS"
+      fi
+    else
+      echo "AWS Environment Variables set for Devops Role in Master Account: $1"
+      mkdir -p ~/.aws
+      session_file=~/.aws/session.env
+      touch $session_file
+      : > $session_file
+      aws_env_vars=$(printenv | grep -Eo "AWS_.*")
+      if [ -z "$aws_env_vars" ]; then
+        echo "No AWS env vars to export. Did you authenticate successfully with AWS?"
+        exit 1;
+      fi
+
+      while read envvar; do
+        echo "export $envvar" >> $session_file
+      done <<< "$aws_env_vars"
+      echo "Written session credentials to $session_file."
+      echo "Source this in your .bashrc/.zshrc file using \"source $session_file\""
+    fi
+	else
+		echo "Error - Failed to authenticate $IAMUSERNAME in  AWS Account: $MASTER_ACCT. Check your username and/or MFA token"
+		echo "If your local username is not the same as your AWS username, pass AWS username as 2nd param"
+	fi
+fi
+return
