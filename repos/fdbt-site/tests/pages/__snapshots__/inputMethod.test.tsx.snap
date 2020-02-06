@@ -11,7 +11,7 @@ exports[`pages inputMethod should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/operator"
+      action="/api/inputMethod"
       method="post"
     >
       <div
@@ -28,7 +28,7 @@ exports[`pages inputMethod should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="input-method-heading"
             >
-               Please select your preferred input method
+              Please select your preferred input method
             </h1>
           </legend>
           <div
@@ -39,27 +39,10 @@ exports[`pages inputMethod should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="manual-entry"
-                name="operator"
-                type="radio"
-                value="MCT"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="manual-entry"
-              >
-                Manual Table Entry
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input"
                 id="csv-upload"
-                name="operator"
+                name="inputMethod"
                 type="radio"
-                value="FirstBus"
+                value="csv"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -72,11 +55,32 @@ exports[`pages inputMethod should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
+                aria-disabled="true"
                 className="govuk-radios__input"
-                id="interactive-map"
-                name="operator"
+                disabled={true}
+                id="manual-entry"
+                name="inputMethod"
                 type="radio"
-                value="FirstBus"
+                value="manual"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="manual-entry"
+              >
+                Manual Table Entry
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                aria-disabled="true"
+                className="govuk-radios__input"
+                disabled={true}
+                id="interactive-map"
+                name="inputMethod"
+                type="radio"
+                value="interactiveMap"
               />
               <label
                 className="govuk-label govuk-radios__label"

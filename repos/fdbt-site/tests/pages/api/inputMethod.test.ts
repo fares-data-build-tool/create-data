@@ -36,7 +36,7 @@ describe('inputMethod', () => {
             connection: {
                 encrypted: false,
             },
-            body: { uploadType: 'pdf' },
+            body: { inputMethod: 'pdf' },
             headers: {
                 host: 'localhost:5000',
                 cookie: '',
@@ -55,7 +55,7 @@ describe('inputMethod', () => {
             connection: {
                 encrypted: false,
             },
-            body: { uploadType: 'csv' },
+            body: { inputMethod: 'csv' },
             headers: {
                 host: 'localhost:5000',
                 cookie: '',
