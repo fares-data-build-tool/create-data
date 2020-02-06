@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages inputMethod should render correctly 1`] = `
+<Layout
+  description="Input method selection page of the Fares data build tool"
+  title="Input Method - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/operator"
+      method="post"
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          aria-describedby="input-method-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="input-method-heading"
+            >
+               Please select your preferred input method
+            </h1>
+          </legend>
+          <div
+            className="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="manual-entry"
+                name="operator"
+                type="radio"
+                value="MCT"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="manual-entry"
+              >
+                Manual Table Entry
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="csv-upload"
+                name="operator"
+                type="radio"
+                value="FirstBus"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="csv-upload"
+              >
+                Upload (csv)
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="interactive-map"
+                name="operator"
+                type="radio"
+                value="FirstBus"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="interactive-map"
+              >
+                Interactive Map (Beta - requires JavaScript)
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;

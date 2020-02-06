@@ -6,14 +6,14 @@ import Layout from '../layout/Layout';
 const title = 'Input Method - Fares data build tool';
 const description = 'Input method selection page of the Fares data build tool';
 
-const inputMethod: NextPage = () => (
+const InputMethod: NextPage = () => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/operator" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
+                    <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">Please select your preferred input method</h1>
+                            <h1 id="input-method-heading" className="govuk-fieldset__heading"> Please select your preferred input method</h1> 
                         </legend>
                         <div className="govuk-radios">
                             <div className="govuk-radios__item">
@@ -66,9 +66,8 @@ const inputMethod: NextPage = () => (
     </Layout>
 );
 
-inputMethod.getInitialProps = async () => {
-    // deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
+InputMethod.getInitialProps = async () => {
     return {};
 };
 
-export default inputMethod;
+export default InputMethod;
