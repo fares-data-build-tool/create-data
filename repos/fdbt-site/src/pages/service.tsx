@@ -29,8 +29,8 @@ const Service = ({ operator, services }: ServiceProps) => (
                         <span className="govuk-hint" id="service-operator-hint">
                             {operator}
                         </span>
-                        <select className="govuk-select" id="service" name="service">
-                            <option value="" disabled selected>
+                        <select className="govuk-select" id="service" name="service" defaultValue="">
+                            <option value="" disabled>
                                 ---Select One---
                             </option>
                             {services.map(service => (
