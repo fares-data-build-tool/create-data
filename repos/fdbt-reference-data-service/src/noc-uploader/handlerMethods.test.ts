@@ -174,7 +174,7 @@ describe('setDbTableEnvVariable', () => {
 
 describe('listS3Objects', () => {
     const ListS3ObjectsParameters: Lists3ObjectsParameters = {
-        Bucket: 'thisIsMyBucket'
+        Bucket: 'thisIsMyBucket',
     };
     const mockS3ListObjectsV2 = jest.fn();
 

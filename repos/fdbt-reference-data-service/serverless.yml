@@ -73,6 +73,7 @@ plugins:
 functions:
     NaptanUploader:
         handler: src/naptan-uploader/handler.s3NaptanHandler
+        memorySize: 3008
         events:
             - s3: fdbt-naptan-data-${self:provider.stage}
               event: s3:ObjectCreated:*
