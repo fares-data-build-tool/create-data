@@ -47,13 +47,27 @@ export const mockS3Event = (bucketName: string, fileName: string) => ({
 });
 
 export const mockServicesData = {
-    NationalOperatorCode: '',
-    LineName: '',
-    RegionCode: '',
-    RegionOperatorCode: '',
-    ServiceCode: '',
-    Description: '',
-    StartDate: '',
+    RowId: '5',
+    NationalOperatorCode: 'A2BR',
+    LineName: '32',
+    RegionCode: 'EA',
+    RegionOperatorCode: 'A2BR',
+    Description: 'Trumpington P & R - Hauxton',
+    ServiceCode: '20-32-_-y08-1',
+    StartDate: '2019-12-03',
+};
+
+export const mockReformattedServicesData = {
+    RowId: '5',
+    NationalOperatorCode: 'A2BR',
+    Partition: 'A2BR',
+    Sort: '32#5',
+    LineName: '32',
+    RegionCode: 'EA',
+    RegionOperatorCode: 'A2BR',
+    Description: 'Trumpington P & R - Hauxton',
+    ServiceCode: '20-32-_-y08-1',
+    StartDate: '2019-12-03',
 };
 
 export const createArray = (index: number, mockNaptanData: ParsedCsvData): ParsedCsvData[] => {
@@ -87,7 +101,7 @@ export const testCsv: string =
     '4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n' +
     '5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR';
 
-export const isJSON = (str: any) => {
+export const isParseableToJSON = (str: any) => {
     try {
         return JSON.parse(str) && !!str;
     } catch (e) {
@@ -95,17 +109,36 @@ export const isJSON = (str: any) => {
     }
 };
 
-export const mockCleanedXmlData: {} = {
-    FileName: 'ea_20-1A-A-y08-12019-12-20T12:29:46.8712Z',
-    OperatorShortName: ['Dews Coaches', 'Dannys Coaches'],
-    StopPoints: [
-        { StopPointRef: '0500SBARH011', CommonName: 'Superstore' },
-        { StopPointRef: '0500HFENS007', CommonName: 'Rookery Way' },
-        { StopPointRef: '0500HFENS006', CommonName: 'Swan Road' },
-        { StopPointRef: '0500HFENS003', CommonName: 'Chequer Street' },
-        { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
-    ],
-};
+export const mockCleanedXmlData: {} = [
+    {
+        Description: 'St Ives - Bar Hill',
+        LineName: '1A',
+        OperatorShortName: 'Dews Coaches',
+        Partition: 'DEWS',
+        Sort: '1A#ea_20-1A-A-y08-1.xml',
+        StopPoints: [
+            { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
+            { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
+            { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
+            { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
+            { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
+        ],
+    },
+    {
+        Description: 'St Ives - Bar Hill',
+        LineName: '1A',
+        OperatorShortName: 'Dannys Coaches',
+        Partition: 'Dannys',
+        Sort: '1A#ea_20-1A-A-y08-1.xml',
+        StopPoints: [
+            { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
+            { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
+            { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
+            { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
+            { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
+        ],
+    },
+];
 
 export const testXml: string = `
 <?xml version="1.0" encoding="utf-8"?>
