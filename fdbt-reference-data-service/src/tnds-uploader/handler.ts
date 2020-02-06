@@ -133,7 +133,7 @@ export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): A
         },
     });
 
-    const dynamoWriteRequests = parsedLines.map(parsedDataToWriteRequest);
+    const dynamoWriteRequests = parsedLines.filter(parsedDataItem => parsedDataItem.NationalOperatorCode).map(parsedDataToWriteRequest);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
