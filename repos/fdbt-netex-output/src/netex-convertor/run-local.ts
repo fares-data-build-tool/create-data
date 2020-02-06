@@ -18,7 +18,10 @@ const streamOutputToCommandLine = async () => {
     const message = "Hello!"
     var json = JSON.parse(parser.toJson(data, {reversible: true}));
     console.log(json);
-    json["PublicationDelivery"]["Description"] = message;
+    const shortenedPath = json["PublicationDelivery"]["Description"];
+    shortenedPath["$t"] = message;
+    json["PublicationDelivery"]["version"] = "GILES";
+    json["PublicationDelivery"]["xsi:schemaLocation"] = "DANNY";
     console.log(json);
     var stringified = JSON.stringify(json);
     var xml = parser.toXml(stringified);
