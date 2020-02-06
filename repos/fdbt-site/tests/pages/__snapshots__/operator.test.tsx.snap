@@ -18,7 +18,7 @@ exports[`pages operator should render correctly 1`] = `
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="operator-name-hint"
+          aria-describedby="page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -26,6 +26,7 @@ exports[`pages operator should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
+              id="page-heading"
             >
               Which operator are you representing?
             </h1>
@@ -35,6 +36,7 @@ exports[`pages operator should render correctly 1`] = `
           >
             <div
               className="govuk-radios__item"
+              key="Connexions Buses"
             >
               <input
                 className="govuk-radios__input"
@@ -45,13 +47,14 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name[object Object]"
+                htmlFor="operator-name0"
               >
                 Connexions Buses
               </label>
             </div>
             <div
               className="govuk-radios__item"
+              key="Durham County Council"
             >
               <input
                 className="govuk-radios__input"
@@ -62,13 +65,14 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name[object Object]"
+                htmlFor="operator-name1"
               >
                 Durham County Council
               </label>
             </div>
             <div
               className="govuk-radios__item"
+              key="Lancashire County Council"
             >
               <input
                 className="govuk-radios__input"
@@ -79,13 +83,14 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name[object Object]"
+                htmlFor="operator-name2"
               >
                 Lancashire County Council
               </label>
             </div>
             <div
               className="govuk-radios__item"
+              key="Manchester Community Transport"
             >
               <input
                 className="govuk-radios__input"
@@ -96,30 +101,32 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name[object Object]"
+                htmlFor="operator-name3"
               >
                 Manchester Community Transport
               </label>
             </div>
             <div
               className="govuk-radios__item"
+              key="Pilkington Bus"
             >
               <input
                 className="govuk-radios__input"
                 id="operator-name4"
                 name="operator"
                 type="radio"
-                value="{\\"operatorName\\":\\"Pilkington Bus\\",\\"nocCode\\":\\"KNGT\\"}"
+                value="{\\"operatorName\\":\\"Pilkington Bus\\",\\"nocCode\\":\\"NWBT\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name[object Object]"
+                htmlFor="operator-name4"
               >
                 Pilkington Bus
               </label>
             </div>
             <div
               className="govuk-radios__item"
+              key="TLC Travel"
             >
               <input
                 className="govuk-radios__input"
@@ -130,13 +137,14 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name[object Object]"
+                htmlFor="operator-name5"
               >
                 TLC Travel
               </label>
             </div>
             <div
               className="govuk-radios__item"
+              key="Transport for Greater Manchester"
             >
               <input
                 className="govuk-radios__input"
@@ -147,7 +155,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name[object Object]"
+                htmlFor="operator-name6"
               >
                 Transport for Greater Manchester
               </label>
