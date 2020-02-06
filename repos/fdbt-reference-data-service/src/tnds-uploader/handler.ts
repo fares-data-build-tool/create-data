@@ -127,17 +127,19 @@ export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): A
         PutRequest: {
             Item: {
                 ...parsedDataItem,
-                Partition: parsedDataItem.NationalOperatorCode,
-                Sort: `${parsedDataItem.LineName}#${parsedDataItem.RowId}`,
+                Partition: parsedDataItem?.NationalOperatorCode,
+                Sort: `${parsedDataItem?.LineName}#${parsedDataItem?.RowId}`,
             },
         },
     });
 
-    const dynamoWriteRequests = parsedLines.map(parsedDataToWriteRequest);
+    const dynamoWriteRequests = parsedLines.filter(parsedDataItem => parsedDataItem.NationalOperatorCode).map(parsedDataToWriteRequest);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
-        if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
+        if (index % batchSize === 0) {
+            result.push(array.slice(index, index + batchSize));
+        }
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
@@ -196,14 +198,14 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
         convertEmptyValues: true,
     });
     console.log('Writing entries to dynamo DB.');
-    const putPromises = parsedXmlLines.map(item => {
+    const putPromises = parsedXmlLines.map(item =>
         dynamodb
             .put({
                 TableName: tableName,
                 Item: item,
             })
-            .promise();
-    });
+            .promise(),
+    );
     try {
         await Promise.all(putPromises);
     } catch (err) {
@@ -215,40 +217,28 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
 export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] => {
     const parsedJson = JSON.parse(parsedXmlData);
 
-    const extractedLineName: string = parsedJson.TransXChange.Services[0].Service[0].Lines[0].Line[0].LineName[0];
-    const extractedFileName: string = parsedJson.TransXChange.$.FileName;
-    const extractedDescription: string = parsedJson.TransXChange.Services[0].Service[0].Description[0];
+    const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
+    const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
+    const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
 
-    const extractedOperators: ExtractedOperators[] = parsedJson.TransXChange.Operators[0].Operator;
-    const extractedStopPoints: ExtractedStopPoint[] = parsedJson.TransXChange.StopPoints[0].AnnotatedStopPointRef;
+    const extractedOperators: ExtractedOperators[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
+    const extractedStopPoints: ExtractedStopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
 
-    const stopPointsCollection: StopPointObject[] = [];
-    for (let i = 0; i < extractedStopPoints.length; i += 1) {
-        const stopPointItem: ExtractedStopPoint = extractedStopPoints[i];
-        const stopPointRef = stopPointItem.StopPointRef[0];
-        const commonName = stopPointItem.CommonName[0];
-        const stopPointObject: StopPointObject = {
-            StopPointRef: stopPointRef,
-            CommonName: commonName,
-        };
-        stopPointsCollection.push(stopPointObject);
-    }
+    const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
+        StopPointRef: stopPointItem?.StopPointRef[0],
+        CommonName: stopPointItem?.CommonName[0],
+    }));
 
-    const cleanedXmlData: tndsDynamoDBData[] = [];
-    for (let i = 0; i < extractedOperators.length; i += 1) {
-        const operator = extractedOperators[i];
-        const nationalOperatorCode: string = operator.NationalOperatorCode[0];
-        const operatorShortName: string = operator.OperatorShortName[0];
-        const operatorInfo: tndsDynamoDBData = {
-            Partition: nationalOperatorCode,
+    const cleanedXmlData: tndsDynamoDBData[] = extractedOperators
+        .filter(operator => operator.NationalOperatorCode[0])
+        .map(operator => ({
+            Partition: operator?.NationalOperatorCode[0],
             Sort: `${extractedLineName}#${extractedFileName}`,
             LineName: extractedLineName,
-            OperatorShortName: operatorShortName,
+            OperatorShortName: operator?.OperatorShortName[0],
             Description: extractedDescription,
             StopPoints: stopPointsCollection,
-        };
-        cleanedXmlData.push(operatorInfo);
-    }
+        }));
 
     return cleanedXmlData;
 };
