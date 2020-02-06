@@ -70,7 +70,9 @@ export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.Dynam
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
-        if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
+        if (index % batchSize === 0) {
+            result.push(array.slice(index, index + batchSize));
+        }
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
