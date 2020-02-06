@@ -11,7 +11,7 @@ exports[`pages inputMethod should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/inputMethod"
+      action="/api/operator"
       method="post"
     >
       <div
@@ -38,29 +38,10 @@ exports[`pages inputMethod should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="csv-upload"
-                name="uploadType"
-                type="radio"
-                value="csv"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="csv-upload"
-              >
-                Upload (csv)
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                aria-disabled="true"
-                className="govuk-radios__input"
-                disabled={true}
                 id="manual-entry"
-                name="uploadType"
+                name="operator"
                 type="radio"
-                value="manual"
+                value="MCT"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -73,13 +54,28 @@ exports[`pages inputMethod should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                aria-disabled="true"
                 className="govuk-radios__input"
-                disabled={true}
-                id="interactive-map"
-                name="uploadType"
+                id="csv-upload"
+                name="operator"
                 type="radio"
-                value="interactiveMap"
+                value="FirstBus"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="csv-upload"
+              >
+                Upload (csv)
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="interactive-map"
+                name="operator"
+                type="radio"
+                value="FirstBus"
               />
               <label
                 className="govuk-label govuk-radios__label"

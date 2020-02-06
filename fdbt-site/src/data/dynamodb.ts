@@ -29,21 +29,18 @@ export type ServiceType = {
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
         TableName: process.env.SERVICES_TABLE_NAME as string,
-        KeyConditionExpression: 'NationalOperatorCode = :value',
+        KeyConditionExpression: '#pk = :value',
+        ExpressionAttributeNames: {
+            '#pk': 'Partition',
+        },
         ExpressionAttributeValues: {
             ':value': nocCode,
         },
     };
 
-    console.log(nocCode);
-
     const { Items } = await getDynamoDBClient()
         .query(queryInput)
         .promise();
 
-    if (!Items?.length) {
-        return Promise.reject(new Error('No services found'));
-    }
-
-    return Items?.map(item => ({ lineName: item.LineName }));
+    return Items?.map((item): ServiceType => ({ lineName: item.LineName })) || [];
 };
