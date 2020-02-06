@@ -86,14 +86,11 @@ resources:
             Type: AWS::S3::Bucket
             Properties:
                 BucketName: fdbt-raw-user-data-${self:provider.stage}
-                CorsConfiguration:
-                    CorsRules:
-                        - AllowedMethods:
-                            - GET
-                            - PUT
-                            - HEAD
-                        - AllowedOrigins:
-                            - '*'
+                LifecycleConfiguration:
+                    Rules:
+                        - Id: ExpiryRule
+                          ExpirationInDays: 30
+                          Status: Enabled
 
     Outputs:
         UnvalidatedUserDataBucketName:
@@ -101,3 +98,8 @@ resources:
             Value: !Ref UnvalidatedUserData
             Export:
                 Name: ${self:service}:${self:provider.stage}:UnvalidatedUserDataBucketName
+        UnvalidatedUserDataBucketArn:
+            Description: The Arn of the S3 bucket for Unvalidated User Data
+            Value: !GetAtt UnvalidatedUserData.Arn
+            Export:
+                Name: ${self:service}:${self:provider.stage}:UnvalidatedUserDataBucketArn
