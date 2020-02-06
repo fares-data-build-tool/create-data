@@ -215,40 +215,26 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
 export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] => {
     const parsedJson = JSON.parse(parsedXmlData);
 
-    const extractedLineName: string = parsedJson.TransXChange.Services[0].Service[0].Lines[0].Line[0].LineName[0];
-    const extractedFileName: string = parsedJson.TransXChange.$.FileName;
-    const extractedDescription: string = parsedJson.TransXChange.Services[0].Service[0].Description[0];
+    const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
+    const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
+    const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
 
-    const extractedOperators: ExtractedOperators[] = parsedJson.TransXChange.Operators[0].Operator;
-    const extractedStopPoints: ExtractedStopPoint[] = parsedJson.TransXChange.StopPoints[0].AnnotatedStopPointRef;
+    const extractedOperators: ExtractedOperators[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
+    const extractedStopPoints: ExtractedStopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
 
-    const stopPointsCollection: StopPointObject[] = [];
-    for (let i = 0; i < extractedStopPoints.length; i += 1) {
-        const stopPointItem: ExtractedStopPoint = extractedStopPoints[i];
-        const stopPointRef = stopPointItem.StopPointRef[0];
-        const commonName = stopPointItem.CommonName[0];
-        const stopPointObject: StopPointObject = {
-            StopPointRef: stopPointRef,
-            CommonName: commonName,
-        };
-        stopPointsCollection.push(stopPointObject);
-    }
+    const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
+        StopPointRef: stopPointItem?.StopPointRef[0],
+        CommonName: stopPointItem?.CommonName[0]
+    }))
 
-    const cleanedXmlData: tndsDynamoDBData[] = [];
-    for (let i = 0; i < extractedOperators.length; i += 1) {
-        const operator = extractedOperators[i];
-        const nationalOperatorCode: string = operator.NationalOperatorCode[0];
-        const operatorShortName: string = operator.OperatorShortName[0];
-        const operatorInfo: tndsDynamoDBData = {
-            Partition: nationalOperatorCode,
-            Sort: `${extractedLineName}#${extractedFileName}`,
-            LineName: extractedLineName,
-            OperatorShortName: operatorShortName,
-            Description: extractedDescription,
-            StopPoints: stopPointsCollection,
-        };
-        cleanedXmlData.push(operatorInfo);
-    }
+    const cleanedXmlData: tndsDynamoDBData[] = extractedOperators.map(operator => ({
+        Partition: operator?.NationalOperatorCode[0],
+        Sort: `${extractedLineName}#${extractedFileName}`,
+        LineName: extractedLineName,
+        OperatorShortName: operator?.OperatorShortName[0],
+        Description: extractedDescription,
+        StopPoints: stopPointsCollection,
+    }));
 
     return cleanedXmlData;
 };
