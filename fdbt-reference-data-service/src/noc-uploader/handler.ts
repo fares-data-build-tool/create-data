@@ -80,14 +80,14 @@ export const lists3Objects = async (parameters: Lists3ObjectsParameters): Promis
     }
     objlist.push(itemOne, itemTwo, itemThree);
     return objlist;
-}
+};
 
 export const fetchDataFromS3AsString = async (parameters: S3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
     const dataAsString = data.Body?.toString('utf-8')!;
     return dataAsString;
-}
+};
 
 export const csvParser = (csvData: string): any => {
     const parsedData: any = csvParse(csvData, {
@@ -96,7 +96,7 @@ export const csvParser = (csvData: string): any => {
         delimiter: ',',
     });
     return parsedData;
-}
+};
 
 export const mergeArrayObjects = (
     nocLinesArray: NocLinesData[],
@@ -116,25 +116,29 @@ export const mergeArrayObjects = (
         ),
     );
     return secondMerge;
-}
+};
 
 export const formatDynamoWriteRequest = (parsedLines: DynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataMapper = (parsedDataItem: ParsedData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
-        PutRequest: { Item: {
-            ...parsedDataItem,
-            Partition: parsedDataItem.NOCCODE
-        } },
+        PutRequest: {
+            Item: {
+                ...parsedDataItem,
+                Partition: parsedDataItem.NOCCODE,
+            },
+        },
     });
 
     const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
-        if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
+        if (index % batchSize === 0) {
+            result.push(array.slice(index, index + batchSize));
+        }
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
-}
+};
 
 export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
@@ -190,7 +194,7 @@ export const setDbTableEnvVariable = (): string => {
         throw new Error('TABLE_NAME environment variable not set.');
     }
     return tableName;
-}
+};
 
 export const s3NocHandler = async (event: S3Event) => {
     const tableName = setDbTableEnvVariable();
@@ -198,7 +202,7 @@ export const s3NocHandler = async (event: S3Event) => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     console.log('s3BucketName retrieved from S3 Event is: ', s3BucketName);
     const Lists3ObjectsParameters: Lists3ObjectsParameters = {
-        Bucket: s3BucketName
+        Bucket: s3BucketName,
     };
 
     const s3ObjectsList = await lists3Objects(Lists3ObjectsParameters);
@@ -206,11 +210,7 @@ export const s3NocHandler = async (event: S3Event) => {
         throw new Error('Key(s) not available or undefined');
     }
 
-    const filenameKeys = [
-        `NOCLines.csv`,
-        `NOCTable.csv`,
-        `PublicName.csv`,
-    ];
+    const filenameKeys = [`NOCLines.csv`, `NOCTable.csv`, `PublicName.csv`];
     console.log('filenameKeys being used to retrieve data are: ', filenameKeys);
     const nocLineParams: S3ObjectParameters = {
         Bucket: s3BucketName,
