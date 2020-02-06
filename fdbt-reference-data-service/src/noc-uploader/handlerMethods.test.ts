@@ -54,46 +54,47 @@ describe('fetchDataFromS3AsAString', () => {
 describe('csvParser', () => {
     it('parses CSV into JSON', () => {
         const returnedValue = csvParser(mocks.testCsv);
-
         expect(returnedValue.length).toBe(5);
-        expect(returnedValue[0]).toEqual({
-            RowId: '1',
-            RegionCode: 'EA',
-            RegionOperatorCode: '703BE',
-            ServiceCode: '9-91-_-y08-11',
-            LineName: '91',
-            Description: 'Ipswich - Hadleigh - Sudbury',
-            StartDate: '2019-12-03',
-            NationalOperatorCode: 'BEES',
-        });
+        expect(returnedValue[4]).toEqual({ ...mocks.mockServicesData });
     });
 });
 
 describe('formatDynamoWriteRequest', () => {
     it('should return data in correct format as a DynamoDB WriteRequest', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1, mocks.mockNocData);
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1, {
+            ...mocks.reformattedMockNocData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedData[] = mocks.createArray(1, mocks.mockNocData);
+        const testArrayOfItems: ParsedData[] = mocks.createArray(1, { ...mocks.mockNocData });
+        console.log({ testArrayOfItems });
         const result = formatDynamoWriteRequest(testArrayOfItems);
+        console.log({ result });
+        console.log({ arrayOfBatches });
         expect(result).toEqual(arrayOfBatches);
     });
 
     it('should return an array of <25 when given <25 items', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23, mocks.mockNocData);
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23, {
+            ...mocks.reformattedMockNocData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedData[] = mocks.createArray(23, mocks.mockNocData);
+        const testArrayOfItems: ParsedData[] = mocks.createArray(23, { ...mocks.mockNocData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
 
     it('should return an array of >25 when given >25 items', () => {
-        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25, mocks.mockNocData);
-        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7, mocks.mockNocData);
+        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25, {
+            ...mocks.reformattedMockNocData,
+        });
+        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7, {
+            ...mocks.reformattedMockNocData,
+        });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch1, batch2);
-        const testArrayOfItems: ParsedData[] = mocks.createArray(32, mocks.mockNocData);
+        const testArrayOfItems: ParsedData[] = mocks.createArray(32, { ...mocks.mockNocData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
@@ -101,8 +102,8 @@ describe('formatDynamoWriteRequest', () => {
 
 describe('writeBatchesToDynamo', () => {
     // Arrange
+
     const tableName = 'mockTableName';
-    const parsedLines: ParsedData[] = [mocks.mockNocData];
     const mockDynamoDbBatchWrite = jest.fn();
 
     beforeEach(() => {
@@ -118,6 +119,7 @@ describe('writeBatchesToDynamo', () => {
 
     it('calls dynamodb.batchwrite() only once for a batch size of 25 or less', async () => {
         // Arrange
+        const parsedLines: ParsedData[] = [{ ...mocks.mockNocData }];
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise() {
                 return Promise.resolve({});
@@ -136,24 +138,24 @@ describe('writeBatchesToDynamo', () => {
                 return Promise.resolve({});
             },
         }));
-        const lines = mocks.createArray(26, mocks.mockNocData);
+        const parsedLines = mocks.createArray(26, { ...mocks.mockNocData });
         // Act
-        await writeBatchesToDynamo({ parsedLines: lines, tableName });
+        await writeBatchesToDynamo({ parsedLines, tableName });
         // Assert
         expect(mockDynamoDbBatchWrite).toHaveBeenCalledTimes(2);
     });
 
     it('throws an error if it cannot write to DynamoDB', async () => {
         // Arrange
-        const lines = mocks.createArray(2, mocks.mockNocData);
+        const parsedLines = mocks.createArray(2, { ...mocks.mockNocData });
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise() {
-                return Promise.reject(new Error());
+                return Promise.reject(Error);
             },
         }));
         // Act & Assert
         expect.assertions(1);
-        await expect(writeBatchesToDynamo({ parsedLines: lines, tableName })).rejects.toThrow(
+        await expect(writeBatchesToDynamo({ parsedLines, tableName })).rejects.toThrow(
             'Could not write batch to DynamoDB',
         );
     });
@@ -172,8 +174,7 @@ describe('setDbTableEnvVariable', () => {
 
 describe('listS3Objects', () => {
     const ListS3ObjectsParameters: Lists3ObjectsParameters = {
-        Bucket: 'thisIsMyBucket',
-        Prefix: 'andThisIsThePrefixOfTheThing',
+        Bucket: 'thisIsMyBucket'
     };
     const mockS3ListObjectsV2 = jest.fn();
 

@@ -35,16 +35,19 @@ export interface s3ObjectParameters {
     Key: string;
 }
 export interface tndsDynamoDBData {
-    FileName: string;
-    OperatorShortname: string;
-    StopPoints: {
-        StopPointRef: string;
-        CommonName: string;
-    };
+    Partition?: string;
+    Sort?: string;
+    LineName: string;
+    OperatorShortName: string;
+    Description: string;
+    StopPoints: StopPointObject[];
 }
 
 export interface servicesDynamoDBData {
+    RowId: string;
     NationalOperatorCode: string;
+    Partition?: string;
+    Sort?: string;
     LineName: string;
     RegionCode: string;
     RegionOperatorCode: string;
@@ -54,7 +57,7 @@ export interface servicesDynamoDBData {
 }
 
 interface PushToDynamoXmlInput {
-    parsedXmlLines: ParsedXmlData;
+    parsedXmlLines: ParsedXmlData[];
     tableName: string;
 }
 
@@ -82,11 +85,9 @@ export const tableChooser = (fileExtension: string) => {
     if (fileExtension === 'csv') {
         return process.env.SERVICES_TABLE_NAME;
     }
-
     if (fileExtension === 'xml') {
         return process.env.TNDS_TABLE_NAME;
     }
-
     console.error(`File is not of a supported format type (${fileExtension})`);
     throw new Error(`Unsupported file type ${fileExtension}`);
 };
@@ -95,7 +96,7 @@ export const removeFirstLineOfString = (xmlData: string): string => {
     return xmlData.substring(xmlData.indexOf('\n') + 1);
 };
 
-export const xmlParser = async (xmlData: string): Promise<string> => {
+export const xmlParser = (xmlData: string): Promise<string> => {
     const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
     return new Promise((resolve, reject) => {
@@ -105,7 +106,6 @@ export const xmlParser = async (xmlData: string): Promise<string> => {
                     new Error(`Parsing xml failed. Error message: ${err.message} and error name: ${err.name}`),
                 );
             }
-
             const noEmptyResult = omitEmpty(result);
             const stringified = JSON.stringify(noEmptyResult) as any;
             return resolve(stringified);
@@ -123,20 +123,29 @@ export const csvParser = (csvData: string): ParsedCsvData[] => {
 };
 
 export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
-    const parsedDataMapper = (parsedDataItem: ParsedCsvData): WriteRequest => ({
-        PutRequest: { Item: parsedDataItem as any },
+    const parsedDataToWriteRequest = (parsedDataItem: ParsedCsvData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
+        PutRequest: {
+            Item: {
+                ...parsedDataItem,
+                Partition: parsedDataItem?.NationalOperatorCode,
+                Sort: `${parsedDataItem?.LineName}#${parsedDataItem?.RowId}`,
+            },
+        },
     });
-    const dynamoWriteRequests = parsedLines.map(parsedDataMapper);
+
+    const dynamoWriteRequests = parsedLines.filter(parsedDataItem => parsedDataItem.NationalOperatorCode).map(parsedDataToWriteRequest);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
-        if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
+        if (index % batchSize === 0) {
+            result.push(array.slice(index, index + batchSize));
+        }
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
 };
 
-export const writeCsvBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushToDynamoCsvInput) => {
+export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushToDynamoCsvInput) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -188,54 +197,48 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
-
     console.log('Writing entries to dynamo DB.');
-
-    await dynamodb
-        .put({
-            TableName: tableName,
-            Item: parsedXmlLines,
-        })
-        .promise();
-
+    const putPromises = parsedXmlLines.map(item =>
+        dynamodb
+            .put({
+                TableName: tableName,
+                Item: item,
+            })
+            .promise(),
+    );
+    try {
+        await Promise.all(putPromises);
+    } catch (err) {
+        throw new Error(`Could not write to Dynamo: ${err.name} ${err.message}`);
+    }
     console.log('Dynamo DB put request complete.');
 };
 
-export const cleanParsedXmlData = (parsedXmlData: string): any => {
+export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] => {
     const parsedJson = JSON.parse(parsedXmlData);
 
-    let extractedFilename: string = parsedJson?.TransXChange?.$?.FileName;
-    const arrayOfExtractedFilename: string[] = extractedFilename.split('.');
-    [extractedFilename] = arrayOfExtractedFilename;
-    const creationDateTime: string = parsedJson?.TransXChange?.$?.CreationDateTime;
+    const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
+    const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
+    const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
 
     const extractedOperators: ExtractedOperators[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
     const extractedStopPoints: ExtractedStopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
 
-    const extractedOperatorShortNames: string[] = [];
-    for (let i = 0; i < extractedOperators.length; i += 1) {
-        const operator = extractedOperators[i];
-        const operatorShortName: string = operator.OperatorShortName[0];
-        extractedOperatorShortNames.push(operatorShortName);
-    }
+    const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
+        StopPointRef: stopPointItem?.StopPointRef[0],
+        CommonName: stopPointItem?.CommonName[0],
+    }));
 
-    const stopPointsCollection: {}[] = [];
-    for (let i = 0; i < extractedStopPoints.length; i += 1) {
-        const stopPointItem: ExtractedStopPoint = extractedStopPoints[i];
-        const stopPointRef = stopPointItem.StopPointRef[0];
-        const commonName = stopPointItem.CommonName[0];
-        const stopPointObject: StopPointObject = {
-            StopPointRef: stopPointRef,
-            CommonName: commonName,
-        };
-        stopPointsCollection.push(stopPointObject);
-    }
-
-    const cleanedXmlData = {
-        FileName: extractedFilename + creationDateTime,
-        OperatorShortName: extractedOperatorShortNames,
-        StopPoints: stopPointsCollection,
-    };
+    const cleanedXmlData: tndsDynamoDBData[] = extractedOperators
+        .filter(operator => operator.NationalOperatorCode[0])
+        .map(operator => ({
+            Partition: operator?.NationalOperatorCode[0],
+            Sort: `${extractedLineName}#${extractedFileName}`,
+            LineName: extractedLineName,
+            OperatorShortName: operator?.OperatorShortName[0],
+            Description: extractedDescription,
+            StopPoints: stopPointsCollection,
+        }));
 
     return cleanedXmlData;
 };
@@ -265,29 +268,28 @@ export const s3TndsHandler = async (event: S3Event) => {
 
     const tableName = tableChooser(fileExtension);
 
-    let parsedData;
     if (tableName === process.env.TNDS_TABLE_NAME) {
-        parsedData = await xmlParser(stringifiedS3Data);
+        const parsedXmlData: string = await xmlParser(stringifiedS3Data);
 
-        if (!parsedData) {
+        if (!parsedXmlData) {
             throw Error('Data parsing has failed, stopping before database writing occurs.');
         }
 
-        parsedData = cleanParsedXmlData(parsedData);
+        const cleanedXmlData = cleanParsedXmlData(parsedXmlData);
 
         await writeXmlToDynamo({
             tableName,
-            parsedXmlLines: parsedData,
+            parsedXmlLines: cleanedXmlData,
         });
     } else if (tableName === process.env.SERVICES_TABLE_NAME) {
-        parsedData = csvParser(stringifiedS3Data);
+        const parsedCsvData = csvParser(stringifiedS3Data);
 
-        if (!parsedData) {
+        if (!parsedCsvData) {
             throw Error('Data parsing has failed, stopping before database writing occurs.');
         }
-        await writeCsvBatchesToDynamo({
+        await writeBatchesToDynamo({
             tableName,
-            parsedCsvLines: parsedData,
+            parsedCsvLines: parsedCsvData,
         });
     }
 };
