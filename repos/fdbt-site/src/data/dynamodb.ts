@@ -27,8 +27,11 @@ export type ServiceType = {
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
+    const tableName =
+        process.env.NODE_ENV === 'development' ? 'dev-Services' : (process.env.SERVICES_TABLE_NAME as string);
+
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
-        TableName: process.env.SERVICES_TABLE_NAME as string,
+        TableName: tableName,
         KeyConditionExpression: '#pk = :value',
         ExpressionAttributeNames: {
             '#pk': 'Partition',
