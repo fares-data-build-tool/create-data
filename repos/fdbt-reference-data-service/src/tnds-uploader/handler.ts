@@ -137,7 +137,9 @@ export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): A
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
-        if (index % batchSize === 0) result.push(array.slice(index, index + batchSize));
+        if (index % batchSize === 0) {
+            result.push(array.slice(index, index + batchSize));
+        }
         return result;
     }, emptyBatch);
     return dynamoWriteRequestBatches;
@@ -196,14 +198,14 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
         convertEmptyValues: true,
     });
     console.log('Writing entries to dynamo DB.');
-    const putPromises = parsedXmlLines.map(item => {
+    const putPromises = parsedXmlLines.map(item =>
         dynamodb
             .put({
                 TableName: tableName,
                 Item: item,
             })
-            .promise();
-    });
+            .promise(),
+    );
     try {
         await Promise.all(putPromises);
     } catch (err) {
@@ -224,17 +226,19 @@ export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] =>
 
     const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
         StopPointRef: stopPointItem?.StopPointRef[0],
-        CommonName: stopPointItem?.CommonName[0]
-    }))
-
-    const cleanedXmlData: tndsDynamoDBData[] = extractedOperators.map(operator => ({
-        Partition: operator?.NationalOperatorCode[0],
-        Sort: `${extractedLineName}#${extractedFileName}`,
-        LineName: extractedLineName,
-        OperatorShortName: operator?.OperatorShortName[0],
-        Description: extractedDescription,
-        StopPoints: stopPointsCollection,
+        CommonName: stopPointItem?.CommonName[0],
     }));
+
+    const cleanedXmlData: tndsDynamoDBData[] = extractedOperators
+        .filter(operator => operator.NationalOperatorCode[0])
+        .map(operator => ({
+            Partition: operator?.NationalOperatorCode[0],
+            Sort: `${extractedLineName}#${extractedFileName}`,
+            LineName: extractedLineName,
+            OperatorShortName: operator?.OperatorShortName[0],
+            Description: extractedDescription,
+            StopPoints: stopPointsCollection,
+        }));
 
     return cleanedXmlData;
 };
