@@ -23,13 +23,6 @@ switch (process.env.NODE_ENV) {
 const nextConfig = {
     assetPrefix,
     target: 'serverless',
-    env: {
-        NAPTAN_TABLE_NAME: 'dev-Stops',
-        NOC_TABLE_NAME: 'dev-Operators',
-        SERVICES_TABLE_NAME: 'dev-Services',
-        TNDS_TABLE_NAME: 'dev-TNDS',
-        AWS_REGION: 'eu-west-2',
-    },
 };
 
 module.exports = withPlugins([
