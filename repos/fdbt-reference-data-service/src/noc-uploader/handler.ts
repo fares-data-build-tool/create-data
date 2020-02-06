@@ -157,10 +157,11 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
                 })
                 .promise(),
         );
-
+        console.log(`writePromises before if statement is ${writePromises}`)
         count += batch.length;
 
         if (writePromises.length === 100) {
+            console.log(`writePromises inside if statement is ${writePromises}`)
             try {
                 await Promise.all(writePromises); // eslint-disable-line no-await-in-loop
                 writePromises = [];
