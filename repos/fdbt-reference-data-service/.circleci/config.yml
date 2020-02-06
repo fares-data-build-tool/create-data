@@ -1,71 +1,104 @@
 version: 2.1
 orbs:
-  semver-orb: tv2norge/semver-orb@0.0.1
+    semver-orb: tv2norge/semver-orb@0.0.1
 
 jobs:
-  checkout-repo:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "*"
+    checkout-repo:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - checkout
+            - persist_to_workspace:
+                  root: ~/project
+                  paths:
+                      - '*'
 
-  build-and-test-reference-data-resources:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "node_modules"
+    build-reference-data-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Starting build"
+                      npm install
+                      npm run build
+            - persist_to_workspace:
+                  root: ~/project
+                  paths:
+                      - 'node_modules'
 
-  deploy-reference-data-resources:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            sudo npm i -g serverless
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
+    test-reference-data-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Running tests"
+                      npm run test:ci
+
+    lint-reference-data-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Linting site"
+                      npm run lint
+
+    deploy-reference-data-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      sudo npm i -g serverless
+                      export SLS_DEBUG="*" && sls deploy
+                      echo "Finished deploy"
 
 workflows:
-  version: 2
-  build-test-and-deploy-reference-data-lambdas:
-    jobs:
-      - checkout-repo:
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - build-and-test-reference-data-resources:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-reference-data-resources:
-          requires:
-            - build-and-test-reference-data-resources
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
+    version: 2
+    build-test-and-deploy-reference-data-lambdas:
+        jobs:
+            - checkout-repo:
+                  filters:
+                      branches:
+                          only: develop
+            - build-reference-data-resources:
+                  requires:
+                      - checkout-repo
+                  filters:
+                      branches:
+                          only: develop
+            - test-reference-data-resources:
+                  requires:
+                      - build-reference-data-resources
+                  filters:
+                      branches:
+                          only: develop
+            - lint-reference-data-resources:
+                  requires:
+                      - build-reference-data-resources
+                  filters:
+                      branches:
+                          only: develop
+            - deploy-reference-data-resources:
+                  requires:
+                      - test-reference-data-resources
+                      - lint-reference-data-resources
+                  context: 'tfn-aws'
+                  filters:
+                      branches:
+                          only: develop
