@@ -69,6 +69,8 @@ module.exports = {
                 assert: 'htmlFor',
             },
         ],
+        'func-style': [2, 'expression'],
+        curly: [2, 'all'],
     },
     settings: {
         'import/resolver': {

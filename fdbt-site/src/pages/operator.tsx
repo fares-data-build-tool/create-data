@@ -19,7 +19,7 @@ const hardCodedOperators: Operator[] = [
     // TODO: Find correct NOC
     { operatorName: 'Lancashire County Council', nocCode: 'PLACEHOLDERLANCASHIRE' },
     { operatorName: 'Manchester Community Transport', nocCode: 'MCTR' },
-    { operatorName: 'Pilkington Bus', nocCode: 'KNGT' },
+    { operatorName: 'Pilkington Bus', nocCode: 'NWBT' },
     { operatorName: 'TLC Travel', nocCode: 'TLCT' },
     // TODO: Find correct NOC
     { operatorName: 'Transport for Greater Manchester', nocCode: 'PLACEHOLDERTFGM' },
@@ -30,14 +30,16 @@ const Operator: NextPage = () => (
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/operator" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="operator-name-hint">
+                    <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">Which operator are you representing?</h1>
+                            <h1 className="govuk-fieldset__heading" id="page-heading">
+                                Which operator are you representing?
+                            </h1>
                         </legend>
                         <div className="govuk-radios">
                             {hardCodedOperators.map(
                                 (operator, index): ReactElement => (
-                                    <div className="govuk-radios__item">
+                                    <div className="govuk-radios__item" key={operator.operatorName}>
                                         <input
                                             className="govuk-radios__input"
                                             id={`operator-name${index}`}
@@ -47,7 +49,7 @@ const Operator: NextPage = () => (
                                         />
                                         <label
                                             className="govuk-label govuk-radios__label"
-                                            htmlFor={`operator-name${operator}`}
+                                            htmlFor={`operator-name${index}`}
                                         >
                                             {`${operator.operatorName}`}
                                         </label>

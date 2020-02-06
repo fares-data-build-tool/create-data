@@ -18,7 +18,7 @@ exports[`pages faretype should render correctly 1`] = `
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="changed-name-hint"
+          aria-describedby="faretype-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -26,6 +26,7 @@ exports[`pages faretype should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
+              id="faretype-page-heading"
             >
               What type of fare?
             </h1>
