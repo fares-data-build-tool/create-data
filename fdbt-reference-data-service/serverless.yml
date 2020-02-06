@@ -205,7 +205,7 @@ custom:
                 sources:
                     - table: ${self:provider.stage}-Stops
                       sources: [./dev/seeddata/stops.json]
-                    - table: Operators
+                    - table: ${self:provider.stage}-Operators
                       sources: [./dev/seeddata/operators.json]
                     - table: ${self:provider.stage}-Services
                       sources: [./dev/seeddata/services.json]
