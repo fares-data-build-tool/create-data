@@ -127,8 +127,8 @@ export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): A
         PutRequest: {
             Item: {
                 ...parsedDataItem,
-                Partition: parsedDataItem.NationalOperatorCode,
-                Sort: `${parsedDataItem.LineName}#${parsedDataItem.RowId}`,
+                Partition: parsedDataItem?.NationalOperatorCode,
+                Sort: `${parsedDataItem?.LineName}#${parsedDataItem?.RowId}`,
             },
         },
     });
