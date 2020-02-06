@@ -9,7 +9,7 @@ const description = 'Input method selection page of the Fares data build tool';
 const inputMethod: NextPage = () => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <form action="/api/inputMethod" method="post">
+            <form action="/api/operator" method="post">
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -19,24 +19,10 @@ const inputMethod: NextPage = () => (
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="csv-upload"
-                                    name="uploadType"
-                                    type="radio"
-                                    value="csv"
-                                />
-                                <label className="govuk-label govuk-radios__label" htmlFor="csv-upload">
-                                    Upload (csv)
-                                </label>
-                            </div>
-                            <div className="govuk-radios__item">
-                                <input
-                                    className="govuk-radios__input"
                                     id="manual-entry"
-                                    name="uploadType"
+                                    name="operator"
                                     type="radio"
-                                    value="manual"
-                                    disabled
-                                    aria-disabled="true"
+                                    value="MCT"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
                                     Manual Table Entry
@@ -45,12 +31,22 @@ const inputMethod: NextPage = () => (
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="interactive-map"
-                                    name="uploadType"
+                                    id="csv-upload"
+                                    name="operator"
                                     type="radio"
-                                    value="interactiveMap"
-                                    disabled
-                                    aria-disabled="true"
+                                    value="FirstBus"
+                                />
+                                <label className="govuk-label govuk-radios__label" htmlFor="csv-upload">
+                                    Upload (csv)
+                                </label>
+                            </div>
+                            <div className="govuk-radios__item">
+                                <input
+                                    className="govuk-radios__input"
+                                    id="interactive-map"
+                                    name="operator"
+                                    type="radio"
+                                    value="FirstBus"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="interactive-map">
                                     Interactive Map (Beta - requires JavaScript)
@@ -71,6 +67,7 @@ const inputMethod: NextPage = () => (
 );
 
 inputMethod.getInitialProps = async () => {
+    // deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
     return {};
 };
 

@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { SERVICE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
-import { serviceBusinessLogic } from './service/businessLogic';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
     if (isSessionValid(req)) {
@@ -16,10 +15,22 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 });
             } else {
                 const { service } = req.body;
-                serviceBusinessLogic(service);
+
+                if (!service) {
+                    res.writeHead(302, {
+                        Location: '/service',
+                    });
+                    res.end();
+                    return;
+                }
+
                 const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
                 const operatorObject = JSON.parse(operatorCookie);
                 const { uuid } = operatorObject;
+
+                if (!uuid) {
+                    throw new Error('No UUID found');
+                }
 
                 const cookieValue = JSON.stringify({ service, uuid });
                 const domain = getDomain(req);
