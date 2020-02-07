@@ -28,42 +28,76 @@ export const fetchDataFromS3AsJSON = async (parameters: s3ObjectParameters): Pro
     }
 };
 
+export const getOperatorsTableData = async (nocCode: string) => {
+    const operatorTableData = await dynamodbservices.getOperatorsItem(nocCode);
+    const operatorsWebsite = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(
+        operatorTableData,
+        'Website',
+    );
+    console.log(operatorsWebsite);
+    const operatorsTtrteEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(
+        operatorTableData,
+        'TTRteEnq',
+    );
+    console.log(operatorsTtrteEnq);
+    const operatorsOperatorPublicName = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(
+        operatorTableData,
+        'OperatorPublicName',
+    );
+    console.log(operatorsOperatorPublicName);
+    const operatorsOpId = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'OpId');
+    console.log(operatorsOpId);
+    const operatorsVosaPSVLicenseName = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(
+        operatorTableData,
+        'VOSA_PSVLicenseName',
+    );
+    console.log(operatorsVosaPSVLicenseName);
+    const operatorsFareEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(
+        operatorTableData,
+        'FareEnq',
+    );
+    console.log(operatorsFareEnq);
+    const operatorsComplEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(
+        operatorTableData,
+        'ComplEnq',
+    );
+    console.log(operatorsComplEnq);
+    const operatorsMode = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'Mode');
+    console.log(operatorsMode);
+};
+
+export const getStopsTableData = async (atcoCode: string) => {
+    const stopsNptgLocalityCode = await dynamodbservices.getStopsNptgLocalityCodeValue(atcoCode);
+    console.log(stopsNptgLocalityCode);
+    const stopsLocalityName = await dynamodbservices.getStopsLocalityNameValue(atcoCode);
+    console.log(stopsLocalityName);
+};
+
+export const getServicesTableData = async (nocCode: string, atcoCode: string, lineNameRowId: string) => {
+    const servicesDescription = await dynamodbservices.getServicesDescriptionValue(nocCode, lineNameRowId);
+    console.log(servicesDescription);
+    const stopsCommonName = await dynamodbservices.getStopsCommonNameValue(atcoCode);
+    console.log(stopsCommonName);
+};
+
+export const getTndsTableData = async (tempNocCode: string, lineNameFileName: string) => {
+    const tndsOperatorShortName = await dynamodbservices.getOperatorShortNameValue(tempNocCode, lineNameFileName);
+    console.log(tndsOperatorShortName);
+    const tndsStopsPointsArray = await dynamodbservices.getStopPointsArray(tempNocCode, lineNameFileName);
+    console.log(tndsStopsPointsArray);
+};
+
 export const netexConvertorHandler = async (event: S3Event) => {
+    const nocCode = 'CARD';
+    const tempNocCode = 'DEWS';
+    const lineNameFileName = '1A#ea_20-1A-A-y08-1.xml';
+    const lineNameRowId = '619#8528';
+    const atcoCode = '0100053331';
     try {
-        const nocCode = 'CARD';
-        const tempNocCode = 'DEWS';
-        const lineNameFileName = '1A#ea_20-1A-A-y08-1.xml'
-        const lineNameRowId = '619#8528';
-        const atcoCode = '0100053331';
-        const operatorTableData = await dynamodbservices.getOperatorsItem(nocCode);
-        const operatorsWebsite = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'Website');
-        console.log(operatorsWebsite);
-        const operatorsTtrteEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'TTRteEnq');
-        console.log(operatorsTtrteEnq);
-        const operatorsOperatorPublicName = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'OperatorPublicName');
-        console.log(operatorsOperatorPublicName);
-        const operatorsOpId = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'OpId');
-        console.log(operatorsOpId);
-        const operatorsVosaPSVLicenseName = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'VOSA_PSVLicenseName');
-        console.log(operatorsVosaPSVLicenseName);
-        const operatorsFareEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'FareEnq');
-        console.log(operatorsFareEnq);
-        const operatorsComplEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'ComplEnq');
-        console.log(operatorsComplEnq);
-        const operatorsMode = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'Mode');
-        console.log(operatorsMode);
-        const stopsNptgLocalityCode = await dynamodbservices.getStopsNptgLocalityCodeValue(atcoCode);
-        console.log(stopsNptgLocalityCode);
-        const stopsLocalityName = await dynamodbservices.getStopsLocalityNameValue(atcoCode);
-        console.log(stopsLocalityName);
-        const servicesDescription = await dynamodbservices.getServicesDescriptionValue(nocCode, lineNameRowId);
-        console.log(servicesDescription);
-        const stopsCommonName = await dynamodbservices.getStopsCommonNameValue(atcoCode);
-        console.log(stopsCommonName);
-        const tndsOperatorShortName = await dynamodbservices.getOperatorShortNameValue(tempNocCode, lineNameFileName);
-        console.log(tndsOperatorShortName);
-        const tndsStopsPointsArray = await dynamodbservices.getStopPointsArray(tempNocCode, lineNameFileName);
-        console.log(tndsStopsPointsArray);
+        await getOperatorsTableData(nocCode);
+        await getStopsTableData(atcoCode);
+        await getServicesTableData(nocCode, atcoCode, lineNameRowId);
+        await getTndsTableData(tempNocCode, lineNameFileName);
     } catch (error) {
         throw new Error(error.message);
     }
