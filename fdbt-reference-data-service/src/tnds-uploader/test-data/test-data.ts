@@ -115,7 +115,7 @@ export const mockCleanedXmlData: {} = [
         LineName: '1A',
         OperatorShortName: 'Dews Coaches',
         Partition: 'DEWS',
-        Sort: '1A#ea_20-1A-A-y08-1.xml',
+        Sort: '1A#2019-12-17#ea_20-1A-A-y08-1.xml',
         StopPoints: [
             { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
             { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
@@ -129,7 +129,7 @@ export const mockCleanedXmlData: {} = [
         LineName: '1A',
         OperatorShortName: 'Dannys Coaches',
         Partition: 'Dannys',
-        Sort: '1A#ea_20-1A-A-y08-1.xml',
+        Sort: '1A#2019-12-17#ea_20-1A-A-y08-1.xml',
         StopPoints: [
             { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
             { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
