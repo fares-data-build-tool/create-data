@@ -1,5 +1,7 @@
 import AWS from 'aws-sdk';
 
+const {NAPTAN_TABLE_NAME,NOC_TABLE_NAME, SERVICES_TABLE_NAME,TNDS_TABLE_NAME}  = process.env;
+
 export const getItemFromDynamoDBTableWithPartitionKey = async (
     tableName: string,
     partitionKey: string,
@@ -82,60 +84,12 @@ export const getAttributeValueFromDynamoDBItemAsObjectArray = (
 };
 
 export const getOperatorsItem = async (nocCode: string) => {
-    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey('giles-Operators', 'Partition', nocCode);
+    const operatorsItemData = await getItemFromDynamoDBTableWithPartitionKey(NOC_TABLE_NAME as string, 'Partition', nocCode);
     return operatorsItemData;
 };
 
-export const getOperatorsWebsiteValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const website = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'Website');
-    return website;
-};
-
-export const getOperatorsTtrteEnqValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const ttrteEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'TTRteEnq');
-    return ttrteEnq;
-};
-
-export const getOperatorsOperatorPublicNameValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const operatorPublicName = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'OperatorPublicName');
-    return operatorPublicName;
-};
-
-export const getOperatorsOpIdValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const opId = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'OpId');
-    return opId;
-};
-
-export const getOperatorsVosaPSVLicenseNameValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const vosaPSVLicenseName = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'VOSA_PSVLicenseName');
-    return vosaPSVLicenseName;
-};
-
-export const getOperatorsFareEnqValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const fareEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'FareEnq');
-    return fareEnq;
-};
-
-export const getOperatorsComplEnqValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const complEnq = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'ComplEnq');
-    return complEnq;
-};
-
-export const getOperatorsModeValue = async (nocCode: string) => {
-    const operatorsItem = await getOperatorsItem(nocCode);
-    const mode = getAttributeValueFromDynamoDBItemAsAString(operatorsItem, 'Mode');
-    return mode;
-};
-
 export const getStopsItem = async (atcoCode: string) => {
-    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey('giles-Stops', 'Partition', atcoCode);
+    const stopsItemData = await getItemFromDynamoDBTableWithPartitionKey(NAPTAN_TABLE_NAME as string, 'Partition', atcoCode);
     return stopsItemData;
 };
 
@@ -153,7 +107,7 @@ export const getStopsLocalityNameValue = async (atcoCode: string) => {
 
 export const getServicesItem = async (nocCode: string, lineNameRowId: string) => {
     const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
-        'giles-Services',
+        SERVICES_TABLE_NAME as string,
         'Partition',
         nocCode,
         'Sort',
@@ -176,7 +130,7 @@ export const getStopsCommonNameValue = async (atcoCode: string) => {
 
 export const getTNDSItem = async (nocCode: string, lineNameFileName: string) => {
     const tndsItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
-        'giles-TNDS',
+        TNDS_TABLE_NAME as string,
         'Partition',
         nocCode,
         'Sort',
