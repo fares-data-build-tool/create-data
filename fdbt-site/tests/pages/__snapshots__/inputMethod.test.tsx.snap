@@ -48,7 +48,7 @@ exports[`pages inputMethod should render correctly 1`] = `
                 className="govuk-label govuk-radios__label"
                 htmlFor="csv-upload"
               >
-                Upload (csv)
+                Upload (.csv)
               </label>
             </div>
             <div
@@ -67,7 +67,7 @@ exports[`pages inputMethod should render correctly 1`] = `
                 className="govuk-label govuk-radios__label"
                 htmlFor="manual-entry"
               >
-                Manual Table Entry
+                Manual Fares Triangle input
               </label>
             </div>
             <div
@@ -86,7 +86,7 @@ exports[`pages inputMethod should render correctly 1`] = `
                 className="govuk-label govuk-radios__label"
                 htmlFor="interactive-map"
               >
-                Interactive Map (Beta - requires JavaScript)
+                Interactive Map (Beta)
               </label>
             </div>
           </div>
