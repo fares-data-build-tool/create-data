@@ -12,8 +12,8 @@ provider:
           Action:
               - 's3:GetObject'
               - 's3:ListBucket'
-              - 'se:ListObjectsV2'
-              - 'se:PutObject'
+              - 's3:ListObjectsV2'
+              - 's3:PutObject'
           Resource:
               - Fn::Join:
                     - ''
