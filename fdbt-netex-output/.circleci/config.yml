@@ -1,72 +1,105 @@
 version: 2.1
 orbs:
-  semver-orb: tv2norge/semver-orb@0.0.1
+    semver-orb: tv2norge/semver-orb@0.0.1
 
 jobs:
-  checkout-repo:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "*"
+    checkout-repo:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - checkout
+            - persist_to_workspace:
+                  root: ~/project
+                  paths:
+                      - '*'
 
-  build-and-test-netex-output-resources:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            npm install
-            npm run build
-            echo "Running tests"
-            npm run test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "./node_modules"
+    build-netex-output-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Starting build"
+                      npm install
+                      npm run build
+            - persist_to_workspace:
+                  root: ~/project
+                  paths:
+                      - './node_modules'
 
-  deploy-netex-output-resources:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            sudo npm i -g serverless
-            export SLS_DEBUG="*" && sls deploy
-            echo "Finished deploy"
+    test-netex-output-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Running tests"
+                      npm run test:ci
+
+    lint-netex-output-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Linting site"
+                      npm run lint
+
+    deploy-netex-output-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Deploying..."
+                      sudo npm i -g serverless
+                      export SLS_DEBUG="*" && sls deploy
+                      echo "Finished deploy"
 
 workflows:
-  version: 2
-  build-test-and-deploy-netex-output-lambdas:
-    jobs:
-      - checkout-repo:
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - build-and-test-netex-output-resources:
-          requires:
-            - checkout-repo
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
-      - deploy-netex-output-resources:
-          requires:
-            - build-and-test-netex-output-resources
-          context: "tfn-aws"
-          filters:
-            branches:
-              only: develop
+    version: 2
+    build-test-and-deploy-netex-output-lambdas:
+        jobs:
+            - checkout-repo:
+                  filters:
+                      branches:
+                          only: develop
+            - build-netex-output-resources:
+                  requires:
+                      - checkout-repo
+                  filters:
+                      branches:
+                          only: develop
+            - test-netex-output-resources:
+                  requires:
+                      - build-netex-output-resources
+                  filters:
+                      branches:
+                          only: develop
+            - lint-netex-output-resources:
+                  requires:
+                      - build-netex-output-resources
+                  filters:
+                      branches:
+                          only: develop
+            - deploy-netex-output-resources:
+                  requires:
+                      - test-netex-output-resources
+                      - lint-netex-output-resources
+                  context: 'tfn-aws'
+                  filters:
+                      branches:
+                          only: develop
