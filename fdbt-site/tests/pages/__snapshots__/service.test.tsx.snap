@@ -51,24 +51,33 @@ exports[`pages service should render correctly 1`] = `
             </option>
             <option
               className="service-option"
-              key="123"
-              value="123"
+              key="123#2020-02-05"
+              value="123#2020-02-05"
             >
               123
+               [Start date 
+              2020-02-05
+              ]
             </option>
             <option
               className="service-option"
-              key="X1"
-              value="X1"
+              key="X1#2020-02-06"
+              value="X1#2020-02-06"
             >
               X1
+               [Start date 
+              2020-02-06
+              ]
             </option>
             <option
               className="service-option"
-              key="Infinity Line"
-              value="Infinity Line"
+              key="Infinity Line#2020-02-07"
+              value="Infinity Line#2020-02-07"
             >
               Infinity Line
+               [Start date 
+              2020-02-07
+              ]
             </option>
           </select>
         </fieldset>

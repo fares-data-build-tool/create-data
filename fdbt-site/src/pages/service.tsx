@@ -34,8 +34,8 @@ const Service = ({ operator, services }: ServiceProps) => (
                                 ---Select One---
                             </option>
                             {services.map(service => (
-                                <option key={service.lineName} value={service.lineName} className="service-option">
-                                    {service.lineName}
+                                <option key={`${service.lineName}#${service.startDate}`} value={`${service.lineName}#${service.startDate}`} className="service-option">
+                                    {service.lineName} [Start date {service.startDate}]
                                 </option>
                             ))}
                         </select>
