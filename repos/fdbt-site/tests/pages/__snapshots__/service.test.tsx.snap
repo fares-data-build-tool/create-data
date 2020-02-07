@@ -39,12 +39,12 @@ exports[`pages service should render correctly 1`] = `
           </span>
           <select
             className="govuk-select"
+            defaultValue=""
             id="service"
             name="service"
           >
             <option
               disabled={true}
-              selected={true}
               value=""
             >
               ---Select One---

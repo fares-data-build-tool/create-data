@@ -7,38 +7,31 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     if (isSessionValid(req)) {
         try {
             const cookies = getCookies(req);
-            const serviceCookie = cookies[SERVICE_COOKIE];
 
-            if (serviceCookie) {
+            const { service } = req.body;
+
+            if (!service) {
                 res.writeHead(302, {
-                    Location: '/inputMethod',
+                    Location: '/service',
                 });
-            } else {
-                const { service } = req.body;
-
-                if (!service) {
-                    res.writeHead(302, {
-                        Location: '/service',
-                    });
-                    res.end();
-                    return;
-                }
-
-                const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
-                const operatorObject = JSON.parse(operatorCookie);
-                const { uuid } = operatorObject;
-
-                if (!uuid) {
-                    throw new Error('No UUID found');
-                }
-
-                const cookieValue = JSON.stringify({ service, uuid });
-                const domain = getDomain(req);
-                setCookieOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
-                res.writeHead(302, {
-                    Location: '/inputMethod',
-                });
+                res.end();
+                return;
             }
+
+            const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
+            const operatorObject = JSON.parse(operatorCookie);
+            const { uuid } = operatorObject;
+
+            if (!uuid) {
+                throw new Error('No UUID found');
+            }
+
+            const cookieValue = JSON.stringify({ service, uuid });
+            const domain = getDomain(req);
+            setCookieOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
+            res.writeHead(302, {
+                Location: '/inputMethod',
+            });
         } catch (error) {
             res.writeHead(302, {
                 Location: '/error',
