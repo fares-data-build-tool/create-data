@@ -9,7 +9,7 @@ const description = 'CSV Upload page of the Fares data build tool';
 const CsvUpload: NextPage = () => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <form action="/api/csvUpload" method="post">
+            <form action="/api/csvUpload" method="post" encType="multipart/form-data">
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -20,14 +20,20 @@ const CsvUpload: NextPage = () => (
                         </label>
                     </fieldset>
                     <div className="govuk-form-group">
-                    <label className="govuk-label" htmlFor="file-upload-1"></label>
-                    <input className="govuk-file-upload" id="file-upload-1" name="file-upload-1" type="file"></input>
+                        <label className="govuk-label" htmlFor="file-upload-1" />
+                        <input
+                            className="govuk-file-upload"
+                            id="file-upload-1"
+                            name="file-upload-1"
+                            type="file"
+                            accept=".csv"
+                        />
                     </div>
                 </div>
                 <input
                     type="submit"
-                    value="Continue"
-                    id="continue-button"
+                    value="Upload and continue"
+                    id="submit-button"
                     className="govuk-button govuk-button--start"
                 />
             </form>
