@@ -31,37 +31,38 @@ export const fetchDataFromS3AsJSON = async (parameters: s3ObjectParameters): Pro
 export const netexConvertorHandler = async (event: S3Event) => {
     try {
         const nocCode = 'CARD';
-        const dummynocCode = 'DEWS';
-        const dummyLineFile = 'reference-data-service-g-serverlessdeploymentbuck-hizve7nwjfl8'
-        const lineServiceName = '619#8528';
+        const tempNocCode = 'DEWS';
+        const lineNameFileName = '1A#ea_20-1A-A-y08-1.xml'
+        const lineNameRowId = '619#8528';
         const atcoCode = '0100053331';
-        const operatorsWebsite = dynamodbservices.getOperatorsWebsiteValue(nocCode);
+        const operatorTableData = await dynamodbservices.getOperatorsItem(nocCode);
+        const operatorsWebsite = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'Website');
         console.log(operatorsWebsite);
-        const operatorsTtrteEnq = dynamodbservices.getOperatorsTtrteEnqValue(nocCode);
+        const operatorsTtrteEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'TTRteEnq');
         console.log(operatorsTtrteEnq);
-        const operatorsOperatorPublicName = dynamodbservices.getOperatorsOperatorPublicNameValue(nocCode);
+        const operatorsOperatorPublicName = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'OperatorPublicName');
         console.log(operatorsOperatorPublicName);
-        const operatorsOpId = dynamodbservices.getOperatorsOpIdValue(nocCode);
+        const operatorsOpId = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'OpId');
         console.log(operatorsOpId);
-        const operatorsVosaPSVLicenseName = dynamodbservices.getOperatorsVosaPSVLicenseNameValue(nocCode);
+        const operatorsVosaPSVLicenseName = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'VOSA_PSVLicenseName');
         console.log(operatorsVosaPSVLicenseName);
-        const operatorsFareEnq = dynamodbservices.getOperatorsFareEnqValue(nocCode);
+        const operatorsFareEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'FareEnq');
         console.log(operatorsFareEnq);
-        const operatorsComplEnq = dynamodbservices.getOperatorsComplEnqValue(nocCode);
+        const operatorsComplEnq = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData, 'ComplEnq');
         console.log(operatorsComplEnq);
-        const operatorsMode = dynamodbservices.getOperatorsModeValue(nocCode);
+        const operatorsMode = await dynamodbservices.getAttributeValueFromDynamoDBItemAsAString(operatorTableData,'Mode');
         console.log(operatorsMode);
-        const stopsNptgLocalityCode = dynamodbservices.getStopsLocalityNameValue(atcoCode);
+        const stopsNptgLocalityCode = await dynamodbservices.getStopsNptgLocalityCodeValue(atcoCode);
         console.log(stopsNptgLocalityCode);
-        const stopsLocalityName = dynamodbservices.getStopsLocalityNameValue(atcoCode);
+        const stopsLocalityName = await dynamodbservices.getStopsLocalityNameValue(atcoCode);
         console.log(stopsLocalityName);
-        const servicesDescription = dynamodbservices.getServicesDescriptionValue(nocCode, lineServiceName);
+        const servicesDescription = await dynamodbservices.getServicesDescriptionValue(nocCode, lineNameRowId);
         console.log(servicesDescription);
-        const servicesCommonName = dynamodbservices.getServicesCommonNameValue(nocCode, lineServiceName);
-        console.log(servicesCommonName);
-        const tndsOperatorShortName = dynamodbservices.getOperatorShortNameValue(dummynocCode, dummyLineFile);
+        const stopsCommonName = await dynamodbservices.getStopsCommonNameValue(atcoCode);
+        console.log(stopsCommonName);
+        const tndsOperatorShortName = await dynamodbservices.getOperatorShortNameValue(tempNocCode, lineNameFileName);
         console.log(tndsOperatorShortName);
-        const tndsStopsPointsArray = dynamodbservices.getStopPointsArray(dummynocCode, dummyLineFile);
+        const tndsStopsPointsArray = await dynamodbservices.getStopPointsArray(tempNocCode, lineNameFileName);
         console.log(tndsStopsPointsArray);
     } catch (error) {
         throw new Error(error.message);

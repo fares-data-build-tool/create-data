@@ -151,49 +151,48 @@ export const getStopsLocalityNameValue = async (atcoCode: string) => {
     return localityName;
 };
 
-export const getServicesItem = async (nocCode: string, lineServiceName: string) => {
+export const getServicesItem = async (nocCode: string, lineNameRowId: string) => {
     const servicesItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
         'giles-Services',
         'Partition',
         nocCode,
         'Sort',
-        lineServiceName,
+        lineNameRowId,
     );
     return servicesItemData;
 };
 
-export const getServicesDescriptionValue = async (nocCode: string, lineServiceName: string) => {
-    const servicesItem = await getServicesItem(nocCode, lineServiceName);
+export const getServicesDescriptionValue = async (nocCode: string, lineNameRowId: string) => {
+    const servicesItem = await getServicesItem(nocCode, lineNameRowId);
     const description = getAttributeValueFromDynamoDBItemAsAString(servicesItem, 'Description');
     return description;
 };
 
-export const getServicesCommonNameValue = async (nocCode: string, lineServiceName: string) => {
-    const servicesItem = await getServicesItem(nocCode, lineServiceName);
-    const commonName = getAttributeValueFromDynamoDBItemAsAString(servicesItem, 'CommonName');
+export const getStopsCommonNameValue = async (atcoCode: string) => {
+    const stopsItem = await getStopsItem(atcoCode);
+    const commonName = getAttributeValueFromDynamoDBItemAsAString(stopsItem, 'CommonName');
     return commonName;
 };
 
-export const getTNDSItem = async (nocCode: string, lineServiceName: string) => {
+export const getTNDSItem = async (nocCode: string, lineNameFileName: string) => {
     const tndsItemData = await getItemFromDynamoDBTableWithPartitionKeyAndSortKey(
         'giles-TNDS',
         'Partition',
         nocCode,
         'Sort',
-        lineServiceName,
+        lineNameFileName,
     );
     return tndsItemData;
 };
 
-export const getOperatorShortNameValue = async (nocCode: string, lineServiceName: string) => {
-    const tndsItem = await getTNDSItem(nocCode, lineServiceName);
-    const operatorShortNameArray = getAttributeValueFromDynamoDBItemAsStringArray(tndsItem, 'OperatorShortName');
-    const operatorShortName = operatorShortNameArray[0];
+export const getOperatorShortNameValue = async (nocCode: string, lineNameFileName: string) => {
+    const tndsItem = await getTNDSItem(nocCode, lineNameFileName);
+    const operatorShortName = getAttributeValueFromDynamoDBItemAsAString(tndsItem, 'OperatorShortName');
     return operatorShortName;
 };
 
-export const getStopPointsArray = async (nocCode: string, lineServiceName: string) => {
-    const tndsItem = await getTNDSItem(nocCode, lineServiceName);
+export const getStopPointsArray = async (nocCode: string, lineNameFileName: string) => {
+    const tndsItem = await getTNDSItem(nocCode, lineNameFileName);
     const stopPointsArray = getAttributeValueFromDynamoDBItemAsObjectArray(tndsItem, 'StopPoints');
     return stopPointsArray;
 };
