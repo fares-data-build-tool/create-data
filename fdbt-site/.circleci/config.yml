@@ -69,6 +69,20 @@ jobs:
                       export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
                       echo "Finished deploy"
 
+    deploy-site-to-preprod:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Deploying..."
+                      sudo npm i -g serverless
+                      export NODE_ENV='production' && export SLS_DEBUG="*" && sls deploy --stage=preprod
+                      echo "Finished deploy"
+
 workflows:
     version: 2
     build-test-and-deploy-site:
@@ -76,30 +90,50 @@ workflows:
             - checkout-repo:
                   filters:
                       branches:
-                          only: develop
+                          only:
+                              - develop
+                              - master
             - build-site:
                   requires:
                       - checkout-repo
                   filters:
                       branches:
-                          only: develop
+                          only:
+                              - develop
+                              - master
             - test-site:
                   requires:
                       - build-site
                   filters:
                       branches:
-                          only: develop
+                          only:
+                              - develop
+                              - master
             - lint-site:
                   requires:
                       - build-site
                   filters:
                       branches:
-                          only: develop
+                          only:
+                              - develop
+                              - master
             - deploy-site-to-test:
                   requires:
                       - test-site
                       - lint-site
-                  context: 'tfn-aws'
+                  context: 'tfn-fdbt-test'
                   filters:
                       branches:
                           only: develop
+            - hold-preprod-deployment:
+                  type: approval
+                  requires:
+                      - test-site
+                      - lint-site
+            - deploy-site-to-preprod:
+                  requires:
+                      - hold-preprod-deployment
+                  context: 'tfn-fdbt-preprod'
+                  filters:
+                      branches:
+                          only: master
