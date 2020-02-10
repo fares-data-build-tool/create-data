@@ -20,14 +20,15 @@ const CsvUpload: NextPage = () => (
                         </label>
                     </fieldset>
                     <div className="govuk-form-group">
-                        <label className="govuk-label" htmlFor="file-upload-1" />
-                        <input
-                            className="govuk-file-upload"
-                            id="file-upload-1"
-                            name="file-upload-1"
-                            type="file"
-                            accept=".csv"
-                        />
+                        <label className="govuk-label" htmlFor="file-upload-1">
+                            <input
+                                className="govuk-file-upload"
+                                id="file-upload-1"
+                                name="file-upload-1"
+                                type="file"
+                                accept=".csv"
+                            />
+                        </label>
                     </div>
                 </div>
                 <input
