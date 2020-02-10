@@ -4,7 +4,7 @@ exports[`Layout should render correctly 1`] = `
 <div>
   <Head>
     <link
-      href={null}
+      href="/assets/images/favicon.ico"
       rel="shortcut icon"
     />
     <title>

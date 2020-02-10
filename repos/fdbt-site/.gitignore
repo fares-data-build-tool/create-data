@@ -9,3 +9,6 @@ buckets
 .idea
 .next
 sls-next-build
+
+coverage
+.vscode

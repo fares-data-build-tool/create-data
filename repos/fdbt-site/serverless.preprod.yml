@@ -1,7 +1,8 @@
 custom:
-  customDomain:
-    domainName: tfn-preprod.infinityworks.com
-    basePath: ''
-    stage: ${self:provider.stage}
-    createRoute53Record: true
-    certificateName: "*.tfn-preprod.infinityworks.com"
+    enableCloudfront: true
+    customDomain:
+        domainName: tfn-preprod.infinityworks.com
+        basePath: ''
+        stage: ${self:provider.stage}
+        createRoute53Record: true
+        certificateName: '*.tfn-preprod.infinityworks.com'

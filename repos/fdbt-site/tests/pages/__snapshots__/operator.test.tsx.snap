@@ -18,7 +18,7 @@ exports[`pages operator should render correctly 1`] = `
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="changed-name-hint"
+          aria-describedby="page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -26,51 +26,138 @@ exports[`pages operator should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
+              id="page-heading"
             >
-              Please select the bus operator that you are representing
+              Which operator are you representing?
             </h1>
           </legend>
-          <span
-            className="govuk-hint"
-            id="changed-name-hint"
-          >
-            Select an operator.
-          </span>
           <div
-            className="govuk-radios govuk-radios--inline"
+            className="govuk-radios"
           >
             <div
               className="govuk-radios__item"
+              key="Connexions Buses"
             >
               <input
                 className="govuk-radios__input"
-                id="changed-name"
+                id="operator-name0"
                 name="operator"
                 type="radio"
-                value="MCT"
+                value="{\\"operatorName\\":\\"Connexions Buses\\",\\"nocCode\\":\\"HCTY\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="changed-name"
+                htmlFor="operator-name0"
               >
-                MCT
+                Connexions Buses
               </label>
             </div>
             <div
               className="govuk-radios__item"
+              key="Durham County Council"
             >
               <input
                 className="govuk-radios__input"
-                id="changed-name-2"
+                id="operator-name1"
                 name="operator"
                 type="radio"
-                value="FirstBus"
+                value="{\\"operatorName\\":\\"Durham County Council\\",\\"nocCode\\":\\"DCCL\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="changed-name-2"
+                htmlFor="operator-name1"
               >
-                FirstBus
+                Durham County Council
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Lancashire County Council"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name2"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Lancashire County Council\\",\\"nocCode\\":\\"PLACEHOLDERLANCASHIRE\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name2"
+              >
+                Lancashire County Council
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Manchester Community Transport"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name3"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Manchester Community Transport\\",\\"nocCode\\":\\"MCTR\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name3"
+              >
+                Manchester Community Transport
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Pilkington Bus"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name4"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Pilkington Bus\\",\\"nocCode\\":\\"NWBT\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name4"
+              >
+                Pilkington Bus
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="TLC Travel"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name5"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"TLC Travel\\",\\"nocCode\\":\\"TLCT\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name5"
+              >
+                TLC Travel
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Transport for Greater Manchester"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name6"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Transport for Greater Manchester\\",\\"nocCode\\":\\"PLACEHOLDERTFGM\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name6"
+              >
+                Transport for Greater Manchester
               </label>
             </div>
           </div>
@@ -78,6 +165,7 @@ exports[`pages operator should render correctly 1`] = `
       </div>
       <input
         className="govuk-button govuk-button--start"
+        id="continue-button"
         type="submit"
         value="Continue"
       />

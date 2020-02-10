@@ -14,7 +14,7 @@ exports[`Header should render correctly 1`] = `
     >
       <a
         className="govuk-header__link govuk-header__link--homepage"
-        href="#"
+        href="https://www.gov.uk/"
       >
         <span
           className="govuk-header__logotype"
