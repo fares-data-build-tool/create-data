@@ -4,6 +4,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { NextPageContext } from 'next';
 import { mockRequest } from 'mock-req-res';
+import MockRes from 'mock-res';
 import Service from '../../src/pages/service';
 import { OPERATOR_COOKIE } from '../../src/constants';
 import { getServicesByNocCode, ServiceType } from '../../src/data/dynamodb';
@@ -19,7 +20,7 @@ const mockServices: ServiceType[] = [
 describe('pages', () => {
     describe('service', () => {
         beforeEach(() => {
-            (getServicesByNocCode as any).mockImplementation(() => mockServices);
+            (getServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
         });
 
         it('should render correctly', () => {
@@ -46,7 +47,6 @@ describe('pages', () => {
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             const operator = 'MCT';
-            const MockRes = require('mock-res');
 
             const res = new MockRes();
 
@@ -90,9 +90,8 @@ describe('pages', () => {
         });
 
         it('redirects to error page if no services can be found', async () => {
-            (getServicesByNocCode as any).mockImplementation(() => []);
+            (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
             const operator = 'MCT';
-            const MockRes = require('mock-res');
 
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
@@ -130,7 +129,6 @@ describe('pages', () => {
 
         it('redirects to error page if operator cookie does not exist', async () => {
             const operator = 'MCT';
-            const MockRes = require('mock-res');
 
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();

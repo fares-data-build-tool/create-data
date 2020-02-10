@@ -1,12 +1,12 @@
 import '../../design/Pages.scss';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import Layout from '../../layout/Layout';
 
 const title = 'Cookies on GOV.UK';
 const description = 'Cookies on GOV.UK';
 
-const Cookies: NextPage = () => (
+const Cookies: NextPage = (): ReactElement => (
     <Layout title={title} description={description}>
         <div className="govuk-width-container">
             <a href="/" className="govuk-back-link">
@@ -46,9 +46,5 @@ const Cookies: NextPage = () => (
         </div>
     </Layout>
 );
-
-Cookies.getInitialProps = async () => {
-    return {};
-};
 
 export default Cookies;

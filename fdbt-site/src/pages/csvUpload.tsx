@@ -1,12 +1,12 @@
 import '../design/Pages.scss';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import Layout from '../layout/Layout';
 
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
 
-const CsvUpload: NextPage = () => (
+const CsvUpload: NextPage = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/csvUpload" method="post">
@@ -33,9 +33,5 @@ const CsvUpload: NextPage = () => (
         </main>
     </Layout>
 );
-
-CsvUpload.getInitialProps = async () => {
-    return {};
-};
 
 export default CsvUpload;

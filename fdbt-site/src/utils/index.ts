@@ -26,7 +26,7 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     return `https://${host}`;
 };
 
-export const isSessionValid = async (url: string, req: IncomingMessage | undefined): Promise<Boolean> => {
+export const isSessionValid = async (url: string, req: IncomingMessage | undefined): Promise<boolean> => {
     try {
         const response = await axios.get(url, {
             withCredentials: true,
@@ -37,7 +37,6 @@ export const isSessionValid = async (url: string, req: IncomingMessage | undefin
 
         return response.data.Valid;
     } catch (err) {
-        console.log(`The validate api returned ${err.message}`);
         return false;
     }
 };

@@ -6,9 +6,9 @@ export interface TableFormProps {
 }
 
 const getRows = (offset: number): ReactElement[] => {
-    const rows: any[] = [];
+    const rows: ReactElement[] = [];
     for (let row = 1; row <= 10 + offset; row += 1) {
-        const cols: any[] = [];
+        const cols: ReactElement[] = [];
         for (let col = 1; col <= 10; col += 1) {
             cols.push(
                 <td key={col}>
