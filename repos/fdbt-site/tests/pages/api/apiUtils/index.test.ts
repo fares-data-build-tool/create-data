@@ -1,10 +1,10 @@
 /* eslint-disable global-require */
 
 import { mockRequest, mockResponse } from 'mock-req-res';
+import MockReq from 'mock-req';
+import mockSetCookie from 'set-cookie';
 import { getCookies, getDomain, setCookieOnResponseObject } from '../../../../src/pages/api/apiUtils';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../../../../src/constants';
-
-const MockReq = require('mock-req');
 
 jest.mock('set-cookie');
 
@@ -50,7 +50,6 @@ describe('apiUtils', () => {
             const res = mockResponse();
             // mock the library and its implementation of the set cookie method
 
-            const mockSetCookie = require('set-cookie');
             mockSetCookie.mockImplementation();
             // call our method with the consts we set above
             setCookieOnResponseObject(domain, cookieName, cookieValue, res);

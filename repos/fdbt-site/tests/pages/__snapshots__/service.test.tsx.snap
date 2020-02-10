@@ -39,36 +39,42 @@ exports[`pages service should render correctly 1`] = `
           </span>
           <select
             className="govuk-select"
+            defaultValue=""
             id="service"
             name="service"
           >
             <option
               disabled={true}
-              selected={true}
               value=""
             >
-              ---Select One---
+              Select One
             </option>
             <option
               className="service-option"
-              key="123"
-              value="123"
+              key="123#05/02/2020"
+              value="123#05/02/2020"
             >
               123
+               - Start date 
+              05/02/2020
             </option>
             <option
               className="service-option"
-              key="X1"
-              value="X1"
+              key="X1#06/02/2020"
+              value="X1#06/02/2020"
             >
               X1
+               - Start date 
+              06/02/2020
             </option>
             <option
               className="service-option"
-              key="Infinity Line"
-              value="Infinity Line"
+              key="Infinity Line#07/02/2020"
+              value="Infinity Line#07/02/2020"
             >
               Infinity Line
+               - Start date 
+              07/02/2020
             </option>
           </select>
         </fieldset>

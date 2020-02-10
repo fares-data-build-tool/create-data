@@ -1,5 +1,5 @@
 import '../design/Pages.scss';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPage, NextPageContext } from 'next';
 import Layout from '../layout/Layout';
 import { FARETYPE_COOKIE } from '../constants';
@@ -8,7 +8,7 @@ import { deleteCookieOnServerSide } from '../utils';
 const title = 'FareType - Fares data build tool';
 const description = 'Fare Type selection page of the Fares data build tool';
 
-const FareType: NextPage = () => (
+const FareType: NextPage = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/faretype" method="post">
@@ -74,7 +74,7 @@ const FareType: NextPage = () => (
     </Layout>
 );
 
-FareType.getInitialProps = async (ctx: NextPageContext) => {
+FareType.getInitialProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, FARETYPE_COOKIE);
 
     return {};

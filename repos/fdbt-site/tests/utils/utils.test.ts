@@ -1,6 +1,5 @@
+import MockReq from 'mock-req';
 import { getHost } from '../../src/utils';
-
-const MockReq = require('mock-req');
 
 describe('utils', () => {
     describe('getHost', () => {
