@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import { S3Event } from 'aws-lambda';
 import { s3TndsHandler } from './handler';
 import * as mocks from './test-data/test-data';
 
@@ -13,24 +14,24 @@ describe('s3 handler with csv event', () => {
         process.env.SERVICES_TABLE_NAME = 'TestServicesTable';
         process.env.TNDS_TABLE_NAME = 'TestTndsTable';
 
-        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
             };
         });
 
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.testCsv });
             },
         }));
 
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { batchWrite: mockDynamoBatchWrite };
         });
 
         mockDynamoBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -43,7 +44,7 @@ describe('s3 handler with csv event', () => {
     });
 
     it('sends the data to dynamo when a csv is created', async () => {
-        const event = mocks.mockS3Event('thisIsMyBucket', 'andThisIsTheNameOfTheThing.csv');
+        const event: S3Event = mocks.mockS3Event('thisIsMyBucket', 'andThisIsTheNameOfTheThing.csv');
 
         await s3TndsHandler(event);
 
@@ -60,24 +61,24 @@ describe('s3 handler with xml event', () => {
         process.env.SERVICES_TABLE_NAME = 'TestServicesTable';
         process.env.TNDS_TABLE_NAME = 'TestTndsTable';
 
-        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
             };
         });
 
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.testXml });
             },
         }));
 
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { put: mockDynamoPut };
         });
 
         mockDynamoPut.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));

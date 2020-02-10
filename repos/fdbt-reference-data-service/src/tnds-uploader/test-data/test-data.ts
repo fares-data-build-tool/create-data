@@ -1,6 +1,7 @@
+import { S3Event } from 'aws-lambda';
 import { ParsedCsvData } from '../handler';
 
-export const mockS3Event = (bucketName: string, fileName: string) => ({
+export const mockS3Event = (bucketName: string, fileName: string): S3Event => ({
     Records: [
         {
             eventVersion: '',
@@ -82,11 +83,11 @@ export const createBatchOfWriteRequests = (
     index: number,
     mockNaptanData: ParsedCsvData,
 ): AWS.DynamoDB.WriteRequest[] => {
-    const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
+    const batchOfWriteRequests: AWS.DynamoDB.DocumentClient.WriteRequest[] = [];
     for (let i = 0; i < index; i += 1) {
         batchOfWriteRequests.push({
             PutRequest: {
-                Item: mockNaptanData as any,
+                Item: mockNaptanData,
             },
         });
     }
@@ -101,7 +102,7 @@ export const testCsv: string =
     '4,EA,A2BR,20-18-A-y08-1,18,Newmarket - Fulbourn - Teversham - Newmarket Road Park & Ride,2019-12-03,A2BR\n' +
     '5,EA,A2BR,20-32-_-y08-1,32,Trumpington P & R - Hauxton,2019-12-03,A2BR';
 
-export const isParseableToJSON = (str: any) => {
+export const isParseableToJSON = (str: string): boolean => {
     try {
         return JSON.parse(str) && !!str;
     } catch (e) {
@@ -140,7 +141,7 @@ export const mockCleanedXmlData: {} = [
     },
 ];
 
-export const testXml: string = `
+export const testXml = `
 <?xml version="1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-12-20T12:29:46.8712Z" ModificationDateTime="2019-12-20T12:29:46.8712Z" Modification="new" RevisionNumber="3" FileName="ea_20-1A-A-y08-1.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
   <StopPoints>

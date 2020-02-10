@@ -5,8 +5,8 @@ import csvParse from 'csv-parse/lib/sync';
 import { WriteRequest } from 'aws-sdk/clients/dynamodb';
 import { parseString } from 'xml2js';
 
-export type ParsedXmlData = tndsDynamoDBData;
-export type ParsedCsvData = servicesDynamoDBData;
+export type ParsedXmlData = TndsDynamoDBData;
+export type ParsedCsvData = ServicesDynamoDBData;
 
 interface ExtractedStopPoint {
     StopPointRef: string[];
@@ -30,11 +30,11 @@ interface StopPointObject {
     CommonName: string;
 }
 
-export interface s3ObjectParameters {
+export interface S3ObjectParameters {
     Bucket: string;
     Key: string;
 }
-export interface tndsDynamoDBData {
+export interface TndsDynamoDBData {
     Partition?: string;
     Sort?: string;
     LineName: string;
@@ -43,7 +43,7 @@ export interface tndsDynamoDBData {
     StopPoints: StopPointObject[];
 }
 
-export interface servicesDynamoDBData {
+export interface ServicesDynamoDBData {
     RowId: string;
     NationalOperatorCode: string;
     Partition?: string;
@@ -66,18 +66,18 @@ interface PushToDynamoCsvInput {
     tableName: string;
 }
 
-export const fetchDataFromS3AsString = async (parameters: s3ObjectParameters): Promise<string> => {
+export const fetchDataFromS3AsString = async (parameters: S3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
-    const dataAsString = data.Body?.toString('utf-8')!;
+    const dataAsString = data.Body?.toString('utf-8') ?? '';
     return dataAsString;
 };
 
-export const fileExtensionGetter = (fileName: string) => {
-    return fileName.split('.').pop();
+export const fileExtensionGetter = (fileName: string): string => {
+    return fileName.split('.').pop() ?? '';
 };
 
-export const tableChooser = (fileExtension: string) => {
+export const tableChooser = (fileExtension: string): string => {
     if (!process.env.SERVICES_TABLE_NAME || !process.env.TNDS_TABLE_NAME) {
         throw new Error('Environment variables for table names have not been set or received.');
     }
@@ -107,7 +107,7 @@ export const xmlParser = (xmlData: string): Promise<string> => {
                 );
             }
             const noEmptyResult = omitEmpty(result);
-            const stringified = JSON.stringify(noEmptyResult) as any;
+            const stringified = JSON.stringify(noEmptyResult);
             return resolve(stringified);
         });
     });
@@ -116,13 +116,13 @@ export const xmlParser = (xmlData: string): Promise<string> => {
 export const csvParser = (csvData: string): ParsedCsvData[] => {
     const parsedData: ParsedCsvData[] = csvParse(csvData, {
         columns: true,
-        skip_empty_lines: true,
+        skip_empty_lines: true, // eslint-disable-line @typescript-eslint/camelcase
         delimiter: ',',
     });
     return parsedData;
 };
 
-export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
+export const formatDynamoWriteRequest = (parsedLines: ServicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataToWriteRequest = (parsedDataItem: ParsedCsvData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
         PutRequest: {
             Item: {
@@ -133,7 +133,9 @@ export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): A
         },
     });
 
-    const dynamoWriteRequests = parsedLines.filter(parsedDataItem => parsedDataItem.NationalOperatorCode).map(parsedDataToWriteRequest);
+    const dynamoWriteRequests = parsedLines
+        .filter(parsedDataItem => parsedDataItem.NationalOperatorCode)
+        .map(parsedDataToWriteRequest);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
     const dynamoWriteRequestBatches = dynamoWriteRequests.reduce((result, _value, index, array) => {
@@ -145,7 +147,7 @@ export const formatDynamoWriteRequest = (parsedLines: servicesDynamoDBData[]): A
     return dynamoWriteRequestBatches;
 };
 
-export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushToDynamoCsvInput) => {
+export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushToDynamoCsvInput): Promise<void> => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -193,7 +195,7 @@ export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushTo
     }
 };
 
-export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDynamoXmlInput) => {
+export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDynamoXmlInput): Promise<void> => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -214,7 +216,7 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     console.log('Dynamo DB put request complete.');
 };
 
-export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] => {
+export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] => {
     const parsedJson = JSON.parse(parsedXmlData);
 
     const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
@@ -230,31 +232,33 @@ export const cleanParsedXmlData = (parsedXmlData: string): tndsDynamoDBData[] =>
         CommonName: stopPointItem?.CommonName[0],
     }));
 
-    const cleanedXmlData: tndsDynamoDBData[] = extractedOperators
-        .filter(operator => operator.NationalOperatorCode[0])
-        .map(operator => ({
-            Partition: operator?.NationalOperatorCode[0],
-            Sort: `${extractedLineName}#${extractedStartDate}#${extractedFileName}`,
-            LineName: extractedLineName,
-            OperatorShortName: operator?.OperatorShortName[0],
-            Description: extractedDescription,
-            StopPoints: stopPointsCollection,
-        }));
+    const cleanedXmlData: TndsDynamoDBData[] = extractedOperators
+        .filter((operator: ExtractedOperators): string => operator.NationalOperatorCode[0])
+        .map(
+            (operator: ExtractedOperators): TndsDynamoDBData => ({
+                Partition: operator.NationalOperatorCode[0],
+                Sort: `${extractedLineName}#${extractedStartDate}#${extractedFileName}`,
+                LineName: extractedLineName,
+                OperatorShortName: operator?.OperatorShortName[0],
+                Description: extractedDescription,
+                StopPoints: stopPointsCollection,
+            }),
+        );
 
     return cleanedXmlData;
 };
 
-export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
+export const setS3ObjectParams = (event: S3Event): S3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')); // Object key may have spaces or unicode non-ASCII characters
-    const params: s3ObjectParameters = {
+    const params: S3ObjectParameters = {
         Bucket: s3BucketName,
         Key: s3FileName,
     };
     return params;
 };
 
-export const s3TndsHandler = async (event: S3Event) => {
+export const s3TndsHandler = async (event: S3Event): Promise<void> => {
     const params = setS3ObjectParams(event);
 
     console.log(`Got S3 event for key '${params.Key}' in bucket '${params.Bucket}'`);

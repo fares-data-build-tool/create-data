@@ -11,24 +11,24 @@ describe('s3 handler with csv event', () => {
     beforeEach(() => {
         process.env.NAPTAN_TABLE_NAME = 'TestNaptanTable';
 
-        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
             };
         });
 
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.testCsv });
             },
         }));
 
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { batchWrite: mockDynamoBatchWrite };
         });
 
         mockDynamoBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));

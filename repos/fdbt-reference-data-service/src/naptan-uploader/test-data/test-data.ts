@@ -1,6 +1,7 @@
+import { S3Event } from 'aws-lambda';
 import { ParsedData } from '../handler';
 
-export const mockS3Event = (bucketName: string, fileName: string) => ({
+export const mockS3Event = (bucketName: string, fileName: string): S3Event => ({
     Records: [
         {
             eventVersion: '',
@@ -148,11 +149,11 @@ export const createArray = (index: number, mockData: ParsedData): ParsedData[] =
 };
 
 export const createBatchOfWriteRequests = (index: number, naptanData: ParsedData): AWS.DynamoDB.WriteRequest[] => {
-    const batchOfWriteRequests: AWS.DynamoDB.WriteRequest[] = [];
+    const batchOfWriteRequests: AWS.DynamoDB.DocumentClient.WriteRequest[] = [];
     for (let i = 0; i < index; i += 1) {
         batchOfWriteRequests.push({
             PutRequest: {
-                Item: naptanData as any,
+                Item: naptanData,
             },
         });
     }
@@ -184,7 +185,7 @@ export const testCsv: string =
     '0100053262,bstjpwd,,,Ikea Car Park,en,,,,,Eastgate Road,en,,,N-bound,en,N,N0076879,Bristol City Centre,Bristol,,,,,,0,U,359264,173135,-2.5876739040,51.4557210446,BCT,MKD,OTH,,,,009,2017-07-25T15:33:15,2017-07-17T14:38:42,14,del,del\n' +
     '0100BRP90168,bstjpad,,,Warwick Road,en,,,,,Stapleton Road,en,,,N-bound,en,N,E0035600,Eastville,Bristol,,,,,,0,U,360594,174345,-2.5686684729,51.4666946645,BCT,MKD,OTH,,,,009,2020-01-07T13:51:40,2017-04-21T17:26:03,10,new,act';
 
-export const testXml: string = `<?xml version="1.0" encoding="utf-8"?>
+export const testXml = `<?xml version="1.0" encoding="utf-8"?>
 <TransXChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.transxchange.org.uk/ http://www.transxchange.org.uk/schema/2.5/TransXChange_general.xsd" CreationDateTime="2019-11-26T10:18:00-00:00" ModificationDateTime="2019-11-26T10:18:00-00:00" Modification="new" RevisionNumber="0" FileName="SVRYHAO999.xml" SchemaVersion="2.5" RegistrationDocument="true" xmlns="http://www.transxchange.org.uk/">
 <StopPoints>
     <AnnotatedStopPointRef>
