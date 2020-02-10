@@ -15,12 +15,22 @@ provider:
               - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NocTableArn'
               - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:ServicesTableArn'
               - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:TndsTableArn'
+        - Effect: 'Allow'
+          Action:
+              - s3:PutObject
+          Resource:
+              - Fn::Join:
+                    - ''
+                    - - 'arn:aws:s3:::'
+                      - fdbt-raw-user-data-${self:provider.stage}
+
     environment:
         NAPTAN_TABLE_NAME: ${self:provider.stage}-Stops
         NOC_TABLE_NAME: ${self:provider.stage}-Operators
         SERVICES_TABLE_NAME: ${self:provider.stage}-Services
         TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+        STAGE: ${self:provider.stage}
 
 plugins:
     - serverless-nextjs-plugin
