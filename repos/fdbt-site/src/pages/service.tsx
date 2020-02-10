@@ -31,11 +31,11 @@ const Service = ({ operator, services }: ServiceProps) => (
                         </span>
                         <select className="govuk-select" id="service" name="service" defaultValue="">
                             <option value="" disabled>
-                                ---Select One---
+                                Select One
                             </option>
                             {services.map(service => (
-                                <option key={service.lineName} value={service.lineName} className="service-option">
-                                    {service.lineName}
+                                <option key={`${service.lineName}#${service.startDate}`} value={`${service.lineName}#${service.startDate}`} className="service-option">
+                                    {service.lineName} - Start date {service.startDate}
                                 </option>
                             ))}
                         </select>

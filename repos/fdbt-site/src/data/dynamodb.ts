@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import dateFormat from 'dateformat';
 
 const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
     const dynamoDbRegion = process.env.AWS_REGION || 'eu-west-2';
@@ -24,7 +25,12 @@ const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
 
 export type ServiceType = {
     lineName: string;
+    startDate: string;
 };
+
+export const convertDateFormat = (startDate: string) => {
+    return dateFormat(startDate, 'dd/mm/yyyy');
+}
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const tableName =
@@ -45,5 +51,5 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         .query(queryInput)
         .promise();
 
-    return Items?.map((item): ServiceType => ({ lineName: item.LineName })) || [];
+    return Items?.map((item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) })) || [];
 };

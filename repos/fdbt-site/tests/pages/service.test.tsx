@@ -10,7 +10,11 @@ import { getServicesByNocCode, ServiceType } from '../../src/data/dynamodb';
 
 jest.mock('../../src/data/dynamodb');
 
-const mockServices: ServiceType[] = [{ lineName: '123' }, { lineName: 'X1' }, { lineName: 'Infinity Line' }];
+const mockServices: ServiceType[] = [
+    { lineName: '123', startDate: '05/02/2020' },
+    { lineName: 'X1', startDate: '06/02/2020' },
+    { lineName: 'Infinity Line', startDate: '07/02/2020' },
+];
 
 describe('pages', () => {
     describe('service', () => {
@@ -35,9 +39,9 @@ describe('pages', () => {
             const operatorServices = wrapper.find('.service-option');
 
             expect(operatorServices).toHaveLength(3);
-            expect(operatorServices.first().text()).toBe('123');
-            expect(operatorServices.at(1).text()).toBe('X1');
-            expect(operatorServices.at(2).text()).toBe('Infinity Line');
+            expect(operatorServices.first().text()).toBe('123 - Start date 05/02/2020');
+            expect(operatorServices.at(1).text()).toBe('X1 - Start date 06/02/2020');
+            expect(operatorServices.at(2).text()).toBe('Infinity Line - Start date 07/02/2020');
         });
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
@@ -71,12 +75,15 @@ describe('pages', () => {
                 services: [
                     {
                         lineName: '123',
+                        startDate: '05/02/2020',
                     },
                     {
                         lineName: 'X1',
+                        startDate: '06/02/2020',
                     },
                     {
                         lineName: 'Infinity Line',
+                        startDate: '07/02/2020',
                     },
                 ],
             });
