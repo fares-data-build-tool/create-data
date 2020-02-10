@@ -10,7 +10,7 @@ import {
     removeFirstLineOfString,
     writeXmlToDynamo,
     cleanParsedXmlData,
-    s3ObjectParameters,
+    S3ObjectParameters,
     writeBatchesToDynamo,
     setS3ObjectParams,
 } from './handler';
@@ -20,7 +20,7 @@ jest.mock('aws-sdk');
 
 describe('fetchDataFromS3AsAString', () => {
     const mockS3GetObject = jest.fn();
-    const s3Params: s3ObjectParameters = {
+    const s3Params: S3ObjectParameters = {
         Bucket: 'thisIsMyBucket',
         Key: 'andThisIsTheNameOfTheThing',
     };
@@ -28,14 +28,14 @@ describe('fetchDataFromS3AsAString', () => {
     beforeEach(() => {
         mockS3GetObject.mockReset();
 
-        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
             };
         });
 
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.testCsv });
             },
         }));
@@ -119,11 +119,11 @@ describe('XML to dynamo writer', () => {
 
     beforeEach(() => {
         mockDynamoPut.mockReset();
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { put: mockDynamoPut };
         });
         mockDynamoPut.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -230,7 +230,7 @@ describe('writeBatchesToDynamo', () => {
 
     beforeEach(() => {
         mockDynamoDbBatchWrite.mockReset();
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { batchWrite: mockDynamoDbBatchWrite };
         });
     });
@@ -243,7 +243,7 @@ describe('writeBatchesToDynamo', () => {
         // Arrange
         const parsedCsvLines: ParsedCsvData[] = [{ ...mocks.mockServicesData }];
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -256,7 +256,7 @@ describe('writeBatchesToDynamo', () => {
     it('calls dynamodb.batchwrite() more than once for a batch size greater than 25', async () => {
         // Arrange
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -271,7 +271,7 @@ describe('writeBatchesToDynamo', () => {
         // Arrange
         const parsedCsvLines = mocks.createArray(2, { ...mocks.mockServicesData });
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.reject(Error);
             },
         }));

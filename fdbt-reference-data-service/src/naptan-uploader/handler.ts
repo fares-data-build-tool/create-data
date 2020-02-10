@@ -4,14 +4,14 @@ import { WriteRequest } from 'aws-sdk/clients/dynamodb';
 
 import csvParse from 'csv-parse/lib/sync';
 
-export type ParsedData = dynamoDBData;
+export type ParsedData = DynamoDBData;
 
-export interface s3ObjectParameters {
+export interface S3ObjectParameters {
     Bucket: string;
     Key: string;
 }
 
-interface dynamoDBData {
+interface DynamoDBData {
     Partition?: string;
     ATCOCode: string;
     NaptanCode: string;
@@ -39,23 +39,23 @@ interface PushToDyanmoInput {
     tableName: string;
 }
 
-export const fetchDataFromS3AsString = async (parameters: s3ObjectParameters): Promise<string> => {
+export const fetchDataFromS3AsString = async (parameters: S3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
-    const dataAsString = data.Body?.toString('utf-8')!;
+    const dataAsString = data.Body?.toString('utf-8') ?? '';
     return dataAsString;
 };
 
 export const csvParser = (csvData: string): ParsedData[] => {
     const parsedData: ParsedData[] = csvParse(csvData, {
         columns: true,
-        skip_empty_lines: true,
+        skip_empty_lines: true, // eslint-disable-line @typescript-eslint/camelcase
         delimiter: ',',
     });
     return parsedData;
 };
 
-export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
+export const formatDynamoWriteRequest = (parsedLines: DynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
     const parsedDataMapper = (parsedDataItem: ParsedData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
         PutRequest: {
             Item: {
@@ -78,7 +78,7 @@ export const formatDynamoWriteRequest = (parsedLines: dynamoDBData[]): AWS.Dynam
     return dynamoWriteRequestBatches;
 };
 
-export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput) => {
+export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput): Promise<void> => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -126,10 +126,10 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
     }
 };
 
-export const setS3ObjectParams = (event: S3Event): s3ObjectParameters => {
+export const setS3ObjectParams = (event: S3Event): S3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-    const params: s3ObjectParameters = {
+    const params: S3ObjectParameters = {
         Bucket: s3BucketName,
         Key: s3FileName,
     };
@@ -144,7 +144,7 @@ export const setDbTableEnvVariable = (): string => {
     return tableName;
 };
 
-export const s3NaptanHandler = async (event: S3Event) => {
+export const s3NaptanHandler = async (event: S3Event): Promise<void> => {
     const tableName = setDbTableEnvVariable();
 
     const params = setS3ObjectParams(event);

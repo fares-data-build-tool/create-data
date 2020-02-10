@@ -1,6 +1,6 @@
-import { Handler } from 'aws-lambda';
+import { Handler, S3Event } from 'aws-lambda';
 
-const s3NptgHandler: Handler = (event: any) => {
+const s3NptgHandler: Handler = (event: S3Event) => {
     console.log('==== This is my event object ====');
     console.log(JSON.stringify(event));
 };

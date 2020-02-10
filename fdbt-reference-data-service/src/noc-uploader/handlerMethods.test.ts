@@ -24,13 +24,13 @@ describe('fetchDataFromS3AsAString', () => {
 
     beforeEach(() => {
         mockS3GetObject.mockReset();
-        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
             };
         });
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.testCsv });
             },
         }));
@@ -108,7 +108,7 @@ describe('writeBatchesToDynamo', () => {
 
     beforeEach(() => {
         mockDynamoDbBatchWrite.mockReset();
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { batchWrite: mockDynamoDbBatchWrite };
         });
     });
@@ -121,7 +121,7 @@ describe('writeBatchesToDynamo', () => {
         // Arrange
         const parsedLines: ParsedData[] = [{ ...mocks.mockNocData }];
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -134,7 +134,7 @@ describe('writeBatchesToDynamo', () => {
     it('calls dynamodb.batchwrite() more than once for a batch size greater than 25', async () => {
         // Arrange
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -149,7 +149,7 @@ describe('writeBatchesToDynamo', () => {
         // Arrange
         const parsedLines = mocks.createArray(2, { ...mocks.mockNocData });
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.reject(Error);
             },
         }));
@@ -180,7 +180,7 @@ describe('listS3Objects', () => {
 
     beforeEach(() => {
         mockS3ListObjectsV2.mockReset();
-        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 listObjectsV2: mockS3ListObjectsV2,
             };
@@ -189,7 +189,7 @@ describe('listS3Objects', () => {
 
     it('should return an empty array if not 3 keys present', async () => {
         mockS3ListObjectsV2.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Contents: mocks.mockS3ListOneKey });
             },
         }));
@@ -197,7 +197,7 @@ describe('listS3Objects', () => {
     });
     it('should return a string array of 3 if 3 keys present', async () => {
         mockS3ListObjectsV2.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Contents: mocks.mockS3ListThreeKeys });
             },
         }));
