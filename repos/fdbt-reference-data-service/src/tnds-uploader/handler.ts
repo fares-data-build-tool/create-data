@@ -222,6 +222,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
     const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
     const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
     const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
+    const extractedStartDate: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.OperatingPeriod[0]?.StartDate[0];
 
     const extractedOperators: ExtractedOperators[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
     const extractedStopPoints: ExtractedStopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
@@ -236,7 +237,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
         .map(
             (operator: ExtractedOperators): TndsDynamoDBData => ({
                 Partition: operator.NationalOperatorCode[0],
-                Sort: `${extractedLineName}#${extractedFileName}`,
+                Sort: `${extractedLineName}#${extractedStartDate}#${extractedFileName}`,
                 LineName: extractedLineName,
                 OperatorShortName: operator?.OperatorShortName[0],
                 Description: extractedDescription,
