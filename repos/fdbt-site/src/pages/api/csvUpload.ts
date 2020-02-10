@@ -1,3 +1,4 @@
+import { getCookies } from './apiUtils/index';
 import util from 'util';
 import { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
@@ -25,8 +26,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const form = new formidable.IncomingForm();
 
-        form.parse(req, function(_err, _fields, file) {
-            fs.readFile(file['file-upload-1'].path, 'utf-8', (_error, data) => {
+        form.parse(req, function (_err, _fields, file) {
+            fs.readFile(file['file-upload-1'].path, 'utf-8', async (_error, data) => {
                 if (!data) {
                     res.writeHead(302, {
                         Location: '/csvUpload',
@@ -34,6 +35,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     res.end();
                     return;
                 }
+
+                const cookies = getCookies(req);
+
+                const uuid = cookies.uuid;
+
+                await putDataInS3(data, uuid, false);
 
                 const fareTriangle: FareTriangleData = {
                     fareStages: [
@@ -69,14 +76,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 }
                 console.log(util.inspect(fareTriangle, false, null, true));
 
-                const s3 = new AWS.S3();
-
-                const fileName = `validated/${  []}`;
-
-                s3.putObject({
-                    Bucket: '',
-                    Key: fileName,
-                });
+                await putDataInS3(fareTriangle, uuid, true)
             });
 
             res.writeHead(302, {
@@ -91,3 +91,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 };
+
+export async function putDataInS3(data: FareTriangleData | string, key: string, processed: boolean) {
+
+    const s3 = new AWS.S3();
+
+    let bucketfolder = "";
+
+    if (processed) {
+        bucketfolder = "/processed"
+    } else {
+        bucketfolder = "/unprocessed"
+    }
+
+    const request: AWS.S3.Types.PutObjectRequest = {
+        Bucket: "fdbt-user-data-" + process.env.STAGE + bucketfolder,
+        Key: key,
+        Body: data,
+        ContentType: 'application/json; charset=utf-8'
+    }
+
+    await s3.putObject(request).promise();
+}

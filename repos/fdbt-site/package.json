@@ -74,7 +74,7 @@
         "@types/aws-lambda-mock-context": "^3.2.0",
         "@types/enzyme": "^3.10.4",
         "@types/enzyme-adapter-react-16": "^1.0.2",
-        "@types/jest": "^24.0.24",
+        "@types/jest": "^24.9.1",
         "@types/mock-req-res": "^1.1.0",
         "@types/moxios": "^0.4.9",
         "@types/node": "^12.12.18",
