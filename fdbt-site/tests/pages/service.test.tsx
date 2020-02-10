@@ -4,18 +4,23 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { NextPageContext } from 'next';
 import { mockRequest } from 'mock-req-res';
+import MockRes from 'mock-res';
 import Service from '../../src/pages/service';
 import { OPERATOR_COOKIE } from '../../src/constants';
 import { getServicesByNocCode, ServiceType } from '../../src/data/dynamodb';
 
 jest.mock('../../src/data/dynamodb');
 
-const mockServices: ServiceType[] = [{ lineName: '123' }, { lineName: 'X1' }, { lineName: 'Infinity Line' }];
+const mockServices: ServiceType[] = [
+    { lineName: '123', startDate: '05/02/2020' },
+    { lineName: 'X1', startDate: '06/02/2020' },
+    { lineName: 'Infinity Line', startDate: '07/02/2020' },
+];
 
 describe('pages', () => {
     describe('service', () => {
         beforeEach(() => {
-            (getServicesByNocCode as any).mockImplementation(() => mockServices);
+            (getServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
         });
 
         it('should render correctly', () => {
@@ -35,14 +40,13 @@ describe('pages', () => {
             const operatorServices = wrapper.find('.service-option');
 
             expect(operatorServices).toHaveLength(3);
-            expect(operatorServices.first().text()).toBe('123');
-            expect(operatorServices.at(1).text()).toBe('X1');
-            expect(operatorServices.at(2).text()).toBe('Infinity Line');
+            expect(operatorServices.first().text()).toBe('123 - Start date 05/02/2020');
+            expect(operatorServices.at(1).text()).toBe('X1 - Start date 06/02/2020');
+            expect(operatorServices.at(2).text()).toBe('Infinity Line - Start date 07/02/2020');
         });
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             const operator = 'MCT';
-            const MockRes = require('mock-res');
 
             const res = new MockRes();
 
@@ -71,21 +75,23 @@ describe('pages', () => {
                 services: [
                     {
                         lineName: '123',
+                        startDate: '05/02/2020',
                     },
                     {
                         lineName: 'X1',
+                        startDate: '06/02/2020',
                     },
                     {
                         lineName: 'Infinity Line',
+                        startDate: '07/02/2020',
                     },
                 ],
             });
         });
 
         it('redirects to error page if no services can be found', async () => {
-            (getServicesByNocCode as any).mockImplementation(() => []);
+            (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
             const operator = 'MCT';
-            const MockRes = require('mock-res');
 
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
@@ -123,7 +129,6 @@ describe('pages', () => {
 
         it('redirects to error page if operator cookie does not exist', async () => {
             const operator = 'MCT';
-            const MockRes = require('mock-res');
 
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();

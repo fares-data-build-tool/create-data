@@ -3,7 +3,7 @@ import inputMethod from '../../../src/pages/api/inputMethod';
 
 describe('inputMethod', () => {
     let res: mockReqRes.ResponseOutput;
-    let writeHeadMock: jest.Mock<any>;
+    let writeHeadMock: jest.Mock;
 
     beforeEach(() => {
         jest.resetAllMocks();
