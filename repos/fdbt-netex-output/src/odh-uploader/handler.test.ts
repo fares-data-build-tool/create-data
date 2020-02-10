@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Callback } from 'aws-lambda';
 import s3OdhUploaderHandler from './handler';
