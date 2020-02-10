@@ -1,6 +1,6 @@
-import { Handler, Context } from 'aws-lambda';
+import { Handler, Context, S3Event } from 'aws-lambda';
 
-const s3OdhUploaderHandler: Handler = (event: any, context: Context) => {
+const s3OdhUploaderHandler: Handler = (event: S3Event, context: Context) => {
     console.log(JSON.stringify(event));
     console.log(JSON.stringify(context));
     console.log(JSON.stringify(process.env));
