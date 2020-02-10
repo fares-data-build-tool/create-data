@@ -1,12 +1,12 @@
 import '../design/Pages.scss';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import Layout from '../layout/Layout';
 
 const title = 'Fares data build tool';
 const description = 'Fares data build tool is a service that allows you to generate data in NeTEx format';
 
-const Home: NextPage = () => (
+const Home: NextPage = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <h1 className="govuk-heading-xl">Fares data build tool</h1>
@@ -42,9 +42,5 @@ const Home: NextPage = () => (
         </main>
     </Layout>
 );
-
-Home.getInitialProps = async () => {
-    return {};
-};
 
 export default Home;

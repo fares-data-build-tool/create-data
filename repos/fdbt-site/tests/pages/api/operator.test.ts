@@ -4,7 +4,7 @@ import { OPERATOR_COOKIE } from '../../../src/constants';
 
 describe('operator', () => {
     let res: mockReqRes.ResponseOutput;
-    let writeHeadMock: jest.Mock<any>;
+    let writeHeadMock: jest.Mock;
     beforeEach(() => {
         jest.resetAllMocks();
         writeHeadMock = jest.fn();

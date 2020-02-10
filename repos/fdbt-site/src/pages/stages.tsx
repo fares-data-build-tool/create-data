@@ -1,5 +1,5 @@
 import '../design/Pages.scss';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
@@ -15,7 +15,7 @@ type StagesProps = {
     service: string;
 };
 
-const Stages = ({ operator, service }: StagesProps) => (
+const Stages = ({ operator, service }: StagesProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <p className="govuk-body-l">Welcome operator {operator}</p>
@@ -29,8 +29,8 @@ const Stages = ({ operator, service }: StagesProps) => (
     </Layout>
 );
 
-Stages.getInitialProps = async (ctx: NextPageContext) => {
-    const redirectOnError = () => {
+Stages.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
+    const redirectOnError = (): void => {
         if (ctx.res) {
             ctx.res.writeHead(302, {
                 Location: '/error',
@@ -43,7 +43,7 @@ Stages.getInitialProps = async (ctx: NextPageContext) => {
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     if (operatorCookie && serviceCookie) {
-        const url: string = `${getHost(ctx.req)}/api/validate`;
+        const url = `${getHost(ctx.req)}/api/validate`;
         const isValid = await isSessionValid(url, ctx.req);
         if (isValid) {
             const operatorObject = JSON.parse(operatorCookie);
@@ -53,9 +53,11 @@ Stages.getInitialProps = async (ctx: NextPageContext) => {
                 service: serviceObject.service,
             };
         }
-        return redirectOnError();
+        redirectOnError();
     }
-    return redirectOnError();
+    redirectOnError();
+
+    return {};
 };
 
 export default Stages;

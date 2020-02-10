@@ -3,7 +3,7 @@ import v1 from 'uuid';
 import { OPERATOR_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         const cookies = getCookies(req);
         const operatorCookie = cookies[OPERATOR_COOKIE];

@@ -1,14 +1,14 @@
+import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document';
+import React, { ReactElement } from 'react';
 import '../design/Pages.scss';
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
-import * as React from 'react';
 
 class MyDocument extends Document {
-    static async getInitialProps(ctx: DocumentContext) {
+    static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
         const initialProps = await Document.getInitialProps(ctx);
         return { ...initialProps };
     }
 
-    render() {
+    render(): ReactElement {
         return (
             <Html lang="en" className="govuk-template app-html-class flexbox no-flexboxtweener">
                 <Head />

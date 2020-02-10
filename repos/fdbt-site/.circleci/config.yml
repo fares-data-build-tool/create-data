@@ -66,7 +66,7 @@ jobs:
                   command: |
                       echo "Deploying..."
                       sudo npm i -g serverless
-                      export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy
+                      export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy --stage=test
                       echo "Finished deploy"
 
     deploy-site-to-preprod:
@@ -93,6 +93,7 @@ workflows:
                           only:
                               - develop
                               - master
+
             - build-site:
                   requires:
                       - checkout-repo
@@ -101,6 +102,7 @@ workflows:
                           only:
                               - develop
                               - master
+
             - test-site:
                   requires:
                       - build-site
@@ -109,6 +111,7 @@ workflows:
                           only:
                               - develop
                               - master
+
             - lint-site:
                   requires:
                       - build-site
@@ -117,6 +120,7 @@ workflows:
                           only:
                               - develop
                               - master
+
             - deploy-site-to-test:
                   requires:
                       - test-site
@@ -125,11 +129,16 @@ workflows:
                   filters:
                       branches:
                           only: develop
+
             - hold-preprod-deployment:
                   type: approval
                   requires:
                       - test-site
                       - lint-site
+                  filters:
+                      branches:
+                          only: master
+
             - deploy-site-to-preprod:
                   requires:
                       - hold-preprod-deployment

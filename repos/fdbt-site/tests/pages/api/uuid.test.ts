@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { mockRequest } from 'mock-req-res';
 import uuidHandler from '../../../src/pages/api/uuid';
 
