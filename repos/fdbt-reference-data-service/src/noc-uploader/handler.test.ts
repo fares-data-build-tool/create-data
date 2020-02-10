@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import { S3Event } from 'aws-lambda';
 import { s3NocHandler } from './handler';
 import * as mocks from './test-data/test-data';
 
@@ -8,20 +9,20 @@ const mockDynamoBatchWrite = jest.fn();
 
 describe('s3 handler with csv event', () => {
     beforeEach(() => {
-        AWS.S3 = jest.fn().mockImplementation(() => ({
-            listObjectsV2(...args: any[]) {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => ({
+            listObjectsV2(...args: string[]): {} {
                 mockS3ListObjectsV2(...args);
                 return {
                     promise: mockS3ListObjectsV2,
                 };
             },
-            getObject(...args: any[]) {
+            getObject(...args: string[]): {} {
                 mockS3GetObject(...args);
                 return {
                     promise: mockS3GetObject,
                 };
             },
-        })) as any;
+        }));
         process.env.NOC_TABLE_NAME = 'TestNocTable';
 
         mockS3ListObjectsV2.mockResolvedValue({ Contents: mocks.mockS3ListThreeKeys });
@@ -31,12 +32,12 @@ describe('s3 handler with csv event', () => {
             .mockResolvedValueOnce({ Body: mocks.nocTableCsvData })
             .mockResolvedValueOnce({ Body: mocks.publicNameCsvData });
 
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { batchWrite: mockDynamoBatchWrite };
         });
 
         mockDynamoBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -49,7 +50,7 @@ describe('s3 handler with csv event', () => {
     });
 
     it('sends the data to dynamo when a csv is created', async () => {
-        const event = mocks.mockS3Event('bucketName', 'fileName.csv');
+        const event: S3Event = mocks.mockS3Event('bucketName', 'fileName.csv');
 
         await s3NocHandler(event);
 

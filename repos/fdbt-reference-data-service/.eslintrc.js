@@ -4,7 +4,13 @@ module.exports = {
         node: true,
         jest: true,
     },
-    extends: ['airbnb-base', 'prettier'],
+    extends: [
+        'airbnb-base',
+        'prettier',
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    ],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -13,6 +19,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',
+        project: `./tsconfig.json`,
     },
     plugins: ['@typescript-eslint'],
     rules: {

@@ -8,27 +8,27 @@ import {
     formatDynamoWriteRequest,
     setDbTableEnvVariable,
     ParsedData,
-    s3ObjectParameters,
+    S3ObjectParameters,
 } from './handler';
 
 jest.mock('aws-sdk');
 
 describe('fetchDataFromS3AsAString', () => {
     const mockS3GetObject = jest.fn();
-    const s3Params: s3ObjectParameters = {
+    const s3Params: S3ObjectParameters = {
         Bucket: 'thisIsMyBucket',
         Key: 'andThisIsTheNameOfTheThing',
     };
 
     beforeEach(() => {
         mockS3GetObject.mockReset();
-        (AWS.S3 as any) = jest.fn().mockImplementation(() => {
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
             };
         });
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.testCsv });
             },
         }));
@@ -139,7 +139,7 @@ describe('writeBatchesToDynamo', () => {
 
     beforeEach(() => {
         mockDynamoDbBatchWrite.mockReset();
-        (AWS.DynamoDB.DocumentClient as any) = jest.fn(() => {
+        (AWS.DynamoDB.DocumentClient as {}) = jest.fn(() => {
             return { batchWrite: mockDynamoDbBatchWrite };
         });
     });
@@ -151,7 +151,7 @@ describe('writeBatchesToDynamo', () => {
     it('calls dynamodb.batchwrite() only once for a batch size of 25 or less', async () => {
         // Arrange
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -164,7 +164,7 @@ describe('writeBatchesToDynamo', () => {
     it('calls dynamodb.batchwrite() more than once for a batch size greater than 25', async () => {
         // Arrange
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({});
             },
         }));
@@ -179,7 +179,7 @@ describe('writeBatchesToDynamo', () => {
         // Arrange
         const lines = mocks.createArray(2, { ...mocks.mockNaptanData });
         mockDynamoDbBatchWrite.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.reject(new Error());
             },
         }));

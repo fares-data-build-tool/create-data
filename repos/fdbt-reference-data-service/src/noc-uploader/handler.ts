@@ -56,7 +56,6 @@ export interface Lists3ObjectsParameters {
 }
 
 export const lists3Objects = async (parameters: Lists3ObjectsParameters): Promise<string[]> => {
-    const objlist: string[] = [];
     const s3 = new AWS.S3();
     const s3Data = await s3
         .listObjectsV2(parameters, (err, data) => {
@@ -67,35 +66,33 @@ export const lists3Objects = async (parameters: Lists3ObjectsParameters): Promis
             }
         })
         .promise();
-    const contents = s3Data.Contents!;
-    let itemOne = '';
-    let itemTwo = '';
-    let itemThree = '';
-    try {
-        itemOne = contents[0].Key!;
-        itemTwo = contents[1].Key!;
-        itemThree = contents[2].Key!;
-    } catch (Error) {
+    const contents = s3Data?.Contents ?? [];
+
+    const itemOne = contents[0]?.Key;
+    const itemTwo = contents[1]?.Key;
+    const itemThree = contents[2]?.Key;
+
+    if (!itemOne || !itemTwo || !itemThree) {
         return [];
     }
-    objlist.push(itemOne, itemTwo, itemThree);
-    return objlist;
+
+    return [itemOne, itemTwo, itemThree];
 };
 
 export const fetchDataFromS3AsString = async (parameters: S3ObjectParameters): Promise<string> => {
     const s3 = new AWS.S3();
     const data = await s3.getObject(parameters).promise();
-    const dataAsString = data.Body?.toString('utf-8')!;
+    const dataAsString = data.Body?.toString('utf-8') ?? '';
     return dataAsString;
 };
 
-export const csvParser = (csvData: string): any => {
-    const parsedData: any = csvParse(csvData, {
+export const csvParser = <T>(csvData: string): T[] => {
+    const parsedData: [] = csvParse(csvData, {
         columns: true,
-        skip_empty_lines: true,
+        skip_empty_lines: true, // eslint-disable-line @typescript-eslint/camelcase
         delimiter: ',',
     });
-    return parsedData;
+    return parsedData as T[];
 };
 
 export const mergeArrayObjects = (
@@ -140,7 +137,7 @@ export const formatDynamoWriteRequest = (parsedLines: DynamoDBData[]): AWS.Dynam
     return dynamoWriteRequestBatches;
 };
 
-export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput) => {
+export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDyanmoInput): Promise<void> => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
@@ -161,11 +158,11 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
                 })
                 .promise(),
         );
-        console.log(`writePromises before if statement is ${writePromises}`)
+        console.log(`writePromises before if statement is ${writePromises}`);
         count += batch.length;
 
         if (writePromises.length === 100) {
-            console.log(`writePromises inside if statement is ${writePromises}`)
+            console.log(`writePromises inside if statement is ${writePromises}`);
             try {
                 await Promise.all(writePromises); // eslint-disable-line no-await-in-loop
                 writePromises = [];
@@ -197,7 +194,7 @@ export const setDbTableEnvVariable = (): string => {
     return tableName;
 };
 
-export const s3NocHandler = async (event: S3Event) => {
+export const s3NocHandler = async (event: S3Event): Promise<void> => {
     const tableName = setDbTableEnvVariable();
 
     const s3BucketName: string = event.Records[0].s3.bucket.name;
