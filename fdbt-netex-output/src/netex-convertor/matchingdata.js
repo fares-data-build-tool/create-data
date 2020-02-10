@@ -63,11 +63,11 @@ export default {
             ],
             prices: [
                 {
-                    price: '110',
+                    price: '1.10',
                     fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
                 },
                 {
-                    price: '170',
+                    price: '1.70',
                     fareZones: ['Cambridge Street', 'Blossom Street', 'Rail Station', 'Piccadilly (York)'],
                 },
             ],
@@ -94,11 +94,11 @@ export default {
             ],
             prices: [
                 {
-                    price: '110',
+                    price: '1.10',
                     fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
                 },
                 {
-                    price: '170',
+                    price: '1.70',
                     fareZones: ['Cambridge Street', 'Blossom Street', 'Rail Station', 'Piccadilly (York)'],
                 },
             ],
@@ -125,11 +125,11 @@ export default {
             ],
             prices: [
                 {
-                    price: '110',
+                    price: '1.10',
                     fareZones: ['Holl Bank/Beech Ave', 'Cambridge Street (York)', 'Blossom Street'],
                 },
                 {
-                    price: '170',
+                    price: '1.70',
                     fareZones: ['Rail Station', 'Piccadilly (York)'],
                 },
             ],
@@ -164,11 +164,11 @@ export default {
             ],
             prices: [
                 {
-                    price: '110',
+                    price: '1.10',
                     fareZones: ['Cambridge Street', 'Blossom Street'],
                 },
                 {
-                    price: '170',
+                    price: '1.70',
                     fareZones: ['Rail Station', 'Piccadilly (York)'],
                 },
             ],
@@ -195,7 +195,7 @@ export default {
             ],
             prices: [
                 {
-                    price: '100',
+                    price: '1.00',
                     fareZones: ['Blossom Street', 'Rail Station', 'Piccadilly (York)'],
                 },
             ],
@@ -230,7 +230,7 @@ export default {
             ],
             prices: [
                 {
-                    price: '100',
+                    price: '1.00',
                     fareZones: ['Rail Station', 'Piccadilly (York)'],
                 },
             ],
@@ -249,7 +249,7 @@ export default {
             ],
             prices: [
                 {
-                    price: '100',
+                    price: '1.00',
                     fareZones: ['Piccadilly (York)'],
                 },
             ],
@@ -300,7 +300,7 @@ export default {
             ],
             prices: [
                 {
-                    price: '100',
+                    price: '1.00',
                     fareZones: ['Piccadilly (York)'],
                 },
             ],

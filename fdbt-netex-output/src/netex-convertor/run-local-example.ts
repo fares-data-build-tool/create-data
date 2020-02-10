@@ -34,6 +34,9 @@ interface NetexObject {
 }
 
 const stops: Stop[] = matchingdata.fareZones.flatMap(zone => zone.stops);
+const uniquePriceGroups: string[] = [
+    ...new Set(matchingdata.fareZones.flatMap(zone => zone.prices.flatMap(price => price.price))),
+];
 
 export async function convertXmlToJsObject(): Promise<NetexObject> {
     try {
@@ -85,42 +88,104 @@ export function updateServiceFrame(netexFileAsJsObject: NetexObject): void {
     serviceFrameUpdates.lines.Line.OperatorRef.$t = NOCCode;
     serviceFrameUpdates.scheduledStopPoints = stops.map(stop => ({
         ScheduledStopPoint: {
+            version: 'any',
             id: `naptan:${stop.atcoCode}`,
             Name: { $t: stop.stopName },
             TopographicPlaceView: {
-                TopographicPlaceRef: { ref: `nptgUkLocality:${stop.localityCode}` },
-                Name: stop.localityName,
-                QualifierName: stop.qualifierName,
+                TopographicPlaceRef: { ref: `nptgUkLocality:${stop.localityCode}`, version: '0' },
+                Name: { $t: stop.localityName },
+                QualifierName: { $t: stop.qualifierName },
             },
         },
     }));
 }
 
-export function updateFareFrame(netexFileAsJsObject: NetexObject): void {
-    const fareFrameUpdates = netexFileAsJsObject.PublicationDelivery.dataObjects.CompositeFrame[0].frames.FareFrame;
-    console.log(util.inspect(fareFrameUpdates, false, null, true));
+export function updateZoneFareFrame(netexFileAsJsObject: NetexObject): void {
+    const fareFrameUpdates = netexFileAsJsObject.PublicationDelivery.dataObjects.CompositeFrame[0].frames.FareFrame[0];
     fareFrameUpdates.Name = operatorPublicNameLineNameFormat;
-    // fareFrameUpdates.fareZones = matchingdata.fareZones.map(zone => ({
-    //     FareZone: {
-    //         id: `naptan:${stop.atcoCode}`,
-    //         Name: { $t: stop.stopName },
-    //         TopographicPlaceView: {
-    //             TopographicPlaceRef: { ref: `nptgUkLocality:${stop.localityCode}` },
-    //             Name: stop.localityName,
-    //             QualifierName: stop.qualifierName,
-    //         },
+    fareFrameUpdates.fareZones = matchingdata.fareZones.map(zone => {
+        const stopPoints = zone.stops.map(stop => ({
+            ScheduledStopPointRef: {
+                ref: `naptan:${stop.atcoCode}`,
+                version: 'any',
+                $t: `${stop.stopName}, ${stop.localityName}`,
+            },
+        }));
+        return {
+            FareZone: {
+                version: '1.0',
+                id: `fs@${zone.name}`,
+                Name: { $t: zone.name },
+                members: stopPoints,
+            },
+        };
+    });
+}
+
+export function updatePriceFareFrame(netexFileAsJsObject: NetexObject): void {
+    const fareFrameUpdates = netexFileAsJsObject.PublicationDelivery.dataObjects.CompositeFrame[0].frames.FareFrame[1];
+    fareFrameUpdates.Name = operatorPublicNameLineNameFormat;
+    fareFrameUpdates.priceGroups = uniquePriceGroups.map((price, index) => ({
+        version: '1.0',
+        id: `price_band_${index}`,
+        members: [
+            {
+                GeographicalIntervalPrice: {
+                    version: '1.0',
+                    id: `price_band_${index}@adult`,
+                    Amount: { $t: price },
+                },
+            },
+        ],
+    }));
+    fareFrameUpdates.tariffs.Tariff.id = `Tariff@single@Line_${matchingdata.lineName}`;
+    fareFrameUpdates.tariffs.Tariff.Name = `${operatorPublicNameLineNameFormat} - Single Fares`;
+    fareFrameUpdates.tariffs.Tariff.OperatorRef.ref = opIdNocFormat;
+    fareFrameUpdates.tariffs.Tariff.OperatorRef.$t = NOCCode;
+    fareFrameUpdates.tariffs.Tariff.LineRef.ref = `Line_${matchingdata.lineName}`;
+    fareFrameUpdates.tariffs.Tariff.fareStructureElements.FareStructureElement.distanceMatrixElements = stops.map(
+        stop => ({
+            DistanceMatrixElement: {
+                version: '1.0',
+                id: `${stop.stopName}+${stop.stopName}`,
+                priceGroups: {
+                    PriceGroupRef: {
+                        version: '1.0',
+                        ref: 'price_band_A',
+                    },
+                },
+                StartTariffZoneRef: {
+                    version: '1.0',
+                    ref: `fs@${stop.stopName}`,
+                },
+                EndTariffZoneRef: {
+                    version: '1.0',
+                    ref: `fs@${stop.stopName}`,
+                },
+            },
+        }),
+    );
+    fareFrameUpdates.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref = `Line_${matchingdata.lineName}`;
+}
+
+export function updateFareTableFrame(netexFileAsJsObject: NetexObject): void {
+    const fareFrameUpdates = netexFileAsJsObject.PublicationDelivery.dataObjects.CompositeFrame[0].frames.FareFrame[2];
+    fareFrameUpdates.id = `${OpId}@Products@Trip@prices@Line_${matchingdata.lineName}`;
+    fareFrameUpdates.dataSourceRef = OpId;
+    fareFrameUpdates.noticeAssignments.NoticeAssignment.id = `${OpId}@Products@Trip@prices@Line_${matchingdata.lineName}@Footnote`;
+    fareFrameUpdates.noticeAssignments.NoticeAssignment.NoticedObjectRef.ref = `Trip@single-SOP@p-ticket@line_${matchingdata.lineName}@adult`;
 
     console.log(util.inspect(fareFrameUpdates, false, null, true));
 }
 
 convertXmlToJsObject()
     .then(data => {
-        console.log(data);
         updateResourceFrame(data);
         updateServiceFrame(data);
-        updateFareFrame(data);
-        console.log(data);
-        // const trialxmlobject: string = convertJsObjectToXml(data);
-        // console.log(trialxmlobject);
+        updateZoneFareFrame(data);
+        updatePriceFareFrame(data);
+        updateFareTableFrame(data);
+        const trialxmlobject: string = convertJsObjectToXml(data);
+        console.log(trialxmlobject);
     })
     .catch(err => console.error(err.message));

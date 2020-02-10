@@ -271,7 +271,8 @@
                         </FareZone>
                     </fareZones>
                 </FareFrame>
-                <!--==== STEP 5:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
+				<!--==== STEP 5:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
+				<FareFrame version="1.0" id="mb:Metrobus@Products@Trip@Line_1" dataSourceRef="mb:metrobus" responsibilitySetRef="mb:tariffs">
 					<Name>Metrobus 1</Name>
 					<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@products@by_Line" versionRef="fxc:v1.0"/>
 					<!--==== Pricing Parameters ====-->
@@ -329,7 +330,6 @@
 								</ValidBetween>
 							</validityConditions>
 							<Name>Metrobus 1 - Single  Fares</Name>
-							<Description>Bewbush West - Crawley - Broadfield/Pease Pottage</Description>
 							<documentLinks>
 								<InfoLink typeOfInfoLink="info">https://assets.goaheadbus.com/media/cms_page_media/2017/1/15/route%201%20farechart%20240117.pdf</InfoLink>
 								<InfoLink typeOfInfoLink="timetableDocument">https://assets.goaheadbus.com/media/cms_page_media/2016/6</InfoLink>
@@ -719,8 +719,9 @@
 								</SalesOfferPackageElement>
 							</salesOfferPackageElements>
 						</SalesOfferPackage>
-					</salesOfferPackages>				
-					<FareFrame version="1.0" id="mb:Metrobus@Products@Trip@prices@Line_1" dataSourceRef="mb:metrobus" responsibilitySetRef="mb:tariffs">
+					</salesOfferPackages>	
+				</FareFrame>			
+				<FareFrame version="1.0" id="mb:Metrobus@Products@Trip@prices@Line_1" dataSourceRef="mb:metrobus" responsibilitySetRef="mb:tariffs">
 						<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@prices" version="fxc:v1.0"/>
 						<FrameDefaults>
 							<!-- Fares are shown in pence. -->
@@ -1214,7 +1215,7 @@
 								</includes>
 							</FareTable>
 						</fareTables>
-					</FareFrame>
+				</FareFrame>
 			</frames>
 		</CompositeFrame>
 		<!--   ========== UK BUs Fares Generic Metadata ========== -->
