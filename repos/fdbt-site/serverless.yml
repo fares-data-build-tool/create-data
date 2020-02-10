@@ -30,6 +30,7 @@ plugins:
 custom:
     serverless-nextjs:
         nextConfigDir: './'
+        cloudFront: ${file(./serverless.${self:provider.stage}.yml):custom.enableCloudfront}
     customDomain: ${file(./serverless.${self:provider.stage}.yml):custom.customDomain}
 
 resources:

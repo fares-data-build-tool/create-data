@@ -3,7 +3,7 @@ import { FARETYPE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
 import { isSessionValid } from './service/validator';
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default (req: NextApiRequest, res: NextApiResponse): void => {
     if (isSessionValid(req)) {
         try {
             const cookies = getCookies(req);

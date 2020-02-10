@@ -70,7 +70,7 @@ const Operator: NextPage = () => (
     </Layout>
 );
 
-Operator.getInitialProps = async (ctx: NextPageContext) => {
+Operator.getInitialProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
     return {};
 };

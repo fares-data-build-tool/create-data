@@ -3,7 +3,7 @@ import operator from '../../../src/pages/api/operator';
 
 describe('operator', () => {
     let res: mockReqRes.ResponseOutput;
-    let writeHeadMock: jest.Mock<any>;
+    let writeHeadMock: jest.Mock;
     beforeEach(() => {
         jest.resetAllMocks();
         writeHeadMock = jest.fn();

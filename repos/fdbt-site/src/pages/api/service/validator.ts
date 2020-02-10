@@ -2,7 +2,7 @@ import { NextApiRequest } from 'next';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../../../constants/index';
 import { getCookies } from '../apiUtils';
 
-export const isSessionValid = (req: NextApiRequest) => {
+export const isSessionValid = (req: NextApiRequest): boolean => {
     const cookies = getCookies(req);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     if (operatorCookie) {
@@ -11,7 +11,7 @@ export const isSessionValid = (req: NextApiRequest) => {
     return false;
 };
 
-export const isCookiesUUIDMatch = (req: NextApiRequest) => {
+export const isCookiesUUIDMatch = (req: NextApiRequest): boolean => {
     const cookies = getCookies(req);
     const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
     const serviceCookie = unescape(decodeURI(cookies[SERVICE_COOKIE]));

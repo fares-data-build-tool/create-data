@@ -4,7 +4,16 @@ module.exports = {
         es6: true,
         jest: true,
     },
-    extends: ['plugin:react/recommended', 'airbnb', 'prettier', 'prettier/react', 'plugin:jsx-a11y/recommended'],
+    extends: [
+        'plugin:react/recommended',
+        'airbnb',
+        'prettier',
+        'prettier/react',
+        'plugin:jsx-a11y/recommended',
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    ],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -16,6 +25,7 @@ module.exports = {
         },
         ecmaVersion: 2018,
         sourceType: 'module',
+        project: `./tsconfig.json`,
     },
     plugins: ['react', '@typescript-eslint', 'jsx-a11y'],
     rules: {
@@ -71,6 +81,7 @@ module.exports = {
         ],
         'func-style': [2, 'expression'],
         curly: [2, 'all'],
+        '@typescript-eslint/unbound-method': 0,
     },
     settings: {
         'import/resolver': {

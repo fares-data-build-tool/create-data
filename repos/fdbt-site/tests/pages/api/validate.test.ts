@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { mockRequest } from 'mock-req-res';
 import validateHandler from '../../../src/pages/api/validate';
 import * as validator from '../../../src/pages/api/service/validator';

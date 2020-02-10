@@ -3,7 +3,7 @@ import v1 from 'uuid';
 import { OPERATOR_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject } from './apiUtils';
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!req.body.operator) {
             res.writeHead(302, {
