@@ -1,4 +1,6 @@
-export const mockS3Event = (bucketName: string, fileName: string) => ({
+import { S3Event } from 'aws-lambda';
+
+export const mockS3Event = (bucketName: string, fileName: string): S3Event => ({
     Records: [
         {
             eventVersion: '',
