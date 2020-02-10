@@ -1,5 +1,5 @@
 import '../design/Pages.scss';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
@@ -15,7 +15,7 @@ type ServiceProps = {
     services: ServiceType[];
 };
 
-const Service = ({ operator, services }: ServiceProps) => (
+const Service = ({ operator, services }: ServiceProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/service" method="post">
@@ -52,8 +52,8 @@ const Service = ({ operator, services }: ServiceProps) => (
     </Layout>
 );
 
-Service.getInitialProps = async (ctx: NextPageContext) => {
-    const redirectOnError = () => {
+Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
+    const redirectOnError = (): void => {
         if (ctx.res) {
             ctx.res.writeHead(302, {
                 Location: '/error',

@@ -12,8 +12,8 @@
         "build": "next build",
         "start": "NODE_ENV=production next start",
         "deploy": "export NODE_ENV='test' && npm run build && export SLS_DEBUG='*' && serverless deploy --aws-profile tfn-test -v --stage test",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-        "lint:fix": "eslint --fix . --ext .js,.jsx,.ts,.tsx"
+        "lint": "eslint . --ext .ts,.tsx",
+        "lint:fix": "eslint --fix . --ext .ts,.tsx"
     },
     "jest": {
         "collectCoverageFrom": [

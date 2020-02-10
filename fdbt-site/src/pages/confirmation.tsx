@@ -1,5 +1,5 @@
 import '../design/Pages.scss';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
@@ -13,7 +13,7 @@ type ConfirmationProps = {
     service: string;
 };
 
-const Confirmation = ({ operator, service }: ConfirmationProps) => (
+const Confirmation = ({ operator, service }: ConfirmationProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <h1 className="govuk-heading-xl">Confirmation</h1>
@@ -24,7 +24,7 @@ const Confirmation = ({ operator, service }: ConfirmationProps) => (
     </Layout>
 );
 
-Confirmation.getInitialProps = async (ctx: NextPageContext) => {
+Confirmation.getInitialProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];

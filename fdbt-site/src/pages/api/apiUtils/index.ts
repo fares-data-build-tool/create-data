@@ -10,7 +10,7 @@ export const getCookies = (req: NextApiRequest): Cookies => {
 
     if (req.headers && req.headers.cookie) {
         req.headers.cookie.split(';').forEach(cookie => {
-            const parts = cookie.match(/(.*?)=(.*)$/);
+            const parts = RegExp(/(.*?)=(.*)$/).exec(cookie);
             if (parts) {
                 cookies[parts[1].trim()] = (parts[2] || '').trim();
             }
@@ -30,7 +30,7 @@ export const setCookieOnResponseObject = (
     cookieName: string,
     cookieValue: string,
     res: NextApiResponse,
-) => {
+): void => {
     setCookie(cookieName, cookieValue, {
         domain,
         path: '/',
