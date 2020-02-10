@@ -47,7 +47,7 @@ exports[`pages service should render correctly 1`] = `
               disabled={true}
               value=""
             >
-              ---Select One---
+              Select One
             </option>
             <option
               className="service-option"

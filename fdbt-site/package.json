@@ -37,6 +37,7 @@
         "@types/aws-lambda": "^8.10.36",
         "@types/axios": "^0.14.0",
         "@types/cookies": "^0.7.4",
+        "@types/dateformat": "^3.0.1",
         "@types/formidable": "^1.0.31",
         "@types/micro": "^7.3.3",
         "@types/next": "^9.0.0",
