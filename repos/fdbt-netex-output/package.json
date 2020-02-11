@@ -24,10 +24,13 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.36",
         "@types/node": "^12.12.14",
+        "@types/xml2json": "^0.11.0",
         "aws-lambda": "^1.0.5",
         "aws-sdk": "^2.610.0",
         "typescript": "^3.7.3",
-        "xml2js": "^0.4.22"
+        "util": "^0.12.1",
+        "xml2js": "^0.4.22",
+        "xml2json": "^0.12.0"
     },
     "devDependencies": {
         "@types/aws-lambda-mock-context": "^3.2.0",
