@@ -16,7 +16,7 @@ interface ExtractedStopPoint {
     LocalityQualifier: string[];
 }
 
-interface ExtractedOperators {
+interface ExtractedOperator {
     $: {};
     NationalOperatorCode: string[];
     OperatorCode: string[];
@@ -30,6 +30,37 @@ interface StopPointObject {
     CommonName: string;
 }
 
+// interface JourneyPatternObject {
+//     Id: string;
+//     OrderedStopPoints: Set<StopPointObject>;
+// }
+
+// interface JourneyPatternFromTo {
+//     $: {
+//         SequenceNumber: string;
+//     };
+//     Activity: string[];
+//     StopPointRef: string[];
+//     TimingStatus: string[];
+// }
+
+// interface JourneyPatternTimingLink {
+//     $: {
+//         id: string;
+//     };
+//     From: JourneyPatternFromTo[];
+//     To: JourneyPatternFromTo[];
+//     RouteLinkRef: string[];
+//     RunTime: string[];
+// }
+
+// interface JourneyPatternSection {
+//     $: {
+//         id: string;
+//     };
+//     JourneyPatternTimingLink: JourneyPatternTimingLink[];
+// }
+
 export interface S3ObjectParameters {
     Bucket: string;
     Key: string;
@@ -41,6 +72,7 @@ export interface TndsDynamoDBData {
     OperatorShortName: string;
     Description: string;
     StopPoints: StopPointObject[];
+    // JourneyPatterns: JourneyPatternObject[];
 }
 
 export interface ServicesDynamoDBData {
@@ -216,15 +248,41 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     console.log('Dynamo DB put request complete.');
 };
 
+export const mapCommonNameToStopPoint = (stopPointObject: StopPointObject, stopPoint: string): string => {
+    if (stopPointObject.hasOwnProperty(stopPoint)) { // eslint-disable-line no-prototype-builtins
+        return stopPointObject?.CommonName;
+    }
+    return "";
+};
+
+// export const extractStopPointRefs = (
+//     journeyPatternSequence: JourneyPatternTimingLink,
+//     orderedStopPoints: Set<string>,
+//     stopPointsCollection: StopPointObject[],
+// ): StopPointObject[] => {
+//     const stopPointRefFrom: string = journeyPatternSequence?.From[0]?.StopPointRef[0];
+//     orderedStopPoints.add(stopPointRefFrom);
+//     const stopPointRefTo: string = journeyPatternSequence?.To[0]?.StopPointRef[0];
+//     orderedStopPoints.add(stopPointRefTo);
+//     const orderedStopPointObject: StopPointObject[] = orderedStopPoints.forEach(stopPoint => ({
+//         StopPointRef: stopPoint,
+//         CommonName: stopPointsCollection.forEach(stopPointObject =>
+//             mapCommonNameToStopPoint(stopPointObject, stopPoint),
+//         ),
+//     }));
+//     return orderedStopPointObject;
+// };
+
 export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] => {
     const parsedJson = JSON.parse(parsedXmlData);
 
     const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
     const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
     const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
-    const extractedStartDate: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.OperatingPeriod[0]?.StartDate[0];
+    const extractedStartDate: string =
+        parsedJson?.TransXChange?.Services[0]?.Service[0]?.OperatingPeriod[0]?.StartDate[0];
 
-    const extractedOperators: ExtractedOperators[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
+    const extractedOperators: ExtractedOperator[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
     const extractedStopPoints: ExtractedStopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
 
     const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
@@ -232,16 +290,27 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
         CommonName: stopPointItem?.CommonName[0],
     }));
 
+    // const journeyPatternSections: JourneyPatternSection[] =
+    //     parsedJson?.TransXChange?.JourneyPatternSections[0]?.JourneyPatternSection;
+    // const orderedStopPoints: Set<string> = new Set();
+    // const journeyPatternToStopPointsMap = journeyPatternSections.map(item => ({
+    //     Id: item.$.id,
+    //     OrderedStopPoints: item.JourneyPatternTimingLink.map(journeyPatternSequence =>
+    //         extractStopPointRefs(journeyPatternSequence, orderedStopPoints, stopPointsCollection),
+    //     ),
+    // }));
+
     const cleanedXmlData: TndsDynamoDBData[] = extractedOperators
-        .filter((operator: ExtractedOperators): string => operator.NationalOperatorCode[0])
+        .filter((operator: ExtractedOperator): string => operator.NationalOperatorCode[0])
         .map(
-            (operator: ExtractedOperators): TndsDynamoDBData => ({
+            (operator: ExtractedOperator): TndsDynamoDBData => ({
                 Partition: operator.NationalOperatorCode[0],
                 Sort: `${extractedLineName}#${extractedStartDate}#${extractedFileName}`,
                 LineName: extractedLineName,
                 OperatorShortName: operator?.OperatorShortName[0],
                 Description: extractedDescription,
                 StopPoints: stopPointsCollection,
+                // JourneyPatterns: journeyPatternToStopPointsMap,
             }),
         );
 
