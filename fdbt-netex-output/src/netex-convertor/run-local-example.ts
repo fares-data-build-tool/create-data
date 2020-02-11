@@ -38,6 +38,21 @@ const uniquePriceGroups: string[] = [
     ...new Set(matchingdata.fareZones.flatMap(zone => zone.prices.flatMap(price => price.price))),
 ];
 
+export function iterateThroughFareTriangleColumns(arr: Stop[]): string [] {
+    const newArr: string[] = [];
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < arr.length - 1; i++) {
+        // eslint-disable-next-line no-plusplus
+        for (let j = i + 1; j < arr.length; j++) {
+            const firstElt = arr[i].stopName;
+            const secondElt = arr[j].stopName;
+            newArr.push(firstElt, secondElt);
+        }
+    }
+    console.log(newArr);
+    return newArr;
+}
+
 export async function convertXmlToJsObject(): Promise<NetexObject> {
     try {
         const fileData = await fs.promises.readFile('./netexTemplate.xml', { encoding: 'utf8' });
@@ -173,8 +188,12 @@ export function updateFareTableFrame(netexFileAsJsObject: NetexObject): void {
     fareFrameUpdates.id = `${OpId}@Products@Trip@prices@Line_${matchingdata.lineName}`;
     fareFrameUpdates.dataSourceRef = OpId;
     fareFrameUpdates.noticeAssignments.NoticeAssignment.id = `${OpId}@Products@Trip@prices@Line_${matchingdata.lineName}@Footnote`;
-    fareFrameUpdates.noticeAssignments.NoticeAssignment.NoticedObjectRef.ref = `Trip@single-SOP@p-ticket@line_${matchingdata.lineName}@adult`;
-
+    fareFrameUpdates.noticeAssignments.NoticeAssignment[0].NoticedObjectRef.ref = `Trip@single-SOP@p-ticket@line_${matchingdata.lineName}@adult`;
+    fareFrameUpdates.fareTables.FareTable.id = `Trip@single-SOP@p-ticket@Line_${matchingdata.lineName}@adult`;
+    fareFrameUpdates.fareTables.FareTable.Name.$t = Description;
+    fareFrameUpdates.fareTables.FareTable.usedIn.TariffRef.ref = `Tariff@single@Line_${matchingdata.lineName}`;
+    fareFrameUpdates.fareTables.FareTable.specifics.LineRef.ref = `Line_${matchingdata.lineName}`;
+    
     console.log(util.inspect(fareFrameUpdates, false, null, true));
 }
 
