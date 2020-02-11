@@ -1,5 +1,4 @@
 custom:
-    enableCloudfront: false
     customDomain:
         domainName: tfn-test.infinityworks.com
         basePath: ''
