@@ -28,9 +28,9 @@ export type ServiceType = {
     startDate: string;
 };
 
-export const convertDateFormat = (startDate: string) => {
+export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
-}
+};
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const tableName =
@@ -51,5 +51,9 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         .query(queryInput)
         .promise();
 
-    return Items?.map((item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) })) || [];
+    return (
+        Items?.map(
+            (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
+        ) || []
+    );
 };
