@@ -66,7 +66,7 @@ jobs:
                   command: |
                       echo "Deploying..."
                       sudo npm i -g serverless
-                      export NODE_ENV='test' && export SLS_DEBUG="*" && sls deploy --stage=test
+                      export NODE_ENV='test' && export SLS_DEBUG="*" && sls create_domain --stage=test && sls deploy --stage=test
                       echo "Finished deploy"
 
     deploy-site-to-preprod:
@@ -80,7 +80,7 @@ jobs:
                   command: |
                       echo "Deploying..."
                       sudo npm i -g serverless
-                      export NODE_ENV='production' && export SLS_DEBUG="*" && sls deploy --stage=preprod
+                      export NODE_ENV='preprod' && export SLS_DEBUG="*" && sls create_domain --stage=preprod && sls deploy --stage=preprod
                       echo "Finished deploy"
 
 workflows:
