@@ -21,6 +21,7 @@ provider:
         SERVICES_TABLE_NAME: ${self:provider.stage}-Services
         TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+        STAGE: ${self:provider.stage}
 
 plugins:
     - serverless-nextjs-plugin
@@ -30,7 +31,6 @@ plugins:
 custom:
     serverless-nextjs:
         nextConfigDir: './'
-        cloudFront: ${file(./serverless.${self:provider.stage}.yml):custom.enableCloudfront}
     customDomain: ${file(./serverless.${self:provider.stage}.yml):custom.customDomain}
 
 resources:
@@ -56,3 +56,7 @@ resources:
             Value: !GetAtt UnvalidatedUserData.Arn
             Export:
                 Name: ${self:service}:${self:provider.stage}:UnvalidatedUserDataBucketArn
+
+package:
+    exclude:
+        - ./**
