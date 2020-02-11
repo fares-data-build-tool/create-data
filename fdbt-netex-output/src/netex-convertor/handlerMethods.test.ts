@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import AWS from 'aws-sdk';
 import { fetchDataFromS3AsJSON, setS3ObjectParams, s3ObjectParameters } from './handler';
 import {
@@ -33,7 +35,7 @@ describe('fetchDataFromS3AsJSON', () => {
 
     it('returns the JSON data', async () => {
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.mockS3ObjectDataAsString });
             },
         }));
@@ -43,7 +45,7 @@ describe('fetchDataFromS3AsJSON', () => {
 
     it('throws an error when no data comes back from S3', async () => {
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.reject(new Error());
             },
         }));
@@ -53,7 +55,7 @@ describe('fetchDataFromS3AsJSON', () => {
 
     it('calls get object from S3 using params provided', async () => {
         mockS3GetObject.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve({ Body: mocks.mockS3ObjectDataAsString });
             },
         }));
@@ -102,7 +104,7 @@ describe('get item data from DynamoDB table with partition key', () => {
         });
 
         mockDynamoQuery.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve(mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString);
             },
         }));
@@ -134,7 +136,7 @@ describe('get item data from DynamoDB table with partition key and sort key', ()
         });
 
         mockDynamoQuery.mockImplementation(() => ({
-            promise() {
+            promise(): Promise<{}> {
                 return Promise.resolve(mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString);
             },
         }));
@@ -158,7 +160,7 @@ describe('get item data from DynamoDB table with partition key and sort key', ()
 });
 
 describe('get attribute value from DynamoDB item as a string', () => {
-    it('gets attribute value as a string', async () => {
+    it('gets attribute value as a string', () => {
         const result = getAttributeValueFromDynamoDBItemAsAString(
             mocks.mockDynamoDBItemDataObjectWithAttributeValueAsString,
             'testattribute',
@@ -169,7 +171,7 @@ describe('get attribute value from DynamoDB item as a string', () => {
 });
 
 describe('get attribute value from DynamoDB item as a string array', () => {
-    it('gets attribute value as string array', async () => {
+    it('gets attribute value as string array', () => {
         const result = getAttributeValueFromDynamoDBItemAsStringArray(
             mocks.mockDynamoDBItemDataObjectWithAttributeValueAsStringArray,
             'testattribute',
@@ -180,7 +182,7 @@ describe('get attribute value from DynamoDB item as a string array', () => {
 });
 
 describe('get attribute value from DynamoDB item as object array', () => {
-    it('gets attribute value as object array', async () => {
+    it('gets attribute value as object array', () => {
         const result = getAttributeValueFromDynamoDBItemAsObjectArray(
             mocks.mockDynamoDBItemDataObjectWithAttributeValueAsObjectArray,
             'testattribute',
