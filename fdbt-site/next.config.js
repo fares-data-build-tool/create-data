@@ -7,7 +7,7 @@ const withFonts = require('next-fonts');
 let assetPrefix = '';
 
 switch (process.env.NODE_ENV) {
-    case 'prod':
+    case 'production':
         assetPrefix = 'https://s3.eu-west-2.amazonaws.com/fdbt-prod-static-assets';
         break;
     case 'preprod':
