@@ -6,6 +6,7 @@ import { getCookies } from './apiUtils/index';
 import { OPERATOR_COOKIE } from '../../constants';
 
 export type FareTriangle = FareTriangleData;
+export type File = FileData;
 
 interface FareTriangleData {
     fareStages: [
@@ -16,13 +17,18 @@ interface FareTriangleData {
     ];
 }
 
+interface FileData {
+    Files: formidable.Files;
+    FileContent: string;
+}
+
 export const config = {
     api: {
         bodyParser: false,
     },
 };
 
-export const formParse = async (req: NextApiRequest) => {
+export const formParse = async (req: NextApiRequest): Promise<Files> => {
     return new Promise<Files>((resolve, reject) => {
         const form = new formidable.IncomingForm();
         form.parse(req, (err, _fields, file) => {
@@ -34,23 +40,29 @@ export const formParse = async (req: NextApiRequest) => {
     });
 };
 
-
-export const putDataInS3 = async (data: FareTriangleData | string, key: string, processed: boolean) => {
+export const putDataInS3 = async (data: FareTriangleData | string, key: string, processed: boolean) => {  // eslint-disable-line @typescript-eslint/explicit-function-return-type
     const s3 = new AWS.S3();
 
-    let bucketfolder = '';
+    let contentType = '';
+    let bucketName = '';
+
+    if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
+        throw new Error('Bucket name environment variables not set.');
+    }
 
     if (processed) {
-        bucketfolder = '/processed';
+        bucketName = process.env.USER_DATA_BUCKET_NAME;
+        contentType = 'application/json; charset=utf-8';
     } else {
-        bucketfolder = '/unprocessed';
+        bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
+        contentType = 'text/csv; charset=utf-8';
     }
 
     const request: AWS.S3.Types.PutObjectRequest = {
-        Bucket: `fdbt-user-data-${process.env.STAGE}${bucketfolder}`,
+        Bucket: bucketName,
         Key: key,
         Body: data,
-        ContentType: 'application/json; charset=utf-8',
+        ContentType: contentType,
     };
 
     await s3.putObject(request).promise();
@@ -68,14 +80,17 @@ export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => 
 
     const dataAsLines: string[] = dataToMap.split('\n');
 
-    for(let t = 0; t < dataAsLines.length; t += 1){
-        if(fareTriangle.fareStages[t]){
+    let expectedNumberOfPrices = 0;
+
+    for (let t = 0; t < dataAsLines.length; t += 1) {
+        expectedNumberOfPrices += t;
+        if (fareTriangle.fareStages[t]) {
             fareTriangle.fareStages[t].stageName = dataAsLines[t].split(',')[t + 1];
         } else {
             fareTriangle.fareStages[t] = {
                 stageName: dataAsLines[t].split(',')[t + 1],
-                prices: []
-            }
+                prices: [],
+            };
         }
     }
 
@@ -83,16 +98,25 @@ export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => 
         const items = dataAsLines[i].split(',');
         for (let j = 0; j < i + 1; j += 1) {
             if (fareTriangle.fareStages[j] && items[j + 1] && j !== i) {
-                if (items[j + 1] !== '') {
+                if (items[j + 1] !== '' && !Number.isNaN(Number(items[j + 1]))) {
                     fareTriangle.fareStages[j].prices.push(items[j + 1]);
                 }
             }
         }
     }
+
+    const numberOfPrices = fareTriangle.fareStages.flatMap(stage => stage.prices).length;
+
+    console.log(`number of prices is ${numberOfPrices}`); // eslint-disable-line no-console
+
+    if (numberOfPrices !== expectedNumberOfPrices) {
+        throw new Error('Data conversion has not worked properly.');
+    }
+
     return fareTriangle;
 };
 
-export const getUuidFromCookie = (req: NextApiRequest) => {
+export const getUuidFromCookie = (req: NextApiRequest): string => {
     const cookies = getCookies(req);
 
     const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
@@ -106,7 +130,7 @@ export const fileChecks = (res: NextApiResponse, formData: formidable.Files, fil
     const fileType = formData['file-upload-1'].type;
 
     if (!fileContent) {
-        console.log('No file attached.');
+        console.log('No file attached.'); // eslint-disable-line no-console
         res.writeHead(302, {
             Location: '/csvUpload',
         });
@@ -115,7 +139,7 @@ export const fileChecks = (res: NextApiResponse, formData: formidable.Files, fil
     }
 
     if (fileSize > 5242880) {
-        console.log('File is too large.');
+        console.log('File is too large.'); // eslint-disable-line no-console
         res.writeHead(302, {
             Location: '/error',
         });
@@ -124,7 +148,7 @@ export const fileChecks = (res: NextApiResponse, formData: formidable.Files, fil
     }
 
     if (fileType !== 'text/csv') {
-        console.log('File is not a csv.');
+        console.log('File is not a csv.'); // eslint-disable-line no-console
         res.writeHead(302, {
             Location: '/error',
         });
@@ -135,36 +159,45 @@ export const fileChecks = (res: NextApiResponse, formData: formidable.Files, fil
     return true;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export const fileParse = async (req: NextApiRequest): Promise<File> => {
+    const files = await new Promise<Files>((resolve, reject) => {
+        const form = new formidable.IncomingForm();
+        form.parse(req, (err, _fields, file) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(file);
+        });
+    });
+
+    const fileContent = await fs.promises.readFile(files['file-upload-1'].path, 'utf-8');
+
+    return {
+        Files: files,
+        FileContent: fileContent,
+    };
+};
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {   // eslint-disable-line @typescript-eslint/explicit-function-return-type
     try {
-        const formData = await formParse(req);
-
-        const fileContent = await fs.promises.readFile(formData['file-upload-1'].path, 'utf-8');
-
-        const isValid = fileChecks(res, formData, fileContent);
-
+        const formData = await fileParse(req);
+        const isValid = fileChecks(res, formData.Files, formData.FileContent);
         if (!isValid) {
             return;
         }
-
-        if (fileContent) {
+        if (formData.FileContent) {
             try {
                 const uuid = getUuidFromCookie(req);
-
-                await putDataInS3(fileContent, uuid, false);
-
-                const fareTriangleData = faresTriangleDataMapper(fileContent);
-
+                await putDataInS3(formData.FileContent, uuid, false);
+                const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
                 await putDataInS3(fareTriangleData, uuid, true);
-
                 res.writeHead(302, {
                     Location: '/matching',
                 });
 
                 res.end();
-                
             } catch (error) {
-                console.log(error);
+                console.log(error); // eslint-disable-line no-console
 
                 res.writeHead(302, {
                     Location: '/error',
@@ -173,12 +206,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
         }
-
-        res.writeHead(302, {
-            Location: '/csvUpload',
-        });
-
-        res.end();
     } catch (error) {
         res.writeHead(302, {
             Location: '/error',

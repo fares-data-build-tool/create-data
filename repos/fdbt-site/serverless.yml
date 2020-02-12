@@ -31,6 +31,8 @@ provider:
         TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
         STAGE: ${self:provider.stage}
+        RAW_USER_DATA_BUCKET_NAME: !Ref UnvalidatedUserData
+        USER_DATA_BUCKET_NAME: !Ref ValidatedUserData
 
 plugins:
     - serverless-nextjs-plugin
@@ -49,6 +51,15 @@ resources:
             Type: AWS::S3::Bucket
             Properties:
                 BucketName: fdbt-raw-user-data-${self:provider.stage}
+                LifecycleConfiguration:
+                    Rules:
+                        - Id: ExpiryRule
+                          ExpirationInDays: 30
+                          Status: Enabled
+        ValidatedUserData:
+            Type: AWS::S3::Bucket
+            Properties:
+                BucketName: fdbt-user-data-${self:provider.stage}
                 LifecycleConfiguration:
                     Rules:
                         - Id: ExpiryRule

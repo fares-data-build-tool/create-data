@@ -56,6 +56,7 @@
         "formidable": "^1.2.1",
         "govuk-frontend": "^3.4.0",
         "micro": "^9.3.5-canary.3",
+        "mock-express-request": "^0.2.2",
         "multer": "^1.4.2",
         "next": "^9.2.1",
         "next-compose-plugins": "^2.2.0",
