@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import setCookie from 'set-cookie';
+import { OPERATOR_COOKIE } from '../../../constants';
 
 type Cookies = {
     [key: string]: string;
@@ -37,4 +38,10 @@ export const setCookieOnResponseObject = (
         maxAge: 3600 * 24,
         res,
     });
+};
+
+export const getUuidFromCookie = (req: NextApiRequest) => {
+    const cookies = getCookies(req);
+    const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
+    return JSON.parse(operatorCookie).uuid;
 };
