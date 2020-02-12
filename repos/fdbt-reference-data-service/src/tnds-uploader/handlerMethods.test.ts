@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import {
+    StopPointObject,
     csvParser,
     xmlParser,
     fetchDataFromS3AsString,
@@ -13,6 +14,8 @@ import {
     S3ObjectParameters,
     writeBatchesToDynamo,
     setS3ObjectParams,
+    mapCommonNameToStopPoint,
+    createOrderedStopPointMap,
 } from './handler';
 import * as mocks from './test-data/test-data';
 
@@ -181,6 +184,67 @@ it('returns cleanedXmlData which contains the right StopPointRefs and CommonName
     expect.assertions(2);
     expect(stopPoints).toHaveLength(5);
     expect(stopPoints).toEqual(expectedStopPoints);
+});
+
+describe('mapCommonNameToStopPoint', () => {
+    it('should map a CommonName to a StopPointRef in the form of a StopPointObject', () => {
+        const stopPoint = '0500SSWAV013';
+        const collectionOfStopPoints: StopPointObject[] = [
+            { StopPointRef: '0500SBARH011', CommonName: 'Superstore' },
+            { StopPointRef: '0500HFENS007', CommonName: 'Rookery Way' },
+            { StopPointRef: '0500HFENS006', CommonName: 'Swan Road' },
+            { StopPointRef: '0500HFENS003', CommonName: 'Chequer Street' },
+            { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
+        ];
+        const expectedMappedStopPoint: StopPointObject = {
+            StopPointRef: '0500SSWAV013',
+            CommonName: 'The Farm',
+        };
+        const mappedStopPoint = mapCommonNameToStopPoint(stopPoint, collectionOfStopPoints);
+        expect(mappedStopPoint).toEqual(expectedMappedStopPoint);
+    });
+
+    it('should return `CommonName: NOT FOUND` and a console.log when a CommonName cannot be found', () => {
+        const stopPoint = '0500SSWAV013';
+        const collectionOfStopPoints: StopPointObject[] = [{ StopPointRef: '0500SBARH011', CommonName: 'Superstore' }];
+        const expectedMappedStopPoint: StopPointObject = {
+            StopPointRef: '0500SSWAV013',
+            CommonName: '',
+        };
+        const mappedStopPoint = mapCommonNameToStopPoint(stopPoint, collectionOfStopPoints);
+        expect(mappedStopPoint).toEqual(expectedMappedStopPoint);
+    });
+});
+
+describe('createOrderedStopPointMap', () => {
+    it('should return an ordered list of stops that matches the order in the JourneyPatternSection', async () => {
+        const stringifiedData = await xmlParser(mocks.testXml);
+        const parsedXmlData = JSON.parse(stringifiedData);
+        const journeyPatternSections = parsedXmlData.TransXChange.JourneyPatternSections[0].JourneyPatternSection;
+        const collectionOfStopPoints: StopPointObject[] = [
+            { StopPointRef: '0500HFENS003', CommonName: 'Chequer Street' },
+            { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
+            { StopPointRef: '0500HFENS007', CommonName: 'Rookery Way' },
+            { StopPointRef: '0500SBARH011', CommonName: 'Superstore' },
+            { StopPointRef: '0500HFENS006', CommonName: 'Swan Road' },
+        ];
+        const journeyPatternSection1 = journeyPatternSections[0];
+        const journeyPatternSection2 = journeyPatternSections[2];
+        const orderedStopPoints1 = createOrderedStopPointMap(
+            journeyPatternSection1.JourneyPatternTimingLink,
+            collectionOfStopPoints,
+        );
+        const orderedStopPoints2 = createOrderedStopPointMap(
+            journeyPatternSection2.JourneyPatternTimingLink,
+            collectionOfStopPoints,
+        );
+        expect.assertions(4);
+        expect(orderedStopPoints1).toHaveLength(4);
+        expect(orderedStopPoints1).toEqual(mocks.mockCleanedXmlData[0].JourneyPatterns[0].OrderedStopPoints)
+        expect(orderedStopPoints2).toHaveLength(10);
+        expect(orderedStopPoints2).toEqual(mocks.mockCleanedXmlData[0].JourneyPatterns[2].OrderedStopPoints)
+
+    });
 });
 
 describe('formatDynamoWriteRequest', () => {
