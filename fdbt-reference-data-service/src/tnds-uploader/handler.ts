@@ -25,41 +25,41 @@ interface ExtractedOperator {
     TradingName: string[];
 }
 
-interface StopPointObject {
+export interface StopPointObject {
     StopPointRef: string;
     CommonName: string;
 }
 
-// interface JourneyPatternObject {
-//     Id: string;
-//     OrderedStopPoints: Set<StopPointObject>;
-// }
+interface JourneyPatternObject {
+    JourneyPatternRef: string;
+    OrderedStopPoints: StopPointObject[];
+}
 
-// interface JourneyPatternFromTo {
-//     $: {
-//         SequenceNumber: string;
-//     };
-//     Activity: string[];
-//     StopPointRef: string[];
-//     TimingStatus: string[];
-// }
+interface JourneyPatternFromTo {
+    $: {
+        SequenceNumber: string;
+    };
+    Activity: string[];
+    StopPointRef: string[];
+    TimingStatus: string[];
+}
 
-// interface JourneyPatternTimingLink {
-//     $: {
-//         id: string;
-//     };
-//     From: JourneyPatternFromTo[];
-//     To: JourneyPatternFromTo[];
-//     RouteLinkRef: string[];
-//     RunTime: string[];
-// }
+interface JourneyPatternTimingLink {
+    $: {
+        id: string;
+    };
+    From: JourneyPatternFromTo[];
+    To: JourneyPatternFromTo[];
+    RouteLinkRef: string[];
+    RunTime: string[];
+}
 
-// interface JourneyPatternSection {
-//     $: {
-//         id: string;
-//     };
-//     JourneyPatternTimingLink: JourneyPatternTimingLink[];
-// }
+interface JourneyPatternSection {
+    $: {
+        id: string;
+    };
+    JourneyPatternTimingLink: JourneyPatternTimingLink[];
+}
 
 export interface S3ObjectParameters {
     Bucket: string;
@@ -72,7 +72,7 @@ export interface TndsDynamoDBData {
     OperatorShortName: string;
     Description: string;
     StopPoints: StopPointObject[];
-    // JourneyPatterns: JourneyPatternObject[];
+    JourneyPatterns: JourneyPatternObject[];
 }
 
 export interface ServicesDynamoDBData {
@@ -248,30 +248,31 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     console.log('Dynamo DB put request complete.');
 };
 
-export const mapCommonNameToStopPoint = (stopPointObject: StopPointObject, stopPoint: string): string => {
-    if (stopPointObject.hasOwnProperty(stopPoint)) { // eslint-disable-line no-prototype-builtins
-        return stopPointObject?.CommonName;
+export const mapCommonNameToStopPoint = (stopPoint: string, collectionOfStopPoints: StopPointObject[]): StopPointObject => {
+    let mappedStopPoint = collectionOfStopPoints.find(
+        (stopPointItem) => stopPointItem?.StopPointRef === stopPoint,
+    );
+    if (!mappedStopPoint) {
+        console.log(`Could not map a common name to the stop point '${stopPoint}'.`)
+        mappedStopPoint = {
+            StopPointRef: stopPoint,
+            CommonName: '',
+        }
     }
-    return "";
+    return mappedStopPoint;
 };
 
-// export const extractStopPointRefs = (
-//     journeyPatternSequence: JourneyPatternTimingLink,
-//     orderedStopPoints: Set<string>,
-//     stopPointsCollection: StopPointObject[],
-// ): StopPointObject[] => {
-//     const stopPointRefFrom: string = journeyPatternSequence?.From[0]?.StopPointRef[0];
-//     orderedStopPoints.add(stopPointRefFrom);
-//     const stopPointRefTo: string = journeyPatternSequence?.To[0]?.StopPointRef[0];
-//     orderedStopPoints.add(stopPointRefTo);
-//     const orderedStopPointObject: StopPointObject[] = orderedStopPoints.forEach(stopPoint => ({
-//         StopPointRef: stopPoint,
-//         CommonName: stopPointsCollection.forEach(stopPointObject =>
-//             mapCommonNameToStopPoint(stopPointObject, stopPoint),
-//         ),
-//     }));
-//     return orderedStopPointObject;
-// };
+export const createOrderedStopPointMap = (journeyPatternTimingLinkArray: JourneyPatternTimingLink[], collectionOfStopPoints: StopPointObject[]): StopPointObject[] => {
+    const orderedListOfStops = journeyPatternTimingLinkArray.flatMap((journeyPatternTimingLink) => [
+        journeyPatternTimingLink?.From[0]?.StopPointRef[0],
+        journeyPatternTimingLink?.To[0]?.StopPointRef[0],
+    ]);
+    const uniqueStops = [...new Set(orderedListOfStops)];
+    const mappedArrayOfOrderedStopPoints = uniqueStops.map(stopPoint =>
+        mapCommonNameToStopPoint(stopPoint, collectionOfStopPoints),
+    );
+    return mappedArrayOfOrderedStopPoints;
+};
 
 export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] => {
     const parsedJson = JSON.parse(parsedXmlData);
@@ -290,15 +291,16 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
         CommonName: stopPointItem?.CommonName[0],
     }));
 
-    // const journeyPatternSections: JourneyPatternSection[] =
-    //     parsedJson?.TransXChange?.JourneyPatternSections[0]?.JourneyPatternSection;
-    // const orderedStopPoints: Set<string> = new Set();
-    // const journeyPatternToStopPointsMap = journeyPatternSections.map(item => ({
-    //     Id: item.$.id,
-    //     OrderedStopPoints: item.JourneyPatternTimingLink.map(journeyPatternSequence =>
-    //         extractStopPointRefs(journeyPatternSequence, orderedStopPoints, stopPointsCollection),
-    //     ),
-    // }));
+    const journeyPatternSections: JourneyPatternSection[] =
+        parsedJson?.TransXChange?.JourneyPatternSections[0]?.JourneyPatternSection;
+
+    const journeyPatternToStopPointsMap: JourneyPatternObject[] = journeyPatternSections.map(journeyPatternSection => ({
+        JourneyPatternRef: journeyPatternSection?.$?.id,
+        OrderedStopPoints: createOrderedStopPointMap(
+            journeyPatternSection?.JourneyPatternTimingLink,
+            stopPointsCollection,
+        ),
+    }));
 
     const cleanedXmlData: TndsDynamoDBData[] = extractedOperators
         .filter((operator: ExtractedOperator): string => operator.NationalOperatorCode[0])
@@ -310,7 +312,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
                 OperatorShortName: operator?.OperatorShortName[0],
                 Description: extractedDescription,
                 StopPoints: stopPointsCollection,
-                // JourneyPatterns: journeyPatternToStopPointsMap,
+                JourneyPatterns: journeyPatternToStopPointsMap,
             }),
         );
 

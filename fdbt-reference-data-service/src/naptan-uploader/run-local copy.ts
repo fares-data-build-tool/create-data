@@ -108,7 +108,7 @@ const streamOutputToCommandLine = async () => {
     };
 
     const journeyPatternObjects = journeyPatternSections.map(journeyPatternSection => ({
-        Id: journeyPatternSection.$.id,
+        JouneryPatternRef: journeyPatternSection.$.id,
         OrderedStopPoints: createOrderedStopPointSet(journeyPatternSection.JourneyPatternTimingLink, stopPointsCollection),
     }));
     console.log(journeyPatternObjects[0]);
