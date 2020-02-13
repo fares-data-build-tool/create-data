@@ -1,5 +1,7 @@
 export default {
     lineName: '13',
+    nocCode: 'IWBU',
+    operatorShortName: 'IWBus',
     fareZones: [
         {
             name: 'Acomb Green Lane',
@@ -301,7 +303,7 @@ export default {
             prices: [
                 {
                     price: '1.00',
-                    fareZones: ['Piccadilly (York)'],
+                    fareZones: [],
                 },
             ],
         },

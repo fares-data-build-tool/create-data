@@ -9,3 +9,5 @@ buckets
 .idea
 
 .vscode
+
+src/netex-convertor/output
