@@ -23,7 +23,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         });
     } catch (error) {
         res.writeHead(302, {
-            Location: '/error',
+            Location: '/_error',
         });
     }
     res.end();

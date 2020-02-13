@@ -33,7 +33,7 @@ Stages.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     const redirectOnError = (): void => {
         if (ctx.res) {
             ctx.res.writeHead(302, {
-                Location: '/error',
+                Location: '/_error',
             });
             ctx.res.end();
         }

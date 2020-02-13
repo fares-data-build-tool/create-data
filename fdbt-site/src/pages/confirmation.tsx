@@ -36,7 +36,7 @@ Confirmation.getInitialProps = (ctx: NextPageContext): {} => {
 
     if (ctx.res) {
         ctx.res.writeHead(302, {
-            Location: '/error',
+            Location: '/_error',
         });
         ctx.res.end();
     }
