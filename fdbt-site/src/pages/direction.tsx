@@ -12,11 +12,11 @@ const description = 'Please select the route direction for your service';
 
 type DirectionProps = {
     Operator: string;
-    LineName: string;
+    lineName: string;
     Journeys: DirectionObject;
 };
 
-const Direction = ({ Operator, LineName, Journeys }: DirectionProps): ReactElement => (
+const Direction = ({ Operator, lineName, Journeys }: DirectionProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/direction" method="post">
@@ -28,7 +28,9 @@ const Direction = ({ Operator, LineName, Journeys }: DirectionProps): ReactEleme
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="direction-operator-linename-hint">
-                            {Operator} - {LineName}
+                            {Operator} - {lineName}
+                        </span>
+                        <span className="govuk-hint" id="direction-journey-description-hint">
                             {Journeys.description}
                         </span>
                         <select className="govuk-select" id="direction" name="direction" defaultValue="">
@@ -36,7 +38,11 @@ const Direction = ({ Operator, LineName, Journeys }: DirectionProps): ReactEleme
                                 Select One
                             </option>
                             {Journeys.journeyPatterns.map(journey => (
-                                <option key={`${journey.JourneyPatternRef}`} value={`${journey.JourneyPatternRef}`} className="journey-option">
+                                <option
+                                    key={`${journey.JourneyPatternRef}`}
+                                    value={`${journey.JourneyPatternRef}`}
+                                    className="journey-option"
+                                >
                                     {journey.Journey}
                                 </option>
                             ))}
@@ -73,18 +79,24 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     if (operatorCookie && serviceCookie) {
         const operatorObject = JSON.parse(operatorCookie);
         const serviceObject = JSON.parse(serviceCookie);
+        const lineName = serviceObject.service.split('#')[0];
+        console.log({ serviceObject });
+        console.log({ lineName });
         let journeys: DirectionObject[] = [];
 
         try {
             if (ctx.req) {
-                journeys = await getJourneysByNocCodeAndLineName(operatorObject.nocCode, serviceObject.lineName);
+                console.log(operatorObject.nocCode);
+                journeys = await getJourneysByNocCodeAndLineName(operatorObject.nocCode, lineName);
+                console.log({ journeys });
             }
 
             if (journeys.length === 0) {
                 redirectOnError();
                 return {};
             }
-            return { operator: operatorObject.operator, lineName: serviceObject.lineName, journeys };
+            console.log({ Operator: operatorObject.operator, lineName, Journeys: journeys[0] });
+            return { Operator: operatorObject.operator, lineName, Journeys: journeys[0] };
         } catch (err) {
             throw new Error(err.message);
         }
