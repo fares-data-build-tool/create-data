@@ -10,19 +10,18 @@ The <PATH_TO_CSV_FILE> will need to be relative to the location of run-local.ts.
 */
 
 interface Stop {
-  stopName: string;
-  naptanCode: string;
-  atcoCode: string;
-  localityCode: string;
-  localityName: string;
-  qualifierName: string;
+    stopName: string;
+    naptanCode: string;
+    atcoCode: string;
+    localityCode: string;
+    localityName: string;
+    qualifierName: string;
 }
 
 // const testArr: string[] = ['stop1', 'stop2', 'stop3', 'stop4', 'stop5', 'stop6', 'stop7'];
 const stops: Stop[] = matchingdata.fareZones.flatMap(zone => zone.stops);
 
-
-export default function streamOutputToCommandLine(arr: Stop[]): string [] {
+export default function streamOutputToCommandLine(arr: Stop[]): string[] {
     const newArr: string[] = [];
     for (let i = 0; i < arr.length - 1; i++) {
         for (let j = i + 1; j < arr.length; j++) {
