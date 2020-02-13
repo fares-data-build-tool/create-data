@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages thankyou should render correctly 1`] = `
+<Layout
+  description="Thank you page for the Fares Data Build Tool"
+  title="Thank You - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper govuk-main-wrapper--l"
+    id="main-content"
+    role="main"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-panel govuk-panel--confirmation"
+      >
+        <h1
+          className="govuk-panel__title"
+        >
+          Application complete
+        </h1>
+        <div
+          className="govuk-panel__body"
+        >
+          Your reference number
+          <br />
+          <strong>
+            a1b2c3d4e5
+          </strong>
+        </div>
+      </div>
+      <h2
+        className="govuk-heading-m"
+      >
+        What happens next
+      </h2>
+      <p
+        className="govuk-body"
+      >
+        Thank you, we've submitted your fares data.
+      </p>
+      <p
+        className="govuk-body"
+      >
+        We will contact you should there be any problem with the data you've provided. Your data will be converted to the NeTEx format and published.
+      </p>
+      <p
+        className="govuk-body"
+      >
+        <a
+          className="govuk-link"
+          href="mailto:fdbt@transportforthenorth.com"
+        >
+          What did you think of this service?
+        </a>
+      </p>
+      <br />
+      <a
+        className="govuk-button govuk-button--start"
+        data-module="govuk-button"
+        draggable="false"
+        href="/index"
+        role="button"
+      >
+        Add another fare
+      </a>
+    </div>
+  </main>
+</Layout>
+`;
