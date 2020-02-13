@@ -23,8 +23,8 @@ const Matching: NextPage = () => (
     </Layout>
 );
 
-// Matching.getInitialProps = async () => {
-//     return {};
-// };
+Matching.getInitialProps = (): {} => {
+    return {};
+};
 
 export default Matching;
