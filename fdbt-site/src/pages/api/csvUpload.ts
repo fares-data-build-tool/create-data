@@ -40,7 +40,7 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
     });
 };
 
-export const putDataInS3 = async (data: FareTriangleData | string, key: string, processed: boolean) => {  // eslint-disable-line @typescript-eslint/explicit-function-return-type
+export const putDataInS3 = async (data: FareTriangleData | string, key: string, processed: boolean): Promise<void> => {
     const s3 = new AWS.S3();
 
     let contentType = '';
@@ -106,8 +106,6 @@ export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => 
     }
 
     const numberOfPrices = fareTriangle.fareStages.flatMap(stage => stage.prices).length;
-
-    console.log(`number of prices is ${numberOfPrices}`); // eslint-disable-line no-console
 
     if (numberOfPrices !== expectedNumberOfPrices) {
         throw new Error('Data conversion has not worked properly.');
@@ -178,7 +176,7 @@ export const fileParse = async (req: NextApiRequest): Promise<File> => {
     };
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {   // eslint-disable-line @typescript-eslint/explicit-function-return-type
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await fileParse(req);
         const isValid = fileChecks(res, formData.Files, formData.FileContent);
