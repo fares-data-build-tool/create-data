@@ -61,7 +61,7 @@ exports[`pages thankyou should render correctly 1`] = `
         className="govuk-button govuk-button--start"
         data-module="govuk-button"
         draggable="false"
-        href="/index"
+        href="/"
         role="button"
       >
         Add another fare

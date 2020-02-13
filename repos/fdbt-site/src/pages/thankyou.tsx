@@ -12,7 +12,7 @@ type ThankyouProps = {
     uuid: string;
 };
 
-const Thankyou = ({ uuid }: ThankyouProps): ReactElement => (
+const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
             <div className="govuk-grid-row">
@@ -37,7 +37,7 @@ const Thankyou = ({ uuid }: ThankyouProps): ReactElement => (
                 </p>
                 <br />
                 <a
-                    href="/index"
+                    href="/"
                     role="button"
                     draggable="false"
                     className="govuk-button govuk-button--start"
@@ -50,7 +50,7 @@ const Thankyou = ({ uuid }: ThankyouProps): ReactElement => (
     </Layout>
 );
 
-Thankyou.getInitialProps = (ctx: NextPageContext): {} => {
+ThankYou.getInitialProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const serviceCookie = cookies[SERVICE_COOKIE];
     if (serviceCookie) {
@@ -63,4 +63,4 @@ Thankyou.getInitialProps = (ctx: NextPageContext): {} => {
     return {};
 };
 
-export default Thankyou;
+export default ThankYou;
