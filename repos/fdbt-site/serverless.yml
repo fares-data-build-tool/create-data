@@ -18,11 +18,10 @@ provider:
         - Effect: 'Allow'
           Action:
               - s3:PutObject
+              - s3:GetObject
           Resource:
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-raw-user-data-${self:provider.stage}
+              - !GetAtt ValidatedUserData.Arn
+              - !GetAtt UnvalidatedUserData.Arn
 
     environment:
         NAPTAN_TABLE_NAME: ${self:provider.stage}-Stops

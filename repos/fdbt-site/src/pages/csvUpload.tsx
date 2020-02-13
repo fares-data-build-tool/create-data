@@ -11,9 +11,11 @@ const CsvUpload: NextPage = (): ReactElement => (
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/csvUpload" method="post" encType="multipart/form-data">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
+                    <fieldset className="govuk-fieldset">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">Please select your file to upload</h1>
+                            <h1 className="govuk-fieldset__heading" aria-describedby="changed-name-hint">
+                                Please select your file to upload
+                            </h1>
                         </legend>
                         <label className="govuk-label" htmlFor="service">
                             Upload a CSV file
