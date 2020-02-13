@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages inputMethod should render correctly 1`] = `
+exports[`pages csvUpload should render correctly 1`] = `
 <Layout
   description="Input method selection page of the Fares data build tool"
   title="Input Method - Fares data build tool"
