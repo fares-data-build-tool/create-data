@@ -51,15 +51,6 @@ const Thankyou = ({ uuid }: ThankyouProps): ReactElement => (
 );
 
 Thankyou.getInitialProps = (ctx: NextPageContext): {} => {
-    const redirectOnError = (): void => {
-        if (ctx.res) {
-            ctx.res.writeHead(302, {
-                Location: '/error',
-            });
-            ctx.res.end();
-        }
-    };
-
     const cookies = parseCookies(ctx);
     const serviceCookie = cookies[SERVICE_COOKIE];
     if (serviceCookie) {
@@ -68,7 +59,6 @@ Thankyou.getInitialProps = (ctx: NextPageContext): {} => {
             uuid: serviceObject.uuid,
         };
     }
-    redirectOnError();
 
     return {};
 };
