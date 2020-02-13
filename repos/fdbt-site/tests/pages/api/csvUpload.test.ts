@@ -103,7 +103,8 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'string',
-                toJSON(): any { // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): any {
+                    // eslint-disable-line @typescript-eslint/no-explicit-any
                     return '';
                 },
             },
@@ -127,14 +128,15 @@ describe('csvUpload', () => {
         expect(outputData).toBe('No file attached.');
     });
 
-    it('should return 302 redirect to /error when a the attached file is too large', async () => {
+    it('should return 302 redirect to /_error when a the attached file is too large', async () => {
         const file = {
             'file-upload-1': {
                 size: 999999999999999,
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {   // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): any {
+                    // eslint-disable-line @typescript-eslint/no-explicit-any
                     return '';
                 },
             },
@@ -152,20 +154,21 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/_error',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
         expect(outputData).toBe('File is too large.');
     });
 
-    it('should return 302 redirect to /error when the attached file is not a csv', async () => {
+    it('should return 302 redirect to /_error when the attached file is not a csv', async () => {
         const file = {
             'file-upload-1': {
                 size: 999,
                 path: 'string',
                 name: 'string',
                 type: 'text/pdf',
-                toJSON(): any { // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): any {
+                    // eslint-disable-line @typescript-eslint/no-explicit-any
                     return '';
                 },
             },
@@ -183,7 +186,7 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/_error',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
         expect(outputData).toBe('File is not a csv.');
@@ -209,7 +212,8 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): any {
+                    // eslint-disable-line @typescript-eslint/no-explicit-any
                     return '';
                 },
             },
@@ -245,7 +249,8 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): any {
+                    // eslint-disable-line @typescript-eslint/no-explicit-any
                     return '';
                 },
             },
@@ -281,7 +286,8 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {   // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): any {
+                    // eslint-disable-line @typescript-eslint/no-explicit-any
                     return '';
                 },
             },
@@ -304,7 +310,7 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/_error',
         });
 
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
@@ -317,7 +323,8 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {   // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): any {
+                    // eslint-disable-line @typescript-eslint/no-explicit-any
                     return '';
                 },
             },
@@ -340,7 +347,7 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/_error',
         });
 
         expect(writeHeadMock).toHaveBeenCalledTimes(1);

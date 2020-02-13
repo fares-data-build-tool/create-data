@@ -5,7 +5,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         console.log(req.body);
     } catch (error) {
         res.writeHead(302, {
-            Location: '/error',
+            Location: '/_error',
         });
     }
 };

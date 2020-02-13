@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import Error from '../../src/pages/error';
+import Error from '../../src/pages/_error';
 
 describe('pages', () => {
     describe('operator', () => {
