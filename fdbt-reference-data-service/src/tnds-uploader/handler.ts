@@ -96,7 +96,6 @@ export interface TndsDynamoDBData {
     Description: string;
     StopPoints: StopPointObject[];
     JourneyPatterns: JourneyPatternObject[];
-    // MostCommonJourney: string;
 }
 
 export interface ServicesDynamoDBData {
@@ -302,54 +301,6 @@ export const createOrderedStopPointMap = (
     return mappedArrayOfOrderedStopPoints;
 };
 
-export const getMostCommonJourneyRef = (
-    journeyPatternToStopPointsMap: JourneyPatternObject[],
-    vehicleJourneys: ExtractedVehicleJourney[],
-) => {
-    console.log({ journeyPatternToStopPointsMap });
-    // let count = 0;
-    const arr: {}[] = [];
-    // for (let a = 0; a < vehicleJourneys.length; a += 1) {
-    //     const journeyPatternRef1 = vehicleJourneys[a].JourneyPatternRef[0];
-    //     for (let b = 0; b < vehicleJourneys.length; b += 1) {
-    //         const journeyPatternRef2 = vehicleJourneys[b].JourneyPatternRef[0];
-    //         if (journeyPatternRef1 === journeyPatternRef2) {
-    //             count += 1;
-    //         }
-    //     }
-    //     const journeyPatternRefCount = {
-    //         JourneyPatternRef: journeyPatternRef1,
-    //         Count: count,
-    //     };
-    //     arr.push(journeyPatternRefCount);
-    //     count = 0;
-    // }
-    // console.log({arr})
-
-
-    const journeryPatternRefCounts: {}[] = vehicleJourneys.reduce(
-        (result, vehicleJourney, index, arrayOfVehicleJourneys) => {
-            let count = 0;
-            for (let i = 0; i < arrayOfVehicleJourneys.length; i += 1) {
-                if (vehicleJourney.JourneyPatternRef[0] === arrayOfVehicleJourneys[index].JourneyPatternRef[0]) {
-                    count += 1;
-                }
-            }
-            const journeyPatternRefCount = {
-                JourneyPatternRef: vehicleJourney.JourneyPatternRef[0],
-                Count: count,
-            };
-            console.log({ journeyPatternRefCount });
-            result.push(journeyPatternRefCount);
-            count = 0;
-            return result;
-        },
-        arr,
-    );
-    console.log({arr})
-    console.log({ journeryPatternRefCounts });
-};
-
 export const extractDataFromParsedXml = (parsedJson: any): ExtractedDataObject => {
     const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
     const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
@@ -384,7 +335,6 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
     const { extractedOperators } = extractedData;
     const { extractedStopPoints } = extractedData;
     const { journeyPatternSections } = extractedData;
-    const { vehicleJourneys } = extractedData;
 
     const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
         StopPointRef: stopPointItem?.StopPointRef[0],
@@ -406,8 +356,6 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
             Journey: `${journeyStartPoint} to ${journeyEndPoint}`,
         };
     });
-    // const mostCommonJourneyRef =
-    getMostCommonJourneyRef(journeyPatternToStopPointsMap, vehicleJourneys);
 
     const cleanedXmlData: TndsDynamoDBData[] = extractedOperators
         .filter((operator: ExtractedOperator): string => operator.NationalOperatorCode[0])
@@ -420,7 +368,6 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
                 Description: extractedDescription,
                 StopPoints: stopPointsCollection,
                 JourneyPatterns: journeyPatternToStopPointsMap,
-                // MostCommonJourney: mostCommonJourneyRef,
             }),
         );
 
