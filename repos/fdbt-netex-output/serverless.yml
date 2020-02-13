@@ -65,7 +65,7 @@ functions:
     NetexConvertor:
         handler: src/netex-convertor/handler.netexConvertorHandler
         events:
-            - s3: fdbt-user-data-${self:provider.stage}
+            - s3: fdbt-matching-data-${self:provider.stage}
               event: s3:ObjectCreated:*
 
     OdhUploader:
