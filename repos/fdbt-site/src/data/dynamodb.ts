@@ -28,9 +28,27 @@ export type ServiceType = {
     startDate: string;
 };
 
-export const convertDateFormat = (startDate: string) => {
+export type DirectionObject = {
+    description: string;
+    journeyPatterns: [
+        {
+            JourneyPatternRef: string;
+            OrderedStopPoints: [
+                {
+                    StopPointRef: string;
+                    CommonName: string;
+                },
+            ];
+            StartPoint: string;
+            EndPoint: string;
+            Journey: string;
+        },
+    ];
+};
+
+export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
-}
+};
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const tableName =
@@ -51,5 +69,36 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         .query(queryInput)
         .promise();
 
-    return Items?.map((item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) })) || [];
+    return (
+        Items?.map(
+            (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
+        ) || []
+    );
+};
+
+export const getJourneysByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<DirectionObject[]> => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
+
+    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
+        TableName: tableName,
+        KeyConditionExpression: '#pkAttNm = :pkAttVal and begins_with (#skAttNm, :skAttVal)',
+        ExpressionAttributeNames: {
+            '#pkAttNm': 'Partition',
+            '#skAttNm': 'Sort',
+        },
+        ExpressionAttributeValues: {
+            ':pkAttVal': nocCode,
+            ':skAttVal': lineName,
+        },
+    };
+
+    const { Items } = await getDynamoDBClient()
+        .query(queryInput)
+        .promise();
+
+    return (
+        Items?.map(
+            (item): DirectionObject => ({ description: item.Description, journeyPatterns: item.JourneyPatterns }),
+        ) || []
+    );
 };
