@@ -8,6 +8,17 @@ import { parseString } from 'xml2js';
 export type ParsedXmlData = TndsDynamoDBData;
 export type ParsedCsvData = ServicesDynamoDBData;
 
+interface ExtractedDataObject {
+    extractedFileName: string;
+    extractedLineName: string;
+    extractedDescription: string;
+    extractedStartDate: string;
+    extractedOperators: ExtractedOperator[];
+    extractedStopPoints: ExtractedStopPoint[];
+    journeyPatternSections: JourneyPatternSection[];
+    vehicleJourneys: ExtractedVehicleJourney[];
+}
+
 interface ExtractedStopPoint {
     StopPointRef: string[];
     CommonName: string[];
@@ -25,6 +36,15 @@ interface ExtractedOperator {
     TradingName: string[];
 }
 
+interface ExtractedVehicleJourney {
+    PrivateCode: string[];
+    VehicleJourneyCode: string[];
+    ServiceRef: string[];
+    LineRef: string[];
+    JourneyPatternRef: string[];
+    DepartureTime: string[];
+}
+
 export interface StopPointObject {
     StopPointRef: string;
     CommonName: string;
@@ -33,6 +53,9 @@ export interface StopPointObject {
 interface JourneyPatternObject {
     JourneyPatternRef: string;
     OrderedStopPoints: StopPointObject[];
+    StartPoint: string;
+    EndPoint: string;
+    Journey: string;
 }
 
 interface JourneyPatternFromTo {
@@ -73,6 +96,7 @@ export interface TndsDynamoDBData {
     Description: string;
     StopPoints: StopPointObject[];
     JourneyPatterns: JourneyPatternObject[];
+    // MostCommonJourney: string;
 }
 
 export interface ServicesDynamoDBData {
@@ -248,22 +272,26 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     console.log('Dynamo DB put request complete.');
 };
 
-export const mapCommonNameToStopPoint = (stopPoint: string, collectionOfStopPoints: StopPointObject[]): StopPointObject => {
-    let mappedStopPoint = collectionOfStopPoints.find(
-        (stopPointItem) => stopPointItem?.StopPointRef === stopPoint,
-    );
+export const mapCommonNameToStopPoint = (
+    stopPoint: string,
+    collectionOfStopPoints: StopPointObject[],
+): StopPointObject => {
+    let mappedStopPoint = collectionOfStopPoints.find(stopPointItem => stopPointItem?.StopPointRef === stopPoint);
     if (!mappedStopPoint) {
-        console.log(`Could not map a common name to the stop point '${stopPoint}'.`)
+        console.log(`Could not map a common name to the stop point '${stopPoint}'.`);
         mappedStopPoint = {
             StopPointRef: stopPoint,
             CommonName: '',
-        }
+        };
     }
     return mappedStopPoint;
 };
 
-export const createOrderedStopPointMap = (journeyPatternTimingLinkArray: JourneyPatternTimingLink[], collectionOfStopPoints: StopPointObject[]): StopPointObject[] => {
-    const orderedListOfStops = journeyPatternTimingLinkArray.flatMap((journeyPatternTimingLink) => [
+export const createOrderedStopPointMap = (
+    journeyPatternTimingLinkArray: JourneyPatternTimingLink[],
+    collectionOfStopPoints: StopPointObject[],
+): StopPointObject[] => {
+    const orderedListOfStops = journeyPatternTimingLinkArray.flatMap(journeyPatternTimingLink => [
         journeyPatternTimingLink?.From[0]?.StopPointRef[0],
         journeyPatternTimingLink?.To[0]?.StopPointRef[0],
     ]);
@@ -274,33 +302,112 @@ export const createOrderedStopPointMap = (journeyPatternTimingLinkArray: Journey
     return mappedArrayOfOrderedStopPoints;
 };
 
-export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] => {
-    const parsedJson = JSON.parse(parsedXmlData);
+export const getMostCommonJourneyRef = (
+    journeyPatternToStopPointsMap: JourneyPatternObject[],
+    vehicleJourneys: ExtractedVehicleJourney[],
+) => {
+    console.log({ journeyPatternToStopPointsMap });
+    // let count = 0;
+    const arr: {}[] = [];
+    // for (let a = 0; a < vehicleJourneys.length; a += 1) {
+    //     const journeyPatternRef1 = vehicleJourneys[a].JourneyPatternRef[0];
+    //     for (let b = 0; b < vehicleJourneys.length; b += 1) {
+    //         const journeyPatternRef2 = vehicleJourneys[b].JourneyPatternRef[0];
+    //         if (journeyPatternRef1 === journeyPatternRef2) {
+    //             count += 1;
+    //         }
+    //     }
+    //     const journeyPatternRefCount = {
+    //         JourneyPatternRef: journeyPatternRef1,
+    //         Count: count,
+    //     };
+    //     arr.push(journeyPatternRefCount);
+    //     count = 0;
+    // }
+    // console.log({arr})
 
+
+    const journeryPatternRefCounts: {}[] = vehicleJourneys.reduce(
+        (result, vehicleJourney, index, arrayOfVehicleJourneys) => {
+            let count = 0;
+            for (let i = 0; i < arrayOfVehicleJourneys.length; i += 1) {
+                if (vehicleJourney.JourneyPatternRef[0] === arrayOfVehicleJourneys[index].JourneyPatternRef[0]) {
+                    count += 1;
+                }
+            }
+            const journeyPatternRefCount = {
+                JourneyPatternRef: vehicleJourney.JourneyPatternRef[0],
+                Count: count,
+            };
+            console.log({ journeyPatternRefCount });
+            result.push(journeyPatternRefCount);
+            count = 0;
+            return result;
+        },
+        arr,
+    );
+    console.log({arr})
+    console.log({ journeryPatternRefCounts });
+};
+
+export const extractDataFromParsedXml = (parsedJson: any): ExtractedDataObject => {
     const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
     const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
     const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
     const extractedStartDate: string =
         parsedJson?.TransXChange?.Services[0]?.Service[0]?.OperatingPeriod[0]?.StartDate[0];
-
     const extractedOperators: ExtractedOperator[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
     const extractedStopPoints: ExtractedStopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
+    const journeyPatternSections: JourneyPatternSection[] =
+        parsedJson?.TransXChange?.JourneyPatternSections[0]?.JourneyPatternSection;
+    const vehicleJourneys: ExtractedVehicleJourney[] = parsedJson?.TransXChange?.VehicleJourneys[0]?.VehicleJourney;
+    return {
+        extractedFileName,
+        extractedLineName,
+        extractedDescription,
+        extractedStartDate,
+        extractedOperators,
+        extractedStopPoints,
+        journeyPatternSections,
+        vehicleJourneys,
+    };
+};
+
+export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] => {
+    const parsedJson = JSON.parse(parsedXmlData);
+
+    const extractedData = extractDataFromParsedXml(parsedJson);
+    const { extractedFileName } = extractedData;
+    const { extractedLineName } = extractedData;
+    const { extractedDescription } = extractedData;
+    const { extractedStartDate } = extractedData;
+    const { extractedOperators } = extractedData;
+    const { extractedStopPoints } = extractedData;
+    const { journeyPatternSections } = extractedData;
+    const { vehicleJourneys } = extractedData;
 
     const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
         StopPointRef: stopPointItem?.StopPointRef[0],
         CommonName: stopPointItem?.CommonName[0],
     }));
 
-    const journeyPatternSections: JourneyPatternSection[] =
-        parsedJson?.TransXChange?.JourneyPatternSections[0]?.JourneyPatternSection;
-
-    const journeyPatternToStopPointsMap: JourneyPatternObject[] = journeyPatternSections.map(journeyPatternSection => ({
-        JourneyPatternRef: journeyPatternSection?.$?.id,
-        OrderedStopPoints: createOrderedStopPointMap(
+    const journeyPatternToStopPointsMap: JourneyPatternObject[] = journeyPatternSections.map(journeyPatternSection => {
+        const orderedStopPoints = createOrderedStopPointMap(
             journeyPatternSection?.JourneyPatternTimingLink,
             stopPointsCollection,
-        ),
-    }));
+        );
+        const journeyStartPoint = orderedStopPoints[0].CommonName;
+        const journeyEndPoint = orderedStopPoints[orderedStopPoints.length - 1].CommonName;
+        return {
+            JourneyPatternRef: journeyPatternSection?.$?.id,
+            OrderedStopPoints: orderedStopPoints,
+            StartPoint: journeyStartPoint,
+            EndPoint: journeyEndPoint,
+            Journey: `${journeyStartPoint} to ${journeyEndPoint}`,
+        };
+    });
+    // const mostCommonJourneyRef =
+    getMostCommonJourneyRef(journeyPatternToStopPointsMap, vehicleJourneys);
 
     const cleanedXmlData: TndsDynamoDBData[] = extractedOperators
         .filter((operator: ExtractedOperator): string => operator.NationalOperatorCode[0])
@@ -313,6 +420,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
                 Description: extractedDescription,
                 StopPoints: stopPointsCollection,
                 JourneyPatterns: journeyPatternToStopPointsMap,
+                // MostCommonJourney: mostCommonJourneyRef,
             }),
         );
 
