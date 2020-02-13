@@ -27,7 +27,7 @@ const InputMethod: NextPage = () => (
                                     value="csv"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="csv-upload">
-                                    Upload (csv)
+                                    Upload (.csv)
                                 </label>
                             </div>
                             <div className="govuk-radios__item">
@@ -41,7 +41,7 @@ const InputMethod: NextPage = () => (
                                     aria-disabled="true"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
-                                    Manual Table Entry
+                                    Manual Fares Triangle input
                                 </label>
                             </div>
                             <div className="govuk-radios__item">
@@ -55,7 +55,7 @@ const InputMethod: NextPage = () => (
                                     aria-disabled="true"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="interactive-map">
-                                    Interactive Map (Beta - requires JavaScript)
+                                    Interactive Map (Beta)
                                 </label>
                             </div>
                         </div>
