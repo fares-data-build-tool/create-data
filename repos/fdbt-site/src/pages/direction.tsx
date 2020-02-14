@@ -31,7 +31,7 @@ const Direction = ({ Operator, lineName, Journeys }: DirectionProps): ReactEleme
                             {Operator} - {lineName}
                         </span>
                         <span className="govuk-hint" id="direction-journey-description-hint">
-                            {Journeys.description}
+                            {`Journey: ${Journeys.description}`}
                         </span>
                         <select className="govuk-select" id="direction" name="direction" defaultValue="">
                             <option value="" disabled>
@@ -39,11 +39,11 @@ const Direction = ({ Operator, lineName, Journeys }: DirectionProps): ReactEleme
                             </option>
                             {Journeys.journeyPatterns.map(journey => (
                                 <option
-                                    key={`${journey.JourneyPatternRef}`}
-                                    value={`${journey.JourneyPatternRef}`}
+                                    key={journey.JourneyPatternRef}
+                                    value={journey.JourneyPatternRef}
                                     className="journey-option"
                                 >
-                                    {journey.Journey}
+                                    {journey.StartPoint} TO {journey.EndPoint}
                                 </option>
                             ))}
                         </select>
