@@ -41,7 +41,6 @@ export type DirectionObject = {
             ];
             StartPoint: string;
             EndPoint: string;
-            Journey: string;
         },
     ];
 };
