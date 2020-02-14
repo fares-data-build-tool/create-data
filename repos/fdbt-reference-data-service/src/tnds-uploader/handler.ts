@@ -55,7 +55,6 @@ interface JourneyPatternObject {
     OrderedStopPoints: StopPointObject[];
     StartPoint: string;
     EndPoint: string;
-    Journey: string;
 }
 
 interface JourneyPatternFromTo {
@@ -353,7 +352,6 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
             OrderedStopPoints: orderedStopPoints,
             StartPoint: journeyStartPoint,
             EndPoint: journeyEndPoint,
-            Journey: `${journeyStartPoint} to ${journeyEndPoint}`,
         };
     });
 
