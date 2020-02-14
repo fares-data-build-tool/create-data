@@ -121,7 +121,7 @@ describe('pages', () => {
             const result = await Service.getInitialProps(ctx);
 
             expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-                Location: '/error',
+                Location: '/_error',
             });
             expect(mockEndFn).toHaveBeenCalled();
             expect(result).toEqual({});
@@ -158,7 +158,7 @@ describe('pages', () => {
             const result = await Service.getInitialProps(ctx);
 
             expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-                Location: '/error',
+                Location: '/_error',
             });
             expect(mockEndFn).toHaveBeenCalled();
             expect(result).toEqual({});
