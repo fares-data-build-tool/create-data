@@ -1,16 +1,16 @@
 import AWS from 'aws-sdk';
 import {
-    StopPointObject,
+    StopPoint,
     csvParser,
     xmlParser,
     fetchDataFromS3AsString,
     formatDynamoWriteRequest,
-    ParsedCsvData,
+    ParsedCsv,
     fileExtensionGetter,
     tableChooser,
     removeFirstLineOfString,
     writeXmlToDynamo,
-    cleanParsedXmlData,
+    cleanParsedXml,
     S3ObjectParameters,
     writeBatchesToDynamo,
     setS3ObjectParams,
@@ -137,7 +137,7 @@ describe('XML to dynamo writer', () => {
     });
 
     it('sends a put request to dynamo', async () => {
-        const parsedData = cleanParsedXmlData(await xmlParser(mocks.testXml));
+        const parsedData = cleanParsedXml(await xmlParser(mocks.testXml));
 
         writeXmlToDynamo({ tableName: 'tableName', parsedXmlLines: parsedData });
 
@@ -145,11 +145,11 @@ describe('XML to dynamo writer', () => {
     });
 });
 
-describe('cleanParsedXmlData', () => {
+describe('cleanParsedXml', () => {
     it('changes the XML to be of the format required', async () => {
         const xmlToBeCleaned = await xmlParser(mocks.testXml);
 
-        const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
+        const cleanedXml = cleanParsedXml(xmlToBeCleaned);
         expect(cleanedXml).toEqual(mocks.mockCleanedXmlData);
     });
 });
@@ -159,7 +159,7 @@ it('returns cleanedXmlData which contains the right primary and sort keys', asyn
     const expectedPartitionKey2 = 'Dannys';
     const expectedSortKey = '1A#2019-12-17#ea_20-1A-A-y08-1.xml';
     const xmlToBeCleaned = await xmlParser(mocks.testXml);
-    const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
+    const cleanedXml = cleanParsedXml(xmlToBeCleaned);
     const partition1 = cleanedXml[0].Partition;
     const partition2 = cleanedXml[1].Partition;
     const sort = cleanedXml[0].Sort;
@@ -179,7 +179,7 @@ it('returns cleanedXmlData which contains the right StopPointRefs and CommonName
         { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
     ];
     const xmlToBeCleaned = await xmlParser(mocks.testXml);
-    const cleanedXml = cleanParsedXmlData(xmlToBeCleaned);
+    const cleanedXml = cleanParsedXml(xmlToBeCleaned);
     const stopPoints = cleanedXml[0].StopPoints;
     expect.assertions(2);
     expect(stopPoints).toHaveLength(5);
@@ -187,16 +187,16 @@ it('returns cleanedXmlData which contains the right StopPointRefs and CommonName
 });
 
 describe('mapCommonNameToStopPoint', () => {
-    it('should map a CommonName to a StopPointRef in the form of a StopPointObject', () => {
+    it('should map a CommonName to a StopPointRef in the form of a StopPoint', () => {
         const stopPoint = '0500SSWAV013';
-        const collectionOfStopPoints: StopPointObject[] = [
+        const collectionOfStopPoints: StopPoint[] = [
             { StopPointRef: '0500SBARH011', CommonName: 'Superstore' },
             { StopPointRef: '0500HFENS007', CommonName: 'Rookery Way' },
             { StopPointRef: '0500HFENS006', CommonName: 'Swan Road' },
             { StopPointRef: '0500HFENS003', CommonName: 'Chequer Street' },
             { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
         ];
-        const expectedMappedStopPoint: StopPointObject = {
+        const expectedMappedStopPoint: StopPoint = {
             StopPointRef: '0500SSWAV013',
             CommonName: 'The Farm',
         };
@@ -206,8 +206,8 @@ describe('mapCommonNameToStopPoint', () => {
 
     it('should return `CommonName: NOT FOUND` and a console.log when a CommonName cannot be found', () => {
         const stopPoint = '0500SSWAV013';
-        const collectionOfStopPoints: StopPointObject[] = [{ StopPointRef: '0500SBARH011', CommonName: 'Superstore' }];
-        const expectedMappedStopPoint: StopPointObject = {
+        const collectionOfStopPoints: StopPoint[] = [{ StopPointRef: '0500SBARH011', CommonName: 'Superstore' }];
+        const expectedMappedStopPoint: StopPoint = {
             StopPointRef: '0500SSWAV013',
             CommonName: '',
         };
@@ -221,7 +221,7 @@ describe('createOrderedStopPointMap', () => {
         const stringifiedData = await xmlParser(mocks.testXml);
         const parsedXmlData = JSON.parse(stringifiedData);
         const journeyPatternSections = parsedXmlData.TransXChange.JourneyPatternSections[0].JourneyPatternSection;
-        const collectionOfStopPoints: StopPointObject[] = [
+        const collectionOfStopPoints: StopPoint[] = [
             { StopPointRef: '0500HFENS003', CommonName: 'Chequer Street' },
             { StopPointRef: '0500SSWAV013', CommonName: 'The Farm' },
             { StopPointRef: '0500HFENS007', CommonName: 'Rookery Way' },
@@ -254,7 +254,7 @@ describe('formatDynamoWriteRequest', () => {
         });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(1, { ...mocks.mockServicesData });
+        const testArrayOfItems: ParsedCsv[] = mocks.createArray(1, { ...mocks.mockServicesData });
         console.log({ testArrayOfItems });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         console.log({ result });
@@ -267,7 +267,7 @@ describe('formatDynamoWriteRequest', () => {
         });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(23, { ...mocks.mockServicesData });
+        const testArrayOfItems: ParsedCsv[] = mocks.createArray(23, { ...mocks.mockServicesData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
@@ -281,7 +281,7 @@ describe('formatDynamoWriteRequest', () => {
         });
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch1, batch2);
-        const testArrayOfItems: ParsedCsvData[] = mocks.createArray(32, { ...mocks.mockServicesData });
+        const testArrayOfItems: ParsedCsv[] = mocks.createArray(32, { ...mocks.mockServicesData });
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
@@ -305,7 +305,7 @@ describe('writeBatchesToDynamo', () => {
 
     it('calls dynamodb.batchwrite() only once for a batch size of 25 or less', async () => {
         // Arrange
-        const parsedCsvLines: ParsedCsvData[] = [{ ...mocks.mockServicesData }];
+        const parsedCsvLines: ParsedCsv[] = [{ ...mocks.mockServicesData }];
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise(): Promise<{}> {
                 return Promise.resolve({});
