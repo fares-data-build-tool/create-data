@@ -34,7 +34,11 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                                 Select One
                             </option>
                             {services.map(service => (
-                                <option key={`${service.lineName}#${service.startDate}`} value={`${service.lineName}#${service.startDate}`} className="service-option">
+                                <option
+                                    key={`${service.lineName}#${service.startDate}`}
+                                    value={`${service.lineName}#${service.startDate}`}
+                                    className="service-option"
+                                >
                                     {service.lineName} - Start date {service.startDate}
                                 </option>
                             ))}
@@ -56,7 +60,7 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     const redirectOnError = (): void => {
         if (ctx.res) {
             ctx.res.writeHead(302, {
-                Location: '/error',
+                Location: '/_error',
             });
             ctx.res.end();
         }

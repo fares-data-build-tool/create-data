@@ -139,7 +139,7 @@ export const fileChecks = (res: NextApiResponse, formData: formidable.Files, fil
     if (fileSize > 5242880) {
         console.log('File is too large.'); // eslint-disable-line no-console
         res.writeHead(302, {
-            Location: '/error',
+            Location: '/_error',
         });
         res.end();
         return false;
@@ -148,7 +148,7 @@ export const fileChecks = (res: NextApiResponse, formData: formidable.Files, fil
     if (fileType !== 'text/csv') {
         console.log('File is not a csv.'); // eslint-disable-line no-console
         res.writeHead(302, {
-            Location: '/error',
+            Location: '/_error',
         });
         res.end();
         return false;
@@ -198,7 +198,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 console.log(error); // eslint-disable-line no-console
 
                 res.writeHead(302, {
-                    Location: '/error',
+                    Location: '/_error',
                 });
                 res.end();
                 return;
@@ -206,7 +206,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         res.writeHead(302, {
-            Location: '/error',
+            Location: '/_error',
         });
     }
 };
