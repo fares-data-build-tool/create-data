@@ -164,3 +164,20 @@ svg:not(:root) {
     background-image: none;
     padding-top: 0px;
 }
+
+.container .box {
+    width: 540px;
+    margin: 50px;
+    display: table;
+}
+
+.container .box .box-row {
+    display: table-row;
+}
+
+.container .box .box-cell {
+    display: table-cell;
+    border: 1px solid black;
+    width: 25%;
+    padding: 10px;
+}

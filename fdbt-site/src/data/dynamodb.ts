@@ -57,3 +57,22 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         ) || []
     );
 };
+
+export const getBusStopNamesAndNaptanCodes = async (journeyId: string) => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Services' : (process.env.TNDS_TABLE_NAME as string);
+
+    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
+        TableName: tableName,
+        KeyConditionExpression: '#pk = :value',
+        ExpressionAttributeNames: {
+            '#pk': 'Partition',
+        },
+        ExpressionAttributeValues: {
+            ':value': journeyId,
+        },
+    };
+
+    await getDynamoDBClient()
+        .query(queryInput)
+        .promise();
+};

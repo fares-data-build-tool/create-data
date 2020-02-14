@@ -2,6 +2,8 @@ import Cookies from 'cookies';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import axios from 'axios';
+import { parseCookies } from 'nookies';
+import { SERVICE_COOKIE } from '../constants';
 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
@@ -39,4 +41,14 @@ export const isSessionValid = async (url: string, req: IncomingMessage | undefin
     } catch (err) {
         return false;
     }
+};
+
+export const getUuidFromCookies = (ctx: NextPageContext) => {
+    const cookies = parseCookies(ctx);
+    const serviceCookie = cookies[SERVICE_COOKIE];
+    if (!serviceCookie) {
+        return {};
+    }
+    const serviceObject = JSON.parse(serviceCookie);
+    return serviceObject.uuid;
 };
