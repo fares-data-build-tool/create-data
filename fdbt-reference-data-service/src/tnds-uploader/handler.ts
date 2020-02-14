@@ -348,7 +348,7 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
             journeyPatternSection?.JourneyPatternTimingLink,
             stopPointsCollection,
         );
-        const journeyStartPoint = orderedStopPoints[0].CommonName;
+        const journeyStartPoint = orderedStopPoints[0]?.CommonName;
         const journeyEndPoint = orderedStopPoints[orderedStopPoints.length - 1].CommonName;
         return {
             JourneyPatternRef: journeyPatternSection?.$?.id,
@@ -359,10 +359,10 @@ export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] =>
     });
 
     const cleanedXmlData: TndsDynamoDBData[] = extractedOperators
-        .filter((operator: ExtractedOperator): string => operator.NationalOperatorCode[0])
+        .filter((operator: ExtractedOperator): string => operator?.NationalOperatorCode[0])
         .map(
             (operator: ExtractedOperator): TndsDynamoDBData => ({
-                Partition: operator.NationalOperatorCode[0],
+                Partition: operator?.NationalOperatorCode[0],
                 Sort: `${extractedLineName}#${extractedStartDate}#${extractedFileName}`,
                 LineName: extractedLineName,
                 OperatorShortName: operator?.OperatorShortName[0],
