@@ -147,7 +147,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: 'Chequer Street',
-                Journey: 'Superstore to Chequer Street',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-2-1-R',
@@ -171,7 +170,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: 'Chequer Street',
-                Journey: 'Superstore to Chequer Street',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-3-2-R',
@@ -219,7 +217,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: '',
-                Journey: 'Superstore to ',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-4-2-R',
@@ -267,7 +264,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: '',
-                Journey: 'Superstore to ',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-5-3-R',
@@ -299,7 +295,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: '',
-                Journey: 'Superstore to ',
             },
         ],
     },
@@ -339,7 +334,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: 'Chequer Street',
-                Journey: 'Superstore to Chequer Street',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-2-1-R',
@@ -363,7 +357,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: 'Chequer Street',
-                Journey: 'Superstore to Chequer Street',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-3-2-R',
@@ -411,7 +404,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: '',
-                Journey: 'Superstore to ',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-4-2-R',
@@ -459,7 +451,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: '',
-                Journey: 'Superstore to ',
             },
             {
                 JourneyPatternRef: 'JPS_20-1A-A-y08-1-5-3-R',
@@ -491,7 +482,6 @@ export const mockCleanedXmlData = [
                 ],
                 StartPoint: 'Superstore',
                 EndPoint: '',
-                Journey: 'Superstore to ',
             },
         ],
     },
