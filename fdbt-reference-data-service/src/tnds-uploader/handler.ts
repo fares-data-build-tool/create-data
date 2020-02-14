@@ -303,7 +303,10 @@ export const createOrderedStopPointMap = (
 export const extractDataFromParsedXml = (parsedJson: any): ExtractedDataObject => {
     const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
     const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
-    const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
+    let extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
+    if (!extractedDescription) {
+        extractedDescription = "";
+    }
     const extractedStartDate: string =
         parsedJson?.TransXChange?.Services[0]?.Service[0]?.OperatingPeriod[0]?.StartDate[0];
     const extractedOperators: ExtractedOperator[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
