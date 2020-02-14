@@ -1,7 +1,9 @@
 import '../design/Pages.scss';
 import React from 'react';
-import { NextPage } from 'next';
+import { NextPage, NextPageContext } from 'next';
 import Layout from '../layout/Layout';
+import { getUserData } from '../data/s3';
+import { getUuidFromCookies } from '../utils';
 
 const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the Fares data build tool';
@@ -13,7 +15,7 @@ const Matching: NextPage = () => (
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="changed-name-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">Matching page</h1>
+                            <h1 className="govuk-fieldset__heading">Matching Bus Stops to Fares Stage</h1>
                         </legend>
                     </fieldset>
                 </div>
@@ -23,8 +25,14 @@ const Matching: NextPage = () => (
     </Layout>
 );
 
-Matching.getInitialProps = (): {} => {
-    return {};
+Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
+    const uuid: string = getUuidFromCookies(ctx);
+    const userData = await getUserData(uuid);
+
+    const fareStages = userData.fareStages.map(item => item.stageName);
+    return {
+        fareStages,
+    };
 };
 
 export default Matching;

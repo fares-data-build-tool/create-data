@@ -10,40 +10,36 @@ exports[`pages operator should render correctly 1`] = `
     id="main-content"
     role="main"
   >
-    <div
-      className="govuk-grid-row"
+    <h1
+      className="govuk-heading-xl"
     >
-      <h1
-        className="govuk-heading-xl"
-      >
-        Sorry, there is a problem with the service.
-      </h1>
-      <p
-        className="govuk-body"
-      >
-        Try again later.
-      </p>
-      <p
-        className="govuk-body"
-      >
-        Your answers have not been saved, click continue to start again.
-      </p>
-      <p
-        className="govuk-body"
-      >
-        Contact us with the feedback button at the top of this page for assistance.
-      </p>
-      <br />
-      <a
-        className="govuk-button govuk-button--start"
-        data-module="govuk-button"
-        draggable="false"
-        href="operator"
-        role="button"
-      >
-        Continue
-      </a>
-    </div>
+      Sorry, there is a problem with the service
+    </h1>
+    <p
+      className="govuk-body"
+    >
+      Try again later.
+    </p>
+    <p
+      className="govuk-body"
+    >
+      Your answers have not been saved, click continue to start again.
+    </p>
+    <p
+      className="govuk-body"
+    >
+      Contact us with the feedback button at the top of this page for assistance.
+    </p>
+    <br />
+    <a
+      className="govuk-button govuk-button--start"
+      data-module="govuk-button"
+      draggable="false"
+      href="operator"
+      role="button"
+    >
+      Continue
+    </a>
   </main>
 </Layout>
 `;

@@ -28,9 +28,7 @@ describe('getInitialProps', () => {
             },
         });
 
-        const res = mockResponse({
-            writeHead: jest.fn(),
-        });
+        const res = mockResponse({});
 
         const expectedResults = {
             uuid: 'd177b8a0-44ed-4e67-9fd0-2d581b5fa91a',
