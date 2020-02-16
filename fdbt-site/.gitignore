@@ -13,3 +13,5 @@ deploy/dev/serverless.yml
 
 coverage
 .vscode
+
+**/.DS_Store
