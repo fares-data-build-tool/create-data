@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages operator should render 404 page correctly 1`] = `
+<Layout
+  description="Error page of the Fares data build tool"
+  title="Error - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div>
+        <h1
+          className="govuk-heading-xl"
+        >
+          Page not found
+        </h1>
+        <p
+          className="govuk-body"
+        >
+          If you entered a web address please check it was correct.
+        </p>
+        <p
+          className="govuk-body"
+        >
+          Click continue to start again.
+        </p>
+      </div>
+      <br />
+      <a
+        className="govuk-button govuk-button--start"
+        data-module="govuk-button"
+        draggable="false"
+        href="operator"
+        role="button"
+      >
+        Continue
+      </a>
+    </div>
+  </main>
+</Layout>
+`;
+
+exports[`pages operator should render error page correctly 1`] = `
+<Layout
+  description="Error page of the Fares data build tool"
+  title="Error - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div>
+        <h1
+          className="govuk-heading-xl"
+        >
+          Sorry, there is a problem with the service.
+        </h1>
+        <p
+          className="govuk-body"
+        >
+          Try again later.
+        </p>
+        <p
+          className="govuk-body"
+        >
+          Your answers have not been saved, click continue to start again.
+        </p>
+        <p
+          className="govuk-body"
+        >
+          Contact us with the feedback button at the top of this page for assistance.
+        </p>
+      </div>
+      <br />
+      <a
+        className="govuk-button govuk-button--start"
+        data-module="govuk-button"
+        draggable="false"
+        href="operator"
+        role="button"
+      >
+        Continue
+      </a>
+    </div>
+  </main>
+</Layout>
+`;

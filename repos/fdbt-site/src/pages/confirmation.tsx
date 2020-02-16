@@ -4,6 +4,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
+import { redirectToError } from './api/apiUtils';
 
 const title = 'Confirmation - Fares data build tool';
 const description = 'Confirmation page of the Fares data build tool';
@@ -35,10 +36,7 @@ Confirmation.getInitialProps = (ctx: NextPageContext): {} => {
     }
 
     if (ctx.res) {
-        ctx.res.writeHead(302, {
-            Location: '/error',
-        });
-        ctx.res.end();
+        redirectToError(ctx.res);
     }
 
     return {};
