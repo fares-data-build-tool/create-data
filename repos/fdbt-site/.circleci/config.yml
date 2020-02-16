@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-    semver-orb: tv2norge/semver-orb@0.0.1
 
 jobs:
     checkout-repo:
@@ -30,6 +28,17 @@ jobs:
                   root: ~/project
                   paths:
                       - 'node_modules'
+
+    audit-site:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      npx audit-ci --moderate
 
     test-site:
         docker:
@@ -66,7 +75,8 @@ jobs:
                   command: |
                       echo "Deploying..."
                       sudo npm i -g serverless
-                      export NODE_ENV='test' && export SLS_DEBUG="*" && sls create_domain --stage=test && sls deploy --stage=test
+                      cd deploy/test
+                      export NODE_ENV='production' && export STAGE='test' && serverless
                       echo "Finished deploy"
 
     deploy-site-to-preprod:
@@ -80,7 +90,8 @@ jobs:
                   command: |
                       echo "Deploying..."
                       sudo npm i -g serverless
-                      export NODE_ENV='preprod' && export SLS_DEBUG="*" && sls create_domain --stage=preprod && sls deploy --stage=preprod
+                      cd deploy/preprod
+                      export NODE_ENV='production' && export STAGE='preprod' && serverless
                       echo "Finished deploy"
 
 workflows:
@@ -103,7 +114,7 @@ workflows:
                               - develop
                               - master
 
-            - test-site:
+            - audit-site:
                   requires:
                       - build-site
                   filters:
@@ -112,9 +123,18 @@ workflows:
                               - develop
                               - master
 
+            - test-site:
+                  requires:
+                      - audit-site
+                  filters:
+                      branches:
+                          only:
+                              - develop
+                              - master
+
             - lint-site:
                   requires:
-                      - build-site
+                      - audit-site
                   filters:
                       branches:
                           only:
