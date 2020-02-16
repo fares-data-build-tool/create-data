@@ -23,8 +23,4 @@ const Matching: NextPage = () => (
     </Layout>
 );
 
-Matching.getInitialProps = (): {} => {
-    return {};
-};
-
 export default Matching;

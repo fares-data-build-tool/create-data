@@ -40,8 +40,20 @@ export const setCookieOnResponseObject = (
     });
 };
 
-export const getUuidFromCookie = (req: NextApiRequest) => {
+export const getUuidFromCookie = (req: NextApiRequest): string => {
     const cookies = getCookies(req);
     const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
     return JSON.parse(operatorCookie).uuid;
+};
+
+export const redirectTo = (res: NextApiResponse, location: string): void => {
+    res.writeHead(302, {
+        Location: location,
+    });
+
+    res.end();
+};
+
+export const redirectToError = (res: NextApiResponse): void => {
+    redirectTo(res, '/error');
 };

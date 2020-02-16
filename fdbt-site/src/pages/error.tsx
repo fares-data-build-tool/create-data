@@ -13,8 +13,4 @@ const Error = (): ReactElement => (
     </Layout>
 );
 
-Error.getInitialProps = (): {} => {
-    return {};
-};
-
 export default Error;
