@@ -1,15 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import v1 from 'uuid';
 import { OPERATOR_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!req.body.operator) {
-            res.writeHead(302, {
-                Location: '/operator',
-            });
-            res.end();
+            redirectTo(res, '/operator');
             return;
         }
 
@@ -18,13 +15,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const cookieValue = JSON.stringify({ operator: operatorName, uuid, nocCode });
         const domain = getDomain(req);
         setCookieOnResponseObject(domain, OPERATOR_COOKIE, cookieValue, res);
-        res.writeHead(302, {
-            Location: '/faretype',
-        });
+        redirectTo(res, '/faretype');
     } catch (error) {
-        res.writeHead(302, {
-            Location: '/_error',
-        });
+        redirectToError(res);
     }
     res.end();
 };

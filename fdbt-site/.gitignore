@@ -3,12 +3,15 @@ node_modules
 jspm_packages
 
 # Serverless directories
-.serverless
 .build
 buckets
 .idea
 .next
 sls-next-build
+.serverless_nextjs
+deploy/dev/serverless.yml
 
 coverage
 .vscode
+
+**/.DS_Store

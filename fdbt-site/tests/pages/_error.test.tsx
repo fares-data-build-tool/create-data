@@ -4,8 +4,13 @@ import Error from '../../src/pages/_error';
 
 describe('pages', () => {
     describe('operator', () => {
-        it('should render correctly', () => {
-            const tree = shallow(<Error />);
+        it('should render error page correctly', () => {
+            const tree = shallow(<Error statusCode={500} />);
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render 404 page correctly', () => {
+            const tree = shallow(<Error statusCode={404} />);
             expect(tree).toMatchSnapshot();
         });
     });

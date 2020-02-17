@@ -1,0 +1,9 @@
+{
+    "name": "b20f05-cejlfjv",
+    "arn": "arn:aws:iam::442445088537:role/b20f05-cejlfjv",
+    "service": ["edgelambda.amazonaws.com", "lambda.amazonaws.com"],
+    "policy": {
+        "arn": "arn:aws:iam::442445088537:policy/next-lambda-policy"
+    },
+    "region": "us-east-1"
+}
