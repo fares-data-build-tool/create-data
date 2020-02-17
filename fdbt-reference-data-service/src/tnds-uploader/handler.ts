@@ -25,7 +25,7 @@ interface RawJourneyPattern {
 }
 
 interface JourneyPatternSection {
-    JourneyPatternRef: string;
+    Id: string;
     OrderedStopPoints: StopPoint[];
     StartPoint: string;
     EndPoint: string;
@@ -58,7 +58,7 @@ export interface JourneyPattern {
     JourneyPatternSections: JourneyPatternSection[];
 }
 
-interface JourneyPatternSequence {
+interface JourneyPatternTimingLinkStopPoint {
     $: {
         SequenceNumber: string;
     };
@@ -71,8 +71,8 @@ interface JourneyPatternTimingLink {
     $: {
         id: string;
     };
-    From: JourneyPatternSequence[];
-    To: JourneyPatternSequence[];
+    From: JourneyPatternTimingLinkStopPoint[];
+    To: JourneyPatternTimingLinkStopPoint[];
     RouteLinkRef: string[];
     RunTime: string[];
 }
@@ -81,7 +81,7 @@ interface RawJourneyPatternSection {
     $: {
         id: string;
     };
-    JourneyPatternTimingLink: JourneyPatternTimingLink[];
+    JourneyPatternTimingLinks: JourneyPatternTimingLink[];
 }
 
 export interface S3ObjectParameters {
@@ -153,7 +153,7 @@ export const removeFirstLineOfString = (xmlData: string): string => {
 export const xmlParser = (xmlData: string): Promise<string> => {
     const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) =>
         parseString(xmlWithoutFirstLine, (err, result) => {
             if (err) {
                 return reject(
@@ -163,8 +163,8 @@ export const xmlParser = (xmlData: string): Promise<string> => {
             const noEmptyResult = omitEmpty(result);
             const stringified = JSON.stringify(noEmptyResult);
             return resolve(stringified);
-        });
-    });
+        })
+    );
 };
 
 export const csvParser = (csvData: string): ParsedCsv[] => {
@@ -283,10 +283,10 @@ export const findCommonNameForStop = (stopPoint: string, collectionOfStopPoints:
 };
 
 export const getOrderedStopPointsForJourneyPatternSection = (
-    journeyPatternTimingLinkArray: JourneyPatternTimingLink[],
+    journeyPatternTimingLinks: JourneyPatternTimingLink[],
     collectionOfStopPoints: StopPoint[],
 ): StopPoint[] => {
-    const orderedListOfStops = journeyPatternTimingLinkArray.flatMap(journeyPatternTimingLink => [
+    const orderedListOfStops = journeyPatternTimingLinks.flatMap(journeyPatternTimingLink => [
         journeyPatternTimingLink?.From[0]?.StopPointRef[0],
         journeyPatternTimingLink?.To[0]?.StopPointRef[0],
     ]);
@@ -345,17 +345,17 @@ export const cleanParsedXml = (parsedXml: string): TndsDynamoDBData[] => {
 
     const journeyPatternSections: JourneyPatternSection[] = rawJourneyPatternSections.map(
         rawJourneyPatternSection => {
-            const orderedStopPoints = getOrderedStopPointsForJourneyPatternSection(
-                rawJourneyPatternSection?.JourneyPatternTimingLink,
+            const sectionStopPoints = getOrderedStopPointsForJourneyPatternSection(
+                rawJourneyPatternSection?.JourneyPatternTimingLinks,
                 stopPointsCollection,
             );
-            const journeyStartPoint = orderedStopPoints[0]?.CommonName;
-            const journeyEndPoint = orderedStopPoints[orderedStopPoints.length - 1]?.CommonName;
+            const sectionStartPoint = sectionStopPoints[0]?.CommonName;
+            const sectionEndPoint = sectionStopPoints[sectionStopPoints.length - 1]?.CommonName;
             return {
-                JourneyPatternRef: rawJourneyPatternSection?.$?.id,
-                OrderedStopPoints: orderedStopPoints,
-                StartPoint: journeyStartPoint,
-                EndPoint: journeyEndPoint,
+                Id: rawJourneyPatternSection?.$?.id,
+                OrderedStopPoints: sectionStopPoints,
+                StartPoint: sectionStartPoint,
+                EndPoint: sectionEndPoint,
             };
         },
     );
@@ -375,7 +375,7 @@ export const cleanParsedXml = (parsedXml: string): TndsDynamoDBData[] => {
             JourneyPatternSections: rawJourneyPattern?.JourneyPatternSectionRefs.map(journeyPatternSectionRef => (
                 findOrThrow(
                     journeyPatternSections,
-                    element => element?.JourneyPatternRef === journeyPatternSectionRef,
+                    section => section?.Id === journeyPatternSectionRef,
                 )
             )),
         }),
