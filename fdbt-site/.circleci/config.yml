@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+    aws-cli: circleci/aws-cli@0.1.20
 
 jobs:
     checkout-repo:
@@ -68,6 +70,7 @@ jobs:
         docker:
             - image: circleci/node:12
         working_directory: ~/project
+        executor: aws-cli/default
         steps:
             - attach_workspace:
                   at: ~/project
@@ -87,6 +90,7 @@ jobs:
         docker:
             - image: circleci/node:12
         working_directory: ~/project
+        executor: aws-cli/default
         steps:
             - attach_workspace:
                   at: ~/project
