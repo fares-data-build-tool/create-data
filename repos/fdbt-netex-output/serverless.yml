@@ -18,11 +18,11 @@ provider:
               - Fn::Join:
                     - ''
                     - - 'arn:aws:s3:::'
-                      - fdbt-user-data-${self:provider.stage}
+                      - fdbt-matching-data-${self:provider.stage}
               - Fn::Join:
                     - ''
                     - - 'arn:aws:s3:::'
-                      - fdbt-user-data-${self:provider.stage}
+                      - fdbt-matching-data-${self:provider.stage}
                       - '/*'
               - Fn::Join:
                     - ''
