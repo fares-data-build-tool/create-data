@@ -10,6 +10,7 @@ buckets
 sls-next-build
 .serverless_nextjs
 deploy/dev/serverless.yml
+**/.serverless
 
 coverage
 .vscode
