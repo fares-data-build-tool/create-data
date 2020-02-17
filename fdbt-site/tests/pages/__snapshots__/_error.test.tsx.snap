@@ -10,8 +10,8 @@ exports[`pages operator should render 404 page correctly 1`] = `
     id="main-content"
     role="main"
   >
-    <h1
-      className="govuk-heading-xl"
+    <div
+      className="govuk-grid-row"
     >
       <div>
         <h1
