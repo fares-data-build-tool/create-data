@@ -1,6 +1,6 @@
-export default {
-    lineName: '13',
-    nocCode: 'IWBU',
+const matchingData = {
+    lineName: '354',
+    nocCode: 'TLCT',
     operatorShortName: 'IWBus',
     fareZones: [
         {
@@ -309,3 +309,5 @@ export default {
         },
     ],
 };
+
+export default matchingData;

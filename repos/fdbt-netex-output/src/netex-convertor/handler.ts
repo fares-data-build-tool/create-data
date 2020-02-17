@@ -1,49 +1,8 @@
 import { S3Event } from 'aws-lambda';
-import generateNetex from './netexGenerator';
+import netexGenerator from './netexGenerator';
 import * as dynamodb from './data/dynamodb';
 import * as s3 from './data/s3';
-
-export interface OperatorData {
-    website: string;
-    ttrteEnq: string;
-    publicName: string;
-    opId: string;
-    vosaPSVLicenseName: string;
-    fareEnq: string;
-    complEnq: string;
-    mode: string;
-}
-
-export interface ServiceData {
-    serviceDescription: string;
-}
-
-export interface Stop {
-    stopName: string;
-    naptanCode: string;
-    atcoCode: string;
-    localityCode: string;
-    localityName: string;
-    qualifierName: string;
-}
-
-export interface FareZonePrices {
-    price: string;
-    fareZones: string[];
-}
-
-export interface FareZone {
-    name: string;
-    stops: Stop[];
-    prices: FareZonePrices[];
-}
-
-export interface MatchingData {
-    lineName: string;
-    nocCode: string;
-    operatorShortName: string;
-    fareZones: FareZone[];
-}
+import { OperatorData, ServiceData, MatchingData } from './types';
 
 const getOperatorsTableData = async (nocCode: string): Promise<OperatorData> => {
     try {
@@ -89,14 +48,15 @@ const getServicesTableData = async (nocCode: string, lineName: string): Promise<
     }
 };
 
-const netexConvertorHandler = async (event: S3Event): Promise<void> => {
+export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
         const matchingData: MatchingData = await s3.fetchMatchingDataFromS3(event);
 
         const operatorData = await getOperatorsTableData(matchingData.nocCode);
         const servicesData = await getServicesTableData(matchingData.nocCode, matchingData.lineName);
 
-        const generatedNetex = await generateNetex(matchingData, operatorData, servicesData);
+        const netexGen = netexGenerator(matchingData, operatorData, servicesData);
+        const generatedNetex = await netexGen.generate();
 
         const fileName = `${matchingData.operatorShortName}_${matchingData.lineName}_${new Date().toISOString()}.xml`;
 
