@@ -49,11 +49,17 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         },
     };
 
-    const { Items } = await dynamoDbClient.query(queryInput).promise();
+    try {
+        const { Items } = await dynamoDbClient.query(queryInput).promise();
 
-    return (
-        Items?.map(
-            (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
-        ) || []
-    );
+        return (
+            Items?.map(
+                (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
+            ) || []
+        );
+    } catch (error) {
+        console.error(`There was an error retrieving the Services from Dynamo: ${error.message}`);
+
+        throw new Error(error.message);
+    }
 };
