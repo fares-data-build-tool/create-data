@@ -81,7 +81,7 @@ interface RawJourneyPatternSection {
     $: {
         id: string;
     };
-    JourneyPatternTimingLinks: JourneyPatternTimingLink[];
+    JourneyPatternTimingLink: JourneyPatternTimingLink[];
 }
 
 export interface S3ObjectParameters {
@@ -346,7 +346,7 @@ export const cleanParsedXml = (parsedXml: string): TndsDynamoDBData[] => {
     const journeyPatternSections: JourneyPatternSection[] = rawJourneyPatternSections.map(
         rawJourneyPatternSection => {
             const sectionStopPoints = getOrderedStopPointsForJourneyPatternSection(
-                rawJourneyPatternSection?.JourneyPatternTimingLinks,
+                rawJourneyPatternSection?.JourneyPatternTimingLink,
                 stopPointsCollection,
             );
             const sectionStartPoint = sectionStopPoints[0]?.CommonName;

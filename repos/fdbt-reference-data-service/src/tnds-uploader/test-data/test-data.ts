@@ -118,7 +118,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-1-1-R',
+                        Id: 'JPS_20-1A-A-y08-1-1-1-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -145,7 +145,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-2-1-R',
+                        Id: 'JPS_20-1A-A-y08-1-2-1-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -172,7 +172,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-3-2-R',
+                        Id: 'JPS_20-1A-A-y08-1-3-2-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -223,7 +223,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-4-2-R',
+                        Id: 'JPS_20-1A-A-y08-1-4-2-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -274,7 +274,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-5-3-R',
+                        Id: 'JPS_20-1A-A-y08-1-5-3-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -318,7 +318,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-1-1-R',
+                        Id: 'JPS_20-1A-A-y08-1-1-1-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -345,7 +345,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-2-1-R',
+                        Id: 'JPS_20-1A-A-y08-1-2-1-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -372,7 +372,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-3-2-R',
+                        Id: 'JPS_20-1A-A-y08-1-3-2-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -423,7 +423,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-4-2-R',
+                        Id: 'JPS_20-1A-A-y08-1-4-2-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
@@ -474,7 +474,7 @@ export const mockCleanedXmlData = [
             {
                 JourneyPatternSections: [
                     {
-                        JourneyPatternRef: 'JPS_20-1A-A-y08-1-5-3-R',
+                        Id: 'JPS_20-1A-A-y08-1-5-3-R',
                         OrderedStopPoints: [
                             {
                                 StopPointRef: '0500SBARH011',
