@@ -50,6 +50,7 @@ provider:
         SERVICES_TABLE_NAME: ${self:provider.stage}-Services
         TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+        NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
 
 custom:
     NaptanTableName:
@@ -79,3 +80,7 @@ plugins:
     - serverless-s3-local
     - serverless-dynamodb-local
     - serverless-offline
+
+package:
+    include:
+        - ./src/netex-convertor/netexTemplate.xml

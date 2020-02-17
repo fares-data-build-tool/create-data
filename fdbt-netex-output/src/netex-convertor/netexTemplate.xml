@@ -51,7 +51,7 @@
 					<!-- ========Responsibility Sets========== -->
 					<responsibilitySets>
 						<ResponsibilitySet version="1.0" id="tariffs">
-							<Name>Opeartor Tariffs</Name>
+							<Name>Operator Tariffs</Name>
 							<roles>
 								<ResponsibilityRoleAssignment version="1.0" id="tariff_data@creates">
 									<DataRoleType>creates</DataRoleType>

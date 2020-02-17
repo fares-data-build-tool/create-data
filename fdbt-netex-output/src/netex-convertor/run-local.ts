@@ -1,37 +1,37 @@
-import matchingdata from './matchingdata';
+import fs from 'fs';
+import format from 'xml-formatter';
+import matchingdata from './testdata/matchingdata';
+import { OperatorData, ServiceData } from './types';
+import netexGenerator from './netexGenerator';
 
-/* eslint-disable no-plusplus */
-/* 
-This file can be used to check the csv parsing and writeBatchesToDynamo functionality.
-It will run the code locally and not actually import data from S3 or push to DynamoDB.
-To run the below, make sure you install 'ts-node'. You can then navigate to the directory
-containing the run-local.ts file and run the command 'ts-node run-local.ts'.
-The <PATH_TO_CSV_FILE> will need to be relative to the location of run-local.ts.
-*/
+const website = 'www.iwbus.co.uk';
+const ttrteEnq = 'email@iwbus.co.uk';
+const opId = '123123';
+const publicName = 'IWBus Transport';
+const vosaPSVLicenseName = 'IWBus Transport Ltd'; // eslint-disable-line @typescript-eslint/camelcase
+const fareEnq = '0113 111 1111';
+const complEnq = 'Apsley Hpuse, 1 Wellington Street, Leeds, LS1 AAA';
+const mode = 'bus';
 
-interface Stop {
-    stopName: string;
-    naptanCode: string;
-    atcoCode: string;
-    localityCode: string;
-    localityName: string;
-    qualifierName: string;
-}
+const operator: OperatorData = {
+    website,
+    ttrteEnq,
+    publicName,
+    opId,
+    vosaPSVLicenseName,
+    fareEnq,
+    complEnq,
+    mode,
+};
 
-// const testArr: string[] = ['stop1', 'stop2', 'stop3', 'stop4', 'stop5', 'stop6', 'stop7'];
-const stops: Stop[] = matchingdata.fareZones.flatMap(zone => zone.stops);
+const service: ServiceData = {
+    serviceDescription: 'Test Description',
+};
 
-export default function streamOutputToCommandLine(arr: Stop[]): string[] {
-    const newArr: string[] = [];
-    for (let i = 0; i < arr.length - 1; i++) {
-        for (let j = i + 1; j < arr.length; j++) {
-            const firstElt = arr[i].stopName;
-            const secondElt = arr[j].stopName;
-            newArr.push(firstElt, secondElt);
-        }
-    }
-    console.log(newArr);
-    return newArr;
-}
+const netexGen = netexGenerator(matchingdata, operator, service);
 
-streamOutputToCommandLine(stops);
+netexGen.generate().then((data: string) => {
+    fs.writeFile('./output/output.xml', format(data), {}, () => {
+        console.log('Written');
+    });
+});
