@@ -12,7 +12,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - "*"
+                      - '*'
 
     build-site:
         docker:
@@ -29,7 +29,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - "node_modules"
+                      - 'node_modules'
 
     audit-site:
         docker:
@@ -74,6 +74,8 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/project
+            - aws-cli/setup:
+                  profile-name: default
             - run:
                   command: |
                       echo "Deploying..."
@@ -94,6 +96,8 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/project
+            - aws-cli/setup:
+                  profile-name: default
             - run:
                   command: |
                       echo "Deploying..."
@@ -157,7 +161,7 @@ workflows:
                   requires:
                       - test-site
                       - lint-site
-                  context: "tfn-fdbt-test"
+                  context: 'tfn-fdbt-test'
                   filters:
                       branches:
                           only: develop
@@ -174,7 +178,7 @@ workflows:
             - deploy-site-to-preprod:
                   requires:
                       - hold-preprod-deployment
-                  context: "tfn-fdbt-preprod"
+                  context: 'tfn-fdbt-preprod'
                   filters:
                       branches:
                           only: master
