@@ -27,6 +27,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             setCookieOnResponseObject(domain, FARETYPE_COOKIE, cookieValue, res);
             redirectTo(res, '/service');
         } catch (error) {
+            console.error(`Error setting faretype: ${error.message}`);
             redirectToError(res);
         }
     } else {
