@@ -1,21 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!req.body.inputMethod) {
-            res.writeHead(302, {
-                Location: '/inputMethod',
-            });
-            res.end();
+            redirectTo(res, '/inputMethod');
             return;
         }
 
         switch (req.body.inputMethod) {
             case 'csv':
-                res.writeHead(302, {
-                    Location: '/csvUpload',
-                });
-                break;
+                redirectTo(res, '/csvUpload');
+                return;
             case 'manual':
                 // redirect to manual page
                 break;
@@ -26,9 +22,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 throw new Error('Input method we expect was not found.');
         }
     } catch (error) {
-        res.writeHead(302, {
-            Location: '/_error',
-        });
+        redirectToError(res);
     }
     res.end();
 };

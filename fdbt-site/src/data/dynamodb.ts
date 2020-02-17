@@ -23,6 +23,8 @@ const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
     return client;
 };
 
+const dynamoDbClient = getDynamoDBClient();
+
 export type ServiceType = {
     lineName: string;
     startDate: string;
@@ -47,9 +49,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         },
     };
 
-    const { Items } = await getDynamoDBClient()
-        .query(queryInput)
-        .promise();
+    const { Items } = await dynamoDbClient.query(queryInput).promise();
 
     return (
         Items?.map(

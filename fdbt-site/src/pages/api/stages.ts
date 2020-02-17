@@ -1,21 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
+import { redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     if (isSessionValid(req) && isCookiesUUIDMatch(req)) {
         try {
-            res.writeHead(302, {
-                Location: '/confirmation',
-            });
+            redirectTo(res, '/confirmation');
         } catch (error) {
-            res.writeHead(302, {
-                Location: '/_error',
-            });
+            redirectToError(res);
         }
     } else {
-        res.writeHead(302, {
-            Location: '/_error',
-        });
+        redirectToError(res);
     }
     res.end();
 };

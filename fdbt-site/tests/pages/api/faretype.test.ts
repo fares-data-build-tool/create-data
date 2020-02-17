@@ -49,7 +49,7 @@ describe('faretype', () => {
         });
     });
 
-    it('should return 302 redirect to /_error when session is not valid', () => {
+    it('should return 302 redirect to /error when session is not valid', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
@@ -65,7 +65,7 @@ describe('faretype', () => {
         });
         faretype(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
     });
 });
