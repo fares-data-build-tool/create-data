@@ -10,7 +10,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - '*'
+                      - "*"
 
     build-site:
         docker:
@@ -27,7 +27,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - 'node_modules'
+                      - "node_modules"
 
     audit-site:
         docker:
@@ -76,7 +76,11 @@ jobs:
                       echo "Deploying..."
                       sudo npm i -g serverless
                       cd deploy/test
+                      echo "Downloading state"
+                      aws s3 sync --delete s3://fdbt-serverless-component-state-test .serverless/
                       export NODE_ENV='production' && export STAGE='test' && serverless
+                      echo "Uploading new state"
+                      aws s3 sync --delete .serverless/ s3://fdbt-serverless-component-state-test
                       echo "Finished deploy"
 
     deploy-site-to-preprod:
@@ -91,7 +95,11 @@ jobs:
                       echo "Deploying..."
                       sudo npm i -g serverless
                       cd deploy/preprod
+                      echo "Downloading state"
+                      aws s3 sync --delete s3://fdbt-serverless-component-state-preprod .serverless/
                       export NODE_ENV='production' && export STAGE='preprod' && serverless
+                      echo "Uploading new state"
+                      aws s3 sync --delete .serverless/ s3://fdbt-serverless-component-state-preprod
                       echo "Finished deploy"
 
 workflows:
@@ -145,7 +153,7 @@ workflows:
                   requires:
                       - test-site
                       - lint-site
-                  context: 'tfn-fdbt-test'
+                  context: "tfn-fdbt-test"
                   filters:
                       branches:
                           only: develop
@@ -162,7 +170,7 @@ workflows:
             - deploy-site-to-preprod:
                   requires:
                       - hold-preprod-deployment
-                  context: 'tfn-fdbt-preprod'
+                  context: "tfn-fdbt-preprod"
                   filters:
                       branches:
                           only: master
