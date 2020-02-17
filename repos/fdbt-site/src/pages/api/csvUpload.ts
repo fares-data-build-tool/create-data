@@ -1,9 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { Files } from 'formidable';
 import fs from 'fs';
-import AWS from 'aws-sdk';
-import { getCookies } from './apiUtils/index';
-import { OPERATOR_COOKIE } from '../../constants';
+import flatMap from 'array.prototype.flatmap';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
+import { putStringInS3 } from '../../data/s3';
+
+const MAX_FILE_SIZE = 5242880;
 
 export type FareTriangle = FareTriangleData;
 export type File = FileData;
@@ -41,8 +43,6 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
 };
 
 export const putDataInS3 = async (data: FareTriangleData | string, key: string, processed: boolean): Promise<void> => {
-    const s3 = new AWS.S3();
-
     let contentType = '';
     let bucketName = '';
 
@@ -58,14 +58,7 @@ export const putDataInS3 = async (data: FareTriangleData | string, key: string, 
         contentType = 'text/csv; charset=utf-8';
     }
 
-    const request: AWS.S3.Types.PutObjectRequest = {
-        Bucket: bucketName,
-        Key: key,
-        Body: data,
-        ContentType: contentType,
-    };
-
-    await s3.putObject(request).promise();
+    await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };
 
 export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => {
@@ -80,94 +73,78 @@ export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => 
 
     const dataAsLines: string[] = dataToMap.split('\n');
 
+    const fareStageCount = dataAsLines.length;
+
+    if (fareStageCount < 2) {
+        throw new Error(`At least 2 fare stages are needed, only ${fareStageCount} found`);
+    }
+
     let expectedNumberOfPrices = 0;
 
-    for (let t = 0; t < dataAsLines.length; t += 1) {
-        expectedNumberOfPrices += t;
-        if (fareTriangle.fareStages[t]) {
-            fareTriangle.fareStages[t].stageName = dataAsLines[t].split(',')[t + 1];
+    for (let i = 0; i < dataAsLines.length; i += 1) {
+        expectedNumberOfPrices += i;
+        if (fareTriangle.fareStages[i]) {
+            fareTriangle.fareStages[i].stageName = dataAsLines[i].split(',')[i + 1];
         } else {
-            fareTriangle.fareStages[t] = {
-                stageName: dataAsLines[t].split(',')[t + 1],
+            fareTriangle.fareStages[i] = {
+                stageName: dataAsLines[i].split(',')[i + 1],
                 prices: [],
             };
         }
-    }
 
-    for (let i = 1; i < dataAsLines.length; i += 1) {
-        const items = dataAsLines[i].split(',');
-        for (let j = 0; j < i + 1; j += 1) {
-            if (fareTriangle.fareStages[j] && items[j + 1] && j !== i) {
-                if (items[j + 1] !== '' && !Number.isNaN(Number(items[j + 1]))) {
-                    fareTriangle.fareStages[j].prices.push(items[j + 1]);
+        if (i > 0) {
+            const items = dataAsLines[i].split(',');
+            for (let j = 0; j < i + 1; j += 1) {
+                if (fareTriangle.fareStages[j] && items[j + 1] && j !== i) {
+                    if (items[j + 1] !== '' && !Number.isNaN(Number(items[j + 1]))) {
+                        fareTriangle.fareStages[j].prices.push(items[j + 1]);
+                    }
                 }
             }
         }
     }
 
-    const numberOfPrices = fareTriangle.fareStages.flatMap(stage => stage.prices).length;
+    const numberOfPrices = flatMap(fareTriangle.fareStages, (stage: { prices: string[] }) => stage.prices).length;
 
     if (numberOfPrices !== expectedNumberOfPrices) {
-        throw new Error('Data conversion has not worked properly.');
+        throw new Error(
+            `Data conversion has not worked properly. Expected ${expectedNumberOfPrices}, got ${numberOfPrices}`,
+        );
     }
 
     return fareTriangle;
 };
 
-export const getUuidFromCookie = (req: NextApiRequest): string => {
-    const cookies = getCookies(req);
-
-    const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
-
-    return JSON.parse(operatorCookie).uuid;
-};
-
-export const fileChecks = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
+export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
     const fileSize = formData['file-upload-1'].size;
-
     const fileType = formData['file-upload-1'].type;
 
     if (!fileContent) {
-        console.log('No file attached.'); // eslint-disable-line no-console
-        res.writeHead(302, {
-            Location: '/csvUpload',
-        });
-        res.end();
+        redirectTo(res, '/csvUpload');
+        console.warn('No file attached.');
+
         return false;
     }
 
-    if (fileSize > 5242880) {
-        console.log('File is too large.'); // eslint-disable-line no-console
-        res.writeHead(302, {
-            Location: '/_error',
-        });
-        res.end();
+    if (fileSize > MAX_FILE_SIZE) {
+        redirectToError(res);
+        console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
+
         return false;
     }
 
     if (fileType !== 'text/csv') {
-        console.log('File is not a csv.'); // eslint-disable-line no-console
-        res.writeHead(302, {
-            Location: '/_error',
-        });
-        res.end();
+        redirectToError(res);
+        console.warn(`File must be of type text/csv, uploaded file is ${fileType}`);
+
         return false;
     }
 
     return true;
 };
 
-export const fileParse = async (req: NextApiRequest): Promise<File> => {
-    const files = await new Promise<Files>((resolve, reject) => {
-        const form = new formidable.IncomingForm();
-        form.parse(req, (err, _fields, file) => {
-            if (err) {
-                return reject(err);
-            }
-            return resolve(file);
-        });
-    });
-
+export const getFormData = async (req: NextApiRequest): Promise<File> => {
+    const files = await formParse(req);
     const fileContent = await fs.promises.readFile(files['file-upload-1'].path, 'utf-8');
 
     return {
@@ -178,35 +155,28 @@ export const fileParse = async (req: NextApiRequest): Promise<File> => {
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
-        const formData = await fileParse(req);
-        const isValid = fileChecks(res, formData.Files, formData.FileContent);
-        if (!isValid) {
+        const formData = await getFormData(req);
+        if (!fileIsValid(res, formData.Files, formData.FileContent)) {
             return;
         }
+
         if (formData.FileContent) {
             try {
                 const uuid = getUuidFromCookie(req);
-                await putDataInS3(formData.FileContent, uuid, false);
+                const date = new Date().toISOString();
+                await putDataInS3(formData.FileContent, `${uuid}_${date}.csv`, false);
                 const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
-                await putDataInS3(fareTriangleData, uuid, true);
-                res.writeHead(302, {
-                    Location: '/matching',
-                });
+                await putDataInS3(fareTriangleData, `${uuid}_${date}.json`, true);
 
-                res.end();
+                redirectTo(res, '/matching');
             } catch (error) {
-                console.log(error); // eslint-disable-line no-console
-
-                res.writeHead(302, {
-                    Location: '/_error',
-                });
-                res.end();
-                return;
+                throw new Error(error.message);
             }
         }
     } catch (error) {
-        res.writeHead(302, {
-            Location: '/_error',
-        });
+        console.error(error.message);
+        redirectToError(res);
     }
+
+    res.end();
 };

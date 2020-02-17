@@ -36,3 +36,36 @@ export const getUserData = async (uuid: string): Promise<UserFareStages> => {
 
     return userData;
 };
+
+const getS3Client = (): AWS.S3 => {
+    let options = {};
+
+    if (process.env.NODE_ENV === 'development') {
+        options = {
+            s3ForcePathStyle: true,
+            accessKeyId: 'S3RVER',
+            secretAccessKey: 'S3RVER',
+            endpoint: new AWS.Endpoint('http://localhost:4572'),
+        };
+    }
+
+    return new AWS.S3(options);
+};
+
+// eslint-disable-next-line import/prefer-default-export
+export const putStringInS3 = async (
+    bucketName: string,
+    key: string,
+    text: string,
+    contentType: string,
+): Promise<void> => {
+    const s3 = getS3Client();
+    const request: AWS.S3.Types.PutObjectRequest = {
+        Bucket: bucketName,
+        Key: key,
+        Body: Buffer.from(text, 'binary'),
+        ContentType: contentType,
+    };
+
+    await s3.putObject(request).promise();
+};

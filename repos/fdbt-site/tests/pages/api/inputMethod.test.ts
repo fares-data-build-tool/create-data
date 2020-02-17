@@ -31,7 +31,7 @@ describe('inputMethod', () => {
         });
     });
 
-    it('should return 302 redirect to /_error when an input method value we dont expect is passed', () => {
+    it('should return 302 redirect to /error when an input method value we dont expect is passed', () => {
         const req = mockRequest({
             connection: {
                 encrypted: false,
@@ -46,7 +46,7 @@ describe('inputMethod', () => {
         inputMethod(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
     });
 

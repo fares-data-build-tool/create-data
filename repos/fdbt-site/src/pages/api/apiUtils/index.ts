@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import setCookie from 'set-cookie';
+import { ServerResponse } from 'http';
 import { OPERATOR_COOKIE } from '../../../constants';
 
 type Cookies = {
@@ -40,8 +41,20 @@ export const setCookieOnResponseObject = (
     });
 };
 
-export const getUuidFromCookie = (req: NextApiRequest) => {
+export const getUuidFromCookie = (req: NextApiRequest): string => {
     const cookies = getCookies(req);
     const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
     return JSON.parse(operatorCookie).uuid;
+};
+
+export const redirectTo = (res: NextApiResponse | ServerResponse, location: string): void => {
+    res.writeHead(302, {
+        Location: location,
+    });
+
+    res.end();
+};
+
+export const redirectToError = (res: NextApiResponse | ServerResponse): void => {
+    redirectTo(res, '/error');
 };

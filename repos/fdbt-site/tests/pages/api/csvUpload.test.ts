@@ -1,75 +1,15 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
-import AWS from 'aws-sdk';
 import * as csvUpload from '../../../src/pages/api/csvUpload';
+import { getUuidFromCookie } from '../../../src/pages/api/apiUtils';
+import * as csvData from '../../testData/csvData';
+import * as s3 from '../../../src/data/s3';
 
-const testCsv: string =
-    ',Acomb Green Lane,,,,,,,\n' +
-    'Mattison Way,110,Mattison Way,,,,,,\n' +
-    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-    'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
-    'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
-    'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)';
-
-const nonNumericPricesTestCsv: string =
-    ',Acomb Green Lane,,,,,,,\n' +
-    'Mattison Way,110,Mattison Way,,,,,,\n' +
-    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-    'Cambridge Street (York),170,d,110,110,Cambridge Street (York),,,\n' +
-    'Blossom Street,170,170,d,110,100,Blossom Street,,\n' +
-    'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,s,100,100,100,Piccadilly (York)';
-
-const missingPricesTestCsv: string =
-    ',Acomb Green Lane,,,,,,,\n' +
-    'Mattison Way,110,Mattison Way,,,,,,\n' +
-    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-    'Cambridge Street (York),170,,110,,Cambridge Street (York),,,\n' +
-    'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
-    'Rail Station (York),170,,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,170,100,,100,Piccadilly (York)';
-
-const unprocessedObject = {
-    Bucket: 'fdbt-raw-user-data',
-    Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
-    Body:
-        ',Acomb Green Lane,,,,,,,\n' +
-        'Mattison Way,110,Mattison Way,,,,,,\n' +
-        'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-        'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-        'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
-        'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
-        'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-        'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)',
-    ContentType: 'text/csv; charset=utf-8',
-};
-
-const processedObject = {
-    Bucket: 'fdbt-user-data',
-    Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
-    Body: {
-        fareStages: [
-            { stageName: 'Acomb Green Lane', prices: ['110', '110', '110', '170', '170', '170', '170'] },
-            { stageName: 'Mattison Way', prices: ['110', '110', '170', '170', '170', '170'] },
-            { stageName: 'Nursery Drive', prices: ['110', '110', '110', '170', '170'] },
-            { stageName: 'Holl Bank/Beech Ave', prices: ['110', '110', '170', '170'] },
-            { stageName: 'Cambridge Street (York)', prices: ['100', '100', '100'] },
-            { stageName: 'Blossom Street', prices: ['100', '100'] },
-            { stageName: 'Rail Station (York)', prices: ['100'] },
-            { stageName: 'Piccadilly (York)', prices: [] },
-        ],
-    },
-    ContentType: 'application/json; charset=utf-8',
-};
+jest.spyOn(s3, 'putStringInS3');
 
 describe('csvUpload', () => {
     let res: mockReqRes.ResponseOutput;
     let writeHeadMock: jest.Mock;
     let outputData = '';
-    const mockS3PutObject = jest.fn();
 
     beforeEach(() => {
         process.env.USER_DATA_BUCKET_NAME = 'fdbt-user-data';
@@ -80,20 +20,9 @@ describe('csvUpload', () => {
         res = mockResponse({
             writeHead: writeHeadMock,
         });
-        const storeLog = (inputs: string): string => (outputData += inputs); // eslint-disable-line no-return-assign
-        console.log = jest.fn(storeLog); // eslint-disable-line no-console
-
-        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
-            return {
-                putObject: mockS3PutObject,
-            };
-        });
-
-        mockS3PutObject.mockImplementation(() => ({
-            promise(): Promise<{}> {
-                return Promise.resolve({});
-            },
-        }));
+        // eslint-disable-next-line no-return-assign
+        const storeLog = (inputs: string): string => (outputData += inputs);
+        console.warn = jest.fn(storeLog);
     });
 
     it('should return 302 redirect to /csvUpload when no file is attached', async () => {
@@ -103,14 +32,13 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'string',
-                toJSON(): any {
-                    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): string {
                     return '';
                 },
             },
         };
 
-        jest.spyOn(csvUpload, 'fileParse')
+        jest.spyOn(csvUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
                 Files: file,
@@ -128,25 +56,24 @@ describe('csvUpload', () => {
         expect(outputData).toBe('No file attached.');
     });
 
-    it('should return 302 redirect to /_error when a the attached file is too large', async () => {
+    it('should return 302 redirect to /error when a the attached file is too large', async () => {
         const file = {
             'file-upload-1': {
                 size: 999999999999999,
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {
-                    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): string {
                     return '';
                 },
             },
         };
 
-        jest.spyOn(csvUpload, 'fileParse')
+        jest.spyOn(csvUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
                 Files: file,
-                FileContent: testCsv,
+                FileContent: csvData.testCsv,
             });
 
         const req = mockRequest({});
@@ -154,31 +81,30 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
-        expect(outputData).toBe('File is too large.');
+        expect(outputData).toBe('File is too large. Uploaded file is 999999999999999 Bytes, max size is 5242880 Bytes');
     });
 
-    it('should return 302 redirect to /_error when the attached file is not a csv', async () => {
+    it('should return 302 redirect to /error when the attached file is not a csv', async () => {
         const file = {
             'file-upload-1': {
                 size: 999,
                 path: 'string',
                 name: 'string',
                 type: 'text/pdf',
-                toJSON(): any {
-                    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): string {
                     return '';
                 },
             },
         };
 
-        jest.spyOn(csvUpload, 'fileParse')
+        jest.spyOn(csvUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
                 Files: file,
-                FileContent: testCsv,
+                FileContent: csvData.testCsv,
             });
 
         const req = mockRequest({});
@@ -186,10 +112,10 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
-        expect(outputData).toBe('File is not a csv.');
+        expect(outputData).toBe('File must be of type text/csv, uploaded file is text/pdf');
     });
 
     it('should get the uuid from the cookie', () => {
@@ -200,7 +126,7 @@ describe('csvUpload', () => {
             },
         });
 
-        const result = csvUpload.getUuidFromCookie(req);
+        const result = getUuidFromCookie(req);
 
         expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
     });
@@ -212,18 +138,17 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {
-                    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): string {
                     return '';
                 },
             },
         };
 
-        jest.spyOn(csvUpload, 'fileParse')
+        jest.spyOn(csvUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
                 Files: file,
-                FileContent: testCsv,
+                FileContent: csvData.testCsv,
             });
 
         const req = mockRequest({
@@ -235,11 +160,21 @@ describe('csvUpload', () => {
 
         await csvUpload.default(req, res);
 
-        expect(mockS3PutObject).toBeCalledWith(unprocessedObject);
+        expect(s3.putStringInS3).toBeCalledWith(
+            'fdbt-raw-user-data',
+            expect.any(String),
+            JSON.stringify(csvData.unprocessedObject.Body),
+            'text/csv; charset=utf-8',
+        );
 
-        expect(mockS3PutObject).toBeCalledWith(processedObject);
+        expect(s3.putStringInS3).toBeCalledWith(
+            'fdbt-user-data',
+            expect.any(String),
+            JSON.stringify(csvData.processedObject.Body),
+            'application/json; charset=utf-8',
+        );
 
-        expect(mockS3PutObject).toBeCalledTimes(2);
+        expect(s3.putStringInS3).toBeCalledTimes(2);
     });
 
     it('should return 302 redirect to /matching when the happy path is used', async () => {
@@ -249,18 +184,17 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {
-                    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): string {
                     return '';
                 },
             },
         };
 
-        jest.spyOn(csvUpload, 'fileParse')
+        jest.spyOn(csvUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
                 Files: file,
-                FileContent: testCsv,
+                FileContent: csvData.testCsv,
             });
 
         const req = mockRequest({
@@ -286,18 +220,17 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {
-                    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): string {
                     return '';
                 },
             },
         };
 
-        jest.spyOn(csvUpload, 'fileParse')
+        jest.spyOn(csvUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
                 Files: file,
-                FileContent: nonNumericPricesTestCsv,
+                FileContent: csvData.nonNumericPricesTestCsv,
             });
 
         const req = mockRequest({
@@ -310,7 +243,7 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
 
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
@@ -323,18 +256,17 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): any {
-                    // eslint-disable-line @typescript-eslint/no-explicit-any
+                toJSON(): string {
                     return '';
                 },
             },
         };
 
-        jest.spyOn(csvUpload, 'fileParse')
+        jest.spyOn(csvUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
                 Files: file,
-                FileContent: missingPricesTestCsv,
+                FileContent: csvData.missingPricesTestCsv,
             });
 
         const req = mockRequest({
@@ -347,7 +279,7 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
 
         expect(writeHeadMock).toHaveBeenCalledTimes(1);

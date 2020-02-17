@@ -1,0 +1,17 @@
+{
+    "name": "b20f05-mlp7vos",
+    "hash": "1A/7DUyMWTkqyBXmjhgVPPzUaJXyvTdDJIs3mFkaLME=",
+    "description": "API Lambda@Edge for Next CloudFront distribution",
+    "memory": 512,
+    "timeout": 10,
+    "code": "/Users/laurencejones/Projects/tfn/repos/fdbt-site/.serverless_nextjs/api-lambda",
+    "shims": [],
+    "handler": "index.handler",
+    "runtime": "nodejs10.x",
+    "env": {},
+    "role": {
+        "arn": "arn:aws:iam::442445088537:role/b20f05-cejlfjv"
+    },
+    "arn": "arn:aws:lambda:us-east-1:442445088537:function:b20f05-mlp7vos",
+    "region": "us-east-1"
+}

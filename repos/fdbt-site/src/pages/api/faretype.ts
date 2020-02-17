@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { FARETYPE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, getCookies, redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -18,28 +18,19 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             if (!faretype) {
-                res.writeHead(302, {
-                    Location: '/faretype',
-                });
-                res.end();
+                redirectTo(res, '/faretype');
                 return;
             }
 
             const cookieValue = JSON.stringify({ faretype, uuid });
             const domain = getDomain(req);
             setCookieOnResponseObject(domain, FARETYPE_COOKIE, cookieValue, res);
-            res.writeHead(302, {
-                Location: '/service',
-            });
+            redirectTo(res, '/service');
         } catch (error) {
-            res.writeHead(302, {
-                Location: '/_error',
-            });
+            redirectToError(res);
         }
     } else {
-        res.writeHead(302, {
-            Location: '/_error',
-        });
+        redirectToError(res);
     }
 
     res.end();

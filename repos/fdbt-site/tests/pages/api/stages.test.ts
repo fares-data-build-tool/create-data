@@ -34,7 +34,7 @@ describe('stages', () => {
         });
     });
 
-    it('should return 302 redirect to /_error when cookie uuid do not match', () => {
+    it('should return 302 redirect to /error when cookie uuid do not match', () => {
         const spyIsSessionValid = jest
             .spyOn(validator, 'isSessionValid')
             .mockImplementation()
@@ -56,11 +56,11 @@ describe('stages', () => {
         expect(spyIsSessionValid).toBeCalled();
         expect(spyIsCookiesUUIDMatch).toBeCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
     });
 
-    it('should return 302 redirect to /_error when session is not valid', () => {
+    it('should return 302 redirect to /error when session is not valid', () => {
         const spyIsSessionValid = jest
             .spyOn(validator, 'isSessionValid')
             .mockImplementation()
@@ -82,11 +82,11 @@ describe('stages', () => {
         expect(spyIsSessionValid).toBeCalled();
         expect(spyIsCookiesUUIDMatch).not.toBeCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
     });
 
-    it('should return 302 redirect to /_error when session is not valid and cookies do not match', () => {
+    it('should return 302 redirect to /error when session is not valid and cookies do not match', () => {
         const spyIsSessionValid = jest
             .spyOn(validator, 'isSessionValid')
             .mockImplementation()
@@ -108,7 +108,7 @@ describe('stages', () => {
         expect(spyIsSessionValid).toBeCalled();
         expect(spyIsCookiesUUIDMatch).not.toBeCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/_error',
+            Location: '/error',
         });
     });
 });

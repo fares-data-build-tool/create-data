@@ -72,8 +72,4 @@ const InputMethod: NextPage = () => (
     </Layout>
 );
 
-InputMethod.getInitialProps = (): {} => {
-    return {};
-};
-
 export default InputMethod;

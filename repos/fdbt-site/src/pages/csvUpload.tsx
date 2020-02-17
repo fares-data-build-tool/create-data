@@ -44,8 +44,4 @@ const CsvUpload: NextPage = (): ReactElement => (
     </Layout>
 );
 
-CsvUpload.getInitialProps = (): {} => {
-    return {};
-};
-
 export default CsvUpload;
