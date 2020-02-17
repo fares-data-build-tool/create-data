@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { SERVICE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, getCookies, redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     if (isSessionValid(req)) {
@@ -11,10 +11,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const { service } = req.body;
 
             if (!service) {
-                res.writeHead(302, {
-                    Location: '/service',
-                });
-                res.end();
+                redirectTo(res, '/service');
                 return;
             }
 
@@ -29,18 +26,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const cookieValue = JSON.stringify({ service, uuid });
             const domain = getDomain(req);
             setCookieOnResponseObject(domain, SERVICE_COOKIE, cookieValue, res);
-            res.writeHead(302, {
-                Location: '/inputMethod',
-            });
+            redirectTo(res, '/inputMethod');
         } catch (error) {
-            res.writeHead(302, {
-                Location: '/_error',
-            });
+            redirectToError(res);
         }
     } else {
-        res.writeHead(302, {
-            Location: '/_error',
-        });
+        redirectToError(res);
     }
     res.end();
 };

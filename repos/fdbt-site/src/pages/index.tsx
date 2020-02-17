@@ -43,8 +43,4 @@ const Home: NextPage = (): ReactElement => (
     </Layout>
 );
 
-Home.getInitialProps = (): {} => {
-    return {};
-};
-
 export default Home;
