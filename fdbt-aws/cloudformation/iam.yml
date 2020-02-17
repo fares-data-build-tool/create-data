@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "CloudFormation template for IAM resources"
+
+Resources:
+  ReadOnlyRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: 386676700885
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: true
+      RoleName: !Sub tfn-readonly-preprod-${AWS::Region}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+
+  Policy:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties:
+      Description: "Policy for cicd accounts"
+      Path: /
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "s3:*"
+              - "logs:*"
+              - "cloudformation:*"
+              - "iam:*"
+              - "cloudfront:*"
+              - "cloudwatch:*"
+              - "waf:*"
+              - "route53:*"
+              - "lambda:*"
+              - "waf-regional:*"
+              - "acm:DescribeCertificate"
+              - "acm:GetCertificate"
+              - "acm:ListTagsForCertificate"
+              - "acm:ListCertificates"
+              - "apigateway:*"
+              - "dynamodb:*"
+            Resource: "*"
+  Group:
+    Type: "AWS::IAM::Group"
+    Properties:
+      GroupName: "cicd"
+      ManagedPolicyArns:
+        - !Ref Policy
+  User:
+    Type: "AWS::IAM::User"
+    Properties:
+      UserName: "circleci"
+      Groups:
+        - !Ref Group

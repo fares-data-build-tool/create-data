@@ -7,7 +7,7 @@ MYUSER=${IAMUSERNAME:=`whoami`}
 MASTER_ACCT=infinityworks
 MASTER_ACCT_ID=386676700885
 MASTER_ACCT_PROFILE=iw
-VALID_ACCOUNTS=( tfn-test )
+VALID_ACCOUNTS=( tfn-test tfn-preprod-ro tfn-preprod-admin iw-sandpit )
 
 # Script should be run in current environment not forked
 if [[ ${BASH_SOURCE[0]} = "${0}" ]]; then
@@ -27,6 +27,18 @@ else
         tfn-test) AWSID=442445088537
              export DEVOPS_ROLE=tfn-devops-test
              export AWS_REGION=eu-west-2
+             ;;
+        tfn-preprod-ro) AWSID=077142786865
+             export DEVOPS_ROLE=tfn-readonly-preprod-eu-west-2
+             export AWS_REGION=eu-west-2
+             ;;
+        tfn-preprod-admin) AWSID=077142786865
+             export DEVOPS_ROLE=OrganizationAccountAccessRole
+             export AWS_REGION=eu-west-2
+             ;;
+        iw-sandpit) AWSID=455073406672
+             export DEVOPS_ROLE=OrganizationAccountAccessRole
+             export AWS_REGION=eu-west-1
              ;;
  		*)	echo "Invalid AWS Account"
             echo "Valid accounts are: ${VALID_ACCOUNTS[*]}"
