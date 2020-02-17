@@ -390,3 +390,248 @@ export const mockDynamoDBItemDataObjectWithAttributeValueAsObjectArray: AWS.Dyna
     Count: 1,
     ScannedCount: 1,
 };
+
+export const fareZoneList = {
+    lineName: '354',
+    nocCode: 'TLCT',
+    operatorShortName: 'IWBus',
+    fareZones: [
+        {
+            name: 'Acomb Green Lane',
+            stops: [
+                {
+                    stopName: 'Queenswood Grove',
+                    naptanCode: '32903623',
+                    atcoCode: '3290YYA03623',
+                    localityCode: 'E0026633',
+                    localityName: 'Bewbush',
+                    qualifierName: 'West Sussex',
+                },
+                {
+                    stopName: 'Kingsthorpe',
+                    naptanCode: '32900077',
+                    atcoCode: '3290YYA00077',
+                    localityCode: 'E0026633',
+                    localityName: 'Bewbush',
+                    qualifierName: 'West Sussex',
+                },
+            ],
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Mattison Way'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: ['Nursery Drive'],
+                },
+                {
+                    price: '2.20',
+                    fareZones: ['Holl Bank/Beech Ave'],
+                },
+            ],
+        },
+        {
+            name: 'Mattison Way',
+            stops: [
+                {
+                    stopName: 'Mattison Way',
+                    naptanCode: '32900359',
+                    atcoCode: '3290YYA00359',
+                    localityCode: 'E0026633',
+                    localityName: 'Bewbush',
+                    qualifierName: 'West Sussex',
+                },
+            ],
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Nursery Drive'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: ['Holl Bank/Beech Ave'],
+                },
+            ],
+        },
+        {
+            name: 'Nursery Drive',
+            stops: [
+                {
+                    stopName: 'Campbell Avenue',
+                    naptanCode: '32900357',
+                    atcoCode: '3290YYA00357',
+                    localityCode: 'E0026633',
+                    localityName: 'Bewbush',
+                    qualifierName: 'West Sussex',
+                },
+            ],
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Holl Bank/Beech Ave'],
+                },
+            ],
+        },
+        {
+            name: 'Holl Bank/Beech Ave',
+            stops: [],
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: [],
+                },
+            ],
+        },
+    ],
+};
+
+export const expectedFareTables = [
+    {
+        Description: { $t: 'Column 1' },
+        Name: { $t: 'Acomb Green Lane' },
+        cells: {
+            Cell: [
+                {
+                    ColumnRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@c1@Acomb_Green_Lane',
+                        versionRef: '1',
+                    },
+                    DistanceMatrixElementPrice: {
+                        DistanceMatrixElementRef: { ref: 'Acomb_Green_Lane+Mattison_Way', version: '1.0' },
+                        GeographicalIntervalPriceRef: { ref: 'price_band_1.10@adult', version: '1.0' },
+                        id: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Mattison_Way',
+                        version: '1.0',
+                    },
+                    RowRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@r3@Mattison_Way',
+                        versionRef: '1',
+                    },
+                    id: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane',
+                    order: 1,
+                    version: '1.0',
+                },
+                {
+                    ColumnRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@c1@Acomb_Green_Lane',
+                        versionRef: '1',
+                    },
+                    DistanceMatrixElementPrice: {
+                        DistanceMatrixElementRef: { ref: 'Acomb_Green_Lane+Nursery_Drive', version: '1.0' },
+                        GeographicalIntervalPriceRef: { ref: 'price_band_1.70@adult', version: '1.0' },
+                        id: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Nursery_Drive',
+                        version: '1.0',
+                    },
+                    RowRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@r2@Nursery_Drive',
+                        versionRef: '1',
+                    },
+                    id: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane',
+                    order: 2,
+                    version: '1.0',
+                },
+                {
+                    ColumnRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@c1@Acomb_Green_Lane',
+                        versionRef: '1',
+                    },
+                    DistanceMatrixElementPrice: {
+                        DistanceMatrixElementRef: {
+                            ref: 'Acomb_Green_Lane+Holl_Bank/Beech_Ave',
+                            version: '1.0',
+                        },
+                        GeographicalIntervalPriceRef: { ref: 'price_band_2.20@adult', version: '1.0' },
+                        id: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Holl_Bank/Beech_Ave',
+                        version: '1.0',
+                    },
+                    RowRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@r1@Holl_Bank/Beech_Ave',
+                        versionRef: '1',
+                    },
+                    id: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane',
+                    order: 3,
+                    version: '1.0',
+                },
+            ],
+        },
+    },
+    {
+        Description: { $t: 'Column 2' },
+        Name: { $t: 'Mattison Way' },
+        cells: {
+            Cell: [
+                {
+                    ColumnRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@c2@Mattison_Way',
+                        versionRef: '1',
+                    },
+                    DistanceMatrixElementPrice: {
+                        DistanceMatrixElementRef: { ref: 'Mattison_Way+Nursery_Drive', version: '1.0' },
+                        GeographicalIntervalPriceRef: { ref: 'price_band_1.10@adult', version: '1.0' },
+                        id: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way+Nursery_Drive',
+                        version: '1.0',
+                    },
+                    RowRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@r2@Nursery_Drive',
+                        versionRef: '1',
+                    },
+                    id: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way',
+                    order: 1,
+                    version: '1.0',
+                },
+                {
+                    ColumnRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@c2@Mattison_Way',
+                        versionRef: '1',
+                    },
+                    DistanceMatrixElementPrice: {
+                        DistanceMatrixElementRef: {
+                            ref: 'Mattison_Way+Holl_Bank/Beech_Ave',
+                            version: '1.0',
+                        },
+                        GeographicalIntervalPriceRef: { ref: 'price_band_1.70@adult', version: '1.0' },
+                        id: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way+Holl_Bank/Beech_Ave',
+                        version: '1.0',
+                    },
+                    RowRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@r1@Holl_Bank/Beech_Ave',
+                        versionRef: '1',
+                    },
+                    id: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way',
+                    order: 2,
+                    version: '1.0',
+                },
+            ],
+        },
+    },
+    {
+        Description: { $t: 'Column 3' },
+        Name: { $t: 'Nursery Drive' },
+        cells: {
+            Cell: [
+                {
+                    ColumnRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@c3@Nursery_Drive',
+                        versionRef: '1',
+                    },
+                    DistanceMatrixElementPrice: {
+                        DistanceMatrixElementRef: {
+                            ref: 'Nursery_Drive+Holl_Bank/Beech_Ave',
+                            version: '1.0',
+                        },
+                        GeographicalIntervalPriceRef: { ref: 'price_band_1.10@adult', version: '1.0' },
+                        id: 'Trip@single-SOP@p-ticket@line_123@adult@Nursery_Drive+Holl_Bank/Beech_Ave',
+                        version: '1.0',
+                    },
+                    RowRef: {
+                        ref: 'Trip@single-SOP@p-ticket@line_123@adult@r1@Holl_Bank/Beech_Ave',
+                        versionRef: '1',
+                    },
+                    id: 'Trip@single-SOP@p-ticket@line_123@adult@Nursery_Drive',
+                    order: 1,
+                    version: '1.0',
+                },
+            ],
+        },
+    },
+];
