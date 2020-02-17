@@ -28,6 +28,10 @@ export type ServiceType = {
     startDate: string;
 };
 
+export type StopType = {
+    stops: string[];
+};
+
 export type DirectionObject = {
     description: string;
     journeyPatterns: [
@@ -75,8 +79,8 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     );
 };
 
-export const getBusStopNamesAndNaptanCodes = async (journeyId: string) => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Services' : (process.env.TNDS_TABLE_NAME as string);
+export const getBusStopNamesAndNaptanCodes = async () => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
 
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
         TableName: tableName,
@@ -85,14 +89,40 @@ export const getBusStopNamesAndNaptanCodes = async (journeyId: string) => {
             '#pk': 'Partition',
         },
         ExpressionAttributeValues: {
-            ':value': journeyId,
+            ':value': '',
         },
     };
 
-    await getDynamoDBClient()
+    const { Items } = await getDynamoDBClient()
         .query(queryInput)
         .promise();
+
+    return Items;
 };
+
+export const getTndsByJourneyId = async (nocCode: string, lineNameStartDate: string) => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
+
+    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
+        TableName: tableName,
+        KeyConditionExpression: '#pk = :value and begins_with(#sk,:sortValue)',
+        ExpressionAttributeNames: {
+            '#pk': 'Partition',
+            '#sk': 'Sort',
+        },
+        ExpressionAttributeValues: {
+            ':value': nocCode,
+            ':sortValue': `${lineNameStartDate}#journey`,
+        },
+    };
+
+    const { Items } = await getDynamoDBClient()
+        .query(queryInput)
+        .promise();
+
+    return Items;
+};
+
 export const getJourneysByNocCodeAndLineName = async (
     nocCode: string,
     lineName: string,
