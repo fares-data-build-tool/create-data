@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "CloudFormation template for S3 resources"
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
+Resources:
+  ServerlessStateBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub fdbt-serverless-component-state-${Stage}
+      VersioningConfiguration:
+        Status: Enabled
+
+  UserDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub fdbt-user-data-${Stage}
+      LifecycleConfiguration:
+        Rules:
+          - ExpirationInDays: 30
+            Status: Enabled
+
+  RawUserDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub fdbt-raw-user-data-${Stage}
+      LifecycleConfiguration:
+        Rules:
+          - ExpirationInDays: 30
+            Status: Enabled

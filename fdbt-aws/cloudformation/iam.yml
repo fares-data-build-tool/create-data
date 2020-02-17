@@ -48,15 +48,43 @@ Resources:
               - "apigateway:*"
               - "dynamodb:*"
             Resource: "*"
+
+  NextJsLambdaPolicy:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties:
+      Description: "Policy for lambda@edge execution role"
+      Path: /
+      ManagedPolicyName: fdbt-nextjs-lambda-policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - "dynamodb:GetItem"
+              - "dynamodb:BatchGetItem"
+              - "dynamodb:PutItem"
+              - "dynamodb:Scan"
+              - "dynamodb:Query"
+              - "dynamodb:UpdateItem"
+              - "s3:PutObject"
+              - "s3:GetObject"
+            Resource: "*"
+
   Group:
     Type: "AWS::IAM::Group"
     Properties:
-      GroupName: "cicd"
+      GroupName: "fdbt-cicd-group"
       ManagedPolicyArns:
         - !Ref Policy
   User:
     Type: "AWS::IAM::User"
     Properties:
-      UserName: "circleci"
+      UserName: "fdbt-circleci-user"
       Groups:
         - !Ref Group
