@@ -8,8 +8,8 @@ import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
 import { redirectToError } from './api/apiUtils';
 
-const title = 'Confirmation - Fares data build tool';
-const description = 'Confirmation page of the Fares data build tool';
+const title = 'Service - Fares data build tool';
+const description = 'Service selection page of the Fares data build tool';
 
 type ServiceProps = {
     operator: string;
