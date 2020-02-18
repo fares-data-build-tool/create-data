@@ -72,26 +72,26 @@ plugins:
 
 functions:
     NaptanUploader:
-        handler: naptan-uploader/handler.s3NaptanHandler
+        handler: handlers/naptan-uploader/handler.s3NaptanHandler
         memorySize: 3008
         events:
             - s3: fdbt-naptan-data-${self:provider.stage}
               event: s3:ObjectCreated:*
 
     NocUploader:
-        handler: noc-uploader/handler.s3NocHandler
+        handler: handlers/noc-uploader/handler.s3NocHandler
         events:
             - s3: fdbt-noc-data-${self:provider.stage}
               event: s3:ObjectCreated:*
 
     NptgUploader:
-        handler: nptg-uploader/handler.s3NptgHandler
+        handler: handlers/nptg-uploader/handler.s3NptgHandler
         events:
             - s3: fdbt-nptg-data-${self:provider.stage}
               event: s3:ObjectCreated:*
 
     TndsUploader:
-        handler: tnds-uploader/handler.s3TndsHandler
+        handler: handlers/tnds-uploader/handler.s3TndsHandler
         events:
             - s3: fdbt-tnds-data-${self:provider.stage}
               event: s3:ObjectCreated:*
