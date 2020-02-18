@@ -6,6 +6,7 @@ import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { getHost, isSessionValid } from '../utils';
 import TableForm from '../components/TableForm';
+import { redirectToError } from './api/apiUtils';
 
 const title = 'Stages - Fares data build tool';
 const description = 'Stages selection page of the Fares data build tool';
@@ -32,10 +33,7 @@ const Stages = ({ operator, service }: StagesProps): ReactElement => (
 Stages.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     const redirectOnError = (): void => {
         if (ctx.res) {
-            ctx.res.writeHead(302, {
-                Location: '/error',
-            });
-            ctx.res.end();
+            redirectToError(ctx.res);
         }
     };
 
