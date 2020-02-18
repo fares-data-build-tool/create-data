@@ -27,7 +27,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - 'src/uploaders/node_modules'
+                      - './src/uploaders/node_modules'
 
     test-reference-data-resources:
         docker:
