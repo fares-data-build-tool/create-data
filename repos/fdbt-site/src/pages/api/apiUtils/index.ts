@@ -40,7 +40,7 @@ export const setCookieOnResponseObject = (
     });
 };
 
-export const getUuidFromCookie = (req: NextApiRequest) => {
+export const getUuidFromCookie = (req: NextApiRequest): string => {
     const cookies = getCookies(req);
     const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
     return JSON.parse(operatorCookie).uuid;
