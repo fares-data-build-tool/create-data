@@ -4,8 +4,8 @@
     "description": "",
     "scripts": {
         "build": "tsc --noEmit",
-        "test": "jest --testRegex src/uploaders/**/*.test.ts",
-        "test:ci": "CI=true jest --testRegex src/uploaders/**/*.test.ts -w 1",
+        "test": "jest --testRegex handlers/**/*.test.ts",
+        "test:ci": "CI=true jest --testRegex handlers/**/*.test.ts -w 1",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts"
     },
@@ -15,7 +15,7 @@
         }
     },
     "lint-staged": {
-        "*.{js,jsx,.ts,.tsx}": [
+        "./handlers/**/*.{js,jsx,.ts,.tsx}": [
             "pretty-quick --staged",
             "eslint --fix"
         ]
