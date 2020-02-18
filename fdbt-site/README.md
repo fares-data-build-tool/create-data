@@ -22,6 +22,11 @@
 -   In order to start dynamo locally navigate to the `fdbt-reference-data-service` and run `make run-dynamodb-local`, this will start dynamo and seed it with some test data
 -   After that you should be able to run `make` in the root of this directory to start localstack and the site together
 
+To generate a new SSL certificate for local development:
+```
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout localhost-cert.key -out localhost-cert.crt -config openssl.conf -extensions 'v3_req'
+```
+
 ## Deploy your version onto AWS
 
 -   Navigate to the `deploy/dev` folder and copy `serverless.yml.example` into a new file called `serverless.yml`.
