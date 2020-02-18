@@ -42,6 +42,7 @@ module.exports = {
                 ts: 'never',
             },
         ],
+        'no-console': 0,
     },
     settings: {
         'import/resolver': {
