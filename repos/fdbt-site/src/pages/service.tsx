@@ -8,8 +8,8 @@ import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
 import { redirectToError } from './api/apiUtils';
 
-const title = 'Confirmation - Fares data build tool';
-const description = 'Confirmation page of the Fares data build tool';
+const title = 'Service - Fares data build tool';
+const description = 'Service selection page of the Fares data build tool';
 
 type ServiceProps = {
     operator: string;
@@ -79,6 +79,7 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
 
             return { operator: operatorObject.operator, services };
         } catch (err) {
+            console.error(err.message);
             throw new Error(err.message);
         }
     }

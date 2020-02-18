@@ -19,6 +19,7 @@ describe('apiUtils', () => {
                 body: {},
                 headers: {
                     host: 'localhost',
+                    origin: 'localhost',
                     cookie: `${OPERATOR_COOKIE}=${operatorCookieValue}; ${SERVICE_COOKIE}=${serviceCookieValue}`,
                 },
             });
@@ -34,6 +35,7 @@ describe('apiUtils', () => {
             const req = new MockReq({
                 headers: {
                     host: 'localhost:3000',
+                    origin: 'localhost:3000',
                 },
             });
             const result = getDomain(req);

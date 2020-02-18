@@ -5,5 +5,5 @@ fdbtTestSiteComponent:
     inputs:
         domain: tfn-test.infinityworks.com
         bucketName: fdbt-static-assets-test
-        policy: arn:aws:iam::442445088537:policy/next-lambda-policy
+        policy: arn:aws:iam::442445088537:policy/fdbt-nextjs-lambda-policy
         nextConfigDir: ../../

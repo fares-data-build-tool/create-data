@@ -1,6 +1,0 @@
-{
-    "name": "fdbt-static-assets-lj-test",
-    "region": "us-east-1",
-    "accelerated": true,
-    "url": "https://fdbt-static-assets-lj-test.s3.amazonaws.com"
-}
