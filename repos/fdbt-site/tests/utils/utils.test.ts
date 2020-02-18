@@ -8,6 +8,7 @@ describe('utils', () => {
             const req = new MockReq({
                 headers: {
                     host: 'localhost',
+                    origin: 'localhost',
                 },
             });
             const result = getHost(req);
@@ -19,6 +20,7 @@ describe('utils', () => {
             const req = new MockReq({
                 headers: {
                     host: 'a.com',
+                    origin: 'https://a.com',
                 },
             });
             const result = getHost(req);

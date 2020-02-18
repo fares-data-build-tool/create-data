@@ -1,20 +1,15 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
-import Layout from '../layout/Layout';
+import { NextPageContext } from 'next';
+import Error from './_error';
 
-const title = 'Error - Fares data build tool';
-const description = 'Error page of the Fares data build tool';
+interface ErrorPageProps {
+    statusCode: number;
+}
 
-const Error = (): ReactElement => (
-    <Layout title={title} description={description}>
-        <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <h1 className="govuk-heading-xl">ERROR</h1>
-        </main>
-    </Layout>
-);
+const ErrorPage = ({ statusCode }: ErrorPageProps): ReactElement => <Error statusCode={statusCode} />;
 
-Error.getInitialProps = (): {} => {
-    return {};
+ErrorPage.getInitialProps = (ctx: NextPageContext): {} => {
+    return { statusCode: ctx?.res?.statusCode };
 };
 
-export default Error;
+export default ErrorPage;
