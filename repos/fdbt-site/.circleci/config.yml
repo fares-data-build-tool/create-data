@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-    semver-orb: tv2norge/semver-orb@0.0.1
+    aws-cli: circleci/aws-cli@0.1.20
 
 jobs:
     checkout-repo:
@@ -31,6 +31,17 @@ jobs:
                   paths:
                       - 'node_modules'
 
+    audit-site:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      npx audit-ci --moderate
+
     test-site:
         docker:
             - image: circleci/node:12
@@ -59,28 +70,44 @@ jobs:
         docker:
             - image: circleci/node:12
         working_directory: ~/project
+        executor: aws-cli/default
         steps:
             - attach_workspace:
                   at: ~/project
+            - aws-cli/setup:
+                  profile-name: default
             - run:
                   command: |
                       echo "Deploying..."
                       sudo npm i -g serverless
-                      export NODE_ENV='test' && export SLS_DEBUG="*" && sls create_domain --stage=test && sls deploy --stage=test
+                      cd deploy/test
+                      echo "Downloading state"
+                      aws s3 sync --delete s3://fdbt-serverless-component-state-test .serverless/
+                      export NODE_ENV='production' && export STAGE='test' && serverless
+                      echo "Uploading new state"
+                      aws s3 sync --delete .serverless/ s3://fdbt-serverless-component-state-test
                       echo "Finished deploy"
 
     deploy-site-to-preprod:
         docker:
             - image: circleci/node:12
         working_directory: ~/project
+        executor: aws-cli/default
         steps:
             - attach_workspace:
                   at: ~/project
+            - aws-cli/setup:
+                  profile-name: default
             - run:
                   command: |
                       echo "Deploying..."
                       sudo npm i -g serverless
-                      export NODE_ENV='preprod' && export SLS_DEBUG="*" && sls create_domain --stage=preprod && sls deploy --stage=preprod
+                      cd deploy/preprod
+                      echo "Downloading state"
+                      aws s3 sync --delete s3://fdbt-serverless-component-state-preprod .serverless/
+                      export NODE_ENV='production' && export STAGE='preprod' && serverless
+                      echo "Uploading new state"
+                      aws s3 sync --delete .serverless/ s3://fdbt-serverless-component-state-preprod
                       echo "Finished deploy"
 
 workflows:
@@ -103,7 +130,7 @@ workflows:
                               - develop
                               - master
 
-            - test-site:
+            - audit-site:
                   requires:
                       - build-site
                   filters:
@@ -112,9 +139,18 @@ workflows:
                               - develop
                               - master
 
+            - test-site:
+                  requires:
+                      - audit-site
+                  filters:
+                      branches:
+                          only:
+                              - develop
+                              - master
+
             - lint-site:
                   requires:
-                      - build-site
+                      - audit-site
                   filters:
                       branches:
                           only:
