@@ -10,7 +10,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && npx audit-ci --moderate"
         }
     },
     "lint-staged": {
@@ -24,10 +24,13 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.36",
         "@types/node": "^12.12.14",
+        "@types/xml-formatter": "^1.1.0",
+        "@types/xml2json": "^0.11.0",
         "aws-lambda": "^1.0.5",
         "aws-sdk": "^2.610.0",
         "typescript": "^3.7.3",
-        "xml2js": "^0.4.22"
+        "xml-formatter": "^1.2.0",
+        "xml2json": "^0.12.0"
     },
     "devDependencies": {
         "@types/aws-lambda-mock-context": "^3.2.0",

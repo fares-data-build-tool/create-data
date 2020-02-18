@@ -9,3 +9,7 @@ buckets
 .idea
 
 .vscode
+
+src/netex-convertor/output
+
+**/.DS_Store
