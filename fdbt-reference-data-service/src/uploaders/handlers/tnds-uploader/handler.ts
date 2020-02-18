@@ -5,18 +5,33 @@ import csvParse from 'csv-parse/lib/sync';
 import { WriteRequest } from 'aws-sdk/clients/dynamodb';
 import { parseString } from 'xml2js';
 
-export type ParsedXmlData = TndsDynamoDBData;
-export type ParsedCsvData = ServicesDynamoDBData;
+export type ParsedXml = TndsDynamoDBData;
+export type ParsedCsv = ServicesDynamoDBData;
 
-interface ExtractedStopPoint {
-    StopPointRef: string[];
-    CommonName: string[];
-    Indicator: string[];
-    LocalityName: string[];
-    LocalityQualifier: string[];
+interface TransportService {
+    FileName: string;
+    LineName: string;
+    ServiceDescription: string;
+    ServiceStartDate: string;
+    Operators: Operator[];
+    StopPoints: StopPoint[];
+    RawJourneyPatternSections: RawJourneyPatternSection[];
+    VehicleJourneys: VehicleJourney[];
+    RawJourneyPatterns: RawJourneyPattern[];
 }
 
-interface ExtractedOperators {
+interface RawJourneyPattern {
+    JourneyPatternSectionRefs: string[];
+}
+
+interface JourneyPatternSection {
+    Id: string;
+    OrderedStopPoints: StopPoint[];
+    StartPoint: string;
+    EndPoint: string;
+}
+
+interface Operator {
     $: {};
     NationalOperatorCode: string[];
     OperatorCode: string[];
@@ -25,9 +40,48 @@ interface ExtractedOperators {
     TradingName: string[];
 }
 
-interface StopPointObject {
+interface VehicleJourney {
+    PrivateCode: string[];
+    VehicleJourneyCode: string[];
+    ServiceRef: string[];
+    LineRef: string[];
+    JourneyPatternRef: string[];
+    DepartureTime: string[];
+}
+
+export interface StopPoint {
     StopPointRef: string;
     CommonName: string;
+}
+
+export interface JourneyPattern {
+    JourneyPatternSections: JourneyPatternSection[];
+}
+
+interface JourneyPatternTimingLinkStopPoint {
+    $: {
+        SequenceNumber: string;
+    };
+    Activity: string[];
+    StopPointRef: string[];
+    TimingStatus: string[];
+}
+
+interface JourneyPatternTimingLink {
+    $: {
+        id: string;
+    };
+    From: JourneyPatternTimingLinkStopPoint[];
+    To: JourneyPatternTimingLinkStopPoint[];
+    RouteLinkRef: string[];
+    RunTime: string[];
+}
+
+interface RawJourneyPatternSection {
+    $: {
+        id: string;
+    };
+    JourneyPatternTimingLink: JourneyPatternTimingLink[];
 }
 
 export interface S3ObjectParameters {
@@ -39,8 +93,8 @@ export interface TndsDynamoDBData {
     Sort?: string;
     LineName: string;
     OperatorShortName: string;
-    Description: string;
-    StopPoints: StopPointObject[];
+    ServiceDescription: string;
+    JourneyPatterns: JourneyPattern[];
 }
 
 export interface ServicesDynamoDBData {
@@ -57,12 +111,12 @@ export interface ServicesDynamoDBData {
 }
 
 interface PushToDynamoXmlInput {
-    parsedXmlLines: ParsedXmlData[];
+    parsedXmlLines: ParsedXml[];
     tableName: string;
 }
 
 interface PushToDynamoCsvInput {
-    parsedCsvLines: ParsedCsvData[];
+    parsedCsvLines: ParsedCsv[];
     tableName: string;
 }
 
@@ -99,7 +153,7 @@ export const removeFirstLineOfString = (xmlData: string): string => {
 export const xmlParser = (xmlData: string): Promise<string> => {
     const xmlWithoutFirstLine = removeFirstLineOfString(xmlData);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) =>
         parseString(xmlWithoutFirstLine, (err, result) => {
             if (err) {
                 return reject(
@@ -109,12 +163,12 @@ export const xmlParser = (xmlData: string): Promise<string> => {
             const noEmptyResult = omitEmpty(result);
             const stringified = JSON.stringify(noEmptyResult);
             return resolve(stringified);
-        });
-    });
+        })
+    );
 };
 
-export const csvParser = (csvData: string): ParsedCsvData[] => {
-    const parsedData: ParsedCsvData[] = csvParse(csvData, {
+export const csvParser = (csvData: string): ParsedCsv[] => {
+    const parsedData: ParsedCsv[] = csvParse(csvData, {
         columns: true,
         skip_empty_lines: true, // eslint-disable-line @typescript-eslint/camelcase
         delimiter: ',',
@@ -123,7 +177,7 @@ export const csvParser = (csvData: string): ParsedCsvData[] => {
 };
 
 export const formatDynamoWriteRequest = (parsedLines: ServicesDynamoDBData[]): AWS.DynamoDB.WriteRequest[][] => {
-    const parsedDataToWriteRequest = (parsedDataItem: ParsedCsvData): AWS.DynamoDB.DocumentClient.WriteRequest => ({
+    const parsedDataToWriteRequest = (parsedDataItem: ParsedCsv): AWS.DynamoDB.DocumentClient.WriteRequest => ({
         PutRequest: {
             Item: {
                 ...parsedDataItem,
@@ -216,33 +270,127 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     console.log('Dynamo DB put request complete.');
 };
 
-export const cleanParsedXmlData = (parsedXmlData: string): TndsDynamoDBData[] => {
-    const parsedJson = JSON.parse(parsedXmlData);
+export const findCommonNameForStop = (stopPoint: string, collectionOfStopPoints: StopPoint[]): StopPoint => {
+    let mappedStopPoint = collectionOfStopPoints.find(stopPointItem => stopPointItem?.StopPointRef === stopPoint);
+    if (!mappedStopPoint) {
+        console.log(`Could not map a common name to the stop point '${stopPoint}'.`);
+        mappedStopPoint = {
+            StopPointRef: stopPoint,
+            CommonName: '',
+        };
+    }
+    return mappedStopPoint;
+};
 
-    const extractedLineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
-    const extractedFileName: string = parsedJson?.TransXChange?.$?.FileName;
-    const extractedDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
-    const extractedStartDate: string =
+export const getOrderedStopPointsForJourneyPatternSection = (
+    journeyPatternTimingLinks: JourneyPatternTimingLink[],
+    collectionOfStopPoints: StopPoint[],
+): StopPoint[] => {
+    const orderedListOfStops = journeyPatternTimingLinks.flatMap(journeyPatternTimingLink => [
+        journeyPatternTimingLink?.From[0]?.StopPointRef[0],
+        journeyPatternTimingLink?.To[0]?.StopPointRef[0],
+    ]);
+    const uniqueStops = [...new Set(orderedListOfStops)];
+    const result = uniqueStops.map(stopPoint => findCommonNameForStop(stopPoint, collectionOfStopPoints));
+    return result;
+};
+
+export const extractJourneyInfoFromParsedXml = (parsedJson: any): TransportService => {
+    const lineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
+    const fileName: string = parsedJson?.TransXChange?.$?.FileName;
+    let serviceDescription: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Description[0];
+    if (!serviceDescription) {
+        serviceDescription = '';
+    }
+    const serviceStartDate: string =
         parsedJson?.TransXChange?.Services[0]?.Service[0]?.OperatingPeriod[0]?.StartDate[0];
 
-    const extractedOperators: ExtractedOperators[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
-    const extractedStopPoints: ExtractedStopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
+    const rawJourneyPatterns: RawJourneyPattern[] =
+        parsedJson?.TransXChange?.Services[0]?.Service[0]?.StandardService[0].JourneyPattern;
+    const operators: Operator[] = parsedJson?.TransXChange?.Operators[0]?.Operator;
+    const stopPoints: StopPoint[] = parsedJson?.TransXChange?.StopPoints[0]?.AnnotatedStopPointRef;
+    const rawJourneyPatternSections: RawJourneyPatternSection[] =
+        parsedJson?.TransXChange?.JourneyPatternSections[0]?.JourneyPatternSection;
+    const vehicleJourneys: VehicleJourney[] = parsedJson?.TransXChange?.VehicleJourneys[0]?.VehicleJourney;
+    return {
+        FileName: fileName,
+        LineName: lineName,
+        ServiceDescription: serviceDescription,
+        ServiceStartDate: serviceStartDate,
+        Operators: operators,
+        StopPoints: stopPoints,
+        RawJourneyPatternSections: rawJourneyPatternSections,
+        VehicleJourneys: vehicleJourneys,
+        RawJourneyPatterns: rawJourneyPatterns,
+    };
+};
 
-    const stopPointsCollection: StopPointObject[] = extractedStopPoints.map(stopPointItem => ({
+export const cleanParsedXml = (parsedXml: string): TndsDynamoDBData[] => {
+    const parsedJson = JSON.parse(parsedXml);
+
+    const extractedData = extractJourneyInfoFromParsedXml(parsedJson);
+    const fileName = extractedData.FileName;
+    const lineName = extractedData.LineName;
+    const serviceDescription = extractedData.ServiceDescription;
+    const serviceStartDate = extractedData.ServiceStartDate;
+    const operators = extractedData.Operators;
+    const stopPoints = extractedData.StopPoints;
+    const rawJourneyPatternSections = extractedData.RawJourneyPatternSections;
+    const rawJourneyPatterns = extractedData.RawJourneyPatterns;
+
+    const stopPointsCollection: StopPoint[] = stopPoints.map(stopPointItem => ({
         StopPointRef: stopPointItem?.StopPointRef[0],
         CommonName: stopPointItem?.CommonName[0],
     }));
 
-    const cleanedXmlData: TndsDynamoDBData[] = extractedOperators
-        .filter((operator: ExtractedOperators): string => operator.NationalOperatorCode?.[0])
+    const journeyPatternSections: JourneyPatternSection[] = rawJourneyPatternSections.map(
+        rawJourneyPatternSection => {
+            const sectionStopPoints = getOrderedStopPointsForJourneyPatternSection(
+                rawJourneyPatternSection?.JourneyPatternTimingLink,
+                stopPointsCollection,
+            );
+            const sectionStartPoint = sectionStopPoints[0]?.CommonName;
+            const sectionEndPoint = sectionStopPoints[sectionStopPoints.length - 1]?.CommonName;
+            return {
+                Id: rawJourneyPatternSection?.$?.id,
+                OrderedStopPoints: sectionStopPoints,
+                StartPoint: sectionStartPoint,
+                EndPoint: sectionEndPoint,
+            };
+        },
+    );
+
+    const findOrThrow = <T>(values: T[], predicate: (value: T) => boolean): T => {
+        const element = values.find(predicate);
+
+        if (!element) {
+            throw new Error('No matching element found');
+        }
+
+        return element;
+    };
+
+    const journeyPatterns: JourneyPattern[] = rawJourneyPatterns.map(
+        (rawJourneyPattern): JourneyPattern => ({
+            JourneyPatternSections: rawJourneyPattern?.JourneyPatternSectionRefs.map(journeyPatternSectionRef => (
+                findOrThrow(
+                    journeyPatternSections,
+                    section => section?.Id === journeyPatternSectionRef,
+                )
+            )),
+        }),
+    );
+
+    const cleanedXmlData: TndsDynamoDBData[] = operators
+        .filter((operator: Operator): string => operator?.NationalOperatorCode[0])
         .map(
-            (operator: ExtractedOperators): TndsDynamoDBData => ({
-                Partition: operator.NationalOperatorCode[0],
-                Sort: `${extractedLineName}#${extractedStartDate}#${extractedFileName}`,
-                LineName: extractedLineName,
+            (operator: Operator): TndsDynamoDBData => ({
+                Partition: operator?.NationalOperatorCode[0],
+                Sort: `${lineName}#${serviceStartDate}#${fileName}`,
+                LineName: lineName,
                 OperatorShortName: operator?.OperatorShortName[0],
-                Description: extractedDescription,
-                StopPoints: stopPointsCollection,
+                ServiceDescription: serviceDescription,
+                JourneyPatterns: journeyPatterns,
             }),
         );
 
@@ -275,27 +423,27 @@ export const s3TndsHandler = async (event: S3Event): Promise<void> => {
     const tableName = tableChooser(fileExtension);
 
     if (tableName === process.env.TNDS_TABLE_NAME) {
-        const parsedXmlData: string = await xmlParser(stringifiedS3Data);
+        const parsedXml: string = await xmlParser(stringifiedS3Data);
 
-        if (!parsedXmlData) {
+        if (!parsedXml) {
             throw Error('Data parsing has failed, stopping before database writing occurs.');
         }
 
-        const cleanedXmlData = cleanParsedXmlData(parsedXmlData);
+        const cleanedXmlData = cleanParsedXml(parsedXml);
 
         await writeXmlToDynamo({
             tableName,
             parsedXmlLines: cleanedXmlData,
         });
     } else if (tableName === process.env.SERVICES_TABLE_NAME) {
-        const parsedCsvData = csvParser(stringifiedS3Data);
+        const parsedCsv = csvParser(stringifiedS3Data);
 
-        if (!parsedCsvData) {
+        if (!parsedCsv) {
             throw Error('Data parsing has failed, stopping before database writing occurs.');
         }
         await writeBatchesToDynamo({
             tableName,
-            parsedCsvLines: parsedCsvData,
+            parsedCsvLines: parsedCsv,
         });
     }
 };
