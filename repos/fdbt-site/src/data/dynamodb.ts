@@ -23,6 +23,8 @@ const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
     return client;
 };
 
+const dynamoDbClient = getDynamoDBClient();
+
 export type ServiceType = {
     lineName: string;
     startDate: string;
@@ -40,8 +42,14 @@ interface RawJourneyPattern {
 }
 
 interface JourneyPattern {
-    startPoint: string;
-    endPoint: string;
+    startPoint: {
+        Id: string;
+        Display: string;
+    };
+    endPoint: {
+        Id: string;
+        Display: string;
+    };
 }
 
 export type ServiceInformation = {
@@ -68,15 +76,16 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         },
     };
 
-    const { Items } = await getDynamoDBClient()
-        .query(queryInput)
-        .promise();
-
-    return (
-        Items?.map(
-            (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
-        ) || []
-    );
+    try {
+        const { Items } = await dynamoDbClient.query(queryInput).promise();
+        return (
+            Items?.map(
+                (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
+            ) || []
+        );
+    } catch (err) {
+        throw new Error(`Could not retrieve services from DynamoDB: ${err.name}, ${err.message}`);
+    }
 };
 
 export const getStopPointLocalityByAtcoCode = async (atcoCode: string): Promise<string> => {
@@ -130,6 +139,10 @@ export const getJourneyPatternsAndLocalityByNocCodeAndLineName = async (
 
     const service = Items?.[0];
 
+    if (!service || !service.JourneyPatterns || service.JourneyPatterns.length === 0) {
+        throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
+    }
+
     const displayedService = {
         serviceDescription: service?.ServiceDescription as string,
         journeyPatterns: (await Promise.all(
@@ -142,8 +155,14 @@ export const getJourneyPatternsAndLocalityByNocCodeAndLineName = async (
                     const endPointLocality = await getStopPointLocalityByAtcoCode(endPoint.StopPointRef);
 
                     return {
-                        startPoint: `${startPoint.CommonName}${startPointLocality ? `,${startPointLocality}` : ''}`,
-                        endPoint: `${endPoint.CommonName}${endPointLocality ? `,${endPointLocality}` : ''}`,
+                        startPoint: {
+                            Display: `${startPoint.CommonName}${startPointLocality ? `,${startPointLocality}` : ''}`,
+                            Id: startPoint.StopPointRef,
+                        },
+                        endPoint: {
+                            Display: `${endPoint.CommonName}${endPointLocality ? `,${endPointLocality}` : ''}`,
+                            Id: endPoint.StopPointRef,
+                        },
                     };
                 },
             ),

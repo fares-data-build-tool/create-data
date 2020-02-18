@@ -1,8 +1,0 @@
-custom:
-    enableCloudfront: false
-    customDomain:
-        domainName: tfn-test.infinityworks.com
-        basePath: ''
-        stage: ${self:provider.stage}
-        createRoute53Record: true
-        certificateName: '*.tfn-test.infinityworks.com'
