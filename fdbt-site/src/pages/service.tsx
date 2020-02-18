@@ -7,8 +7,8 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
 
-const title = 'Confirmation - Fares data build tool';
-const description = 'Confirmation page of the Fares data build tool';
+const title = 'Service - Fares data build tool';
+const description = 'Service selection page of the Fares data build tool';
 
 type ServiceProps = {
     operator: string;
@@ -34,7 +34,11 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                                 Select One
                             </option>
                             {services.map(service => (
-                                <option key={`${service.lineName}#${service.startDate}`} value={`${service.lineName}#${service.startDate}`} className="service-option">
+                                <option
+                                    key={`${service.lineName}#${service.startDate}`}
+                                    value={`${service.lineName}#${service.startDate}`}
+                                    className="service-option"
+                                >
                                     {service.lineName} - Start date {service.startDate}
                                 </option>
                             ))}
