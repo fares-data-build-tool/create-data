@@ -142,6 +142,7 @@
 .cls-1 {
     fill: #49499e;
 }
+
 .cls-2 {
     fill: #00bdd0;
 }
@@ -180,4 +181,14 @@ svg:not(:root) {
     border: 1px solid black;
     width: 25%;
     padding: 10px;
+}
+
+.inline-select {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.inline-select select {
+    margin-left: auto;
 }

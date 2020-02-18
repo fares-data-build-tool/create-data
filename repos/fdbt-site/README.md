@@ -5,7 +5,7 @@
 ## Requirements
 
 -   Node.js 12+
--   Localstack CLI
+-   Localstack & Localstack AWS CLI
 -   AWS CLI
 -   Python 3 / Pip
 -   Docker
