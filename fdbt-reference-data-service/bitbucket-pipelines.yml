@@ -9,8 +9,8 @@ pipelines:
         caches:
           - node-modules-reference-data-resources
         script:
-          - npm ci
-          - CI=true npm test -- --coverage --detectOpenHandles
+          - npm --prefix src/uploaders ci
+          - npm --prefix src/uploaders run test:ci -- --coverage --detectOpenHandles
 
 definitions:
   caches:

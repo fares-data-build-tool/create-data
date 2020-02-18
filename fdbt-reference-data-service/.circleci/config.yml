@@ -22,12 +22,12 @@ jobs:
             - run:
                   command: |
                       echo "Starting build"
-                      npm install
-                      npm run build
+                      npm --prefix src/uploaders install
+                      npm --prefix src/uploaders run build
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - './node_modules'
+                      - './src/uploaders/node_modules'
 
     test-reference-data-resources:
         docker:
@@ -39,7 +39,7 @@ jobs:
             - run:
                   command: |
                       echo "Running tests"
-                      npm run test:ci
+                      npm --prefix src/uploaders run test:ci
 
     lint-reference-data-resources:
         docker:
@@ -51,7 +51,7 @@ jobs:
             - run:
                   command: |
                       echo "Linting site"
-                      npm run lint
+                      npm --prefix src/uploaders run lint
 
     deploy-reference-data-uploaders-to-test:
         docker:
@@ -156,25 +156,7 @@ workflows:
                       branches:
                           only: develop
 
-            - deploy-reference-data-retrievers-to-test:
-                  requires:
-                      - test-reference-data-resources
-                      - lint-reference-data-resources
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only: develop
-
             - hold-reference-data-uploaders-preprod-deployment:
-                  type: approval
-                  requires:
-                      - test-reference-data-resources
-                      - lint-reference-data-resources
-                  filters:
-                      branches:
-                          only: master
-
-            - hold-reference-data-retrievers-preprod-deployment:
                   type: approval
                   requires:
                       - test-reference-data-resources
@@ -187,6 +169,22 @@ workflows:
                   requires:
                       - hold-reference-data-uploaders-preprod-deployment
                   context: tfn-fdbt-preprod
+                  filters:
+                      branches:
+                          only: master
+
+            - deploy-reference-data-retrievers-to-test:
+                  requires:
+                      - checkout-repo
+                  context: tfn-fdbt-test
+                  filters:
+                      branches:
+                          only: develop
+
+            - hold-reference-data-retrievers-preprod-deployment:
+                  type: approval
+                  requires:
+                      - checkout-repo
                   filters:
                       branches:
                           only: master
