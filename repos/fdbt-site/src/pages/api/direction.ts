@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { OPERATOR_COOKIE, DIRECTION_COOKIE } from '../../constants/index';
+import { OPERATOR_COOKIE, JOURNEY_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { getDomain, setCookieOnResponseObject, getCookies } from './apiUtils';
 
@@ -8,9 +8,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         try {
             const cookies = getCookies(req);
 
-            const { direction } = req.body;
+            const { journeyPattern } = req.body;
 
-            if (!direction) {
+            if (!journeyPattern) {
                 res.writeHead(302, {
                     Location: '/direction',
                 });
@@ -26,9 +26,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 throw new Error('No UUID found');
             }
 
-            const cookieValue = JSON.stringify({ direction, uuid });
+            const cookieValue = JSON.stringify({ journeyPattern, uuid });
             const domain = getDomain(req);
-            setCookieOnResponseObject(domain, DIRECTION_COOKIE, cookieValue, res);
+            setCookieOnResponseObject(domain, JOURNEY_COOKIE, cookieValue, res);
             res.writeHead(302, {
                 Location: '/inputMethod',
             });
