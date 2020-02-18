@@ -2,8 +2,8 @@
 
 exports[`pages service should render correctly 1`] = `
 <Layout
-  description="Confirmation page of the Fares data build tool"
-  title="Confirmation - Fares data build tool"
+  description="Service selection page of the Fares data build tool"
+  title="Service - Fares data build tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
