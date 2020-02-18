@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "CloudFormation template for WAF resources"
+
+Outputs:
+  AclArn:
+    Value: !GetAtt RestrictAccessAcl.Arn
+
+Resources:
+  IwIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for Infinity Works office
+      Name: IwIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses:
+        - 52.51.7.138/32
+        - 156.67.242.53/32
+
+  TfnIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for TFN offices
+      Name: TfnIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses:
+        - 213.104.199.0/24
+        - 148.252.255.0/24
+
+  RestrictAccessAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: RestrictAccess
+      Scope: CLOUDFRONT
+      Description: Restricts access to Infinity Works and TFN
+      DefaultAction:
+        Block: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: RestrictAccessMetric
+      Rules:
+        - Name: AllowIw
+          Action:
+            Allow: {}
+          Priority: 0
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowIwRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt IwIpSet.Arn
+        - Name: AllowTfn
+          Action:
+            Allow: {}
+          Priority: 1
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowTfnRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt TfnIpSet.Arn
