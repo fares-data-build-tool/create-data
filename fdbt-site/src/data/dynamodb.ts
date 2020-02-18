@@ -31,10 +31,13 @@ export type ServiceType = {
 };
 
 export type StopType = {
-    stops: string[];
+    CommonName: string;
+    Indicator: string;
+    LocalityName: string;
+    Partition: string;
 };
 
-export type DirectionObject = {
+export type Service = {
     description: string;
     journeyPatterns: [
         {
@@ -49,6 +52,11 @@ export type DirectionObject = {
             EndPoint: string;
         },
     ];
+};
+
+export type BusStopType = {
+    StopName: string;
+    NaptanCode: string;
 };
 
 export const convertDateFormat = (startDate: string): string => {
@@ -79,26 +87,61 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     );
 };
 
-export const getBusStopNamesAndNaptanCodes = async () => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
+// export const getBusStopNamesAndNaptanCodes = async (atcoCodes: string[]) => {
+//     const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.STOPS_TABLE_NAME as string);
 
-    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
-        TableName: tableName,
-        KeyConditionExpression: '#pk = :value',
-        ExpressionAttributeNames: {
-            '#pk': 'Partition',
-        },
-        ExpressionAttributeValues: {
-            ':value': '',
-        },
-    };
+//     const emptyBatch: string[][] = [];
+//     const batchSize = 100;
+//     const atcoCodeBatches = atcoCodes.reduce((result, _value, index, array) => {
+//         if (index % batchSize === 0) {
+//             result.push(array.slice(index, index + batchSize));
+//         }
+//         return result;
+//     }, emptyBatch);
 
-    const { Items } = await getDynamoDBClient()
-        .query(queryInput)
-        .promise();
+//     const batchPromises = atcoCodeBatches.map(item => {
+//         const queryInput: AWS.DynamoDB.DocumentClient.BatchGetItemInput = {
+//             RequestItems: {
+//                 [tableName]: {
+//                     Keys: item.map((item: string): {} => (
+//                         {
+//                             Partition: item
+//                         }
+//                     )),
+//                     AttributesToGet: [
+//                         'CommonName',
+//                         'Indicator',
+//                         'LocalityName',
+//                         'Partition'
+//                     ],
+//                 },
+//             }
+//         };
 
-    return Items;
-};
+//         return dynamoDbClient.batchGet(queryInput).promise();
+//     });
+
+//     let stopResults: AWS.DynamoDB.DocumentClient.BatchGetItemOutput[];
+
+//     try {
+//         stopResults = await Promise.all(batchPromises);
+//     } catch (err) {
+//         console.error(`Unable to retrieve stops from dynamo: ${err.message}`);
+//         throw new Error(err.message);
+//     }
+
+//     const stops:StopType[] = stopResults.map(item => item.Responses ? item.Responses[tableName] : {
+//         CommonName: "",
+//         Indicator: "",
+//         LocalityName: "",
+//         Partition: ""
+//     });
+
+//     atcoCodes.map(item => {
+//         return stops.find(stop => stop.Partition === item)
+//     })
+
+// }
 
 export const getTndsByJourneyId = async (nocCode: string, lineNameStartDate: string) => {
     const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
@@ -123,10 +166,7 @@ export const getTndsByJourneyId = async (nocCode: string, lineNameStartDate: str
     return Items;
 };
 
-export const getJourneysByNocCodeAndLineName = async (
-    nocCode: string,
-    lineName: string,
-): Promise<DirectionObject[]> => {
+export const getJourneysByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<Service[]> => {
     const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
 
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
@@ -147,8 +187,6 @@ export const getJourneysByNocCodeAndLineName = async (
         .promise();
 
     return (
-        Items?.map(
-            (item): DirectionObject => ({ description: item.Description, journeyPatterns: item.JourneyPatterns }),
-        ) || []
+        Items?.map((item): Service => ({ description: item.Description, journeyPatterns: item.JourneyPatterns })) || []
     );
 };
