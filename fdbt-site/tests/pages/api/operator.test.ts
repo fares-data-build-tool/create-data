@@ -9,6 +9,7 @@ describe('operator', () => {
         writeHeadMock = jest.fn();
         res = mockResponse({
             writeHead: writeHeadMock,
+            set: false,
         });
     });
 
