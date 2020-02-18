@@ -14,7 +14,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const uuid = v1();
         const cookieValue = JSON.stringify({ operator: operatorName, uuid, nocCode });
         const domain = getDomain(req);
-        setCookieOnResponseObject(domain, OPERATOR_COOKIE, cookieValue, res);
+        setCookieOnResponseObject(domain, OPERATOR_COOKIE, cookieValue, req, res);
         redirectTo(res, '/faretype');
     } catch (error) {
         redirectToError(res);

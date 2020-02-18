@@ -21,6 +21,7 @@ describe('service', () => {
         });
         const res = mockResponse({
             writeHead: writeHeadMock,
+            set: false,
         });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {

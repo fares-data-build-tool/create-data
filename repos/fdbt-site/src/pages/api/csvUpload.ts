@@ -162,7 +162,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (formData.FileContent) {
             try {
-                const uuid = getUuidFromCookie(req);
+                const uuid = getUuidFromCookie(req, res);
                 await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
                 const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
                 await putDataInS3(fareTriangleData, `${uuid}.json`, true);

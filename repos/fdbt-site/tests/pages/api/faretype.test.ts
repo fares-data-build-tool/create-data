@@ -21,6 +21,7 @@ describe('faretype', () => {
         });
         const res = mockResponse({
             writeHead: writeHeadMock,
+            set: false,
         });
         faretype(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
