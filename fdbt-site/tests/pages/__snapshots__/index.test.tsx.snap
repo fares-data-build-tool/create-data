@@ -42,6 +42,7 @@ exports[`pages operator should render correctly 1`] = `
       data-module="govuk-button"
       draggable="false"
       href="/operator"
+      id="start-now-button"
       role="button"
     >
       Start now

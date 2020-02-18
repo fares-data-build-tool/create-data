@@ -163,10 +163,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (formData.FileContent) {
             try {
                 const uuid = getUuidFromCookie(req);
-                const date = new Date().toISOString();
-                await putDataInS3(formData.FileContent, `${uuid}_${date}.csv`, false);
+                await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
                 const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
-                await putDataInS3(fareTriangleData, `${uuid}_${date}.json`, true);
+                await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
                 redirectTo(res, '/matching');
             } catch (error) {

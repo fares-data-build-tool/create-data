@@ -3,9 +3,10 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, DIRECTION_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
-import { getJourneysByNocCodeAndLineName, DirectionObject } from '../data/dynamodb';
+import { redirectToError } from './api/apiUtils';
+import { getJourneyPatternsAndLocalityByNocCodeAndLineName, ServiceInformation } from '../data/dynamodb';
 
 const title = 'Select a Direction';
 const description = 'Please select the route direction for your service';
@@ -13,10 +14,10 @@ const description = 'Please select the route direction for your service';
 type DirectionProps = {
     Operator: string;
     lineName: string;
-    Journeys: DirectionObject;
+    serviceInfo: ServiceInformation;
 };
 
-const Direction = ({ Operator, lineName, Journeys }: DirectionProps): ReactElement => (
+const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/direction" method="post">
@@ -31,19 +32,19 @@ const Direction = ({ Operator, lineName, Journeys }: DirectionProps): ReactEleme
                             {Operator} - {lineName}
                         </span>
                         <span className="govuk-hint" id="direction-journey-description-hint">
-                            {`Journey: ${Journeys.description}`}
+                            {`Journey: ${serviceInfo.serviceDescription}`}
                         </span>
-                        <select className="govuk-select" id="direction" name="direction" defaultValue="">
+                        <select className="govuk-select" id="journeyPattern" name="journeyPattern" defaultValue="">
                             <option value="" disabled>
                                 Select One
                             </option>
-                            {Journeys.journeyPatterns.map(journey => (
+                            {serviceInfo.journeyPatterns.map(journeyPattern => (
                                 <option
-                                    key={journey.JourneyPatternRef}
-                                    value={journey.JourneyPatternRef}
+                                    key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
+                                    value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
                                     className="journey-option"
                                 >
-                                    {journey.StartPoint} TO {journey.EndPoint}
+                                    {journeyPattern.startPoint.Display} TO {journeyPattern.endPoint.Display}
                                 </option>
                             ))}
                         </select>
@@ -61,17 +62,7 @@ const Direction = ({ Operator, lineName, Journeys }: DirectionProps): ReactEleme
 );
 
 Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
-    const redirectOnError = (): void => {
-        if (ctx.res) {
-            ctx.res.writeHead(302, {
-                Location: '/error',
-            });
-            ctx.res.end();
-        }
-    };
-
-    deleteCookieOnServerSide(ctx, DIRECTION_COOKIE);
-
+    deleteCookieOnServerSide(ctx, JOURNEY_COOKIE);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
@@ -80,29 +71,26 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
         const operatorObject = JSON.parse(operatorCookie);
         const serviceObject = JSON.parse(serviceCookie);
         const lineName = serviceObject.service.split('#')[0];
-        console.log({ serviceObject });
-        console.log({ lineName });
-        let journeys: DirectionObject[] = [];
+        let serviceInfo: ServiceInformation;
 
         try {
             if (ctx.req) {
-                console.log(operatorObject.nocCode);
-                journeys = await getJourneysByNocCodeAndLineName(operatorObject.nocCode, lineName);
-                console.log({ journeys });
+                serviceInfo = await getJourneyPatternsAndLocalityByNocCodeAndLineName(operatorObject.nocCode, lineName);
+                if (!serviceInfo && ctx.res) {
+                    redirectToError(ctx.res);
+                    return {};
+                }
+                return { Operator: operatorObject.operator, lineName, serviceInfo };
             }
-
-            if (journeys.length === 0) {
-                redirectOnError();
-                return {};
-            }
-            console.log({ Operator: operatorObject.operator, lineName, Journeys: journeys[0] });
-            return { Operator: operatorObject.operator, lineName, Journeys: journeys[0] };
         } catch (err) {
+            console.error(err.message);
             throw new Error(err.message);
         }
     }
 
-    redirectOnError();
+    if (ctx.res) {
+        redirectToError(ctx.res);
+    }
 
     return {};
 };

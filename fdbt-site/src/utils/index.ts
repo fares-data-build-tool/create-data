@@ -9,8 +9,8 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
         const date = new Date();
-        const host = ctx?.req?.headers?.host;
-        const domain = host && host.split(':')[0];
+        const host = ctx?.req?.headers?.origin;
+        const domain = host && (host as string).replace(/(^\w+:|^)\/\//, '');
 
         date.setDate(date.getDate() - 1);
         cookies.set(cookieName, '', { overwrite: true, expires: date, domain, path: '/' });
@@ -21,11 +21,18 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     if (!req) {
         return '';
     }
-    const host = req?.headers?.host;
-    if (host && host.startsWith('localhost')) {
-        return `http://${host}`;
+    const origin = req?.headers?.origin;
+
+    if (origin) {
+        const host = (origin as string).replace(/(^\w+:|^)\/\//, '');
+
+        if (host && host.startsWith('localhost')) {
+            return `http://${host}`;
+        }
+        return `https://${host}`;
     }
-    return `https://${host}`;
+
+    return '';
 };
 
 export const isSessionValid = async (url: string, req: IncomingMessage | undefined): Promise<boolean> => {
