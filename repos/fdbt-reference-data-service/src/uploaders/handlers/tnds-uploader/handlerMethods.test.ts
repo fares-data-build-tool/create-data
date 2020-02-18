@@ -163,7 +163,6 @@ it('returns cleanedXmlData which contains the right primary and sort keys', asyn
     const partition1 = cleanedXml[0].Partition;
     const partition2 = cleanedXml[1].Partition;
     const sort = cleanedXml[0].Sort;
-    expect.assertions(4);
     expect(cleanedXml).toHaveLength(2);
     expect(partition1).toEqual(expectedPartitionKey1);
     expect(partition2).toEqual(expectedPartitionKey2);
@@ -180,7 +179,6 @@ it('returns cleanedXmlData which contains the right StopPointRefs and CommonName
     const xmlToBeCleaned = await xmlParser(mocks.testXml);
     const cleanedXml = cleanParsedXml(xmlToBeCleaned);
     const stopPoints = cleanedXml[0].JourneyPatterns[0].JourneyPatternSections[0].OrderedStopPoints;
-    expect.assertions(2);
     expect(stopPoints).toHaveLength(4);
     expect(stopPoints).toEqual(expectedStopPoints);
 });
@@ -203,7 +201,7 @@ describe('findCommonNameForStop', () => {
         expect(mappedStopPoint).toEqual(expectedMappedStopPoint);
     });
 
-    it('should return `CommonName: NOT FOUND` and a console.log when a CommonName cannot be found', () => {
+    it('should return empty CommonName when it CommonName cannot be found', () => {
         const stopPoint = '0500SSWAV013';
         const collectionOfStopPoints: StopPoint[] = [{ StopPointRef: '0500SBARH011', CommonName: 'Superstore' }];
         const expectedMappedStopPoint: StopPoint = {
@@ -227,17 +225,16 @@ describe('getOrderedStopPointsForJourneyPatternSection', () => {
             { StopPointRef: '0500SBARH011', CommonName: 'Superstore' },
             { StopPointRef: '0500HFENS006', CommonName: 'Swan Road' },
         ];
-        const journeyPatternSection1 = journeyPatternSections[0];
+        const journeyPatternSection0 = journeyPatternSections[0];
         const journeyPatternSection2 = journeyPatternSections[2];
         const orderedStopPoints1 = getOrderedStopPointsForJourneyPatternSection(
-            journeyPatternSection1.JourneyPatternTimingLink,
+            journeyPatternSection0.JourneyPatternTimingLink,
             collectionOfStopPoints,
         );
         const orderedStopPoints2 = getOrderedStopPointsForJourneyPatternSection(
             journeyPatternSection2.JourneyPatternTimingLink,
             collectionOfStopPoints,
         );
-        expect.assertions(4);
         expect(orderedStopPoints1).toHaveLength(4);
         expect(orderedStopPoints1).toEqual(
             mocks.mockCleanedXmlData[0].JourneyPatterns[0].JourneyPatternSections[0].OrderedStopPoints,
@@ -257,9 +254,7 @@ describe('formatDynamoWriteRequest', () => {
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
         const testArrayOfItems: ParsedCsv[] = mocks.createArray(1, { ...mocks.mockServicesData });
-        console.log({ testArrayOfItems });
         const result = formatDynamoWriteRequest(testArrayOfItems);
-        console.log({ result });
         expect(result).toEqual(arrayOfBatches);
     });
 
@@ -342,7 +337,6 @@ describe('writeBatchesToDynamo', () => {
             },
         }));
         // Act & Assert
-        expect.assertions(1);
         await expect(writeBatchesToDynamo({ parsedCsvLines, tableName })).rejects.toThrow(
             'Could not write batch to DynamoDB',
         );
