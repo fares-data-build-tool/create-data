@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-    semver-orb: tv2norge/semver-orb@0.0.1
 
 jobs:
     checkout-repo:
@@ -24,12 +22,12 @@ jobs:
             - run:
                   command: |
                       echo "Starting build"
-                      npm install
-                      npm run build
+                      npm --prefix src/uploaders install
+                      npm --prefix src/uploaders run build
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - 'node_modules'
+                      - './src/uploaders/node_modules'
 
     test-reference-data-resources:
         docker:
@@ -41,7 +39,7 @@ jobs:
             - run:
                   command: |
                       echo "Running tests"
-                      npm run test:ci
+                      npm --prefix src/uploaders run test:ci
 
     lint-reference-data-resources:
         docker:
@@ -53,9 +51,9 @@ jobs:
             - run:
                   command: |
                       echo "Linting site"
-                      npm run lint
+                      npm --prefix src/uploaders run lint
 
-    deploy-reference-data-resources-to-test:
+    deploy-reference-data-uploaders-to-test:
         docker:
             - image: circleci/node:12
         working_directory: ~/project
@@ -65,10 +63,11 @@ jobs:
             - run:
                   command: |
                       sudo npm i -g serverless
+                      cd src/uploaders
                       export SLS_DEBUG="*" && sls deploy --stage=test
                       echo "Finished deploy"
 
-    deploy-reference-data-resources-to-preprod:
+    deploy-reference-data-uploaders-to-preprod:
         docker:
             - image: circleci/node:12
         working_directory: ~/project
@@ -78,6 +77,35 @@ jobs:
             - run:
                   command: |
                       sudo npm i -g serverless
+                      cd src/uploaders
+                      export SLS_DEBUG="*" && sls deploy --stage=preprod
+                      echo "Finished deploy"
+
+    deploy-reference-data-retrievers-to-test:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      sudo npm i -g serverless
+                      cd src/retrievers
+                      export SLS_DEBUG="*" && sls deploy --stage=test
+                      echo "Finished deploy"
+
+    deploy-reference-data-retrievers-to-preprod:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      sudo npm i -g serverless
+                      cd src/retrievers
                       export SLS_DEBUG="*" && sls deploy --stage=preprod
                       echo "Finished deploy"
 
@@ -119,7 +147,7 @@ workflows:
                               - develop
                               - master
 
-            - deploy-reference-data-resources-to-test:
+            - deploy-reference-data-uploaders-to-test:
                   requires:
                       - test-reference-data-resources
                       - lint-reference-data-resources
@@ -128,7 +156,7 @@ workflows:
                       branches:
                           only: develop
 
-            - hold-preprod-deployment:
+            - hold-reference-data-uploaders-preprod-deployment:
                   type: approval
                   requires:
                       - test-reference-data-resources
@@ -137,9 +165,33 @@ workflows:
                       branches:
                           only: master
 
-            - deploy-reference-data-resources-to-preprod:
+            - deploy-reference-data-uploaders-to-preprod:
                   requires:
-                      - hold-preprod-deployment
+                      - hold-reference-data-uploaders-preprod-deployment
+                  context: tfn-fdbt-preprod
+                  filters:
+                      branches:
+                          only: master
+
+            - deploy-reference-data-retrievers-to-test:
+                  requires:
+                      - checkout-repo
+                  context: tfn-fdbt-test
+                  filters:
+                      branches:
+                          only: develop
+
+            - hold-reference-data-retrievers-preprod-deployment:
+                  type: approval
+                  requires:
+                      - checkout-repo
+                  filters:
+                      branches:
+                          only: master
+
+            - deploy-reference-data-retrievers-to-preprod:
+                  requires:
+                      - hold-reference-data-retrievers-preprod-deployment
                   context: tfn-fdbt-preprod
                   filters:
                       branches:
