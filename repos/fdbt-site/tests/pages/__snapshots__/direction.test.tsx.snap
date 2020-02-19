@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages direction should render correctly 1`] = `
+<Layout
+  description="Direction selection page of the Fares data build tool"
+  title="Select a Direction - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/direction"
+      method="post"
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              Please select your journey direction
+            </h1>
+          </legend>
+          <span
+            className="govuk-hint"
+            id="direction-operator-linename-hint"
+          >
+            Connexions Buses
+             - 
+            X6A
+          </span>
+          <span
+            className="govuk-hint"
+            id="direction-journey-description-hint"
+          >
+            Journey: Harrogate - Beckwith Knowle
+          </span>
+          <select
+            className="govuk-select"
+            defaultValue=""
+            id="journeyPattern"
+            name="journeyPattern"
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select One
+            </option>
+            <option
+              className="journey-option"
+              key="3200YND90060#3200YND90060"
+              value="3200YND90060#3200YND90060"
+            >
+              Harrogate Bus Station Stand 5, Harrogate
+               TO 
+              Harrogate Bus Station Stand 6, Harrogate
+            </option>
+            <option
+              className="journey-option"
+              key="000HGTPL1000#000HGTPL2000"
+              value="000HGTPL1000#000HGTPL2000"
+            >
+              Harrogate Place 1, Harrogate
+               TO 
+              Harrogate Place 2, Harrogate
+            </option>
+            <option
+              className="journey-option"
+              key="000PNAL0010#000KSBRG0020"
+              value="000PNAL0010#000KSBRG0020"
+            >
+              Pannal, Harrogate
+               TO 
+              Knaresborough Bus Station, Harrogate
+            </option>
+          </select>
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
