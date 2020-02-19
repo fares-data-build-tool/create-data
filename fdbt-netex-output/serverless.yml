@@ -43,6 +43,12 @@ provider:
               - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NocTableArn'
               - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:ServicesTableArn'
               - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:TndsTableArn'
+        - Effect: 'Allow'
+          Action:
+            - ses:SendEmail
+          Resource:
+            - '*'
+
 
     environment:
         NAPTAN_TABLE_NAME: ${self:provider.stage}-Stops
@@ -70,7 +76,7 @@ functions:
               event: s3:ObjectCreated:*
 
     OdhUploader:
-        handler: src/odh-uploader/handler.s3OdhUploaderHandler
+        handler: src/odh-uploader/handler.odhUploaderHandler
         events:
             - s3: fdbt-netex-data-${self:provider.stage}
               event: s3:ObjectCreated:*
