@@ -1,5 +1,5 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
-import howManyFareStages from '../../../src/pages/api/howManyStages';
+import howManyStages from '../../../src/pages/api/howManyStages';
 
 describe('howManyStages', () => {
     let res: mockReqRes.ResponseOutput;
@@ -24,48 +24,67 @@ describe('howManyStages', () => {
                 cookie: '',
             },
         });
-        howManyFareStages(req, res);
+        howManyStages(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/howManyStages',
         });
     });
 
-    // it('should return 302 redirect to /error when an number of fare stages value we dont expect is passed', () => {
-    //     const req = mockRequest({
-    //         connection: {
-    //             encrypted: false,
-    //         },
-    //         body: { inputMethod: 'pdf' },
-    //         headers: {
-    //             host: 'localhost:5000',
-    //             cookie: '',
-    //         },
-    //     });
+    it('should return 302 redirect to /error when an number of fare stages value we dont expect is passed', () => {
+        const req = mockRequest({
+            connection: {
+                encrypted: false,
+            },
+            body: { howManyStages: '100' },
+            headers: {
+                host: 'localhost:5000',
+                cookie: '',
+            },
+        });
 
-    //     inputMethod(req, res);
+        howManyStages(req, res);
 
-    //     expect(writeHeadMock).toBeCalledWith(302, {
-    //         Location: '/error',
-    //     });
-    // });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
+        });
+    });
 
-    // it('should return 302 redirect to /csvUpload when more then 20 fare stages is selected', () => {
-    //     const req = mockRequest({
-    //         connection: {
-    //             encrypted: false,
-    //         },
-    //         body: { howmanyfareStages: 'more than 20 fare stages' },
-    //         headers: {
-    //             host: 'localhost:5000',
-    //             cookie: '',
-    //         },
-    //     });
+    it('should return 302 redirect to /csvUpload when more then 20 fare stages is selected', () => {
+        const req = mockRequest({
+            connection: {
+                encrypted: false,
+            },
+            body: { howManyStages: 'moreThan20' },
+            headers: {
+                host: 'localhost:5000',
+                cookie: '',
+            },
+        });
 
-    //     inputMethod(req, res);
+        howManyStages(req, res);
 
-    //     expect(writeHeadMock).toBeCalledWith(302, {
-    //         Location: '/csvUpload',
-    //     });
-    // });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/csvUpload',
+        });
+    });
+
+    it('should return 302 redirect to /chooseStages when less than 20 fare stages is selected', () => {
+        const req = mockRequest({
+            connection: {
+                encrypted: false,
+            },
+            body: { howManyStages: 'lessThan20' },
+            headers: {
+                host: 'localhost:5000',
+                cookie: '',
+            },
+        });
+
+        howManyStages(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/chooseStages',
+        });
+    });
 });
