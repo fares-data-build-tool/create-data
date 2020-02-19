@@ -7,8 +7,8 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getJourneyPatternsAndLocalityByNocCodeAndLineName, ServiceInformation } from '../data/dynamodb';
 
-const title = 'Select a Direction';
-const description = 'Please select the route direction for your service';
+const title = 'Select a Direction - Fares data build tool';
+const description = 'Direction selection page of the Fares data build tool';
 
 type DirectionProps = {
     Operator: string;
