@@ -59,12 +59,30 @@ exports[`pages direction should render correctly 1`] = `
             </option>
             <option
               className="journey-option"
-              key="Harrogate Bus Station Stand 5, Harrogate"
-              value="Harrogate Bus Station Stand 6, Harrogate"
+              key="3200YND90060#3200YND90060"
+              value="3200YND90060#3200YND90060"
             >
               Harrogate Bus Station Stand 5, Harrogate
                TO 
               Harrogate Bus Station Stand 6, Harrogate
+            </option>
+            <option
+              className="journey-option"
+              key="000HGTPL1000#000HGTPL2000"
+              value="000HGTPL1000#000HGTPL2000"
+            >
+              Harrogate Place 1, Harrogate
+               TO 
+              Harrogate Place 2, Harrogate
+            </option>
+            <option
+              className="journey-option"
+              key="000PNAL0010#000KSBRG0020"
+              value="000PNAL0010#000KSBRG0020"
+            >
+              Pannal, Harrogate
+               TO 
+              Knaresborough Bus Station, Harrogate
             </option>
           </select>
         </fieldset>

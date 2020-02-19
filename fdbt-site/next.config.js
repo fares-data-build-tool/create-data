@@ -4,31 +4,19 @@ const withCss = require('@zeit/next-css');
 const withImages = require('next-images');
 const withFonts = require('next-fonts');
 
-let assetPrefix = '';
-
-switch (process.env.NODE_ENV) {
-    case 'prod':
-        assetPrefix = 'https://s3.eu-west-2.amazonaws.com/fdbt-prod-static-assets';
-        break;
-    case 'preprod':
-        assetPrefix = 'https://s3.eu-west-2.amazonaws.com/fdbt-preprod-static-assets';
-        break;
-    case 'test':
-        assetPrefix = 'https://s3.eu-west-2.amazonaws.com/fdbt-test-static-assets';
-        break;
-    default:
-        assetPrefix = '';
-}
+const stage = process.env.STAGE || 'dev';
 
 const nextConfig = {
-    assetPrefix,
     target: 'serverless',
+    env: {
+        NAPTAN_TABLE_NAME: `${stage}-Stops`,
+        NOC_TABLE_NAME: `${stage}-Operators`,
+        SERVICES_TABLE_NAME: `${stage}-Services`,
+        TNDS_TABLE_NAME: `${stage}-TNDS`,
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        RAW_USER_DATA_BUCKET_NAME: `fdbt-raw-user-data-${stage}`,
+        USER_DATA_BUCKET_NAME: `fdbt-user-data-${stage}`,
+    },
 };
 
-module.exports = withPlugins([
-    [withSass],
-    [withFonts, { assetPrefix }],
-    [withImages, { assetPrefix }],
-    [withCss],
-    nextConfig,
-]);
+module.exports = withPlugins([[withSass], [withFonts], [withImages], [withCss], nextConfig]);

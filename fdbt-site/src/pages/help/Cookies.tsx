@@ -47,4 +47,8 @@ const Cookies: NextPage = (): ReactElement => (
     </Layout>
 );
 
+Cookies.getInitialProps = (): {} => {
+    return {};
+};
+
 export default Cookies;
