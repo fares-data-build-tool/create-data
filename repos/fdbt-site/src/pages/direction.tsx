@@ -5,6 +5,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
+import { redirectToError } from './api/apiUtils';
 import { getJourneyPatternsAndLocalityByNocCodeAndLineName, ServiceInformation } from '../data/dynamodb';
 
 const title = 'Select a Direction - Fares data build tool';
@@ -39,11 +40,11 @@ const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactEl
                             </option>
                             {serviceInfo.journeyPatterns.map(journeyPattern => (
                                 <option
-                                    key={`${journeyPattern.startPoint}`}
-                                    value={(journeyPattern.startPoint, journeyPattern.endPoint)}
+                                    key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
+                                    value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
                                     className="journey-option"
                                 >
-                                    {journeyPattern.startPoint} TO {journeyPattern.endPoint}
+                                    {journeyPattern.startPoint.Display} TO {journeyPattern.endPoint.Display}
                                 </option>
                             ))}
                         </select>
@@ -61,17 +62,7 @@ const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactEl
 );
 
 Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
-    const redirectOnError = (): void => {
-        if (ctx.res) {
-            ctx.res.writeHead(302, {
-                Location: '/error',
-            });
-            ctx.res.end();
-        }
-    };
-
     deleteCookieOnServerSide(ctx, JOURNEY_COOKIE);
-
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
@@ -85,19 +76,21 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
         try {
             if (ctx.req) {
                 serviceInfo = await getJourneyPatternsAndLocalityByNocCodeAndLineName(operatorObject.nocCode, lineName);
-
-                if (!serviceInfo) {
-                    redirectOnError();
+                if (!serviceInfo && ctx.res) {
+                    redirectToError(ctx.res);
                     return {};
                 }
                 return { Operator: operatorObject.operator, lineName, serviceInfo };
             }
         } catch (err) {
+            console.error(err.message);
             throw new Error(err.message);
         }
     }
 
-    redirectOnError();
+    if (ctx.res) {
+        redirectToError(ctx.res);
+    }
 
     return {};
 };

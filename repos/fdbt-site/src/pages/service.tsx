@@ -6,9 +6,10 @@ import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
+import { redirectToError } from './api/apiUtils';
 
-const title = 'Confirmation - Fares data build tool';
-const description = 'Confirmation page of the Fares data build tool';
+const title = 'Service - Fares data build tool';
+const description = 'Service selection page of the Fares data build tool';
 
 type ServiceProps = {
     operator: string;
@@ -34,7 +35,11 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                                 Select One
                             </option>
                             {services.map(service => (
-                                <option key={`${service.lineName}#${service.startDate}`} value={`${service.lineName}#${service.startDate}`} className="service-option">
+                                <option
+                                    key={`${service.lineName}#${service.startDate}`}
+                                    value={`${service.lineName}#${service.startDate}`}
+                                    className="service-option"
+                                >
                                     {service.lineName} - Start date {service.startDate}
                                 </option>
                             ))}
@@ -53,15 +58,6 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
 );
 
 Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
-    const redirectOnError = (): void => {
-        if (ctx.res) {
-            ctx.res.writeHead(302, {
-                Location: '/error',
-            });
-            ctx.res.end();
-        }
-    };
-
     deleteCookieOnServerSide(ctx, SERVICE_COOKIE);
 
     const cookies = parseCookies(ctx);
@@ -76,18 +72,21 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
                 services = await getServicesByNocCode(operatorObject.nocCode);
             }
 
-            if (services.length === 0) {
-                redirectOnError();
+            if (services.length === 0 && ctx.res) {
+                redirectToError(ctx.res);
                 return {};
             }
 
             return { operator: operatorObject.operator, services };
         } catch (err) {
+            console.error(err.message);
             throw new Error(err.message);
         }
     }
 
-    redirectOnError();
+    if (ctx.res) {
+        redirectToError(ctx.res);
+    }
 
     return {};
 };

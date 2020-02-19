@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import Confirmation from '../../src/pages/confirmation';
+import InputMethod from '../../src/pages/inputMethod';
 
 describe('pages', () => {
-    describe('confirmation', () => {
+    describe('csvUpload', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Confirmation operator="operator" service="service" />);
+            const tree = shallow(<InputMethod />);
             expect(tree).toMatchSnapshot();
         });
     });
