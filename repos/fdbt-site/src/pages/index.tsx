@@ -25,6 +25,7 @@ const Home: NextPage = (): ReactElement => (
                 draggable="false"
                 className="govuk-button govuk-button--start"
                 data-module="govuk-button"
+                id="start-now-button"
             >
                 Start now
                 <svg

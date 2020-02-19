@@ -8,8 +8,8 @@ import { getHost, isSessionValid } from '../utils';
 import TableForm from '../components/TableForm';
 import { redirectToError } from './api/apiUtils';
 
-const title = 'Confirmation - Fares data build tool';
-const description = 'Confirmation page of the Fares data build tool';
+const title = 'Stages - Fares data build tool';
+const description = 'Stages selection page of the Fares data build tool';
 
 type StagesProps = {
     operator: string;
