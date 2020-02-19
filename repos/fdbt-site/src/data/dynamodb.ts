@@ -156,11 +156,11 @@ export const getJourneyPatternsAndLocalityByNocCodeAndLineName = async (
 
                     return {
                         startPoint: {
-                            Display: `${startPoint.CommonName}${startPointLocality ? `,${startPointLocality}` : ''}`,
+                            Display: `${startPoint.CommonName}${startPointLocality ? `, ${startPointLocality}` : ''}`,
                             Id: startPoint.StopPointRef,
                         },
                         endPoint: {
-                            Display: `${endPoint.CommonName}${endPointLocality ? `,${endPointLocality}` : ''}`,
+                            Display: `${endPoint.CommonName}${endPointLocality ? `, ${endPointLocality}` : ''}`,
                             Id: endPoint.StopPointRef,
                         },
                     };
