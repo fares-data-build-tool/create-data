@@ -1,7 +1,7 @@
 import { S3Event } from 'aws-lambda';
 import AWS from 'aws-sdk';
 
-const ses = new AWS.SES({ region: 'eu-west-2' });
+const ses = new AWS.SES({ region: 'eu-west-1' });
 
 export interface S3ObjectParameters {
     Bucket: string;
@@ -27,7 +27,7 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
         Message: {
             Body: {
                 Text: {
-                    Data: `There was a file uploaded to ${s3ObjectParams.Bucket} [Filename: ${s3ObjectParams.Key}]`,
+                    Data: `There was a file uploaded to '${s3ObjectParams.Bucket}' [Filename: '${s3ObjectParams.Key}']`,
                 },
             },
             Subject: {
