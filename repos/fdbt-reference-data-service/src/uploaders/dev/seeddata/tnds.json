@@ -27,7 +27,11 @@
                         ],
                         "StartPoint": "Hgte Bus Stn Stand 6",
                         "EndPoint": "Beckwith Knowle"
-                    },
+                    }
+                ]
+            },
+            {
+                "JourneyPatternSections": [
                     {
                         "Id": "JPS_YNAX006A-5",
                         "OrderedStopPoints": [
@@ -37,7 +41,11 @@
                         ],
                         "StartPoint": "Beckwith Avenue",
                         "EndPoint": "Beckwith Knowle"
-                    },
+                    }
+                ]
+            },
+            {
+                "JourneyPatternSections": [
                     {
                         "Id": "JPS_YNAX006A-6",
                         "OrderedStopPoints": [
