@@ -1,8 +1,10 @@
 export const OPERATOR_COOKIE = 'fdbt-operator-cookie';
 
+export const FARETYPE_COOKIE = 'fdbt-faretype-cookie';
+
 export const SERVICE_COOKIE = 'fdbt-service-cookie';
 
-export const FARETYPE_COOKIE = 'fdbt-faretype-cookie';
+export const JOURNEY_COOKIE = 'fdbt-journey-cookie';
 
 export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com';
 

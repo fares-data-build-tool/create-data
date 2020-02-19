@@ -24,7 +24,7 @@ describe('service', () => {
         });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/inputMethod',
+            Location: '/direction',
         });
     });
 
