@@ -55,9 +55,7 @@ exports[`pages inputMethod should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                aria-disabled="true"
                 className="govuk-radios__input"
-                disabled={true}
                 id="manual-entry"
                 name="inputMethod"
                 type="radio"
