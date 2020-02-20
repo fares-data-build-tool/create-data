@@ -27,7 +27,7 @@ exports[`Footer should render correctly 1`] = `
           >
             <a
               className="govuk-footer__link"
-              href="#1"
+              href="https://www.gov.uk/help"
             >
               Help
             </a>
@@ -37,7 +37,7 @@ exports[`Footer should render correctly 1`] = `
           >
             <a
               className="govuk-footer__link"
-              href="/help/cookies"
+              href="https://www.gov.uk/help/cookies"
             >
               Cookies
             </a>
@@ -47,7 +47,7 @@ exports[`Footer should render correctly 1`] = `
           >
             <a
               className="govuk-footer__link"
-              href="#3"
+              href="https://www.gov.uk/contact"
             >
               Contact
             </a>
@@ -57,7 +57,7 @@ exports[`Footer should render correctly 1`] = `
           >
             <a
               className="govuk-footer__link"
-              href="#4"
+              href="https://www.gov.uk/help/terms-conditions"
             >
               Terms and conditions
             </a>
