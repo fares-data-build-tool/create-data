@@ -22,7 +22,7 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
     const s3ObjectParams = setS3ObjectParams(event);
     const emailParams = {
         Destination: {
-            ToAddresses: ['danny.davies@infinityworks.com'],
+            ToAddresses: ['tfn@infinityworks.com', 'fdbt@transportforthenorth.com'],
         },
         Message: {
             Body: {
@@ -37,6 +37,7 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
         Source: 'tfn@infinityworks.com',
     };
     try {
+        // THIS NEEDS CHANGING FROM 'ses.sendEmail' to 'ses.sendRawEmail' to enable attachments.
         const sendPromise = await ses.sendEmail(emailParams).promise();
         console.log(sendPromise.MessageId)
     } catch (err) {
