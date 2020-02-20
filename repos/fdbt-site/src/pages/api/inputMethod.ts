@@ -13,7 +13,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 redirectTo(res, '/csvUpload');
                 return;
             case 'manual':
-                // redirect to manual page
+                redirectTo(res, '/howManyStages');
                 break;
             case 'interactiveMap':
                 // redirect to map page
