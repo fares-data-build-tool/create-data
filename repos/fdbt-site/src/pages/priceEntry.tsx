@@ -42,7 +42,12 @@ const PriceEntry: NextPage = () => (
                                     className="govuk-input govuk-input--width-4 fare-triangle-input"
                                     id={`cell-${rowIndex}-${columnIndex}`}
                                     name={`cell-${rowIndex}-${columnIndex}`}
-                                    type="text"
+                                    type="number"
+                                    min="1"
+                                    max="10000"
+                                    maxLength={5}
+                                    required
+                                    // pattern="^[0-9]*$"
                                 />
                             ))}
                         <div className="govuk-heading-s fare-triangle-label">{stageName}</div>
