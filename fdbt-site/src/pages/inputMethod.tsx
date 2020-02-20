@@ -37,8 +37,6 @@ const InputMethod: NextPage = () => (
                                     name="inputMethod"
                                     type="radio"
                                     value="manual"
-                                    disabled
-                                    aria-disabled="true"
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
                                     Manual Fares Triangle input
