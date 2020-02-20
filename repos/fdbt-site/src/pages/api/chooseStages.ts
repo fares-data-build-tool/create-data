@@ -37,8 +37,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             redirectToError(res);
             return;
         }
-
-        const { numberOfFareStages } = JSON.parse(req.body.fareStageInput);
+        const numberOfFareStages = req.body.fareStageInput;
         const cookieValue = JSON.stringify({ fareStages: numberOfFareStages });
         const domain = getDomain(req);
         setCookieOnResponseObject(domain, FARE_STAGES_COOKIE, cookieValue, res);
