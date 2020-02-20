@@ -43,7 +43,9 @@ exports[`pages direction should render correctly 1`] = `
             className="govuk-hint"
             id="direction-journey-description-hint"
           >
-            Journey: Harrogate - Beckwith Knowle
+            Journey: 
+				Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea
+			
           </span>
           <select
             className="govuk-select"
@@ -59,30 +61,21 @@ exports[`pages direction should render correctly 1`] = `
             </option>
             <option
               className="journey-option"
-              key="3200YND90060#3200YND90060"
-              value="3200YND90060#3200YND90060"
+              key="13003921A#13003655B#0"
+              value="13003921A#13003655B"
             >
-              Harrogate Bus Station Stand 5, Harrogate
+              Estate (Hail and Ride) N/B, tet
                TO 
-              Harrogate Bus Station Stand 6, Harrogate
+              Interchange Stand B, tet
             </option>
             <option
               className="journey-option"
-              key="000HGTPL1000#000HGTPL2000"
-              value="000HGTPL1000#000HGTPL2000"
+              key="13003655B#13003921A#1"
+              value="13003655B#13003921A"
             >
-              Harrogate Place 1, Harrogate
+              Interchange Stand B, tet
                TO 
-              Harrogate Place 2, Harrogate
-            </option>
-            <option
-              className="journey-option"
-              key="000PNAL0010#000KSBRG0020"
-              value="000PNAL0010#000KSBRG0020"
-            >
-              Pannal, Harrogate
-               TO 
-              Knaresborough Bus Station, Harrogate
+              Estate (Hail and Ride) N/B, tet
             </option>
           </select>
         </fieldset>

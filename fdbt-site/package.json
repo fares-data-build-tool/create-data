@@ -9,8 +9,8 @@
         "test:ci": "CI=true jest -w 1",
         "test:updateSnapshots": "jest --updateSnapshot",
         "dev": "export NODE_ENV='' && next -p 5555",
-        "build": "rm -rf ./.serverless_nextjs && next build",
-        "start": "NODE_ENV=production next start",
+        "build": "rm -rf ./.serverless_nextjs && NODE_ENV=development next build",
+        "start": "NODE_ENV=development next start",
         "deploy": "export NODE_ENV='test' && export SLS_DEBUG='*' && serverless --config serverless.test.yml",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx"

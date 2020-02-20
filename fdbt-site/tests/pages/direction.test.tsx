@@ -6,42 +6,55 @@ import MockRes from 'mock-res';
 
 import Direction from '../../src/pages/direction';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../../src/constants';
-import { getJourneyPatternsAndLocalityByNocCodeAndLineName, ServiceInformation } from '../../src/data/dynamodb';
+import { getServiceByNocCodeAndLineName, getNaptanInfoByAtcoCode, ServiceInformation } from '../../src/data/dynamodb';
+import { serviceData } from '../testData/fareData';
 
 jest.mock('../../src/data/dynamodb');
 
 const mockServiceInfo: ServiceInformation = {
-    serviceDescription: 'Harrogate - Beckwith Knowle',
+    serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
+    operatorShortName: 'HCTY',
     journeyPatterns: [
         {
-            startPoint: {
-                Display: 'Harrogate Bus Station Stand 5, Harrogate',
-                Id: '3200YND90060',
-            },
-            endPoint: {
-                Display: 'Harrogate Bus Station Stand 6, Harrogate',
-                Id: '3200YND90060',
-            },
+            startPoint: { Display: 'Estate (Hail and Ride) N/B, tet', Id: '13003921A' },
+            endPoint: { Display: 'Interchange Stand B, tet', Id: '13003655B' },
+            stopList: [
+                '13003921A',
+                '13003305E',
+                '13003306B',
+                '13003618B',
+                '13003622B',
+                '13003923B',
+                '13003939H',
+                '13003625C',
+                '13003612D',
+                '13003611B',
+                '13003609E',
+                '13003661E',
+                '13003949C',
+                '13003635B',
+                '13003655B',
+            ],
         },
         {
-            startPoint: {
-                Display: 'Harrogate Place 1, Harrogate',
-                Id: '000HGTPL1000',
-            },
-            endPoint: {
-                Display: 'Harrogate Place 2, Harrogate',
-                Id: '000HGTPL2000',
-            },
-        },
-        {
-            startPoint: {
-                Display: 'Pannal, Harrogate',
-                Id: '000PNAL0010',
-            },
-            endPoint: {
-                Display: 'Knaresborough Bus Station, Harrogate',
-                Id: '000KSBRG0020',
-            },
+            startPoint: { Display: 'Interchange Stand B, tet', Id: '13003655B' },
+            endPoint: { Display: 'Estate (Hail and Ride) N/B, tet', Id: '13003921A' },
+            stopList: [
+                '13003655B',
+                '13003654G',
+                '13003609A',
+                '13003611F',
+                '13003612H',
+                '13003625G',
+                '13003939D',
+                '13003923F',
+                '13003622F',
+                '13003621F',
+                '13003618F',
+                '13003306A',
+                '13003305A',
+                '13003921A',
+            ],
         },
     ],
 };
@@ -49,9 +62,8 @@ const mockServiceInfo: ServiceInformation = {
 describe('pages', () => {
     describe('direction', () => {
         beforeEach(() => {
-            (({ ...getJourneyPatternsAndLocalityByNocCodeAndLineName } as jest.Mock).mockImplementation(
-                () => mockServiceInfo,
-            ));
+            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => serviceData));
+            (({ ...getNaptanInfoByAtcoCode } as jest.Mock).mockImplementation(() => ({ localityName: 'tet' })));
         });
 
         it('should render correctly', () => {
@@ -69,18 +81,16 @@ describe('pages', () => {
 
             expect(journeyWelcome.text()).toBe('Connexions Buses - X6A');
         });
+
         it('shows a list of journey patterns for the service in the select box', () => {
             const wrapper = shallow(
                 <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceInfo} />,
             );
             const serviceJourney = wrapper.find('.journey-option');
 
-            expect(serviceJourney).toHaveLength(3);
-            expect(serviceJourney.first().text()).toBe(
-                'Harrogate Bus Station Stand 5, Harrogate TO Harrogate Bus Station Stand 6, Harrogate',
-            );
-            expect(serviceJourney.at(1).text()).toBe('Harrogate Place 1, Harrogate TO Harrogate Place 2, Harrogate');
-            expect(serviceJourney.at(2).text()).toBe('Pannal, Harrogate TO Knaresborough Bus Station, Harrogate');
+            expect(serviceJourney).toHaveLength(2);
+            expect(serviceJourney.first().text()).toBe('Estate (Hail and Ride) N/B, tet TO Interchange Stand B, tet');
+            expect(serviceJourney.at(1).text()).toBe('Interchange Stand B, tet TO Estate (Hail and Ride) N/B, tet');
         });
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
@@ -102,6 +112,7 @@ describe('pages', () => {
                     SERVICE_COOKIE: lineName,
                 },
             });
+
             const ctx: NextPageContext = {
                 res,
                 req,
@@ -110,16 +121,16 @@ describe('pages', () => {
                 AppTree: () => <div />,
             };
             const result = await Direction.getInitialProps(ctx);
+
             expect(result).toEqual({
                 Operator: operator,
                 lineName,
                 serviceInfo: mockServiceInfo,
             });
         });
+
         it('redirects to the error page if no journey patterns can be found', async () => {
-            (({ ...getJourneyPatternsAndLocalityByNocCodeAndLineName } as jest.Mock).mockImplementation(() =>
-                Promise.resolve(null),
-            ));
+            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
             const operator = 'HCTY';
             const lineName = 'X6A';
 
@@ -150,14 +161,10 @@ describe('pages', () => {
                 query: {},
                 AppTree: () => <div />,
             };
-            const result = await Direction.getInitialProps(ctx);
 
-            expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-                Location: '/error',
-            });
-            expect(mockEndFn).toHaveBeenCalled();
-            expect(result).toEqual({});
+            await expect(Direction.getInitialProps(ctx)).rejects.toThrow();
         });
+
         it('redirects to the error page if the operator or service cookies do not exist', async () => {
             const operator = 'HCTY';
             const lineName = 'X6A';
@@ -189,13 +196,10 @@ describe('pages', () => {
                 query: {},
                 AppTree: () => <div />,
             };
-            const result = await Direction.getInitialProps(ctx);
 
-            expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-                Location: '/error',
-            });
-            expect(mockEndFn).toHaveBeenCalled();
-            expect(result).toEqual({});
+            await expect(Direction.getInitialProps(ctx)).rejects.toThrow(
+                'Necessary cookies not found to show direction page',
+            );
         });
     });
 });
