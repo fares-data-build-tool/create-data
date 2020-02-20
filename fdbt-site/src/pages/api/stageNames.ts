@@ -16,7 +16,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const fareStageNames = fareStageNameKeys.map(fareStageNameKey => req.body[fareStageNameKey]);
-            console.log(fareStageNames);
 
             if (!req.body) {
                 redirectTo(res, '/stageNames');
