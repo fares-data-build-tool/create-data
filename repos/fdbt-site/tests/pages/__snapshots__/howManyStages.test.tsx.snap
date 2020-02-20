@@ -53,7 +53,7 @@ exports[`pages howManyStages should render correctly 1`] = `
                 className="govuk-label govuk-radios__label govuk-label--s"
                 htmlFor="selection"
               >
-                Less than 20 fare stages
+                20 fare stages or less
               </label>
               <span
                 className="govuk-hint govuk-radios__hint"
