@@ -2,28 +2,30 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { FARE_STAGES_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 
-export const isValidFareStageNumber = (req: NextApiRequest): boolean => {
+export const isInvalidFareStageNumber = (req: NextApiRequest): boolean => {
     const { fareStageInput } = req.body;
 
-    if (fareStageInput.isNaN()) {
-        return false;
+    if (isNaN(fareStageInput)) {
+        // eslint-disable-line no-restricted-globals
+        return true;
     }
 
-    if (!Number.isInteger(fareStageInput)) {
-        return false;
+    if (!Number.isInteger(Number(fareStageInput))) {
+        return true;
     }
 
     if (fareStageInput > 20 || fareStageInput < 1) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (req.body.fareStageInput === 0) {
             redirectToError(res);
+            return;
         }
 
         if (!req.body.fareStageInput) {
@@ -31,8 +33,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        if (!isValidFareStageNumber(req)) {
+        if (isInvalidFareStageNumber(req)) {
             redirectToError(res);
+            return;
         }
 
         const { numberOfFareStages } = JSON.parse(req.body.fareStageInput);
@@ -41,7 +44,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(domain, FARE_STAGES_COOKIE, cookieValue, res);
         redirectTo(res, '/stageNames');
     } catch (error) {
+        console.log(error.message);
         redirectToError(res);
+        return;
     }
     res.end();
 };
