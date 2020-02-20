@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 const title = 'Select number of fare stages - Fares data build tool';
 const description = 'Number of fare stages selection page of the Fares data build tool';
 
-const FareStages = (): ReactElement => (
+const ChooseStages = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/chooseStages" method="post">
@@ -19,14 +19,18 @@ const FareStages = (): ReactElement => (
 
                         <div className="govuk-form-group">
                             <label className="govuk-label" htmlFor="width-2">
-                                Number of fare stages
+                                Number of fare stages (1-20)
                             </label>
                             <input
                                 className="govuk-input govuk-input--width-2"
-                                id="width-2"
-                                name="width-2"
-                                type="text"
+                                id="fareStages"
+                                name="fareStageInput"
+                                type="number"
+                                min="1"
+                                max="20"
                                 maxLength={2}
+                                required
+                                pattern="^[0-9]*$"
                             />
                         </div>
                     </fieldset>
@@ -42,8 +46,8 @@ const FareStages = (): ReactElement => (
     </Layout>
 );
 
-FareStages.getInitialProps = () => {
+ChooseStages.getInitialProps = (): {} => {
     return {};
 };
 
-export default FareStages;
+export default ChooseStages;
