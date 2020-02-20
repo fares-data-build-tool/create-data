@@ -50,21 +50,21 @@ export const isSessionValid = async (url: string, req: IncomingMessage | undefin
     }
 };
 
-export const getUuidFromCookies = (ctx: NextPageContext) => {
+export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     if (!operatorCookie) {
-        return {};
+        return null;
     }
     const operatorObject = JSON.parse(operatorCookie);
     return operatorObject.uuid;
 };
 
-export const getJourneyPatternFromCookies = (ctx: NextPageContext) => {
+export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | null => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     if (!operatorCookie) {
-        return {};
+        return null;
     }
     const operatorObject = JSON.parse(operatorCookie);
     return operatorObject.journeyPattern;

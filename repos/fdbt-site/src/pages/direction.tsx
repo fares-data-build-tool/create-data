@@ -2,20 +2,27 @@ import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
-import { redirectToError } from './api/apiUtils';
-import { getJourneyPatternsAndLocalityByNocCodeAndLineName, ServiceInformation } from '../data/dynamodb';
+import {
+    getServiceByNocCodeAndLineName,
+    ServiceInformation,
+    getNaptanInfoByAtcoCode,
+    JourneyPattern,
+    RawJourneyPattern,
+    RawServiceInformation,
+} from '../data/dynamodb';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';
 
-type DirectionProps = {
+interface DirectionProps {
     Operator: string;
     lineName: string;
     serviceInfo: ServiceInformation;
-};
+}
 
 const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactElement => (
     <Layout title={title} description={description}>
@@ -38,9 +45,9 @@ const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactEl
                             <option value="" disabled>
                                 Select One
                             </option>
-                            {serviceInfo.journeyPatterns.map(journeyPattern => (
+                            {serviceInfo.journeyPatterns.map((journeyPattern, i) => (
                                 <option
-                                    key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
+                                    key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}#${+i}`}
                                     value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
                                     className="journey-option"
                                 >
@@ -61,6 +68,38 @@ const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactEl
     </Layout>
 );
 
+const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPattern[]): Promise<JourneyPattern[]> =>
+    Promise.all(
+        journeyPatterns.map(
+            async (item: RawJourneyPattern): Promise<JourneyPattern> => {
+                const stopList = flatMap(item.JourneyPatternSections, section =>
+                    section.OrderedStopPoints.flatMap(stop => stop.StopPointRef),
+                );
+                const startPoint = item.JourneyPatternSections[0].OrderedStopPoints[0];
+                const startPointNaptan = await getNaptanInfoByAtcoCode(startPoint.StopPointRef);
+
+                const endPoint = item.JourneyPatternSections.splice(-1, 1)[0].OrderedStopPoints.splice(-1, 1)[0];
+                const endPointNaptan = await getNaptanInfoByAtcoCode(endPoint.StopPointRef);
+
+                return {
+                    startPoint: {
+                        Display: `${startPoint.CommonName}${
+                            startPointNaptan?.localityName ? `, ${startPointNaptan.localityName}` : ''
+                        }`,
+                        Id: startPoint.StopPointRef,
+                    },
+                    endPoint: {
+                        Display: `${endPoint.CommonName}${
+                            endPointNaptan?.localityName ? `, ${endPointNaptan.localityName}` : ''
+                        }`,
+                        Id: endPoint.StopPointRef,
+                    },
+                    stopList,
+                };
+            },
+        ),
+    );
+
 Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     deleteCookieOnServerSide(ctx, JOURNEY_COOKIE);
     const cookies = parseCookies(ctx);
@@ -71,25 +110,43 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
         const operatorObject = JSON.parse(operatorCookie);
         const serviceObject = JSON.parse(serviceCookie);
         const lineName = serviceObject.service.split('#')[0];
-        let serviceInfo: ServiceInformation;
 
         try {
             if (ctx.req) {
-                serviceInfo = await getJourneyPatternsAndLocalityByNocCodeAndLineName(operatorObject.nocCode, lineName);
+                const rawServiceInfo: RawServiceInformation = await getServiceByNocCodeAndLineName(
+                    operatorObject.nocCode,
+                    lineName,
+                );
+                const serviceInfo: ServiceInformation = {
+                    ...rawServiceInfo,
+                    journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawServiceInfo.journeyPatterns),
+                };
+
                 if (!serviceInfo && ctx.res) {
-                    redirectToError(ctx.res);
-                    return {};
+                    throw new Error(
+                        `No service info could be retrieved for nocCode: ${operatorObject.nocCode} and lineName: ${lineName}`,
+                    );
                 }
+
+                // Remove journeys with duplicate start and end points for display purposes
+                serviceInfo.journeyPatterns = serviceInfo.journeyPatterns.filter(
+                    (pattern, index, self) =>
+                        self.findIndex(
+                            item =>
+                                item.endPoint.Id === pattern.endPoint.Id &&
+                                item.startPoint.Id === pattern.startPoint.Id,
+                        ) === index,
+                );
+
                 return { Operator: operatorObject.operator, lineName, serviceInfo };
             }
-        } catch (err) {
-            console.error(err.message);
-            throw new Error(err.message);
+        } catch (error) {
+            console.error(`Unable to get journey patterns for direction page: ${error.stack}`);
+            throw new Error(error);
         }
-    }
-
-    if (ctx.res) {
-        redirectToError(ctx.res);
+    } else {
+        console.error('Necessary cookies not found to show direction page');
+        throw new Error('Necessary cookies not found to show direction page');
     }
 
     return {};

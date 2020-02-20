@@ -9,13 +9,16 @@ export interface StageName {
     stageName: string;
 }
 
+export interface FareStage {
+    stageName: string;
+    prices: {
+        price: string;
+        fareZones: string[];
+    }[];
+}
+
 export interface UserFareStages {
-    fareStages: [
-        {
-            stageName: string;
-            prices: string[];
-        },
-    ];
+    fareStages: FareStage[];
 }
 
 const getS3Client = (): AWS.S3 => {
