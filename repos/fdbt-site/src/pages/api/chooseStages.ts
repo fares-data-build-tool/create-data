@@ -3,8 +3,6 @@ import { FARE_STAGES_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 
 export const isValidFareStageNumber = (req: NextApiRequest): boolean => {
-    console.log(req.body.fareStageInput);
-
     const { fareStageInput } = req.body;
 
     if (fareStageInput.isNaN()) {
