@@ -5,6 +5,10 @@
     line-height: 35px;
 }
 
+.fare-triangle {
+    padding-bottom: 40px;
+}
+
 .fare-triangle-row {
     display: flex;
     flex-direction: row;
@@ -14,20 +18,16 @@
     align-content: flex-start;
 }
 
-.fare-cell:not(:first-child)[class] {
+.fare-triangle-input:first-child {
+    border-bottom: none;
+}
+
+.fare-triangle-input:not(:first-child) {
     border-bottom: none;
     border-left: none;
 }
 
-.fare-cell:first-child[class] {
-    border-bottom: none;
-}
-
-.fare-triangle {
-    padding-bottom: 40px;
-}
-
-.fare-triangle-cell[class] {
+.fare-triangle-label[class] {
     margin: auto 0;
     width: 80px;
     white-space: nowrap;
@@ -36,6 +36,6 @@
     padding-left: 5px;
 }
 
-.fare-triangle-cell:hover[class] {
+.fare-triangle-label:hover[class] {
     overflow: visible;
 }

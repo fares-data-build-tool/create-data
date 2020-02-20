@@ -39,13 +39,13 @@ const PriceEntry: NextPage = () => (
                             .fill({})
                             .map((_, columnIndex) => (
                                 <input
-                                    className="govuk-input govuk-input--width-4 fare-cell"
+                                    className="govuk-input govuk-input--width-4 fare-triangle-input"
                                     id={`cell-${rowIndex}-${columnIndex}`}
                                     name={`cell-${rowIndex}-${columnIndex}`}
                                     type="text"
                                 />
                             ))}
-                        <div className="govuk-heading-s fare-triangle-cell">{stageName}</div>
+                        <div className="govuk-heading-s fare-triangle-label">{stageName}</div>
                     </div>
                 ))}
             </div>
