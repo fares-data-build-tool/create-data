@@ -30,7 +30,7 @@ const HowManyStages: NextPage = () => (
                                     value="lessThan20"
                                 />
                                 <label className="govuk-label govuk-radios__label govuk-label--s" htmlFor="selection">
-                                    Less than 20 fare stages
+                                    20 fare stages or less
                                 </label>
                                 <span id="selection-item-hint" className="govuk-hint govuk-radios__hint">
                                     You&apos;ll need to add the fare stages, prices and match the stops on your route to

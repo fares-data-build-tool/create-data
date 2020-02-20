@@ -1,10 +1,10 @@
 import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-// import { parseCookies } from 'nookies';
+import { parseCookies } from 'nookies';
 
 import Layout from '../layout/Layout';
-import { STAGE_NAMES_COOKIE } from '../constants';
+import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { redirectToError } from './api/apiUtils';
 
@@ -15,26 +15,25 @@ type StageNameProps = {
     numberOfFareStages: number;
 };
 
-const generateInputFields = (numberOfFareStages: number): ReactElement => {
+const generateInputFields = (numberOfFareStages: number): ReactElement[] => {
+    const iteratorLimit = Number(numberOfFareStages) + 1;
     const elements = [];
-    for (let i = 1; i < numberOfFareStages + 1; i += 1) {
+    for (let i = 1; i < iteratorLimit; i += 1) {
         elements.push(
-            <label className="govuk-label" htmlFor={`StageNameForFareStage${i}`}>
+            <label className="govuk-hint" htmlFor={`fareStage${i}`}>
                 Fare Stage {i}
             </label>,
             <input
-                className="govuk-input"
-                id={`StageNameForFareStage${i}`}
-                name={`StageNameForFareStage${i}`}
+                className="govuk-input govuk-input--width-30"
+                id={`fareStage${i}`}
+                name={`fareStage${i}`}
                 type="text"
                 maxLength={20}
                 required
-                width={2}
             />,
         );
     }
-    console.log(numberOfFareStages);
-    return <div className="govuk-form-group">{elements}</div>;
+    return elements;
 };
 
 const StageNames = ({ numberOfFareStages }: StageNameProps): ReactElement => (
@@ -47,8 +46,9 @@ const StageNames = ({ numberOfFareStages }: StageNameProps): ReactElement => (
                             <h1 className="govuk-fieldset__heading">
                                 Please enter the names of your fare stages in order
                             </h1>
+                            <p className="govuk-hint">Fare stage names are limited to 30 characters</p>
                         </legend>
-                        {generateInputFields(numberOfFareStages)}
+                        <div className="govuk-form-group">{generateInputFields(numberOfFareStages)}</div>
                     </fieldset>
                 </div>
                 <input
@@ -64,14 +64,12 @@ const StageNames = ({ numberOfFareStages }: StageNameProps): ReactElement => (
 
 StageNames.getInitialProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
-    // const cookies = parseCookies(ctx);
-    const fareStagesCookie = 14;
-    // const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
+    const cookies = parseCookies(ctx);
+    const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
 
     if (fareStagesCookie) {
-        // const fareStagesObject = JSON.parse(fareStagesCookie);
-        // const numberOfFareStages = fareStagesObject.fareStages;
-        const numberOfFareStages = fareStagesCookie;
+        const fareStagesObject = JSON.parse(fareStagesCookie);
+        const numberOfFareStages = fareStagesObject.fareStages;
 
         return { numberOfFareStages };
     }

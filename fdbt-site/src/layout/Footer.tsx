@@ -10,22 +10,22 @@ const Footer: FC = () => (
                     <h2 className="govuk-visually-hidden">Support links</h2>
                     <ul className="govuk-footer__inline-list">
                         <li className="govuk-footer__inline-list-item">
-                            <a className="govuk-footer__link" href="#1">
+                            <a className="govuk-footer__link" href="https://www.gov.uk/help">
                                 Help
                             </a>
                         </li>
                         <li className="govuk-footer__inline-list-item">
-                            <a className="govuk-footer__link" href="/help/cookies">
+                            <a className="govuk-footer__link" href="https://www.gov.uk/help/cookies">
                                 Cookies
                             </a>
                         </li>
                         <li className="govuk-footer__inline-list-item">
-                            <a className="govuk-footer__link" href="#3">
+                            <a className="govuk-footer__link" href="https://www.gov.uk/contact">
                                 Contact
                             </a>
                         </li>
                         <li className="govuk-footer__inline-list-item">
-                            <a className="govuk-footer__link" href="#4">
+                            <a className="govuk-footer__link" href="https://www.gov.uk/help/terms-conditions">
                                 Terms and conditions
                             </a>
                         </li>
