@@ -5,8 +5,8 @@ import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } fro
 export const isInvalidFareStageNumber = (req: NextApiRequest): boolean => {
     const { fareStageInput } = req.body;
 
+    // eslint-disable-next-line no-restricted-globals
     if (isNaN(fareStageInput)) {
-        // eslint-disable-line no-restricted-globals
         return true;
     }
 
