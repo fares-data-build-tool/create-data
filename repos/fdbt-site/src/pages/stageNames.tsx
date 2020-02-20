@@ -12,10 +12,10 @@ const title = 'Stage Names - Fares data build tool';
 const description = 'Stage Names page of the Fares data build tool';
 
 type StageNameProps = {
-    numberOfFareStages: number;
+    numberOfFareStages: string;
 };
 
-const generateInputFields = (numberOfFareStages: number): ReactElement[] => {
+const generateInputFields = (numberOfFareStages: string): ReactElement[] => {
     const iteratorLimit = Number(numberOfFareStages) + 1;
     const elements = [];
     for (let i = 1; i < iteratorLimit; i += 1) {
@@ -44,7 +44,7 @@ const StageNames = ({ numberOfFareStages }: StageNameProps): ReactElement => (
                     <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading">
-                                Please enter the names of your fare stages in order
+                                Please enter the names of your fare stages in order from first to last
                             </h1>
                             <p className="govuk-hint">Fare stage names are limited to 30 characters</p>
                         </legend>
@@ -66,6 +66,7 @@ StageNames.getInitialProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
+    console.log({ cookies });
 
     if (fareStagesCookie) {
         const fareStagesObject = JSON.parse(fareStagesCookie);

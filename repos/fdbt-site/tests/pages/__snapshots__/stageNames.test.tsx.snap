@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages stageNames should render correctly 1`] = `
+<Layout
+  description="Stage Names page of the Fares data build tool"
+  title="Stage Names - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/stageNames"
+      method="post"
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          aria-describedby="selection-hint"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+            >
+              Please enter the names of your fare stages in order from first to last
+            </h1>
+            <p
+              className="govuk-hint"
+            >
+              Fare stage names are limited to 30 characters
+            </p>
+          </legend>
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              className="govuk-hint"
+              htmlFor="fareStage1"
+            >
+              Fare Stage 
+              1
+            </label>
+            <input
+              className="govuk-input govuk-input--width-30"
+              id="fareStage1"
+              maxLength={20}
+              name="fareStage1"
+              required={true}
+              type="text"
+            />
+            <label
+              className="govuk-hint"
+              htmlFor="fareStage2"
+            >
+              Fare Stage 
+              2
+            </label>
+            <input
+              className="govuk-input govuk-input--width-30"
+              id="fareStage2"
+              maxLength={20}
+              name="fareStage2"
+              required={true}
+              type="text"
+            />
+            <label
+              className="govuk-hint"
+              htmlFor="fareStage3"
+            >
+              Fare Stage 
+              3
+            </label>
+            <input
+              className="govuk-input govuk-input--width-30"
+              id="fareStage3"
+              maxLength={20}
+              name="fareStage3"
+              required={true}
+              type="text"
+            />
+            <label
+              className="govuk-hint"
+              htmlFor="fareStage4"
+            >
+              Fare Stage 
+              4
+            </label>
+            <input
+              className="govuk-input govuk-input--width-30"
+              id="fareStage4"
+              maxLength={20}
+              name="fareStage4"
+              required={true}
+              type="text"
+            />
+            <label
+              className="govuk-hint"
+              htmlFor="fareStage5"
+            >
+              Fare Stage 
+              5
+            </label>
+            <input
+              className="govuk-input govuk-input--width-30"
+              id="fareStage5"
+              maxLength={20}
+              name="fareStage5"
+              required={true}
+              type="text"
+            />
+            <label
+              className="govuk-hint"
+              htmlFor="fareStage6"
+            >
+              Fare Stage 
+              6
+            </label>
+            <input
+              className="govuk-input govuk-input--width-30"
+              id="fareStage6"
+              maxLength={20}
+              name="fareStage6"
+              required={true}
+              type="text"
+            />
+          </div>
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
