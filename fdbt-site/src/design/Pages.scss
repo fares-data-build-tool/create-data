@@ -7,35 +7,29 @@
 
 .fare-triangle {
     padding-bottom: 40px;
-}
-
-.fare-triangle-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    align-content: flex-start;
-}
-
-.fare-triangle-input:first-child {
-    border-bottom: none;
-}
-
-.fare-triangle-input:not(:first-child) {
-    border-bottom: none;
-    border-left: none;
-}
-
-.fare-triangle-label[class] {
-    margin: auto 0;
-    width: 80px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-left: 5px;
-}
-
-.fare-triangle-label:hover[class] {
-    overflow: visible;
+    .fare-triangle-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+    }
+    .fare-triangle-row:not(:last-child) .fare-triangle-input {
+        border-bottom: none;
+    }
+    .fare-triangle-input:not(:first-child) {
+        border-left: none;
+    }
+    .fare-triangle-label {
+        margin: auto 0;
+        width: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 7px;
+    }
+    .fare-triangle-label:hover {
+        overflow: visible;
+    }
 }
