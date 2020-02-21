@@ -93,9 +93,8 @@ PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
                 stageNames = stageNameObject.names;
             }
 
-            if (stageNames.length === 0 && ctx.res) {
-                redirectToError(ctx.res);
-                return {};
+            if (stageNames.length === 0) {
+                throw new Error('No stages found in cookie!');
             }
 
             return { stageNames };

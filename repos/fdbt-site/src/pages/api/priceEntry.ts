@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PRICEENTRY_COOKIE, STAGENAMES_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, getCookies, redirectToError, redirectTo } from './apiUtils';
+import { STAGENAMES_COOKIE } from '../../constants/index';
+import { getCookies, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -25,13 +25,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const bucketName: string = process.env.USER_DATA_BUCKET_NAME!;
         const key = `${uuid}.json`;
-        const text = priceEntry;
         const contentType = 'application/json; charset=utf-8';
-        putStringInS3(bucketName, key, text, contentType);
+        putStringInS3(bucketName, key, priceEntry, contentType);
 
-        const cookieValue = JSON.stringify(uuid);
-        const domain = getDomain(req);
-        setCookieOnResponseObject(domain, PRICEENTRY_COOKIE, cookieValue, res);
         redirectTo(res, '/matching');
     } catch (error) {
         redirectToError(res);
