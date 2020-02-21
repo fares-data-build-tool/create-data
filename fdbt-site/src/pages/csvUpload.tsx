@@ -40,6 +40,18 @@ const CsvUpload: NextPage = (): ReactElement => (
                     className="govuk-button govuk-button--start"
                 />
             </form>
+            <div>
+                <p>
+                    <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link" download>
+                        Download Help File
+                    </a>
+                </p>
+                <p>
+                    <a href="assets/files/Fares Triangle Example.csv" className="govuk-link" download>
+                        Download Fares Triangle CSV Example
+                    </a>
+                </p>
+            </div>
         </main>
     </Layout>
 );
