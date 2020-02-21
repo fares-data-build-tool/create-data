@@ -1,5 +1,5 @@
 import { S3Event } from 'aws-lambda';
-import { ParsedCsvData } from '../handler';
+import { ParsedCsv } from '../handler';
 
 export const mockS3Event = (bucketName: string, fileName: string): S3Event => ({
     Records: [
@@ -71,18 +71,15 @@ export const mockReformattedServicesData = {
     StartDate: '2019-12-03',
 };
 
-export const createArray = (index: number, mockNaptanData: ParsedCsvData): ParsedCsvData[] => {
-    const array: ParsedCsvData[] = [];
+export const createArray = (index: number, mockNaptanData: ParsedCsv): ParsedCsv[] => {
+    const array: ParsedCsv[] = [];
     for (let i = 0; i < index; i += 1) {
         array.push(mockNaptanData);
     }
     return array;
 };
 
-export const createBatchOfWriteRequests = (
-    index: number,
-    mockNaptanData: ParsedCsvData,
-): AWS.DynamoDB.WriteRequest[] => {
+export const createBatchOfWriteRequests = (index: number, mockNaptanData: ParsedCsv): AWS.DynamoDB.WriteRequest[] => {
     const batchOfWriteRequests: AWS.DynamoDB.DocumentClient.WriteRequest[] = [];
     for (let i = 0; i < index; i += 1) {
         batchOfWriteRequests.push({
@@ -110,33 +107,405 @@ export const isParseableToJSON = (str: string): boolean => {
     }
 };
 
-export const mockCleanedXmlData: {} = [
+export const mockCleanedXmlData = [
     {
-        Description: 'St Ives - Bar Hill',
+        ServiceDescription: 'St Ives - Bar Hill',
         LineName: '1A',
         OperatorShortName: 'Dews Coaches',
         Partition: 'DEWS',
         Sort: '1A#2019-12-17#ea_20-1A-A-y08-1.xml',
-        StopPoints: [
-            { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
-            { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
-            { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
-            { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
-            { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
+        JourneyPatterns: [
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-1-1-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: 'Chequer Street',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-2-1-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: 'Chequer Street',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-3-2-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500SSWAV013',
+                                CommonName: 'The Farm',
+                            },
+                            {
+                                StopPointRef: '0500SFEND004',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500SFEND003',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                            {
+                                StopPointRef: '0500HHEMG002',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HHOLY010',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HSTIV002',
+                                CommonName: '',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: '',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-4-2-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500SSWAV013',
+                                CommonName: 'The Farm',
+                            },
+                            {
+                                StopPointRef: '0500SFEND004',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500SFEND003',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                            {
+                                StopPointRef: '0500HHEMG002',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HHOLY010',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HSTIV002',
+                                CommonName: '',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: '',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-5-3-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                            {
+                                StopPointRef: '0500HHEMG002',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HSTIV002',
+                                CommonName: '',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: '',
+                    },
+                ],
+            },
         ],
     },
     {
-        Description: 'St Ives - Bar Hill',
+        ServiceDescription: 'St Ives - Bar Hill',
         LineName: '1A',
         OperatorShortName: 'Dannys Coaches',
         Partition: 'Dannys',
         Sort: '1A#2019-12-17#ea_20-1A-A-y08-1.xml',
-        StopPoints: [
-            { CommonName: 'Superstore', StopPointRef: '0500SBARH011' },
-            { CommonName: 'Rookery Way', StopPointRef: '0500HFENS007' },
-            { CommonName: 'Swan Road', StopPointRef: '0500HFENS006' },
-            { CommonName: 'Chequer Street', StopPointRef: '0500HFENS003' },
-            { CommonName: 'The Farm', StopPointRef: '0500SSWAV013' },
+        JourneyPatterns: [
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-1-1-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: 'Chequer Street',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-2-1-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: 'Chequer Street',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-3-2-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500SSWAV013',
+                                CommonName: 'The Farm',
+                            },
+                            {
+                                StopPointRef: '0500SFEND004',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500SFEND003',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                            {
+                                StopPointRef: '0500HHEMG002',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HHOLY010',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HSTIV002',
+                                CommonName: '',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: '',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-4-2-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500SSWAV013',
+                                CommonName: 'The Farm',
+                            },
+                            {
+                                StopPointRef: '0500SFEND004',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500SFEND003',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                            {
+                                StopPointRef: '0500HHEMG002',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HHOLY010',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HSTIV002',
+                                CommonName: '',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: '',
+                    },
+                ],
+            },
+            {
+                JourneyPatternSections: [
+                    {
+                        Id: 'JPS_20-1A-A-y08-1-5-3-R',
+                        OrderedStopPoints: [
+                            {
+                                StopPointRef: '0500SBARH011',
+                                CommonName: 'Superstore',
+                            },
+                            {
+                                StopPointRef: '0500HFENS007',
+                                CommonName: 'Rookery Way',
+                            },
+                            {
+                                StopPointRef: '0500HFENS006',
+                                CommonName: 'Swan Road',
+                            },
+                            {
+                                StopPointRef: '0500HFENS003',
+                                CommonName: 'Chequer Street',
+                            },
+                            {
+                                StopPointRef: '0500HHEMG002',
+                                CommonName: '',
+                            },
+                            {
+                                StopPointRef: '0500HSTIV002',
+                                CommonName: '',
+                            },
+                        ],
+                        StartPoint: 'Superstore',
+                        EndPoint: '',
+                    },
+                ],
+            },
         ],
     },
 ];
