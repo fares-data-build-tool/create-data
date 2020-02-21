@@ -9,8 +9,7 @@
         "test:ci": "CI=true jest --silent -w 1",
         "test:updateSnapshots": "jest --updateSnapshot",
         "dev": "export NODE_ENV='' && next -p 5555",
-        "build": "rm -rf ./.serverless_nextjs && NODE_ENV=development next build",
-        "start": "NODE_ENV=development next start",
+        "build": "rm -rf ./.serverless_nextjs && NODE_ENV=production next build",
         "deploy": "export NODE_ENV='test' && export SLS_DEBUG='*' && serverless --config serverless.test.yml",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx"
@@ -22,7 +21,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci"
         }
     },
     "lint-staged": {
