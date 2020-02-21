@@ -99,7 +99,7 @@ const getJourneysByStartAndEndPoint = (
 
 // Gets a unique set of stop point refs from an array of journey pattern sections
 const getMasterStopList = (journeys: RawJourneyPatternSection[]): string[] => [
-    ...new Set(flatMap(journeys, journey => journey.OrderedStopPoints.flatMap(item => item.StopPointRef))),
+    ...new Set(flatMap(journeys, journey => journey.OrderedStopPoints.map(item => item.StopPointRef))),
 ];
 
 Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
