@@ -2,8 +2,8 @@
 import matching from '../../../src/pages/api/matching';
 import {
     getMockRequestAndResponse,
-    serviceInfo,
-    mockMatchingUserData,
+    service,
+    mockMatchingUserFareStages,
     expectedMatchingJson,
 } from '../../testData/mockData';
 import * as s3 from '../../../src/data/s3';
@@ -40,7 +40,11 @@ describe('Matching API', () => {
     it('correctly generates matching JSON and uploads to S3', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
-            { ...selections, serviceinfo: JSON.stringify(serviceInfo), userdata: JSON.stringify(mockMatchingUserData) },
+            {
+                ...selections,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
+            },
             {},
             writeHeadMock,
         );
@@ -61,8 +65,8 @@ describe('Matching API', () => {
             {
                 option0: '',
                 option1: '',
-                serviceinfo: JSON.stringify(serviceInfo),
-                userdata: JSON.stringify(mockMatchingUserData),
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             {},
             writeHeadMock,
@@ -77,7 +81,11 @@ describe('Matching API', () => {
     it('redirects to thankyou page if all valid', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
-            { ...selections, serviceinfo: JSON.stringify(serviceInfo), userdata: JSON.stringify(mockMatchingUserData) },
+            {
+                ...selections,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
+            },
             {},
             writeHeadMock,
         );
@@ -89,7 +97,7 @@ describe('Matching API', () => {
     it('redirects back to matching page if no user data in body', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
-            { ...selections, serviceinfo: JSON.stringify(serviceInfo), userdata: '' },
+            { ...selections, service: JSON.stringify(service), userfarestages: '' },
             {},
             writeHeadMock,
         );
@@ -103,7 +111,7 @@ describe('Matching API', () => {
     it('redirects back to matching page if no service info in body', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
-            { ...selections, serviceinfo: '', userdata: JSON.stringify(mockMatchingUserData) },
+            { ...selections, service: '', userfarestages: JSON.stringify(mockMatchingUserFareStages) },
             {},
             writeHeadMock,
         );

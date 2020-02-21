@@ -3,7 +3,7 @@ import React from 'react';
 import { NextPageContext } from 'next';
 import mockReqRes, { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { RawServiceData, ServiceData } from '../../src/data/dynamodb';
+import { RawService, Service } from '../../src/data/dynamodb';
 import { UserFareStages } from '../../src/data/s3';
 import { OPERATOR_COOKIE, FARETYPE_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../../src/constants';
 
@@ -83,7 +83,7 @@ export const getMockContext = (cookies: any = {}, body: any = null, uuid: any = 
     return ctx;
 };
 
-export const serviceData: RawServiceData = {
+export const mockRawService: RawService = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [
@@ -219,7 +219,7 @@ export const serviceData: RawServiceData = {
     ],
 };
 
-export const serviceDataWithDuplicates: RawServiceData = {
+export const mockRawServiceWithDuplicates: RawService = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [
@@ -395,7 +395,7 @@ export const serviceDataWithDuplicates: RawServiceData = {
     ],
 };
 
-export const userData: UserFareStages = {
+export const userFareStages: UserFareStages = {
     fareStages: [
         {
             stageName: 'Acomb Green Lane',
@@ -614,9 +614,9 @@ export const naptanStopInfo = [
     },
 ];
 
-export const serviceInfo = { lineName: '215', nocCode: 'DCCL', operatorShortName: 'DCC' };
+export const service = { lineName: '215', nocCode: 'DCCL', operatorShortName: 'DCC' };
 
-export const mockServiceData: ServiceData = {
+export const mockServiceData: Service = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [
@@ -664,7 +664,7 @@ export const mockServiceData: ServiceData = {
     ],
 };
 
-export const mockMatchingUserData = {
+export const mockMatchingUserFareStages = {
     fareStages: [
         {
             stageName: 'Acomb Green Lane',

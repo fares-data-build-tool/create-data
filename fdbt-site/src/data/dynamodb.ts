@@ -43,7 +43,7 @@ interface DynamoNaptanInfo {
     Street: string;
 }
 
-export interface NaptanInfo {
+export interface Stop {
     stopName: string;
     naptanCode: string;
     atcoCode: string;
@@ -54,13 +54,13 @@ export interface NaptanInfo {
     qualifierName?: string;
 }
 
-export interface ServiceData {
+export interface Service {
     serviceDescription: string;
     operatorShortName: string;
     journeyPatterns: JourneyPattern[];
 }
 
-export interface RawServiceData {
+export interface RawService {
     serviceDescription: string;
     operatorShortName: string;
     journeyPatterns: RawJourneyPattern[];
@@ -121,47 +121,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     }
 };
 
-export const getNaptanInfoByAtcoCode = async (atcoCode: string): Promise<NaptanInfo | null> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
-
-    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
-        TableName: tableName,
-        KeyConditionExpression: '#pk = :value',
-        ExpressionAttributeNames: {
-            '#pk': 'Partition',
-            '#in': 'Indicator',
-        },
-        ExpressionAttributeValues: {
-            ':value': atcoCode,
-        },
-        ProjectionExpression: 'LocalityName,#in,Street,CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
-    };
-
-    try {
-        const { Items } = await dynamoDbClient.query(queryInput).promise();
-
-        const data = Items?.[0];
-
-        if (data) {
-            return {
-                stopName: data.CommonName,
-                naptanCode: data.NaptanCode,
-                atcoCode: data.ATCOCode,
-                localityCode: data.NptgLocalityCode,
-                localityName: data.LocalityName,
-                indicator: data.Indicator,
-                street: data.Street,
-            };
-        }
-
-        return null;
-    } catch (error) {
-        console.error(`Error performing batch get for naptan info for atcoCode: ${atcoCode}, error: ${error}`);
-        throw new Error(error);
-    }
-};
-
-export const batchGetNaptanInfoByAtcoCode = async (atcoCodes: string[]): Promise<NaptanInfo[] | []> => {
+export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
     const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
     const count = atcoCodes.length;
     const batchSize = 100;
@@ -210,7 +170,7 @@ export const batchGetNaptanInfoByAtcoCode = async (atcoCodes: string[]): Promise
     }
 };
 
-export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawServiceData> => {
+export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
 
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
@@ -242,8 +202,8 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
     }
 
     return {
-        serviceDescription: service?.ServiceDescription,
-        operatorShortName: service?.OperatorShortName,
-        journeyPatterns: service?.JourneyPatterns,
+        serviceDescription: service.ServiceDescription,
+        operatorShortName: service.OperatorShortName,
+        journeyPatterns: service.JourneyPatterns,
     };
 };

@@ -1,6 +1,6 @@
 import MockReq from 'mock-req';
 import { getHost, formatStopName } from '../../src/utils';
-import { NaptanInfo } from '../../src/data/dynamodb';
+import { Stop } from '../../src/data/dynamodb';
 
 describe('utils', () => {
     describe('getHost', () => {
@@ -30,7 +30,7 @@ describe('utils', () => {
     });
 
     describe('formatStopName', () => {
-        const allFields: NaptanInfo = {
+        const allFields: Stop = {
             stopName: 'Test Stop',
             naptanCode: '12345',
             atcoCode: 'gvgvxgasvx',
@@ -40,7 +40,7 @@ describe('utils', () => {
             street: 'Test Street',
         };
 
-        const noLocalityName: NaptanInfo = {
+        const noLocalityName: Stop = {
             stopName: 'Test Stop',
             naptanCode: '12345',
             atcoCode: 'gvgvxgasvx',
@@ -50,7 +50,7 @@ describe('utils', () => {
             street: 'Test Street',
         };
 
-        const noStreet: NaptanInfo = {
+        const noStreet: Stop = {
             stopName: 'Test Stop',
             naptanCode: '12345',
             atcoCode: 'gvgvxgasvx',

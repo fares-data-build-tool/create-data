@@ -9,7 +9,7 @@ const MAX_FILE_SIZE = 5242880;
 
 export type File = FileData;
 
-export interface UserData {
+export interface UserFareStages {
     fareStages: {
         stageName: string;
         prices: {
@@ -54,7 +54,7 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
     });
 };
 
-export const putDataInS3 = async (data: UserData | string, key: string, processed: boolean): Promise<void> => {
+export const putDataInS3 = async (data: UserFareStages | string, key: string, processed: boolean): Promise<void> => {
     let contentType = '';
     let bucketName = '';
 
@@ -73,7 +73,7 @@ export const putDataInS3 = async (data: UserData | string, key: string, processe
     await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };
 
-export const faresTriangleDataMapper = (dataToMap: string): UserData => {
+export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     const fareTriangle: FareTriangleData = {
         fareStages: [],
     };
@@ -93,37 +93,32 @@ export const faresTriangleDataMapper = (dataToMap: string): UserData => {
         const items = dataAsLines[rowNum].split(',');
         const stageName = items[rowNum + 1];
 
-        if (fareTriangle.fareStages[rowNum]) {
-            fareTriangle.fareStages[rowNum].stageName = stageName;
-        } else {
-            fareTriangle.fareStages[rowNum] = {
-                stageName,
-                prices: {},
-            };
-        }
+        fareTriangle.fareStages[rowNum] = {
+            stageName,
+            prices: {},
+        };
 
-        if (rowNum > 0) {
-            for (let colNum = 0; colNum < rowNum + 1; colNum += 1) {
-                const price = items[colNum + 1];
-                const priceZoneName = items[rowNum + 1];
+        for (let colNum = 0; colNum < rowNum; colNum += 1) {
+            const price = items[colNum + 1];
+            const priceZoneName = items[rowNum + 1];
 
-                if (fareTriangle.fareStages[colNum] && price && colNum !== rowNum) {
-                    if (price && !Number.isNaN(Number(price))) {
-                        if (fareTriangle.fareStages?.[colNum].prices?.[price]?.fareZones) {
-                            fareTriangle.fareStages[colNum].prices[price].fareZones.push(priceZoneName);
-                        } else {
-                            fareTriangle.fareStages[colNum].prices[price] = {
-                                price: (parseFloat(price) / 100).toFixed(2),
-                                fareZones: [priceZoneName],
-                            };
-                        }
+            if (price) {
+                // Check explicitly for number to account for invalid fare data
+                if (!Number.isNaN(Number(price))) {
+                    if (fareTriangle.fareStages?.[colNum].prices?.[price]?.fareZones) {
+                        fareTriangle.fareStages[colNum].prices[price].fareZones.push(priceZoneName);
+                    } else {
+                        fareTriangle.fareStages[colNum].prices[price] = {
+                            price: (parseFloat(price) / 100).toFixed(2),
+                            fareZones: [priceZoneName],
+                        };
                     }
                 }
             }
         }
     }
 
-    const mappedFareTriangle: UserData = {
+    const mappedFareTriangle: UserFareStages = {
         fareStages: fareTriangle.fareStages.map(item => ({
             ...item,
             prices: Object.values(item.prices),
