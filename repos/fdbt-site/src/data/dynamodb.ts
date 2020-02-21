@@ -1,5 +1,70 @@
 import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
+import flatMap from 'array.prototype.flatmap';
+
+export interface ServiceType {
+    lineName: string;
+    startDate: string;
+}
+
+export interface JourneyPattern {
+    startPoint: {
+        Id: string;
+        Display: string;
+    };
+    endPoint: {
+        Id: string;
+        Display: string;
+    };
+    stopList: string[];
+}
+
+export interface RawJourneyPatternSection {
+    Id: string;
+    OrderedStopPoints: {
+        StopPointRef: string;
+        CommonName: string;
+    }[];
+    StartPoint: string;
+    EndPoint: string;
+}
+
+export interface RawJourneyPattern {
+    JourneyPatternSections: RawJourneyPatternSection[];
+}
+
+interface DynamoNaptanInfo {
+    CommonName: string;
+    NaptanCode: string;
+    ATCOCode: string;
+    NptgLocalityCode: string;
+    LocalityName: string;
+    Indicator: string;
+    Street: string;
+}
+
+export interface Stop {
+    stopName: string;
+    naptanCode: string;
+    atcoCode: string;
+    localityCode: string;
+    localityName: string;
+    indicator: string;
+    street: string;
+    qualifierName?: string;
+}
+
+export interface Service {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: JourneyPattern[];
+}
+
+export interface RawService {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: RawJourneyPattern[];
+}
 
 const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
     const dynamoDbRegion = process.env.AWS_REGION || 'eu-west-2';
@@ -25,11 +90,6 @@ const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
 
 const dynamoDbClient = getDynamoDBClient();
 
-export type ServiceType = {
-    lineName: string;
-    startDate: string;
-};
-
 export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
@@ -51,15 +111,99 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 
     try {
         const { Items } = await dynamoDbClient.query(queryInput).promise();
-
         return (
             Items?.map(
                 (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
             ) || []
         );
-    } catch (error) {
-        console.error(`There was an error retrieving the Services from Dynamo: ${error.message}`);
-
-        throw new Error(error.message);
+    } catch (err) {
+        throw new Error(`Could not retrieve services from DynamoDB: ${err.name}, ${err.message}`);
     }
+};
+
+export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
+    const count = atcoCodes.length;
+    const batchSize = 100;
+    const batchArray = [];
+
+    for (let i = 0; i < count; i += batchSize) {
+        batchArray.push(atcoCodes.slice(i, i + batchSize));
+    }
+
+    const batchPromises = batchArray.map(batch => {
+        const batchQueryInput: AWS.DynamoDB.DocumentClient.BatchGetItemInput = {
+            RequestItems: {
+                [tableName]: {
+                    ExpressionAttributeNames: {
+                        '#in': 'Indicator',
+                    },
+                    Keys: batch.map(code => ({
+                        Partition: code,
+                    })),
+                    ProjectionExpression: 'LocalityName,#in,Street,CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
+                },
+            },
+        };
+
+        return dynamoDbClient.batchGet(batchQueryInput).promise();
+    });
+
+    try {
+        const results = await Promise.all(batchPromises);
+        const filteredResults = results.filter(item => item.Responses?.[tableName]);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const naptanItems: DynamoNaptanInfo[] = flatMap(filteredResults, (item: any) => item.Responses[tableName]);
+
+        return naptanItems.map(item => ({
+            stopName: item.CommonName,
+            naptanCode: item.NaptanCode,
+            atcoCode: item.ATCOCode,
+            localityCode: item.NptgLocalityCode,
+            localityName: item.LocalityName,
+            indicator: item.Indicator,
+            street: item.Street,
+        }));
+    } catch (error) {
+        console.error(`Error performing batch get for naptan info for stop list: ${atcoCodes}, error: ${error}`);
+        throw new Error(error);
+    }
+};
+
+export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
+
+    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
+        TableName: tableName,
+        KeyConditionExpression: '#pkAttNm = :pkAttVal and begins_with (#skAttNm, :skAttVal)',
+        ExpressionAttributeNames: {
+            '#pkAttNm': 'Partition',
+            '#skAttNm': 'Sort',
+        },
+        ExpressionAttributeValues: {
+            ':pkAttVal': nocCode,
+            ':skAttVal': lineName,
+        },
+    };
+    let Items;
+
+    try {
+        ({ Items } = await getDynamoDBClient()
+            .query(queryInput)
+            .promise());
+    } catch (err) {
+        throw new Error(`Could not get journey patterns from Dynamo DB: ${err.name}, ${err.message}`);
+    }
+
+    const service = Items?.[0];
+
+    if (!service || !service.JourneyPatterns || service.JourneyPatterns.length === 0) {
+        throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
+    }
+
+    return {
+        serviceDescription: service.ServiceDescription,
+        operatorShortName: service.OperatorShortName,
+        journeyPatterns: service.JourneyPatterns,
+    };
 };
