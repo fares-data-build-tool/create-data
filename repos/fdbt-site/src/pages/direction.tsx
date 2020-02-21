@@ -73,7 +73,7 @@ const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPa
         journeyPatterns.map(
             async (item: RawJourneyPattern): Promise<JourneyPattern> => {
                 const stopList = flatMap(item.JourneyPatternSections, section =>
-                    section.OrderedStopPoints.flatMap(stop => stop.StopPointRef),
+                    section.OrderedStopPoints.map(stop => stop.StopPointRef),
                 );
                 const startPoint = item.JourneyPatternSections[0].OrderedStopPoints[0];
                 const [startPointStop] = await batchGetStopsByAtcoCode([startPoint.StopPointRef]);
