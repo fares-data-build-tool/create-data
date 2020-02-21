@@ -14,15 +14,16 @@ type Operator = {
 };
 
 const hardCodedOperators: Operator[] = [
+    { operatorName: 'Blackpool Transport', nocCode: 'BLAC' },
     { operatorName: 'Connexions Buses', nocCode: 'HCTY' },
     { operatorName: 'Durham County Council', nocCode: 'DCCL' },
-    // TODO: Find correct NOC
-    { operatorName: 'Lancashire County Council', nocCode: 'PLACEHOLDERLANCASHIRE' },
+    { operatorName: 'East Yorkshire Council', nocCode: 'ERDG' },
+    { operatorName: 'Lancashire County Council', nocCode: 'PBLT' },
     { operatorName: 'Manchester Community Transport', nocCode: 'MCTR' },
     { operatorName: 'Pilkington Bus', nocCode: 'NWBT' },
     { operatorName: 'TLC Travel', nocCode: 'TLCT' },
-    // TODO: Find correct NOC
-    { operatorName: 'Transport for Greater Manchester', nocCode: 'PLACEHOLDERTFGM' },
+    { operatorName: 'Transport for Greater Manchester', nocCode: 'HIPK' },
+    { operatorName: "Warrington's Own Buses", nocCode: 'WBTR' },
 ];
 
 const Operator: NextPage = () => (

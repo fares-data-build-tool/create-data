@@ -5,7 +5,7 @@
 ## Requirements
 
 -   Node.js 12+
--   Localstack CLI
+-   Localstack & Localstack AWS CLI
 -   AWS CLI
 -   Python 3 / Pip
 -   Docker
@@ -13,8 +13,9 @@
 ## Installing localstack
 
 -   To install localstack, you will need pip installed first, then you can run `pip install localstack`
+-   To install localstack AWS CLI, run `pip install awscli-local`
 -   To test it is working make sure docker is running then run `localstack`
-    -- By default, localstack will try and mount in a `/private` directory into the docker container, if this is failing, you will need to navigate to Docker for Mac > Preferences > File Sharing and add in `/private` as a directory
+    -- By default, localstack will try and mount in a `/private` directory into the docker container, if this is failing, you will need to navigate to Docker for Mac > Preferences> File Sharing and add in `/private` as a directory
 
 ## Running locally
 
