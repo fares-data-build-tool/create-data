@@ -11,57 +11,136 @@
                     {
                         "Id": "JPS_YNAX006A-4",
                         "OrderedStopPoints": [
-                            { "StopPointRef": "3200YND90060", "CommonName": "Hgte Bus Stn Stand 6" },
-                            { "StopPointRef": "3200YND81000", "CommonName": "Victoria Avenue" },
-                            { "StopPointRef": "3200YND12510", "CommonName": "County Court" },
-                            { "StopPointRef": "3200YND81010", "CommonName": "Montpellier Hill" },
-                            { "StopPointRef": "3200YND81370", "CommonName": "White Hart Hotel" },
-                            { "StopPointRef": "3200YND81360", "CommonName": "Cold Bath Road PO" },
-                            { "StopPointRef": "3200YND81030", "CommonName": "Cold Bath Road PO" },
-                            { "StopPointRef": "3200YND81040", "CommonName": "Queens Road" },
-                            { "StopPointRef": "3200YND81050", "CommonName": "New Inn" },
-                            { "StopPointRef": "3200YND81060", "CommonName": "Pannal Ash Road" },
-                            { "StopPointRef": "3200YND81250", "CommonName": "Beckwith Avenue" },
-                            { "StopPointRef": "3200YND81260", "CommonName": "Larkfield Way" },
-                            { "StopPointRef": "3200YND81104", "CommonName": "Beckwith Knowle" }
+                            {
+                                "StopPointRef": "3200YND90060",
+                                "CommonName": "Hgte Bus Stn Stand 6"
+                            },
+                            {
+                                "StopPointRef": "3200YND81000",
+                                "CommonName": "Victoria Avenue"
+                            },
+                            {
+                                "StopPointRef": "3200YND12510",
+                                "CommonName": "County Court"
+                            },
+                            {
+                                "StopPointRef": "3200YND81010",
+                                "CommonName": "Montpellier Hill"
+                            },
+                            {
+                                "StopPointRef": "3200YND81370",
+                                "CommonName": "White Hart Hotel"
+                            },
+                            {
+                                "StopPointRef": "3200YND81360",
+                                "CommonName": "Cold Bath Road PO"
+                            },
+                            {
+                                "StopPointRef": "3200YND81030",
+                                "CommonName": "Cold Bath Road PO"
+                            },
+                            {
+                                "StopPointRef": "3200YND81040",
+                                "CommonName": "Queens Road"
+                            },
+                            {
+                                "StopPointRef": "3200YND81050",
+                                "CommonName": "New Inn"
+                            },
+                            {
+                                "StopPointRef": "3200YND81060",
+                                "CommonName": "Pannal Ash Road"
+                            },
+                            {
+                                "StopPointRef": "3200YND81250",
+                                "CommonName": "Beckwith Avenue"
+                            },
+                            {
+                                "StopPointRef": "3200YND81260",
+                                "CommonName": "Larkfield Way"
+                            },
+                            {
+                                "StopPointRef": "3200YND81104",
+                                "CommonName": "Beckwith Knowle"
+                            }
                         ],
                         "StartPoint": "Hgte Bus Stn Stand 6",
                         "EndPoint": "Beckwith Knowle"
-                    }
-                ]
-            },
-            {
-                "JourneyPatternSections": [
+                    },
                     {
                         "Id": "JPS_YNAX006A-5",
                         "OrderedStopPoints": [
-                            { "StopPointRef": "3200YND81250", "CommonName": "Beckwith Avenue" },
-                            { "StopPointRef": "3200YND81260", "CommonName": "Larkfield Way" },
-                            { "StopPointRef": "3200YND81104", "CommonName": "Beckwith Knowle" }
+                            {
+                                "StopPointRef": "3200YND81250",
+                                "CommonName": "Beckwith Avenue"
+                            },
+                            {
+                                "StopPointRef": "3200YND81260",
+                                "CommonName": "Larkfield Way"
+                            },
+                            {
+                                "StopPointRef": "3200YND81104",
+                                "CommonName": "Beckwith Knowle"
+                            }
                         ],
                         "StartPoint": "Beckwith Avenue",
                         "EndPoint": "Beckwith Knowle"
-                    }
-                ]
-            },
-            {
-                "JourneyPatternSections": [
+                    },
                     {
                         "Id": "JPS_YNAX006A-6",
                         "OrderedStopPoints": [
-                            { "StopPointRef": "3200YND81104", "CommonName": "Beckwith Knowle" },
-                            { "StopPointRef": "3200YNA96426", "CommonName": "Harlow Pines" },
-                            { "StopPointRef": "3200YND81290", "CommonName": "Plantation Road" },
-                            { "StopPointRef": "3200YND81300", "CommonName": "Shepherds Dog" },
-                            { "StopPointRef": "3200YND81310", "CommonName": "College Street" },
-                            { "StopPointRef": "3200YND81320", "CommonName": "Harlow Oval" },
-                            { "StopPointRef": "3200YND81330", "CommonName": "New Inn" },
-                            { "StopPointRef": "3200YND81340", "CommonName": "Wordsworth Crescent" },
-                            { "StopPointRef": "3200YND81350", "CommonName": "Beechwood Crescent" },
-                            { "StopPointRef": "3200YNA96791", "CommonName": "The Adelphi" },
-                            { "StopPointRef": "3200YND81020", "CommonName": "White Hart" },
-                            { "StopPointRef": "3200YNA96546", "CommonName": "War Memorial" },
-                            { "StopPointRef": "3200YND90060", "CommonName": "Hgte Bus Stn Stand 6" }
+                            {
+                                "StopPointRef": "3200YND81104",
+                                "CommonName": "Beckwith Knowle"
+                            },
+                            {
+                                "StopPointRef": "3200YNA96426",
+                                "CommonName": "Harlow Pines"
+                            },
+                            {
+                                "StopPointRef": "3200YND81290",
+                                "CommonName": "Plantation Road"
+                            },
+                            {
+                                "StopPointRef": "3200YND81300",
+                                "CommonName": "Shepherds Dog"
+                            },
+                            {
+                                "StopPointRef": "3200YND81310",
+                                "CommonName": "College Street"
+                            },
+                            {
+                                "StopPointRef": "3200YND81320",
+                                "CommonName": "Harlow Oval"
+                            },
+                            {
+                                "StopPointRef": "3200YND81330",
+                                "CommonName": "New Inn"
+                            },
+                            {
+                                "StopPointRef": "3200YND81340",
+                                "CommonName": "Wordsworth Crescent"
+                            },
+                            {
+                                "StopPointRef": "3200YND81350",
+                                "CommonName": "Beechwood Crescent"
+                            },
+                            {
+                                "StopPointRef": "3200YNA96791",
+                                "CommonName": "The Adelphi"
+                            },
+                            {
+                                "StopPointRef": "3200YND81020",
+                                "CommonName": "White Hart"
+                            },
+                            {
+                                "StopPointRef": "3200YNA96546",
+                                "CommonName": "War Memorial"
+                            },
+                            {
+                                "StopPointRef": "3200YND90060",
+                                "CommonName": "Hgte Bus Stn Stand 6"
+                            }
                         ],
                         "StartPoint": "Beckwith Knowle",
                         "EndPoint": "Hgte Bus Stn Stand 6"
@@ -420,5 +499,428 @@
         "Partition": "ANWE",
         "ServiceDescription": "Macclesfield - Moss Rose Circular",
         "Sort": "9#2018-10-28#TXC.xml"
+    },
+    {
+        "JourneyPatterns": [
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Bus station stand H",
+                        "Id": "JPS_I0",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Kell Road Hail and Ride SE/B",
+                                "StopPointRef": "13003345D"
+                            },
+                            {
+                                "CommonName": "Yoden Way SW/B",
+                                "StopPointRef": "13003522F"
+                            },
+                            {
+                                "CommonName": "Yoden Way/Chapel Hill Road W/B",
+                                "StopPointRef": "13003521G"
+                            },
+                            {
+                                "CommonName": "Surtees Rd./Edenhill Rd. NW/B",
+                                "StopPointRef": "13003219H"
+                            },
+                            {
+                                "CommonName": "Bus station stand H",
+                                "StopPointRef": "13003519H"
+                            }
+                        ],
+                        "StartPoint": "Kell Road Hail and Ride SE/B"
+                    }
+                ]
+            },
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Bus station stand H",
+                        "Id": "JPS_I1",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Kell Road Hail and Ride SE/B",
+                                "StopPointRef": "13003345D"
+                            },
+                            {
+                                "CommonName": "Yoden Way SW/B",
+                                "StopPointRef": "13003522F"
+                            },
+                            {
+                                "CommonName": "Yoden Way/Chapel Hill Road W/B",
+                                "StopPointRef": "13003521G"
+                            },
+                            {
+                                "CommonName": "Surtees Rd./Edenhill Rd. NW/B",
+                                "StopPointRef": "13003219H"
+                            },
+                            {
+                                "CommonName": "Bus station stand H",
+                                "StopPointRef": "13003519H"
+                            }
+                        ],
+                        "StartPoint": "Kell Road Hail and Ride SE/B"
+                    }
+                ]
+            },
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Bus station stand H",
+                        "Id": "JPS_I2",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Kell Road Hail and Ride SE/B",
+                                "StopPointRef": "13003345D"
+                            },
+                            {
+                                "CommonName": "Yoden Way SW/B",
+                                "StopPointRef": "13003522F"
+                            },
+                            {
+                                "CommonName": "Yoden Way/Chapel Hill Road W/B",
+                                "StopPointRef": "13003521G"
+                            },
+                            {
+                                "CommonName": "Surtees Rd./Edenhill Rd. NW/B",
+                                "StopPointRef": "13003219H"
+                            },
+                            {
+                                "CommonName": "Bus station stand H",
+                                "StopPointRef": "13003519H"
+                            }
+                        ],
+                        "StartPoint": "Kell Road Hail and Ride SE/B"
+                    }
+                ]
+            },
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Kell Road Hail and Ride SE/B",
+                        "Id": "JPS_O3",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Bus station stand H",
+                                "StopPointRef": "13003519H"
+                            },
+                            {
+                                "CommonName": "Surtees Rd./Edenhill Rd. SE/B",
+                                "StopPointRef": "13003219D"
+                            },
+                            {
+                                "CommonName": "Yoden Way/Chapel Hill Road E/B",
+                                "StopPointRef": "13003521C"
+                            },
+                            {
+                                "CommonName": "Yoden Way NE/B",
+                                "StopPointRef": "13003522B"
+                            },
+                            {
+                                "CommonName": "Kell Road Hail and Ride SE/B",
+                                "StopPointRef": "13003345D"
+                            }
+                        ],
+                        "StartPoint": "Bus station stand H"
+                    }
+                ]
+            }
+        ],
+        "LineName": "205",
+        "OperatorShortName": "DCC",
+        "Partition": "DCCL",
+        "ServiceDescription": "\n\t\t\t\tBus station stand H,Peterlee - Kell Road Hail and Ride SE/B,Horden\n\t\t\t",
+        "Sort": "205#2009-06-01#NE_130_0000_205.xml"
+    },
+    {
+        "JourneyPatterns": [
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Interchange Stand B",
+                        "Id": "JPS_I0",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Estate (Hail and Ride) N/B",
+                                "StopPointRef": "13003921A"
+                            },
+                            {
+                                "CommonName": "Westlea shops S/B",
+                                "StopPointRef": "13003305E"
+                            },
+                            {
+                                "CommonName": "Mount Pleasant NE/B",
+                                "StopPointRef": "13003306B"
+                            },
+                            {
+                                "CommonName": "The Avenue/Essex Crescent NE/B",
+                                "StopPointRef": "13003618B"
+                            },
+                            {
+                                "CommonName": "The Avenue Shops NE/B",
+                                "StopPointRef": "13003622B"
+                            },
+                            {
+                                "CommonName": "Kingston Avenue Hail and Ride NE/B",
+                                "StopPointRef": "13003923B"
+                            },
+                            {
+                                "CommonName": "Laurel Avenue NW/B",
+                                "StopPointRef": "13003939H"
+                            },
+                            {
+                                "CommonName": "Park E/B",
+                                "StopPointRef": "13003625C"
+                            },
+                            {
+                                "CommonName": "New Strangford Road SE/B",
+                                "StopPointRef": "13003612D"
+                            },
+                            {
+                                "CommonName": "New Tempest Road (York House) NE/B",
+                                "StopPointRef": "13003611B"
+                            },
+                            {
+                                "CommonName": "Vane Terrace/Castlereagh S/B",
+                                "StopPointRef": "13003609E"
+                            },
+                            {
+                                "CommonName": "Sophia Street S/B",
+                                "StopPointRef": "13003661E"
+                            },
+                            {
+                                "CommonName": "Viceroy Street E/B",
+                                "StopPointRef": "13003949C"
+                            },
+                            {
+                                "CommonName": "Adolphus Place NE/B",
+                                "StopPointRef": "13003635B"
+                            },
+                            {
+                                "CommonName": "Interchange Stand B",
+                                "StopPointRef": "13003655B"
+                            }
+                        ],
+                        "StartPoint": "Estate (Hail and Ride) N/B"
+                    }
+                ]
+            },
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Estate (Hail and Ride) N/B",
+                        "Id": "JPS_O1",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Interchange Stand B",
+                                "StopPointRef": "13003655B"
+                            },
+                            {
+                                "CommonName": "North Railway Street W/B",
+                                "StopPointRef": "13003654G"
+                            },
+                            {
+                                "CommonName": "Vane Terrace/Castlereagh N/B",
+                                "StopPointRef": "13003609A"
+                            },
+                            {
+                                "CommonName": "New Tempest Road (York House) SW/B",
+                                "StopPointRef": "13003611F"
+                            },
+                            {
+                                "CommonName": "New Strangford Road NW/B",
+                                "StopPointRef": "13003612H"
+                            },
+                            {
+                                "CommonName": "Park W/B",
+                                "StopPointRef": "13003625G"
+                            },
+                            {
+                                "CommonName": "Laurel Avenue SE/B",
+                                "StopPointRef": "13003939D"
+                            },
+                            {
+                                "CommonName": "Kingston Avenue Hail and Ride SW/B",
+                                "StopPointRef": "13003923F"
+                            },
+                            {
+                                "CommonName": "The Avenue Shops SW/B",
+                                "StopPointRef": "13003622F"
+                            },
+                            {
+                                "CommonName": "The Lawns SW/B",
+                                "StopPointRef": "13003621F"
+                            },
+                            {
+                                "CommonName": "The Avenue/Essex Crescent SW/B",
+                                "StopPointRef": "13003618F"
+                            },
+                            {
+                                "CommonName": "Mount Pleasant N/B",
+                                "StopPointRef": "13003306A"
+                            },
+                            {
+                                "CommonName": "Westlea shops N/B",
+                                "StopPointRef": "13003305A"
+                            },
+                            {
+                                "CommonName": "Estate (Hail and Ride) N/B",
+                                "StopPointRef": "13003921A"
+                            }
+                        ],
+                        "StartPoint": "Interchange Stand B"
+                    }
+                ]
+            }
+        ],
+        "LineName": "215",
+        "OperatorShortName": "DCC",
+        "Partition": "DCCL",
+        "ServiceDescription": "\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t",
+        "Sort": "215#2014-01-26#NE_130_0000_215.xml"
+    },
+    {
+        "JourneyPatterns": [
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Salvation Army SW/B",
+                        "Id": "JPS_I0",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Front Street stand C",
+                                "StopPointRef": "13002205C"
+                            },
+                            {
+                                "CommonName": "Lambton Arms P.H. S/B",
+                                "StopPointRef": "13002206E"
+                            },
+                            {
+                                "CommonName": "Black Horse S/B",
+                                "StopPointRef": "13002207E"
+                            },
+                            {
+                                "CommonName": "Ropery Lane Roundabout S/B",
+                                "StopPointRef": "13002208E"
+                            },
+                            {
+                                "CommonName": "Clifford Terrace S/B",
+                                "StopPointRef": "13002209E"
+                            },
+                            {
+                                "CommonName": "Hermitage SW/B",
+                                "StopPointRef": "13002210F"
+                            },
+                            {
+                                "CommonName": "Farm (south only) SW/B",
+                                "StopPointRef": "13002211F"
+                            },
+                            {
+                                "CommonName": "Inn SW/B",
+                                "StopPointRef": "13002212F"
+                            },
+                            {
+                                "CommonName": "Red Lion S/B",
+                                "StopPointRef": "13002214E"
+                            },
+                            {
+                                "CommonName": "Bank SW/B",
+                                "StopPointRef": "13002216F"
+                            },
+                            {
+                                "CommonName": "Club W/B",
+                                "StopPointRef": "13002217G"
+                            },
+                            {
+                                "CommonName": "Green W/B",
+                                "StopPointRef": "13002219G"
+                            },
+                            {
+                                "CommonName": "Woodland Terrace W/B",
+                                "StopPointRef": "13002220G"
+                            },
+                            {
+                                "CommonName": "Aged Miners SW/B",
+                                "StopPointRef": "13002221F"
+                            },
+                            {
+                                "CommonName": "Salvation Army SW/B",
+                                "StopPointRef": "13002222F"
+                            }
+                        ],
+                        "StartPoint": "Front Street stand C"
+                    }
+                ]
+            },
+            {
+                "JourneyPatternSections": [
+                    {
+                        "EndPoint": "Front Street stand E",
+                        "Id": "JPS_O1",
+                        "OrderedStopPoints": [
+                            {
+                                "CommonName": "Salvation Army NE/B",
+                                "StopPointRef": "13002222B"
+                            },
+                            {
+                                "CommonName": "Aged Miners NE/B",
+                                "StopPointRef": "13002221B"
+                            },
+                            {
+                                "CommonName": "Woodland Terrace E/B",
+                                "StopPointRef": "13002220C"
+                            },
+                            {
+                                "CommonName": "Green E/B",
+                                "StopPointRef": "13002219C"
+                            },
+                            {
+                                "CommonName": "Club E/B",
+                                "StopPointRef": "13002217C"
+                            },
+                            {
+                                "CommonName": "Bank NE/B",
+                                "StopPointRef": "13002216B"
+                            },
+                            {
+                                "CommonName": "Red Lion N/B",
+                                "StopPointRef": "13002214A"
+                            },
+                            {
+                                "CommonName": "Inn NE/B",
+                                "StopPointRef": "13002212B"
+                            },
+                            {
+                                "CommonName": "Hermitage NE/B",
+                                "StopPointRef": "13002210B"
+                            },
+                            {
+                                "CommonName": "Clifford Terrace N/B",
+                                "StopPointRef": "13002209A"
+                            },
+                            {
+                                "CommonName": "Black Horse N/B",
+                                "StopPointRef": "13002207A"
+                            },
+                            {
+                                "CommonName": "Lambton Arms P.H. N/B",
+                                "StopPointRef": "13002206A"
+                            },
+                            {
+                                "CommonName": "Front Street stand E",
+                                "StopPointRef": "13002205E"
+                            }
+                        ],
+                        "StartPoint": "Salvation Army NE/B"
+                    }
+                ]
+            }
+        ],
+        "LineName": "726",
+        "OperatorShortName": "DCC",
+        "Partition": "DCCL",
+        "ServiceDescription": "\n\t\t\t\tSalvation Army NE/B,Sacriston - Front Street stand E,Chester-le-Street\n\t\t\t",
+        "Sort": "726#2015-05-03#NE_130_0000_726.xml"
     }
 ]
