@@ -1,5 +1,70 @@
 import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
+import flatMap from 'array.prototype.flatmap';
+
+export interface ServiceType {
+    lineName: string;
+    startDate: string;
+}
+
+export interface JourneyPattern {
+    startPoint: {
+        Id: string;
+        Display: string;
+    };
+    endPoint: {
+        Id: string;
+        Display: string;
+    };
+    stopList: string[];
+}
+
+export interface RawJourneyPatternSection {
+    Id: string;
+    OrderedStopPoints: {
+        StopPointRef: string;
+        CommonName: string;
+    }[];
+    StartPoint: string;
+    EndPoint: string;
+}
+
+export interface RawJourneyPattern {
+    JourneyPatternSections: RawJourneyPatternSection[];
+}
+
+interface DynamoNaptanInfo {
+    CommonName: string;
+    NaptanCode: string;
+    ATCOCode: string;
+    NptgLocalityCode: string;
+    LocalityName: string;
+    Indicator: string;
+    Street: string;
+}
+
+export interface Stop {
+    stopName: string;
+    naptanCode: string;
+    atcoCode: string;
+    localityCode: string;
+    localityName: string;
+    indicator: string;
+    street: string;
+    qualifierName?: string;
+}
+
+export interface Service {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: JourneyPattern[];
+}
+
+export interface RawService {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: RawJourneyPattern[];
+}
 
 const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
     const dynamoDbRegion = process.env.AWS_REGION || 'eu-west-2';
@@ -24,38 +89,6 @@ const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
 };
 
 const dynamoDbClient = getDynamoDBClient();
-
-export type ServiceType = {
-    lineName: string;
-    startDate: string;
-};
-
-interface RawJourneyPattern {
-    JourneyPatternSections: [
-        {
-            Id: string;
-            OrderedStopPoints: [{ StopPointRef: string; CommonName: string }];
-            StartPoint: string;
-            EndPoint: string;
-        },
-    ];
-}
-
-interface JourneyPattern {
-    startPoint: {
-        Id: string;
-        Display: string;
-    };
-    endPoint: {
-        Id: string;
-        Display: string;
-    };
-}
-
-export type ServiceInformation = {
-    serviceDescription: string;
-    journeyPatterns: JourneyPattern[];
-};
 
 export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
@@ -88,31 +121,56 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     }
 };
 
-export const getStopPointLocalityByAtcoCode = async (atcoCode: string): Promise<string> => {
+export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
     const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
+    const count = atcoCodes.length;
+    const batchSize = 100;
+    const batchArray = [];
 
-    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
-        TableName: tableName,
-        KeyConditionExpression: '#pk = :value',
-        ExpressionAttributeNames: {
-            '#pk': 'Partition',
-        },
-        ExpressionAttributeValues: {
-            ':value': atcoCode,
-        },
-    };
+    for (let i = 0; i < count; i += batchSize) {
+        batchArray.push(atcoCodes.slice(i, i + batchSize));
+    }
 
-    const { Items } = await getDynamoDBClient()
-        .query(queryInput)
-        .promise();
+    const batchPromises = batchArray.map(batch => {
+        const batchQueryInput: AWS.DynamoDB.DocumentClient.BatchGetItemInput = {
+            RequestItems: {
+                [tableName]: {
+                    ExpressionAttributeNames: {
+                        '#in': 'Indicator',
+                    },
+                    Keys: batch.map(code => ({
+                        Partition: code,
+                    })),
+                    ProjectionExpression: 'LocalityName,#in,Street,CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
+                },
+            },
+        };
 
-    return Items?.[0]?.LocalityName ?? '';
+        return dynamoDbClient.batchGet(batchQueryInput).promise();
+    });
+
+    try {
+        const results = await Promise.all(batchPromises);
+        const filteredResults = results.filter(item => item.Responses?.[tableName]);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const naptanItems: DynamoNaptanInfo[] = flatMap(filteredResults, (item: any) => item.Responses[tableName]);
+
+        return naptanItems.map(item => ({
+            stopName: item.CommonName,
+            naptanCode: item.NaptanCode,
+            atcoCode: item.ATCOCode,
+            localityCode: item.NptgLocalityCode,
+            localityName: item.LocalityName,
+            indicator: item.Indicator,
+            street: item.Street,
+        }));
+    } catch (error) {
+        console.error(`Error performing batch get for naptan info for stop list: ${atcoCodes}, error: ${error}`);
+        throw new Error(error);
+    }
 };
 
-export const getJourneyPatternsAndLocalityByNocCodeAndLineName = async (
-    nocCode: string,
-    lineName: string,
-): Promise<ServiceInformation> => {
+export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
 
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
@@ -143,31 +201,9 @@ export const getJourneyPatternsAndLocalityByNocCodeAndLineName = async (
         throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
     }
 
-    const displayedService = {
-        serviceDescription: service?.ServiceDescription as string,
-        journeyPatterns: (await Promise.all(
-            service?.JourneyPatterns.map(
-                async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                    const startPoint = item.JourneyPatternSections[0].OrderedStopPoints[0];
-                    const startPointLocality = await getStopPointLocalityByAtcoCode(startPoint.StopPointRef);
-
-                    const endPoint = item.JourneyPatternSections.splice(-1, 1)[0].OrderedStopPoints.splice(-1, 1)[0];
-                    const endPointLocality = await getStopPointLocalityByAtcoCode(endPoint.StopPointRef);
-
-                    return {
-                        startPoint: {
-                            Display: `${startPoint.CommonName}${startPointLocality ? `,${startPointLocality}` : ''}`,
-                            Id: startPoint.StopPointRef,
-                        },
-                        endPoint: {
-                            Display: `${endPoint.CommonName}${endPointLocality ? `,${endPointLocality}` : ''}`,
-                            Id: endPoint.StopPointRef,
-                        },
-                    };
-                },
-            ),
-        )) as JourneyPattern[],
+    return {
+        serviceDescription: service.ServiceDescription,
+        operatorShortName: service.OperatorShortName,
+        journeyPatterns: service.JourneyPatterns,
     };
-
-    return displayedService;
 };

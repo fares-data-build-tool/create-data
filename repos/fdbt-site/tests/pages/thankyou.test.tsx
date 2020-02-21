@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { NextPageContext } from 'next';
 import { mockRequest, mockResponse } from 'mock-req-res';
-import { SERVICE_COOKIE } from '../../src/constants';
+import { OPERATOR_COOKIE } from '../../src/constants';
 import Thankyou from '../../src/pages/thankyou';
 
 describe('pages', () => {
@@ -19,21 +19,19 @@ describe('getInitialProps', () => {
         const req = mockRequest({
             body: {},
             cookies: {
-                SERVICE_COOKIE:
-                    '%7B%22service%22%3A%22N1%22%2C%22uuid%22%3A%22d177b8a0-44ed-4e67-9fd0-2d581b5fa91a%22%7D',
+                OPERATOR_COOKIE:
+                    '%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%2284c7b1b4-e178-4849-bc49-bd32cdb2db39%22%2C%22nocCode%22%3A%22HCTY%22%7D',
             },
             headers: {
                 host: 'localhost',
-                cookie: `${SERVICE_COOKIE}=%7B%22service%22%3A%22N1%22%2C%22uuid%22%3A%22d177b8a0-44ed-4e67-9fd0-2d581b5fa91a%22%7D`,
+                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%2284c7b1b4-e178-4849-bc49-bd32cdb2db39%22%2C%22nocCode%22%3A%22HCTY%22%7D`,
             },
         });
 
-        const res = mockResponse({
-            writeHead: jest.fn(),
-        });
+        const res = mockResponse({});
 
         const expectedResults = {
-            uuid: 'd177b8a0-44ed-4e67-9fd0-2d581b5fa91a',
+            uuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39',
         };
 
         const props: NextPageContext = {
