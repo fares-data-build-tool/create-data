@@ -30,10 +30,10 @@ export const isCookiesUUIDMatch = (req: NextApiRequest): boolean => {
             return true;
         }
     } catch (err) {
-        console.error('Cookie UUIDs to not match');
+        console.error('Cookie UUIDs do not match');
         return false;
     }
 
-    console.error('Cookie UUIDs to not match');
+    console.error('Cookie UUIDs do not match');
     return false;
 };

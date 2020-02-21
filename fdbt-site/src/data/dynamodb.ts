@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
+import flatMap from 'array.prototype.flatmap';
 
 export interface ServiceType {
     lineName: string;
@@ -30,6 +31,16 @@ export interface RawJourneyPatternSection {
 
 export interface RawJourneyPattern {
     JourneyPatternSections: RawJourneyPatternSection[];
+}
+
+interface DynamoNaptanInfo {
+    CommonName: string;
+    NaptanCode: string;
+    ATCOCode: string;
+    NptgLocalityCode: string;
+    LocalityName: string;
+    Indicator: string;
+    Street: string;
 }
 
 export interface NaptanInfo {
@@ -180,10 +191,9 @@ export const batchGetNaptanInfoByAtcoCode = async (atcoCodes: string[]): Promise
 
     try {
         const results = await Promise.all(batchPromises);
-        const naptanItems = results
-            .filter(item => item.Responses?.[tableName])
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .flatMap((item: any) => item.Responses[tableName]);
+        const filteredResults = results.filter(item => item.Responses?.[tableName]);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const naptanItems: DynamoNaptanInfo[] = flatMap(filteredResults, (item: any) => item.Responses[tableName]);
 
         return naptanItems.map(item => ({
             stopName: item.CommonName,
