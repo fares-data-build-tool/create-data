@@ -79,7 +79,6 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
 
             return { operator: operatorObject.operator, services };
         } catch (err) {
-            console.error(err.message);
             throw new Error(err.message);
         }
     }

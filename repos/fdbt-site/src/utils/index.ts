@@ -2,6 +2,9 @@ import Cookies from 'cookies';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import axios from 'axios';
+import { parseCookies } from 'nookies';
+import { OPERATOR_COOKIE } from '../constants';
+import { Stop } from '../data/dynamodb';
 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
@@ -47,3 +50,28 @@ export const isSessionValid = async (url: string, req: IncomingMessage | undefin
         return false;
     }
 };
+
+export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
+    const cookies = parseCookies(ctx);
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    if (!operatorCookie) {
+        return null;
+    }
+    const operatorObject = JSON.parse(operatorCookie);
+    return operatorObject.uuid;
+};
+
+export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | null => {
+    const cookies = parseCookies(ctx);
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    if (!operatorCookie) {
+        return null;
+    }
+    const operatorObject = JSON.parse(operatorCookie);
+    return operatorObject.journeyPattern;
+};
+
+export const formatStopName = (stop: Stop): string =>
+    `${stop.localityName ? `${stop.localityName}, ` : ''}${stop.indicator ?? ''} ${stop.stopName ?? ''}${
+        stop.street ? ` (on ${stop.street})` : ''
+    }`;
