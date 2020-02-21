@@ -7,16 +7,28 @@ import { putStringInS3 } from '../../data/s3';
 
 const MAX_FILE_SIZE = 5242880;
 
-export type FareTriangle = FareTriangleData;
 export type File = FileData;
 
+export interface UserFareStages {
+    fareStages: {
+        stageName: string;
+        prices: {
+            price: string;
+            fareZones: string[];
+        }[];
+    }[];
+}
+
 interface FareTriangleData {
-    fareStages: [
-        {
-            stageName: string;
-            prices: string[];
-        },
-    ];
+    fareStages: {
+        stageName: string;
+        prices: {
+            [key: string]: {
+                price: string;
+                fareZones: string[];
+            };
+        };
+    }[];
 }
 
 interface FileData {
@@ -42,7 +54,7 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
     });
 };
 
-export const putDataInS3 = async (data: FareTriangleData | string, key: string, processed: boolean): Promise<void> => {
+export const putDataInS3 = async (data: UserFareStages | string, key: string, processed: boolean): Promise<void> => {
     let contentType = '';
     let bucketName = '';
 
@@ -61,14 +73,9 @@ export const putDataInS3 = async (data: FareTriangleData | string, key: string, 
     await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };
 
-export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => {
+export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     const fareTriangle: FareTriangleData = {
-        fareStages: [
-            {
-                stageName: '',
-                prices: [],
-            },
-        ],
+        fareStages: [],
     };
 
     const dataAsLines: string[] = dataToMap.split('\n');
@@ -81,30 +88,46 @@ export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => 
 
     let expectedNumberOfPrices = 0;
 
-    for (let i = 0; i < dataAsLines.length; i += 1) {
-        expectedNumberOfPrices += i;
-        if (fareTriangle.fareStages[i]) {
-            fareTriangle.fareStages[i].stageName = dataAsLines[i].split(',')[i + 1];
-        } else {
-            fareTriangle.fareStages[i] = {
-                stageName: dataAsLines[i].split(',')[i + 1],
-                prices: [],
-            };
-        }
+    for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
+        expectedNumberOfPrices += rowNum;
+        const items = dataAsLines[rowNum].split(',');
+        const stageName = items[rowNum + 1];
 
-        if (i > 0) {
-            const items = dataAsLines[i].split(',');
-            for (let j = 0; j < i + 1; j += 1) {
-                if (fareTriangle.fareStages[j] && items[j + 1] && j !== i) {
-                    if (items[j + 1] !== '' && !Number.isNaN(Number(items[j + 1]))) {
-                        fareTriangle.fareStages[j].prices.push(items[j + 1]);
+        fareTriangle.fareStages[rowNum] = {
+            stageName,
+            prices: {},
+        };
+
+        for (let colNum = 0; colNum < rowNum; colNum += 1) {
+            const price = items[colNum + 1];
+            const priceZoneName = items[rowNum + 1];
+
+            if (price) {
+                // Check explicitly for number to account for invalid fare data
+                if (!Number.isNaN(Number(price))) {
+                    if (fareTriangle.fareStages?.[colNum].prices?.[price]?.fareZones) {
+                        fareTriangle.fareStages[colNum].prices[price].fareZones.push(priceZoneName);
+                    } else {
+                        fareTriangle.fareStages[colNum].prices[price] = {
+                            price: (parseFloat(price) / 100).toFixed(2),
+                            fareZones: [priceZoneName],
+                        };
                     }
                 }
             }
         }
     }
 
-    const numberOfPrices = flatMap(fareTriangle.fareStages, (stage: { prices: string[] }) => stage.prices).length;
+    const mappedFareTriangle: UserFareStages = {
+        fareStages: fareTriangle.fareStages.map(item => ({
+            ...item,
+            prices: Object.values(item.prices),
+        })),
+    };
+
+    const numberOfPrices = flatMap(mappedFareTriangle.fareStages, stage =>
+        flatMap(stage.prices, price => price.fareZones),
+    ).length;
 
     if (numberOfPrices !== expectedNumberOfPrices) {
         throw new Error(
@@ -112,7 +135,7 @@ export const faresTriangleDataMapper = (dataToMap: string): FareTriangleData => 
         );
     }
 
-    return fareTriangle;
+    return mappedFareTriangle;
 };
 
 export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
