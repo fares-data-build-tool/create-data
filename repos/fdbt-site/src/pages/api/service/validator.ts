@@ -18,8 +18,6 @@ export const isCookiesUUIDMatch = (req: NextApiRequest): boolean => {
     const fareTypeCookie = unescape(decodeURI(cookies[FARETYPE_COOKIE]));
     const journeyCookie = unescape(decodeURI(cookies[JOURNEY_COOKIE]));
 
-    console.log(fareTypeCookie);
-
     try {
         const operatorObject = JSON.parse(operatorCookie);
         const serviceObject = JSON.parse(serviceCookie);

@@ -80,11 +80,6 @@ export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
-export const formatStopName = (info: NaptanInfo): string =>
-    `${info.localityName ? `${info.localityName}, ` : ''}${info.indicator ?? ''} ${info.stopName ?? ''} ${
-        info.street ? `(on ${info.street})` : ''
-    }`;
-
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const tableName =
         process.env.NODE_ENV === 'development' ? 'dev-Services' : (process.env.SERVICES_TABLE_NAME as string);

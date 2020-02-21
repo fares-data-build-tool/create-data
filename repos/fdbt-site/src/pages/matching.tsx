@@ -2,17 +2,12 @@ import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import util from 'util';
 import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
-import {
-    getServiceByNocCodeAndLineName,
-    batchGetNaptanInfoByAtcoCode,
-    NaptanInfo,
-    formatStopName,
-} from '../data/dynamodb';
+import { getServiceByNocCodeAndLineName, batchGetNaptanInfoByAtcoCode, NaptanInfo } from '../data/dynamodb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { getUserData, UserFareStages, FareStage } from '../data/s3';
+import { formatStopName } from '../utils';
 
 const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the Fares data build tool';
@@ -53,7 +48,11 @@ const Matching = ({ userData, stops, serviceInfo }: MatchingProps): ReactElement
                                         {stop.naptanCode}
                                     </label>
                                     <div className="farestage-select-wrapper">
-                                        <select className="govuk-select" id={`option${index}`} name={`option${index}`}>
+                                        <select
+                                            className="govuk-select farestage-select"
+                                            id={`option${index}`}
+                                            name={`option${index}`}
+                                        >
                                             <option value="">Not Applicable</option>
 
                                             {userData.fareStages.map((stage: FareStage) => (
@@ -106,7 +105,7 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
                 ).filter(
                     item =>
                         item.OrderedStopPoints[0].StopPointRef === selectedStartPoint &&
-                        item.OrderedStopPoints.splice(-1, 1)[0].StopPointRef === selectedEndPoint,
+                        [...item.OrderedStopPoints].splice(-1, 1)[0].StopPointRef === selectedEndPoint,
                 );
 
                 const masterStopList = [
@@ -117,21 +116,13 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
                     ),
                 ];
 
-                const naptanInfo = await batchGetNaptanInfoByAtcoCode(masterStopList);
+                if (masterStopList.length === 0) {
+                    throw new Error(
+                        `No stops found for journey: nocCode ${nocCode}, lineName: ${lineName}, startPoint: ${selectedStartPoint}, endPoint: ${selectedEndPoint}`,
+                    );
+                }
 
-                console.log(util.inspect(naptanInfo, false, null, true));
-                console.log(
-                    util.inspect(
-                        {
-                            lineName,
-                            nocCode,
-                            operatorShortName: service.operatorShortName,
-                        },
-                        false,
-                        null,
-                        true,
-                    ),
-                );
+                const naptanInfo = await batchGetNaptanInfoByAtcoCode(masterStopList);
 
                 return {
                     stops: naptanInfo,

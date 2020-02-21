@@ -95,8 +95,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (!req.body.serviceinfo || !req.body.userdata) {
-            redirectTo(res, '/matching');
-            return;
+            throw new Error('No service or userdata info found');
         }
 
         const serviceInfo: ServiceInfo = JSON.parse(req.body.serviceinfo);
@@ -115,7 +114,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         redirectTo(res, '/thankyou');
     } catch (error) {
         console.error(`There was a problem generating the matching JSON: ${error.stack}`);
-
         redirectToError(res);
     }
     res.end();

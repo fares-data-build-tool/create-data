@@ -43,8 +43,6 @@ export const getUserData = async (uuid: string): Promise<UserFareStages> => {
         throw new Error('Environment variable for validated bucket not set');
     }
 
-    console.log(uuid);
-
     const params: S3ObjectParameters = {
         Bucket: process.env.USER_DATA_BUCKET_NAME,
         Key: `${uuid}.json`,

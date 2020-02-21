@@ -64,18 +64,18 @@ exports[`pages direction should render correctly 1`] = `
               key="13003921A#13003655B#0"
               value="13003921A#13003655B"
             >
-              Estate (Hail and Ride) N/B, tet
+              Estate (Hail and Ride) N/B
                TO 
-              Interchange Stand B, tet
+              Interchange Stand B
             </option>
             <option
               className="journey-option"
               key="13003655B#13003921A#1"
               value="13003655B#13003921A"
             >
-              Interchange Stand B, tet
+              Interchange Stand B
                TO 
-              Estate (Hail and Ride) N/B, tet
+              Estate (Hail and Ride) N/B
             </option>
           </select>
         </fieldset>

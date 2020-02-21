@@ -4,6 +4,7 @@ import { IncomingMessage } from 'http';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
 import { OPERATOR_COOKIE } from '../constants';
+import { NaptanInfo } from '../data/dynamodb';
 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
@@ -69,3 +70,8 @@ export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | nul
     const operatorObject = JSON.parse(operatorCookie);
     return operatorObject.journeyPattern;
 };
+
+export const formatStopName = (info: NaptanInfo): string =>
+    `${info.localityName ? `${info.localityName}, ` : ''}${info.indicator ?? ''} ${info.stopName ?? ''}${
+        info.street ? ` (on ${info.street})` : ''
+    }`;
