@@ -4,7 +4,13 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
-import { getServiceByNocCodeAndLineName, batchGetNaptanInfoByAtcoCode, NaptanInfo } from '../data/dynamodb';
+import {
+    getServiceByNocCodeAndLineName,
+    batchGetNaptanInfoByAtcoCode,
+    NaptanInfo,
+    RawServiceData,
+    RawJourneyPatternSection,
+} from '../data/dynamodb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { getUserData, UserFareStages, FareStage } from '../data/s3';
 import { formatStopName } from '../utils';
@@ -12,7 +18,7 @@ import { formatStopName } from '../utils';
 const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the Fares data build tool';
 
-export interface ServiceInfo {
+export interface BasicServiceData {
     lineName: string;
     nocCode: string;
     operatorShortName: string;
@@ -21,10 +27,10 @@ export interface ServiceInfo {
 interface MatchingProps {
     userData: UserFareStages;
     stops: NaptanInfo[];
-    serviceInfo: ServiceInfo;
+    serviceData: BasicServiceData;
 }
 
-const Matching = ({ userData, stops, serviceInfo }: MatchingProps): ReactElement => (
+const Matching = ({ userData, stops, serviceData }: MatchingProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class matching-page" id="main-content" role="main">
             <form action="/api/matching" method="post">
@@ -71,13 +77,30 @@ const Matching = ({ userData, stops, serviceInfo }: MatchingProps): ReactElement
                     </div>
                 </div>
 
-                <input type="hidden" name="serviceinfo" value={JSON.stringify(serviceInfo)} />
+                <input type="hidden" name="serviceinfo" value={JSON.stringify(serviceData)} />
                 <input type="hidden" name="userdata" value={JSON.stringify(userData)} />
                 <input type="submit" value="Submit" id="submit-button" className="govuk-button govuk-button--start" />
             </form>
         </main>
     </Layout>
 );
+
+// Gets a list of journey pattern sections with a given start and end point
+const getJourneysByStartAndEndPoint = (
+    service: RawServiceData,
+    selectedStartPoint: string,
+    selectedEndPoint: string,
+): RawJourneyPatternSection[] =>
+    flatMap(service.journeyPatterns, journey => journey.JourneyPatternSections).filter(
+        item =>
+            item.OrderedStopPoints[0].StopPointRef === selectedStartPoint &&
+            [...item.OrderedStopPoints].splice(-1, 1)[0].StopPointRef === selectedEndPoint,
+    );
+
+// Gets a unique set of stop point refs from an array of journey pattern sections
+const getMasterStopList = (journeys: RawJourneyPatternSection[]): string[] => [
+    ...new Set(flatMap(journeys, journey => journey.OrderedStopPoints.flatMap(item => item.StopPointRef))),
+];
 
 Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     const cookies = parseCookies(ctx);
@@ -98,23 +121,8 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
             if (ctx.req) {
                 const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
                 const userData = await getUserData(operatorObject.uuid);
-
-                const relevantJourneys = flatMap(
-                    service.journeyPatterns,
-                    journey => journey.JourneyPatternSections,
-                ).filter(
-                    item =>
-                        item.OrderedStopPoints[0].StopPointRef === selectedStartPoint &&
-                        [...item.OrderedStopPoints].splice(-1, 1)[0].StopPointRef === selectedEndPoint,
-                );
-
-                const masterStopList = [
-                    ...new Set(
-                        flatMap(relevantJourneys, journey =>
-                            journey.OrderedStopPoints.flatMap(item => item.StopPointRef),
-                        ),
-                    ),
-                ];
+                const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
+                const masterStopList = getMasterStopList(relevantJourneys);
 
                 if (masterStopList.length === 0) {
                     throw new Error(
@@ -127,7 +135,7 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
                 return {
                     stops: naptanInfo,
                     userData,
-                    serviceInfo: {
+                    serviceData: {
                         lineName,
                         nocCode,
                         operatorShortName: service.operatorShortName,

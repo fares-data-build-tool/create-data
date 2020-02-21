@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import { UserData } from './csvUpload';
-import { ServiceInfo } from '../matching';
+import { BasicServiceData } from '../matching';
 import { NaptanInfo } from '../../data/dynamodb';
 import { putStringInS3 } from '../../data/s3';
 import { isCookiesUUIDMatch } from './service/validator';
@@ -67,11 +67,11 @@ const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones =>
 };
 
 const getMatchingJson = (
-    serviceInfo: ServiceInfo,
+    serviceData: BasicServiceData,
     userData: UserData,
     matchingFareZones: MatchingFareZones,
 ): MatchingData => ({
-    ...serviceInfo,
+    ...serviceData,
     fareZones: userData.fareStages
         .filter(userStage => matchingFareZones[userStage.stageName])
         .map(userStage => {
@@ -98,14 +98,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('No service or userdata info found');
         }
 
-        const serviceInfo: ServiceInfo = JSON.parse(req.body.serviceinfo);
+        const serviceData: BasicServiceData = JSON.parse(req.body.serviceinfo);
         const userData: UserData = JSON.parse(req.body.userdata);
 
         delete req.body.serviceinfo;
         delete req.body.userdata;
 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
-        const matchingJson = getMatchingJson(serviceInfo, userData, matchingFareZones);
+        const matchingJson = getMatchingJson(serviceData, userData, matchingFareZones);
 
         const uuid = getUuidFromCookie(req);
 
