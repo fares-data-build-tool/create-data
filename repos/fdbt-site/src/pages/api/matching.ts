@@ -98,7 +98,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('No service or userfarestages info found');
         }
 
-        const serviceData: BasicService = JSON.parse(req.body.service);
+        const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
 
         // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
@@ -106,7 +106,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         delete req.body.userfarestages;
 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
-        const matchingJson = getMatchingJson(serviceData, userFareStages, matchingFareZones);
+        const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones);
 
         const uuid = getUuidFromCookie(req);
 
