@@ -6,31 +6,31 @@ import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
 import {
     getServiceByNocCodeAndLineName,
-    batchGetNaptanInfoByAtcoCode,
-    NaptanInfo,
-    RawServiceData,
+    batchGetStopsByAtcoCode,
+    Stop,
+    RawService,
     RawJourneyPatternSection,
 } from '../data/dynamodb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
-import { getUserData, UserFareStages, FareStage } from '../data/s3';
+import { getUserFareStages, UserFareStages, FareStage } from '../data/s3';
 import { formatStopName } from '../utils';
 
 const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the Fares data build tool';
 
-export interface BasicServiceData {
+export interface BasicService {
     lineName: string;
     nocCode: string;
     operatorShortName: string;
 }
 
 interface MatchingProps {
-    userData: UserFareStages;
-    stops: NaptanInfo[];
-    serviceData: BasicServiceData;
+    userFareStages: UserFareStages;
+    stops: Stop[];
+    service: BasicService;
 }
 
-const Matching = ({ userData, stops, serviceData }: MatchingProps): ReactElement => (
+const Matching = ({ userFareStages, stops, service }: MatchingProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class matching-page" id="main-content" role="main">
             <form action="/api/matching" method="post">
@@ -61,7 +61,7 @@ const Matching = ({ userData, stops, serviceData }: MatchingProps): ReactElement
                                         >
                                             <option value="">Not Applicable</option>
 
-                                            {userData.fareStages.map((stage: FareStage) => (
+                                            {userFareStages.fareStages.map((stage: FareStage) => (
                                                 <option
                                                     key={stage.stageName}
                                                     value={JSON.stringify({ stop, stage: stage.stageName })}
@@ -77,8 +77,8 @@ const Matching = ({ userData, stops, serviceData }: MatchingProps): ReactElement
                     </div>
                 </div>
 
-                <input type="hidden" name="serviceinfo" value={JSON.stringify(serviceData)} />
-                <input type="hidden" name="userdata" value={JSON.stringify(userData)} />
+                <input type="hidden" name="service" value={JSON.stringify(service)} />
+                <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
                 <input type="submit" value="Submit" id="submit-button" className="govuk-button govuk-button--start" />
             </form>
         </main>
@@ -87,14 +87,14 @@ const Matching = ({ userData, stops, serviceData }: MatchingProps): ReactElement
 
 // Gets a list of journey pattern sections with a given start and end point
 const getJourneysByStartAndEndPoint = (
-    service: RawServiceData,
+    service: RawService,
     selectedStartPoint: string,
     selectedEndPoint: string,
 ): RawJourneyPatternSection[] =>
     flatMap(service.journeyPatterns, journey => journey.JourneyPatternSections).filter(
         item =>
             item.OrderedStopPoints[0].StopPointRef === selectedStartPoint &&
-            [...item.OrderedStopPoints].splice(-1, 1)[0].StopPointRef === selectedEndPoint,
+            item.OrderedStopPoints.slice(-1)[0].StopPointRef === selectedEndPoint,
     );
 
 // Gets a unique set of stop point refs from an array of journey pattern sections
@@ -108,50 +108,40 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
 
-    if (operatorCookie && serviceCookie && journeyCookie) {
-        const operatorObject = JSON.parse(operatorCookie);
-        const serviceObject = JSON.parse(serviceCookie);
-        const journeyObject = JSON.parse(journeyCookie);
-
-        const lineName = serviceObject.service.split('#')[0];
-        const { nocCode } = operatorObject;
-        const [selectedStartPoint, selectedEndPoint] = journeyObject.journeyPattern.split('#');
-
-        try {
-            if (ctx.req) {
-                const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
-                const userData = await getUserData(operatorObject.uuid);
-                const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
-                const masterStopList = getMasterStopList(relevantJourneys);
-
-                if (masterStopList.length === 0) {
-                    throw new Error(
-                        `No stops found for journey: nocCode ${nocCode}, lineName: ${lineName}, startPoint: ${selectedStartPoint}, endPoint: ${selectedEndPoint}`,
-                    );
-                }
-
-                const naptanInfo = await batchGetNaptanInfoByAtcoCode(masterStopList);
-
-                return {
-                    stops: naptanInfo,
-                    userData,
-                    serviceData: {
-                        lineName,
-                        nocCode,
-                        operatorShortName: service.operatorShortName,
-                    },
-                };
-            }
-        } catch (error) {
-            console.error(`There was an error displaying the matching page: ${error}`);
-            throw new Error(error);
-        }
-    } else {
-        console.error('Necessary cookies not found to show matching page');
+    if (!operatorCookie || !serviceCookie || !journeyCookie) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 
-    return {};
+    const operatorObject = JSON.parse(operatorCookie);
+    const serviceObject = JSON.parse(serviceCookie);
+    const journeyObject = JSON.parse(journeyCookie);
+
+    const lineName = serviceObject.service.split('#')[0];
+    const { nocCode } = operatorObject;
+    const [selectedStartPoint, selectedEndPoint] = journeyObject.journeyPattern.split('#');
+
+    const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
+    const userFareStages = await getUserFareStages(operatorObject.uuid);
+    const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
+    const masterStopList = getMasterStopList(relevantJourneys);
+
+    if (masterStopList.length === 0) {
+        throw new Error(
+            `No stops found for journey: nocCode ${nocCode}, lineName: ${lineName}, startPoint: ${selectedStartPoint}, endPoint: ${selectedEndPoint}`,
+        );
+    }
+
+    const naptanInfo = await batchGetStopsByAtcoCode(masterStopList);
+
+    return {
+        stops: naptanInfo,
+        userFareStages,
+        serviceData: {
+            lineName,
+            nocCode,
+            operatorShortName: service.operatorShortName,
+        },
+    };
 };
 
 export default Matching;

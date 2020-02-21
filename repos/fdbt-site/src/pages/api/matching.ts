@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
-import { UserData } from './csvUpload';
-import { BasicServiceData } from '../matching';
-import { NaptanInfo } from '../../data/dynamodb';
+import { UserFareStages } from './csvUpload';
+import { BasicService } from '../matching';
+import { Stop } from '../../data/dynamodb';
 import { putStringInS3 } from '../../data/s3';
 import { isCookiesUUIDMatch } from './service/validator';
 
@@ -12,7 +12,7 @@ interface MatchingData {
     operatorShortName: string;
     fareZones: {
         name: string;
-        stops: NaptanInfo[];
+        stops: Stop[];
         prices: {
             price: string;
             fareZones: string[];
@@ -23,7 +23,7 @@ interface MatchingData {
 interface MatchingFareZones {
     [key: string]: {
         name: string;
-        stops: NaptanInfo[];
+        stops: Stop[];
     };
 }
 
@@ -67,19 +67,19 @@ const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones =>
 };
 
 const getMatchingJson = (
-    serviceData: BasicServiceData,
-    userData: UserData,
+    service: BasicService,
+    userFareStages: UserFareStages,
     matchingFareZones: MatchingFareZones,
 ): MatchingData => ({
-    ...serviceData,
-    fareZones: userData.fareStages
+    ...service,
+    fareZones: userFareStages.fareStages
         .filter(userStage => matchingFareZones[userStage.stageName])
         .map(userStage => {
             const matchedZone = matchingFareZones[userStage.stageName];
 
             return {
                 name: userStage.stageName,
-                stops: matchedZone.stops.map((stop: NaptanInfo) => ({
+                stops: matchedZone.stops.map((stop: Stop) => ({
                     ...stop,
                     qualifierName: '',
                 })),
@@ -94,18 +94,19 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Cookie UUIDs do not match');
         }
 
-        if (!req.body.serviceinfo || !req.body.userdata) {
-            throw new Error('No service or userdata info found');
+        if (!req.body.service || !req.body.userfarestages) {
+            throw new Error('No service or userfarestages info found');
         }
 
-        const serviceData: BasicServiceData = JSON.parse(req.body.serviceinfo);
-        const userData: UserData = JSON.parse(req.body.userdata);
+        const serviceData: BasicService = JSON.parse(req.body.service);
+        const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
 
-        delete req.body.serviceinfo;
-        delete req.body.userdata;
+        // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
+        delete req.body.service;
+        delete req.body.userfarestages;
 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
-        const matchingJson = getMatchingJson(serviceData, userData, matchingFareZones);
+        const matchingJson = getMatchingJson(serviceData, userFareStages, matchingFareZones);
 
         const uuid = getUuidFromCookie(req);
 

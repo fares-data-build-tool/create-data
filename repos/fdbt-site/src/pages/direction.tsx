@@ -8,23 +8,23 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import {
     getServiceByNocCodeAndLineName,
-    ServiceData,
-    getNaptanInfoByAtcoCode,
+    Service,
+    batchGetStopsByAtcoCode,
     JourneyPattern,
     RawJourneyPattern,
-    RawServiceData,
+    RawService,
 } from '../data/dynamodb';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';
 
 interface DirectionProps {
-    Operator: string;
+    operator: string;
     lineName: string;
-    serviceInfo: ServiceData;
+    service: Service;
 }
 
-const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactElement => (
+const Direction = ({ operator, lineName, service }: DirectionProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/direction" method="post">
@@ -36,16 +36,16 @@ const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactEl
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="direction-operator-linename-hint">
-                            {Operator} - {lineName}
+                            {operator} - {lineName}
                         </span>
                         <span className="govuk-hint" id="direction-journey-description-hint">
-                            {`Journey: ${serviceInfo.serviceDescription}`}
+                            {`Journey: ${service.serviceDescription}`}
                         </span>
                         <select className="govuk-select" id="journeyPattern" name="journeyPattern" defaultValue="">
                             <option value="" disabled>
                                 Select One
                             </option>
-                            {serviceInfo.journeyPatterns.map((journeyPattern, i) => (
+                            {service.journeyPatterns.map((journeyPattern, i) => (
                                 <option
                                     key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}#${+i}`}
                                     value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
@@ -76,21 +76,25 @@ const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPa
                     section.OrderedStopPoints.flatMap(stop => stop.StopPointRef),
                 );
                 const startPoint = item.JourneyPatternSections[0].OrderedStopPoints[0];
-                const startPointNaptan = await getNaptanInfoByAtcoCode(startPoint.StopPointRef);
+                const [startPointStop] = await batchGetStopsByAtcoCode([startPoint.StopPointRef]);
 
-                const endPoint = [...item.JourneyPatternSections].splice(-1, 1)[0].OrderedStopPoints.splice(-1, 1)[0];
-                const endPointNaptan = await getNaptanInfoByAtcoCode(endPoint.StopPointRef);
+                const endPoint = item.JourneyPatternSections.slice(-1)[0].OrderedStopPoints.slice(-1)[0];
+                const [endPointStop] = await batchGetStopsByAtcoCode([endPoint.StopPointRef]);
+
+                if (!startPointStop || !endPointStop) {
+                    throw new Error('No data for start or end point of journey');
+                }
 
                 return {
                     startPoint: {
                         Display: `${startPoint.CommonName}${
-                            startPointNaptan?.localityName ? `, ${startPointNaptan.localityName}` : ''
+                            startPointStop.localityName ? `, ${startPointStop.localityName}` : ''
                         }`,
                         Id: startPoint.StopPointRef,
                     },
                     endPoint: {
                         Display: `${endPoint.CommonName}${
-                            endPointNaptan?.localityName ? `, ${endPointNaptan.localityName}` : ''
+                            endPointStop.localityName ? `, ${endPointStop.localityName}` : ''
                         }`,
                         Id: endPoint.StopPointRef,
                     },
@@ -106,50 +110,35 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
 
-    if (operatorCookie && serviceCookie) {
-        const operatorObject = JSON.parse(operatorCookie);
-        const serviceObject = JSON.parse(serviceCookie);
-        const lineName = serviceObject.service.split('#')[0];
-
-        try {
-            if (ctx.req) {
-                const rawServiceData: RawServiceData = await getServiceByNocCodeAndLineName(
-                    operatorObject.nocCode,
-                    lineName,
-                );
-                const serviceData: ServiceData = {
-                    ...rawServiceData,
-                    journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawServiceData.journeyPatterns),
-                };
-
-                if (!serviceData && ctx.res) {
-                    throw new Error(
-                        `No service info could be retrieved for nocCode: ${operatorObject.nocCode} and lineName: ${lineName}`,
-                    );
-                }
-
-                // Remove journeys with duplicate start and end points for display purposes
-                serviceData.journeyPatterns = serviceData.journeyPatterns.filter(
-                    (pattern, index, self) =>
-                        self.findIndex(
-                            item =>
-                                item.endPoint.Id === pattern.endPoint.Id &&
-                                item.startPoint.Id === pattern.startPoint.Id,
-                        ) === index,
-                );
-
-                return { Operator: operatorObject.operator, lineName, serviceInfo: serviceData };
-            }
-        } catch (error) {
-            console.error(`Unable to get journey patterns for direction page: ${error.stack}`);
-            throw new Error(error);
-        }
-    } else {
-        console.error('Necessary cookies not found to show direction page');
+    if (!operatorCookie || !serviceCookie) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
-    return {};
+    const operatorObject = JSON.parse(operatorCookie);
+    const serviceObject = JSON.parse(serviceCookie);
+    const lineName = serviceObject.service.split('#')[0];
+
+    const rawService: RawService = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
+    const service: Service = {
+        ...rawService,
+        journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),
+    };
+
+    if (!service && ctx.res) {
+        throw new Error(
+            `No service info could be retrieved for nocCode: ${operatorObject.nocCode} and lineName: ${lineName}`,
+        );
+    }
+
+    // Remove journeys with duplicate start and end points for display purposes
+    service.journeyPatterns = service.journeyPatterns.filter(
+        (pattern, index, self) =>
+            self.findIndex(
+                item => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
+            ) === index,
+    );
+
+    return { operator: operatorObject.operator, lineName, service };
 };
 
 export default Direction;

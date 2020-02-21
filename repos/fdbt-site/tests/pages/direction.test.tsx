@@ -2,38 +2,32 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import Direction from '../../src/pages/direction';
-import { getServiceByNocCodeAndLineName, getNaptanInfoByAtcoCode } from '../../src/data/dynamodb';
-import { serviceData, mockServiceData, serviceDataWithDuplicates, getMockContext } from '../testData/mockData';
+import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/dynamodb';
+import { mockRawService, mockServiceData, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
 
 jest.mock('../../src/data/dynamodb');
 
 describe('pages', () => {
     describe('direction', () => {
         beforeEach(() => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => serviceData));
-            (({ ...getNaptanInfoByAtcoCode } as jest.Mock).mockImplementation(() => ({})));
+            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
+            (({ ...batchGetStopsByAtcoCode } as jest.Mock).mockImplementation(() => [{ localityName: '' }]));
         });
 
         it('should render correctly', () => {
-            const tree = shallow(
-                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceData} />,
-            );
+            const tree = shallow(<Direction operator="Connexions Buses" lineName="X6A" service={mockServiceData} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('shows operator name above the select box', () => {
-            const wrapper = shallow(
-                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceData} />,
-            );
+            const wrapper = shallow(<Direction operator="Connexions Buses" lineName="X6A" service={mockServiceData} />);
             const journeyWelcome = wrapper.find('#direction-operator-linename-hint').first();
 
             expect(journeyWelcome.text()).toBe('Connexions Buses - X6A');
         });
 
         it('shows a list of journey patterns for the service in the select box', () => {
-            const wrapper = shallow(
-                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceData} />,
-            );
+            const wrapper = shallow(<Direction operator="Connexions Buses" lineName="X6A" service={mockServiceData} />);
             const serviceJourney = wrapper.find('.journey-option');
 
             expect(serviceJourney).toHaveLength(2);
@@ -42,7 +36,7 @@ describe('pages', () => {
         });
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => serviceData));
+            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
             const operator = 'HCTY';
             const lineName = 'X6A';
 
@@ -51,14 +45,16 @@ describe('pages', () => {
             const result = await Direction.getInitialProps(ctx);
 
             expect(result).toEqual({
-                Operator: operator,
+                operator,
                 lineName,
-                serviceInfo: mockServiceData,
+                service: mockServiceData,
             });
         });
 
         it('removes journeys that have the same start and end points before rendering', async () => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => serviceDataWithDuplicates));
+            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
+                () => mockRawServiceWithDuplicates,
+            ));
             const operator = 'HCTY';
             const lineName = 'X6A';
 
@@ -67,9 +63,9 @@ describe('pages', () => {
             const result = await Direction.getInitialProps(ctx);
 
             expect(result).toEqual({
-                Operator: operator,
+                operator,
                 lineName,
-                serviceInfo: mockServiceData,
+                service: mockServiceData,
             });
         });
 

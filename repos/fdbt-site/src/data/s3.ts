@@ -1,14 +1,5 @@
 import AWS from 'aws-sdk';
 
-export interface S3ObjectParameters {
-    Bucket: string;
-    Key: string;
-}
-
-export interface StageName {
-    stageName: string;
-}
-
 export interface FareStage {
     stageName: string;
     prices: {
@@ -38,21 +29,19 @@ const getS3Client = (): AWS.S3 => {
 
 const s3 = getS3Client();
 
-export const getUserData = async (uuid: string): Promise<UserFareStages> => {
+export const getUserFareStages = async (uuid: string): Promise<UserFareStages> => {
     if (!process.env.USER_DATA_BUCKET_NAME) {
         throw new Error('Environment variable for validated bucket not set');
     }
 
-    const params: S3ObjectParameters = {
+    const params = {
         Bucket: process.env.USER_DATA_BUCKET_NAME,
         Key: `${uuid}.json`,
     };
     const response = await s3.getObject(params).promise();
     const dataAsString = response.Body?.toString('utf-8') ?? '';
 
-    const userData: UserFareStages = JSON.parse(dataAsString);
-
-    return userData;
+    return JSON.parse(dataAsString);
 };
 
 export const putStringInS3 = async (

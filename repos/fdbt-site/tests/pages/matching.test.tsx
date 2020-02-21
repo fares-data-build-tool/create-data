@@ -4,12 +4,12 @@ import { shallow } from 'enzyme';
 import * as dynamodb from '../../src/data/dynamodb';
 import * as s3 from '../../src/data/s3';
 import {
-    serviceData,
-    userData,
+    mockRawService,
+    userFareStages,
     naptanStopInfo,
-    serviceInfo,
+    service,
     getMockContext,
-    serviceDataWithDuplicates,
+    mockRawServiceWithDuplicates,
 } from '../testData/mockData';
 import Matching from '../../src/pages/matching';
 
@@ -19,19 +19,19 @@ jest.mock('../../src/data/s3.ts');
 describe('Matching Page', () => {
     let wrapper: any;
     let getServiceByNocCodeAndLineNameSpy: any;
-    let batchGetNaptanInfoByAtcoCodeSpy: any;
-    let getUserDataSpy: any;
+    let batchGetStopsByAtcoCodeSpy: any;
+    let getUserFareStagesSpy: any;
 
     beforeEach(() => {
         getServiceByNocCodeAndLineNameSpy = jest.spyOn(dynamodb, 'getServiceByNocCodeAndLineName');
-        batchGetNaptanInfoByAtcoCodeSpy = jest.spyOn(dynamodb, 'batchGetNaptanInfoByAtcoCode');
-        getUserDataSpy = jest.spyOn(s3, 'getUserData');
+        batchGetStopsByAtcoCodeSpy = jest.spyOn(dynamodb, 'batchGetStopsByAtcoCode');
+        getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
-        getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(serviceData));
-        batchGetNaptanInfoByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
-        getUserDataSpy.mockImplementation(() => Promise.resolve(userData));
+        getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
+        batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
+        getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
-        wrapper = shallow(<Matching userData={userData} stops={naptanStopInfo} serviceInfo={serviceInfo} />);
+        wrapper = shallow(<Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} />);
     });
 
     afterEach(() => {
@@ -57,8 +57,8 @@ describe('Matching Page', () => {
 
             await Matching.getInitialProps(ctx);
 
-            expect(dynamodb.batchGetNaptanInfoByAtcoCode).toBeCalledTimes(1);
-            expect(dynamodb.batchGetNaptanInfoByAtcoCode).toBeCalledWith([
+            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
+            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledWith([
                 '13003921A',
                 '13003305E',
                 '13003306B',
@@ -78,7 +78,7 @@ describe('Matching Page', () => {
         });
 
         it('generates the correct list of master stops given journeys with duplicate start and end points', async () => {
-            getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(serviceDataWithDuplicates));
+            getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawServiceWithDuplicates));
 
             const ctx = getMockContext({
                 journey: {
@@ -89,8 +89,8 @@ describe('Matching Page', () => {
 
             await Matching.getInitialProps(ctx);
 
-            expect(dynamodb.batchGetNaptanInfoByAtcoCode).toBeCalledTimes(1);
-            expect(dynamodb.batchGetNaptanInfoByAtcoCode).toBeCalledWith([
+            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
+            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledWith([
                 '13003655B',
                 '13003654G',
                 '13003609A',
