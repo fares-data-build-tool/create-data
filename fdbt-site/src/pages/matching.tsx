@@ -136,7 +136,7 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     return {
         stops: naptanInfo,
         userFareStages,
-        serviceData: {
+        service: {
             lineName,
             nocCode,
             operatorShortName: service.operatorShortName,
