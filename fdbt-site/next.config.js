@@ -16,6 +16,7 @@ const nextConfig = {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         RAW_USER_DATA_BUCKET_NAME: `fdbt-raw-user-data-${stage}`,
         USER_DATA_BUCKET_NAME: `fdbt-user-data-${stage}`,
+        MATCHING_DATA_BUCKET_NAME: `fdbt-matching-data-${stage}`,
     },
 };
 
