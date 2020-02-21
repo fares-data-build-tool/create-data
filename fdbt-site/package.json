@@ -8,7 +8,7 @@
         "test:coverage": "jest --coverage --watchAll",
         "test:ci": "CI=true jest -w 1",
         "test:updateSnapshots": "jest --updateSnapshot",
-        "dev": "export NODE_ENV='' && node devServer.js",
+        "dev": "export NODE_ENV='' && next -p 5555",
         "build": "rm -rf ./.serverless_nextjs && next build",
         "start": "NODE_ENV=production next start",
         "deploy": "export NODE_ENV='test' && export SLS_DEBUG='*' && serverless --config serverless.test.yml",
