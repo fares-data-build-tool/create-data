@@ -8,11 +8,11 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import {
     getServiceByNocCodeAndLineName,
-    ServiceInformation,
+    ServiceData,
     getNaptanInfoByAtcoCode,
     JourneyPattern,
     RawJourneyPattern,
-    RawServiceInformation,
+    RawServiceData,
 } from '../data/dynamodb';
 
 const title = 'Select a Direction - Fares data build tool';
@@ -21,7 +21,7 @@ const description = 'Direction selection page of the Fares data build tool';
 interface DirectionProps {
     Operator: string;
     lineName: string;
-    serviceInfo: ServiceInformation;
+    serviceInfo: ServiceData;
 }
 
 const Direction = ({ Operator, lineName, serviceInfo }: DirectionProps): ReactElement => (
@@ -113,23 +113,23 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
 
         try {
             if (ctx.req) {
-                const rawServiceInfo: RawServiceInformation = await getServiceByNocCodeAndLineName(
+                const rawServiceData: RawServiceData = await getServiceByNocCodeAndLineName(
                     operatorObject.nocCode,
                     lineName,
                 );
-                const serviceInfo: ServiceInformation = {
-                    ...rawServiceInfo,
-                    journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawServiceInfo.journeyPatterns),
+                const serviceData: ServiceData = {
+                    ...rawServiceData,
+                    journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawServiceData.journeyPatterns),
                 };
 
-                if (!serviceInfo && ctx.res) {
+                if (!serviceData && ctx.res) {
                     throw new Error(
                         `No service info could be retrieved for nocCode: ${operatorObject.nocCode} and lineName: ${lineName}`,
                     );
                 }
 
                 // Remove journeys with duplicate start and end points for display purposes
-                serviceInfo.journeyPatterns = serviceInfo.journeyPatterns.filter(
+                serviceData.journeyPatterns = serviceData.journeyPatterns.filter(
                     (pattern, index, self) =>
                         self.findIndex(
                             item =>
@@ -138,7 +138,7 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
                         ) === index,
                 );
 
-                return { Operator: operatorObject.operator, lineName, serviceInfo };
+                return { Operator: operatorObject.operator, lineName, serviceInfo: serviceData };
             }
         } catch (error) {
             console.error(`Unable to get journey patterns for direction page: ${error.stack}`);

@@ -18,15 +18,18 @@ export interface JourneyPattern {
     stopList: string[];
 }
 
+export interface RawJourneyPatternSection {
+    Id: string;
+    OrderedStopPoints: {
+        StopPointRef: string;
+        CommonName: string;
+    }[];
+    StartPoint: string;
+    EndPoint: string;
+}
+
 export interface RawJourneyPattern {
-    JourneyPatternSections: [
-        {
-            Id: string;
-            OrderedStopPoints: { StopPointRef: string; CommonName: string }[];
-            StartPoint: string;
-            EndPoint: string;
-        },
-    ];
+    JourneyPatternSections: RawJourneyPatternSection[];
 }
 
 export interface NaptanInfo {
@@ -40,13 +43,13 @@ export interface NaptanInfo {
     qualifierName?: string;
 }
 
-export interface ServiceInformation {
+export interface ServiceData {
     serviceDescription: string;
     operatorShortName: string;
     journeyPatterns: JourneyPattern[];
 }
 
-export interface RawServiceInformation {
+export interface RawServiceData {
     serviceDescription: string;
     operatorShortName: string;
     journeyPatterns: RawJourneyPattern[];
@@ -197,10 +200,7 @@ export const batchGetNaptanInfoByAtcoCode = async (atcoCodes: string[]): Promise
     }
 };
 
-export const getServiceByNocCodeAndLineName = async (
-    nocCode: string,
-    lineName: string,
-): Promise<RawServiceInformation> => {
+export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawServiceData> => {
     const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
 
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {

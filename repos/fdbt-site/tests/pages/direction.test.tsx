@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import Direction from '../../src/pages/direction';
 import { getServiceByNocCodeAndLineName, getNaptanInfoByAtcoCode } from '../../src/data/dynamodb';
-import { serviceData, mockServiceInfo, serviceDataWithDuplicates, getMockContext } from '../testData/mockData';
+import { serviceData, mockServiceData, serviceDataWithDuplicates, getMockContext } from '../testData/mockData';
 
 jest.mock('../../src/data/dynamodb');
 
@@ -16,14 +16,14 @@ describe('pages', () => {
 
         it('should render correctly', () => {
             const tree = shallow(
-                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceInfo} />,
+                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceData} />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('shows operator name above the select box', () => {
             const wrapper = shallow(
-                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceInfo} />,
+                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceData} />,
             );
             const journeyWelcome = wrapper.find('#direction-operator-linename-hint').first();
 
@@ -32,7 +32,7 @@ describe('pages', () => {
 
         it('shows a list of journey patterns for the service in the select box', () => {
             const wrapper = shallow(
-                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceInfo} />,
+                <Direction Operator="Connexions Buses" lineName="X6A" serviceInfo={mockServiceData} />,
             );
             const serviceJourney = wrapper.find('.journey-option');
 
@@ -53,7 +53,7 @@ describe('pages', () => {
             expect(result).toEqual({
                 Operator: operator,
                 lineName,
-                serviceInfo: mockServiceInfo,
+                serviceInfo: mockServiceData,
             });
         });
 
@@ -69,7 +69,7 @@ describe('pages', () => {
             expect(result).toEqual({
                 Operator: operator,
                 lineName,
-                serviceInfo: mockServiceInfo,
+                serviceInfo: mockServiceData,
             });
         });
 

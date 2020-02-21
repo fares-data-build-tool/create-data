@@ -3,7 +3,7 @@ import React from 'react';
 import { NextPageContext } from 'next';
 import mockReqRes, { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { RawServiceInformation, ServiceInformation } from '../../src/data/dynamodb';
+import { RawServiceData, ServiceData } from '../../src/data/dynamodb';
 import { UserFareStages } from '../../src/data/s3';
 import { OPERATOR_COOKIE, FARETYPE_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../../src/constants';
 
@@ -83,7 +83,7 @@ export const getMockContext = (cookies: any = {}, body: any = null, uuid: any = 
     return ctx;
 };
 
-export const serviceData: RawServiceInformation = {
+export const serviceData: RawServiceData = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [
@@ -219,7 +219,7 @@ export const serviceData: RawServiceInformation = {
     ],
 };
 
-export const serviceDataWithDuplicates: RawServiceInformation = {
+export const serviceDataWithDuplicates: RawServiceData = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [
@@ -616,7 +616,7 @@ export const naptanStopInfo = [
 
 export const serviceInfo = { lineName: '215', nocCode: 'DCCL', operatorShortName: 'DCC' };
 
-export const mockServiceInfo: ServiceInformation = {
+export const mockServiceData: ServiceData = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [
