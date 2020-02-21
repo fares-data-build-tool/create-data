@@ -616,7 +616,7 @@ export const naptanStopInfo = [
 
 export const service = { lineName: '215', nocCode: 'DCCL', operatorShortName: 'DCC' };
 
-export const mockServiceData: Service = {
+export const mockService: Service = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [
