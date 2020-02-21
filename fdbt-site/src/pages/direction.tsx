@@ -78,7 +78,7 @@ const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPa
                 const startPoint = item.JourneyPatternSections[0].OrderedStopPoints[0];
                 const startPointNaptan = await getNaptanInfoByAtcoCode(startPoint.StopPointRef);
 
-                const endPoint = item.JourneyPatternSections.splice(-1, 1)[0].OrderedStopPoints.splice(-1, 1)[0];
+                const endPoint = [...item.JourneyPatternSections].splice(-1, 1)[0].OrderedStopPoints.splice(-1, 1)[0];
                 const endPointNaptan = await getNaptanInfoByAtcoCode(endPoint.StopPointRef);
 
                 return {
