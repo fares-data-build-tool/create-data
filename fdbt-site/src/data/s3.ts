@@ -1,5 +1,17 @@
 import AWS from 'aws-sdk';
 
+export interface FareStage {
+    stageName: string;
+    prices: {
+        price: string;
+        fareZones: string[];
+    }[];
+}
+
+export interface UserFareStages {
+    fareStages: FareStage[];
+}
+
 const getS3Client = (): AWS.S3 => {
     let options = {};
 
@@ -17,7 +29,21 @@ const getS3Client = (): AWS.S3 => {
 
 const s3 = getS3Client();
 
-// eslint-disable-next-line import/prefer-default-export
+export const getUserFareStages = async (uuid: string): Promise<UserFareStages> => {
+    if (!process.env.USER_DATA_BUCKET_NAME) {
+        throw new Error('Environment variable for validated bucket not set');
+    }
+
+    const params = {
+        Bucket: process.env.USER_DATA_BUCKET_NAME,
+        Key: `${uuid}.json`,
+    };
+    const response = await s3.getObject(params).promise();
+    const dataAsString = response.Body?.toString('utf-8') ?? '';
+
+    return JSON.parse(dataAsString);
+};
+
 export const putStringInS3 = async (
     bucketName: string,
     key: string,
