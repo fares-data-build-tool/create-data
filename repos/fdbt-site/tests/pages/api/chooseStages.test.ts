@@ -30,6 +30,7 @@ describe('chooseStages', () => {
     ];
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+        (setCookieOnResponseObject as {}) = jest.fn();
         chooseStages(mockRequest({ body: testData }), res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
