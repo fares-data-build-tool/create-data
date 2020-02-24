@@ -1,37 +1,37 @@
 import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+// import { NextPageContext } from 'next';
+// import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { PRICEENTRY_COOKIE, STAGENAMES_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
-import { redirectToError } from './api/apiUtils';
+// import { PRICEENTRY_COOKIE, STAGE_NAMES_COOKIE } from '../constants';
+// import { deleteCookieOnServerSide } from '../utils';
+// import { redirectToError } from './api/apiUtils';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Enter prices into fares triangle page of the Fares Data Build Tool';
 
-// const fareStages = [
-//     'Briggate',
-//     'Chapeltown',
-//     'Chapel Allerton',
-//     'Moortown',
-//     'Harrogate Road',
-//     'Harehills',
-//     'Gipton',
-//     'Armley',
-//     'Stanningley',
-//     'Pudsey',
-//     'Seacroft',
-//     'Rothwell',
-//     'Dewsbury',
-//     'Wakefield',
-// ];
+const fareStages = [
+    'Briggate',
+    'Chapeltown',
+    'Chapel Allerton',
+    // 'Moortown',
+    // 'Harrogate Road',
+    // 'Harehills',
+    // 'Gipton',
+    // 'Armley',
+    // 'Stanningley',
+    // 'Pudsey',
+    // 'Seacroft',
+    // 'Rothwell',
+    // 'Dewsbury',
+    // 'Wakefield',
+];
 
-type PriceEntryProps = {
-    fareStages: string[];
-};
+// type PriceEntryProps = {
+//     fareStages: string[];
+// };
 
-const PriceEntry = ({ fareStages }: PriceEntryProps): ReactElement => (
+const PriceEntry = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/priceEntry" method="post">
@@ -46,26 +46,35 @@ const PriceEntry = ({ fareStages }: PriceEntryProps): ReactElement => (
                             For example £1 would be 100 or £2.29 would be 229
                         </span>
                     </fieldset>
-                </div>
-                <div className="fare-triangle">
-                    {fareStages.map((rowStage, rowIndex) => (
-                        <div id={`row-${rowIndex}`} className="fare-triangle-row">
-                            {fareStages.slice(0, rowIndex).map((_, columnIndex) => (
-                                <input
-                                    className="govuk-input govuk-input--width-4 fare-triangle-input"
-                                    id={`cell-${rowIndex}-${columnIndex}`}
-                                    name={`cell-${rowIndex}-${columnIndex}`}
-                                    type="number"
-                                    min="1"
-                                    max="10000"
-                                    maxLength={5}
-                                    required
-                                    pattern="^[0-9]*$"
-                                />
+                    <div className="fare-triangle-container">
+                        <div className="fare-triangle-column">
+                            {fareStages.map((rowStage, rowIndex) => (
+                                <div className="govuk-heading-s fare-triangle-label-left">
+                                    <span>{rowIndex > 0 ? rowStage : null}</span>
+                                </div>
                             ))}
-                            <div className="govuk-heading-s fare-triangle-label">{rowStage}</div>
                         </div>
-                    ))}
+                        <div className="fare-triangle">
+                            {fareStages.map((rowStage, rowIndex) => (
+                                <div id={`row-${rowIndex}`} className="fare-triangle-row">
+                                    {fareStages.slice(0, rowIndex).map((_, columnIndex) => (
+                                        <input
+                                            className="govuk-input govuk-input--width-4 fare-triangle-input"
+                                            id={`cell-${rowIndex}-${columnIndex}`}
+                                            name={`cell-${rowIndex}-${columnIndex}`}
+                                            type="number"
+                                            min="1"
+                                            max="10000"
+                                            maxLength={5}
+                                            required
+                                            pattern="^[0-9]*$"
+                                        />
+                                    ))}
+                                    <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
                 <input
                     type="submit"
@@ -78,35 +87,32 @@ const PriceEntry = ({ fareStages }: PriceEntryProps): ReactElement => (
     </Layout>
 );
 
-PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
-    deleteCookieOnServerSide(ctx, PRICEENTRY_COOKIE);
+PriceEntry.getInitialProps = (): {} => {
+    // deleteCookieOnServerSide(ctx, PRICEENTRY_COOKIE);
 
-    const cookies = parseCookies(ctx);
-    const stageNamesCookie = cookies[STAGENAMES_COOKIE];
+    // const cookies = parseCookies(ctx);
+    // const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
 
-    if (stageNamesCookie) {
-        const stageNameObject = JSON.parse(stageNamesCookie);
-        let stageNames: [] = [];
+    // if (stageNamesCookie) {
+    //     const stageNamesArray = JSON.parse(stageNamesCookie);
 
-        try {
-            if (ctx.req) {
-                stageNames = stageNameObject.names;
-            }
+    //     try {
 
-            if (stageNames.length === 0) {
-                throw new Error('No stages found in cookie!');
-            }
+    //         if (stageNamesArray.length === 0) {
+    //             throw new Error('No stages found in cookie!');
+    //         }
 
-            return { stageNames };
-        } catch (err) {
-            console.error(err.message);
-            throw new Error(err.message);
-        }
-    }
+    //         return { stageNamesArray };
 
-    if (ctx.res) {
-        redirectToError(ctx.res);
-    }
+    //     } catch (err) {
+    //         console.error(err.stack);
+    //         throw new Error(err.stack);
+    //     }
+    // }
+
+    // if (ctx.res) {
+    //     redirectToError(ctx.res);
+    // }
 
     return {};
 };
