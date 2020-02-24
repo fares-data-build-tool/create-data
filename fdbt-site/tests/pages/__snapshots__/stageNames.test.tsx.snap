@@ -39,92 +39,92 @@ exports[`pages stageNames should render correctly 1`] = `
             className="govuk-form-group"
           >
             <label
-              className="govuk-hint"
+              className="govuk-label"
               htmlFor="fareStage1"
             >
               Fare Stage 
               1
             </label>
             <input
-              className="govuk-input govuk-input--width-30"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fareStage1"
-              maxLength={20}
-              name="fareStage1"
+              maxLength={30}
+              name="stageNameInput"
               required={true}
               type="text"
             />
             <label
-              className="govuk-hint"
+              className="govuk-label"
               htmlFor="fareStage2"
             >
               Fare Stage 
               2
             </label>
             <input
-              className="govuk-input govuk-input--width-30"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fareStage2"
-              maxLength={20}
-              name="fareStage2"
+              maxLength={30}
+              name="stageNameInput"
               required={true}
               type="text"
             />
             <label
-              className="govuk-hint"
+              className="govuk-label"
               htmlFor="fareStage3"
             >
               Fare Stage 
               3
             </label>
             <input
-              className="govuk-input govuk-input--width-30"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fareStage3"
-              maxLength={20}
-              name="fareStage3"
+              maxLength={30}
+              name="stageNameInput"
               required={true}
               type="text"
             />
             <label
-              className="govuk-hint"
+              className="govuk-label"
               htmlFor="fareStage4"
             >
               Fare Stage 
               4
             </label>
             <input
-              className="govuk-input govuk-input--width-30"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fareStage4"
-              maxLength={20}
-              name="fareStage4"
+              maxLength={30}
+              name="stageNameInput"
               required={true}
               type="text"
             />
             <label
-              className="govuk-hint"
+              className="govuk-label"
               htmlFor="fareStage5"
             >
               Fare Stage 
               5
             </label>
             <input
-              className="govuk-input govuk-input--width-30"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fareStage5"
-              maxLength={20}
-              name="fareStage5"
+              maxLength={30}
+              name="stageNameInput"
               required={true}
               type="text"
             />
             <label
-              className="govuk-hint"
+              className="govuk-label"
               htmlFor="fareStage6"
             >
               Fare Stage 
               6
             </label>
             <input
-              className="govuk-input govuk-input--width-30"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fareStage6"
-              maxLength={20}
-              name="fareStage6"
+              maxLength={30}
+              name="stageNameInput"
               required={true}
               type="text"
             />

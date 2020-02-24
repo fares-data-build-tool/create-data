@@ -20,15 +20,15 @@ const generateInputFields = (numberOfFareStages: string): ReactElement[] => {
     const elements = [];
     for (let i = 1; i < iteratorLimit; i += 1) {
         elements.push(
-            <label className="govuk-hint" htmlFor={`fareStage${i}`}>
+            <label className="govuk-label" htmlFor={`fareStage${i}`}>
                 Fare Stage {i}
             </label>,
             <input
-                className="govuk-input govuk-input--width-30"
+                className="govuk-input govuk-input--width-30 stage-name-input-field"
                 id={`fareStage${i}`}
-                name={`fareStage${i}`}
+                name="stageNameInput"
                 type="text"
-                maxLength={20}
+                maxLength={30}
                 required
             />,
         );
@@ -66,7 +66,6 @@ StageNames.getInitialProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
-    console.log({ cookies });
 
     if (fareStagesCookie) {
         const fareStagesObject = JSON.parse(fareStagesCookie);
