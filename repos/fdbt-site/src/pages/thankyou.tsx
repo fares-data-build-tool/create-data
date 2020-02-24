@@ -1,9 +1,9 @@
 import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { FEEDBACK_LINK, SERVICE_COOKIE } from '../constants';
+import { FEEDBACK_LINK } from '../constants';
+import { getUuidFromCookies } from '../utils';
 
 const title = 'Thank You - Fares data build tool';
 const description = 'Thank you page for the Fares Data Build Tool';
@@ -51,16 +51,7 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
 );
 
 ThankYou.getInitialProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-    const serviceCookie = cookies[SERVICE_COOKIE];
-    if (serviceCookie) {
-        const serviceObject = JSON.parse(serviceCookie);
-        return {
-            uuid: serviceObject.uuid,
-        };
-    }
-
-    return {};
+    return { uuid: getUuidFromCookies(ctx) };
 };
 
 export default ThankYou;
