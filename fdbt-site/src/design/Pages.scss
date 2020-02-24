@@ -4,3 +4,40 @@
     list-style-type: disc;
     line-height: 35px;
 }
+
+.matching-page {
+    .matching-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        justify-content: center;
+    }
+
+    .matching-stop-name {
+        width: 60%;
+        margin-right: 20px;
+    }
+
+    .matching-stop-header {
+        width: 60%;
+        margin-right: 20px;
+    }
+
+    .naptan-code-header {
+        width: 20%;
+    }
+
+    .fare-stage-header {
+        width: 20%;
+    }
+
+    .naptan-code {
+        margin-left: auto;
+        width: 20%;
+    }
+
+    .farestage-select-wrapper {
+        margin-left: auto;
+        width: 20%;
+    }
+}
