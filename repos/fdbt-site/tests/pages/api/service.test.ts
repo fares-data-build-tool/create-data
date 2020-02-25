@@ -1,6 +1,9 @@
 import { mockRequest, mockResponse } from 'mock-req-res';
+import http from 'http';
 import service from '../../../src/pages/api/service';
 import { OPERATOR_COOKIE } from '../../../src/constants';
+
+http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('service', () => {
     beforeEach(() => {
@@ -21,10 +24,6 @@ describe('service', () => {
         });
         const res = mockResponse({
             writeHead: writeHeadMock,
-            // Hacky workaround to prevent to cookies module from blowing up due to this in that module,
-            // where http..setHeader is not defined:
-            // var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader
-            set: false,
         });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
