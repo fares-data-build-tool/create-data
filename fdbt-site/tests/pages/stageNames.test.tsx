@@ -10,10 +10,13 @@ import { FARE_STAGES_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
 describe('pages', () => {
     describe('stageNames', () => {
         const mockNumberOfFareStages = '6';
+        const mockValidationObject: any[] = [];
         const operator = 'HCTY';
 
         it('should render correctly', () => {
-            const tree = shallow(<StageNames numberOfFareStages={mockNumberOfFareStages} />);
+            const tree = shallow(
+                <StageNames numberOfFareStages={mockNumberOfFareStages} validationObject={mockValidationObject} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
@@ -43,6 +46,7 @@ describe('pages', () => {
             const result = StageNames.getInitialProps(ctx);
             expect(result).toEqual({
                 numberOfFareStages: '6',
+                validationObject: [],
             });
         });
     });

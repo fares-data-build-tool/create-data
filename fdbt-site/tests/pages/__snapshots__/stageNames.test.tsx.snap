@@ -40,92 +40,86 @@ exports[`pages stageNames should render correctly 1`] = `
           >
             <label
               className="govuk-label"
-              htmlFor="fareStage1"
+              htmlFor="fareStageName1"
             >
               Fare Stage 
               1
             </label>
             <input
               className="govuk-input govuk-input--width-30 stage-name-input-field"
-              id="fareStage1"
+              id="fareStageName1"
               maxLength={30}
               name="stageNameInput"
-              required={true}
               type="text"
             />
             <label
               className="govuk-label"
-              htmlFor="fareStage2"
+              htmlFor="fareStageName2"
             >
               Fare Stage 
               2
             </label>
             <input
               className="govuk-input govuk-input--width-30 stage-name-input-field"
-              id="fareStage2"
+              id="fareStageName2"
               maxLength={30}
               name="stageNameInput"
-              required={true}
               type="text"
             />
             <label
               className="govuk-label"
-              htmlFor="fareStage3"
+              htmlFor="fareStageName3"
             >
               Fare Stage 
               3
             </label>
             <input
               className="govuk-input govuk-input--width-30 stage-name-input-field"
-              id="fareStage3"
+              id="fareStageName3"
               maxLength={30}
               name="stageNameInput"
-              required={true}
               type="text"
             />
             <label
               className="govuk-label"
-              htmlFor="fareStage4"
+              htmlFor="fareStageName4"
             >
               Fare Stage 
               4
             </label>
             <input
               className="govuk-input govuk-input--width-30 stage-name-input-field"
-              id="fareStage4"
+              id="fareStageName4"
               maxLength={30}
               name="stageNameInput"
-              required={true}
               type="text"
             />
             <label
               className="govuk-label"
-              htmlFor="fareStage5"
+              htmlFor="fareStageName5"
             >
               Fare Stage 
               5
             </label>
             <input
               className="govuk-input govuk-input--width-30 stage-name-input-field"
-              id="fareStage5"
+              id="fareStageName5"
               maxLength={30}
               name="stageNameInput"
-              required={true}
               type="text"
             />
             <label
               className="govuk-label"
-              htmlFor="fareStage6"
+              htmlFor="fareStageName6"
             >
               Fare Stage 
               6
             </label>
             <input
               className="govuk-input govuk-input--width-30 stage-name-input-field"
-              id="fareStage6"
+              id="fareStageName6"
               maxLength={30}
               name="stageNameInput"
-              required={true}
               type="text"
             />
           </div>
