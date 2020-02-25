@@ -2,10 +2,10 @@ import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import Layout from '../layout/Layout';
+import FileAttachment from '../components/FileAttachment';
 
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
-const image = require('../../public/assets/images/Guidance-doc-front-page-3.png');
 
 const CsvUpload: NextPage = (): ReactElement => (
     <Layout title={title} description={description}>
@@ -41,28 +41,16 @@ const CsvUpload: NextPage = (): ReactElement => (
                     className="govuk-button govuk-button--start"
                 />
             </form>
-            <section className="file-attachment">
-                <div className="file-attachment-thumbnail">
-                    <a aria-hidden="true" href="assets/files/How to Upload a Fares Triangle.pdf"><img alt="" src={image} /></a>
-                </div>
-                <div>
-                    <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link govuk-!-font-size-27">Download Help File</a>
-                    <p className="file-attachment-metadata">
-                        <abbr title="Portable Document Format">PDF</abbr>
-                    </p>
-                </div>
-            </section>
-            <section className="file-attachment">
-                <div className="file-attachment-thumbnail">
-                    <a aria-hidden="true" href="assets/files/How to Upload a Fares Triangle.pdf"><img alt="" src={image} /></a>
-                </div>
-                <div>
-                    <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link govuk-!-font-size-27">Download Fares Triangle CSV Example</a>
-                    <p className="file-attachment-metadata">
-                        <abbr title="Portable Document Format">PDF</abbr>
-                    </p>
-                </div>
-            </section>
+            <FileAttachment
+                displayName="Download Help File"
+                attahmentUrl="assets/files/How to Upload a Fares Triangle.pdf"
+                imageUrl="assets/images/Guidance-doc-front-page-3.png"
+            />
+            <FileAttachment
+                displayName="Download Fares Triangle CSV Example"
+                attahmentUrl="assets/files/How to Upload a Fares Triangle.pdf"
+                imageUrl="assets/images/Guidance-doc-front-page-3.png"
+            />
         </main>
     </Layout>
 );
