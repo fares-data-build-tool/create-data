@@ -7,7 +7,7 @@ import { isSessionValid } from './service/validator';
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     if (isSessionValid(req, res)) {
         try {
-            const cookies = Cookies(req, res);
+            const cookies = new Cookies(req, res);
 
             const { faretype } = req.body;
             const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));

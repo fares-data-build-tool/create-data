@@ -1,5 +1,8 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
+import http from 'http';
 import operator from '../../../src/pages/api/operator';
+
+http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('operator', () => {
     let res: mockReqRes.ResponseOutput;
@@ -9,10 +12,6 @@ describe('operator', () => {
         writeHeadMock = jest.fn();
         res = mockResponse({
             writeHead: writeHeadMock,
-            // Hacky workaround to prevent to cookies module from blowing up due to this in that module,
-            // where http..setHeader is not defined:
-            // var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader
-            set: false,
         });
     });
 
