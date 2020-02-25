@@ -90,7 +90,7 @@ const getMatchingJson = (
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isCookiesUUIDMatch(req)) {
+        if (!isCookiesUUIDMatch(req, res)) {
             throw new Error('Cookie UUIDs do not match');
         }
 
@@ -108,7 +108,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
         const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones);
 
-        const uuid = getUuidFromCookie(req);
+        const uuid = getUuidFromCookie(req, res);
 
         await putDataInS3(matchingJson, uuid);
 
