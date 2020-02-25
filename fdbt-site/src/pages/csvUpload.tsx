@@ -41,23 +41,27 @@ const CsvUpload: NextPage = (): ReactElement => (
                     className="govuk-button govuk-button--start"
                 />
             </form>
-            <div className="govuk-grid-row">
-                <section>
-                    <p>
-                        <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link" download>
-                            < img src={image} className="image" alt = ""/>
-                            Download Help File
-                        </a>
+            <section className="file-attachment">
+                <div className="file-attachment-thumbnail">
+                    <a aria-hidden="true" href="assets/files/How to Upload a Fares Triangle.pdf"><img alt="" src={image} /></a>
+                </div>
+                <div>
+                    <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link govuk-!-font-size-27">Download Help File</a>
+                    <p className="file-attachment-metadata">
+                        <abbr title="Portable Document Format">PDF</abbr>
                     </p>
-                </section>
-            </div>
-            <section>
-                <p>
-                    <a href="assets/files/Fares Triangle Example.csv" className="govuk-link" download>
-                        <img src={image} className="image" alt = "" />
-                        Download Fares Triangle CSV Example
-                    </a>
-                </p>
+                </div>
+            </section>
+            <section className="file-attachment">
+                <div className="file-attachment-thumbnail">
+                    <a aria-hidden="true" href="assets/files/How to Upload a Fares Triangle.pdf"><img alt="" src={image} /></a>
+                </div>
+                <div>
+                    <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link govuk-!-font-size-27">Download Fares Triangle CSV Example</a>
+                    <p className="file-attachment-metadata">
+                        <abbr title="Portable Document Format">PDF</abbr>
+                    </p>
+                </div>
             </section>
         </main>
     </Layout>

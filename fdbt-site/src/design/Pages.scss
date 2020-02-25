@@ -41,3 +41,23 @@
         width: 20%;
     }
 }
+
+.file-attachment {
+    display: flex;
+    margin-bottom: 40px;
+
+    .file-attachment-thumbnail {
+        margin-right: 20px;
+        outline: 5px solid rgba(11,12,12,0.1);
+        box-shadow: 0 2px 2px rgba(11,12,12,0.4);
+    }
+
+    .file-attachment-metadata {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+
+        abbr[title] {
+            text-decoration: none;
+        }
+    }
+}
