@@ -62,6 +62,27 @@ exports[`pages inputMethod should render correctly 1`] = `
                 Chapel Allerton
               </span>
             </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Moortown
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Harrogate Road
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Harehills
+              </span>
+            </div>
           </div>
           <div
             className="fare-triangle"
@@ -86,7 +107,7 @@ exports[`pages inputMethod should render correctly 1`] = `
                 max="10000"
                 maxLength={5}
                 min="1"
-                name="cell-1-0"
+                name="Briggate-Chapeltown"
                 pattern="^[0-9]*$"
                 required={true}
                 type="number"
@@ -107,7 +128,7 @@ exports[`pages inputMethod should render correctly 1`] = `
                 max="10000"
                 maxLength={5}
                 min="1"
-                name="cell-2-0"
+                name="Briggate-Chapel Allerton"
                 pattern="^[0-9]*$"
                 required={true}
                 type="number"
@@ -118,7 +139,7 @@ exports[`pages inputMethod should render correctly 1`] = `
                 max="10000"
                 maxLength={5}
                 min="1"
-                name="cell-2-1"
+                name="Chapeltown-Chapel Allerton"
                 pattern="^[0-9]*$"
                 required={true}
                 type="number"
@@ -127,6 +148,168 @@ exports[`pages inputMethod should render correctly 1`] = `
                 className="govuk-heading-s fare-triangle-label-right"
               >
                 Chapel Allerton
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-3"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-3-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Briggate-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-3-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Chapeltown-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-3-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Chapel Allerton-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Moortown
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-4"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-4-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Briggate-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-4-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Chapeltown-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-4-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Chapel Allerton-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-4-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Moortown-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Harrogate Road
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-5"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-5-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Briggate-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-5-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Chapeltown-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-5-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Chapel Allerton-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-5-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Moortown-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-5-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Harrogate Road-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Harehills
               </div>
             </div>
           </div>
