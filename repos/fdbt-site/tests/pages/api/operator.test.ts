@@ -1,5 +1,8 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
+import http from 'http';
 import operator from '../../../src/pages/api/operator';
+
+http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('operator', () => {
     let res: mockReqRes.ResponseOutput;

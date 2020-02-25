@@ -60,6 +60,8 @@ module.exports = {
                 ignoreRestSiblings: false,
             },
         ],
+        'no-unused-expressions': 'off',
+        '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
         'react/jsx-indent': [2, 4],
         'no-console': 0,

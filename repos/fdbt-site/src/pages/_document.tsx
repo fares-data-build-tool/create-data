@@ -5,6 +5,8 @@ import '../design/Pages.scss';
 class MyDocument extends Document {
     static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
         const initialProps = await Document.getInitialProps(ctx);
+        ctx.res?.setHeader('X-Content-Type-Options', 'nosniff');
+        ctx.res?.setHeader('X-Frame-Options', 'DENY');
         return { ...initialProps };
     }
 

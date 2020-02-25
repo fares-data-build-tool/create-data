@@ -1,15 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import Cookies from 'cookies';
 import { FARETYPE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, getCookies, redirectToError, redirectTo } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
-    if (isSessionValid(req)) {
+    if (isSessionValid(req, res)) {
         try {
-            const cookies = getCookies(req);
+            const cookies = new Cookies(req, res);
 
             const { faretype } = req.body;
-            const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
+            const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
             const operatorObject = JSON.parse(operatorCookie);
             const { uuid } = operatorObject;
 
@@ -24,7 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
             const cookieValue = JSON.stringify({ faretype, uuid });
             const domain = getDomain(req);
-            setCookieOnResponseObject(domain, FARETYPE_COOKIE, cookieValue, res);
+            setCookieOnResponseObject(domain, FARETYPE_COOKIE, cookieValue, req, res);
             redirectTo(res, '/service');
         } catch (error) {
             console.error(`Error setting faretype: ${error.message}`);
