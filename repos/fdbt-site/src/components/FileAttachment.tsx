@@ -3,19 +3,19 @@ import React, { FC } from 'react';
 
 export interface FileAttachmentProps {
     displayName: string;
-    attahmentUrl: string;
+    attachmentUrl: string;
     imageUrl: string;
 }
 
-const FileAttachment: FC<FileAttachmentProps> = ({ displayName, attahmentUrl, imageUrl }: FileAttachmentProps) => (
+const FileAttachment: FC<FileAttachmentProps> = ({ displayName, attachmentUrl, imageUrl }: FileAttachmentProps) => (
     <section className="file-attachment">
         <div className="file-attachment-thumbnail">
-            <a aria-hidden="true" href={attahmentUrl}>
+            <a aria-hidden="true" href={attachmentUrl}>
                 <img alt="" src={imageUrl} />
             </a>
         </div>
         <div>
-            <a href={attahmentUrl} className="govuk-link govuk-!-font-size-27">
+            <a href={attachmentUrl} className="govuk-link govuk-!-font-size-27">
                 {displayName}
             </a>
             <p className="file-attachment-metadata">
