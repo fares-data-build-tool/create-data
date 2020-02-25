@@ -43,13 +43,13 @@ const CsvUpload: NextPage = (): ReactElement => (
             </form>
             <FileAttachment
                 displayName="Download Help File"
-                attahmentUrl="assets/files/How to Upload a Fares Triangle.pdf"
-                imageUrl="assets/images/Guidance-doc-front-page-3.png"
+                attachmentUrl="assets/files/How to Upload a Fares Triangle.pdf"
+                imageUrl="assets/images/Guidance-doc-front-page.png"
             />
             <FileAttachment
                 displayName="Download Fares Triangle CSV Example"
-                attahmentUrl="assets/files/How to Upload a Fares Triangle.pdf"
-                imageUrl="assets/images/Guidance-doc-front-page-3.png"
+                attachmentUrl="assets/files/Fares Triangle Example.csv"
+                imageUrl="assets/images/Guidance-doc-front-page.png"
             />
         </main>
     </Layout>
