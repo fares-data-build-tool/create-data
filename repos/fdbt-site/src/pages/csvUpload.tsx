@@ -5,6 +5,7 @@ import Layout from '../layout/Layout';
 
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
+//const image = require('../../public/assets/images/Guidance-doc-front-page-3.png');
 
 const CsvUpload: NextPage = (): ReactElement => (
     <Layout title={title} description={description}>
@@ -40,18 +41,26 @@ const CsvUpload: NextPage = (): ReactElement => (
                     className="govuk-button govuk-button--start"
                 />
             </form>
-            <div>
-                <p>
-                    <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link" download>
-                        Download Help File
-                    </a>
-                </p>
+            <div className="govuk-grid-row">
+                <section>
+                    <p>
+                        <a href="assets/files/How to Upload a Fares Triangle.pdf" className="govuk-link" download>
+                            < img //src={image} className="image" 
+                           alt = ""/>
+                           // Download Help File
+                        </a>
+                    </p>
+                </section>
+            </div>
+            <section>
                 <p>
                     <a href="assets/files/Fares Triangle Example.csv" className="govuk-link" download>
+                        <img //src={image} className="image" 
+                       alt = "" />
                         Download Fares Triangle CSV Example
                     </a>
                 </p>
-            </div>
+            </section>
         </main>
     </Layout>
 );
