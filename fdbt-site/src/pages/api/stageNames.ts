@@ -4,9 +4,9 @@ import { isSessionValid } from './service/validator';
 import { getDomain, setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
-const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
+export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
     const { stageNameInput } = req.body;
-    const response = [];
+    const response: InputCheck[] = [];
     for (let i = 0; i < stageNameInput.length; i += 1) {
         const check = { Valid: true, Error: '', Input: '' };
         if (stageNameInput[i] === null) {
@@ -21,12 +21,10 @@ const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
             check.Error = 'Enter a name for this fare stage';
             check.Valid = false;
         }
-        if (stageNameInput[i].length < 1 || stageNameInput[i].length > 30) {
-            console.log(
-                `Stage name input of '${stageNameInput[i]}' is invalid. Input length is outside of condition 1 < input.length < 30.`,
-            );
+        if (stageNameInput[i].length > 30) {
+            console.log(`Stage name input of '${stageNameInput[i]}' is invalid. Input length is greater than 30.`);
             check.Input = `${stageNameInput[i]}`;
-            check.Error = `The name for Fare Stage ${i + 1} needs to be between 1-30 characters`;
+            check.Error = `The name for Fare Stage ${i + 1} needs to be less than 30 characters`;
             check.Valid = false;
         } else {
             check.Input = stageNameInput[i];
@@ -36,7 +34,7 @@ const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
     return response;
 };
 
-const checkUserInput = (userInputValidity: InputCheck[]): boolean => {
+export const checkUserInput = (userInputValidity: InputCheck[]): boolean => {
     let valid = true;
     userInputValidity.forEach(input => {
         if (input.Valid === false) {
@@ -52,7 +50,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const userInputValidity = isStageNameValid(req);
             const valid = checkUserInput(userInputValidity);
             if (valid) {
-                console.log(req.body.stageNameInput);
                 const cookieValue = JSON.stringify(req.body.stageNameInput);
                 const domain = getDomain(req);
                 setCookieOnResponseObject(domain, STAGE_NAMES_COOKIE, cookieValue, res);
