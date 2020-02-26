@@ -45,24 +45,24 @@ export const checkUserInput = (userInputValidity: InputCheck[]): boolean => {
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
-    if (isSessionValid(req)) {
+    if (isSessionValid(req, res)) {
         try {
             const userInputValidity = isStageNameValid(req);
             const valid = checkUserInput(userInputValidity);
             if (valid) {
                 const cookieValue = JSON.stringify(req.body.stageNameInput);
                 const domain = getDomain(req);
-                setCookieOnResponseObject(domain, STAGE_NAMES_COOKIE, cookieValue, res);
+                setCookieOnResponseObject(domain, STAGE_NAMES_COOKIE, cookieValue, req, res);
                 redirectTo(res, '/priceEntry');
             }
             if (!valid) {
                 const cookieValue = JSON.stringify(userInputValidity);
                 const domain = getDomain(req);
-                setCookieOnResponseObject(domain, VALIDATION_COOKIE, cookieValue, res);
+                setCookieOnResponseObject(domain, VALIDATION_COOKIE, cookieValue, req, res);
                 redirectTo(res, '/stageNames');
             }
         } catch (error) {
-            console.log(`There was an error while reading and setting cookies. Error: ${error.name}, ${error.stack}`);
+            console.log(`There was an error while reading and setting cookies. Error: ${error.stack}`);
             redirectToError(res);
         }
     } else {

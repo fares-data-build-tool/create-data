@@ -1,6 +1,9 @@
 import { mockRequest, mockResponse } from 'mock-req-res';
+import http from 'http';
 import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
 import { OPERATOR_COOKIE, FARE_STAGES_COOKIE } from '../../../src/constants';
+
+http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('stageNames', () => {
     describe('isStageNameValid', () => {
