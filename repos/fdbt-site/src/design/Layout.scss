@@ -6,6 +6,7 @@
 
 .dftlogo {
     margin-top: 10px;
+    display: inline-block;
 }
 
 .govuk-grid-row {
@@ -142,6 +143,7 @@
 .cls-1 {
     fill: #49499e;
 }
+
 .cls-2 {
     fill: #00bdd0;
 }
@@ -153,16 +155,22 @@ svg:not(:root) {
 .logo {
     width: 20%;
     max-width: 160px;
+    min-width: 120px;
     display: inline-block;
-    margin-top: 18px;
+    margin-left: 20px;
     vertical-align: top;
     padding-top: 10px;
-    margin-left: -17px;
+    display: inline-block;
 }
 
 .no-background-image {
     background-image: none;
     padding-top: 0px;
+}
+
+.logo-banner {
+    display: flex;
+    align-items: flex-end;
 }
 
 .stage-name-input-field {

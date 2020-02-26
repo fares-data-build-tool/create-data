@@ -6,11 +6,10 @@
         "test": "jest --runInBand",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage --watchAll",
-        "test:ci": "CI=true jest -w 1",
+        "test:ci": "CI=true jest --silent -w 1",
         "test:updateSnapshots": "jest --updateSnapshot",
         "dev": "export NODE_ENV='' && next -p 5555",
-        "build": "rm -rf ./.serverless_nextjs && next build",
-        "start": "NODE_ENV=production next start",
+        "build": "rm -rf ./.serverless_nextjs && NODE_ENV=production next build",
         "deploy": "export NODE_ENV='test' && export SLS_DEBUG='*' && serverless --config serverless.test.yml",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx"
@@ -22,7 +21,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci"
         }
     },
     "lint-staged": {
@@ -71,7 +70,6 @@
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
         "serverless-nextjs-plugin": "^2.4.3",
-        "set-cookie": "0.0.4",
         "uuid": "^3.3.3",
         "xml2js": "^0.4.22"
     },

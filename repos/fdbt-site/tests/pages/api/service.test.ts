@@ -1,6 +1,9 @@
 import { mockRequest, mockResponse } from 'mock-req-res';
+import http from 'http';
 import service from '../../../src/pages/api/service';
 import { OPERATOR_COOKIE } from '../../../src/constants';
+
+http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('service', () => {
     beforeEach(() => {
