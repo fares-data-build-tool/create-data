@@ -17,14 +17,20 @@ const fareStages = [
     'Moortown',
     'Harrogate Road',
     'Harehills',
-    // 'Gipton',
-    // 'Armley',
+    'Gipton',
+    'Armley',
     // 'Stanningley',
     // 'Pudsey',
     // 'Seacroft',
     // 'Rothwell',
     // 'Dewsbury',
     // 'Wakefield',
+    // 'Pontefract',
+    // 'Sandal',
+    // 'Casteford',
+    // 'Otley',
+    // 'Ikley',
+    // 'Pannal',
 ];
 
 // type PriceEntryProps = {
