@@ -26,7 +26,7 @@ const FileAttachment: FC<FileAttachmentProps> = ({
             </a>
             <p className="file-attachment-metadata govuk-!-font-size-10">
                 <abbr title="File">
-                    {attachmentUrl.substr(attachmentUrl.length - 3).toUpperCase()} - {size}
+                    {attachmentUrl.substr(attachmentUrl.length - 3).toUpperCase()},{size}
                 </abbr>
             </p>
         </div>
