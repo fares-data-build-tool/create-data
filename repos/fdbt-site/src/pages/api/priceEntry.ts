@@ -4,90 +4,92 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils';
 // import { putStringInS3 } from '../../data/s3';
 
-// interface UserFareStages {
-//     fareStages: {
-//         stageName: string;
-//         prices: {
-//             price: string;
-//             fareZones: string[];
-//         }[];
-//     }[];
-// }
-
-interface FareTriangleData {
+interface UserFareStages {
     fareStages: {
-        stageName: string | unknown;
+        stageName: string;
         prices: {
-            [key: string]: {
-                price: string;
-                fareZones: string | unknown[];
-            };
-        };
+            price: string;
+            fareZones: string[];
+        }[];
     }[];
 }
 
+interface FareTriangleData {
+    [stageName: string]: {
+        [price: string]: {
+            price: string;
+            fareZones: string[];
+        };
+    };
+}
+
+// export const getUuidFromCookie = (req: NextApiRequest): string => {
+//     const cookies = getCookies(req);
+//     const stageNamesCookie = unescape(decodeURI(cookies[STAGE_NAMES_COOKIE]));
+//     const stageNamesObject = JSON.parse(stageNamesCookie);
+//     const { uuid } = stageNamesObject;
+//     if (!uuid) {
+//         throw new Error('No UUID found');
+//     } else {
+//         return uuid;
+//     }
+// };
+
+// export const putDataInS3 = ( uuid: string, text: string ) => {
+//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+//     const bucketName: string = process.env.USER_DATA_BUCKET_NAME!;
+//     const key = `${uuid}.json`;
+//     const contentType = 'application/json; charset=utf-8';
+//     putStringInS3(bucketName, key, text, contentType);
+// };
+
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
-        const items: [string, unknown][] = Object.entries(req.body);
+        const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
 
-        for (let itemNum = 0; itemNum < items.length; itemNum += 1) {
-            const reorganisedItemArrays = [];
-            const fareTriangle: FareTriangleData = {
-                fareStages: [],
-            };
+        // TO DO: validate all input rows have prices
 
-            const item = items[itemNum];
-            const cellRef = item[0];
+        const fareTriangle: FareTriangleData = {};
+
+        for (let itemNum = 0; itemNum < arrayOfFareItemArrays.length; itemNum += 1) {
+            const cellRef = arrayOfFareItemArrays[itemNum][0];
             const splitCellRefAsArray = cellRef.split('-');
-            const originFareStageName = splitCellRefAsArray[0];
-            const destinationFareStageName = splitCellRefAsArray[1];
-            reorganisedItemArrays.push(originFareStageName, destinationFareStageName, item[1]);
+            const destinationFareStageName = splitCellRefAsArray[0];
+            const originFareStageName = splitCellRefAsArray[1];
+            const price = arrayOfFareItemArrays[itemNum][1];
 
-            const stageName = reorganisedItemArrays[0];
+            if (!fareTriangle[originFareStageName]) {
+                fareTriangle[originFareStageName] = {};
+            }
 
-            fareTriangle.fareStages[itemNum] = {
-                stageName,
-                prices: {},
-            };
+            if (!fareTriangle[originFareStageName][price]) {
+                fareTriangle[originFareStageName][price] = {
+                    price: (parseFloat(price) / 100).toFixed(2),
+                    fareZones: [],
+                };
+            }
 
-            // const priceZoneName = reorganisedItemArrays[1];
-            // const price = reorganisedItemArrays[2];
-
-            // if (price) {
-            //     // Check explicitly for number to account for invalid fare data
-            //     if (!Number.isNaN(Number(price))) {
-            //         if (fareTriangle.fareStages?.[itemNum].prices?.[price]?.fareZones)
-            //             fareTriangle.fareStages[itemNum].prices[price].fareZones.push(priceZoneName);
-            //     } else {
-            //         fareTriangle.fareStages[itemNum].prices[price] = {
-            //             price: (parseFloat(price) / 100).toFixed(2),
-            //             fareZones: [priceZoneName],
-            //         };
-            //     }
-
-            console.log(fareTriangle);
-
-            // const cookies = getCookies(req);
-            // const stageNamesCookie = unescape(decodeURI(cookies[STAGE_NAMES_COOKIE]));
-            // const stageNamesObject = JSON.parse(stageNamesCookie);
-            // const { uuid } = stageNamesObject;
-            // if (!uuid) {
-            //     throw new Error('No UUID found');
-            // }
-
-            // const uuid = "gd1234";
-
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            // const bucketName: string = process.env.USER_DATA_BUCKET_NAME!;
-            // const key = `${uuid}.json`;
-            // const contentType = 'application/json; charset=utf-8';
-            // putStringInS3(bucketName, key, stringifiedBodyValues, contentType);
+            fareTriangle[originFareStageName][price].fareZones.push(destinationFareStageName);
         }
 
+        const originStages = Object.entries(fareTriangle);
+        const mappedFareTriangle: UserFareStages = {
+            fareStages: originStages.map(kv => {
+                const pricesToDestinationStages = Object.values(kv[1]);
+                return {
+                    stageName: kv[0],
+                    prices: pricesToDestinationStages,
+                };
+            }),
+        };
+        console.log(mappedFareTriangle);
+
+        // const uuid = getUuidFromCookie(req);
+        // putStringInS3(uuid, text);
         redirectTo(res, '/matching');
     } catch (error) {
+        console.error(`There was a problem generating the priceEntry JSON: ${error.stack}`);
         redirectToError(res);
     }
-
     res.end();
 };

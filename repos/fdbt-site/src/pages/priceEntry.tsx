@@ -10,7 +10,7 @@ import Layout from '../layout/Layout';
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Enter prices into fares triangle page of the Fares Data Build Tool';
 
-export const fareStages = [
+const fareStages = [
     'Briggate',
     'Chapeltown',
     'Chapel Allerton',
@@ -57,11 +57,11 @@ const PriceEntry = (): ReactElement => (
                         <div className="fare-triangle">
                             {fareStages.map((rowStage, rowIndex) => (
                                 <div id={`row-${rowIndex}`} className="fare-triangle-row">
-                                    {fareStages.slice(0, rowIndex).map((_, columnIndex) => (
+                                    {fareStages.slice(0, rowIndex).map((columnStage, columnIndex) => (
                                         <input
                                             className="govuk-input govuk-input--width-4 fare-triangle-input"
                                             id={`cell-${rowIndex}-${columnIndex}`}
-                                            name={`${fareStages[columnIndex]}-${fareStages[rowIndex]}`}
+                                            name={`${rowStage}-${columnStage}`}
                                             type="number"
                                             min="1"
                                             max="10000"
