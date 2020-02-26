@@ -16,7 +16,7 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
             check.Valid = false;
         }
         if (stageNameInput[i].replace(/\s+/g, '').length === 0) {
-            console.log(`Stage name input of ${stageNameInput[i]} is invalid. Stage name cannot be just whitesapce.`);
+            console.log(`Stage name input is empty, Stage name cannot be just whitespace.`);
             check.Input = `${stageNameInput[i]}`;
             check.Error = 'Enter a name for this fare stage';
             check.Valid = false;
