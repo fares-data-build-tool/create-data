@@ -25,8 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ service, uuid });
-            const domain = getDomain(req);
-            setCookieOnResponseObject(domain, SERVICE_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(getDomain(req), SERVICE_COOKIE, cookieValue, req, res);
             redirectTo(res, '/direction');
         } catch (error) {
             redirectToError(res);
