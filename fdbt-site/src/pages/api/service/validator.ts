@@ -4,7 +4,6 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, FARETYPE_COOKIE, JOURNEY_COOKIE } from
 
 export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
     const cookies = new Cookies(req, res);
-    console.log(cookies.get(OPERATOR_COOKIE));
     const operatorCookie = cookies.get(OPERATOR_COOKIE) || '';
     if (operatorCookie) {
         return true;

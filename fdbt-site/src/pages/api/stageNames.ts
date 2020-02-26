@@ -24,31 +24,17 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
     return response;
 };
 
-export const checkUserInput = (userInputValidity: InputCheck[]): boolean => {
-    let valid = true;
-    userInputValidity.forEach(input => {
-        if (input.Error !== '') {
-            valid = false;
-        }
-    });
-    return valid;
-};
-
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     if (isSessionValid(req, res)) {
         try {
             const userInputValidity = isStageNameValid(req);
-            const valid = checkUserInput(userInputValidity);
-            if (valid) {
+            if (!userInputValidity.some(el => el.Error !== '')) {
                 const cookieValue = JSON.stringify(req.body.stageNameInput);
-                const domain = getDomain(req);
-                setCookieOnResponseObject(domain, STAGE_NAMES_COOKIE, cookieValue, req, res);
+                setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, cookieValue, req, res);
                 redirectTo(res, '/priceEntry');
-            }
-            if (!valid) {
+            } else {
                 const cookieValue = JSON.stringify(userInputValidity);
-                const domain = getDomain(req);
-                setCookieOnResponseObject(domain, VALIDATION_COOKIE, cookieValue, req, res);
+                setCookieOnResponseObject(getDomain(req), VALIDATION_COOKIE, cookieValue, req, res);
                 redirectTo(res, '/stageNames');
             }
         } catch (error) {
