@@ -100,9 +100,7 @@ StageNames.getInitialProps = (ctx: NextPageContext): {} => {
         return { numberOfFareStages, inputChecks };
     }
 
-    if (ctx.res) {
-        redirectToError(ctx.res);
-    }
+    redirectToError(ctx.res!);
 
     return {};
 };
