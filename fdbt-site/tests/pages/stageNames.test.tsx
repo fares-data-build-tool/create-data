@@ -4,125 +4,65 @@ import { NextPageContext } from 'next';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 
-import { StageNames, defineInputFields, InputCheck } from '../../src/pages/stageNames';
+import { StageNames, renderInputFields, InputCheck } from '../../src/pages/stageNames';
 import { FARE_STAGES_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
 
 describe('pages', () => {
-    describe('defineInputFields', () => {
-        it('should return a base React fragment with no error tags when there is no validation object', () => {
-            const mockIndex = 4;
-            const mockInputTags = {
-                outerDivFormGroupError: '',
-                outerDivInputError: '',
-                errorSpan: <div />,
-                inputFieldError: '',
-                fareStageNameError: '',
-                defaultValue: '',
-            };
-            const expectedInputField = (
-                <React.Fragment key={mockIndex}>
-                    <div
-                        className={`govuk-form-group ${mockInputTags.outerDivFormGroupError} ${mockInputTags.outerDivInputError}`}
-                    >
-                        <label className="govuk-label" htmlFor={`fareStageName${mockIndex}`}>
-                            Fare Stage {mockIndex}
-                        </label>
-                        {mockInputTags.errorSpan}
-                        <input
-                            className={`govuk-input govuk-input--width-30 ${mockInputTags.inputFieldError} stage-name-input-field`}
-                            id={`fareStageName${mockIndex}`}
-                            name="stageNameInput"
-                            type="text"
-                            maxLength={30}
-                            defaultValue={mockInputTags.defaultValue}
-                            aria-describedby={mockInputTags.fareStageNameError}
-                        />
-                    </div>
-                </React.Fragment>
-            );
-            const inputField = defineInputFields(mockIndex, mockInputTags);
-            expect(inputField).toEqual(expectedInputField);
+    describe('renderInputFields', () => {
+        it('should return a list of html elements that macthes the number of fare stages and inputCheck objects', () => {
+            const mockNumberOfFareStages = 4;
+            const mockInputCheck: InputCheck[] = [
+                { Error: '', Input: 'ab' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: '', Input: 'cd' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+            ];
+            const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck);
+            expect(renderElements).toHaveLength(4);
         });
 
-        it('should return a React fragment containing error tags and no default value when there is a validation object containing errors', () => {
-            const mockIndex = 2;
-            const mockValidationObject = [
-                { Valid: true, Error: '', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '   ' },
-            ];
-            const mockInputTags = {
-                outerDivFormGroupError: 'govuk-form-group--error',
-                outerDivInputError: 'input-error',
-                errorSpan: (
-                    <span id={`fareStageName${mockIndex}-error`} className="govuk-error-message">
-                        <span className="govuk-visually-hidden">Error:</span>{' '}
-                        {mockValidationObject[mockIndex - 1].Error}
-                    </span>
-                ),
-                inputFieldError: 'govuk-input--error',
-                fareStageNameError: `fareStageName${mockIndex}-error`,
-                defaultValue: '',
-            };
-            const expectedInputField = (
-                <React.Fragment key={mockIndex}>
-                    <div
-                        className={`govuk-form-group ${mockInputTags.outerDivFormGroupError} ${mockInputTags.outerDivInputError}`}
-                    >
-                        <label className="govuk-label" htmlFor={`fareStageName${mockIndex}`}>
-                            Fare Stage {mockIndex}
-                        </label>
-                        {mockInputTags.errorSpan}
-                        <input
-                            className={`govuk-input govuk-input--width-30 ${mockInputTags.inputFieldError} stage-name-input-field`}
-                            id={`fareStageName${mockIndex}`}
-                            name="stageNameInput"
-                            type="text"
-                            maxLength={30}
-                            defaultValue={mockInputTags.defaultValue}
-                            aria-describedby={mockInputTags.fareStageNameError}
-                        />
-                    </div>
-                </React.Fragment>
-            );
-            const inputFields = defineInputFields(mockIndex, mockInputTags);
-            expect(inputFields).toEqual(expectedInputField);
+        it('should return a <div> element containing <label> and <input> elements with error tags and no default value when there is an inputCheck object containing errors', () => {
+            const mockNumberOfFareStages = 2;
+            const mockInputCheck: InputCheck[] = [];
+            const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck);
+            expect(renderElements).toHaveLength(2);
         });
     });
 
     describe('stageNames', () => {
         it('should render correctly when a user first visits the page', () => {
-            const mockNumberOfFareStages = '6';
-            const mockValidationObject: InputCheck[] = [];
+            const mockNumberOfFareStages = 6;
+            const mockInputChecks: InputCheck[] = [];
             const tree = shallow(
-                <StageNames numberOfFareStages={mockNumberOfFareStages} validationObject={mockValidationObject} />,
+                <StageNames numberOfFareStages={mockNumberOfFareStages} inputChecks={mockInputChecks} />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when a user is redirected to the page from itself when incorrect data is entered', () => {
-            const mockNumberOfFareStages = '5';
-            const mockValidationObject: InputCheck[] = [
-                { Valid: true, Error: '', Input: '' },
-                { Valid: true, Error: '', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
-                { Valid: true, Error: '', Input: '' },
-                { Valid: true, Error: '', Input: '' },
+            const mockNumberOfFareStages = 5;
+            const mockInputChecks: InputCheck[] = [
+                { Error: '', Input: '' },
+                { Error: '', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: '', Input: '' },
+                { Error: '', Input: '' },
             ];
             const tree = shallow(
-                <StageNames numberOfFareStages={mockNumberOfFareStages} validationObject={mockValidationObject} />,
+                <StageNames numberOfFareStages={mockNumberOfFareStages} inputChecks={mockInputChecks} />,
             );
             expect(tree).toMatchSnapshot();
         });
         it('should render correctly when a user is redirected to the page from itself when no data is entered', () => {
-            const mockNumberOfFareStages = '4';
-            const mockValidationObject: InputCheck[] = [
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
+            const mockNumberOfFareStages = 4;
+            const mockinputChecks: InputCheck[] = [
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
             ];
             const tree = shallow(
-                <StageNames numberOfFareStages={mockNumberOfFareStages} validationObject={mockValidationObject} />,
+                <StageNames numberOfFareStages={mockNumberOfFareStages} inputChecks={mockinputChecks} />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -154,8 +94,8 @@ describe('pages', () => {
             };
             const result = StageNames.getInitialProps(ctx);
             expect(result).toEqual({
-                numberOfFareStages: '6',
-                validationObject: [],
+                numberOfFareStages: 6,
+                inputChecks: [],
             });
         });
     });
