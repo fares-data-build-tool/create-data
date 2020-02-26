@@ -25,7 +25,9 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
-    if (isSessionValid(req, res)) {
+    if (!isSessionValid(req, res)) {
+        redirectToError(res);
+    } else {
         try {
             const userInputValidity = isStageNameValid(req);
             if (!userInputValidity.some(el => el.Error !== '')) {
@@ -41,8 +43,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             console.log(`There was an error while reading and setting cookies. Error: ${error.stack}`);
             redirectToError(res);
         }
-    } else {
-        redirectToError(res);
     }
     res.end();
 };
