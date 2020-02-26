@@ -19,10 +19,10 @@ describe('stageNames', () => {
                 },
             });
             const expectedArray = [
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
@@ -39,10 +39,10 @@ describe('stageNames', () => {
                 },
             });
             const expectedArray = [
-                { Valid: true, Error: '', Input: 'abcd' },
-                { Valid: true, Error: '', Input: 'efg' },
-                { Valid: true, Error: '', Input: 'hijkl' },
-                { Valid: true, Error: '', Input: 'mn' },
+                { Error: '', Input: 'abcd' },
+                { Error: '', Input: 'efg' },
+                { Error: '', Input: 'hijkl' },
+                { Error: '', Input: 'mn' },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
@@ -59,10 +59,10 @@ describe('stageNames', () => {
                 },
             });
             const expectedArray = [
-                { Valid: true, Error: '', Input: 'abcde' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '   ' },
-                { Valid: true, Error: '', Input: 'xyz' },
-                { Valid: false, Error: 'Enter a name for this fare stage', Input: '' },
+                { Error: '', Input: 'abcde' },
+                { Error: 'Enter a name for this fare stage', Input: '   ' },
+                { Error: '', Input: 'xyz' },
+                { Error: 'Enter a name for this fare stage', Input: '' },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);

@@ -21,7 +21,7 @@ export const setCookieOnResponseObject = (
     cookies.set(cookieName, cookieValue, {
         domain,
         path: '/',
-        maxAge: 3600 * 24,
+        maxAge: 3600 * 1000,
         sameSite: 'strict',
     });
 };

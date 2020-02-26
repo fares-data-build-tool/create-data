@@ -8,27 +8,17 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
     const { stageNameInput } = req.body;
     const response: InputCheck[] = [];
     for (let i = 0; i < stageNameInput.length; i += 1) {
-        const check = { Valid: true, Error: '', Input: '' };
-        if (stageNameInput[i] === null) {
-            console.log(`Stage name input of '${stageNameInput[i]}' is invalid. Stage name cannot be null.`);
-            check.Input = `${stageNameInput[i]}`;
-            check.Error = 'Enter a name for this fare stage';
-            check.Valid = false;
-        }
-        if (stageNameInput[i].replace(/\s+/g, '').length === 0) {
-            console.log(`Stage name input is empty, Stage name cannot be just whitespace.`);
-            check.Input = `${stageNameInput[i]}`;
-            check.Error = 'Enter a name for this fare stage';
-            check.Valid = false;
-        }
-        if (stageNameInput[i].length > 30) {
+        let error;
+        if (stageNameInput[i] === null || stageNameInput[i].replace(/\s+/g, '').length === 0) {
+            console.log(`Stage name input of '${stageNameInput[i]}' is invalid. Stage name cannot be empty.`);
+            error = 'Enter a name for this fare stage';
+        } else if (stageNameInput[i].length > 30) {
             console.log(`Stage name input of '${stageNameInput[i]}' is invalid. Input length is greater than 30.`);
-            check.Input = `${stageNameInput[i]}`;
-            check.Error = `The name for Fare Stage ${i + 1} needs to be less than 30 characters`;
-            check.Valid = false;
+            error = `The name for Fare Stage ${i + 1} needs to be less than 30 characters`;
         } else {
-            check.Input = stageNameInput[i];
+            error = '';
         }
+        const check: InputCheck = { Input: stageNameInput[i], Error: error };
         response.push(check);
     }
     return response;
@@ -37,7 +27,7 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
 export const checkUserInput = (userInputValidity: InputCheck[]): boolean => {
     let valid = true;
     userInputValidity.forEach(input => {
-        if (input.Valid === false) {
+        if (input.Error !== '') {
             valid = false;
         }
     });
