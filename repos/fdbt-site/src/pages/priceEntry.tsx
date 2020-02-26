@@ -28,8 +28,4 @@ const PriceEntry = (): ReactElement => (
     </Layout>
 );
 
-PriceEntry.getInitialProps = (): {} => {
-    return {};
-};
-
 export default PriceEntry;
