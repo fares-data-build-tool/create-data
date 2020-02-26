@@ -19,7 +19,7 @@ const ChooseStages = (): ReactElement => (
 
                         <div className="govuk-form-group">
                             <label className="govuk-hint" htmlFor="width-2">
-                                Number of fare stages (1-20)
+                                Number of fare stages (1-20) e.g. 3
                             </label>
                             <input
                                 className="govuk-input govuk-input--width-2"
