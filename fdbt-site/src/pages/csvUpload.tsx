@@ -51,13 +51,13 @@ const CsvUpload: NextPage = (): ReactElement => (
                     </legend>
                     <FileAttachment
                         displayName="Download Help File"
-                        attachmentUrl="/assets/files/How to Upload a Fares Triangle.pdf"
+                        attachmentUrl="/assets/files/How-to-Upload-a-Fares-Triangle.pdf"
                         imageUrl="/assets/images/Guidance-doc-front-page.png"
                         size="1.3MB"
                     />
                     <FileAttachment
                         displayName="Download Fares Triangle CSV Example"
-                        attachmentUrl="/assets/files/Fares Triangle Example.csv"
+                        attachmentUrl="/assets/files/Fares-Triangle-Example.csv"
                         imageUrl="/assets/images/csv.png"
                         size="325B"
                     />
