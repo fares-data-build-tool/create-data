@@ -15,7 +15,10 @@ export const setCookieOnResponseObject = (
     req: NextApiRequest,
     res: NextApiResponse,
 ): void => {
-    const cookies = new Cookies(req, res);
+    const cookieOptions = {
+        ...(process.env.NODE_ENV === 'production' ? { secure: true } : null),
+    };
+    const cookies = new Cookies(req, res, cookieOptions);
     // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
     // default. An error will be thrown if you try to send secure cookies over an insecure socket.
     cookies.set(cookieName, cookieValue, {
