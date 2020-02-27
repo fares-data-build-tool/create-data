@@ -3,6 +3,7 @@ import * as csvUpload from '../../../src/pages/api/csvUpload';
 import { getUuidFromCookie } from '../../../src/pages/api/apiUtils';
 import * as csvData from '../../testData/csvData';
 import * as s3 from '../../../src/data/s3';
+import { OPERATOR_COOKIE, FARETYPE_COOKIE, SERVICE_COOKIE } from '../../../src/constants';
 
 jest.spyOn(s3, 'putStringInS3');
 
@@ -10,6 +11,7 @@ describe('csvUpload', () => {
     let res: mockReqRes.ResponseOutput;
     let writeHeadMock: jest.Mock;
     let outputData = '';
+    const mockCookie = `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARETYPE_COOKIE}=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; ${SERVICE_COOKIE}=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D`;
 
     beforeEach(() => {
         process.env.USER_DATA_BUCKET_NAME = 'fdbt-user-data';
@@ -121,12 +123,11 @@ describe('csvUpload', () => {
     it('should get the uuid from the cookie', () => {
         const req = mockRequest({
             headers: {
-                cookie:
-                    'fdbt-operator-cookie=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; fdbt-faretype-cookie=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-service-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D',
+                cookie: mockCookie,
             },
         });
 
-        const result = getUuidFromCookie(req);
+        const result = getUuidFromCookie(req, res);
 
         expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
     });
@@ -153,8 +154,7 @@ describe('csvUpload', () => {
 
         const req = mockRequest({
             headers: {
-                cookie:
-                    'fdbt-operator-cookie=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; fdbt-faretype-cookie=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-service-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D',
+                cookie: mockCookie,
             },
         });
 
@@ -199,8 +199,7 @@ describe('csvUpload', () => {
 
         const req = mockRequest({
             headers: {
-                cookie:
-                    'fdbt-operator-cookie=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; fdbt-faretype-cookie=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-service-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D',
+                cookie: mockCookie,
             },
         });
 
@@ -235,8 +234,7 @@ describe('csvUpload', () => {
 
         const req = mockRequest({
             headers: {
-                cookie:
-                    'fdbt-operator-cookie=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; fdbt-faretype-cookie=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-service-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D',
+                cookie: mockCookie,
             },
         });
 
@@ -271,8 +269,7 @@ describe('csvUpload', () => {
 
         const req = mockRequest({
             headers: {
-                cookie:
-                    'fdbt-operator-cookie=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; fdbt-faretype-cookie=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-service-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D',
+                cookie: mockCookie,
             },
         });
 

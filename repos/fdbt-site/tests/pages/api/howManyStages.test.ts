@@ -16,7 +16,7 @@ describe('howManyStages', () => {
     it('should return 302 redirect to /howManyStages when a number of fare stages is not selected', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
@@ -34,7 +34,7 @@ describe('howManyStages', () => {
     it('should return 302 redirect to /error when an number of fare stages value we dont expect is passed', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { howManyStages: '100' },
             headers: {
@@ -53,7 +53,7 @@ describe('howManyStages', () => {
     it('should return 302 redirect to /csvUpload when more then 20 fare stages is selected', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { howManyStages: 'moreThan20' },
             headers: {
@@ -72,7 +72,7 @@ describe('howManyStages', () => {
     it('should return 302 redirect to /chooseStages when less than 20 fare stages is selected', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { howManyStages: 'lessThan20' },
             headers: {

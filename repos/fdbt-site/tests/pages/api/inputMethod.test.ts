@@ -16,7 +16,7 @@ describe('inputMethod', () => {
     it('should return 302 redirect to /inputMethod when no input method is selected', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
@@ -34,7 +34,7 @@ describe('inputMethod', () => {
     it('should return 302 redirect to /error when an input method value we dont expect is passed', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { inputMethod: 'pdf' },
             headers: {
@@ -53,7 +53,7 @@ describe('inputMethod', () => {
     it('should return 302 redirect to /csvUpload when csv is the passed input method', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { inputMethod: 'csv' },
             headers: {

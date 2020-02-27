@@ -24,8 +24,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ faretype, uuid });
-            const domain = getDomain(req);
-            setCookieOnResponseObject(domain, FARETYPE_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
             redirectTo(res, '/service');
         } catch (error) {
             console.error(`Error setting faretype: ${error.message}`);
