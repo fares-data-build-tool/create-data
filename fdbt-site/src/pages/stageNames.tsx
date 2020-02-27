@@ -4,7 +4,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 
 import Layout from '../layout/Layout';
-import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, VALIDATION_COOKIE } from '../constants';
+import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { redirectToError } from './api/apiUtils';
 
@@ -85,10 +85,10 @@ StageNames.getInitialProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
     let inputChecks: InputCheck[] = [];
-    if (cookies[VALIDATION_COOKIE]) {
-        const validationCookie = cookies[VALIDATION_COOKIE];
+    if (cookies[STAGE_NAME_VALIDATION_COOKIE]) {
+        const validationCookie = cookies[STAGE_NAME_VALIDATION_COOKIE];
         inputChecks = JSON.parse(validationCookie);
-        deleteCookieOnServerSide(ctx, VALIDATION_COOKIE);
+        deleteCookieOnServerSide(ctx, STAGE_NAME_VALIDATION_COOKIE);
     }
 
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
