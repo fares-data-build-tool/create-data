@@ -53,7 +53,7 @@ export const getMockRequestAndResponse = (
 
     const req = mockRequest({
         connection: {
-            encrypted: false,
+            encrypted: true,
         },
         headers: {
             host: 'localhost:5000',

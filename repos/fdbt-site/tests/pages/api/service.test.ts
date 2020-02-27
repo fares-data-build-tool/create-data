@@ -15,7 +15,7 @@ describe('service', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { service: 'test_service' },
             headers: {
@@ -36,7 +36,7 @@ describe('service', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
@@ -57,7 +57,7 @@ describe('service', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {

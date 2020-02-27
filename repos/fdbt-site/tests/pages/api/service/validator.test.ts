@@ -8,7 +8,7 @@ describe('validator', () => {
             const expected = true;
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 body: {},
                 headers: {
@@ -24,7 +24,7 @@ describe('validator', () => {
             const expected = false;
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 body: {},
                 headers: {
@@ -43,7 +43,7 @@ describe('validator', () => {
             const expected = true;
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 body: {},
                 headers: {
@@ -60,7 +60,7 @@ describe('validator', () => {
             const expected = false;
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 body: {},
                 headers: {

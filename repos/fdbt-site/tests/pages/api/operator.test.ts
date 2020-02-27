@@ -18,7 +18,7 @@ describe('operator', () => {
     it('should return 302 redirect to /faretype when session operator cookie does not exist but req has operator', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { operator: '{"operatorName":"Connexions Buses","nocCode":"HCTY"}' },
             headers: {
@@ -34,7 +34,7 @@ describe('operator', () => {
     it('should return 302 redirect to /operator when session operator cookie and operator body do not exist', () => {
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
