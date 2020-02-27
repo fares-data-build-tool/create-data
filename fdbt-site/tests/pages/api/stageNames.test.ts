@@ -12,7 +12,7 @@ describe('stageNames', () => {
         it('should return an array of invalid input checks when the user enters no data', () => {
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 body: { stageNameInput: ['', '', '', ''] },
                 headers: {
@@ -32,7 +32,7 @@ describe('stageNames', () => {
         it('should return an array of valid input checks when the user enters correct data', () => {
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 body: { stageNameInput: ['abcd', 'efg', 'hijkl', 'mn'] },
                 headers: {
@@ -52,7 +52,7 @@ describe('stageNames', () => {
         it('should return an array of invalid and valid input checks when the user enters incorrect data', () => {
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 body: { stageNameInput: ['abcde', '   ', 'xyz', ''] },
                 headers: {
@@ -79,7 +79,7 @@ describe('stageNames', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { stageNameInput: ['', '', '', ''] },
             headers: {
@@ -100,7 +100,7 @@ describe('stageNames', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { stageNameInput: ['a', 'b', 'c', 'd'] },
             headers: {
@@ -121,7 +121,7 @@ describe('stageNames', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
