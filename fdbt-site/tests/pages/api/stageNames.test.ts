@@ -6,6 +6,8 @@ import { OPERATOR_COOKIE, FARE_STAGES_COOKIE } from '../../../src/constants';
 http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('stageNames', () => {
+    const mockCookie = `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22HCTY%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%226%22%7D`;
+
     describe('isStageNameValid', () => {
         it('should return an array of invalid input checks when the user enters no data', () => {
             const req = mockRequest({
@@ -15,7 +17,7 @@ describe('stageNames', () => {
                 body: { stageNameInput: ['', '', '', ''] },
                 headers: {
                     host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22HCTY%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%226%22%7D`,
+                    cookie: mockCookie,
                 },
             });
             const expectedArray = [
@@ -35,7 +37,7 @@ describe('stageNames', () => {
                 body: { stageNameInput: ['abcd', 'efg', 'hijkl', 'mn'] },
                 headers: {
                     host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22HCTY%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%226%22%7D`,
+                    cookie: mockCookie,
                 },
             });
             const expectedArray = [
@@ -55,7 +57,7 @@ describe('stageNames', () => {
                 body: { stageNameInput: ['abcde', '   ', 'xyz', ''] },
                 headers: {
                     host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22HCTY%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%226%22%7D`,
+                    cookie: mockCookie,
                 },
             });
             const expectedArray = [
@@ -68,8 +70,6 @@ describe('stageNames', () => {
             expect(inputCheck).toEqual(expectedArray);
         });
     });
-    const mockNumberOfFareStages = '6';
-    const operator = 'HCTY';
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -84,7 +84,7 @@ describe('stageNames', () => {
             body: { stageNameInput: ['', '', '', ''] },
             headers: {
                 host: 'localhost:5000',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${mockNumberOfFareStages}%22%7D`,
+                cookie: mockCookie,
             },
         });
         const res = mockResponse({
@@ -105,7 +105,7 @@ describe('stageNames', () => {
             body: { stageNameInput: ['a', 'b', 'c', 'd'] },
             headers: {
                 host: 'localhost:5000',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${mockNumberOfFareStages}%22%7D`,
+                cookie: mockCookie,
             },
         });
         const res = mockResponse({

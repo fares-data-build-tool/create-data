@@ -30,6 +30,11 @@ describe('pages', () => {
     });
 
     describe('stageNames', () => {
+        const mockOperatorCookie =
+            '%7B%22operator%22%3A%22HCTY%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D';
+        const mockFareStagesCookie = '%7B%22fareStages%22%3A%226%22%7D';
+        const mockCombinedCookie = `${OPERATOR_COOKIE}=${mockOperatorCookie}; ${FARE_STAGES_COOKIE}=${mockFareStagesCookie}`;
+
         it('should render correctly when a user first visits the page', () => {
             const mockNumberOfFareStages = 6;
             const mockInputChecks: InputCheck[] = [];
@@ -68,21 +73,18 @@ describe('pages', () => {
         });
 
         it('displays a number of input fields which matches the number of fare stages in the fareStagesCookie ', () => {
-            const mockNumberOfFareStages = '6';
-            const operator = 'HCTY';
             const res = new MockRes();
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 headers: {
                     host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D; ${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${mockNumberOfFareStages}%22%7D`,
+                    cookie: mockCombinedCookie,
                 },
                 cookies: {
-                    FARE_STAGES_COOKIE: `%7B%22fareStages%22%3A%22${mockNumberOfFareStages}%22%7D`,
-                    OPERATOR_COOKIE:
-                        '%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22d177b8a0-44ed-4e67-9fd0-2d581b5fa91a%22%7D',
+                    FARE_STAGES_COOKIE: mockFareStagesCookie,
+                    OPERATOR_COOKIE: mockOperatorCookie,
                 },
             });
             const ctx: NextPageContext = {
