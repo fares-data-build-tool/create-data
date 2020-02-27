@@ -83,6 +83,62 @@ exports[`pages inputMethod should render correctly 1`] = `
                 Harehills
               </span>
             </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Gipton
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Armley
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Stanningley
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Pudsey
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Seacroft
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Rothwell
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Dewsbury
+              </span>
+            </div>
+            <div
+              className="govuk-heading-s fare-triangle-label-left"
+            >
+              <span>
+                Wakefield
+              </span>
+            </div>
           </div>
           <div
             className="fare-triangle"
@@ -310,6 +366,922 @@ exports[`pages inputMethod should render correctly 1`] = `
                 className="govuk-heading-s fare-triangle-label-right"
               >
                 Harehills
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-6"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-6-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Gipton-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-6-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Gipton-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-6-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Gipton-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-6-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Gipton-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-6-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Gipton-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-6-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Gipton-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Gipton
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-7"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-7-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Armley-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-7-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Armley-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-7-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Armley-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-7-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Armley-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-7-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Armley-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-7-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Armley-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-7-6"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Armley-Gipton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Armley
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-8"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-6"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Gipton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-8-7"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Stanningley-Armley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Stanningley
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-9"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-6"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Gipton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-7"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Armley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-9-8"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Pudsey-Stanningley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Pudsey
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-10"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-6"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Gipton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-7"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Armley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-8"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Stanningley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-10-9"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Seacroft-Pudsey"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Seacroft
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-11"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-6"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Gipton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-7"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Armley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-8"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Stanningley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-9"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Pudsey"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-11-10"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Rothwell-Seacroft"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Rothwell
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-12"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-6"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Gipton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-7"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Armley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-8"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Stanningley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-9"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Pudsey"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-10"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Seacroft"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-12-11"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Dewsbury-Rothwell"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Dewsbury
+              </div>
+            </div>
+            <div
+              className="fare-triangle-row"
+              id="row-13"
+            >
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-0"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Briggate"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-1"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Chapeltown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-2"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Chapel Allerton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-3"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Moortown"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-4"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Harrogate Road"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-5"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Harehills"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-6"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Gipton"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-7"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Armley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-8"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Stanningley"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-9"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Pudsey"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-10"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Seacroft"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-11"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Rothwell"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <input
+                className="govuk-input govuk-input--width-4 fare-triangle-input"
+                id="cell-13-12"
+                max="10000"
+                maxLength={5}
+                min="1"
+                name="Wakefield-Dewsbury"
+                pattern="^[0-9]*$"
+                required={true}
+                type="number"
+              />
+              <div
+                className="govuk-heading-s fare-triangle-label-right"
+              >
+                Wakefield
               </div>
             </div>
           </div>

@@ -1,43 +1,43 @@
 import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
-// import { NextPageContext } from 'next';
-// import { parseCookies } from 'nookies';
+import { NextPageContext } from 'next';
+import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-// import { PRICEENTRY_COOKIE, STAGE_NAMES_COOKIE } from '../constants';
-// import { deleteCookieOnServerSide } from '../utils';
-// import { redirectToError } from './api/apiUtils';
+import { PRICEENTRY_COOKIE, STAGE_NAMES_COOKIE } from '../constants';
+import { deleteCookieOnServerSide } from '../utils';
+import { redirectToError } from './api/apiUtils';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Enter prices into fares triangle page of the Fares Data Build Tool';
 
-const fareStages = [
-    'Briggate',
-    'Chapeltown',
-    'Chapel Allerton',
-    'Moortown',
-    'Harrogate Road',
-    'Harehills',
-    'Gipton',
-    'Armley',
-    // 'Stanningley',
-    // 'Pudsey',
-    // 'Seacroft',
-    // 'Rothwell',
-    // 'Dewsbury',
-    // 'Wakefield',
-    // 'Pontefract',
-    // 'Sandal',
-    // 'Casteford',
-    // 'Otley',
-    // 'Ikley',
-    // 'Pannal',
-];
+// const fareStages = [
+//     'Briggate',
+//     'Chapeltown',
+//     'Chapel Allerton',
+//     'Moortown',
+//     'Harrogate Road',
+//     'Harehills',
+//     'Gipton',
+//     'Armley',
+//     'Stanningley',
+//     'Pudsey',
+//     'Seacroft',
+//     'Rothwell',
+//     'Dewsbury',
+//     'Wakefield',
+//     'Pontefract',
+//     'Sandal',
+//     'Casteford',
+//     'Otley',
+//     'Ikley',
+//     'Pannal',
+// ];
 
-// type PriceEntryProps = {
-//     fareStages: string[];
-// };
+type PriceEntryProps = {
+    fareStages: string[];
+};
 
-const PriceEntry = (): ReactElement => (
+const PriceEntry = ({ fareStages }: PriceEntryProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/priceEntry" method="post">
@@ -93,33 +93,28 @@ const PriceEntry = (): ReactElement => (
     </Layout>
 );
 
-PriceEntry.getInitialProps = (): {} => {
-    // deleteCookieOnServerSide(ctx, PRICEENTRY_COOKIE);
+PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
+    deleteCookieOnServerSide(ctx, PRICEENTRY_COOKIE);
 
-    // const cookies = parseCookies(ctx);
-    // const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
+    const cookies = parseCookies(ctx);
+    const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
 
-    // if (stageNamesCookie) {
-    //     const stageNamesArray = JSON.parse(stageNamesCookie);
+    if (stageNamesCookie) {
+        const stageNamesArray = JSON.parse(stageNamesCookie);
+        try {
+            if (stageNamesArray.length === 0) {
+                throw new Error('No stages found in cookie!');
+            }
+            return { stageNamesArray };
+        } catch (err) {
+            console.error(err.stack);
+            throw new Error(err.stack);
+        }
+    }
 
-    //     try {
-
-    //         if (stageNamesArray.length === 0) {
-    //             throw new Error('No stages found in cookie!');
-    //         }
-
-    //         return { stageNamesArray };
-
-    //     } catch (err) {
-    //         console.error(err.stack);
-    //         throw new Error(err.stack);
-    //     }
-    // }
-
-    // if (ctx.res) {
-    //     redirectToError(ctx.res);
-    // }
-
+    if (ctx.res) {
+        redirectToError(ctx.res);
+    }
     return {};
 };
 
