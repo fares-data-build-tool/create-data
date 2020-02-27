@@ -48,14 +48,99 @@ export const processedObject = {
     Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
     Body: {
         fareStages: [
-            { stageName: 'Acomb Green Lane', prices: ['110', '110', '110', '170', '170', '170', '170'] },
-            { stageName: 'Mattison Way', prices: ['110', '110', '170', '170', '170', '170'] },
-            { stageName: 'Nursery Drive', prices: ['110', '110', '110', '170', '170'] },
-            { stageName: 'Holl Bank/Beech Ave', prices: ['110', '110', '170', '170'] },
-            { stageName: 'Cambridge Street (York)', prices: ['100', '100', '100'] },
-            { stageName: 'Blossom Street', prices: ['100', '100'] },
-            { stageName: 'Rail Station (York)', prices: ['100'] },
-            { stageName: 'Piccadilly (York)', prices: [] },
+            {
+                stageName: 'Acomb Green Lane',
+                prices: [
+                    {
+                        price: '1.10',
+                        fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+                    },
+                    {
+                        price: '1.70',
+                        fareZones: [
+                            'Cambridge Street (York)',
+                            'Blossom Street',
+                            'Rail Station (York)',
+                            'Piccadilly (York)',
+                        ],
+                    },
+                ],
+            },
+            {
+                stageName: 'Mattison Way',
+                prices: [
+                    {
+                        price: '1.10',
+                        fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
+                    },
+                    {
+                        price: '1.70',
+                        fareZones: [
+                            'Cambridge Street (York)',
+                            'Blossom Street',
+                            'Rail Station (York)',
+                            'Piccadilly (York)',
+                        ],
+                    },
+                ],
+            },
+            {
+                stageName: 'Nursery Drive',
+                prices: [
+                    {
+                        price: '1.10',
+                        fareZones: ['Holl Bank/Beech Ave', 'Cambridge Street (York)', 'Blossom Street'],
+                    },
+                    {
+                        price: '1.70',
+                        fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+                    },
+                ],
+            },
+            {
+                stageName: 'Holl Bank/Beech Ave',
+                prices: [
+                    {
+                        price: '1.10',
+                        fareZones: ['Cambridge Street (York)', 'Blossom Street'],
+                    },
+                    {
+                        price: '1.70',
+                        fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+                    },
+                ],
+            },
+            {
+                stageName: 'Cambridge Street (York)',
+                prices: [
+                    {
+                        price: '1.00',
+                        fareZones: ['Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+                    },
+                ],
+            },
+            {
+                stageName: 'Blossom Street',
+                prices: [
+                    {
+                        price: '1.00',
+                        fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+                    },
+                ],
+            },
+            {
+                stageName: 'Rail Station (York)',
+                prices: [
+                    {
+                        price: '1.00',
+                        fareZones: ['Piccadilly (York)'],
+                    },
+                ],
+            },
+            {
+                stageName: 'Piccadilly (York)',
+                prices: [],
+            },
         ],
     },
     ContentType: 'application/json; charset=utf-8',

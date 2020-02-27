@@ -1,6 +1,9 @@
 import { mockRequest, mockResponse } from 'mock-req-res';
+import http from 'http';
 import { OPERATOR_COOKIE } from '../../../src/constants';
 import faretype from '../../../src/pages/api/faretype';
+
+http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('faretype', () => {
     beforeEach(() => {
