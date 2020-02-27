@@ -17,6 +17,9 @@ describe('pages', () => {
 describe('getInitialProps', () => {
     it('retrieves the uuid correctly', () => {
         const req = mockRequest({
+            connection: {
+                encrypted: true,
+            },
             body: {},
             cookies: {
                 OPERATOR_COOKIE:

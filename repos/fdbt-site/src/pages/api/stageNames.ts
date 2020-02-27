@@ -25,24 +25,24 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
-    if (!isSessionValid(req, res)) {
-        redirectToError(res);
-    } else {
-        try {
-            const userInputValidity = isStageNameValid(req);
-            if (!userInputValidity.some(el => el.Error !== '')) {
-                const cookieValue = JSON.stringify(req.body.stageNameInput);
-                setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, cookieValue, req, res);
-                redirectTo(res, '/priceEntry');
-            } else {
-                const cookieValue = JSON.stringify(userInputValidity);
-                setCookieOnResponseObject(getDomain(req), VALIDATION_COOKIE, cookieValue, req, res);
-                redirectTo(res, '/stageNames');
-            }
-        } catch (error) {
-            console.log(`There was an error while reading and setting cookies. Error: ${error.stack}`);
+    try {
+        if (!isSessionValid(req, res)) {
             redirectToError(res);
+            return;
         }
+        const userInputValidity = isStageNameValid(req);
+        if (!userInputValidity.some(el => el.Error !== '')) {
+            const cookieValue = JSON.stringify(req.body.stageNameInput);
+            setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, cookieValue, req, res);
+            redirectTo(res, '/priceEntry');
+        } else {
+            const cookieValue = JSON.stringify(userInputValidity);
+            setCookieOnResponseObject(getDomain(req), VALIDATION_COOKIE, cookieValue, req, res);
+            redirectTo(res, '/stageNames');
+        }
+    } catch (error) {
+        console.log(`There was an error while reading and setting cookies. Error: ${error.stack}`);
+        redirectToError(res);
     }
     res.end();
 };
