@@ -3,7 +3,7 @@ import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
 import { redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
-    if (isSessionValid(req) && isCookiesUUIDMatch(req)) {
+    if (isSessionValid(req, res) && isCookiesUUIDMatch(req, res)) {
         try {
             redirectTo(res, '/confirmation');
         } catch (error) {
