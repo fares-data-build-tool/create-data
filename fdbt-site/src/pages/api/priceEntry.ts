@@ -1,27 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-// import { STAGE_NAMES_COOKIE } from '../../constants/index';
-// import { getCookies, redirectToError, redirectTo } from './apiUtils';
-import { redirectToError, redirectTo } from './apiUtils';
-// import { putStringInS3 } from '../../data/s3';
+import { STAGE_NAMES_COOKIE } from '../../constants/index';
+import { getCookies, redirectToError, redirectTo } from './apiUtils';
+import { putStringInS3 } from '../../data/s3';
 
-// interface UserFareStages {
-//     fareStages: {
-//         stageName: string;
-//         prices: {
-//             price: string;
-//             fareZones: string[];
-//         }[];
-//     }[];
-// }
+interface UserFareStages {
+    fareStages: {
+        stageName: string;
+        prices: {
+            price: string;
+            fareZones: string[];
+        }[];
+    }[];
+}
 
-// interface FareTriangleData {
-//     [stageName: string]: {
-//         [price: string]: {
-//             price: string;
-//             fareZones: string[];
-//         };
-//     };
-// }
+interface FareTriangleData {
+    [stageName: string]: {
+        [price: string]: {
+            price: string;
+            fareZones: string[];
+        };
+    };
+}
 
 export const priceInputIsValid = (req: NextApiRequest): boolean => {
     const cookies = getCookies(req);
@@ -58,7 +57,6 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
                         fareZones: [],
                     };
                 }
-
                 fareTriangle[originFareStageName][price].fareZones.push(destinationFareStageName);
             }
         }
@@ -74,37 +72,37 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
             };
         }),
     };
+
     return mappedFareTriangle;
 };
 
-// export const getUuidFromCookie = (req: NextApiRequest): string => {
-//     const cookies = getCookies(req);
-//     const stageNamesCookie = unescape(decodeURI(cookies[STAGE_NAMES_COOKIE]));
-//     const stageNamesObject = JSON.parse(stageNamesCookie);
-//     const { uuid } = stageNamesObject;
-//     if (!uuid) {
-//         throw new Error('No UUID found');
-//     } else {
-//         return uuid;
-//     }
-// };
+export const getUuidFromCookie = (req: NextApiRequest): string => {
+    const cookies = getCookies(req);
+    const stageNamesCookie = unescape(decodeURI(cookies[STAGE_NAMES_COOKIE]));
+    const stageNamesObject = JSON.parse(stageNamesCookie);
+    const { uuid } = stageNamesObject;
+    if (!uuid) {
+        throw new Error('No UUID found');
+    } else {
+        return uuid;
+    }
+};
 
-// export const putDataInS3 = ( uuid: string, text: string ) => {
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     const bucketName: string = process.env.USER_DATA_BUCKET_NAME!;
-//     const key = `${uuid}.json`;
-//     const contentType = 'application/json; charset=utf-8';
-//     putStringInS3(bucketName, key, text, contentType);
-// };
+export const putDataInS3 = async (uuid: string, text: string): Promise<void> => {
+    if (!process.env.USER_DATA_BUCKET_NAME) {
+        throw new Error('Bucket name environment variable not set.');
+    }
+    await putStringInS3(process.env.USER_DATA_BUCKET_NAME, `${uuid}.json`, text, 'application/json; charset=utf-8');
+};
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!priceInputIsValid(req)) {
             return;
         }
-        // const mappedData = faresTriangleDataMapper(req);
-        // const uuid = getUuidFromCookie(req);
-        // putStringInS3(uuid, mappedData);
+        const mappedData = faresTriangleDataMapper(req);
+        const uuid = getUuidFromCookie(req);
+        await putDataInS3(uuid, JSON.stringify(mappedData));
         redirectTo(res, '/matching');
     } catch (error) {
         console.error(`There was a problem generating the priceEntry JSON: ${error.stack}`);
