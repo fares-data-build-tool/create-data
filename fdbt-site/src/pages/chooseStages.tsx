@@ -46,8 +46,4 @@ const ChooseStages = (): ReactElement => (
     </Layout>
 );
 
-ChooseStages.getInitialProps = (): {} => {
-    return {};
-};
-
 export default ChooseStages;

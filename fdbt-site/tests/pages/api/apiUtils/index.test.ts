@@ -44,7 +44,7 @@ describe('apiUtils', () => {
             expect(mockCookiesSet).toBeCalledWith(cookieName, cookieValue, {
                 domain,
                 path: '/',
-                maxAge: 3600 * 24,
+                maxAge: 1000 * (3600 * 24),
                 sameSite: 'strict',
             });
         });

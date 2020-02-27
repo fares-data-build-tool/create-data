@@ -25,8 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ journeyPattern, uuid });
-            const domain = getDomain(req);
-            setCookieOnResponseObject(domain, JOURNEY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
             redirectTo(res, '/inputMethod');
         } catch (error) {
             redirectToError(res);

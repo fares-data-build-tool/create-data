@@ -6,6 +6,7 @@ import faretype from '../../../src/pages/api/faretype';
 http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 describe('faretype', () => {
+    const mockOperatorCookie = `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`;
     beforeEach(() => {
         jest.resetAllMocks();
     });
@@ -14,12 +15,12 @@ describe('faretype', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { faretype: 'single' },
             headers: {
                 host: 'localhost:5000',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`,
+                cookie: mockOperatorCookie,
             },
         });
         const res = mockResponse({
@@ -35,12 +36,12 @@ describe('faretype', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
                 host: 'localhost:5000',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`,
+                cookie: mockOperatorCookie,
             },
         });
         const res = mockResponse({
@@ -56,7 +57,7 @@ describe('faretype', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {

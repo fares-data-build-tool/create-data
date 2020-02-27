@@ -24,14 +24,19 @@ export const setCookieOnResponseObject = (
     cookies.set(cookieName, cookieValue, {
         domain,
         path: '/',
-        maxAge: 3600 * 24,
+        // The Cookies library applies units of Milliseconds to maxAge. For this reason, maxAge of 24 hours needs to be corrected by a factor of 1000.
+        maxAge: 1000 * (3600 * 24),
         sameSite: 'strict',
     });
 };
 
 export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
     const cookies = new Cookies(req, res);
+    console.log({ req });
+    console.log({ cookies });
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
+    console.log({ operatorCookie });
+    console.log(JSON.parse(operatorCookie).uuid);
     return JSON.parse(operatorCookie).uuid;
 };
 
