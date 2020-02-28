@@ -2,8 +2,8 @@ import '../design/Layout.scss';
 import React, { FC } from 'react';
 
 const LogoBanner: FC = () => (
-    <div className="govuk-grid-row">
-        <div className="govuk-grid-column-two-thirds organisation__margin-bottom">
+    <div className="logo-banner">
+        <div>
             <div className="gem-c-organisation-logo brand--department-for-transport">
                 <div className="gem-c-organisation-logo__container gem-c-organisation-logo__crest gem-c-organisation-logo__crest--single-identity brand__border-color">
                     <span className="gem-c-organisation-logo__name">

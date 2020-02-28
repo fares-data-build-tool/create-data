@@ -26,7 +26,7 @@ const mockFareStages: string[] = [
 describe('pages', () => {
     describe('inputMethod', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PriceEntry fareStages={mockFareStages} />);
+            const tree = shallow(<PriceEntry stageNamesArray={mockFareStages} />);
             expect(tree).toMatchSnapshot();
         });
 

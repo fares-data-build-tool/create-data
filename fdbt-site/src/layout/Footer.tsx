@@ -55,12 +55,9 @@ const Footer: FC = () => (
                 </div>
                 <div className="govuk-footer__meta-item">
                     <a
-                        className="govuk-footer__link govuk-footer__copyright-logo no-background-image"
+                        className="govuk-footer__link govuk-footer__copyright-logo"
                         href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
                     >
-                        <div>
-                            <img src="/assets/images/govuk-crest.png" alt="gov uk crown" />
-                        </div>
                         <div>© Crown copyright</div>
                     </a>
                 </div>

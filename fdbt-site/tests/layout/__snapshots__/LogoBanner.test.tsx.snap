@@ -2,11 +2,9 @@
 
 exports[`LogoBanner should render correctly 1`] = `
 <div
-  className="govuk-grid-row"
+  className="logo-banner"
 >
-  <div
-    className="govuk-grid-column-two-thirds organisation__margin-bottom"
-  >
+  <div>
     <div
       className="gem-c-organisation-logo brand--department-for-transport"
     >
