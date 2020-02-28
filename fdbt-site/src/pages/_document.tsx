@@ -21,15 +21,6 @@ class MyDocument extends Document {
             </Html>
         );
     }
-
-    // Force every page to server side render so that we get a chance to set security-related cookies
-    // This will have a slight performance impact, but it should be negligable
-    // A better approach long term would be to submit a contribution to the Next.js serverless component
-    // to provide the option to set these headers as properties on the statically rendered pages as
-    // they are uploaded to S3
-    getInitialProps = (): {} => {
-        return {};
-    };
 }
 
 export default MyDocument;
