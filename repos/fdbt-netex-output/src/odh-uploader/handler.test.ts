@@ -21,7 +21,7 @@ describe('odhHandler SES emailer', () => {
 
         mockS3GetObject.mockImplementation(() => ({
             promise(): Promise<{}> {
-                return Promise.resolve({ Body: "body"});
+                return Promise.resolve({ Body: testData.testNetexFromS3});
             },
         }));
 

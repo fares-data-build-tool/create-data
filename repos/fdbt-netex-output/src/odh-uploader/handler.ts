@@ -48,11 +48,12 @@ export const getNetexFileFromS3 = async (params: S3ObjectParameters): Promise<st
 };
 
 export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
+    
     try {
         const s3ObjectParams = setS3ObjectParams(event);
         const pathToSavedNetex = `/tmp/${s3ObjectParams.Key}`;
         const netexFile = await getNetexFileFromS3(s3ObjectParams);
-        await fs.writeFile(netexFile, pathToSavedNetex);
+        await fs.writeFile(pathToSavedNetex, netexFile);
 
         const mailOptions = setMailOptions(s3ObjectParams, pathToSavedNetex);
 
@@ -62,7 +63,7 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
 
         console.log(info);
 
-        if(info.message){
+        if (info.message) {
             console.log(`Email sent: ${info.message}`);
         } else {
             console.log(`Email sent.`)

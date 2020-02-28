@@ -13,3 +13,4 @@ buckets
 src/netex-convertor/output
 
 **/.DS_Store
+/tmp/*
