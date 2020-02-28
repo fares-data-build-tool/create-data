@@ -1,9 +1,13 @@
 import { mockRequest, mockResponse } from 'mock-req-res';
+import http from 'http';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import direction from '../../../src/pages/api/direction';
 import { OPERATOR_COOKIE } from '../../../src/constants';
 
+http.OutgoingMessage.prototype.setHeader = jest.fn();
+
 describe('direction', () => {
+    const mockOperatorCookie = `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`;
     beforeEach(() => {
         jest.resetAllMocks();
     });
@@ -12,12 +16,12 @@ describe('direction', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
                 host: 'localhost:5000',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`,
+                cookie: mockOperatorCookie,
             },
         });
         const res = mockResponse({
@@ -34,12 +38,12 @@ describe('direction', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: { journeyPattern: 'test_journey' },
             headers: {
                 host: 'localhost:5000',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22FirstBus%22%2C%22uuid%22%3A%22cbc0111a-e763-48e7-982b-ac25ecbe625c%22%7D`,
+                cookie: mockOperatorCookie,
             },
         });
         const res = mockResponse({
@@ -55,7 +59,7 @@ describe('direction', () => {
         const writeHeadMock = jest.fn();
         const req = mockRequest({
             connection: {
-                encrypted: false,
+                encrypted: true,
             },
             body: {},
             headers: {
