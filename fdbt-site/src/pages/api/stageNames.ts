@@ -43,8 +43,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             redirectTo(res, '/stageNames');
         }
     } catch (error) {
-        console.log(`There was an error while reading and setting cookies. Error: ${error.stack}`);
         redirectToError(res);
+        throw error;
     }
-    res.end();
 };
