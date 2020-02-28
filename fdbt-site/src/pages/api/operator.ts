@@ -16,8 +16,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieValue, req, res);
         redirectTo(res, '/faretype');
     } catch (error) {
-        console.log(error.stack);
         redirectToError(res);
+        throw error;
     }
-    res.end();
 };

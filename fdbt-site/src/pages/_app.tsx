@@ -18,7 +18,13 @@ const MyApp = ({ Component, pageProps }: AppProps): ReactElement => (
 //
 MyApp.getInitialProps = async (appContext: AppContext): Promise<{}> => {
     // calls page's `getInitialProps` and fills `appProps.pageProps`
-    const appProps = await App.getInitialProps(appContext);
+    let appProps;
+    try {
+        appProps = await App.getInitialProps(appContext);
+    } catch (error) {
+        console.error(`Unhandled exception: ${error.stack}`);
+        throw error;
+    }
 
     // Prop spreading is the recommended way to implement this, from Next.js docs
     // eslint-disable-next-line react/jsx-props-no-spreading
