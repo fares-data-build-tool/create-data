@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { STAGE_NAMES_COOKIE } from '../../constants/index';
-import { getCookies, redirectToError, redirectTo } from './apiUtils';
+import Cookies from 'cookies';
+import { FARE_STAGES_COOKIE } from '../../constants/index';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 
 interface UserFareStages {
@@ -22,12 +23,14 @@ interface FareTriangleData {
     };
 }
 
-export const priceInputIsValid = (req: NextApiRequest): boolean => {
-    const cookies = getCookies(req);
-    const stageNamesCookie = unescape(decodeURI(cookies[STAGE_NAMES_COOKIE]));
-    const numberOfStagesInCookie = JSON.parse(stageNamesCookie).length;
-    const expectedNumberOfPriceInputs = numberOfStagesInCookie ** 2 / 2;
+export const priceInputIsValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
+    const cookies = new Cookies(req, res);
+    const fareStagesCookie = unescape(decodeURI(cookies.get(FARE_STAGES_COOKIE) || ''));
+    const fareStagesObject = JSON.parse(fareStagesCookie);
+    const numberOfFareStages = fareStagesObject.fareStages;
+    const expectedNumberOfPriceInputs = (numberOfFareStages * (numberOfFareStages - 1)) / 2;
     const numberofInputInApiRequest = Object.entries(req.body).length;
+    console.log(Object.entries(req.body));
     if (expectedNumberOfPriceInputs === numberofInputInApiRequest) {
         return true;
     }
@@ -76,18 +79,6 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
     return mappedFareTriangle;
 };
 
-export const getUuidFromCookie = (req: NextApiRequest): string => {
-    const cookies = getCookies(req);
-    const stageNamesCookie = unescape(decodeURI(cookies[STAGE_NAMES_COOKIE]));
-    const stageNamesObject = JSON.parse(stageNamesCookie);
-    const { uuid } = stageNamesObject;
-    if (!uuid) {
-        throw new Error('No UUID found');
-    } else {
-        return uuid;
-    }
-};
-
 export const putDataInS3 = async (uuid: string, text: string): Promise<void> => {
     if (!process.env.USER_DATA_BUCKET_NAME) {
         throw new Error('Bucket name environment variable not set.');
@@ -97,11 +88,12 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
-        if (!priceInputIsValid(req)) {
+        if (!priceInputIsValid(req, res)) {
+            redirectTo(res, '/priceEntry');
             return;
         }
         const mappedData = faresTriangleDataMapper(req);
-        const uuid = getUuidFromCookie(req);
+        const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));
         redirectTo(res, '/matching');
     } catch (error) {

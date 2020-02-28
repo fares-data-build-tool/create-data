@@ -10,34 +10,11 @@ import { redirectToError } from './api/apiUtils';
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Enter prices into fares triangle page of the Fares Data Build Tool';
 
-// const fareStages = [
-//     'Briggate',
-//     'Chapeltown',
-//     'Chapel Allerton',
-//     'Moortown',
-//     'Harrogate Road',
-//     'Harehills',
-//     'Gipton',
-//     'Armley',
-//     'Stanningley',
-//     'Pudsey',
-//     'Seacroft',
-//     'Rothwell',
-//     'Dewsbury',
-//     'Wakefield',
-//     'Pontefract',
-//     'Sandal',
-//     'Casteford',
-//     'Otley',
-//     'Ikley',
-//     'Pannal',
-// ];
-
 type PriceEntryProps = {
-    fareStages: string[];
+    stageNamesArray: string[];
 };
 
-const PriceEntry = ({ fareStages }: PriceEntryProps): ReactElement => (
+const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/priceEntry" method="post">
@@ -54,16 +31,16 @@ const PriceEntry = ({ fareStages }: PriceEntryProps): ReactElement => (
                     </fieldset>
                     <div className="fare-triangle-container">
                         <div className="fare-triangle-column">
-                            {fareStages.map((rowStage, rowIndex) => (
+                            {stageNamesArray.map((rowStage, rowIndex) => (
                                 <div className="govuk-heading-s fare-triangle-label-left">
                                     <span>{rowIndex > 0 ? rowStage : null}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="fare-triangle">
-                            {fareStages.map((rowStage, rowIndex) => (
+                            {stageNamesArray.map((rowStage, rowIndex) => (
                                 <div id={`row-${rowIndex}`} className="fare-triangle-row">
-                                    {fareStages.slice(0, rowIndex).map((columnStage, columnIndex) => (
+                                    {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
                                         <input
                                             className="govuk-input govuk-input--width-4 fare-triangle-input"
                                             id={`cell-${rowIndex}-${columnIndex}`}

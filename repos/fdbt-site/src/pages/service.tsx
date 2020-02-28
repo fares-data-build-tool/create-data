@@ -83,9 +83,7 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
         }
     }
 
-    if (ctx.res) {
-        redirectToError(ctx.res);
-    }
+    redirectToError(ctx.res!);
 
     return {};
 };

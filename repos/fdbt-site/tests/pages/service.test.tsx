@@ -19,6 +19,8 @@ const mockServices: ServiceType[] = [
 
 describe('pages', () => {
     describe('service', () => {
+        const mockOperatorCookieBody =
+            '%7B%22operator%22%3A%22MCT%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D';
         beforeEach(() => {
             (getServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
         });
@@ -52,11 +54,11 @@ describe('pages', () => {
 
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 headers: {
                     host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22nocCode%22%3A%22IWBC%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D`,
+                    cookie: `${OPERATOR_COOKIE}=${mockOperatorCookieBody}`,
                 },
                 cookies: {
                     OPERATOR_COOKIE: operator,
@@ -101,11 +103,11 @@ describe('pages', () => {
 
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 headers: {
                     host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22nocCode%22%3A%22IWBC%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D`,
+                    cookie: `${OPERATOR_COOKIE}=${mockOperatorCookieBody}`,
                 },
                 cookies: {
                     OPERATOR_COOKIE: operator,
@@ -138,11 +140,11 @@ describe('pages', () => {
 
             const req = mockRequest({
                 connection: {
-                    encrypted: false,
+                    encrypted: true,
                 },
                 headers: {
                     host: 'localhost:5000',
-                    cookie: `othername=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D`,
+                    cookie: `othername=${mockOperatorCookieBody}`,
                 },
                 cookies: {
                     OPERATOR_COOKIE: operator,
