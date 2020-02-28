@@ -32,11 +32,7 @@ export const setCookieOnResponseObject = (
 
 export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
     const cookies = new Cookies(req, res);
-    console.log({ req });
-    console.log({ cookies });
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-    console.log({ operatorCookie });
-    console.log(JSON.parse(operatorCookie).uuid);
     return JSON.parse(operatorCookie).uuid;
 };
 
