@@ -132,9 +132,10 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
     }
 
     const naptanInfo = await batchGetStopsByAtcoCode(masterStopList);
+    const orderedStops = masterStopList.map(atco => naptanInfo.find(s => s.atcoCode === atco));
 
     return {
-        stops: naptanInfo,
+        stops: orderedStops,
         userFareStages,
         service: {
             lineName,
