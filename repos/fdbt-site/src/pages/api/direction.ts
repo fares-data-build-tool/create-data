@@ -5,33 +5,34 @@ import { isSessionValid } from './service/validator';
 import { getDomain, setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
-    if (isSessionValid(req, res)) {
-        try {
-            const cookies = new Cookies(req, res);
-
-            const { journeyPattern } = req.body;
-
-            if (!journeyPattern) {
-                redirectTo(res, '/direction');
-                return;
-            }
-
-            const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-            const operatorObject = JSON.parse(operatorCookie);
-            const { uuid } = operatorObject;
-
-            if (!uuid) {
-                throw new Error('No UUID found');
-            }
-
-            const cookieValue = JSON.stringify({ journeyPattern, uuid });
-            setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
-            redirectTo(res, '/inputMethod');
-        } catch (error) {
+    try {
+        if (!isSessionValid(req, res)) {
             redirectToError(res);
+            return;
         }
-    } else {
+
+        const cookies = new Cookies(req, res);
+
+        const { journeyPattern } = req.body;
+
+        if (!journeyPattern) {
+            redirectTo(res, '/direction');
+            return;
+        }
+
+        const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
+        const operatorObject = JSON.parse(operatorCookie);
+        const { uuid } = operatorObject;
+
+        if (!uuid) {
+            throw new Error('No UUID found');
+        }
+
+        const cookieValue = JSON.stringify({ journeyPattern, uuid });
+        setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
+        redirectTo(res, '/inputMethod');
+    } catch (error) {
         redirectToError(res);
+        throw error;
     }
-    res.end();
 };
