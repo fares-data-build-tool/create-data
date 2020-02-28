@@ -23,16 +23,27 @@ interface FareTriangleData {
     };
 }
 
-export const priceInputIsValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
+export const numberOfInputsIsValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
     const cookies = new Cookies(req, res);
     const fareStagesCookie = unescape(decodeURI(cookies.get(FARE_STAGES_COOKIE) || ''));
     const fareStagesObject = JSON.parse(fareStagesCookie);
     const numberOfFareStages = fareStagesObject.fareStages;
     const expectedNumberOfPriceInputs = (numberOfFareStages * (numberOfFareStages - 1)) / 2;
     const numberofInputInApiRequest = Object.entries(req.body).length;
-    console.log(Object.entries(req.body));
+
     if (expectedNumberOfPriceInputs === numberofInputInApiRequest) {
         return true;
+    }
+    return false;
+};
+
+export const priceIsValid = (req: NextApiRequest): boolean => {
+    const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
+    for (let itemNum = 0; itemNum < arrayOfFareItemArrays.length; itemNum += 1) {
+        const price = arrayOfFareItemArrays[itemNum][1];
+        if (!Number.isNaN(Number(price))) {
+            return true;
+        }
     }
     return false;
 };
@@ -52,17 +63,13 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
             fareTriangle[originFareStageName] = {};
         }
 
-        if (price) {
-            if (!Number.isNaN(Number(price))) {
-                if (!fareTriangle[originFareStageName][price]) {
-                    fareTriangle[originFareStageName][price] = {
-                        price: (parseFloat(price) / 100).toFixed(2),
-                        fareZones: [],
-                    };
-                }
-                fareTriangle[originFareStageName][price].fareZones.push(destinationFareStageName);
-            }
+        if (!fareTriangle[originFareStageName][price]) {
+            fareTriangle[originFareStageName][price] = {
+                price: (parseFloat(price) / 100).toFixed(2),
+                fareZones: [],
+            };
         }
+        fareTriangle[originFareStageName][price].fareZones.push(destinationFareStageName);
     }
 
     const originStages = Object.entries(fareTriangle);
@@ -88,7 +95,7 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
-        if (!priceInputIsValid(req, res)) {
+        if (!numberOfInputsIsValid(req, res) || !priceIsValid(req)) {
             redirectTo(res, '/priceEntry');
             return;
         }

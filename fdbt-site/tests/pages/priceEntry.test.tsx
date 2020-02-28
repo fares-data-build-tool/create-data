@@ -30,43 +30,43 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        // it('should throw an error if there are no stages in the cookie', () => {
+        //         it('should throw an error if there are no stages in the cookie', () => {
 
-        //     const mockWriteHeadFn = jest.fn();
-        //     const mockEndFn = jest.fn();
-        //     const res = new MockRes();
-        //     res.writeHead = mockWriteHeadFn;
-        //     res.end = mockEndFn;
+        //             const mockWriteHeadFn = jest.fn();
+        //             const mockEndFn = jest.fn();
+        //             const res = new MockRes();
+        //             res.writeHead = mockWriteHeadFn;
+        //             res.end = mockEndFn;
 
-        //     const req = mockRequest({
-        //         connection: {
-        //             encrypted: true,
-        //         },
-        //         headers: {
-        //             host: 'localhost:5000',
-        //             cookie: ,
-        //         },
-        //         cookies: {
-        //             STAGE_NAMES_COOKIE: stageNames,
-        //         },
-        //     });
+        //             const req = mockRequest({
+        //                 connection: {
+        //                     encrypted: true,
+        //                 },
+        //                 headers: {
+        //                     host: 'localhost:5000',
+        //                     cookie: ,
+        //                 },
+        //                 cookies: {
+        //                     STAGE_NAMES_COOKIE: stageNames,
+        //                 },
+        //             });
 
-        //     const ctx: NextPageContext = {
-        //         res,
-        //         req,
-        //         pathname: '',
-        //         query: {},
-        //         AppTree: () => <div />,
-        //     };
+        //             const ctx: NextPageContext = {
+        //                 res,
+        //                 req,
+        //                 pathname: '',
+        //                 query: {},
+        //                 AppTree: () => <div />,
+        //             };
 
-        //     const result = PriceEntry.getInitialProps(ctx);
+        //             const result = PriceEntry.getInitialProps(ctx);
 
-        //     expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-        //         Location: '/error',
-        //     });
-        //     expect(mockEndFn).toHaveBeenCalled();
-        //     expect(result).toEqual({});
-        // });
+        //             expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
+        //                 Location: '/error',
+        //             });
+        //             expect(mockEndFn).toHaveBeenCalled();
+        //             expect(result).toEqual({});
+        //         });
 
         // it('should throw an error if there is no stageNames cookie', () => {
         //     const mockWriteHeadFn = jest.fn();

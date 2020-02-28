@@ -1,96 +1,90 @@
-// import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
-import { mockRequest, mockResponse } from 'mock-req-res';
-import { priceInputIsValid } from '../../../src/pages/api/priceEntry';
-// import { userFareStages } from '../../testData/mockData';
-// import * as s3 from '../../../src/data/s3';
+import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
+import priceEntry, { numberOfInputsIsValid, putDataInS3 } from '../../../src/pages/api/priceEntry';
 import { FARE_STAGES_COOKIE } from '../../../src/constants';
 
-// jest.spyOn(s3, 'putDataInS3');
-
 describe('priceEntry', () => {
-    // let res: mockReqRes.ResponseOutput;
-    // let writeHeadMock: jest.Mock;
     const mockCookie = `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%226%22%7D`;
 
     beforeEach(() => {
         process.env.USER_DATA_BUCKET_NAME = 'fdbt-user-data';
-        jest.resetAllMocks();
-        // writeHeadMock = jest.fn();
-        // res = mockResponse({
-        // writeHead: writeHeadMock,
-        // });
     });
 
     it('should return 302 redirect to /priceEntry if number of price inputs does not match implied number of price inputs in cookie', () => {
         const req = mockRequest({
             body: [
-                ['Rob-Giles', '1'],
-                ['Ivor-Giles', '1'],
-                ['Ivor-Rob', '1'],
-                ['Sean-Giles', '1'],
-                ['Sean-Rob', '1'],
-                ['Sean-Ivor', '1'],
-                ['Danny-Giles', '1'],
-                ['Danny-Rob', '1'],
-                ['Danny-Ivor', '1'],
-                ['Danny-Sean', '1'],
-                ['Ellen-Giles', '1'],
-                ['Ellen-Rob', '1'],
-                ['Ellen-Ivor', '1'],
-                ['Ellen-Sean', '1'],
-                ['Ellen-Danny', '1'],
+                ['Acomb Lane-Canning', '100'],
+                ['BewBush-Canning', '120'],
+                ['BewBush-Acomb Lane', '1120'],
+                ['Chorlton-Canning', '140'],
+                ['Chorlton-Acomb Lane', '160'],
+                ['Chorlton-BewBush', '100'],
+                ['Crawley-Canning', '120'],
+                ['Crawley-Acomb Lane', '140'],
+                ['Crawley-BewBush', '160'],
+                ['Crawley-Chorlton', '100'],
+                ['Cranfield-Canning', '120'],
+                ['Cranfield-Acomb Lane', '140'],
+                ['Cranfield-BewBush', '160'],
+                ['Cranfield-Chorlton', '140'],
+                ['Cranfield-Crawley', '120'],
             ],
             headers: {
                 cookie: mockCookie,
             },
         });
-
         const res = mockResponse({});
-
-        const result = priceInputIsValid(req, res);
-
+        const result = numberOfInputsIsValid(req, res);
         expect(result).toBe(true);
     });
 
-    // it('should return 302 redirect to /matching when the happy path is used', async () => {
+    it('should throw an error when there there is no S3 bucket name variable set', () => {
+        process.env.MATCHING_DATA_BUCKET_NAME = '';
+        const uuid = '780e3459-6305-4ae5-9082-b925b92cb46c';
+        const text =
+            '{"fareStages":[{"stageName":"Bewbush","prices":[{"price":"1.00","fareZones":["Chorlton"]},{"price":"1.20","fareZones":["Dewsbury"]}]},{"stageName":"Chorlton","prices":[{"price":"1.40","fareZones":["Dewsbury"]}]}]}';
+        try {
+            putDataInS3(uuid, text);
+        } catch {
+            expect(putDataInS3(uuid, text)).toThrow('No Bucket name environment variable not set.');
+        }
+    });
+});
 
-    //     const req = mockRequest({
-    //         headers: {
-    //             cookie:
-    //                 'fdbt-operator-cookie=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; fdbt-faretype-cookie=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-service-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-stage-names-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D',
-    //         },
-    //     });
+describe('priceEntry', () => {
+    let res: mockReqRes.ResponseOutput;
+    let writeHeadMock: jest.Mock;
 
-    //     await priceEntry.default(req, res);
+    beforeEach(() => {
+        jest.resetAllMocks();
+        writeHeadMock = jest.fn();
+        res = mockResponse({
+            writeHead: writeHeadMock,
+        });
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const cases: any[] = [
+        [{}, { Location: '/priceEntry' }],
+        [{ ChorltonBewbush: 'abcdefghijk' }, { Location: '/priceEntry' }],
+        [{ ChorltonBewbush: '1.2' }, { Location: '/priceEntry' }],
+        [{ ChorltonBewbush: 1.2 }, { Location: '/priceEntry' }],
+        [{ ChorltonBewbush: '0' }, { Location: '/priceEntry' }],
+        [{ ChorltonBewbush: 0 }, { Location: '/priceEntry' }],
+        [{ ChorltonBewbush: "[]'l..33" }, { Location: '/priceEntry' }],
+    ];
 
-    //     expect(writeHeadMock).toBeCalledWith(302, {
-    //         Location: '/matching',
-    //     });
-
-    //     expect(writeHeadMock).toHaveBeenCalledTimes(1);
-
-    // });
-
-    // it('should throw an error if the fares triangle has non-numerical prices', () => {
-
-    // });
-
-    // it('should put the parsed data in s3', async () => {
-
-    //     const req = mockRequest({
-    //         headers: {
-    //             cookie:
-    //                 'fdbt-operator-cookie=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%2C%22nocCode%22%3A%22HCTY%22%7D; fdbt-faretype-cookie=%7B%22faretype%22%3A%22single%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-service-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D; fdbt-stage-names-cookie=%7B%22service%22%3A%2213%2322%2F07%2F2019%22%2C%22uuid%22%3A%22780e3459-6305-4ae5-9082-b925b92cb46c%22%7D',
-    //         },
-    //     });
-
-    //     await priceEntry.default(req, res);
-
-    //     expect(s3.putStringInS3).toBeCalledWith(
-    //         'fdbt-user-data',
-    //         expect.any(String),
-    //         JSON.stringify(userFareStages),
-    //         'application/json; charset=utf-8',
-    //     );
-    // });
+    test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+        const mockCookie = `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%226%22%7D`;
+        const req = mockRequest({
+            connection: {
+                encrypted: true,
+            },
+            body: testData,
+            headers: {
+                host: 'localhost:5000',
+                cookie: mockCookie,
+            },
+        });
+        priceEntry(mockRequest(req), res);
+        expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
+    });
 });
