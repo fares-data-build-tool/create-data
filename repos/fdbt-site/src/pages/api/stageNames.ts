@@ -32,12 +32,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
         const userInputValidity = isStageNameValid(req);
         if (!userInputValidity.some(el => el.Error !== '')) {
-            const cookieValue = JSON.stringify(req.body.stageNameInput);
-            setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, cookieValue, req, res);
+            const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
+            setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
+            const validationCookieValue = JSON.stringify(userInputValidity);
+            setCookieOnResponseObject(getDomain(req), STAGE_NAME_VALIDATION_COOKIE, validationCookieValue, req, res);
             redirectTo(res, '/priceEntry');
         } else {
-            const cookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(getDomain(req), STAGE_NAME_VALIDATION_COOKIE, cookieValue, req, res);
+            const validationCookieValue = JSON.stringify(userInputValidity);
+            setCookieOnResponseObject(getDomain(req), STAGE_NAME_VALIDATION_COOKIE, validationCookieValue, req, res);
             redirectTo(res, '/stageNames');
         }
     } catch (error) {
