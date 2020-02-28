@@ -68,8 +68,6 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
             console.log(`Email sent.`)
         }
 
-        
-
     } catch (err) {
         throw new Error(
             `SES SendEmail failed. Error: ${err.stack}`,

@@ -1,8 +1,8 @@
-import { createMailTransporter, odhUploaderHandler } from './handler';
 import AWS from 'aws-sdk';
 import { S3Event } from 'aws-lambda';
-import * as testData from './testData/testData'
 import nodemailer from 'nodemailer';
+import * as testData from './testData/testData'
+import { createMailTransporter, odhUploaderHandler } from './handler';
 
 jest.mock('aws-sdk');
 
