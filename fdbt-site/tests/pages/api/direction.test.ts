@@ -1,5 +1,6 @@
 import { mockRequest, mockResponse } from 'mock-req-res';
 import http from 'http';
+import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import direction from '../../../src/pages/api/direction';
 import { OPERATOR_COOKIE } from '../../../src/constants';
 
@@ -26,6 +27,7 @@ describe('direction', () => {
         const res = mockResponse({
             writeHead: writeHeadMock,
         });
+        (setCookieOnResponseObject as {}) = jest.fn();
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/direction',
