@@ -24,7 +24,6 @@ const mockFareStages: string[] = [
 ];
 
 describe('Price Entry Page', () => {
-    const mockStageNamesCookieBody = '';
     const stageNames = ['Bewbush', 'Chorlton', 'Green Lane', 'Ashbury'];
 
     it('should render correctly', () => {
@@ -33,6 +32,7 @@ describe('Price Entry Page', () => {
     });
 
     it('redirects to error page if stage names cookie does not exist', () => {
+        const mockStageNamesCookieBody = '%7B%22operator%22%3A%22MCT%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D';
         const mockWriteHeadFn = jest.fn();
         const mockEndFn = jest.fn();
         const res = new MockRes();
@@ -68,6 +68,7 @@ describe('Price Entry Page', () => {
     });
 
     it('redirects to error page if no stage names can be found', () => {
+        const mockStageNamesCookieBody = '';
         const mockWriteHeadFn = jest.fn();
         const mockEndFn = jest.fn();
         const res = new MockRes();
