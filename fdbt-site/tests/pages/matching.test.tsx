@@ -77,6 +77,23 @@ describe('Matching Page', () => {
             ]);
         });
 
+        it('preserves the stops order', async () => {
+            getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
+            batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(naptanStopInfo));
+
+            const ctx = getMockContext({
+                journey: {
+                    startPoint: '13003921A',
+                    endPoint: '13003655B',
+                },
+            });
+
+            const result = await Matching.getInitialProps(ctx);
+
+            expect(result.stops[0].atcoCode).toEqual('13003921A');
+            expect(result.stops[result.stops.length - 1].atcoCode).toEqual('13003655B');
+        });
+
         it('generates the correct list of master stops given journeys with duplicate start and end points', async () => {
             getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawServiceWithDuplicates));
 
