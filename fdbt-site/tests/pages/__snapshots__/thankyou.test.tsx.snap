@@ -23,6 +23,7 @@ exports[`pages thankyou should render correctly 1`] = `
         </h1>
         <div
           className="govuk-panel__body"
+          id="uuid-ref-number"
         >
           Your reference number
           <br />
