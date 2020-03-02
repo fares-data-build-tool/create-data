@@ -1,26 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import setCookie from 'set-cookie';
+import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { OPERATOR_COOKIE } from '../../../constants';
-
-type Cookies = {
-    [key: string]: string;
-};
-
-export const getCookies = (req: NextApiRequest): Cookies => {
-    const cookies: Cookies = {};
-
-    if (req.headers && req.headers.cookie) {
-        req.headers.cookie.split(';').forEach(cookie => {
-            const parts = RegExp(/(.*?)=(.*)$/).exec(cookie);
-            if (parts) {
-                cookies[parts[1].trim()] = (parts[2] || '').trim();
-            }
-        });
-    }
-
-    return cookies;
-};
 
 export const getDomain = (req: NextApiRequest): string => {
     const host = req?.headers?.origin;
@@ -31,19 +12,40 @@ export const setCookieOnResponseObject = (
     domain: string,
     cookieName: string,
     cookieValue: string,
+    req: NextApiRequest,
     res: NextApiResponse,
 ): void => {
-    setCookie(cookieName, cookieValue, {
+    const cookieOptions = {
+        ...(process.env.NODE_ENV === 'production' ? { secure: true } : null),
+    };
+    const cookies = new Cookies(req, res, cookieOptions);
+    // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
+    // default. An error will be thrown if you try to send secure cookies over an insecure socket.
+    cookies.set(cookieName, cookieValue, {
         domain,
         path: '/',
-        maxAge: 3600 * 24,
-        res,
+        // The Cookies library applies units of Milliseconds to maxAge. For this reason, maxAge of 24 hours needs to be corrected by a factor of 1000.
+        maxAge: 1000 * (3600 * 24),
+        sameSite: 'strict',
     });
 };
 
-export const getUuidFromCookie = (req: NextApiRequest): string => {
-    const cookies = getCookies(req);
-    const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
+export const deleteCookieOnResponseObject = (
+    domain: string,
+    cookieName: string,
+    req: NextApiRequest,
+    res: NextApiResponse,
+): void => {
+    const cookies = new Cookies(req, res);
+    const date = new Date();
+
+    date.setDate(date.getDate() - 1);
+    cookies.set(cookieName, '', { overwrite: true, expires: date, domain, path: '/' });
+};
+
+export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
+    const cookies = new Cookies(req, res);
+    const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
     return JSON.parse(operatorCookie).uuid;
 };
 
