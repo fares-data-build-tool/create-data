@@ -23,40 +23,40 @@ const FareType: NextPage = (): ReactElement => (
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="faretype"
-                                    name="faretype"
+                                    id="faretype-single"
+                                    name="faretype-single"
                                     type="radio"
                                     value="single"
                                 />
-                                <label className="govuk-label govuk-radios__label" htmlFor="faretype">
+                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-single">
                                     Single
                                 </label>
                             </div>
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="faretype-2"
-                                    name="faretype"
+                                    id="faretype-return"
+                                    name="faretype-return"
                                     type="radio"
                                     value="return"
                                     disabled
                                     aria-disabled="true"
                                 />
-                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-2">
+                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-return">
                                     Return
                                 </label>
                             </div>
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="faretype-3"
-                                    name="faretype"
+                                    id="faretype-period"
+                                    name="faretype-period"
                                     type="radio"
                                     value="period"
                                     disabled
                                     aria-disabled="true"
                                 />
-                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-3">
+                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-period">
                                     Period Tickets
                                 </label>
                             </div>
