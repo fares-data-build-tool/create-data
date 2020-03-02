@@ -76,21 +76,21 @@ const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPa
                     section.OrderedStopPoints.map(stop => stop.StopPointRef),
                 );
                 const startPoint = item.JourneyPatternSections[0].OrderedStopPoints[0];
-                const [startPointStopDetail] = await batchGetStopsByAtcoCode([startPoint.StopPointRef]);
+                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.StopPointRef]);
 
                 const endPoint = item.JourneyPatternSections.slice(-1)[0].OrderedStopPoints.slice(-1)[0];
-                const [endPointStopDetail] = await batchGetStopsByAtcoCode([endPoint.StopPointRef]);
+                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.StopPointRef]);
 
                 return {
                     startPoint: {
                         Display: `${startPoint.CommonName}${
-                            startPointStopDetail?.localityName ? `, ${startPointStopDetail.localityName}` : ''
+                            startPointStopLocality?.localityName ? `, ${startPointStopLocality.localityName}` : ''
                         }`,
                         Id: startPoint.StopPointRef,
                     },
                     endPoint: {
                         Display: `${endPoint.CommonName}${
-                            endPointStopDetail?.localityName ? `, ${endPointStopDetail.localityName}` : ''
+                            endPointStopLocality?.localityName ? `, ${endPointStopLocality.localityName}` : ''
                         }`,
                         Id: endPoint.StopPointRef,
                     },
