@@ -30,6 +30,19 @@ export const setCookieOnResponseObject = (
     });
 };
 
+export const deleteCookieOnResponseObject = (
+    domain: string,
+    cookieName: string,
+    req: NextApiRequest,
+    res: NextApiResponse,
+): void => {
+    const cookies = new Cookies(req, res);
+    const date = new Date();
+
+    date.setDate(date.getDate() - 1);
+    cookies.set(cookieName, '', { overwrite: true, expires: date, domain, path: '/' });
+};
+
 export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
     const cookies = new Cookies(req, res);
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
