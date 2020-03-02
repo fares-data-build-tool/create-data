@@ -29,9 +29,9 @@ export const numberOfInputsIsValid = (req: NextApiRequest, res: NextApiResponse)
     const fareStagesObject = JSON.parse(fareStagesCookie);
     const numberOfFareStages = fareStagesObject.fareStages;
     const expectedNumberOfPriceInputs = (numberOfFareStages * (numberOfFareStages - 1)) / 2;
-    const numberofInputInApiRequest = Object.entries(req.body).length;
+    const numberOfInputInApiRequest = Object.entries(req.body).length;
 
-    if (expectedNumberOfPriceInputs === numberofInputInApiRequest) {
+    if (expectedNumberOfPriceInputs === numberOfInputInApiRequest) {
         return true;
     }
     return false;
