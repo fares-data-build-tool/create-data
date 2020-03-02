@@ -51,6 +51,7 @@ exports[`pages service should render correctly 1`] = `
             </option>
             <option
               className="service-option"
+              id="123#05/02/2020"
               key="123#05/02/2020"
               value="123#05/02/2020"
             >
@@ -60,6 +61,7 @@ exports[`pages service should render correctly 1`] = `
             </option>
             <option
               className="service-option"
+              id="X1#06/02/2020"
               key="X1#06/02/2020"
               value="X1#06/02/2020"
             >
@@ -69,6 +71,7 @@ exports[`pages service should render correctly 1`] = `
             </option>
             <option
               className="service-option"
+              id="Infinity Line#07/02/2020"
               key="Infinity Line#07/02/2020"
               value="Infinity Line#07/02/2020"
             >

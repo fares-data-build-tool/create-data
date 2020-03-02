@@ -61,6 +61,7 @@ exports[`pages direction should render correctly 1`] = `
             </option>
             <option
               className="journey-option"
+              id="13003921A#13003655B#0"
               key="13003921A#13003655B#0"
               value="13003921A#13003655B"
             >
@@ -70,6 +71,7 @@ exports[`pages direction should render correctly 1`] = `
             </option>
             <option
               className="journey-option"
+              id="13003655B#13003921A#1"
               key="13003655B#13003921A#1"
               value="13003655B#13003921A"
             >

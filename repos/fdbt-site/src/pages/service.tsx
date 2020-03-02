@@ -37,6 +37,7 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                             {services.map(service => (
                                 <option
                                     key={`${service.lineName}#${service.startDate}`}
+                                    id={`${service.lineName}#${service.startDate}`}
                                     value={`${service.lineName}#${service.startDate}`}
                                     className="service-option"
                                 >

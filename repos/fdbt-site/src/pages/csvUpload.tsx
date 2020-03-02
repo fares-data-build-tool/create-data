@@ -25,11 +25,11 @@ const CsvUpload: NextPage = (): ReactElement => (
                                 </label>
                             </fieldset>
                             <div className="govuk-form-group">
-                                <label className="govuk-label" htmlFor="file-upload-1">
+                                <label className="govuk-label" htmlFor="csv-upload">
                                     <input
                                         className="govuk-file-upload"
-                                        id="file-upload-1"
-                                        name="file-upload-1"
+                                        id="csv-upload"
+                                        name="csv-upload"
                                         type="file"
                                         accept=".csv"
                                     />
