@@ -22,7 +22,7 @@ const hardCodedOperators: Operator[] = [
     { operatorName: 'Manchester Community Transport', nocCode: 'MCTR' },
     { operatorName: 'Pilkington Bus', nocCode: 'NWBT' },
     { operatorName: 'TLC Travel', nocCode: 'TLCT' },
-    { operatorName: 'Transport for Greater Manchester', nocCode: 'HIPK' },
+    { operatorName: 'Transport for Greater Manchester', nocCode: 'VISB' },
     { operatorName: "Warrington's Own Buses", nocCode: 'WBTR' },
 ];
 
