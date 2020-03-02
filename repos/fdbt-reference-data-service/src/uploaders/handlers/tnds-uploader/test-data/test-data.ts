@@ -62,7 +62,7 @@ export const mockReformattedServicesData = {
     RowId: '5',
     NationalOperatorCode: 'A2BR',
     Partition: 'A2BR',
-    Sort: '32#5',
+    Sort: '32#2019-12-03',
     LineName: '32',
     RegionCode: 'EA',
     RegionOperatorCode: 'A2BR',

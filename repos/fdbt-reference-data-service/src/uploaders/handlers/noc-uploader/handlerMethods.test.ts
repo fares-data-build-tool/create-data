@@ -67,10 +67,7 @@ describe('formatDynamoWriteRequest', () => {
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
         const testArrayOfItems: ParsedData[] = mocks.createArray(1, { ...mocks.mockNocData });
-        console.log({ testArrayOfItems });
         const result = formatDynamoWriteRequest(testArrayOfItems);
-        console.log({ result });
-        console.log({ arrayOfBatches });
         expect(result).toEqual(arrayOfBatches);
     });
 
