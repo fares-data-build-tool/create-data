@@ -1,12 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import Cookies from 'cookies';
 import { OPERATOR_COOKIE, JOURNEY_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { getDomain, setCookieOnResponseObject, getCookies, redirectTo, redirectToError } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
-    if (isSessionValid(req)) {
+    if (isSessionValid(req, res)) {
         try {
-            const cookies = getCookies(req);
+            const cookies = new Cookies(req, res);
 
             const { journeyPattern } = req.body;
 
@@ -15,7 +16,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 return;
             }
 
-            const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
+            const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
             const operatorObject = JSON.parse(operatorCookie);
             const { uuid } = operatorObject;
 
@@ -24,8 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ journeyPattern, uuid });
-            const domain = getDomain(req);
-            setCookieOnResponseObject(domain, JOURNEY_COOKIE, cookieValue, res);
+            setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
             redirectTo(res, '/inputMethod');
         } catch (error) {
             redirectToError(res);
