@@ -48,6 +48,7 @@ const Direction = ({ operator, lineName, service }: DirectionProps): ReactElemen
                             {service.journeyPatterns.map((journeyPattern, i) => (
                                 <option
                                     key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}#${+i}`}
+                                    id={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}#${+i}`}
                                     value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
                                     className="journey-option"
                                 >
