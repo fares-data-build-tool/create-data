@@ -102,7 +102,7 @@ const getMasterStopList = (journeys: RawJourneyPatternSection[]): string[] => [
     ...new Set(flatMap(journeys, journey => journey.OrderedStopPoints.map(item => item.StopPointRef))),
 ];
 
-Matching.getInitialProps = async (ctx: NextPageContext): Promise<any> => {
+Matching.getInitialProps = async (ctx: NextPageContext): Promise<MatchingProps> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
@@ -132,7 +132,9 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<any> => {
     }
 
     const naptanInfo = await batchGetStopsByAtcoCode(masterStopList);
-    const orderedStops = masterStopList.map(atco => naptanInfo.find(s => s.atcoCode === atco));
+    const orderedStops = masterStopList
+        .map(atco => naptanInfo.find(s => s.atcoCode === atco))
+        .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
     return {
         stops: orderedStops,

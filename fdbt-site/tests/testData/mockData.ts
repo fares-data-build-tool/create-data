@@ -505,6 +505,15 @@ export const naptanStopInfo = [
         street: 'The Avenue',
     },
     {
+        stopName: 'Interchange Stand B',
+        naptanCode: 'duratjwd',
+        atcoCode: '13003655B',
+        localityCode: 'E0045957',
+        localityName: 'Seaham',
+        indicator: 'B',
+        street: 'South Crescent',
+    },
+    {
         stopName: 'Adolphus Place',
         naptanCode: 'duratjga',
         atcoCode: '13003635B',
