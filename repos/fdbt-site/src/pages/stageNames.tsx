@@ -6,7 +6,6 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
-import { redirectToError } from './api/apiUtils';
 
 const title = 'Stage Names - Fares data build tool';
 const description = 'Stage Names page of the Fares data build tool';
@@ -93,16 +92,14 @@ StageNames.getInitialProps = (ctx: NextPageContext): {} => {
 
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
 
-    if (fareStagesCookie && inputChecks) {
+    if (fareStagesCookie) {
         const fareStagesObject = JSON.parse(fareStagesCookie);
         const numberOfFareStages = Number(fareStagesObject.fareStages);
 
         return { numberOfFareStages, inputChecks };
     }
 
-    redirectToError(ctx.res!);
-
-    return {};
+    throw new Error('Failed to retrieve fareStageCookie info for Stage Names page.');
 };
 
 export default StageNames;
