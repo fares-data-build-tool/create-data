@@ -3,8 +3,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { PRICEENTRY_COOKIE, STAGE_NAMES_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { STAGE_NAMES_COOKIE } from '../constants';
 import { redirectToError } from './api/apiUtils';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
@@ -71,27 +70,25 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
 );
 
 PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
-    deleteCookieOnServerSide(ctx, PRICEENTRY_COOKIE);
-
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
 
     if (stageNamesCookie) {
         const stageNamesArray = JSON.parse(stageNamesCookie);
+
         try {
-            if (stageNamesArray.length === 0) {
-                throw new Error('No stages found in cookie!');
+            if (stageNamesArray.length === 0 && ctx.res) {
+                redirectToError(ctx.res);
+                return {};
             }
             return { stageNamesArray };
         } catch (err) {
-            console.error(err.stack);
             throw new Error(err.stack);
         }
     }
 
-    if (ctx.res) {
-        redirectToError(ctx.res);
-    }
+    redirectToError(ctx.res!);
+
     return {};
 };
 
