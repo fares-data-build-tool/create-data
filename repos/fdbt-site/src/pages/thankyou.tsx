@@ -18,7 +18,7 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
             <div className="govuk-grid-row">
                 <div className="govuk-panel govuk-panel--confirmation">
                     <h1 className="govuk-panel__title">Application complete</h1>
-                    <div className="govuk-panel__body">
+                    <div className="govuk-panel__body" id="uuid-ref-number">
                         Your reference number
                         <br />
                         <strong>{uuid}</strong>
