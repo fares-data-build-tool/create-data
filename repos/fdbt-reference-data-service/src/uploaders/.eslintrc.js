@@ -33,7 +33,7 @@ module.exports = {
                 ignoreRestSiblings: false,
             },
         ],
-        'no-console': 'warn',
+        'no-console': 0,
         'import/extensions': [
             'error',
             'ignorePackages',
