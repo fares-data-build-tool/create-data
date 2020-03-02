@@ -9,7 +9,7 @@ describe('priceEntry', () => {
         process.env.USER_DATA_BUCKET_NAME = 'fdbt-user-data';
     });
 
-    it('should return 302 redirect to /priceEntry if number of price inputs does not match implied number of price inputs in cookie', () => {
+    it('should return true if number of price inputs matches implied number of price inputs in cookie', () => {
         const req = mockRequest({
             body: [
                 ['Acomb Lane-Canning', '100'],
@@ -35,6 +35,26 @@ describe('priceEntry', () => {
         const res = mockResponse({});
         const result = numberOfInputsIsValid(req, res);
         expect(result).toBe(true);
+    });
+
+    it('should return false if number of price inputs matches implied number of price inputs in cookie', () => {
+        const req = mockRequest({
+            body: [
+                ['Acomb Lane-Canning', '100'],
+                ['BewBush-Canning', '120'],
+                ['BewBush-Acomb Lane', '1120'],
+                ['Chorlton-Canning', '140'],
+                ['Chorlton-Acomb Lane', '160'],
+                ['Chorlton-BewBush', '100'],
+                ['Crawley-Canning', '120'],
+            ],
+            headers: {
+                cookie: mockCookie,
+            },
+        });
+        const res = mockResponse({});
+        const result = numberOfInputsIsValid(req, res);
+        expect(result).toBe(false);
     });
 
     it('should throw an error when there there is no S3 bucket name variable set', () => {

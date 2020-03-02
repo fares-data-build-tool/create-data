@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages inputMethod should render correctly 1`] = `
+exports[`Price Entry Page should render correctly 1`] = `
 <Layout
   description="Enter prices into fares triangle page of the Fares Data Build Tool"
   title="Price Entry Fares Triangle - Fares Data Build Tool"
