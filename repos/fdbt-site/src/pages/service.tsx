@@ -59,6 +59,9 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
 );
 
 Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
+    if (!ctx.res) {
+        throw new Error('Unexpected null res');
+    }
     deleteCookieOnServerSide(ctx, SERVICE_COOKIE);
 
     const cookies = parseCookies(ctx);
@@ -73,7 +76,8 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
                 services = await getServicesByNocCode(operatorObject.nocCode);
             }
 
-            if (services.length === 0 && ctx.res) {
+            if (services.length === 0) {
+                console.error(`No services found for NOC Code: ${operatorObject.nocCode}`);
                 redirectToError(ctx.res);
                 return {};
             }
@@ -84,7 +88,7 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
         }
     }
 
-    redirectToError(ctx.res!);
+    redirectToError(ctx.res);
 
     return {};
 };
