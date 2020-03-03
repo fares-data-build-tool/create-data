@@ -24,7 +24,7 @@ const FareType: NextPage = (): ReactElement => (
                                 <input
                                     className="govuk-radios__input"
                                     id="faretype-single"
-                                    name="faretype-single"
+                                    name="faretype"
                                     type="radio"
                                     value="single"
                                 />
@@ -36,7 +36,7 @@ const FareType: NextPage = (): ReactElement => (
                                 <input
                                     className="govuk-radios__input"
                                     id="faretype-return"
-                                    name="faretype-return"
+                                    name="faretype"
                                     type="radio"
                                     value="return"
                                     disabled
@@ -50,7 +50,7 @@ const FareType: NextPage = (): ReactElement => (
                                 <input
                                     className="govuk-radios__input"
                                     id="faretype-period"
-                                    name="faretype-period"
+                                    name="faretype"
                                     type="radio"
                                     value="period"
                                     disabled
