@@ -40,7 +40,7 @@ exports[`pages faretype should render correctly 1`] = `
               <input
                 className="govuk-radios__input"
                 id="faretype-single"
-                name="faretype-single"
+                name="faretype"
                 type="radio"
                 value="single"
               />
@@ -59,7 +59,7 @@ exports[`pages faretype should render correctly 1`] = `
                 className="govuk-radios__input"
                 disabled={true}
                 id="faretype-return"
-                name="faretype-return"
+                name="faretype"
                 type="radio"
                 value="return"
               />
@@ -78,7 +78,7 @@ exports[`pages faretype should render correctly 1`] = `
                 className="govuk-radios__input"
                 disabled={true}
                 id="faretype-period"
-                name="faretype-period"
+                name="faretype"
                 type="radio"
                 value="period"
               />

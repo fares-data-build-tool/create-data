@@ -29,7 +29,7 @@ describe('csvUpload', () => {
 
     it('should return 302 redirect to /csvUpload when no file is attached', async () => {
         const file = {
-            'file-upload-1': {
+            'csv-upload': {
                 size: 2,
                 path: 'string',
                 name: 'string',
@@ -60,7 +60,7 @@ describe('csvUpload', () => {
 
     it('should return 302 redirect to /error when a the attached file is too large', async () => {
         const file = {
-            'file-upload-1': {
+            'csv-upload': {
                 size: 999999999999999,
                 path: 'string',
                 name: 'string',
@@ -91,7 +91,7 @@ describe('csvUpload', () => {
 
     it('should return 302 redirect to /error when the attached file is not a csv', async () => {
         const file = {
-            'file-upload-1': {
+            'csv-upload': {
                 size: 999,
                 path: 'string',
                 name: 'string',
@@ -134,7 +134,7 @@ describe('csvUpload', () => {
 
     it('should put the unparsed data in s3 and the parsed data in s3', async () => {
         const file = {
-            'file-upload-1': {
+            'csv-upload': {
                 size: 999,
                 path: 'string',
                 name: 'string',
@@ -179,7 +179,7 @@ describe('csvUpload', () => {
 
     it('should return 302 redirect to /matching when the happy path is used', async () => {
         const file = {
-            'file-upload-1': {
+            'csv-upload': {
                 size: 999,
                 path: 'string',
                 name: 'string',
@@ -214,7 +214,7 @@ describe('csvUpload', () => {
 
     it('should throw an error if the fares triangle data has non-numerical prices', async () => {
         const file = {
-            'file-upload-1': {
+            'csv-upload': {
                 size: 999,
                 path: 'string',
                 name: 'string',
@@ -249,7 +249,7 @@ describe('csvUpload', () => {
 
     it('should throw an error if the fares triangle data has missing prices', async () => {
         const file = {
-            'file-upload-1': {
+            'csv-upload': {
                 size: 999,
                 path: 'string',
                 name: 'string',
