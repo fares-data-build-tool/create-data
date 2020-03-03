@@ -139,8 +139,8 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
 };
 
 export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
-    const fileSize = formData['file-upload-1'].size;
-    const fileType = formData['file-upload-1'].type;
+    const fileSize = formData['csv-upload'].size;
+    const fileType = formData['csv-upload'].type;
 
     if (!fileContent) {
         redirectTo(res, '/csvUpload');
@@ -168,7 +168,7 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
 
 export const getFormData = async (req: NextApiRequest): Promise<File> => {
     const files = await formParse(req);
-    const fileContent = await fs.promises.readFile(files['file-upload-1'].path, 'utf-8');
+    const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
 
     return {
         Files: files,
