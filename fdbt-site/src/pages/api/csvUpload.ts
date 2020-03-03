@@ -184,21 +184,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (formData.FileContent) {
-            try {
-                const uuid = getUuidFromCookie(req, res);
-                await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
-                const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
-                await putDataInS3(fareTriangleData, `${uuid}.json`, true);
+            const uuid = getUuidFromCookie(req, res);
+            await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
+            const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
+            await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
-                redirectTo(res, '/matching');
-            } catch (error) {
-                throw new Error(error.message);
-            }
+            redirectTo(res, '/matching');
         }
     } catch (error) {
-        console.error(error.message);
         redirectToError(res);
+        throw error;
     }
-
-    res.end();
 };

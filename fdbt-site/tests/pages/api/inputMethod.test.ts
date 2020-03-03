@@ -43,7 +43,7 @@ describe('inputMethod', () => {
             },
         });
 
-        inputMethod(req, res);
+        expect(() => inputMethod(req, res)).toThrow();
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',

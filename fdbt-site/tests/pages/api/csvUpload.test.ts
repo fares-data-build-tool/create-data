@@ -238,7 +238,7 @@ describe('csvUpload', () => {
             },
         });
 
-        await csvUpload.default(req, res);
+        await expect(csvUpload.default(req, res)).rejects.toThrow();
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
@@ -273,7 +273,7 @@ describe('csvUpload', () => {
             },
         });
 
-        await csvUpload.default(req, res);
+        await expect(csvUpload.default(req, res)).rejects.toThrow();
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
