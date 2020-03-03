@@ -34,6 +34,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             redirectToError(res);
             return;
         }
+
         if (!req.body.stageNameInput || req.body.stageNameInput.length === 0) {
             throw new Error('No stage name input received from Stage Names page.');
         }
