@@ -72,7 +72,8 @@ describe('Matching API', () => {
             writeHeadMock,
         );
 
-        await matching(req, res);
+        await expect(matching(req, res)).rejects.toThrow();
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
@@ -102,7 +103,7 @@ describe('Matching API', () => {
             writeHeadMock,
         );
 
-        await matching(req, res);
+        await expect(matching(req, res)).rejects.toThrow();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
@@ -116,7 +117,7 @@ describe('Matching API', () => {
             writeHeadMock,
         );
 
-        await matching(req, res);
+        await expect(matching(req, res)).rejects.toThrow();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
@@ -125,7 +126,7 @@ describe('Matching API', () => {
     it('should redirect to the error page if the cookie UUIDs to do not match', async () => {
         const { req, res } = getMockRequestAndResponse({}, null, { journeyUuid: 'someUuid' }, writeHeadMock);
 
-        await matching(req, res);
+        await expect(matching(req, res)).rejects.toThrow();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
