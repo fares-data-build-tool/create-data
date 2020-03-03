@@ -17,7 +17,7 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
         <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
             <div className="govuk-grid-row">
                 <div className="govuk-panel govuk-panel--confirmation">
-                    <h1 className="govuk-panel__title">Application complete</h1>
+                    <h1 className="govuk-panel__title">Upload complete</h1>
                     <div className="govuk-panel__body" id="uuid-ref-number">
                         Your reference number
                         <br />
@@ -25,14 +25,15 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
                     </div>
                 </div>
                 <h2 className="govuk-heading-m">What happens next</h2>
-                <p className="govuk-body">Thank you, we&apos;ve submitted your fares data.</p>
+                <p className="govuk-body">Thank you for submitting your fares data.</p>
                 <p className="govuk-body">
-                    We will contact you should there be any problem with the data you&apos;ve provided. Your data will
-                    be converted to the NeTEx format and published.
+                    Your data will be converted to the NeTEx format and published to the open data hub. You will be
+                    contacted should there be a problem with your upload.
                 </p>
                 <p className="govuk-body">
+                    If you would like to provide feedback on this service please click{' '}
                     <a href={FEEDBACK_LINK} className="govuk-link">
-                        What did you think of this service?
+                        here
                     </a>
                 </p>
                 <br />
