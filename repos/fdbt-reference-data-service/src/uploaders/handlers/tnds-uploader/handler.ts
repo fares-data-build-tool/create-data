@@ -189,6 +189,11 @@ export const formatDynamoWriteRequest = (parsedLines: ServicesDynamoDBData[]): A
 
     const dynamoWriteRequests = parsedLines
         .filter(parsedDataItem => parsedDataItem.NationalOperatorCode)
+        // Remove duplicates with the same line name and start date
+        .filter(
+            (item, index, self) =>
+                self.findIndex(t => t.StartDate === item.StartDate && t.LineName === item.LineName) === index,
+        )
         .map(parsedDataToWriteRequest);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
