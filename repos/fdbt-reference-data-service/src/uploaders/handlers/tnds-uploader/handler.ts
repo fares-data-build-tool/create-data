@@ -163,7 +163,7 @@ export const xmlParser = (xmlData: string): Promise<string> => {
             const noEmptyResult = omitEmpty(result);
             const stringified = JSON.stringify(noEmptyResult);
             return resolve(stringified);
-        })
+        }),
     );
 };
 
@@ -182,13 +182,18 @@ export const formatDynamoWriteRequest = (parsedLines: ServicesDynamoDBData[]): A
             Item: {
                 ...parsedDataItem,
                 Partition: parsedDataItem?.NationalOperatorCode,
-                Sort: `${parsedDataItem?.LineName}#${parsedDataItem?.RowId}`,
+                Sort: `${parsedDataItem?.LineName}#${parsedDataItem?.StartDate}`,
             },
         },
     });
 
     const dynamoWriteRequests = parsedLines
         .filter(parsedDataItem => parsedDataItem.NationalOperatorCode)
+        // Remove duplicates with the same line name and start date
+        .filter(
+            (item, index, self) =>
+                self.findIndex(t => t.StartDate === item.StartDate && t.LineName === item.LineName) === index,
+        )
         .map(parsedDataToWriteRequest);
     const emptyBatch: WriteRequest[][] = [];
     const batchSize = 25;
@@ -206,7 +211,7 @@ export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushTo
         convertEmptyValues: true,
     });
     const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedCsvLines);
-    console.log('Number of batches to write to DynamoDB is: ', dynamoWriteRequestBatches.length);
+    console.info('Number of batches to write to DynamoDB is: ', dynamoWriteRequestBatches.length);
     let count = 0;
 
     let writePromises = [];
@@ -230,9 +235,9 @@ export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushTo
                 await Promise.all(writePromises); // eslint-disable-line no-await-in-loop
                 writePromises = [];
 
-                console.log(`Wrote ${count} items to DynamoDB.`);
+                console.info(`Wrote ${count} items to DynamoDB.`);
             } catch (err) {
-                console.log(`Throwing error.... ${err.name} : ${err.message}`);
+                console.error(`Throwing error.... ${err.name} : ${err.message}`);
                 throw new Error('Could not write batch to DynamoDB');
             }
         }
@@ -241,10 +246,10 @@ export const writeBatchesToDynamo = async ({ parsedCsvLines, tableName }: PushTo
     try {
         await Promise.all(writePromises);
 
-        console.log(`Wrote ${dynamoWriteRequestBatches.length} total batches to DynamoDB`);
-        console.log(`Wrote ${count} total items to DynamoDB.`);
+        console.info(`Wrote ${dynamoWriteRequestBatches.length} total batches to DynamoDB`);
+        console.info(`Wrote ${count} total items to DynamoDB.`);
     } catch (err) {
-        console.log(`Throwing error.... ${err.name} : ${err.message}`);
+        console.error(`Throwing error.... ${err.name} : ${err.message}`);
         throw new Error('Could not write batch to DynamoDB');
     }
 };
@@ -253,7 +258,7 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     const dynamodb = new AWS.DynamoDB.DocumentClient({
         convertEmptyValues: true,
     });
-    console.log('Writing entries to dynamo DB.');
+    console.info('Writing entries to dynamo DB.');
     const putPromises = parsedXmlLines.map(item =>
         dynamodb
             .put({
@@ -267,13 +272,13 @@ export const writeXmlToDynamo = async ({ parsedXmlLines, tableName }: PushToDyna
     } catch (err) {
         throw new Error(`Could not write to Dynamo: ${err.name} ${err.message}`);
     }
-    console.log('Dynamo DB put request complete.');
+    console.info('Dynamo DB put request complete.');
 };
 
 export const findCommonNameForStop = (stopPoint: string, collectionOfStopPoints: StopPoint[]): StopPoint => {
     let mappedStopPoint = collectionOfStopPoints.find(stopPointItem => stopPointItem?.StopPointRef === stopPoint);
     if (!mappedStopPoint) {
-        console.log(`Could not map a common name to the stop point '${stopPoint}'.`);
+        console.warn(`Could not map a common name to the stop point '${stopPoint}'.`);
         mappedStopPoint = {
             StopPointRef: stopPoint,
             CommonName: '',
@@ -295,6 +300,7 @@ export const getOrderedStopPointsForJourneyPatternSection = (
     return result;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const extractJourneyInfoFromParsedXml = (parsedJson: any): TransportService => {
     const lineName: string = parsedJson?.TransXChange?.Services[0]?.Service[0]?.Lines[0]?.Line[0]?.LineName[0];
     const fileName: string = parsedJson?.TransXChange?.$?.FileName;
@@ -343,22 +349,20 @@ export const cleanParsedXml = (parsedXml: string): TndsDynamoDBData[] => {
         CommonName: stopPointItem?.CommonName[0],
     }));
 
-    const journeyPatternSections: JourneyPatternSection[] = rawJourneyPatternSections.map(
-        rawJourneyPatternSection => {
-            const sectionStopPoints = getOrderedStopPointsForJourneyPatternSection(
-                rawJourneyPatternSection?.JourneyPatternTimingLink,
-                stopPointsCollection,
-            );
-            const sectionStartPoint = sectionStopPoints[0]?.CommonName;
-            const sectionEndPoint = sectionStopPoints[sectionStopPoints.length - 1]?.CommonName;
-            return {
-                Id: rawJourneyPatternSection?.$?.id,
-                OrderedStopPoints: sectionStopPoints,
-                StartPoint: sectionStartPoint,
-                EndPoint: sectionEndPoint,
-            };
-        },
-    );
+    const journeyPatternSections: JourneyPatternSection[] = rawJourneyPatternSections.map(rawJourneyPatternSection => {
+        const sectionStopPoints = getOrderedStopPointsForJourneyPatternSection(
+            rawJourneyPatternSection?.JourneyPatternTimingLink,
+            stopPointsCollection,
+        );
+        const sectionStartPoint = sectionStopPoints[0]?.CommonName;
+        const sectionEndPoint = sectionStopPoints[sectionStopPoints.length - 1]?.CommonName;
+        return {
+            Id: rawJourneyPatternSection?.$?.id,
+            OrderedStopPoints: sectionStopPoints,
+            StartPoint: sectionStartPoint,
+            EndPoint: sectionEndPoint,
+        };
+    });
 
     const findOrThrow = <T>(values: T[], predicate: (value: T) => boolean): T => {
         const element = values.find(predicate);
@@ -372,12 +376,9 @@ export const cleanParsedXml = (parsedXml: string): TndsDynamoDBData[] => {
 
     const journeyPatterns: JourneyPattern[] = rawJourneyPatterns.map(
         (rawJourneyPattern): JourneyPattern => ({
-            JourneyPatternSections: rawJourneyPattern?.JourneyPatternSectionRefs.map(journeyPatternSectionRef => (
-                findOrThrow(
-                    journeyPatternSections,
-                    section => section?.Id === journeyPatternSectionRef,
-                )
-            )),
+            JourneyPatternSections: rawJourneyPattern?.JourneyPatternSectionRefs.map(journeyPatternSectionRef =>
+                findOrThrow(journeyPatternSections, section => section?.Id === journeyPatternSectionRef),
+            ),
         }),
     );
 
@@ -410,7 +411,7 @@ export const setS3ObjectParams = (event: S3Event): S3ObjectParameters => {
 export const s3TndsHandler = async (event: S3Event): Promise<void> => {
     const params = setS3ObjectParams(event);
 
-    console.log(`Got S3 event for key '${params.Key}' in bucket '${params.Bucket}'`);
+    console.info(`Got S3 event for key '${params.Key}' in bucket '${params.Bucket}'`);
 
     const fileExtension = fileExtensionGetter(params.Key);
 

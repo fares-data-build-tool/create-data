@@ -92,6 +92,7 @@ functions:
 
     TndsUploader:
         handler: handlers/tnds-uploader/handler.s3TndsHandler
+        reservedConcurrency: 50
         events:
             - s3: fdbt-tnds-data-${self:provider.stage}
               event: s3:ObjectCreated:*
