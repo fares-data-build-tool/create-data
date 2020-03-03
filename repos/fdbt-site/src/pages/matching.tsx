@@ -16,7 +16,7 @@ import { getUserFareStages, UserFareStages, FareStage } from '../data/s3';
 import { formatStopName } from '../utils';
 
 const title = 'Matching - Fares data build tool';
-const description = 'Matching page of the Fares data build tool';
+const description = 'Matching page of the fares data build tool';
 
 export interface BasicService {
     lineName: string;
@@ -36,13 +36,16 @@ const Matching = ({ userFareStages, stops, service }: MatchingProps): ReactEleme
             <form action="/api/matching" method="post">
                 <div className="govuk-form-group">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                        <h1 className="govuk-fieldset__heading">Matching Bus Stops to Fares Stage</h1>
+                        <h1 className="govuk-fieldset__heading">Match stops to fares stages</h1>
                     </legend>
+                    <span className="govuk-hint" id="match-fares-hint">
+                        Please select the correct fare stages for each stop.
+                    </span>
                     <div>
                         <div className="matching-wrapper">
-                            <div className="govuk-heading-s matching-stop-header">Stop</div>
-                            <div className="govuk-heading-s naptan-code-header">Naptan</div>
-                            <div className="govuk-heading-s fare-stage-header">Fare Stage</div>
+                            <div className="govuk-heading-s matching-stop-header">Stop name</div>
+                            <div className="govuk-heading-s naptan-code-header">Naptan code</div>
+                            <div className="govuk-heading-s fare-stage-header">Fare stage</div>
                         </div>
                         {stops.map((stop, index) => (
                             <fieldset key={stop.atcoCode} className="govuk-fieldset">
