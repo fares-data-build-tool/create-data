@@ -13,9 +13,7 @@ const HowManyStages: NextPage = () => (
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">
-                                How many fare stages are in your fares triangle?
-                            </h1>
+                            <h1 className="govuk-fieldset__heading">What is the size of your fares triangle?</h1>
                         </legend>
                         <span className="govuk-hint" id="selection-hint">
                             You&apos;ll need to upload a CSV if your fares triangle has more than 20 fares stages.

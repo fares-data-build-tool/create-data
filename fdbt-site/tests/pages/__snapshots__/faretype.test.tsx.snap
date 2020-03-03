@@ -28,7 +28,7 @@ exports[`pages faretype should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="faretype-page-heading"
             >
-              What type of fare?
+              What type of fare would you like to provide?
             </h1>
           </legend>
           <div
@@ -48,7 +48,7 @@ exports[`pages faretype should render correctly 1`] = `
                 className="govuk-label govuk-radios__label"
                 htmlFor="faretype-single"
               >
-                Single
+                Single - Point to Point
               </label>
             </div>
             <div
