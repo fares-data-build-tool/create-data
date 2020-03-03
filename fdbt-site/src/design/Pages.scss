@@ -5,6 +5,74 @@
     line-height: 35px;
 }
 
+.fare-triangle-container {
+    display: flex;
+
+    .fare-triangle-column {
+        .fare-triangle-label-left {
+            display: flex;
+            height: 40px;
+            margin: 0;
+            flex: 0 0 auto;
+            width: 80px;
+            white-space: nowrap;
+
+            span {
+                margin: auto 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                background: #fff;
+                padding: 6px;
+            }
+
+            span:hover {
+                overflow: visible;
+                z-index: 1;
+            }
+        }
+    }
+
+    .fare-triangle {
+        overflow-x: auto;
+        margin-bottom: 40px;
+
+        .fare-triangle-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .fare-triangle-row:not(:last-child) .fare-triangle-input {
+            border-bottom: none;
+        }
+
+        .fare-triangle-input {
+            flex: 0 0 auto;
+        }
+
+        .fare-triangle-input:not(:nth-child(1)) {
+            border-left: none;
+        }
+
+        .fare-triangle-label-right {
+            flex: 0 0 auto;
+            margin: auto 0;
+            width: 110px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 7px;
+        }
+
+        .fare-triangle-label-right:hover {
+            overflow: visible;
+        }
+    }
+}
+
 .matching-page {
     .matching-wrapper {
         display: flex;

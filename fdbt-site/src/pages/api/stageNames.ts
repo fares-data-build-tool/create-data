@@ -1,13 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import {
-    getDomain,
-    setCookieOnResponseObject,
-    redirectTo,
-    redirectToError,
-    deleteCookieOnResponseObject,
-} from './apiUtils';
+import { getDomain, setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
 export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
@@ -34,6 +28,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             redirectToError(res);
             return;
         }
+
         if (!req.body.stageNameInput || req.body.stageNameInput.length === 0) {
             throw new Error('No stage name input received from Stage Names page.');
         }
@@ -41,7 +36,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         if (!userInputValidity.some(el => el.Error !== '')) {
             const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
             setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
-            deleteCookieOnResponseObject(getDomain(req), STAGE_NAME_VALIDATION_COOKIE, req, res);
+            // deleteCookieOnResponseObject(getDomain(req), STAGE_NAME_VALIDATION_COOKIE, req, res);
             redirectTo(res, '/priceEntry');
         } else {
             const validationCookieValue = JSON.stringify(userInputValidity);
