@@ -63,7 +63,7 @@ describe('csvParser and xmlParsers', () => {
     it('parses CSV into JSON', () => {
         const returnedValue = csvParser(mocks.testCsv);
         expect(returnedValue.length).toBe(5);
-        expect(returnedValue[4]).toEqual({ ...mocks.mockServicesData });
+        expect(returnedValue[4]).toEqual(mocks.getMockServicesData(5, 0));
     });
 
     it('parses XML into JSON', async () => {
@@ -248,39 +248,31 @@ describe('getOrderedStopPointsForJourneyPatternSection', () => {
 
 describe('formatDynamoWriteRequest', () => {
     it('should return data in correct format as a DynamoDB WriteRequest', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1, {
-            ...mocks.mockReformattedServicesData,
-        });
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(1);
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedCsv[] = mocks.createArray(1, { ...mocks.mockServicesData });
+        const testArrayOfItems: ParsedCsv[] = mocks.createArray(1);
         const result = formatDynamoWriteRequest(testArrayOfItems);
         expect(result).toEqual(arrayOfBatches);
     });
 
     it('should return an array of <25 when given <25 items', () => {
-        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23, {
-            ...mocks.mockReformattedServicesData,
-        });
+        const batch: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(23);
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch);
-        const testArrayOfItems: ParsedCsv[] = mocks.createArray(23, { ...mocks.mockServicesData });
+        const testArrayOfItems: ParsedCsv[] = mocks.createArray(23);
         const result = formatDynamoWriteRequest(testArrayOfItems);
-        expect(result).toEqual(arrayOfBatches);
+        expect(result).toHaveLength(1);
     });
 
     it('should return an array of >25 when given >25 items', () => {
-        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25, {
-            ...mocks.mockReformattedServicesData,
-        });
-        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7, {
-            ...mocks.mockReformattedServicesData,
-        });
+        const batch1: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(25);
+        const batch2: AWS.DynamoDB.WriteRequest[] = mocks.createBatchOfWriteRequests(7);
         const arrayOfBatches: AWS.DynamoDB.WriteRequest[][] = [];
         arrayOfBatches.push(batch1, batch2);
-        const testArrayOfItems: ParsedCsv[] = mocks.createArray(32, { ...mocks.mockServicesData });
+        const testArrayOfItems: ParsedCsv[] = mocks.createArray(32);
         const result = formatDynamoWriteRequest(testArrayOfItems);
-        expect(result).toEqual(arrayOfBatches);
+        expect(result).toHaveLength(2);
     });
 });
 
@@ -302,7 +294,7 @@ describe('writeBatchesToDynamo', () => {
 
     it('calls dynamodb.batchwrite() only once for a batch size of 25 or less', async () => {
         // Arrange
-        const parsedCsvLines: ParsedCsv[] = [{ ...mocks.mockServicesData }];
+        const parsedCsvLines: ParsedCsv[] = mocks.createArray(1);
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise(): Promise<{}> {
                 return Promise.resolve({});
@@ -321,16 +313,16 @@ describe('writeBatchesToDynamo', () => {
                 return Promise.resolve({});
             },
         }));
-        const parsedCsvLines = mocks.createArray(26, { ...mocks.mockServicesData });
+        const parsedCsvLines = mocks.createArray(53);
         // Act
         await writeBatchesToDynamo({ parsedCsvLines, tableName });
         // Assert
-        expect(mockDynamoDbBatchWrite).toHaveBeenCalledTimes(2);
+        expect(mockDynamoDbBatchWrite).toHaveBeenCalledTimes(3);
     });
 
     it('throws an error if it cannot write to DynamoDB', async () => {
         // Arrange
-        const parsedCsvLines = mocks.createArray(2, { ...mocks.mockServicesData });
+        const parsedCsvLines = mocks.createArray(2);
         mockDynamoDbBatchWrite.mockImplementation(() => ({
             promise(): Promise<{}> {
                 return Promise.reject(Error);

@@ -47,44 +47,44 @@ export const mockS3Event = (bucketName: string, fileName: string): S3Event => ({
     ],
 });
 
-export const mockServicesData = {
-    RowId: '5',
+export const getMockServicesData = (rowId: number, yearModifier: number): ParsedCsv => ({
+    RowId: `${rowId}`,
     NationalOperatorCode: 'A2BR',
     LineName: '32',
     RegionCode: 'EA',
     RegionOperatorCode: 'A2BR',
     Description: 'Trumpington P & R - Hauxton',
     ServiceCode: '20-32-_-y08-1',
-    StartDate: '2019-12-03',
-};
+    StartDate: `2${yearModifier}19-12-03`,
+});
 
-export const mockReformattedServicesData = {
-    RowId: '5',
+export const getMockReformattedServicesData = (rowId: number, yearModifier: number): {} => ({
+    RowId: `${rowId}`,
     NationalOperatorCode: 'A2BR',
     Partition: 'A2BR',
-    Sort: '32#2019-12-03',
+    Sort: `32#2${yearModifier}19-12-03`,
     LineName: '32',
     RegionCode: 'EA',
     RegionOperatorCode: 'A2BR',
     Description: 'Trumpington P & R - Hauxton',
     ServiceCode: '20-32-_-y08-1',
-    StartDate: '2019-12-03',
-};
+    StartDate: `2${yearModifier}19-12-03`,
+});
 
-export const createArray = (index: number, mockNaptanData: ParsedCsv): ParsedCsv[] => {
+export const createArray = (index: number): ParsedCsv[] => {
     const array: ParsedCsv[] = [];
     for (let i = 0; i < index; i += 1) {
-        array.push(mockNaptanData);
+        array.push(getMockServicesData(i, i));
     }
     return array;
 };
 
-export const createBatchOfWriteRequests = (index: number, mockNaptanData: ParsedCsv): AWS.DynamoDB.WriteRequest[] => {
+export const createBatchOfWriteRequests = (index: number): AWS.DynamoDB.WriteRequest[] => {
     const batchOfWriteRequests: AWS.DynamoDB.DocumentClient.WriteRequest[] = [];
     for (let i = 0; i < index; i += 1) {
         batchOfWriteRequests.push({
             PutRequest: {
-                Item: mockNaptanData,
+                Item: getMockReformattedServicesData(i, i),
             },
         });
     }
