@@ -9,12 +9,10 @@ import { Stop } from '../data/dynamodb';
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
-        const date = new Date();
         const host = ctx?.req?.headers?.origin;
         const domain = host && (host as string).replace(/(^\w+:|^)\/\//, '');
 
-        date.setDate(date.getDate() - 1);
-        cookies.set(cookieName, '', { overwrite: true, expires: date, domain, path: '/' });
+        cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
     }
 };
 
