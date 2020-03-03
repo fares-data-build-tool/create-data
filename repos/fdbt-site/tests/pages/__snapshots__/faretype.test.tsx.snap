@@ -39,14 +39,14 @@ exports[`pages faretype should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="faretype"
+                id="faretype-single"
                 name="faretype"
                 type="radio"
                 value="single"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="faretype"
+                htmlFor="faretype-single"
               >
                 Single
               </label>
@@ -58,14 +58,14 @@ exports[`pages faretype should render correctly 1`] = `
                 aria-disabled="true"
                 className="govuk-radios__input"
                 disabled={true}
-                id="faretype-2"
+                id="faretype-return"
                 name="faretype"
                 type="radio"
                 value="return"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="faretype-2"
+                htmlFor="faretype-return"
               >
                 Return
               </label>
@@ -77,14 +77,14 @@ exports[`pages faretype should render correctly 1`] = `
                 aria-disabled="true"
                 className="govuk-radios__input"
                 disabled={true}
-                id="faretype-3"
+                id="faretype-period"
                 name="faretype"
                 type="radio"
                 value="period"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="faretype-3"
+                htmlFor="faretype-period"
               >
                 Period Tickets
               </label>

@@ -87,7 +87,7 @@ StageNames.getInitialProps = (ctx: NextPageContext): {} => {
     if (cookies[STAGE_NAME_VALIDATION_COOKIE]) {
         const validationCookie = cookies[STAGE_NAME_VALIDATION_COOKIE];
         inputChecks = JSON.parse(validationCookie);
-        deleteCookieOnServerSide(ctx, STAGE_NAME_VALIDATION_COOKIE);
+        // deleteCookieOnServerSide(ctx, STAGE_NAME_VALIDATION_COOKIE);
     }
 
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
