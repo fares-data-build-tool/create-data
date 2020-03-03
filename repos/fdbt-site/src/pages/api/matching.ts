@@ -114,8 +114,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         redirectTo(res, '/thankyou');
     } catch (error) {
-        console.error(`There was a problem generating the matching JSON: ${error.stack}`);
         redirectToError(res);
+        throw error;
     }
-    res.end();
 };

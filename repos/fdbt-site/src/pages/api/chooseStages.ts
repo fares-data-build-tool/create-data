@@ -42,9 +42,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), FARE_STAGES_COOKIE, cookieValue, req, res);
         redirectTo(res, '/stageNames');
     } catch (error) {
-        console.log(error.stack);
         redirectToError(res);
-        return;
+        throw error;
     }
-    res.end();
 };

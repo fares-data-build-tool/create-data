@@ -216,7 +216,7 @@ exports[`Matching Page should render correctly 1`] = `
           </fieldset>
           <fieldset
             className="govuk-fieldset"
-            key="13003635B"
+            key="13003655B"
           >
             <div
               className="matching-wrapper"
@@ -225,13 +225,13 @@ exports[`Matching Page should render correctly 1`] = `
                 className="govuk-label matching-stop-name"
                 htmlFor="option2"
               >
-                Seaham, NE-bound Adolphus Place (on South Terrace)
+                Seaham, B Interchange Stand B (on South Crescent)
               </label>
               <label
                 className="govuk-label naptan-code"
                 htmlFor="option2"
               >
-                duratjga
+                duratjwd
               </label>
               <div
                 className="farestage-select-wrapper"
@@ -240,6 +240,90 @@ exports[`Matching Page should render correctly 1`] = `
                   className="govuk-select farestage-select"
                   id="option2"
                   name="option2"
+                >
+                  <option
+                    value=""
+                  >
+                    Not Applicable
+                  </option>
+                  <option
+                    key="Acomb Green Lane"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                  >
+                    Acomb Green Lane
+                  </option>
+                  <option
+                    key="Mattison Way"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Mattison Way\\"}"
+                  >
+                    Mattison Way
+                  </option>
+                  <option
+                    key="Nursery Drive"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                  >
+                    Nursery Drive
+                  </option>
+                  <option
+                    key="Holl Bank/Beech Ave"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                  >
+                    Holl Bank/Beech Ave
+                  </option>
+                  <option
+                    key="Cambridge Street (York)"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                  >
+                    Cambridge Street (York)
+                  </option>
+                  <option
+                    key="Blossom Street"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Blossom Street\\"}"
+                  >
+                    Blossom Street
+                  </option>
+                  <option
+                    key="Rail Station (York)"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                  >
+                    Rail Station (York)
+                  </option>
+                  <option
+                    key="Piccadilly (York)"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                  >
+                    Piccadilly (York)
+                  </option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset
+            className="govuk-fieldset"
+            key="13003635B"
+          >
+            <div
+              className="matching-wrapper"
+            >
+              <label
+                className="govuk-label matching-stop-name"
+                htmlFor="option3"
+              >
+                Seaham, NE-bound Adolphus Place (on South Terrace)
+              </label>
+              <label
+                className="govuk-label naptan-code"
+                htmlFor="option3"
+              >
+                duratjga
+              </label>
+              <div
+                className="farestage-select-wrapper"
+              >
+                <select
+                  className="govuk-select farestage-select"
+                  id="option3"
+                  name="option3"
                 >
                   <option
                     value=""
@@ -307,13 +391,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option3"
+                htmlFor="option4"
               >
                 Deneside, NE-bound The Avenue - Essex Crescent (on The Avenue)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option3"
+                htmlFor="option4"
               >
                 duratgpt
               </label>
@@ -322,8 +406,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option3"
-                  name="option3"
+                  id="option4"
+                  name="option4"
                 >
                   <option
                     value=""
@@ -391,13 +475,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option4"
+                htmlFor="option5"
               >
                 Seaham, SE-bound New Strangford Road (on New Stranford Road)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option4"
+                htmlFor="option5"
               >
                 duratgma
               </label>
@@ -406,8 +490,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option4"
-                  name="option4"
+                  id="option5"
+                  name="option5"
                 >
                   <option
                     value=""
@@ -475,13 +559,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option5"
+                htmlFor="option6"
               >
                 Seaham, NE-bound New Tempest Road - York House (on Tempest Road)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option5"
+                htmlFor="option6"
               >
                 duratgjt
               </label>
@@ -490,8 +574,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option5"
-                  name="option5"
+                  id="option6"
+                  name="option6"
                 >
                   <option
                     value=""
@@ -559,13 +643,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option6"
+                htmlFor="option7"
               >
                 New Seaham, NE-bound Mount Pleasant (on The Avenue)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option6"
+                htmlFor="option7"
               >
                 durapmjg
               </label>
@@ -574,8 +658,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option6"
-                  name="option6"
+                  id="option7"
+                  name="option7"
                 >
                   <option
                     value=""
@@ -643,13 +727,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option7"
+                htmlFor="option8"
               >
                 Seaham, E-bound Viceroy Street (on Viceroy street)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option7"
+                htmlFor="option8"
               >
                 durgawmt
               </label>
@@ -658,8 +742,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option7"
-                  name="option7"
+                  id="option8"
+                  name="option8"
                 >
                   <option
                     value=""
@@ -727,13 +811,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option8"
+                htmlFor="option9"
               >
                 Seaham, S-bound Vane Terrace - Castlereagh (on Vane Terrace)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option8"
+                htmlFor="option9"
               >
                 duratgdt
               </label>
@@ -742,8 +826,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option8"
-                  name="option8"
+                  id="option9"
+                  name="option9"
                 >
                   <option
                     value=""
@@ -811,13 +895,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option9"
+                htmlFor="option10"
               >
                 New Seaham, N-bound Estate Hail and Ride (on Windermere Road)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option9"
+                htmlFor="option10"
               >
                 durgawjp
               </label>
@@ -826,8 +910,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option9"
-                  name="option9"
+                  id="option10"
+                  name="option10"
                 >
                   <option
                     value=""
@@ -895,13 +979,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option10"
+                htmlFor="option11"
               >
                 Deneside, NE-bound Kingston Avenue (on Kingston Avenue)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option10"
+                htmlFor="option11"
               >
                 durawagw
               </label>
@@ -910,8 +994,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option10"
-                  name="option10"
+                  id="option11"
+                  name="option11"
                 >
                   <option
                     value=""
@@ -979,13 +1063,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option11"
+                htmlFor="option12"
               >
                 Deneside, E-bound Park (on The Avenue)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option11"
+                htmlFor="option12"
               >
                 duratgwg
               </label>
@@ -994,8 +1078,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option11"
-                  name="option11"
+                  id="option12"
+                  name="option12"
                 >
                   <option
                     value=""
@@ -1063,13 +1147,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option12"
+                htmlFor="option13"
               >
                 Deneside, NW-bound Laurel Avenue (on Laurel Avenue)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option12"
+                htmlFor="option13"
               >
                 durawamp
               </label>
@@ -1078,8 +1162,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option12"
-                  name="option12"
+                  id="option13"
+                  name="option13"
                 >
                   <option
                     value=""
@@ -1147,13 +1231,13 @@ exports[`Matching Page should render correctly 1`] = `
             >
               <label
                 className="govuk-label matching-stop-name"
-                htmlFor="option13"
+                htmlFor="option14"
               >
                 Seaham, S-bound Sophia Street (on Sophia Street)
               </label>
               <label
                 className="govuk-label naptan-code"
-                htmlFor="option13"
+                htmlFor="option14"
               >
                 durgapwp
               </label>
@@ -1162,8 +1246,8 @@ exports[`Matching Page should render correctly 1`] = `
               >
                 <select
                   className="govuk-select farestage-select"
-                  id="option13"
-                  name="option13"
+                  id="option14"
+                  name="option14"
                 >
                   <option
                     value=""
