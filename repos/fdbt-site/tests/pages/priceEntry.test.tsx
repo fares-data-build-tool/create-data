@@ -31,8 +31,9 @@ describe('Price Entry Page', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    it('redirects to error page if stage names cookie does not exist', () => {
-        const mockStageNamesCookieBody = '%7B%22operator%22%3A%22MCT%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D';
+    it('throws error if stage names cookie does not exist', () => {
+        const mockStageNamesCookieBody =
+            '%7B%22operator%22%3A%22MCT%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D';
         const mockWriteHeadFn = jest.fn();
         const mockEndFn = jest.fn();
         const res = new MockRes();
@@ -58,16 +59,11 @@ describe('Price Entry Page', () => {
             query: {},
             AppTree: () => <div />,
         };
-        const result = PriceEntry.getInitialProps(ctx);
 
-        expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-            Location: '/error',
-        });
-        expect(mockEndFn).toHaveBeenCalled();
-        expect(result).toEqual({});
+        expect(() => PriceEntry.getInitialProps(ctx)).toThrow();
     });
 
-    it('redirects to error page if no stage names can be found', () => {
+    it('throws error if no stage names can be found', () => {
         const mockStageNamesCookieBody = '';
         const mockWriteHeadFn = jest.fn();
         const mockEndFn = jest.fn();
@@ -94,12 +90,7 @@ describe('Price Entry Page', () => {
             query: {},
             AppTree: () => <div />,
         };
-        const result = PriceEntry.getInitialProps(ctx);
 
-        expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-            Location: '/error',
-        });
-        expect(mockEndFn).toHaveBeenCalled();
-        expect(result).toEqual({});
+        expect(() => PriceEntry.getInitialProps(ctx)).toThrow();
     });
 });
