@@ -37,10 +37,8 @@ export const deleteCookieOnResponseObject = (
     res: NextApiResponse,
 ): void => {
     const cookies = new Cookies(req, res);
-    const date = new Date();
 
-    date.setDate(date.getDate() - 1);
-    cookies.set(cookieName, '', { overwrite: true, expires: date, domain, path: '/' });
+    cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
 };
 
 export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
