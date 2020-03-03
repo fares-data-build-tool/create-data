@@ -83,7 +83,7 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
         convertEmptyValues: true,
     });
     const dynamoWriteRequestBatches = formatDynamoWriteRequest(parsedLines);
-    console.log('Number of batches to write to DynamoDB is: ', dynamoWriteRequestBatches.length);
+    console.info('Number of batches to write to DynamoDB is: ', dynamoWriteRequestBatches.length);
     let count = 0;
 
     let writePromises = [];
@@ -107,9 +107,9 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
                 await Promise.all(writePromises); // eslint-disable-line no-await-in-loop
                 writePromises = [];
 
-                console.log(`Wrote ${count} items to DynamoDB.`);
+                console.info(`Wrote ${count} items to DynamoDB.`);
             } catch (err) {
-                console.log(`Throwing error.... ${err.name} : ${err.message}`);
+                console.error(`Throwing error.... ${err.name} : ${err.message}`);
                 throw new Error('Could not write batch to DynamoDB');
             }
         }
@@ -118,10 +118,10 @@ export const writeBatchesToDynamo = async ({ parsedLines, tableName }: PushToDya
     try {
         await Promise.all(writePromises);
 
-        console.log(`Wrote ${dynamoWriteRequestBatches.length} total batches to DynamoDB`);
-        console.log(`Wrote ${count} total items to DynamoDB.`);
+        console.info(`Wrote ${dynamoWriteRequestBatches.length} total batches to DynamoDB`);
+        console.info(`Wrote ${count} total items to DynamoDB.`);
     } catch (err) {
-        console.log(`Throwing error.... ${err.name} : ${err.message}`);
+        console.error(`Throwing error.... ${err.name} : ${err.message}`);
         throw new Error('Could not write batch to DynamoDB');
     }
 };
