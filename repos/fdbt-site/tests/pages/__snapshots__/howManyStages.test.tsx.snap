@@ -27,7 +27,7 @@ exports[`pages howManyStages should render correctly 1`] = `
             <h1
               className="govuk-fieldset__heading"
             >
-              How many fare stages are in your fares triangle?
+              What is the size of your fares triangle?
             </h1>
           </legend>
           <span
