@@ -27,13 +27,13 @@ exports[`pages operator should render correctly 1`] = `
         className="index-page-list"
       >
         <li>
-          Add fares to a newly registered bus service
+          Publish fares to a newly registered service
         </li>
         <li>
-          Update fares on an existing bus service
+          Update fares for an existing service
         </li>
         <li>
-          Generate fares data for services in NeTEx format
+          Generate fares data in NeTEx format
         </li>
       </ul>
     </div>
