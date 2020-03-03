@@ -31,14 +31,21 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
                     <div className="fare-triangle-container">
                         <div className="fare-triangle-column">
                             {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div className="govuk-heading-s fare-triangle-label-left">
+                                <div
+                                    className="govuk-heading-s fare-triangle-label-left"
+                                    key={stageNamesArray[rowIndex]}
+                                >
                                     <span>{rowIndex > 0 ? rowStage : null}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="fare-triangle">
                             {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div id={`row-${rowIndex}`} className="fare-triangle-row">
+                                <div
+                                    id={`row-${rowIndex}`}
+                                    className="fare-triangle-row"
+                                    key={stageNamesArray[rowIndex]}
+                                >
                                     {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
                                         <input
                                             className="govuk-input govuk-input--width-4 fare-triangle-input"
@@ -50,6 +57,7 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
                                             maxLength={5}
                                             required
                                             pattern="^[0-9]*$"
+                                            key={stageNamesArray[columnIndex]}
                                         />
                                     ))}
                                     <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>

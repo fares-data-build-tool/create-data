@@ -2,7 +2,7 @@ import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
 import priceEntry, { numberOfInputsIsValid, putDataInS3 } from '../../../src/pages/api/priceEntry';
 import { FARE_STAGES_COOKIE } from '../../../src/constants';
 
-describe('priceEntry', () => {
+describe('API validation of number of price inputs', () => {
     const mockCookie = `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%226%22%7D`;
 
     beforeEach(() => {
@@ -56,21 +56,9 @@ describe('priceEntry', () => {
         const result = numberOfInputsIsValid(req, res);
         expect(result).toBe(false);
     });
-
-    it('should throw an error when there there is no S3 bucket name variable set', () => {
-        process.env.MATCHING_DATA_BUCKET_NAME = '';
-        const uuid = '780e3459-6305-4ae5-9082-b925b92cb46c';
-        const text =
-            '{"fareStages":[{"stageName":"Bewbush","prices":[{"price":"1.00","fareZones":["Chorlton"]},{"price":"1.20","fareZones":["Dewsbury"]}]},{"stageName":"Chorlton","prices":[{"price":"1.40","fareZones":["Dewsbury"]}]}]}';
-        try {
-            putDataInS3(uuid, text);
-        } catch {
-            expect(putDataInS3(uuid, text)).toThrow('No Bucket name environment variable not set.');
-        }
-    });
 });
 
-describe('priceEntry', () => {
+describe('API validation of format of price inputs', () => {
     let res: mockReqRes.ResponseOutput;
     let writeHeadMock: jest.Mock;
 
@@ -106,5 +94,19 @@ describe('priceEntry', () => {
         });
         priceEntry(mockRequest(req), res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
+    });
+});
+
+describe('S3 bucket name validation', () => {
+    it('should throw an error when there there is no S3 bucket name variable set', () => {
+        process.env.MATCHING_DATA_BUCKET_NAME = '';
+        const uuid = '780e3459-6305-4ae5-9082-b925b92cb46c';
+        const text =
+            '{"fareStages":[{"stageName":"Bewbush","prices":[{"price":"1.00","fareZones":["Chorlton"]},{"price":"1.20","fareZones":["Dewsbury"]}]},{"stageName":"Chorlton","prices":[{"price":"1.40","fareZones":["Dewsbury"]}]}]}';
+        try {
+            putDataInS3(uuid, text);
+        } catch {
+            expect(putDataInS3(uuid, text)).toThrow('No Bucket name environment variable not set.');
+        }
     });
 });

@@ -31,10 +31,7 @@ export const numberOfInputsIsValid = (req: NextApiRequest, res: NextApiResponse)
     const expectedNumberOfPriceInputs = (numberOfFareStages * (numberOfFareStages - 1)) / 2;
     const numberOfInputInApiRequest = Object.entries(req.body).length;
 
-    if (expectedNumberOfPriceInputs === numberOfInputInApiRequest) {
-        return true;
-    }
-    return false;
+    return expectedNumberOfPriceInputs === numberOfInputInApiRequest;
 };
 
 export const priceIsValid = (req: NextApiRequest): boolean => {

@@ -45,11 +45,13 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Briggate"
             >
               <span />
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Chapeltown"
             >
               <span>
                 Chapeltown
@@ -57,6 +59,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Chapel Allerton"
             >
               <span>
                 Chapel Allerton
@@ -64,6 +67,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Moortown"
             >
               <span>
                 Moortown
@@ -71,6 +75,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Harrogate Road"
             >
               <span>
                 Harrogate Road
@@ -78,6 +83,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Harehills"
             >
               <span>
                 Harehills
@@ -85,6 +91,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Gipton"
             >
               <span>
                 Gipton
@@ -92,6 +99,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Armley"
             >
               <span>
                 Armley
@@ -99,6 +107,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Stanningley"
             >
               <span>
                 Stanningley
@@ -106,6 +115,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Pudsey"
             >
               <span>
                 Pudsey
@@ -113,6 +123,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Seacroft"
             >
               <span>
                 Seacroft
@@ -120,6 +131,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Rothwell"
             >
               <span>
                 Rothwell
@@ -127,6 +139,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Dewsbury"
             >
               <span>
                 Dewsbury
@@ -134,6 +147,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             </div>
             <div
               className="govuk-heading-s fare-triangle-label-left"
+              key="Wakefield"
             >
               <span>
                 Wakefield
@@ -146,6 +160,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-0"
+              key="Briggate"
             >
               <div
                 className="govuk-heading-s fare-triangle-label-right"
@@ -156,10 +171,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-1"
+              key="Chapeltown"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-1-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -177,10 +194,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-2"
+              key="Chapel Allerton"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-2-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -192,6 +211,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-2-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -209,10 +229,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-3"
+              key="Moortown"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-3-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -224,6 +246,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-3-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -235,6 +258,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-3-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -252,10 +276,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-4"
+              key="Harrogate Road"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-4-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -267,6 +293,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-4-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -278,6 +305,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-4-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -289,6 +317,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-4-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -306,10 +335,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-5"
+              key="Harehills"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-5-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -321,6 +352,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-5-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -332,6 +364,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-5-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -343,6 +376,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-5-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -354,6 +388,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-5-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -371,10 +406,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-6"
+              key="Gipton"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-6-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -386,6 +423,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-6-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -397,6 +435,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-6-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -408,6 +447,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-6-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -419,6 +459,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-6-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -430,6 +471,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-6-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -447,10 +489,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-7"
+              key="Armley"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-7-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -462,6 +506,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-7-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -473,6 +518,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-7-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -484,6 +530,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-7-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -495,6 +542,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-7-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -506,6 +554,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-7-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -517,6 +566,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-7-6"
+                key="Gipton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -534,10 +584,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-8"
+              key="Stanningley"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -549,6 +601,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -560,6 +613,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -571,6 +625,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -582,6 +637,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -593,6 +649,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -604,6 +661,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-6"
+                key="Gipton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -615,6 +673,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-8-7"
+                key="Armley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -632,10 +691,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-9"
+              key="Pudsey"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -647,6 +708,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -658,6 +720,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -669,6 +732,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -680,6 +744,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -691,6 +756,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -702,6 +768,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-6"
+                key="Gipton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -713,6 +780,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-7"
+                key="Armley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -724,6 +792,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-9-8"
+                key="Stanningley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -741,10 +810,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-10"
+              key="Seacroft"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -756,6 +827,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -767,6 +839,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -778,6 +851,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -789,6 +863,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -800,6 +875,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -811,6 +887,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-6"
+                key="Gipton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -822,6 +899,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-7"
+                key="Armley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -833,6 +911,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-8"
+                key="Stanningley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -844,6 +923,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-10-9"
+                key="Pudsey"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -861,10 +941,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-11"
+              key="Rothwell"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -876,6 +958,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -887,6 +970,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -898,6 +982,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -909,6 +994,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -920,6 +1006,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -931,6 +1018,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-6"
+                key="Gipton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -942,6 +1030,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-7"
+                key="Armley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -953,6 +1042,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-8"
+                key="Stanningley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -964,6 +1054,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-9"
+                key="Pudsey"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -975,6 +1066,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-11-10"
+                key="Seacroft"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -992,10 +1084,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-12"
+              key="Dewsbury"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1007,6 +1101,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1018,6 +1113,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1029,6 +1125,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1040,6 +1137,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1051,6 +1149,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1062,6 +1161,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-6"
+                key="Gipton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1073,6 +1173,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-7"
+                key="Armley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1084,6 +1185,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-8"
+                key="Stanningley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1095,6 +1197,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-9"
+                key="Pudsey"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1106,6 +1209,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-10"
+                key="Seacroft"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1117,6 +1221,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-12-11"
+                key="Rothwell"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1134,10 +1239,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             <div
               className="fare-triangle-row"
               id="row-13"
+              key="Wakefield"
             >
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-0"
+                key="Briggate"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1149,6 +1256,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-1"
+                key="Chapeltown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1160,6 +1268,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-2"
+                key="Chapel Allerton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1171,6 +1280,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-3"
+                key="Moortown"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1182,6 +1292,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-4"
+                key="Harrogate Road"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1193,6 +1304,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-5"
+                key="Harehills"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1204,6 +1316,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-6"
+                key="Gipton"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1215,6 +1328,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-7"
+                key="Armley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1226,6 +1340,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-8"
+                key="Stanningley"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1237,6 +1352,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-9"
+                key="Pudsey"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1248,6 +1364,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-10"
+                key="Seacroft"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1259,6 +1376,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-11"
+                key="Rothwell"
                 max="10000"
                 maxLength={5}
                 min="1"
@@ -1270,6 +1388,7 @@ exports[`Price Entry Page should render correctly 1`] = `
               <input
                 className="govuk-input govuk-input--width-4 fare-triangle-input"
                 id="cell-13-12"
+                key="Dewsbury"
                 max="10000"
                 maxLength={5}
                 min="1"
