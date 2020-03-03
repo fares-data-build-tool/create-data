@@ -43,7 +43,7 @@ describe('howManyStages', () => {
             },
         });
 
-        howManyStages(req, res);
+        expect(() => howManyStages(req, res)).toThrow();
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
