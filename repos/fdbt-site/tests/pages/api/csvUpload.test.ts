@@ -117,7 +117,7 @@ describe('csvUpload', () => {
             Location: '/error',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
-        expect(outputData).toBe('File must be of type text/csv, uploaded file is text/pdf');
+        expect(outputData).toBe('File not of allowed type, uploaded file is text/pdf');
     });
 
     it('should get the uuid from the cookie', () => {
