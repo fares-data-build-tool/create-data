@@ -6,7 +6,17 @@ export const testCsv: string =
     'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
     'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
     'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)\n';
+    'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)';
+
+export const testCsvWithEmptyLines: string =
+    ',Acomb Green Lane,,,,,,,\n' +
+    'Mattison Way,110,Mattison Way,,,,,,\n' +
+    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
+    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
+    'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
+    'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
+    'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)\n\n\n\n';
 
 export const nonNumericPricesTestCsv: string =
     ',Acomb Green Lane,,,,,,,\n' +
@@ -16,7 +26,7 @@ export const nonNumericPricesTestCsv: string =
     'Cambridge Street (York),170,d,110,110,Cambridge Street (York),,,\n' +
     'Blossom Street,170,170,d,110,100,Blossom Street,,\n' +
     'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,s,100,100,100,Piccadilly (York)\n';
+    'Piccadilly (York),170,170,170,s,100,100,100,Piccadilly (York)';
 
 export const missingPricesTestCsv: string =
     ',Acomb Green Lane,,,,,,,\n' +
@@ -26,7 +36,7 @@ export const missingPricesTestCsv: string =
     'Cambridge Street (York),170,,110,,Cambridge Street (York),,,\n' +
     'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
     'Rail Station (York),170,,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,170,100,,100,Piccadilly (York)\n';
+    'Piccadilly (York),170,170,170,170,100,,100,Piccadilly (York)';
 
 export const unprocessedObject = {
     Bucket: 'fdbt-raw-user-data',
@@ -39,7 +49,22 @@ export const unprocessedObject = {
         'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
         'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
         'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-        'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)\n',
+        'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)',
+    ContentType: 'text/csv; charset=utf-8',
+};
+
+export const unprocessedObjectWithEmptyLines = {
+    Bucket: 'fdbt-raw-user-data',
+    Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
+    Body:
+        ',Acomb Green Lane,,,,,,,\n' +
+        'Mattison Way,110,Mattison Way,,,,,,\n' +
+        'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
+        'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
+        'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
+        'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
+        'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
+        'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)\n\n\n\n',
     ContentType: 'text/csv; charset=utf-8',
 };
 
