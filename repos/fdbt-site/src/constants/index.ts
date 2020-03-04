@@ -17,3 +17,15 @@ export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-governme
 export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
 export const PRICEENTRY_COOKIE = 'fdbt-price-entry';
+
+export const ALLOWED_CSV_FILE_TYPES = [
+    'text/plain',
+    'text/x-csv',
+    'application/vnd.ms-excel',
+    'application/csv',
+    'application/x-csv',
+    'text/csv',
+    'text/comma-separated-values',
+    'text/x-comma-separated-values',
+    'text/tab-separated-values',
+];
