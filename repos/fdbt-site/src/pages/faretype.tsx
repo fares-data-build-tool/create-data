@@ -28,7 +28,7 @@ const FareType: NextPage = (): ReactElement => (
                                     type="radio"
                                     value="single"
                                 />
-                                <label className="govuk-label govuk-radios__label" htmlFor="faretype">
+                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-single">
                                     Single - Point to Point
                                 </label>
                             </div>

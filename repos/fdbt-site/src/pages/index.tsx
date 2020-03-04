@@ -13,7 +13,7 @@ const Home: NextPage = (): ReactElement => (
             <p className="govuk-body-l">Use this service to:</p>
             <div className="govuk-body-l">
                 <ul className="index-page-list">
-                    <li>Publish fares to a newly registered service</li>
+                    <li>Publish fares for a newly registered service</li>
                     <li>Update fares for an existing service</li>
                     <li>Generate fares data in NeTEx format</li>
                 </ul>
