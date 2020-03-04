@@ -15,6 +15,10 @@ const CsvUpload: NextPage = (): ReactElement => (
                     Please select your file to upload
                 </h1>
             </legend>
+            <span className="govuk-hint" id="csv-upload-hint">
+                Please upload your fares triangle as a csv below. You can refer to the documents section to down a
+                template and help file.
+            </span>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
                     <form action="/api/csvUpload" method="post" encType="multipart/form-data">
@@ -47,7 +51,7 @@ const CsvUpload: NextPage = (): ReactElement => (
                 <div className="govuk-grid-column-one-third">
                     <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                        <h1 className="govuk-fieldset__heading">Documents</h1>
+                        <h1 className="govuk-fieldset__heading">Help documents</h1>
                     </legend>
                     <FileAttachment
                         displayName="Download Help File"
