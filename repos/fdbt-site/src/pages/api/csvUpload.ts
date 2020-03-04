@@ -90,8 +90,14 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     let expectedNumberOfPrices = 0;
 
     for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
-        expectedNumberOfPrices += rowNum;
         const items = dataAsLines[rowNum].split(',');
+
+        if (items.length <= 1) {
+            break;
+        }
+
+        expectedNumberOfPrices += rowNum;
+
         const stageName = items[rowNum + 1];
 
         fareTriangle.fareStages[rowNum] = {
