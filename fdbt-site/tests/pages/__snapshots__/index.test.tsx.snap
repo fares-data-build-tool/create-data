@@ -27,7 +27,7 @@ exports[`pages operator should render correctly 1`] = `
         className="index-page-list"
       >
         <li>
-          Publish fares to a newly registered service
+          Publish fares for a newly registered service
         </li>
         <li>
           Update fares for an existing service
