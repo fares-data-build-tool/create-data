@@ -4,7 +4,6 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { STAGE_NAMES_COOKIE } from '../constants';
-import { redirectToError } from './api/apiUtils';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Enter prices into fares triangle page of the Fares Data Build Tool';
@@ -86,8 +85,7 @@ PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
 
         try {
             if (stageNamesArray.length === 0 && ctx.res) {
-                redirectToError(ctx.res);
-                return {};
+                throw new Error('No stages in cookie data');
             }
             return { stageNamesArray };
         } catch (err) {
@@ -95,9 +93,7 @@ PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
         }
     }
 
-    redirectToError(ctx.res!);
-
-    return {};
+    throw new Error('Stage Name cookie not set');
 };
 
 export default PriceEntry;
