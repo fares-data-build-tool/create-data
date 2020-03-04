@@ -4,6 +4,7 @@ import fs from 'fs';
 import flatMap from 'array.prototype.flatmap';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
+import { ALLOWED_CSV_FILE_TYPES } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;
 
@@ -156,9 +157,9 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
         return false;
     }
 
-    if (fileType !== 'text/csv') {
+    if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
         redirectToError(res);
-        console.warn(`File must be of type text/csv, uploaded file is ${fileType}`);
+        console.warn(`File not of allowed type, uploaded file is ${fileType}`);
 
         return false;
     }
