@@ -66,6 +66,10 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
                 fareZones: [],
             };
         }
+
+        if (!fareTriangle[destinationFareStageName]) {
+            fareTriangle[destinationFareStageName] = {};
+        }
         fareTriangle[originFareStageName][price].fareZones.push(destinationFareStageName);
     }
 
