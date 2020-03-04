@@ -46,7 +46,7 @@ exports[`pages faretype should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="faretype"
+                htmlFor="faretype-single"
               >
                 Single - Point to Point
               </label>
