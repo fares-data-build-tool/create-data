@@ -32,6 +32,5 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/service');
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };

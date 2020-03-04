@@ -79,7 +79,7 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
         fareStages: [],
     };
 
-    const dataAsLines: string[] = dataToMap.split('\n');
+    const dataAsLines: string[] = dataToMap.split(/\r?\n/);
 
     const fareStageCount = dataAsLines.length;
 
@@ -90,9 +90,18 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     let expectedNumberOfPrices = 0;
 
     for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
-        expectedNumberOfPrices += rowNum;
         const items = dataAsLines[rowNum].split(',');
-        const stageName = items[rowNum + 1];
+        const trimmedItems = items.map(item => item.trim());
+        let [stageName] = trimmedItems;
+        if (rowNum === 0) {
+            [, stageName] = trimmedItems;
+        }
+
+        if (trimmedItems.every(item => item === '' || item === null)) {
+            break;
+        } else {
+            expectedNumberOfPrices += rowNum;
+        }
 
         fareTriangle.fareStages[rowNum] = {
             stageName,
@@ -100,20 +109,17 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
         };
 
         for (let colNum = 0; colNum < rowNum; colNum += 1) {
-            const price = items[colNum + 1];
-            const priceZoneName = items[rowNum + 1];
+            const price = trimmedItems[colNum + 1];
 
-            if (price) {
-                // Check explicitly for number to account for invalid fare data
-                if (!Number.isNaN(Number(price))) {
-                    if (fareTriangle.fareStages?.[colNum].prices?.[price]?.fareZones) {
-                        fareTriangle.fareStages[colNum].prices[price].fareZones.push(priceZoneName);
-                    } else {
-                        fareTriangle.fareStages[colNum].prices[price] = {
-                            price: (parseFloat(price) / 100).toFixed(2),
-                            fareZones: [priceZoneName],
-                        };
-                    }
+            // Check explicitly for number to account for invalid fare data
+            if (price && !Number.isNaN(Number(price)) && stageName) {
+                if (fareTriangle.fareStages?.[colNum].prices?.[price]?.fareZones) {
+                    fareTriangle.fareStages[colNum].prices[price].fareZones.push(stageName);
+                } else {
+                    fareTriangle.fareStages[colNum].prices[price] = {
+                        price: (parseFloat(price) / 100).toFixed(2),
+                        fareZones: [stageName],
+                    };
                 }
             }
         }
@@ -194,6 +200,5 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };

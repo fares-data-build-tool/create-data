@@ -45,6 +45,5 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };
