@@ -132,50 +132,56 @@ describe('csvUpload', () => {
         expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
     });
 
-    it('should put the unparsed data in s3 and the parsed data in s3', async () => {
-        const file = {
-            'csv-upload': {
-                size: 999,
-                path: 'string',
-                name: 'string',
-                type: 'text/csv',
-                toJSON(): string {
-                    return '';
+    it.each([
+        [csvData.testCsv, csvData.unprocessedObject.Body, csvData.processedObject.Body],
+        [csvData.testCsvWithEmptyLines, csvData.unprocessedObjectWithEmptyLines.Body, csvData.processedObject.Body],
+    ])(
+        'should put the unparsed data in s3 and the parsed data in s3',
+        async (csv, expectedUnprocessed, expectedProcessed) => {
+            const file = {
+                'csv-upload': {
+                    size: 999,
+                    path: 'string',
+                    name: 'string',
+                    type: 'text/csv',
+                    toJSON(): string {
+                        return '';
+                    },
                 },
-            },
-        };
+            };
 
-        jest.spyOn(csvUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.testCsv,
+            jest.spyOn(csvUpload, 'getFormData')
+                .mockImplementation()
+                .mockResolvedValue({
+                    Files: file,
+                    FileContent: csv,
+                });
+
+            const req = mockRequest({
+                headers: {
+                    cookie: mockCookie,
+                },
             });
 
-        const req = mockRequest({
-            headers: {
-                cookie: mockCookie,
-            },
-        });
+            await csvUpload.default(req, res);
 
-        await csvUpload.default(req, res);
+            expect(s3.putStringInS3).toBeCalledWith(
+                'fdbt-raw-user-data',
+                expect.any(String),
+                JSON.stringify(expectedUnprocessed),
+                'text/csv; charset=utf-8',
+            );
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-raw-user-data',
-            expect.any(String),
-            JSON.stringify(csvData.unprocessedObject.Body),
-            'text/csv; charset=utf-8',
-        );
+            expect(s3.putStringInS3).toBeCalledWith(
+                'fdbt-user-data',
+                expect.any(String),
+                JSON.stringify(expectedProcessed),
+                'application/json; charset=utf-8',
+            );
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-user-data',
-            expect.any(String),
-            JSON.stringify(csvData.processedObject.Body),
-            'application/json; charset=utf-8',
-        );
-
-        expect(s3.putStringInS3).toBeCalledTimes(2);
-    });
+            expect(s3.putStringInS3).toBeCalledTimes(2);
+        },
+    );
 
     it('should return 302 redirect to /matching when the happy path is used', async () => {
         const file = {
@@ -238,7 +244,7 @@ describe('csvUpload', () => {
             },
         });
 
-        await expect(csvUpload.default(req, res)).rejects.toThrow();
+        await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
@@ -273,7 +279,7 @@ describe('csvUpload', () => {
             },
         });
 
-        await expect(csvUpload.default(req, res)).rejects.toThrow();
+        await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
