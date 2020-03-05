@@ -115,6 +115,5 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         redirectTo(res, '/thankyou');
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };

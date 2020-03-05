@@ -83,7 +83,7 @@ describe('stageNames', () => {
         const mockBody = {};
         const mockWriteHeadFn = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
-        expect(() => stageNames(req, res)).toThrow();
+        stageNames(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
             Location: '/error',
         });
