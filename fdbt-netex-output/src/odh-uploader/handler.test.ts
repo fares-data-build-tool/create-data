@@ -1,20 +1,57 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import AWS from 'aws-sdk';
+import { S3Event } from 'aws-lambda';
+import nodemailer from 'nodemailer';
+import * as testData from './testData/testData'
+import { createMailTransporter, odhUploaderHandler } from './handler';
 
-import { Callback } from 'aws-lambda';
-import s3OdhUploaderHandler from './handler';
+jest.mock('aws-sdk');
 
-describe('aws handler', () => {
-    it('should call console.log', () => {
-        const event = {
-            Name: 'myName',
-        };
-        const context: any = {};
-        const callback: Callback = jest.fn();
-        const globalAny: any = global;
-        globalAny.console = {
-            log: jest.fn(),
-        };
-        s3OdhUploaderHandler(event, context, callback);
-        expect(globalAny.console.log).toHaveBeenCalledWith(JSON.stringify(event));
+describe('odhHandler SES emailer', () => {
+
+    const mockS3GetObject = jest.fn();
+    const mockMailTransporter = jest.fn();
+
+    beforeEach(() => {
+
+        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
+            return {
+                getObject: mockS3GetObject,
+            };
+        });
+
+        mockS3GetObject.mockImplementation(() => ({
+            promise(): Promise<{}> {
+                return Promise.resolve({ Body: testData.testNetexFromS3});
+            },
+        }));
+
+        (createMailTransporter as {}) = jest.fn().mockImplementation(() => {
+            return {
+                sendMail: mockMailTransporter,
+            };
+        });
+
+        mockMailTransporter.mockImplementation(() => {
+            return nodemailer.createTransport({
+                streamTransport: true,
+                newline: 'unix',
+                buffer: true
+            });
+        })
+    });
+
+    afterEach(() => {
+        mockS3GetObject.mockReset();
+        mockMailTransporter.mockReset();
+    });
+
+    it('sends an email', async () => {
+        const key = 'NameOfNetexFile.xml';
+        const event: S3Event = testData.testS3Event('thisIsMyBucket', key);
+
+        await odhUploaderHandler(event);
+
+        expect(mockMailTransporter).toBeCalledTimes(1);
+
     });
 });
