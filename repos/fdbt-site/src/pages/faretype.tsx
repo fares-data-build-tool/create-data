@@ -35,6 +35,18 @@ const FareType: NextPage = (): ReactElement => (
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
+                                    id="faretype-period"
+                                    name="faretype"
+                                    type="radio"
+                                    value="period"
+                                />
+                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-period">
+                                    Period Tickets
+                                </label>
+                            </div>
+                            <div className="govuk-radios__item">
+                                <input
+                                    className="govuk-radios__input"
                                     id="faretype-return"
                                     name="faretype"
                                     type="radio"
@@ -44,20 +56,6 @@ const FareType: NextPage = (): ReactElement => (
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="faretype-return">
                                     Return
-                                </label>
-                            </div>
-                            <div className="govuk-radios__item">
-                                <input
-                                    className="govuk-radios__input"
-                                    id="faretype-period"
-                                    name="faretype"
-                                    type="radio"
-                                    value="period"
-                                    disabled
-                                    aria-disabled="true"
-                                />
-                                <label className="govuk-label govuk-radios__label" htmlFor="faretype-period">
-                                    Period Tickets
                                 </label>
                             </div>
                         </div>
