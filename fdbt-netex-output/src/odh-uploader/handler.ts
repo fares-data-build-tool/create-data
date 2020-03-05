@@ -13,7 +13,7 @@ export const createMailTransporter = (): Mail => {
     return nodemailer.createTransport({
         SES: new AWS.SES({
             apiVersion: '2010-12-01',
-            region: 'eu-west-2'
+            region: 'eu-west-1'
         }),
     });
 };
@@ -61,8 +61,6 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
         const mailTransporter = createMailTransporter();
 
         const info: SentMessageInfo = await mailTransporter.sendMail(mailOptions);
-
-        console.log(info);
 
         if (info.message) {
             console.log(`Email sent: ${info.message.toString()}`);
