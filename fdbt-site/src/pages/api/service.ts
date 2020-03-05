@@ -33,6 +33,5 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/direction');
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };
