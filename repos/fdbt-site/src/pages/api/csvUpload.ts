@@ -92,10 +92,7 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
         const items = dataAsLines[rowNum].split(',');
         const trimmedItems = items.map(item => item.trim());
-        let [stageName] = trimmedItems;
-        if (rowNum === 0) {
-            [, stageName] = trimmedItems;
-        }
+        const stageName = trimmedItems[rowNum + 1];
 
         if (trimmedItems.every(item => item === '' || item === null)) {
             break;
