@@ -43,6 +43,5 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/stageNames');
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };
