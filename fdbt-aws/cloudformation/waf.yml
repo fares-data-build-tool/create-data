@@ -29,6 +29,16 @@ Resources:
         - 213.104.199.0/24
         - 148.252.255.0/24
 
+  TesterIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for testers of the tool
+      Name: TesterIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses:
+        - 91.240.227.66/32
+
   RestrictAccessAcl:
     Type: AWS::WAFv2::WebACL
     Properties:
@@ -64,3 +74,14 @@ Resources:
           Statement:
             IPSetReferenceStatement:
               Arn: !GetAtt TfnIpSet.Arn
+        - Name: AllowTesters
+          Action:
+            Allow: {}
+          Priority: 2
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowTestersRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt TesterIpSet.Arn

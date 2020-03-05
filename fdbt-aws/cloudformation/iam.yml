@@ -2,6 +2,14 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 Description: "CloudFormation template for IAM resources"
 
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
 Resources:
   ReadOnlyRole:
     Type: "AWS::IAM::Role"
@@ -17,9 +25,27 @@ Resources:
             Condition:
               Bool:
                 aws:MultiFactorAuthPresent: true
-      RoleName: !Sub tfn-readonly-preprod-${AWS::Region}
+      RoleName: !Sub tfn-readonly-${Stage}-${AWS::Region}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
+
+  BillingRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: 386676700885
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: true
+      RoleName: !Sub tfn-billing-${Stage}-${AWS::Region}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/Billing
 
   Policy:
     Type: "AWS::IAM::ManagedPolicy"
