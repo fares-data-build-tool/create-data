@@ -2,7 +2,7 @@
 
 exports[`Matching Page should render correctly 1`] = `
 <Layout
-  description="Matching page of the Fares data build tool"
+  description="Matching page of the fares data build tool"
   title="Matching - Fares data build tool"
 >
   <main
@@ -23,9 +23,15 @@ exports[`Matching Page should render correctly 1`] = `
           <h1
             className="govuk-fieldset__heading"
           >
-            Matching Bus Stops to Fares Stage
+            Match stops to fares stages
           </h1>
         </legend>
+        <span
+          className="govuk-hint"
+          id="match-fares-hint"
+        >
+          Please select the correct fare stages for each stop.
+        </span>
         <div>
           <div
             className="matching-wrapper"
@@ -33,17 +39,17 @@ exports[`Matching Page should render correctly 1`] = `
             <div
               className="govuk-heading-s matching-stop-header"
             >
-              Stop
+              Stop name
             </div>
             <div
               className="govuk-heading-s naptan-code-header"
             >
-              Naptan
+              Naptan code
             </div>
             <div
               className="govuk-heading-s fare-stage-header"
             >
-              Fare Stage
+              Fare stage
             </div>
           </div>
           <fieldset

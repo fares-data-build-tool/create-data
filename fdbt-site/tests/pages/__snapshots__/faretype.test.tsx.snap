@@ -28,7 +28,7 @@ exports[`pages faretype should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="faretype-page-heading"
             >
-              What type of fare?
+              What type of fare would you like to provide?
             </h1>
           </legend>
           <div
@@ -48,7 +48,24 @@ exports[`pages faretype should render correctly 1`] = `
                 className="govuk-label govuk-radios__label"
                 htmlFor="faretype-single"
               >
-                Single
+                Single - Point to Point
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="faretype-period"
+                name="faretype"
+                type="radio"
+                value="period"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="faretype-period"
+              >
+                Period Tickets
               </label>
             </div>
             <div
@@ -68,25 +85,6 @@ exports[`pages faretype should render correctly 1`] = `
                 htmlFor="faretype-return"
               >
                 Return
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                aria-disabled="true"
-                className="govuk-radios__input"
-                disabled={true}
-                id="faretype-period"
-                name="faretype"
-                type="radio"
-                value="period"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="faretype-period"
-              >
-                Period Tickets
               </label>
             </div>
           </div>

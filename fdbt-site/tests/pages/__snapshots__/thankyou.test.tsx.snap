@@ -19,7 +19,7 @@ exports[`pages thankyou should render correctly 1`] = `
         <h1
           className="govuk-panel__title"
         >
-          Application complete
+          Upload complete
         </h1>
         <div
           className="govuk-panel__body"
@@ -40,21 +40,23 @@ exports[`pages thankyou should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        Thank you, we've submitted your fares data.
+        Thank you for submitting your fares data.
       </p>
       <p
         className="govuk-body"
       >
-        We will contact you should there be any problem with the data you've provided. Your data will be converted to the NeTEx format and published.
+        Your data will be converted to the NeTEx format and published to the open data hub. You will be contacted should there be a problem with your upload.
       </p>
       <p
         className="govuk-body"
       >
+        If you would like to provide feedback on this service please click
+         
         <a
           className="govuk-link"
           href="mailto:fdbt@transportforthenorth.com"
         >
-          What did you think of this service?
+          here
         </a>
       </p>
       <br />
