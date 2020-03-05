@@ -17,6 +17,5 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/faretype');
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };

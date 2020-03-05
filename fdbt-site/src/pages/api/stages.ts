@@ -12,6 +12,5 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/confirmation');
     } catch (error) {
         redirectToError(res);
-        throw error;
     }
 };
