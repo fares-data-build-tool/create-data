@@ -28,7 +28,7 @@ exports[`pages service should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              Please select your bus service
+              Please select your service
             </h1>
           </legend>
           <span
