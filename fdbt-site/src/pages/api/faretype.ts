@@ -32,7 +32,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
 
         if (faretype === 'period') {
-            redirectTo(res, '/periodtype');
+            redirectTo(res, '/periodType');
             return;
         }
 
