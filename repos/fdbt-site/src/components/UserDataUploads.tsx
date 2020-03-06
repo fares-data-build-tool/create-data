@@ -4,14 +4,14 @@ import FileAttachment from './FileAttachment';
 import { UserDataUploadsProps } from '../utils/types';
 
 const CsvUpload: FC<UserDataUploadsProps> = ({
-    helpDisplayName,
-    helpAttachmentUrl,
-    helpImageUrl,
-    helpSize,
-    exampleDisplayName,
-    exampleAttachmentUrl,
-    exampleImageUrl,
-    exampleSize,
+    guidanceDocDisplayName,
+    guidanceDocAttachmentUrl,
+    guidanceDocImageUrl,
+    guidanceDocSize,
+    csvTemplateDisplayName,
+    csvTemplateAttachmentUrl,
+    csvTemplateImageUrl,
+    csvTemplateSize,
 }: UserDataUploadsProps) => (
     <>
         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -58,16 +58,16 @@ const CsvUpload: FC<UserDataUploadsProps> = ({
                     <h1 className="govuk-fieldset__heading">Help documents</h1>
                 </legend>
                 <FileAttachment
-                    displayName={helpDisplayName}
-                    attachmentUrl={helpAttachmentUrl}
-                    imageUrl={helpImageUrl}
-                    size={helpSize}
+                    displayName={guidanceDocDisplayName}
+                    attachmentUrl={guidanceDocAttachmentUrl}
+                    imageUrl={guidanceDocImageUrl}
+                    size={guidanceDocSize}
                 />
                 <FileAttachment
-                    displayName={exampleDisplayName}
-                    attachmentUrl={exampleAttachmentUrl}
-                    imageUrl={exampleImageUrl}
-                    size={exampleSize}
+                    displayName={csvTemplateDisplayName}
+                    attachmentUrl={csvTemplateAttachmentUrl}
+                    imageUrl={csvTemplateImageUrl}
+                    size={csvTemplateSize}
                 />
             </div>
         </div>

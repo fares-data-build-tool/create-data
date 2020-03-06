@@ -52,6 +52,7 @@
         "axios": "^0.19.0",
         "base-64": "^0.1.0",
         "cookies": "^0.8.0",
+        "csv-parse": "^4.8.8",
         "dateformat": "^3.0.3",
         "enzyme-to-json": "^3.4.3",
         "formidable": "^1.2.1",
