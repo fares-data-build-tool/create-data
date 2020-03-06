@@ -52,8 +52,13 @@ export const putDataInS3 = async (data: UserFareZone | string, key: string, proc
         bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
         contentType = 'text/csv; charset=utf-8';
     }
-
-    await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
+    try {
+        await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
+    } catch (error) {
+        throw new Error(
+            `Could not put ${processed ? 'processed json' : 'raw csv'} in ${bucketName}. Error: ${error.stack}`,
+        );
+    }
 };
 
 export const dataMapper = (dataToMap: string): UserFareZone => {
@@ -99,6 +104,7 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
 };
 
 export const getFormData = async (req: NextApiRequest): Promise<File> => {
+    console.log('Getting form data');
     const files = await formParse(req);
     const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
 
@@ -111,11 +117,13 @@ export const getFormData = async (req: NextApiRequest): Promise<File> => {
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
+        console.log({ formData });
         if (!fileIsValid(res, formData.Files, formData.FileContent)) {
             return;
         }
 
         if (formData.FileContent) {
+            console.log(formData.FileContent);
             const uuid = getUuidFromCookie(req, res);
             await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
             const fareZoneData = dataMapper(formData.FileContent);
@@ -126,6 +134,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/periodProduct');
         }
     } catch (error) {
+        console.log(error.stack);
         redirectToError(res);
     }
 };

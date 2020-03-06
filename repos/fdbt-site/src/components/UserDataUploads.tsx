@@ -4,6 +4,8 @@ import FileAttachment from './FileAttachment';
 import { UserDataUploadsProps } from '../utils/types';
 
 const CsvUpload: FC<UserDataUploadsProps> = ({
+    csvUploadApiRoute,
+    csvUploadHintText,
     guidanceDocDisplayName,
     guidanceDocAttachmentUrl,
     guidanceDocImageUrl,
@@ -20,12 +22,11 @@ const CsvUpload: FC<UserDataUploadsProps> = ({
             </h1>
         </legend>
         <span className="govuk-hint" id="csv-upload-hint">
-            Please upload your fares triangle as a csv below. You can refer to the documents section to down a template
-            and help file.
+            {csvUploadHintText}
         </span>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
-                <form action="/api/csvUpload" method="post" encType="multipart/form-data">
+                <form action={csvUploadApiRoute} method="post" encType="multipart/form-data">
                     <div className="govuk-form-group input-form">
                         <fieldset className="govuk-fieldset">
                             <label className="govuk-label" htmlFor="service">
