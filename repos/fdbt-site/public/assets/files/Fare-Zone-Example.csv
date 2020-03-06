@@ -1,4 +1,4 @@
-Fare Zone Name,Stops (NaPTAN Codes ONLY),Stops (ATCO Codes ONLY)
+FareZoneName,NAPTAN,ATCO
 Test Town Centre,TestNaptan-TC1,TestATCO-TC1
 ,TestNaptan-TC2,TestATCO-TC2
 ,TestNaptan-TC3,TestATCO-TC3
