@@ -18,6 +18,8 @@ export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
 export const PRICEENTRY_COOKIE = 'fdbt-price-entry';
 
+export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',

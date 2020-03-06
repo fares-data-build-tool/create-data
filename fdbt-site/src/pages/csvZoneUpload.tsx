@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
@@ -10,14 +9,14 @@ const title = 'CSV Zone Upload Method - Fares data build tool';
 const description = 'CSV Zone Upload page of the Fares data build tool';
 
 const uploadProps: UserDataUploadsProps = {
-    helpDisplayName: 'fffffff',
-    helpAttachmentUrl: 'fffffff',
-    helpImageUrl: 'fffffff',
-    helpSize: 'fffffff',
-    exampleDisplayName: 'fffffff',
-    exampleAttachmentUrl: 'fffffff',
-    exampleImageUrl: 'fffffff',
-    exampleSize: 'fffffff',
+    guidanceDocDisplayName: 'Download Help File',
+    guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fare-Zone.pdf',
+    guidanceDocImageUrl: '/assets/images/Guidance-doc-front-page.png',
+    guidanceDocSize: '1.0MB',
+    csvTemplateDisplayName: 'Download Fare Zone CSV Example',
+    csvTemplateAttachmentUrl: '/assets/files/Fare-Zone-Example.csv',
+    csvTemplateImageUrl: '/assets/images/csv.png',
+    csvTemplateSize: '600B',
 };
 
 const CsvZoneUpload: NextPage = (): ReactElement => (

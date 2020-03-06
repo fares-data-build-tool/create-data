@@ -10,14 +10,14 @@ const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
 
 const uploadProps: UserDataUploadsProps = {
-    helpDisplayName: 'Download Help File',
-    helpAttachmentUrl: '/assets/files/How-to-Upload-a-Fares-Triangle.pdf',
-    helpImageUrl: '/assets/images/Guidance-doc-front-page.png',
-    helpSize: '1.3MB',
-    exampleDisplayName: 'Download Fares Triangle CSV Example',
-    exampleAttachmentUrl: '/assets/files/Fares-Triangle-Example.csv',
-    exampleImageUrl: '/assets/images/csv.png',
-    exampleSize: '325B',
+    guidanceDocDisplayName: 'Download Help File',
+    guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fares-Triangle.pdf',
+    guidanceDocImageUrl: '/assets/images/Guidance-doc-front-page.png',
+    guidanceDocSize: '600KB',
+    csvTemplateDisplayName: 'Download Fares Triangle CSV Example',
+    csvTemplateAttachmentUrl: '/assets/files/Fares-Triangle-Example.csv',
+    csvTemplateImageUrl: '/assets/images/csv.png',
+    csvTemplateSize: '400B',
 };
 
 const CsvUpload: NextPage = (): ReactElement => (
