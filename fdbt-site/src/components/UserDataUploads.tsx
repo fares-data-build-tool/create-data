@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import FileAttachment from './FileAttachment';
 import { UserDataUploadsProps } from '../utils/types';
 
-const CsvUpload: FC<UserDataUploadsProps> = ({
+const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
     csvUploadApiRoute,
     csvUploadHintText,
     guidanceDocDisplayName,
@@ -75,4 +75,4 @@ const CsvUpload: FC<UserDataUploadsProps> = ({
     </>
 );
 
-export default CsvUpload;
+export default UserDataUploadComponent;

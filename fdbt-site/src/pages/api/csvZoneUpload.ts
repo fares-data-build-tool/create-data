@@ -16,7 +16,7 @@ interface FileData {
 
 export interface UserFareZone {
     zoneName: string;
-    stopsNaptan: string[];
+    stopsAtco: string[];
 }
 
 export interface RawFareZoneData {
@@ -25,9 +25,17 @@ export interface RawFareZoneData {
     stopsAtco: string[];
 }
 
+// The below 'config' needs to be exported for the formidable library to work.
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+
 export const formParse = async (req: NextApiRequest): Promise<Files> => {
     return new Promise<Files>((resolve, reject) => {
         const form = new formidable.IncomingForm();
+        console.log({ form });
         form.parse(req, (err, _fields, file) => {
             if (err) {
                 return reject(err);
@@ -70,7 +78,7 @@ export const dataMapper = (dataToMap: string): UserFareZone => {
         throw new Error(`At least 1 stop is needed, only ${stopCount} found`);
     }
 
-    const mappedData: UserFareZone = { zoneName: '', stopsNaptan: [] };
+    const mappedData: UserFareZone = { zoneName: '', stopsAtco: [] };
 
     return mappedData;
 };
@@ -105,8 +113,11 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
 
 export const getFormData = async (req: NextApiRequest): Promise<File> => {
     console.log('Getting form data');
+    console.log(`Req is ${req}`);
     const files = await formParse(req);
+    console.log({ files });
     const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
+    console.log({ fileContent });
 
     return {
         Files: files,
