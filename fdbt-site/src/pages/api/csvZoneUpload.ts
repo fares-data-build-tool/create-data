@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { Files } from 'formidable';
+// import csvParse from 'csv-parse/lib/sync';
 import fs from 'fs';
 import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
@@ -35,7 +36,6 @@ export const config = {
 export const formParse = async (req: NextApiRequest): Promise<Files> => {
     return new Promise<Files>((resolve, reject) => {
         const form = new formidable.IncomingForm();
-        console.log({ form });
         form.parse(req, (err, _fields, file) => {
             if (err) {
                 return reject(err);
@@ -111,14 +111,19 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
     return true;
 };
 
-export const getFormData = async (req: NextApiRequest): Promise<File> => {
-    console.log('Getting form data');
-    console.log(`Req is ${req}`);
-    const files = await formParse(req);
-    console.log({ files });
-    const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
-    console.log({ fileContent });
+// export const csvParser = (stringifiedCsvData: string): RawFareZoneData[] => {
+//     const parsedData: RawFareZoneData[] = csvParse(stringifiedCsvData, {
+//         columns: true,
+//         skip_empty_lines: false, // eslint-disable-line @typescript-eslint/camelcase
+//         delimiter: ',',
+//     });
+//     return parsedData;
+// };
 
+export const getFormData = async (req: NextApiRequest): Promise<File> => {
+    const files = await formParse(req);
+    const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
+    // const fileContent = csvParser(stringifiedFileContent);
     return {
         Files: files,
         FileContent: fileContent,
@@ -128,7 +133,6 @@ export const getFormData = async (req: NextApiRequest): Promise<File> => {
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
-        console.log({ formData });
         if (!fileIsValid(res, formData.Files, formData.FileContent)) {
             return;
         }
@@ -145,7 +149,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/periodProduct');
         }
     } catch (error) {
-        console.log(error.stack);
         redirectToError(res);
     }
 };
