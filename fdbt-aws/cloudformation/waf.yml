@@ -38,6 +38,7 @@ Resources:
       IPAddressVersion: IPV4
       Addresses:
         - 91.240.227.66/32
+        - 86.188.217.2/32
 
   RestrictAccessAcl:
     Type: AWS::WAFv2::WebACL
