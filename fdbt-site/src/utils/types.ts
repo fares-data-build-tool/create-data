@@ -1,4 +1,6 @@
 export type UserDataUploadsProps = {
+    csvUploadApiRoute: string;
+    csvUploadHintText: string;
     guidanceDocDisplayName: string;
     guidanceDocAttachmentUrl: string;
     guidanceDocImageUrl: string;
