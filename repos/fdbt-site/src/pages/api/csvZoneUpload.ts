@@ -1,120 +1,131 @@
-// import { NextApiRequest, NextApiResponse } from 'next';
-// import csvParse from 'csv-parse/lib/sync';
-// import fs from 'fs';
-// import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
-// import { putStringInS3 } from '../../data/s3';
-// import { CSV_ZONE_UPLOAD_COOKIE, ALLOWED_CSV_FILE_TYPES } from '../../constants';
+import { NextApiRequest, NextApiResponse } from 'next';
+import formidable, { Files } from 'formidable';
+import fs from 'fs';
+import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { putStringInS3 } from '../../data/s3';
+import { CSV_ZONE_UPLOAD_COOKIE, ALLOWED_CSV_FILE_TYPES } from '../../constants';
 
-// const MAX_FILE_SIZE = 5242880;
+const MAX_FILE_SIZE = 5242880;
 
-// export interface UserZone {
-//     zoneName: string;
-//     stops: string[];
-// }
+export type File = FileData;
 
-// export const csvParser = async (req: NextApiRequest): ParsedCsv[] => {
-//     const parsedData: ParsedCsv[] = csvParse(csvData, {
-//         columns: true,
-//         skip_empty_lines: true, // eslint-disable-line @typescript-eslint/camelcase
-//         delimiter: ',',
-//     });
-//     return parsedData;
-// };
+interface FileData {
+    Files: formidable.Files;
+    FileContent: string;
+}
 
-// export const putDataInS3 = async (data: UserZone | string, key: string, processed: boolean): Promise<void> => {
-//     let contentType = '';
-//     let bucketName = '';
+export interface UserFareZone {
+    zoneName: string;
+    stopsNaptan: string[];
+}
 
-//     if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
-//         throw new Error('Bucket name environment variables not set.');
-//     }
+export interface RawFareZoneData {
+    zoneName: string;
+    stopsNaptan: string[];
+    stopsAtco: string[];
+}
 
-//     if (processed) {
-//         bucketName = process.env.USER_DATA_BUCKET_NAME;
-//         contentType = 'application/json; charset=utf-8';
-//     } else {
-//         bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
-//         contentType = 'text/csv; charset=utf-8';
-//     }
+export const formParse = async (req: NextApiRequest): Promise<Files> => {
+    return new Promise<Files>((resolve, reject) => {
+        const form = new formidable.IncomingForm();
+        form.parse(req, (err, _fields, file) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(file);
+        });
+    });
+};
 
-//     await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
-// };
+export const putDataInS3 = async (data: UserFareZone | string, key: string, processed: boolean): Promise<void> => {
+    let contentType = '';
+    let bucketName = '';
 
-// export const dataMapper = (dataToMap: string): UserZone => {
-//     const userZone: UserZone = {
-//         zoneName: '',
-//         stops: [],
-//     };
+    if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
+        throw new Error('Bucket name environment variables not set.');
+    }
 
-//     const dataAsLines: string[] = dataToMap.split(/\n/);
+    if (processed) {
+        bucketName = process.env.USER_DATA_BUCKET_NAME;
+        contentType = 'application/json; charset=utf-8';
+    } else {
+        bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
+        contentType = 'text/csv; charset=utf-8';
+    }
 
-//     const stopCount = dataAsLines.length;
+    await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
+};
 
-//     if (stopCount < 1) {
-//         throw new Error(`At least 1 stop is needed, only ${stopCount} found`);
-//     }
+export const dataMapper = (dataToMap: string): UserFareZone => {
+    const dataAsLines: string[] = dataToMap.split(/\n/);
 
-//     const mappedData: UserZone = {
+    const stopCount = dataAsLines.length;
 
-//     return mappedData;
-// };
+    if (stopCount < 1) {
+        throw new Error(`At least 1 stop is needed, only ${stopCount} found`);
+    }
 
-// export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
-//     const fileSize = formData['csv-upload'].size;
-//     const fileType = formData['csv-upload'].type;
+    const mappedData: UserFareZone = { zoneName: '', stopsNaptan: [] };
 
-//     if (!fileContent) {
-//         redirectTo(res, '/csvZoneUpload');
-//         console.warn('No file attached.');
+    return mappedData;
+};
 
-//         return false;
-//     }
+export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
+    const fileSize = formData['csv-upload'].size;
+    const fileType = formData['csv-upload'].type;
 
-//     if (fileSize > MAX_FILE_SIZE) {
-//         redirectToError(res);
-//         console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
+    if (!fileContent) {
+        redirectTo(res, '/csvZoneUpload');
+        console.warn('No file attached.');
 
-//         return false;
-//     }
+        return false;
+    }
 
-//     if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
-//         redirectToError(res);
-//         console.warn(`File not of allowed type, uploaded file is ${fileType}`);
+    if (fileSize > MAX_FILE_SIZE) {
+        redirectToError(res);
+        console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
 
-//         return false;
-//     }
+        return false;
+    }
 
-//     return true;
-// };
+    if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
+        redirectToError(res);
+        console.warn(`File not of allowed type, uploaded file is ${fileType}`);
 
-// export const getFormData = async (req: NextApiRequest): Promise<File> => {
-//     const files = await formParse(req);
-//     const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
+        return false;
+    }
 
-//     return {
-//         Files: files,
-//         FileContent: fileContent,
-//     };
-// };
+    return true;
+};
 
-// export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-//     try {
-//         const formData = await getFormData(req);
-//         if (!fileIsValid(res, formData.Files, formData.FileContent)) {
-//             return;
-//         }
+export const getFormData = async (req: NextApiRequest): Promise<File> => {
+    const files = await formParse(req);
+    const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
 
-//         if (formData.FileContent) {
-//             const uuid = getUuidFromCookie(req, res);
-//             await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
-//             const fareTriangleData = dataMapper(formData.FileContent);
-//             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
-//             const cookieValue = JSON.stringify({ zoneName, uuid });
-//             setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+    return {
+        Files: files,
+        FileContent: fileContent,
+    };
+};
 
-//             redirectTo(res, '/periodProduct');
-//         }
-//     } catch (error) {
-//         redirectToError(res);
-//     }
-// };
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+    try {
+        const formData = await getFormData(req);
+        if (!fileIsValid(res, formData.Files, formData.FileContent)) {
+            return;
+        }
+
+        if (formData.FileContent) {
+            const uuid = getUuidFromCookie(req, res);
+            await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
+            const fareZoneData = dataMapper(formData.FileContent);
+            await putDataInS3(fareZoneData, `${uuid}.json`, true);
+            const cookieValue = JSON.stringify({ fareZoneData, uuid });
+            setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+
+            redirectTo(res, '/periodProduct');
+        }
+    } catch (error) {
+        redirectToError(res);
+    }
+};
