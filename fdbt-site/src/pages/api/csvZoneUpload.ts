@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { Files } from 'formidable';
-// import csvParse from 'csv-parse/lib/sync';
+import csvParse from 'csv-parse/lib/sync';
 import fs from 'fs';
 import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
@@ -16,14 +16,13 @@ interface FileData {
 }
 
 export interface UserFareZone {
-    zoneName: string;
-    stopsAtco: string[];
+    FareZoneName: string;
+    AtcoCodes: string[];
 }
 
-export interface RawFareZoneData {
-    zoneName: string;
-    stopsNaptan: string[];
-    stopsAtco: string[];
+export interface RawUserFareZone {
+    FareZoneName: string;
+    AtcoCodes: string;
 }
 
 // The below 'config' needs to be exported for the formidable library to work.
@@ -69,20 +68,6 @@ export const putDataInS3 = async (data: UserFareZone | string, key: string, proc
     }
 };
 
-export const dataMapper = (dataToMap: string): UserFareZone => {
-    const dataAsLines: string[] = dataToMap.split(/\n/);
-
-    const stopCount = dataAsLines.length;
-
-    if (stopCount < 1) {
-        throw new Error(`At least 1 stop is needed, only ${stopCount} found`);
-    }
-
-    const mappedData: UserFareZone = { zoneName: '', stopsAtco: [] };
-
-    return mappedData;
-};
-
 export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
     const fileSize = formData['csv-upload'].size;
     const fileType = formData['csv-upload'].type;
@@ -111,22 +96,21 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
     return true;
 };
 
-// export const csvParser = (stringifiedCsvData: string): RawFareZoneData[] => {
-//     const parsedData: RawFareZoneData[] = csvParse(stringifiedCsvData, {
-//         columns: true,
-//         skip_empty_lines: false, // eslint-disable-line @typescript-eslint/camelcase
-//         delimiter: ',',
-//     });
-//     return parsedData;
-// };
+export const csvParser = (stringifiedCsvData: string): RawUserFareZone[] => {
+    const parsedFileContent: RawUserFareZone[] = csvParse(stringifiedCsvData, {
+        columns: true,
+        skip_empty_lines: false, // eslint-disable-line @typescript-eslint/camelcase
+        delimiter: ',',
+    });
+    return parsedFileContent;
+};
 
 export const getFormData = async (req: NextApiRequest): Promise<File> => {
     const files = await formParse(req);
-    const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
-    // const fileContent = csvParser(stringifiedFileContent);
+    const stringifiedFileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
     return {
         Files: files,
-        FileContent: fileContent,
+        FileContent: stringifiedFileContent,
     };
 };
 
@@ -141,9 +125,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             console.log(formData.FileContent);
             const uuid = getUuidFromCookie(req, res);
             await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
-            const fareZoneData = dataMapper(formData.FileContent);
-            await putDataInS3(fareZoneData, `${uuid}.json`, true);
-            const cookieValue = JSON.stringify({ fareZoneData, uuid });
+            const parsedFileContent = csvParser(formData.FileContent);
+            const { FareZoneName } = parsedFileContent[0];
+            const atcoCodes = parsedFileContent.map(item => item.AtcoCodes);
+            const userFareZone: UserFareZone = {
+                FareZoneName,
+                AtcoCodes: atcoCodes,
+            };
+            await putDataInS3(userFareZone, `${uuid}.json`, true);
+            const cookieValue = JSON.stringify({ FareZoneName, uuid });
             setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
 
             redirectTo(res, '/periodProduct');
