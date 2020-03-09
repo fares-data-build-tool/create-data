@@ -122,7 +122,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (formData.FileContent) {
-            console.log(formData.FileContent);
             const uuid = getUuidFromCookie(req, res);
             await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
             const parsedFileContent = csvParser(formData.FileContent);
