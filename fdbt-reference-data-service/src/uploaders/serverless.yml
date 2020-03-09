@@ -106,6 +106,8 @@ resources:
                 AttributeDefinitions:
                     - AttributeName: 'Partition'
                       AttributeType: 'S'
+                    - AttributeName: 'NaptanCode'
+                      AttributeType: 'S'
                 KeySchema:
                     - AttributeName: 'Partition'
                       KeyType: 'HASH'
