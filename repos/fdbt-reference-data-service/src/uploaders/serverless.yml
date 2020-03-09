@@ -110,6 +110,13 @@ resources:
                     - AttributeName: 'Partition'
                       KeyType: 'HASH'
                 BillingMode: PAY_PER_REQUEST
+                GlobalSecondaryIndexes:
+                - IndexName: NaptanIndex
+                  KeySchema:
+                  - AttributeName: 'NaptanCode'
+                    KeyType: 'HASH'
+                  Projection:
+                    ProjectionType: 'KEYS_ONLY'
 
         NocTable:
             Type: AWS::DynamoDB::Table
