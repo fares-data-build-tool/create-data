@@ -4,6 +4,7 @@ import csvParse from 'csv-parse/lib/sync';
 import fs from 'fs';
 import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
+import { batchGetAtcoByNaptanCode } from '../../data/dynamodb';
 import { CSV_ZONE_UPLOAD_COOKIE, ALLOWED_CSV_FILE_TYPES } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;
@@ -17,11 +18,7 @@ interface FileData {
 
 export interface UserFareZone {
     FareZoneName: string;
-    AtcoCodes: string[];
-}
-
-export interface RawUserFareZone {
-    FareZoneName: string;
+    NaptanCodes: string;
     AtcoCodes: string;
 }
 
@@ -44,7 +41,7 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
     });
 };
 
-export const putDataInS3 = async (data: UserFareZone | string, key: string, processed: boolean): Promise<void> => {
+export const putDataInS3 = async (data: UserFareZone[] | string, key: string, processed: boolean): Promise<void> => {
     let contentType = '';
     let bucketName = '';
 
@@ -96,8 +93,8 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
     return true;
 };
 
-export const csvParser = (stringifiedCsvData: string): RawUserFareZone[] => {
-    const parsedFileContent: RawUserFareZone[] = csvParse(stringifiedCsvData, {
+export const csvParser = (stringifiedCsvData: string): UserFareZone[] => {
+    const parsedFileContent: UserFareZone[] = csvParse(stringifiedCsvData, {
         columns: true,
         skip_empty_lines: false, // eslint-disable-line @typescript-eslint/camelcase
         delimiter: ',',
@@ -114,6 +111,33 @@ export const getFormData = async (req: NextApiRequest): Promise<File> => {
     };
 };
 
+export const processCsvUpload = async (fileContent: string): Promise<UserFareZone[]> => {
+    const parsedFileContent = csvParser(fileContent);
+    const { FareZoneName } = parsedFileContent[0];
+    const rawUserFareZones = parsedFileContent
+        .map(parsedItem => ({
+            FareZoneName,
+            NaptanCodes: parsedItem.NaptanCodes,
+            AtcoCodes: parsedItem.AtcoCodes,
+        }))
+        .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
+    const naptanCodesToQuery = rawUserFareZones
+        .filter(rawUserFareZone => rawUserFareZone.AtcoCodes === '')
+        .map(rawUserFareZone => rawUserFareZone.NaptanCodes);
+    const atcoItems = await batchGetAtcoByNaptanCode(naptanCodesToQuery);
+    const userFareZones = rawUserFareZones.map(rawUserFareZone => {
+        const atcoItem = atcoItems.find(item => rawUserFareZone.NaptanCodes === item.naptanCode);
+        if (atcoItem) {
+            return {
+                ...rawUserFareZone,
+                AtcoCodes: atcoItem.atcoCode,
+            };
+        }
+        return rawUserFareZone;
+    });
+    return userFareZones;
+};
+
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
@@ -124,15 +148,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (formData.FileContent) {
             const uuid = getUuidFromCookie(req, res);
             await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
-            const parsedFileContent = csvParser(formData.FileContent);
-            const { FareZoneName } = parsedFileContent[0];
-            const atcoCodes = parsedFileContent.map(item => item.AtcoCodes);
-            const userFareZone: UserFareZone = {
-                FareZoneName,
-                AtcoCodes: atcoCodes,
-            };
-            await putDataInS3(userFareZone, `${uuid}.json`, true);
-            const cookieValue = JSON.stringify({ FareZoneName, uuid });
+            const userFareZones = await processCsvUpload(formData.FileContent);
+            const fareZoneName = userFareZones[0].FareZoneName;
+            await putDataInS3(userFareZones, `${uuid}.json`, true);
+            const cookieValue = JSON.stringify({ fareZoneName, uuid });
             setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
 
             redirectTo(res, '/periodProduct');

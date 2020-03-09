@@ -43,6 +43,11 @@ interface DynamoNaptanInfo {
     Street: string;
 }
 
+interface DynamoNaptanInfoByGsi {
+    NaptanCode: string;
+    ATCOCode: string;
+}
+
 export interface Stop {
     stopName: string;
     naptanCode: string;
@@ -52,6 +57,11 @@ export interface Stop {
     indicator: string;
     street: string;
     qualifierName?: string;
+}
+
+export interface StopIdentifiers {
+    naptanCode: string | null;
+    atcoCode: string;
 }
 
 export interface Service {
@@ -166,6 +176,46 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
         }));
     } catch (error) {
         console.error(`Error performing batch get for naptan info for stop list: ${atcoCodes}, error: ${error}`);
+        throw new Error(error);
+    }
+};
+
+export const batchGetAtcoByNaptanCode = async (naptanCodes: string[]): Promise<StopIdentifiers[] | []> => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
+    const count = naptanCodes.length;
+    const batchSize = 100;
+    const batchArray = [];
+
+    for (let i = 0; i < count; i += batchSize) {
+        batchArray.push(naptanCodes.slice(i, i + batchSize));
+    }
+
+    const batchPromises = batchArray.map(batch => {
+        const batchQueryInput: AWS.DynamoDB.DocumentClient.BatchGetItemInput = {
+            RequestItems: {
+                [tableName]: {
+                    Keys: batch.map(code => ({
+                        NaptanCode: code,
+                    })),
+                },
+            },
+        };
+
+        return dynamoDbClient.batchGet(batchQueryInput).promise();
+    });
+
+    try {
+        const results = await Promise.all(batchPromises);
+        const filteredResults = results.filter(item => item.Responses?.[tableName]);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const atcoItems: DynamoNaptanInfoByGsi[] = flatMap(filteredResults, (item: any) => item.Responses[tableName]);
+
+        return atcoItems.map(item => ({
+            naptanCode: item.NaptanCode,
+            atcoCode: item.ATCOCode,
+        }));
+    } catch (error) {
+        console.error(`Error performing batch get for naptan info for stop list: ${naptanCodes}, error: ${error}`);
         throw new Error(error);
     }
 };
