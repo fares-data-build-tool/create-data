@@ -2,7 +2,7 @@
 
 import { mockRequest } from 'mock-req-res';
 import validateHandler from '../../../src/pages/api/validate';
-import * as validator from '../../../src/pages/api/service/validator';
+import * as index from '../../../src/pages/api/apiUtils/index';
 
 describe('validate handler', () => {
     beforeEach(() => {
@@ -11,11 +11,11 @@ describe('validate handler', () => {
 
     it('should return a 200 with valid = true when session is valid and uuids match', () => {
         const spyIsSessionValid = jest
-            .spyOn(validator, 'isSessionValid')
+            .spyOn(index, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(true);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(validator, 'isCookiesUUIDMatch')
+            .spyOn(index, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(true);
 
@@ -41,11 +41,11 @@ describe('validate handler', () => {
 
     it('should return a 401 with valid = false when session is not valid', () => {
         const spyIsSessionValid = jest
-            .spyOn(validator, 'isSessionValid')
+            .spyOn(index, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(false);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(validator, 'isCookiesUUIDMatch')
+            .spyOn(index, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(true);
 
@@ -71,11 +71,11 @@ describe('validate handler', () => {
 
     it('should return a 401 with valid = false when session is valid but uuids do not match', () => {
         const spyIsSessionValid = jest
-            .spyOn(validator, 'isSessionValid')
+            .spyOn(index, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(true);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(validator, 'isCookiesUUIDMatch')
+            .spyOn(index, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(false);
 
@@ -101,11 +101,11 @@ describe('validate handler', () => {
 
     it('should return a 401 with valid = false when session is not valid and uuids do not match', () => {
         const spyIsSessionValid = jest
-            .spyOn(validator, 'isSessionValid')
+            .spyOn(index, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(false);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(validator, 'isCookiesUUIDMatch')
+            .spyOn(index, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(false);
 
