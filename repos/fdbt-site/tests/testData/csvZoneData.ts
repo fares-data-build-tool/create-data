@@ -7,7 +7,7 @@ export const testCsv: string =
     ',TestNaptan-TC6,TestATCO-TC6,\n' +
     ',TestNaptan-TC7,TestATCO-TC7,\n' +
     ',TestNaptan-TC8,TestATCO-TC8,\n' +
-    ',TestNaptan-TC9,TestATCO-TC9,\n';
+    ',TestNaptan-TC9,TestATCO-TC9';
 
 export const testCsvWithEmptyCells: string =
     'Town Centre,TestNaptan-TC1,TestATCO-TC1,\n' +
@@ -18,7 +18,7 @@ export const testCsvWithEmptyCells: string =
     ',TestNaptan-TC6,TestATCO-TC6,\n' +
     ',TestNaptan-TC7,TestATCO-TC7,\n' +
     ',,TestATCO-TC8,\n' +
-    ',TestNaptan-TC9,TestATCO-TC9,\n';
+    ',TestNaptan-TC9,TestATCO-TC9';
 
 export const unprocessedObject = {
     Bucket: 'fdbt-raw-user-data',
@@ -32,7 +32,7 @@ export const unprocessedObject = {
         ',TestNaptan-TC6,TestATCO-TC6,\n' +
         ',TestNaptan-TC7,TestATCO-TC7,\n' +
         ',TestNaptan-TC8,TestATCO-TC8,\n' +
-        ',TestNaptan-TC9,TestATCO-TC9,\n',
+        ',TestNaptan-TC9,TestATCO-TC9',
     ContentType: 'text/csv; charset=utf-8',
 };
 
@@ -48,7 +48,7 @@ export const unprocessedObjectWithEmptyCells = {
         ',TestNaptan-TC6,TestATCO-TC6,\n' +
         ',TestNaptan-TC7,TestATCO-TC7,\n' +
         ',,TestATCO-TC8,\n' +
-        ',TestNaptan-TC9,TestATCO-TC9,\n',
+        ',TestNaptan-TC9,TestATCO-TC9',
     ContentType: 'text/csv; charset=utf-8',
 };
 

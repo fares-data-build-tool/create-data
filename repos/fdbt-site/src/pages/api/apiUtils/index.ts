@@ -37,6 +37,9 @@ export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): b
     const fareTypeCookie = unescape(decodeURI(cookies.get(FARETYPE_COOKIE) || ''));
     const journeyCookie = unescape(decodeURI(cookies.get(JOURNEY_COOKIE) || ''));
 
+    console.log(operatorCookie);
+    console.log(serviceCookie);
+
     try {
         const operatorObject = JSON.parse(operatorCookie);
         const serviceObject = JSON.parse(serviceCookie);
@@ -139,6 +142,7 @@ export const deleteCookieOnResponseObject = (
 export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
     const cookies = new Cookies(req, res);
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
+    console.log(operatorCookie);
     return JSON.parse(operatorCookie).uuid;
 };
 
