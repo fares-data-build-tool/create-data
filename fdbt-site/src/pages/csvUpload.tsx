@@ -16,7 +16,7 @@ const CsvUpload: NextPage = (): ReactElement => (
                 </h1>
             </legend>
             <span className="govuk-hint" id="csv-upload-hint">
-                Please upload your fares triangle as a csv below. You can refer to the documents section to down a
+                Please upload your fares triangle as a csv below. You can refer to the documents section to download a
                 template and help file.
             </span>
             <div className="govuk-grid-row">
