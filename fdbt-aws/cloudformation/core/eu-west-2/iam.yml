@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "CloudFormation template for IAM resources"
+
+Resources:
+  ManageOwnUserPolicy:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties:
+      Description: "Policy to allow users to manage their own account"
+      Path: /
+      ManagedPolicyName: allow-manage-user
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "iam:ListAccountAliases"
+              - "iam:ListUsers"
+              - "iam:ListVirtualMFADevices"
+              - "iam:GetAccountPasswordPolicy"
+              - "iam:GetAccountSummary"
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - "iam:ChangePassword"
+              - "iam:CreateAccessKey"
+              - "iam:CreateLoginProfile"
+              - "iam:DeleteAccessKey"
+              - "iam:DeleteLoginProfile"
+              - "iam:GetLoginProfile"
+              - "iam:ListAccessKeys"
+              - "iam:UpdateAccessKey"
+              - "iam:UpdateLoginProfile"
+              - "iam:ListSigningCertificates"
+              - "iam:DeleteSigningCertificate"
+              - "iam:UpdateSigningCertificate"
+              - "iam:UploadSigningCertificate"
+              - "iam:ListSSHPublicKeys"
+              - "iam:GetSSHPublicKey"
+              - "iam:DeleteSSHPublicKey"
+              - "iam:UpdateSSHPublicKey"
+              - "iam:UploadSSHPublicKey"
+            Resource: "arn:aws:iam::*:user/${aws:username}"
+          - Effect: Allow
+            Action:
+              - "iam:ListMFADevices"
+            Resource:
+              - "arn:aws:iam::*:mfa/*"
+              - "arn:aws:iam::*:user/${aws:username}"
+          - Effect: Allow
+            Action:
+              - "iam:CreateVirtualMFADevice"
+              - "iam:DeleteVirtualMFADevice"
+              - "iam:EnableMFADevice"
+              - "iam:ResyncMFADevice"
+              - "iam:DeactivateMFADevice"
+            Resource:
+              - "arn:aws:iam::*:mfa/${aws:username}"
+              - "arn:aws:iam::*:user/${aws:username}"
+
+  DeveloperGroup:
+    Type: "AWS::IAM::Group"
+    Properties:
+      GroupName: "tfn-developers"
+      Policies:
+        - PolicyName: "allow-developer-access"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sts:AssumeRole"
+                Resource:
+                  - "arn:aws:iam::442445088537:role/tfn-admin-test-eu-west-2"
+                  - "arn:aws:iam::077142786865:role/tfn-readonly-preprod-eu-west-2"
+        - PolicyName: "allow-manage-own-user"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:ListAccountAliases"
+                  - "iam:ListUsers"
+                  - "iam:ListVirtualMFADevices"
+                  - "iam:GetAccountPasswordPolicy"
+                  - "iam:GetAccountSummary"
+                Resource: "*"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - !Ref ManageOwnUserPolicy
+
+  BillingGroup:
+    Type: "AWS::IAM::Group"
+    Properties:
+      GroupName: "tfn-billing"
+      Policies:
+        - PolicyName: "allow-billing-access"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sts:AssumeRole"
+                Resource:
+                  - "arn:aws:iam::442445088537:role/tfn-billing-test-eu-west-2"
+                  - "arn:aws:iam::077142786865:role/tfn-billing-preprod-eu-west-2"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/Billing
+        - !Ref ManageOwnUserPolicy
+
+  AdminGroup:
+    Type: "AWS::IAM::Group"
+    Properties:
+      GroupName: "tfn-admins"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AdministratorAccess"

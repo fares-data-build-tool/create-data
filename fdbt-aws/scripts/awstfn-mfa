@@ -4,9 +4,9 @@ JQCLI=`which jq`
 IAMUSERNAME=$2
 MYUSER=${IAMUSERNAME:=`whoami`}
 # The master acct where IAM identities are managed
-MASTER_ACCT=infinityworks
-MASTER_ACCT_ID=386676700885
-MASTER_ACCT_PROFILE=iw
+MASTER_ACCT=tfn-core
+MASTER_ACCT_ID=827855331226
+MASTER_ACCT_PROFILE=tfn-core
 VALID_ACCOUNTS=( tfn-test tfn-preprod-ro tfn-preprod-admin iw-sandpit )
 
 # Script should be run in current environment not forked
@@ -25,7 +25,7 @@ if [ -z "$1" ]; then
 else
 	case "$1" in
         tfn-test) AWSID=442445088537
-             export DEVOPS_ROLE=tfn-devops-test
+             export DEVOPS_ROLE=tfn-admin-test-eu-west-2
              export AWS_REGION=eu-west-2
              ;;
         tfn-preprod-ro) AWSID=077142786865
@@ -33,13 +33,16 @@ else
              export AWS_REGION=eu-west-2
              ;;
         tfn-preprod-admin) AWSID=077142786865
-             export DEVOPS_ROLE=OrganizationAccountAccessRole
+             export DEVOPS_ROLE=tfn-admin-preprod-eu-west-2
              export AWS_REGION=eu-west-2
              ;;
         iw-sandpit) AWSID=455073406672
              export DEVOPS_ROLE=OrganizationAccountAccessRole
              export AWS_REGION=eu-west-1
              ;;
+        tfn-core) AWSID=$MASTER_ACCT_ID
+            export AWS_REGION=eu-west-2
+			       ;;
  		*)	echo "Invalid AWS Account"
             echo "Valid accounts are: ${VALID_ACCOUNTS[*]}"
 			return
