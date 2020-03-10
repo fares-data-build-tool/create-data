@@ -37,7 +37,9 @@ exports[`Choose Validity Page should render correctly 1`] = `
               htmlFor="validity"
             >
               Product: 
+              bus company
                - 
+              £3.00
             </label>
           </div>
           <label

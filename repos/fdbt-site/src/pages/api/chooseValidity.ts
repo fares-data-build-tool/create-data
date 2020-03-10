@@ -40,7 +40,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const numberOfDaysValidFor = req.body.validityInput;
         const cookieValue = JSON.stringify({ daysValid: numberOfDaysValidFor });
         setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
-        redirectTo(res, '/validityRule');
+        redirectTo(res, '/periodValidity');
     } catch (error) {
         redirectToError(res);
     }

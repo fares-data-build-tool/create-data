@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 const title = 'Select the rule for how long the ticket is valid for - Fares data build tool';
 const description = 'Period ticket rule page of the Fares data build tool';
 
-const ValidityRule = (): ReactElement => (
+const PeriodValidity = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <div className="govuk-form-group">
@@ -19,4 +19,4 @@ const ValidityRule = (): ReactElement => (
     </Layout>
 );
 
-export default ValidityRule;
+export default PeriodValidity;
