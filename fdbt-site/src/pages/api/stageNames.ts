@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, redirectTo, redirectToError, isSessionValid } from './apiUtils';
+import { isSessionValid } from './service/validator';
+import { getDomain, setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
 export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {

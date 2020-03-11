@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isSessionValid, isCookiesUUIDMatch } from './apiUtils';
+import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     if (isSessionValid(req, res) && isCookiesUUIDMatch(req, res)) {
