@@ -105,7 +105,7 @@ const getMasterStopList = (journeys: RawJourneyPatternSection[]): string[] => [
     ...new Set(flatMap(journeys, journey => journey.OrderedStopPoints.map(item => item.StopPointRef))),
 ];
 
-Matching.getInitialProps = async (ctx: NextPageContext): Promise<MatchingProps> => {
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
@@ -140,12 +140,14 @@ Matching.getInitialProps = async (ctx: NextPageContext): Promise<MatchingProps> 
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
     return {
-        stops: orderedStops,
-        userFareStages,
-        service: {
-            lineName,
-            nocCode,
-            operatorShortName: service.operatorShortName,
+        props: {
+            stops: orderedStops,
+            userFareStages,
+            service: {
+                lineName,
+                nocCode,
+                operatorShortName: service.operatorShortName,
+            },
         },
     };
 };

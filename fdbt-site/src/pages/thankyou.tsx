@@ -51,8 +51,9 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
     </Layout>
 );
 
-ThankYou.getInitialProps = (ctx: NextPageContext): {} => {
-    return { uuid: getUuidFromCookies(ctx) };
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+    return { props: { uuid: getUuidFromCookies(ctx) } };
 };
 
 export default ThankYou;

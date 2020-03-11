@@ -9,8 +9,8 @@ import { Stop } from '../data/dynamodb';
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
-        const host = ctx?.req?.headers?.origin;
-        const domain = host && (host as string).replace(/(^\w+:|^)\/\//, '');
+        const host = ctx?.req?.headers?.host;
+        const domain = host ? host.split(':')[0] : '';
 
         cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
     }
@@ -20,11 +20,9 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     if (!req) {
         return '';
     }
-    const origin = req?.headers?.origin;
+    const host = req?.headers?.host;
 
-    if (origin) {
-        const host = (origin as string).replace(/(^\w+:|^)\/\//, '');
-
+    if (host) {
         if (host && host.startsWith('localhost')) {
             return `http://${host}`;
         }

@@ -1,17 +1,16 @@
-import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import chooseStages from '../../../src/pages/api/chooseStages';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('chooseStages', () => {
-    let res: mockReqRes.ResponseOutput;
     let writeHeadMock: jest.Mock;
 
     beforeEach(() => {
-        jest.resetAllMocks();
         writeHeadMock = jest.fn();
-        res = mockResponse({
-            writeHead: writeHeadMock,
-        });
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cases: any[] = [
@@ -30,16 +29,15 @@ describe('chooseStages', () => {
     ];
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+
         (setCookieOnResponseObject as {}) = jest.fn();
-        chooseStages(mockRequest({ body: testData }), res);
+        chooseStages(req, res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
     it('should set the fare stages cookie according to the specified number of fare stages', () => {
-        const req = mockRequest({
-            body: { fareStageInput: '6' },
-            headers: { origin: 'test' },
-        });
+        const { req, res } = getMockRequestAndResponse({}, { fareStageInput: '6' }, {}, writeHeadMock);
 
         const mockSetCookies = jest.fn();
 

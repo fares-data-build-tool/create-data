@@ -2,12 +2,9 @@
 
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { NextPageContext } from 'next';
-import { mockRequest } from 'mock-req-res';
-import MockRes from 'mock-res';
-import Service from '../../src/pages/service';
-import { OPERATOR_COOKIE } from '../../src/constants';
+import Service, { getServerSideProps } from '../../src/pages/service';
 import { getServicesByNocCode, ServiceType } from '../../src/data/dynamodb';
+import { getMockContext } from '../testData/mockData';
 
 jest.mock('../../src/data/dynamodb');
 
@@ -19,8 +16,6 @@ const mockServices: ServiceType[] = [
 
 describe('pages', () => {
     describe('service', () => {
-        const mockOperatorCookieBody =
-            '%7B%22operator%22%3A%22MCT%22%2C%22uuid%22%3A%223f8d5a32-b480-4370-be9a-60d366422a87%22%7D';
         beforeEach(() => {
             (getServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
         });
@@ -48,122 +43,47 @@ describe('pages', () => {
         });
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
-            const operator = 'MCT';
-
-            const res = new MockRes();
-
-            const req = mockRequest({
-                connection: {
-                    encrypted: true,
-                },
-                headers: {
-                    host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=${mockOperatorCookieBody}`,
-                },
-                cookies: {
-                    OPERATOR_COOKIE: operator,
-                },
-            });
-            const ctx: NextPageContext = {
-                res,
-                req,
-                pathname: '',
-                query: {},
-                AppTree: () => <div />,
-            };
-            const result = await Service.getInitialProps(ctx);
+            const ctx = getMockContext();
+            const result = await getServerSideProps(ctx);
             expect(result).toEqual({
-                operator,
-                services: [
-                    {
-                        lineName: '123',
-                        startDate: '05/02/2020',
-                    },
-                    {
-                        lineName: 'X1',
-                        startDate: '06/02/2020',
-                    },
-                    {
-                        lineName: 'Infinity Line',
-                        startDate: '07/02/2020',
-                    },
-                ],
+                props: {
+                    operator: 'test',
+                    services: [
+                        {
+                            lineName: '123',
+                            startDate: '05/02/2020',
+                        },
+                        {
+                            lineName: 'X1',
+                            startDate: '06/02/2020',
+                        },
+                        {
+                            lineName: 'Infinity Line',
+                            startDate: '07/02/2020',
+                        },
+                    ],
+                },
             });
         });
 
-        it('redirects to error page if no services can be found', async () => {
+        it('throws error if no services can be found', async () => {
             (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
-            const operator = 'MCT';
 
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
-            const res = new MockRes();
-            res.writeHead = mockWriteHeadFn;
-            res.end = mockEndFn;
 
-            const req = mockRequest({
-                connection: {
-                    encrypted: true,
-                },
-                headers: {
-                    host: 'localhost:5000',
-                    cookie: `${OPERATOR_COOKIE}=${mockOperatorCookieBody}`,
-                },
-                cookies: {
-                    OPERATOR_COOKIE: operator,
-                },
-            });
-            const ctx: NextPageContext = {
-                res,
-                req,
-                pathname: '',
-                query: {},
-                AppTree: () => <div />,
-            };
-            const result = await Service.getInitialProps(ctx);
+            const ctx = getMockContext({}, null, {}, mockWriteHeadFn, mockEndFn);
 
-            expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-                Location: '/error',
-            });
-            expect(mockEndFn).toHaveBeenCalled();
-            expect(result).toEqual({});
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Error: No services found for NOC Code: HCTY');
         });
 
-        it('redirects to error page if operator cookie does not exist', async () => {
-            const operator = 'MCT';
-
+        it('throws error if operator cookie does not exist', async () => {
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
-            const res = new MockRes();
-            res.writeHead = mockWriteHeadFn;
-            res.end = mockEndFn;
 
-            const req = mockRequest({
-                connection: {
-                    encrypted: true,
-                },
-                headers: {
-                    host: 'localhost:5000',
-                    cookie: `othername=${mockOperatorCookieBody}`,
-                },
-                cookies: {
-                    OPERATOR_COOKIE: operator,
-                },
-            });
-            const ctx: NextPageContext = {
-                res,
-                req,
-                pathname: '',
-                query: {},
-                AppTree: () => <div />,
-            };
-            const result = await Service.getInitialProps(ctx);
+            const ctx = getMockContext({ operator: null }, null, {}, mockWriteHeadFn, mockEndFn);
 
-            expect(mockWriteHeadFn).toHaveBeenCalledWith(302, {
-                Location: '/error',
-            });
-            expect(mockEndFn).toHaveBeenCalled();
-            expect(result).toEqual({});
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Operator cookie not found');
         });
     });
 });

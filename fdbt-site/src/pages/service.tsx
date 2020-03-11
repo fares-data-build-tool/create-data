@@ -6,7 +6,6 @@ import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
-import { redirectToError } from './api/apiUtils';
 
 const title = 'Service - Fares data build tool';
 const description = 'Service selection page of the Fares data build tool';
@@ -57,7 +56,7 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
     </Layout>
 );
 
-Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     if (!ctx.res) {
         throw new Error('Unexpected null res');
     }
@@ -76,20 +75,16 @@ Service.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
             }
 
             if (services.length === 0) {
-                console.error(`No services found for NOC Code: ${operatorObject.nocCode}`);
-                redirectToError(ctx.res);
-                return {};
+                throw new Error(`No services found for NOC Code: ${operatorObject.nocCode}`);
             }
 
-            return { operator: operatorObject.operator, services };
+            return { props: { operator: operatorObject.operator, services } };
         } catch (err) {
-            throw new Error(err.message);
+            throw new Error(err);
         }
     }
 
-    redirectToError(ctx.res);
-
-    return {};
+    throw new Error('Operator cookie not found');
 };
 
 export default Service;
