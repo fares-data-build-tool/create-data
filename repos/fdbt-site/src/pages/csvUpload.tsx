@@ -3,6 +3,10 @@ import { NextPage } from 'next';
 import Layout from '../layout/Layout';
 import FileAttachment from '../components/FileAttachment';
 
+import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
+import csvImage from '../assets/images/csv.png';
+import { STATIC_FILES_PATH } from '../constants';
+
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
 
@@ -54,14 +58,14 @@ const CsvUpload: NextPage = (): ReactElement => (
                     </legend>
                     <FileAttachment
                         displayName="Download Help File"
-                        attachmentUrl="/assets/files/How-to-Upload-a-Fares-Triangle.pdf"
-                        imageUrl="/assets/images/Guidance-doc-front-page.png"
+                        attachmentUrl={`${STATIC_FILES_PATH}/assets/files/How-to-Upload-a-Fares-Triangle.pdf`}
+                        imageUrl={guidanceDocImage}
                         size="1.3MB"
                     />
                     <FileAttachment
                         displayName="Download Fares Triangle CSV Example"
-                        attachmentUrl="/assets/files/Fares-Triangle-Example.csv"
-                        imageUrl="/assets/images/csv.png"
+                        attachmentUrl={`${STATIC_FILES_PATH}/assets/files/Fares-Triangle-Example.csv`}
+                        imageUrl={csvImage}
                         size="325B"
                     />
                 </div>

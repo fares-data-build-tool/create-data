@@ -18,6 +18,8 @@ export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
 export const PRICEENTRY_COOKIE = 'fdbt-price-entry';
 
+export const PERIOD_PRODUCT = 'fdbt-period-product';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',
@@ -39,3 +41,6 @@ export const TNDS_TABLE_NAME = `${STAGE}-TNDS`;
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
+export const STATIC_FILES_PATH = process.env.STATIC_FILES_BUCKET_URL
+    ? `https://${process.env.STATIC_FILES_BUCKET_URL}`
+    : '';
