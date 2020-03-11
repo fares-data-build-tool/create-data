@@ -1,7 +1,7 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
 import * as csvUpload from '../../../src/pages/api/csvUpload';
 import { getUuidFromCookie } from '../../../src/pages/api/apiUtils';
-import * as csvData from '../../testData/csvData';
+import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
 import { OPERATOR_COOKIE, FARETYPE_COOKIE, SERVICE_COOKIE } from '../../../src/constants';
 
