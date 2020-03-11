@@ -3,7 +3,7 @@ import formidable, { Files } from 'formidable';
 import csvParse from 'csv-parse/lib/sync';
 import fs from 'fs';
 import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
-import { putStringInS3 } from '../../data/s3';
+import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/dynamodb';
 import { CSV_ZONE_UPLOAD_COOKIE, ALLOWED_CSV_FILE_TYPES } from '../../constants';
 
@@ -14,12 +14,6 @@ export type File = FileData;
 interface FileData {
     Files: formidable.Files;
     FileContent: string;
-}
-
-export interface UserFareZone {
-    FareZoneName: string;
-    NaptanCodes: string;
-    AtcoCodes: string;
 }
 
 // The below 'config' needs to be exported for the formidable library to work.
@@ -39,30 +33,6 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
             return resolve(file);
         });
     });
-};
-
-export const putDataInS3 = async (data: UserFareZone[] | string, key: string, processed: boolean): Promise<void> => {
-    let contentType = '';
-    let bucketName = '';
-
-    if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
-        throw new Error('Bucket name environment variables not set.');
-    }
-
-    if (processed) {
-        bucketName = process.env.USER_DATA_BUCKET_NAME;
-        contentType = 'application/json; charset=utf-8';
-    } else {
-        bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
-        contentType = 'text/csv; charset=utf-8';
-    }
-    try {
-        await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
-    } catch (error) {
-        throw new Error(
-            `Could not put ${processed ? 'processed json' : 'raw csv'} in ${bucketName}. Error: ${error.stack}`,
-        );
-    }
 };
 
 export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {

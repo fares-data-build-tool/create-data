@@ -3,22 +3,12 @@ import formidable, { Files } from 'formidable';
 import fs from 'fs';
 import flatMap from 'array.prototype.flatmap';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
-import { putStringInS3 } from '../../data/s3';
+import { putDataInS3, UserFareStages } from '../../data/s3';
 import { ALLOWED_CSV_FILE_TYPES } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;
 
 export type File = FileData;
-
-export interface UserFareStages {
-    fareStages: {
-        stageName: string;
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
 
 interface FareTriangleData {
     fareStages: {
@@ -55,25 +45,6 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
             return resolve(file);
         });
     });
-};
-
-export const putDataInS3 = async (data: UserFareStages | string, key: string, processed: boolean): Promise<void> => {
-    let contentType = '';
-    let bucketName = '';
-
-    if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
-        throw new Error('Bucket name environment variables not set.');
-    }
-
-    if (processed) {
-        bucketName = process.env.USER_DATA_BUCKET_NAME;
-        contentType = 'application/json; charset=utf-8';
-    } else {
-        bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
-        contentType = 'text/csv; charset=utf-8';
-    }
-
-    await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };
 
 export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
