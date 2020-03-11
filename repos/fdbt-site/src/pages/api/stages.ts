@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectToError, redirectTo, isSessionValid, isCookiesUUIDMatch } from './apiUtils';
+import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
+import { redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {

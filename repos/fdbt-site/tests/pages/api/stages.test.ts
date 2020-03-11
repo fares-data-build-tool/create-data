@@ -1,7 +1,7 @@
 import { mockRequest, mockResponse } from 'mock-req-res';
 import stages from '../../../src/pages/api/stages';
 
-import * as index from '../../../src/pages/api/apiUtils/index';
+import * as validator from '../../../src/pages/api/service/validator';
 
 describe('stages', () => {
     beforeEach(() => {
@@ -10,11 +10,11 @@ describe('stages', () => {
 
     it('should return 302 redirect to /confirmation when session is valid and cookies uuid match', () => {
         const spyIsSessionValid = jest
-            .spyOn(index, 'isSessionValid')
+            .spyOn(validator, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(true);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(index, 'isCookiesUUIDMatch')
+            .spyOn(validator, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(true);
 
@@ -36,11 +36,11 @@ describe('stages', () => {
 
     it('should return 302 redirect to /error when cookie uuid do not match', () => {
         const spyIsSessionValid = jest
-            .spyOn(index, 'isSessionValid')
+            .spyOn(validator, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(true);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(index, 'isCookiesUUIDMatch')
+            .spyOn(validator, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(false);
 
@@ -62,11 +62,11 @@ describe('stages', () => {
 
     it('should return 302 redirect to /error when session is not valid', () => {
         const spyIsSessionValid = jest
-            .spyOn(index, 'isSessionValid')
+            .spyOn(validator, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(false);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(index, 'isCookiesUUIDMatch')
+            .spyOn(validator, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(true);
 
@@ -88,11 +88,11 @@ describe('stages', () => {
 
     it('should return 302 redirect to /error when session is not valid and cookies do not match', () => {
         const spyIsSessionValid = jest
-            .spyOn(index, 'isSessionValid')
+            .spyOn(validator, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(false);
         const spyIsCookiesUUIDMatch = jest
-            .spyOn(index, 'isCookiesUUIDMatch')
+            .spyOn(validator, 'isCookiesUUIDMatch')
             .mockImplementation()
             .mockReturnValue(false);
 
