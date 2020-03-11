@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-    aws-cli: circleci/aws-cli@0.1.20
     aws-ecr: circleci/aws-ecr@6.7.1
+    aws-ecs: circleci/aws-ecs@1.1.0
 
 jobs:
     checkout-repo:
@@ -67,50 +67,6 @@ jobs:
                       echo "Linting site"
                       npm run lint
 
-    build-and-deploy-site-to-test:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        executor: aws-cli/default
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - aws-cli/setup:
-                  profile-name: default
-            - run:
-                  command: |
-                      echo "Deploying..."
-                      sudo npm i -g serverless
-                      cd deploy/test
-                      echo "Downloading state"
-                      aws s3 sync --delete s3://fdbt-serverless-component-state-test .serverless/
-                      export NODE_ENV='production' && export STAGE='test' && serverless
-                      echo "Uploading new state"
-                      aws s3 sync --delete .serverless/ s3://fdbt-serverless-component-state-test
-                      echo "Finished deploy"
-
-    # deploy-site-to-preprod:
-    #     docker:
-    #         - image: circleci/node:12
-    #     working_directory: ~/project
-    #     executor: aws-cli/default
-    #     steps:
-    #         - attach_workspace:
-    #               at: ~/project
-    #         - aws-cli/setup:
-    #               profile-name: default
-    #         - run:
-    #               command: |
-    #                   echo "Deploying..."
-    #                   sudo npm i -g serverless
-    #                   cd deploy/preprod
-    #                   echo "Downloading state"
-    #                   aws s3 sync --delete s3://fdbt-serverless-component-state-preprod .serverless/
-    #                   export NODE_ENV='production' && export STAGE='preprod' && serverless
-    #                   echo "Uploading new state"
-    #                   aws s3 sync --delete .serverless/ s3://fdbt-serverless-component-state-preprod
-    #                   echo "Finished deploy"
-
 workflows:
     version: 2
     build-test-and-deploy-site:
@@ -119,7 +75,8 @@ workflows:
                   filters:
                       branches:
                           only:
-                              - feature/TFN-312_dockerise_site
+                              - develop
+                              - master
 
             - build-site:
                   requires:
@@ -127,7 +84,8 @@ workflows:
                   filters:
                       branches:
                           only:
-                              - feature/TFN-312_dockerise_site
+                              - develop
+                              - master
 
             - audit-site:
                   requires:
@@ -135,7 +93,8 @@ workflows:
                   filters:
                       branches:
                           only:
-                              - feature/TFN-312_dockerise_site
+                              - develop
+                              - master
 
             - test-site:
                   requires:
@@ -143,7 +102,8 @@ workflows:
                   filters:
                       branches:
                           only:
-                              - feature/TFN-312_dockerise_site
+                              - develop
+                              - master
 
             - lint-site:
                   requires:
@@ -151,38 +111,48 @@ workflows:
                   filters:
                       branches:
                           only:
-                              - feature/TFN-312_dockerise_site
+                              - develop
+                              - master
 
             - aws-ecr/build-and-push-image:
                   requires:
                       - test-site
                       - lint-site
-                  repo: '${AWS_RESOURCE_NAME_PREFIX}'
+                  repo: '${SITE_ECR_REPO}'
                   tag: '${CIRCLE_SHA1},latest'
                   context: tfn-fdbt-core
                   filters:
                       branches:
-                          only: feature/TFN-312_dockerise_site
-            # - deploy-site-to-test:
-            #       requires:
-            #           - test-site
-            #           - lint-site
-            #       context: 'tfn-fdbt-test'
-            #       filters:
-            #           branches:
-            #               only: feature/TFN-312_dockerise_site
-            # - hold-preprod-deployment:
-            #       type: approval
-            #       requires:
-            #           - test-site
-            #           - lint-site
-            #       filters:
-            #           branches:
-            #               only: master
-            # - deploy-site-to-preprod:
-            #       requires:
-            #           - hold-preprod-deployment
-            #       context: 'tfn-fdbt-preprod'
-            #       filters:
-            #           branches:
-            #               only: master
+                          only:
+                              - develop
+                              - master
+
+            - aws-ecs/deploy-service-update:
+                  requires:
+                      - aws-ecr/build-and-push-image
+                  family: '${SITE_ECS_FAMILY}'
+                  cluster-name: '${SITE_ECS_CLUSTER}'
+                  container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+                  context: tfn-fdbt-test
+                  filters:
+                      branches:
+                          only: develop
+
+            - hold-preprod-deployment:
+                  type: approval
+                  requires:
+                      - aws-ecr/build-and-push-image
+                  filters:
+                      branches:
+                          only: master
+
+            - aws-ecs/deploy-service-update:
+                  requires:
+                      - hold-preprod-deployment
+                  family: '${SITE_ECS_FAMILY}'
+                  cluster-name: '${SITE_ECS_CLUSTER}'
+                  container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+                  context: tfn-fdbt-preprod
+                  filters:
+                      branches:
+                          only: master
