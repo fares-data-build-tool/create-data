@@ -4,7 +4,7 @@ import csvParse from 'csv-parse/lib/sync';
 import fs from 'fs';
 import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
-import { batchGetAtcoByNaptanCode } from '../../data/dynamodb';
+import { getAtcoCodesByNaptanCodes } from '../../data/dynamodb';
 import { CSV_ZONE_UPLOAD_COOKIE, ALLOWED_CSV_FILE_TYPES } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;
@@ -124,7 +124,9 @@ export const processCsvUpload = async (fileContent: string): Promise<UserFareZon
     const naptanCodesToQuery = rawUserFareZones
         .filter(rawUserFareZone => rawUserFareZone.AtcoCodes === '')
         .map(rawUserFareZone => rawUserFareZone.NaptanCodes);
-    const atcoItems = await batchGetAtcoByNaptanCode(naptanCodesToQuery);
+    console.log({ naptanCodesToQuery });
+    const atcoItems = await getAtcoCodesByNaptanCodes(naptanCodesToQuery);
+    console.log({ atcoItems });
     const userFareZones = rawUserFareZones.map(rawUserFareZone => {
         const atcoItem = atcoItems.find(item => rawUserFareZone.NaptanCodes === item.naptanCode);
         if (atcoItem) {
@@ -133,8 +135,10 @@ export const processCsvUpload = async (fileContent: string): Promise<UserFareZon
                 AtcoCodes: atcoItem.atcoCode,
             };
         }
+        console.log(rawUserFareZone);
         return rawUserFareZone;
     });
+    console.log(userFareZones);
     return userFareZones;
 };
 
@@ -147,9 +151,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (formData.FileContent) {
             const uuid = getUuidFromCookie(req, res);
+            console.log(`File content received is: ${formData.FileContent}`);
             await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
             const userFareZones = await processCsvUpload(formData.FileContent);
             const fareZoneName = userFareZones[0].FareZoneName;
+            console.log(`FareZoneName is ${fareZoneName} and userFareZones are ${userFareZones}`);
             await putDataInS3(userFareZones, `${uuid}.json`, true);
             const cookieValue = JSON.stringify({ fareZoneName, uuid });
             setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
@@ -157,6 +163,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/periodProduct');
         }
     } catch (error) {
+        console.log(error.stack);
         redirectToError(res);
     }
 };

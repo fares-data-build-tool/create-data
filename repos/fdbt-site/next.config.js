@@ -10,6 +10,7 @@ const nextConfig = {
     target: 'serverless',
     env: {
         NAPTAN_TABLE_NAME: `${stage}-Stops`,
+        NAPTAN_TABLE_GSI: 'NaptanIndex',
         NOC_TABLE_NAME: `${stage}-Operators`,
         SERVICES_TABLE_NAME: `${stage}-Services`,
         TNDS_TABLE_NAME: `${stage}-TNDS`,
