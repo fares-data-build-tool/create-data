@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { FARETYPE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
-import { isSessionValid } from './service/validator';
+import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, isSessionValid } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
