@@ -10,14 +10,8 @@ import {
     csvFileIsValid,
     getFormData,
 } from './apiUtils';
-import { putDataInS3 } from '../../data/s3';
+import { putDataInS3, UserFareZone } from '../../data/s3';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../../constants';
-
-export interface UserFareZone {
-    FareZoneName: string;
-    NaptanCodes: string;
-    AtcoCodes: string;
-}
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {

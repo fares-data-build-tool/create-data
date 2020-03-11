@@ -14,7 +14,8 @@ export interface UserStages {
 
 export interface UserFareZone {
     FareZoneName: string;
-    AtcoCodes: string[];
+    NaptanCodes: string;
+    AtcoCodes: string;
 }
 
 export interface UserFareStages {
@@ -76,7 +77,7 @@ export const putStringInS3 = async (
 };
 
 export const putDataInS3 = async (
-    data: UserFareZone | UserFareStages | string,
+    data: UserFareZone[] | UserFareStages | string,
     key: string,
     processed: boolean,
 ): Promise<void> => {
