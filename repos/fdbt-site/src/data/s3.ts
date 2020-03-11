@@ -8,8 +8,23 @@ export interface FareStage {
     }[];
 }
 
-export interface UserFareStages {
+export interface UserStages {
     fareStages: FareStage[];
+}
+
+export interface UserFareZone {
+    FareZoneName: string;
+    AtcoCodes: string[];
+}
+
+export interface UserFareStages {
+    fareStages: {
+        stageName: string;
+        prices: {
+            price: string;
+            fareZones: string[];
+        }[];
+    }[];
 }
 
 const getS3Client = (): AWS.S3 => {
@@ -29,7 +44,7 @@ const getS3Client = (): AWS.S3 => {
 
 const s3 = getS3Client();
 
-export const getUserFareStages = async (uuid: string): Promise<UserFareStages> => {
+export const getUserFareStages = async (uuid: string): Promise<UserStages> => {
     if (!process.env.USER_DATA_BUCKET_NAME) {
         throw new Error('Environment variable for validated bucket not set');
     }
@@ -58,4 +73,32 @@ export const putStringInS3 = async (
     };
 
     await s3.putObject(request).promise();
+};
+
+export const putDataInS3 = async (
+    data: UserFareZone | UserFareStages | string,
+    key: string,
+    processed: boolean,
+): Promise<void> => {
+    let contentType = '';
+    let bucketName = '';
+
+    if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
+        throw new Error('Bucket name environment variables not set.');
+    }
+
+    if (processed) {
+        bucketName = process.env.USER_DATA_BUCKET_NAME;
+        contentType = 'application/json; charset=utf-8';
+    } else {
+        bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
+        contentType = 'text/csv; charset=utf-8';
+    }
+    try {
+        await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
+    } catch (error) {
+        throw new Error(
+            `Could not put ${processed ? 'processed json' : 'raw csv'} in ${bucketName}. Error: ${error.stack}`,
+        );
+    }
 };

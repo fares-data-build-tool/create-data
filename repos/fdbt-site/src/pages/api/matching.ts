@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
-import { UserFareStages } from './csvUpload';
+import { redirectTo, redirectToError, getUuidFromCookie, isCookiesUUIDMatch } from './apiUtils';
 import { BasicService } from '../matching';
 import { Stop } from '../../data/dynamodb';
-import { putStringInS3 } from '../../data/s3';
-import { isCookiesUUIDMatch } from './service/validator';
+import { putStringInS3, UserFareStages } from '../../data/s3';
 
 interface MatchingData {
     lineName: string;
