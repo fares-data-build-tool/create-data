@@ -1,4 +1,3 @@
-import '../design/Layout.scss';
 import React, { FC, PropsWithChildren } from 'react';
 import Head from 'next/head';
 import Header from './Header';

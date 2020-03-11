@@ -1,3 +1,6 @@
+import '../design/Pages.scss';
+import '../design/Layout.scss';
+import '../design/Components.scss';
 import App, { AppProps, AppContext } from 'next/app';
 import React, { ReactElement } from 'react';
 
