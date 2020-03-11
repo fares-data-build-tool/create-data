@@ -29,3 +29,13 @@ export const ALLOWED_CSV_FILE_TYPES = [
     'text/x-comma-separated-values',
     'text/tab-separated-values',
 ];
+
+export const STAGE = process.env.STAGE || 'dev';
+
+export const NAPTAN_TABLE_NAME = `${STAGE}-Stops`;
+export const NOC_TABLE_NAME = `${STAGE}-Operators`;
+export const SERVICES_TABLE_NAME = `${STAGE}-Services`;
+export const TNDS_TABLE_NAME = `${STAGE}-TNDS`;
+export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
+export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
+export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;

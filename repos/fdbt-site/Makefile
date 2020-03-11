@@ -16,10 +16,3 @@ create-local-buckets:
 
 run-local:
 	export STAGE=dev && npm run dev
-
-clean:
-	rm -rf .serverless_nextjs
-
-deploy-dev: clean
-	cd deploy/dev; \
-		STAGE=$(STAGE) serverless

@@ -1,6 +1,6 @@
 import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
-import { NextPage, NextPageContext } from 'next';
+import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
 import { FARETYPE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
@@ -8,7 +8,7 @@ import { deleteCookieOnServerSide } from '../utils';
 const title = 'FareType - Fares data build tool';
 const description = 'Fare Type selection page of the Fares data build tool';
 
-const FareType: NextPage = (): ReactElement => (
+const FareType = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/faretype" method="post">
@@ -72,10 +72,11 @@ const FareType: NextPage = (): ReactElement => (
     </Layout>
 );
 
-FareType.getInitialProps = (ctx: NextPageContext): {} => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     deleteCookieOnServerSide(ctx, FARETYPE_COOKIE);
 
-    return {};
+    return { props: {} };
 };
 
 export default FareType;

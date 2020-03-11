@@ -100,7 +100,7 @@ const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPa
         ),
     );
 
-Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     deleteCookieOnServerSide(ctx, JOURNEY_COOKIE);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
@@ -134,7 +134,7 @@ Direction.getInitialProps = async (ctx: NextPageContext): Promise<{}> => {
             ) === index,
     );
 
-    return { operator: operatorObject.operator, lineName, service };
+    return { props: { operator: operatorObject.operator, lineName, service } };
 };
 
 export default Direction;
