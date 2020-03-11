@@ -158,7 +158,7 @@ workflows:
                       - test-site
                       - lint-site
                   repo: '${AWS_RESOURCE_NAME_PREFIX}'
-                  tag: '${CIRCLE_SHA1}'
+                  tag: '${CIRCLE_SHA1},latest'
                   context: tfn-fdbt-core
                   filters:
                       branches:
