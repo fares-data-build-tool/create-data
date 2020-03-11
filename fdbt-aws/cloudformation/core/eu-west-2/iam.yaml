@@ -14,11 +14,11 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
+              - "iam:GetAccountPasswordPolicy"
+              - "iam:GetAccountSummary"
               - "iam:ListAccountAliases"
               - "iam:ListUsers"
               - "iam:ListVirtualMFADevices"
-              - "iam:GetAccountPasswordPolicy"
-              - "iam:GetAccountSummary"
             Resource: "*"
           - Effect: Allow
             Action:
@@ -27,18 +27,18 @@ Resources:
               - "iam:CreateLoginProfile"
               - "iam:DeleteAccessKey"
               - "iam:DeleteLoginProfile"
+              - "iam:DeleteSigningCertificate"
+              - "iam:DeleteSSHPublicKey"
               - "iam:GetLoginProfile"
+              - "iam:GetSSHPublicKey"
               - "iam:ListAccessKeys"
+              - "iam:ListSigningCertificates"
+              - "iam:ListSSHPublicKeys"
               - "iam:UpdateAccessKey"
               - "iam:UpdateLoginProfile"
-              - "iam:ListSigningCertificates"
-              - "iam:DeleteSigningCertificate"
               - "iam:UpdateSigningCertificate"
-              - "iam:UploadSigningCertificate"
-              - "iam:ListSSHPublicKeys"
-              - "iam:GetSSHPublicKey"
-              - "iam:DeleteSSHPublicKey"
               - "iam:UpdateSSHPublicKey"
+              - "iam:UploadSigningCertificate"
               - "iam:UploadSSHPublicKey"
             Resource: "arn:aws:iam::*:user/${aws:username}"
           - Effect: Allow
@@ -50,13 +50,26 @@ Resources:
           - Effect: Allow
             Action:
               - "iam:CreateVirtualMFADevice"
+              - "iam:DeactivateMFADevice"
               - "iam:DeleteVirtualMFADevice"
               - "iam:EnableMFADevice"
               - "iam:ResyncMFADevice"
-              - "iam:DeactivateMFADevice"
             Resource:
               - "arn:aws:iam::*:mfa/${aws:username}"
               - "arn:aws:iam::*:user/${aws:username}"
+
+  CircleCiPolicy:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties:
+      Description: "Policy for cicd accounts"
+      Path: /
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "ecr:*"
+            Resource: "*"
 
   DeveloperGroup:
     Type: "AWS::IAM::Group"
@@ -79,11 +92,11 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
+                  - "iam:GetAccountPasswordPolicy"
+                  - "iam:GetAccountSummary"
                   - "iam:ListAccountAliases"
                   - "iam:ListUsers"
                   - "iam:ListVirtualMFADevices"
-                  - "iam:GetAccountPasswordPolicy"
-                  - "iam:GetAccountSummary"
                 Resource: "*"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
@@ -114,3 +127,17 @@ Resources:
       GroupName: "tfn-admins"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
+
+  CircleCiGroup:
+    Type: "AWS::IAM::Group"
+    Properties:
+      GroupName: "fdbt-core-circleci-group"
+      ManagedPolicyArns:
+        - !Ref CircleCiPolicy
+
+  CircleCiUser:
+    Type: "AWS::IAM::User"
+    Properties:
+      UserName: "fdbt-core-circleci-user"
+      Groups:
+        - !Ref CircleCiGroup

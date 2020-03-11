@@ -68,6 +68,53 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/Billing
 
+  EcsTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-user-data-${Stage}/*
+              - Effect: Allow
+                Action:
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-raw-user-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}/*
+              - Effect: Allow
+                Action:
+                  - "dynamodb:BatchGetItem"
+                  - "dynamodb:GetItem"
+                  - "dynamodb:Query"
+                Resource: "*"
+          PolicyName: allow-s3-dynamo-access
+
+  EcsTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
   Policy:
     Type: "AWS::IAM::ManagedPolicy"
     Properties:
@@ -95,6 +142,7 @@ Resources:
               - "apigateway:*"
               - "dynamodb:*"
               - "events:*"
+              - "ecs:*"
             Resource: "*"
 
   NextJsLambdaPolicy:
@@ -137,3 +185,13 @@ Resources:
       UserName: "fdbt-circleci-user"
       Groups:
         - !Ref Group
+
+Outputs:
+  EcsTaskRoleArn:
+    Value: !GetAtt EcsTaskRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsTaskRoleArn
+  EcsTaskExecutionRoleArn:
+    Value: !GetAtt EcsTaskExecutionRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsTaskExecutionRoleArn

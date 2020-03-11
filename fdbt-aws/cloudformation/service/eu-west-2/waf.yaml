@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "CloudFormation template for WAF resources"
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
+Resources:
+  IwIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for Infinity Works office
+      Name: IwIpSet
+      Scope: REGIONAL
+      IPAddressVersion: IPV4
+      Addresses:
+        - 52.51.7.138/32
+        - 156.67.242.53/32
+
+  TfnIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for TFN offices
+      Name: TfnIpSet
+      Scope: REGIONAL
+      IPAddressVersion: IPV4
+      Addresses:
+        - 213.104.199.0/24
+        - 148.252.255.0/24
+
+  TesterIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for testers of the tool
+      Name: TesterIpSet
+      Scope: REGIONAL
+      IPAddressVersion: IPV4
+      Addresses:
+        - 91.240.227.66/32
+        - 86.188.217.2/32
+
+  RestrictAccessAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: RestrictAccess
+      Scope: REGIONAL
+      Description: Restricts access to Infinity Works, TFN and external testers
+      DefaultAction:
+        Block: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: RestrictAccessMetric
+      Rules:
+        - Name: AllowIw
+          Action:
+            Allow: {}
+          Priority: 0
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowIwRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt IwIpSet.Arn
+        - Name: AllowTfn
+          Action:
+            Allow: {}
+          Priority: 1
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowTfnRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt TfnIpSet.Arn
+        - Name: AllowTesters
+          Action:
+            Allow: {}
+          Priority: 2
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowTestersRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt TesterIpSet.Arn
+
+  WafAssociation:
+    Type: "AWS::WAFv2::WebACLAssociation"
+    Properties:
+      ResourceArn:
+        Fn::ImportValue: !Sub ${Stage}:LoadbalancerArn
+      WebACLArn: !GetAtt RestrictAccessAcl.Arn
