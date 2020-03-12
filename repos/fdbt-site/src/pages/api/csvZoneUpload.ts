@@ -91,23 +91,30 @@ export const processCsvUpload = async (fileContent: string): Promise<UserFareZon
             AtcoCodes: parsedItem.AtcoCodes,
         }))
         .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
+    console.log({ rawUserFareZones });
+    let userFareZones = rawUserFareZones;
     const naptanCodesToQuery = rawUserFareZones
         .filter(rawUserFareZone => rawUserFareZone.AtcoCodes === '')
         .map(rawUserFareZone => rawUserFareZone.NaptanCodes);
     console.log({ naptanCodesToQuery });
-    const atcoItems = await getAtcoCodesByNaptanCodes(naptanCodesToQuery);
-    console.log({ atcoItems });
-    const userFareZones = rawUserFareZones.map(rawUserFareZone => {
-        const atcoItem = atcoItems.find(item => rawUserFareZone.NaptanCodes === item.naptanCode);
-        if (atcoItem) {
-            return {
-                ...rawUserFareZone,
-                AtcoCodes: atcoItem.atcoCode,
-            };
-        }
-        console.log(rawUserFareZone);
-        return rawUserFareZone;
-    });
+    console.log(naptanCodesToQuery.length);
+    console.log(naptanCodesToQuery.length > 1);
+    if (naptanCodesToQuery.length !== 0) {
+        console.log('NAPTANCODESTOQUERY IS LONGER THAN 1');
+        const atcoItems = await getAtcoCodesByNaptanCodes(naptanCodesToQuery);
+        console.log({ atcoItems });
+        userFareZones = rawUserFareZones.map(rawUserFareZone => {
+            const atcoItem = atcoItems.find(item => rawUserFareZone.NaptanCodes === item.naptanCode);
+            if (atcoItem) {
+                return {
+                    ...rawUserFareZone,
+                    AtcoCodes: atcoItem.atcoCode,
+                };
+            }
+            console.log(rawUserFareZone);
+            return rawUserFareZone;
+        });
+    }
     console.log(userFareZones);
     return userFareZones;
 };
@@ -122,10 +129,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (formData.FileContent) {
             const uuid = getUuidFromCookie(req, res);
             console.log(`File content received is: ${formData.FileContent}`);
+            console.log(formData.FileContent);
             await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
             const userFareZones = await processCsvUpload(formData.FileContent);
             const fareZoneName = userFareZones[0].FareZoneName;
             console.log(`FareZoneName is ${fareZoneName} and userFareZones are ${userFareZones}`);
+            console.log(userFareZones);
             await putDataInS3(userFareZones, `${uuid}.json`, true);
             const cookieValue = JSON.stringify({ fareZoneName, uuid });
             setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
