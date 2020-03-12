@@ -33,6 +33,7 @@ describe('csvZoneUpload', () => {
     ])(
         'should put the unprocessed data in S3 as a csv and the processed data in S3 as json',
         async (csv, expectedUnprocessed, expectedProcessed) => {
+
             const file = {
                 'csv-upload': {
                     size: 999,
@@ -78,6 +79,7 @@ describe('csvZoneUpload', () => {
     );
 
     it('should return 302 redirect to /periodProduct when valid a valid file is processed and put in S3', async () => {
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -103,15 +105,12 @@ describe('csvZoneUpload', () => {
         });
     });
 
-    // it('should extract the file data submitted via the UI', () => {
-
-    // });
-
     // it('should redirect to /error when an error is thrown in the default', () => {
 
     // });
 
     describe('fileIsValid', () => {
+
         it('should return 302 redirect to /csvZoneUpload when an empty file is attached', async () => {
             const file = {
                 'csv-upload': {
