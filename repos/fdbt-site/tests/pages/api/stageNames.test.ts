@@ -1,19 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import http from 'http';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../../src/constants';
 import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-http.OutgoingMessage.prototype.setHeader = jest.fn();
-
 describe('stageNames', () => {
     let setCookieSpy: any;
-    // let deleteCookieSpy: any;
 
     beforeEach(() => {
         setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-        // deleteCookieSpy = jest.spyOn(apiUtils, 'deleteCookieOnResponseObject');
     });
 
     afterEach(() => {
@@ -94,8 +89,7 @@ describe('stageNames', () => {
         const { req, res } = getMockRequestAndResponse({}, mockBody);
         const mockStageNamesCookieValue = '["a","b","c","d"]';
         stageNames(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith('', STAGE_NAMES_COOKIE, mockStageNamesCookieValue, req, res);
-        // expect(deleteCookieSpy).toHaveBeenCalledWith('', STAGE_NAME_VALIDATION_COOKIE, req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith('localhost', STAGE_NAMES_COOKIE, mockStageNamesCookieValue, req, res);
     });
 
     it('should set the STAGE_NAME_VALIDATION_COOKIE with a value matching the invalid data entered by the user', () => {
@@ -104,6 +98,6 @@ describe('stageNames', () => {
         const mockInputCheck =
             '[{"Input":" ","Error":"Enter a name for this fare stage"},{"Input":"abcdefghijklmnopqrstuvwxyzabcdefgh","Error":"The name for Fare Stage 2 needs to be less than 30 characters"},{"Input":"   ","Error":"Enter a name for this fare stage"},{"Input":"b","Error":""}]';
         stageNames(req, res);
-        expect(setCookieSpy).toBeCalledWith('', STAGE_NAME_VALIDATION_COOKIE, mockInputCheck, req, res);
+        expect(setCookieSpy).toBeCalledWith('localhost', STAGE_NAME_VALIDATION_COOKIE, mockInputCheck, req, res);
     });
 });

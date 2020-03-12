@@ -1,4 +1,3 @@
-import MockReq from 'mock-req';
 import Cookies from 'cookies';
 import { getDomain, setCookieOnResponseObject, getUuidFromCookie } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
@@ -18,12 +17,7 @@ describe('apiUtils', () => {
     describe('getDomain', () => {
         it('should return the domain without a port number', () => {
             const expected = 'localhost';
-            const req = new MockReq({
-                headers: {
-                    host: 'localhost:3000',
-                    origin: 'localhost:3000',
-                },
-            });
+            const { req } = getMockRequestAndResponse();
             const result = getDomain(req);
             expect(result).toEqual(expected);
         });

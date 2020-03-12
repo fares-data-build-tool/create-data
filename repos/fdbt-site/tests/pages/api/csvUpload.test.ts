@@ -1,6 +1,5 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
 import * as csvUpload from '../../../src/pages/api/csvUpload';
-import { getUuidFromCookie } from '../../../src/pages/api/apiUtils';
 import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
 import { OPERATOR_COOKIE, FARETYPE_COOKIE, SERVICE_COOKIE } from '../../../src/constants';
@@ -118,18 +117,6 @@ describe('csvUpload', () => {
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
         expect(outputData).toBe('File not of allowed type, uploaded file is text/pdf');
-    });
-
-    it('should get the uuid from the cookie', () => {
-        const req = mockRequest({
-            headers: {
-                cookie: mockCookie,
-            },
-        });
-
-        const result = getUuidFromCookie(req, res);
-
-        expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
     });
 
     it.each([
