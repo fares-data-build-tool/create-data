@@ -98,6 +98,9 @@ Resources:
               Value: !Ref Stage
             - Name: AWS_NODEJS_CONNECTION_REUSE_ENABLED
               Value: "1"
+            - Name: STATIC_FILES_BUCKET_URL
+              Value:
+                Fn::ImportValue: !Sub ${Stage}:StaticFilesBucketUrl
 
   Service:
     Type: AWS::ECS::Service
@@ -112,7 +115,7 @@ Resources:
       DesiredCount: !Ref DesiredCount
       NetworkConfiguration:
         AwsvpcConfiguration:
-          AssignPublicIp: ENABLED
+          AssignPublicIp: DISABLED
           SecurityGroups:
             - !Ref ContainerSG
           Subnets:

@@ -17,6 +17,11 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       BucketName: !Sub fdbt-serverless-component-state-${Stage}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       VersioningConfiguration:
         Status: Enabled
 
@@ -24,6 +29,11 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub fdbt-user-data-${Stage}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       LifecycleConfiguration:
         Rules:
           - ExpirationInDays: 30
@@ -33,7 +43,40 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub fdbt-raw-user-data-${Stage}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       LifecycleConfiguration:
         Rules:
           - ExpirationInDays: 30
             Status: Enabled
+
+  StaticFilesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub fdbt-static-files-${Stage}
+
+  StaticFilesBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StaticFilesBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - !Ref StaticFilesBucket
+                  - "/*"
+            Principal: "*"
+
+Outputs:
+  StaticFilesBucketUrl:
+    Value: !GetAtt StaticFilesBucket.RegionalDomainName
+    Export:
+      Name: !Sub ${Stage}:StaticFilesBucketUrl

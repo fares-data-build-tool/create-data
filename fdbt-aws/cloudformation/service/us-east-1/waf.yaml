@@ -39,6 +39,7 @@ Resources:
       Addresses:
         - 91.240.227.66/32
         - 86.188.217.2/32
+        - 62.255.235.96/27
 
   RestrictAccessAcl:
     Type: AWS::WAFv2::WebACL
