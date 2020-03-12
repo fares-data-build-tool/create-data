@@ -97,15 +97,11 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error('Failed to retrieve fareStageCookie info for Stage Names page.');
     }
 
-    if (!periodProductCookie) {
-        return { props: {} };
-    }
-
     const operatorObject = JSON.parse(operatorCookie);
 
     return {
         props: {
-            product: JSON.parse(periodProductCookie),
+            product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
             operator: operatorObject.operator,
         },
     };
