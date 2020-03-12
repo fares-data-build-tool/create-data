@@ -37,7 +37,6 @@ export const config = {
 export const formParse = async (req: NextApiRequest): Promise<Files> => {
     return new Promise<Files>((resolve, reject) => {
         const form = new formidable.IncomingForm();
-        console.log({ form });
         form.parse(req, (err, _fields, file) => {
             if (err) {
                 return reject(err);
@@ -145,9 +144,7 @@ export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fi
 
 export const getFormData = async (req: NextApiRequest): Promise<File> => {
     const files = await formParse(req);
-    console.log({ files });
     const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
-    console.log({ fileContent });
 
     return {
         Files: files,
@@ -157,7 +154,6 @@ export const getFormData = async (req: NextApiRequest): Promise<File> => {
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
-        console.log(`Request is ${req.body}`);
         const formData = await getFormData(req);
         if (!fileIsValid(res, formData.Files, formData.FileContent)) {
             return;

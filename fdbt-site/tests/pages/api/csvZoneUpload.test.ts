@@ -24,16 +24,15 @@ describe('csvZoneUpload', () => {
     });
 
     it.each([
-        [csvData.testCsv, csvData.unprocessedFromTestCsv.Body, csvData.processedFromTestCsv.Body],
+        [csvData.testCsv, csvData.unprocessedTestCsv.Body, csvData.processedTestCsv.Body],
         [
             csvData.testCsvWithEmptyCells,
-            csvData.unprocessedFromTestCsvWithEmptyCells.Body,
-            csvData.processedFromTestCsvWithEmptyCells.Body,
+            csvData.unprocessedTestCsvWithEmptyCells.Body,
+            csvData.processedTestCsvWithEmptyCells.Body,
         ],
     ])(
         'should put the unprocessed data in S3 as a csv and the processed data in S3 as json',
         async (csv, expectedUnprocessed, expectedProcessed) => {
-
             const file = {
                 'csv-upload': {
                     size: 999,
@@ -79,7 +78,6 @@ describe('csvZoneUpload', () => {
     );
 
     it('should return 302 redirect to /periodProduct when valid a valid file is processed and put in S3', async () => {
-
         const file = {
             'csv-upload': {
                 size: 999,
@@ -98,6 +96,7 @@ describe('csvZoneUpload', () => {
                 Files: file,
                 FileContent: csvData.testCsv,
             });
+
         await csvZoneUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -105,12 +104,39 @@ describe('csvZoneUpload', () => {
         });
     });
 
-    // it('should redirect to /error when an error is thrown in the default', () => {
+    it('should redirect to /error when an error is thrown in the default', async () => {
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+        const dynamoError = 'Could not fetch data from dynamo in test';
 
-    // });
+        jest.spyOn(csvZoneUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                Files: file,
+                FileContent: csvData.testCsvWithEmptyCells,
+            });
+
+        jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes').mockImplementation(() => {
+            throw new Error(dynamoError);
+        });
+
+        await csvZoneUpload.default(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
+        });
+    });
 
     describe('fileIsValid', () => {
-
         it('should return 302 redirect to /csvZoneUpload when an empty file is attached', async () => {
             const file = {
                 'csv-upload': {
@@ -130,6 +156,7 @@ describe('csvZoneUpload', () => {
                     Files: file,
                     FileContent: '',
                 });
+
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -156,6 +183,7 @@ describe('csvZoneUpload', () => {
                     Files: file,
                     FileContent: csvData.testCsv,
                 });
+
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -182,6 +210,7 @@ describe('csvZoneUpload', () => {
                     Files: file,
                     FileContent: csvData.testCsv,
                 });
+
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -192,8 +221,8 @@ describe('csvZoneUpload', () => {
 
     describe('processCsvUpload', () => {
         it.each([
-            [csvData.testCsvWithEmptyLines, csvData.processedFromTestCsvWithEmptyLines.Body],
-            [csvData.testCsvWithEmptyLinesAndEmptyCells, csvData.processedFromTestCsvWithEmptyLinesAndEmptyCells.Body],
+            [csvData.testCsvWithEmptyLines, csvData.processedTestCsvWithEmptyLines.Body],
+            [csvData.testCsvWithEmptyLinesAndEmptyCells, csvData.processedTestCsvWithEmptyLinesAndEmptyCells.Body],
         ])('should skip empty lines in the csv', async (fileContent, expectedProcessed) => {
             jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
@@ -205,9 +234,21 @@ describe('csvZoneUpload', () => {
         });
     });
 
-    // describe('formatDynamoResponse', () => {
-    //     it('should return an array of UserFareZone objects when called with an array of naptan codes', () => {
+    describe('formatDynamoResponse', () => {
+        it('should return an array of UserFareZone objects when called with an array of naptan codes', async () => {
+            const mockRawUserFareZones = csvData.partProcessedTestCsvWithEmptyCells.Body;
+            const mockNaptanCodesToQuery: string[] = ['TestNaptan-TC5'];
+            const expectedUserFareZones = csvData.processedTestCsvWithEmptyCells.Body;
 
-    //     });
-    // });
+            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+                .mockImplementation()
+                .mockResolvedValue([{ atcoCode: 'TestATCO-TC5', naptanCode: 'TestNaptan-TC5' }]);
+
+            const mockUserFareZones = await csvZoneUpload.formatDynamoResponse(
+                mockRawUserFareZones,
+                mockNaptanCodesToQuery,
+            );
+            expect(mockUserFareZones).toEqual(expectedUserFareZones);
+        });
+    });
 });

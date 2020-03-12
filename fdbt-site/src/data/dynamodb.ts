@@ -202,11 +202,8 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     });
     try {
         const results = await Promise.all(queryPromises);
-        console.log(`Results from dynamo are ${results}`);
-        console.log(`The inner part of each results item is ${results[0].Items}`);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const atcoItems: RawDynamoNaptanIndex[] = flatMap(results, (item: any) => item.Items);
-        console.log({ atcoItems });
         return atcoItems.map(item => ({ atcoCode: item.Partition, naptanCode: item.NaptanCode }));
     } catch (error) {
         console.error(
