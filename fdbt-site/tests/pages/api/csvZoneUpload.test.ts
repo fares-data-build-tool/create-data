@@ -24,11 +24,11 @@ describe('csvZoneUpload', () => {
     });
 
     it.each([
-        [csvData.testCsv, csvData.unprocessedFromTestCsv.Body, csvData.processedFromTestCsv.Body],
+        [csvData.testCsv, csvData.unprocessedTestCsv.Body, csvData.processedTestCsv.Body],
         [
             csvData.testCsvWithEmptyCells,
-            csvData.unprocessedFromTestCsvWithEmptyCells.Body,
-            csvData.processedFromTestCsvWithEmptyCells.Body,
+            csvData.unprocessedTestCsvWithEmptyCells.Body,
+            csvData.processedTestCsvWithEmptyCells.Body,
         ],
     ])(
         'should put the unprocessed data in S3 as a csv and the processed data in S3 as json',
@@ -225,8 +225,8 @@ describe('csvZoneUpload', () => {
 
     describe('processCsvUpload', () => {
         it.each([
-            [csvData.testCsvWithEmptyLines, csvData.processedFromTestCsvWithEmptyLines.Body],
-            [csvData.testCsvWithEmptyLinesAndEmptyCells, csvData.processedFromTestCsvWithEmptyLinesAndEmptyCells.Body],
+            [csvData.testCsvWithEmptyLines, csvData.processedTestCsvWithEmptyLines.Body],
+            [csvData.testCsvWithEmptyLinesAndEmptyCells, csvData.processedTestCsvWithEmptyLinesAndEmptyCells.Body],
         ])('should skip empty lines in the csv', async (fileContent, expectedProcessed) => {
             jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
@@ -238,21 +238,21 @@ describe('csvZoneUpload', () => {
         });
     });
 
-    // describe('formatDynamoResponse', () => {
-    //     it('should return an array of UserFareZone objects when called with an array of naptan codes', async () => {
-    //         const mockRawUserFareZones = csvData.unprocessedFromTestCsvWithEmptyCells.Body;
-    //         const mockNaptanCodesToQuery = [];
-    //         const expectedUserFareZones = csvData.processedFromTestCsvWithEmptyCells.Body;
+    describe('formatDynamoResponse', () => {
+        it('should return an array of UserFareZone objects when called with an array of naptan codes', async () => {
+            const mockRawUserFareZones = csvData.partProcessedTestCsvWithEmptyCells.Body;
+            const mockNaptanCodesToQuery: string[] = ['TestNaptan-TC5'];
+            const expectedUserFareZones = csvData.processedTestCsvWithEmptyCells.Body;
 
-    //         jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
-    //             .mockImplementation()
-    //             .mockResolvedValue([{ atcoCode: 'TestATCO-TC5', naptanCode: 'TestNaptan-TC5' }]);
+            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+                .mockImplementation()
+                .mockResolvedValue([{ atcoCode: 'TestATCO-TC5', naptanCode: 'TestNaptan-TC5' }]);
 
-    //         const mockUserFareZones = await csvZoneUpload.formatDynamoResponse(
-    //             mockRawUserFareZones,
-    //             mockNaptanCodesToQuery,
-    //         );
-    //         expect(mockUserFareZones).toBeEqual(expectedUserFareZones);
-    //     });
-    // });
+            const mockUserFareZones = await csvZoneUpload.formatDynamoResponse(
+                mockRawUserFareZones,
+                mockNaptanCodesToQuery,
+            );
+            expect(mockUserFareZones).toEqual(expectedUserFareZones);
+        });
+    });
 });
