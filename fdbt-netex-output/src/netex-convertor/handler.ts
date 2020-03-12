@@ -1,3 +1,4 @@
+import { netexIsValid } from './netexValidator';
 import { S3Event } from 'aws-lambda';
 import netexGenerator from './netexGenerator';
 import * as dynamodb from './data/dynamodb';
@@ -61,7 +62,15 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const fileName = `${matchingData.operatorShortName}_${matchingData.lineName}_${new Date().toISOString()}.xml`;
         const fileNameWithoutSlashes = fileName.replace("/", "_");
 
-        await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
+        const resultOfValidation = netexIsValid(generatedNetex);
+
+        if (resultOfValidation === true) {
+            await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
+        } else {
+            throw new Error(`Netex validation has failed. XSD errors: ${resultOfValidation}`)
+        }
+
+
     } catch (error) {
         console.error(error.message);
     }
