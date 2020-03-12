@@ -128,6 +128,7 @@ export const processCsvUpload = async (fileContent: string): Promise<UserFareZon
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
+        console.log(formData.FileContent);
         if (!fileIsValid(res, formData.Files, formData.FileContent)) {
             return;
         }
