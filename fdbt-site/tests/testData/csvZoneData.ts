@@ -62,47 +62,100 @@ export const processedObject = {
     Body: [
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC1',
+            NaptanCodes: 'TestNaptan-TC1',
             AtcoCodes: 'TestATCO-TC1',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC2',
+            NaptanCodes: 'TestNaptan-TC2',
             AtcoCodes: 'TestATCO-TC2',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC3',
+            NaptanCodes: 'TestNaptan-TC3',
             AtcoCodes: 'TestATCO-TC3',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC4',
+            NaptanCodes: 'TestNaptan-TC4',
             AtcoCodes: 'TestATCO-TC4',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC5',
+            NaptanCodes: 'TestNaptan-TC5',
             AtcoCodes: 'TestATCO-TC5',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC6',
+            NaptanCodes: 'TestNaptan-TC6',
             AtcoCodes: 'TestATCO-TC6',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC7',
+            NaptanCodes: 'TestNaptan-TC7',
             AtcoCodes: 'TestATCO-TC7',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC8',
+            NaptanCodes: 'TestNaptan-TC8',
             AtcoCodes: 'TestATCO-TC8',
         },
         {
             FareZoneName: 'Town Centre',
-            NaptanCodes: 'Test-Naptan-TC9',
+            NaptanCodes: 'TestNaptan-TC9',
+            AtcoCodes: 'TestATCO-TC9',
+        },
+    ],
+    ContentType: 'application/json; charset=utf-8',
+};
+
+export const processedObjectForEmptyCells = {
+    Bucket: 'fdbt-user-data',
+    Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
+    Body: [
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'TestNaptan-TC1',
+            AtcoCodes: 'TestATCO-TC1',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: '',
+            AtcoCodes: 'TestATCO-TC2',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'TestNaptan-TC3',
+            AtcoCodes: 'TestATCO-TC3',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'TestNaptan-TC4',
+            AtcoCodes: 'TestATCO-TC4',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'TestNaptan-TC5',
+            AtcoCodes: 'TestATCO-TC5',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'TestNaptan-TC6',
+            AtcoCodes: 'TestATCO-TC6',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'TestNaptan-TC7',
+            AtcoCodes: 'TestATCO-TC7',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: '',
+            AtcoCodes: 'TestATCO-TC8',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'TestNaptan-TC9',
             AtcoCodes: 'TestATCO-TC9',
         },
     ],
