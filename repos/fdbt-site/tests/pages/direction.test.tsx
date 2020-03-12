@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import Direction from '../../src/pages/direction';
+import Direction, { getServerSideProps } from '../../src/pages/direction';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/dynamodb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
 
@@ -42,12 +42,14 @@ describe('pages', () => {
 
             const ctx = getMockContext({ operator, serviceLineName: lineName });
 
-            const result = await Direction.getInitialProps(ctx);
+            const result = await getServerSideProps(ctx);
 
             expect(result).toEqual({
-                operator,
-                lineName,
-                service: mockService,
+                props: {
+                    operator,
+                    lineName,
+                    service: mockService,
+                },
             });
         });
 
@@ -60,12 +62,14 @@ describe('pages', () => {
 
             const ctx = getMockContext({ operator, serviceLineName: lineName });
 
-            const result = await Direction.getInitialProps(ctx);
+            const result = await getServerSideProps(ctx);
 
             expect(result).toEqual({
-                operator,
-                lineName,
-                service: mockService,
+                props: {
+                    operator,
+                    lineName,
+                    service: mockService,
+                },
             });
         });
 
@@ -74,15 +78,13 @@ describe('pages', () => {
 
             const ctx = getMockContext();
 
-            await expect(Direction.getInitialProps(ctx)).rejects.toThrow();
+            await expect(getServerSideProps(ctx)).rejects.toThrow();
         });
 
         it('throws an error if the operator or service cookies do not exist', async () => {
             const ctx = getMockContext({ operator: null, serviceLineName: null });
 
-            await expect(Direction.getInitialProps(ctx)).rejects.toThrow(
-                'Necessary cookies not found to show direction page',
-            );
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');
         });
     });
 });

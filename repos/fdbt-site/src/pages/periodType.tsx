@@ -1,58 +1,63 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import Layout from '../layout/Layout';
 
-const title = 'Input Method - Fares data build tool';
-const description = 'Input method selection page of the Fares data build tool';
+const title = 'Period Type - Fares data build tool';
+const description = 'Period Type selection page of the Fares data build tool';
 
-const InputMethod: NextPage = () => (
+const PeriodType: NextPage = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <form action="/api/inputMethod" method="post">
+            <form action="/api/periodtype" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
+                    <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 id="input-method-heading" className="govuk-fieldset__heading">
-                                Please select your preferred input method
+                            <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
+                                What type of Period Ticket?
                             </h1>
                         </legend>
                         <div className="govuk-radios">
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="csv-upload"
-                                    name="inputMethod"
+                                    id="periodtype-geo-zone"
+                                    name="periodGeoZone"
                                     type="radio"
-                                    value="csv"
+                                    value="geozone"
                                 />
-                                <label className="govuk-label govuk-radios__label" htmlFor="csv-upload">
-                                    Upload (.csv)
+                                <label className="govuk-label govuk-radios__label" htmlFor="periodtype-geo-zone">
+                                    A ticket within a geographical zone
                                 </label>
                             </div>
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="manual-entry"
-                                    name="inputMethod"
+                                    id="periodtype-single-set-service"
+                                    name="periodtypeSingle"
                                     type="radio"
-                                    value="manual"
-                                />
-                                <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
-                                    Manual Fares Triangle input
-                                </label>
-                            </div>
-                            <div className="govuk-radios__item">
-                                <input
-                                    className="govuk-radios__input"
-                                    id="interactive-map"
-                                    name="inputMethod"
-                                    type="radio"
-                                    value="interactiveMap"
+                                    value="singleset"
                                     disabled
                                     aria-disabled="true"
                                 />
-                                <label className="govuk-label govuk-radios__label" htmlFor="interactive-map">
-                                    Interactive Map (Beta)
+                                <label
+                                    className="govuk-label govuk-radios__label"
+                                    htmlFor="periodtype-single-set-service"
+                                >
+                                    A ticket for a single or select set of services
+                                </label>
+                            </div>
+                            <div className="govuk-radios__item">
+                                <input
+                                    className="govuk-radios__input"
+                                    id="periodtype-network"
+                                    name="periodtypeNetwork"
+                                    type="radio"
+                                    value="network"
+                                    disabled
+                                    aria-disabled="true"
+                                />
+                                <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
+                                    A ticket for your network of services
                                 </label>
                             </div>
                         </div>
@@ -69,4 +74,4 @@ const InputMethod: NextPage = () => (
     </Layout>
 );
 
-export default InputMethod;
+export default PeriodType;
