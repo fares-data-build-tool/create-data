@@ -11,7 +11,7 @@ import {
     getMockContext,
     mockRawServiceWithDuplicates,
 } from '../testData/mockData';
-import Matching from '../../src/pages/matching';
+import Matching, { getServerSideProps } from '../../src/pages/matching';
 
 jest.mock('../../src/data/dynamodb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -51,11 +51,11 @@ describe('Matching Page', () => {
         ).toHaveLength(9);
     });
 
-    describe('getInitialProps', () => {
+    describe('getServerSideProps', () => {
         it('generates the correct list of master stops', async () => {
             const ctx = getMockContext();
 
-            await Matching.getInitialProps(ctx);
+            await getServerSideProps(ctx);
 
             expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
             expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledWith([
@@ -88,10 +88,10 @@ describe('Matching Page', () => {
                 },
             });
 
-            const result = await Matching.getInitialProps(ctx);
+            const result = await getServerSideProps(ctx);
 
-            expect(result.stops[0].atcoCode).toEqual('13003921A');
-            expect(result.stops[result.stops.length - 1].atcoCode).toEqual('13003655B');
+            expect(result.props.stops[0].atcoCode).toEqual('13003921A');
+            expect(result.props.stops[result.props.stops.length - 1].atcoCode).toEqual('13003655B');
         });
 
         it('generates the correct list of master stops given journeys with duplicate start and end points', async () => {
@@ -104,7 +104,7 @@ describe('Matching Page', () => {
                 },
             });
 
-            await Matching.getInitialProps(ctx);
+            await getServerSideProps(ctx);
 
             expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
             expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledWith([
@@ -135,7 +135,7 @@ describe('Matching Page', () => {
                 },
             });
 
-            await expect(Matching.getInitialProps(ctx)).rejects.toThrow(
+            await expect(getServerSideProps(ctx)).rejects.toThrow(
                 'No stops found for journey: nocCode HCTY, lineName: X01, startPoint: 123ZZZ, endPoint: 13003921A',
             );
         });
@@ -145,9 +145,7 @@ describe('Matching Page', () => {
                 operator: null,
             });
 
-            await expect(Matching.getInitialProps(ctx)).rejects.toThrow(
-                'Necessary cookies not found to show matching page',
-            );
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
         });
     });
 });

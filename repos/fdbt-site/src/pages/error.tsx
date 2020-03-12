@@ -8,8 +8,9 @@ interface ErrorPageProps {
 
 const ErrorPage = ({ statusCode }: ErrorPageProps): ReactElement => <Error statusCode={statusCode} />;
 
-ErrorPage.getInitialProps = (ctx: NextPageContext): {} => {
-    return { statusCode: ctx?.res?.statusCode };
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+    return { props: { statusCode: ctx?.res?.statusCode } };
 };
 
 export default ErrorPage;

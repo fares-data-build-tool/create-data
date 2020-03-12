@@ -1,4 +1,3 @@
-import '../design/Layout.scss';
 import React, { FC } from 'react';
 
 const LogoBanner: FC = () => (
