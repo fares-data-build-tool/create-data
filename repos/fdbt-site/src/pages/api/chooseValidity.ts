@@ -21,26 +21,44 @@ export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
     return false;
 };
 
+export const setCookie = (req: NextApiRequest, res: NextApiResponse, error: string = ""): void => {
+
+    if (error === "") {
+        const numberOfDaysValidFor = req.body.validityInput;
+        const cookieValue = JSON.stringify({ daysValid: numberOfDaysValidFor });
+        setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
+        return;
+    }
+
+    const numberOfDaysValidFor = req.body.validityInput;
+    const cookieValue = JSON.stringify({ daysValid: numberOfDaysValidFor, error: error });
+    setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
+    return;
+}
+
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (req.body.validityInput === 0) {
-            redirectToError(res);
+            setCookie(req, res, "The value of days your product is valid for cannot be 0.");
+            redirectTo(res, '/chooseValidity');
             return;
         }
 
         if (!req.body.validityInput) {
+            setCookie(req, res, "The value of days your product is valid for cannot be empty.");
             redirectTo(res, '/chooseValidity');
             return;
         }
 
         if (isInvalidValidityNumber(req)) {
-            redirectToError(res);
+            setCookie(req, res, "The value of days your product is valid for has to be a whole number between 1 and 366.");
+            redirectTo(res, '/chooseValidity');
             return;
         }
-        const numberOfDaysValidFor = req.body.validityInput;
-        const cookieValue = JSON.stringify({ daysValid: numberOfDaysValidFor });
-        setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
+
+        setCookie(req, res);
         redirectTo(res, '/periodValidity');
+
     } catch (error) {
         redirectToError(res);
     }
