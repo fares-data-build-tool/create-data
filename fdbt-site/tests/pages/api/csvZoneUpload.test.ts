@@ -1,12 +1,10 @@
 import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
-import http from 'http';
+import Cookies from 'cookies';
 import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
-import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
+import * as dynamo from '../../../src/data/dynamodb';
 import { OPERATOR_COOKIE, FARETYPE_COOKIE, SERVICE_COOKIE } from '../../../src/constants';
-
-http.OutgoingMessage.prototype.setHeader = jest.fn();
 
 jest.spyOn(s3, 'putStringInS3');
 
@@ -25,6 +23,7 @@ describe('csvZoneUpload', () => {
         res = mockResponse({
             writeHead: writeHeadMock,
         });
+        Cookies.prototype.set = jest.fn();
         // eslint-disable-next-line no-return-assign
         const storeLog = (inputs: string): string => (outputData += inputs);
         console.warn = jest.fn(storeLog);
@@ -33,53 +32,54 @@ describe('csvZoneUpload', () => {
     it.each([
         [csvData.testCsv, csvData.unprocessedObject.Body, csvData.processedObject.Body],
         [csvData.testCsvWithEmptyCells, csvData.unprocessedObjectWithEmptyCells.Body, csvData.processedObject.Body],
-    ])(
-        'should put the unparsed data in s3 and the parsed data in s3',
-        async (csv, expectedUnprocessed) => {
-            const file = {
-                'csv-upload': {
-                    size: 999,
-                    path: 'string',
-                    name: 'string',
-                    type: 'text/csv',
-                    toJSON(): string {
-                        return '';
-                    },
+    ])('should put the unparsed data in s3 and the parsed data in s3', async (csv, expectedUnprocessed) => {
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
                 },
-            };
+            },
+        };
 
-            jest.spyOn(csvZoneUpload, 'getFormData')
-                .mockImplementation()
-                .mockResolvedValue({
-                    Files: file,
-                    FileContent: csv,
-                });
-
-            const req = mockRequest({
-                headers: {
-                    cookie: mockCookie,
-                },
+        jest.spyOn(csvZoneUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                Files: file,
+                FileContent: csv,
             });
 
-            await csvZoneUpload.default(req, res);
+        jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+            .mockImplementation()
+            .mockResolvedValue([{ atcoCode: 'TestATCO-TC5', naptanCode: 'TestNaptan-TC5' }]);
 
-            expect(s3.putStringInS3).toBeCalledWith(
-                'fdbt-raw-user-data',
-                expect.any(String),
-                JSON.stringify(expectedUnprocessed),
-                'text/csv; charset=utf-8',
-            );
+        const req = mockRequest({
+            headers: {
+                cookie: mockCookie,
+            },
+        });
 
-            // expect(s3.putStringInS3).toBeCalledWith(
-            //     'fdbt-user-data',
-            //     expect.any(String),
-            //     JSON.stringify(expectedProcessed),
-            //     'application/json; charset=utf-8',
-            // );
+        await csvZoneUpload.default(req, res);
 
-            expect(s3.putStringInS3).toBeCalledTimes(2);
-        },
-    );
+        expect(s3.putStringInS3).toBeCalledWith(
+            'fdbt-raw-user-data',
+            expect.any(String),
+            JSON.stringify(expectedUnprocessed),
+            'text/csv; charset=utf-8',
+        );
+
+        // expect(s3.putStringInS3).toBeCalledWith(
+        //     'fdbt-user-data',
+        //     expect.any(String),
+        //     JSON.stringify(expectedProcessed),
+        //     'application/json; charset=utf-8',
+        // );
+
+        expect(s3.putStringInS3).toBeCalledTimes(2);
+    });
 
     it('should return 302 redirect to /periodProduct when the happy path is used', async () => {
         const file = {
@@ -106,7 +106,7 @@ describe('csvZoneUpload', () => {
                 cookie: mockCookie,
             },
         });
-        (setCookieOnResponseObject as {}) = jest.fn();
+
         await csvZoneUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {

@@ -1,4 +1,5 @@
 export const testCsv: string =
+    'FareZoneName,NaptanCodes,AtcoCodes,\n' +
     'Town Centre,TestNaptan-TC1,TestATCO-TC1,\n' +
     ',TestNaptan-TC2,TestATCO-TC2,\n' +
     ',TestNaptan-TC3,TestATCO-TC3,\n' +
@@ -10,6 +11,7 @@ export const testCsv: string =
     ',TestNaptan-TC9,TestATCO-TC9,\n';
 
 export const testCsvWithEmptyCells: string =
+    'FareZoneName,NaptanCodes,AtcoCodes,\n' +
     'Town Centre,TestNaptan-TC1,TestATCO-TC1,\n' +
     ',,TestATCO-TC2,\n' +
     ',TestNaptan-TC3,TestATCO-TC3,\n' +
@@ -24,6 +26,7 @@ export const unprocessedObject = {
     Bucket: 'fdbt-raw-user-data',
     Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
     Body:
+        'FareZoneName,NaptanCodes,AtcoCodes,\n' +
         'Town Centre,TestNaptan-TC1,TestATCO-TC1,\n' +
         ',TestNaptan-TC2,TestATCO-TC2,\n' +
         ',TestNaptan-TC3,TestATCO-TC3,\n' +
@@ -40,6 +43,7 @@ export const unprocessedObjectWithEmptyCells = {
     Bucket: 'fdbt-raw-user-data',
     Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
     Body:
+        'FareZoneName,NaptanCodes,AtcoCodes,\n' +
         'Town Centre,TestNaptan-TC1,TestATCO-TC1,\n' +
         ',,TestATCO-TC2,\n' +
         ',TestNaptan-TC3,TestATCO-TC3,\n' +
@@ -55,19 +59,52 @@ export const unprocessedObjectWithEmptyCells = {
 export const processedObject = {
     Bucket: 'fdbt-user-data',
     Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
-    Body: {
-        FareZoneName: 'Town Centre',
-        AtcoCodes: [
-            'TestATCO-TC1',
-            'TestATCO-TC2',
-            'TestATCO-TC3',
-            'TestATCO-TC4',
-            'TestATCO-TC5',
-            'TestATCO-TC6',
-            'TestATCO-TC7',
-            'TestATCO-TC8',
-            'TestATCO-TC9',
-        ],
-    },
+    Body: [
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC1',
+            AtcoCodes: 'TestATCO-TC1',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC2',
+            AtcoCodes: 'TestATCO-TC2',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC3',
+            AtcoCodes: 'TestATCO-TC3',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC4',
+            AtcoCodes: 'TestATCO-TC4',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC5',
+            AtcoCodes: 'TestATCO-TC5',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC6',
+            AtcoCodes: 'TestATCO-TC6',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC7',
+            AtcoCodes: 'TestATCO-TC7',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC8',
+            AtcoCodes: 'TestATCO-TC8',
+        },
+        {
+            FareZoneName: 'Town Centre',
+            NaptanCodes: 'Test-Naptan-TC9',
+            AtcoCodes: 'TestATCO-TC9',
+        },
+    ],
     ContentType: 'application/json; charset=utf-8',
 };
