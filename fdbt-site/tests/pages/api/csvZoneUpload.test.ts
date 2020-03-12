@@ -24,11 +24,11 @@ describe('csvZoneUpload', () => {
     });
 
     it.each([
-        [csvData.testCsv, csvData.unprocessedObject.Body, csvData.processedObject.Body],
+        [csvData.testCsv, csvData.unprocessedFromTestCsv.Body, csvData.processedFromTestCsv.Body],
         [
             csvData.testCsvWithEmptyCells,
-            csvData.unprocessedObjectWithEmptyCells.Body,
-            csvData.processedObjectForEmptyCells.Body,
+            csvData.unprocessedFromTestCsvWithEmptyCells.Body,
+            csvData.processedFromTestCsvWithEmptyCells.Body,
         ],
     ])(
         'should put the unprocessed data in S3 as a csv and the processed data in S3 as json',
@@ -191,11 +191,20 @@ describe('csvZoneUpload', () => {
         });
     });
 
-    // describe('processCsvUpload', () => {
-    //     it('should skip empty lines in the csv', () => {
+    describe('processCsvUpload', () => {
+        it.each([
+            [csvData.testCsvWithEmptyLines, csvData.processedFromTestCsvWithEmptyLines.Body],
+            [csvData.testCsvWithEmptyLinesAndEmptyCells, csvData.processedFromTestCsvWithEmptyLinesAndEmptyCells.Body],
+        ])('should skip empty lines in the csv', async (fileContent, expectedProcessed) => {
+            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+                .mockImplementation()
+                .mockResolvedValue([{ atcoCode: 'TestATCO-TC4', naptanCode: 'TestNaptan-TC4' }]);
 
-    //     });
-    // });
+            const result = await csvZoneUpload.processCsvUpload(fileContent);
+
+            expect(result).toEqual(expectedProcessed);
+        });
+    });
 
     // describe('formatDynamoResponse', () => {
     //     it('should return an array of UserFareZone objects when called with an array of naptan codes', () => {
