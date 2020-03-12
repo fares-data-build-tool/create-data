@@ -14,6 +14,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const cookies = new Cookies(req, res);
 
         const { faretype } = req.body;
+
         const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
         const operatorObject = JSON.parse(operatorCookie);
         const { uuid } = operatorObject;
@@ -29,6 +30,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const cookieValue = JSON.stringify({ faretype, uuid });
         setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
+
+        if (faretype === 'period') {
+            redirectTo(res, '/periodType');
+            return;
+        }
+
         redirectTo(res, '/service');
     } catch (error) {
         redirectToError(res);

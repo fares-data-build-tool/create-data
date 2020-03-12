@@ -1,6 +1,5 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
-import { NextPageContext, NextPage } from 'next';
+import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
@@ -26,7 +25,7 @@ const hardCodedOperators: Operator[] = [
     { operatorName: "Warrington's Own Buses", nocCode: 'WBTR' },
 ];
 
-const Operator: NextPage = () => (
+const Operator = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/operator" method="post">
@@ -71,9 +70,10 @@ const Operator: NextPage = () => (
     </Layout>
 );
 
-Operator.getInitialProps = (ctx: NextPageContext): {} => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
-    return {};
+    return { props: {} };
 };
 
 export default Operator;

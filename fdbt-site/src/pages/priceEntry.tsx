@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
@@ -76,7 +75,8 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
     </Layout>
 );
 
-PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
 
@@ -87,7 +87,7 @@ PriceEntry.getInitialProps = (ctx: NextPageContext): {} => {
             if (stageNamesArray.length === 0 && ctx.res) {
                 throw new Error('No stages in cookie data');
             }
-            return { stageNamesArray };
+            return { props: { stageNamesArray } };
         } catch (err) {
             throw new Error(err.stack);
         }

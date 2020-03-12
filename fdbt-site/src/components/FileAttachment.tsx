@@ -1,4 +1,3 @@
-import '../design/Components.scss';
 import React, { FC } from 'react';
 
 export interface FileAttachmentProps {

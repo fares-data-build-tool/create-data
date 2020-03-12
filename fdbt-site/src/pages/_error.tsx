@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
@@ -46,7 +45,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
     </Layout>
 );
 
-Error.getInitialProps = (ctx: NextPageContext): {} => {
+Error.getServerSideProps = (ctx: NextPageContext): {} => {
     return { statusCode: ctx?.res?.statusCode };
 };
 
