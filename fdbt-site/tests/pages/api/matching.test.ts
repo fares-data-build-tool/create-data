@@ -24,14 +24,9 @@ const selections = {
 };
 
 describe('Matching API', () => {
-    let putStringInS3Spy: any;
+    const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
+    putStringInS3Spy.mockImplementation(() => Promise.resolve());
     const writeHeadMock = jest.fn();
-
-    beforeEach(() => {
-        process.env.MATCHING_DATA_BUCKET_NAME = 'fdbt-matching-data';
-        putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
-        putStringInS3Spy.mockImplementation(() => Promise.resolve());
-    });
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -52,7 +47,7 @@ describe('Matching API', () => {
 
         expect(putStringInS3Spy).toBeCalledTimes(1);
         expect(putStringInS3Spy).toBeCalledWith(
-            'fdbt-matching-data',
+            'fdbt-matching-data-dev',
             '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
             JSON.stringify(expectedMatchingJson),
             'application/json; charset=utf-8',

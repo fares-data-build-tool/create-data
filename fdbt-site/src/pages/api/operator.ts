@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import v1 from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { OPERATOR_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 
@@ -11,11 +11,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const { operatorName, nocCode } = JSON.parse(req.body.operator);
-        const uuid = v1();
+        const uuid = uuidv4();
         const cookieValue = JSON.stringify({ operator: operatorName, uuid, nocCode });
         setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieValue, req, res);
         redirectTo(res, '/faretype');
     } catch (error) {
+        console.error(error.stack);
         redirectToError(res);
     }
 };
