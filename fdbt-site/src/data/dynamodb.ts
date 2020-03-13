@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
 import flatMap from 'array.prototype.flatmap';
-import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME } from '../constants';
+import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME, NAPTAN_TABLE_GSI } from '../constants';
 
 export interface ServiceType {
     lineName: string;
@@ -186,8 +186,8 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 };
 
 export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<DynamoNaptanIndex[]> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
-    const indexName = process.env.NODE_ENV === 'development' ? 'NaptanIndex' : (process.env.NAPTAN_TABLE_GSI as string);
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : NAPTAN_TABLE_NAME;
+    const indexName = process.env.NODE_ENV === 'development' ? 'NaptanIndex' : NAPTAN_TABLE_GSI;
 
     const queryPromises = naptanCodes.map(async naptanCode => {
         const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {

@@ -1,8 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import Layout from '../layout/Layout';
-import UserDataUploadComponent from '../components/UserDataUploads';
-import { UserDataUploadsProps } from '../utils/types';
+import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 
 const title = 'CSV Zone Upload Method - Fares data build tool';
 const description = 'CSV Zone Upload page of the Fares data build tool';
