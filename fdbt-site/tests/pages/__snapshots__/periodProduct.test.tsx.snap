@@ -93,7 +93,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           defaultValue=""
           id="periodProductPrice"
           name="periodProductPriceInput"
-          type="number"
+          type="text"
         />
       </div>
       <input

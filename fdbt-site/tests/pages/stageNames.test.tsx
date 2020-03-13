@@ -64,9 +64,9 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        it('displays a number of input fields which matches the number of fare stages in the fareStagesCookie ', async () => {
+        it('displays a number of input fields which matches the number of fare stages in the fareStagesCookie ', () => {
             const ctx = getMockContext();
-            const result = await getServerSideProps(ctx);
+            const result = getServerSideProps(ctx);
             expect(result).toEqual({
                 props: {
                     numberOfFareStages: 6,

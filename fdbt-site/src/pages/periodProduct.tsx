@@ -71,7 +71,7 @@ const PeriodProduct = ({ product, operator }: PeriodProduct): ReactElement => {
                             } `}
                             id="periodProductPrice"
                             name="periodProductPriceInput"
-                            type="number"
+                            type="text"
                             defaultValue={productPrice}
                         />
                     </div>
@@ -88,7 +88,7 @@ const PeriodProduct = ({ product, operator }: PeriodProduct): ReactElement => {
 };
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const periodProductCookie = cookies[PERIOD_PRODUCT];
     const operatorCookie = cookies[OPERATOR_COOKIE];

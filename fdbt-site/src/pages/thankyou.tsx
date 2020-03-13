@@ -51,7 +51,7 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
 );
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     return { props: { uuid: getUuidFromCookies(ctx) } };
 };
 

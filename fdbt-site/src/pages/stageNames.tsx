@@ -80,7 +80,7 @@ const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactE
 );
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
     let inputChecks: InputCheck[] = [];
