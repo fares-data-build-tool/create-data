@@ -15,11 +15,9 @@ const uploadProps: UserDataUploadsProps = {
         'Please upload your fares triangle as a csv below. You can refer to the documents section to down a template and help file.',
     guidanceDocDisplayName: 'Download Help File',
     guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fares-Triangle.pdf',
-    guidanceDocImageUrl: '/assets/images/Guidance-doc-front-page.png',
     guidanceDocSize: '600KB',
     csvTemplateDisplayName: 'Download Fares Triangle CSV Example',
     csvTemplateAttachmentUrl: '/assets/files/Fares-Triangle-Example.csv',
-    csvTemplateImageUrl: '/assets/images/csv.png',
     csvTemplateSize: '400B',
 };
 

@@ -5,7 +5,13 @@ import mockReqRes, { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/dynamodb';
 import { UserFareStages } from '../../src/data/s3';
-import { OPERATOR_COOKIE, FARETYPE_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../../src/constants';
+import {
+    OPERATOR_COOKIE,
+    FARETYPE_COOKIE,
+    SERVICE_COOKIE,
+    JOURNEY_COOKIE,
+    FARE_STAGES_COOKIE,
+} from '../../src/constants';
 
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
@@ -17,19 +23,21 @@ export const getMockRequestAndResponse = (
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
     res.end = mockEndFn;
+    const defaultUuid = '1e0459b3-082e-4e70-89db-96e8ae173e10';
 
     const {
         operator = 'test',
         faretype = 'single',
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
+        fareStages = 6,
     } = cookieValues;
 
     const {
-        operatorUuid = '1e0459b3-082e-4e70-89db-96e8ae173e10',
-        faretypeUuid = '1e0459b3-082e-4e70-89db-96e8ae173e10',
-        serviceUuid = '1e0459b3-082e-4e70-89db-96e8ae173e10',
-        journeyUuid = '1e0459b3-082e-4e70-89db-96e8ae173e10',
+        operatorUuid = defaultUuid,
+        faretypeUuid = defaultUuid,
+        serviceUuid = defaultUuid,
+        journeyUuid = defaultUuid,
     } = uuid;
 
     let cookieString = '';
@@ -48,8 +56,10 @@ export const getMockRequestAndResponse = (
 
     cookieString +=
         startPoint && endPoint
-            ? `${JOURNEY_COOKIE}=%7B%22journeyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D`
+            ? `${JOURNEY_COOKIE}=%7B%22journeyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
             : '';
+
+    cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     const req = mockRequest({
         connection: {
@@ -70,8 +80,14 @@ export const getMockRequestAndResponse = (
     return { req, res };
 };
 
-export const getMockContext = (cookies: any = {}, body: any = null, uuid: any = {}): NextPageContext => {
-    const { req, res } = getMockRequestAndResponse(cookies, body, uuid);
+export const getMockContext = (
+    cookies: any = {},
+    body: any = null,
+    uuid: any = {},
+    mockWriteHeadFn = jest.fn(),
+    mockEndFn = jest.fn(),
+): NextPageContext => {
+    const { req, res } = getMockRequestAndResponse(cookies, body, uuid, mockWriteHeadFn, mockEndFn);
 
     const ctx: NextPageContext = {
         res,

@@ -5,7 +5,7 @@ import validateHandler from '../../../src/pages/api/validate';
 import * as validator from '../../../src/pages/api/service/validator';
 
 describe('validate handler', () => {
-    beforeEach(() => {
+    afterEach(() => {
         jest.resetAllMocks();
     });
 

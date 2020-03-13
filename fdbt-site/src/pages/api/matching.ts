@@ -4,6 +4,7 @@ import { BasicService } from '../matching';
 import { Stop } from '../../data/dynamodb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch } from './service/validator';
+import { MATCHING_DATA_BUCKET_NAME } from '../../constants';
 
 interface MatchingData {
     lineName: string;
@@ -27,12 +28,8 @@ interface MatchingFareZones {
 }
 
 export const putDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
-    if (!process.env.MATCHING_DATA_BUCKET_NAME) {
-        throw new Error('Bucket name environment variable not set.');
-    }
-
     await putStringInS3(
-        process.env.MATCHING_DATA_BUCKET_NAME,
+        MATCHING_DATA_BUCKET_NAME,
         `${uuid}_${data.lineName}_${data.nocCode}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',

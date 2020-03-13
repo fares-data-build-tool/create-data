@@ -168,6 +168,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/matching');
         }
     } catch (error) {
+        console.log(error);
         redirectToError(res);
     }
 };

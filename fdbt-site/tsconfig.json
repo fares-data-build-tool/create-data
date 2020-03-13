@@ -19,7 +19,6 @@
         "outDir": ".build",
         "rootDir": "./",
         "jsx": "preserve",
-        "incremental": true,
         "sourceMap": true
     },
     "exclude": ["node_modules"],

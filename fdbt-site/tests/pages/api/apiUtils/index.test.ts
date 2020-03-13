@@ -32,7 +32,6 @@ describe('apiUtils', () => {
             const { req, res } = getMockRequestAndResponse();
             // mock the library and its implementation of the set cookie method
 
-            // call our method with the consts we set above
             setCookieOnResponseObject(domain, cookieName, cookieValue, req, res);
             // making sure our mock is being called with what we passed it
             expect(Cookies.prototype.set).toBeCalledWith(cookieName, cookieValue, {

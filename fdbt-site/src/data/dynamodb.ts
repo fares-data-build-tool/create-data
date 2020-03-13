@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
 import flatMap from 'array.prototype.flatmap';
+import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME } from '../constants';
 
 export interface ServiceType {
     lineName: string;
@@ -110,8 +111,7 @@ export const convertDateFormat = (startDate: string): string => {
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
-    const tableName =
-        process.env.NODE_ENV === 'development' ? 'dev-Services' : (process.env.SERVICES_TABLE_NAME as string);
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Services' : SERVICES_TABLE_NAME;
 
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
         TableName: tableName,
@@ -137,7 +137,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : (process.env.NAPTAN_TABLE_NAME as string);
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : NAPTAN_TABLE_NAME;
     const count = atcoCodes.length;
     const batchSize = 100;
     const batchArray = [];
@@ -214,7 +214,7 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 };
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : (process.env.TNDS_TABLE_NAME as string);
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : TNDS_TABLE_NAME;
 
     const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
         TableName: tableName,

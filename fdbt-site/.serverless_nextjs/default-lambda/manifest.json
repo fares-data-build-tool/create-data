@@ -1,0 +1,46 @@
+{
+    "pages": {
+        "ssr": {
+            "dynamic": {},
+            "nonDynamic": {
+                "/_error": "pages/_error.js",
+                "/chooseStages": "pages/chooseStages.js",
+                "/csvUpload": "pages/csvUpload.js",
+                "/direction": "pages/direction.js",
+                "/error": "pages/error.js",
+                "/faretype": "pages/faretype.js",
+                "/help/Cookies": "pages/help/Cookies.js",
+                "/howManyStages": "pages/howManyStages.js",
+                "/index": "pages/index.js",
+                "/inputMethod": "pages/inputMethod.js",
+                "/matching": "pages/matching.js",
+                "/operator": "pages/operator.js",
+                "/periodType": "pages/periodType.js",
+                "/priceEntry": "pages/priceEntry.js",
+                "/service": "pages/service.js",
+                "/stageNames": "pages/stageNames.js",
+                "/thankyou": "pages/thankyou.js",
+                "/csvZoneUpload": "pages/csvZoneUpload.js",
+                "/": "pages/index.js"
+            }
+        },
+        "html": { "dynamic": {}, "nonDynamic": {} }
+    },
+    "publicFiles": {
+        "/.DS_Store": ".DS_Store",
+        "/assets/.DS_Store": "assets/.DS_Store",
+        "/assets/files/Fare-Zone-Example.csv": "assets/files/Fare-Zone-Example.csv",
+        "/assets/files/Fares-Triangle-Example.csv": "assets/files/Fares-Triangle-Example.csv",
+        "/assets/files/How-to-Upload-a-Fare-Zone.pdf": "assets/files/How-to-Upload-a-Fare-Zone.pdf",
+        "/assets/files/How-to-Upload-a-Fares-Triangle.pdf": "assets/files/How-to-Upload-a-Fares-Triangle.pdf",
+        "/assets/images/.DS_Store": "assets/images/.DS_Store",
+        "/assets/images/Guidance-doc-front-page.png": "assets/images/Guidance-doc-front-page.png",
+        "/assets/images/csv.png": "assets/images/csv.png",
+        "/assets/images/favicon.ico": "assets/images/favicon.ico",
+        "/assets/images/govuk-crest-2x.png": "assets/images/govuk-crest-2x.png",
+        "/assets/images/govuk-crest.png": "assets/images/govuk-crest.png",
+        "/assets/images/org_crest_18px-7026afebba9918a0830ebf68cf496cbb0b81f3514b884dc2c32904780baa3368.png": "assets/images/org_crest_18px-7026afebba9918a0830ebf68cf496cbb0b81f3514b884dc2c32904780baa3368.png",
+        "/assets/images/org_crest_18px_x2-b4af7a6d71fbd9bfb3b9550bc0e1d856e01e5b388ad8e18717b4ad60e73705ff.png": "assets/images/org_crest_18px_x2-b4af7a6d71fbd9bfb3b9550bc0e1d856e01e5b388ad8e18717b4ad60e73705ff.png"
+    },
+    "cloudFrontOrigins": {}
+}

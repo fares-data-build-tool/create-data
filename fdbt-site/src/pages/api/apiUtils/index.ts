@@ -4,8 +4,8 @@ import { ServerResponse } from 'http';
 import { OPERATOR_COOKIE } from '../../../constants';
 
 export const getDomain = (req: NextApiRequest): string => {
-    const host = req?.headers?.origin;
-    return host ? (host as string).replace(/(^\w+:|^)\/\//, '').split(':')[0] : '';
+    const host = req?.headers?.host;
+    return host ? host.split(':')[0] : '';
 };
 
 export const setCookieOnResponseObject = (

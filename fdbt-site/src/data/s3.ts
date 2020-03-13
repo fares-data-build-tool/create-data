@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import { USER_DATA_BUCKET_NAME } from '../constants';
 
 export interface FareStage {
     stageName: string;
@@ -36,12 +37,8 @@ const getS3Client = (): AWS.S3 => {
 const s3 = getS3Client();
 
 export const getUserFareStages = async (uuid: string): Promise<UserFareStages> => {
-    if (!process.env.USER_DATA_BUCKET_NAME) {
-        throw new Error('Environment variable for validated bucket not set');
-    }
-
     const params = {
-        Bucket: process.env.USER_DATA_BUCKET_NAME,
+        Bucket: USER_DATA_BUCKET_NAME,
         Key: `${uuid}.json`,
     };
     const response = await s3.getObject(params).promise();
@@ -73,7 +70,10 @@ export const putDataInS3 = async (
 ): Promise<void> => {
     let contentType = '';
     let bucketName = '';
-
+    console.log(`NODE_ENV is ${process.env.NODE_ENV}`);
+    console.log(
+        `USER_DATA_BUCKET_NAME is ${process.env.USER_DATA_BUCKET_NAME} and RAW_USER_DATA_BUCKET_NAME is ${process.env.RAW_USER_DATA_BUCKET_NAME}`,
+    );
     if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
         throw new Error('Bucket name environment variables not set.');
     }

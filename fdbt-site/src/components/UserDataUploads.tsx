@@ -3,16 +3,18 @@ import React, { FC } from 'react';
 import FileAttachment from './FileAttachment';
 import { UserDataUploadsProps } from '../utils/types';
 
+import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
+import csvImage from '../assets/images/csv.png';
+import { STATIC_FILES_PATH } from '../constants';
+
 const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
     csvUploadApiRoute,
     csvUploadHintText,
     guidanceDocDisplayName,
     guidanceDocAttachmentUrl,
-    guidanceDocImageUrl,
     guidanceDocSize,
     csvTemplateDisplayName,
     csvTemplateAttachmentUrl,
-    csvTemplateImageUrl,
     csvTemplateSize,
 }: UserDataUploadsProps) => (
     <>
@@ -60,14 +62,14 @@ const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
                 </legend>
                 <FileAttachment
                     displayName={guidanceDocDisplayName}
-                    attachmentUrl={guidanceDocAttachmentUrl}
-                    imageUrl={guidanceDocImageUrl}
+                    attachmentUrl={`${STATIC_FILES_PATH}${guidanceDocAttachmentUrl}`}
+                    imageUrl={guidanceDocImage}
                     size={guidanceDocSize}
                 />
                 <FileAttachment
                     displayName={csvTemplateDisplayName}
-                    attachmentUrl={csvTemplateAttachmentUrl}
-                    imageUrl={csvTemplateImageUrl}
+                    attachmentUrl={`${STATIC_FILES_PATH}${csvTemplateAttachmentUrl}`}
+                    imageUrl={csvImage}
                     size={csvTemplateSize}
                 />
             </div>
