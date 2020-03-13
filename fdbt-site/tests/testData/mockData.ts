@@ -68,6 +68,7 @@ export const getMockRequestAndResponse = (
         headers: {
             host: 'localhost:5000',
             cookie: cookieString,
+            origin: 'localhost:5000',
         },
         cookies: cookieValues,
     });

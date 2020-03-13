@@ -22,6 +22,10 @@ export const VALIDITY_COOKIE = 'fdbt-days-valid';
 
 export const PERIOD_PRODUCT = 'fdbt-period-product';
 
+export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
+
+export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',
@@ -37,6 +41,7 @@ export const ALLOWED_CSV_FILE_TYPES = [
 export const STAGE = process.env.STAGE || 'dev';
 
 export const NAPTAN_TABLE_NAME = `${STAGE}-Stops`;
+export const NAPTAN_TABLE_GSI = 'NaptanIndex';
 export const NOC_TABLE_NAME = `${STAGE}-Operators`;
 export const SERVICES_TABLE_NAME = `${STAGE}-Services`;
 export const TNDS_TABLE_NAME = `${STAGE}-TNDS`;

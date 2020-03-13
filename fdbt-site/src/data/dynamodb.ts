@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
 import flatMap from 'array.prototype.flatmap';
-import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME } from '../constants';
+import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME, NAPTAN_TABLE_GSI } from '../constants';
 
 export interface ServiceType {
     lineName: string;
@@ -44,6 +44,16 @@ interface DynamoNaptanInfo {
     Street: string;
 }
 
+interface DynamoNaptanIndex {
+    naptanCode: string;
+    atcoCode: string;
+}
+
+interface RawDynamoNaptanIndex {
+    NaptanCode: string;
+    Partition: string;
+}
+
 export interface Stop {
     stopName: string;
     naptanCode: string;
@@ -53,6 +63,11 @@ export interface Stop {
     indicator: string;
     street: string;
     qualifierName?: string;
+}
+
+export interface StopIdentifiers {
+    naptanCode: string | null;
+    atcoCode: string;
 }
 
 export interface Service {
@@ -166,6 +181,34 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
         }));
     } catch (error) {
         console.error(`Error performing batch get for naptan info for stop list: ${atcoCodes}, error: ${error}`);
+        throw new Error(error);
+    }
+};
+
+export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<DynamoNaptanIndex[]> => {
+    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : NAPTAN_TABLE_NAME;
+    const indexName = process.env.NODE_ENV === 'development' ? 'NaptanIndex' : NAPTAN_TABLE_GSI;
+
+    const queryPromises = naptanCodes.map(async naptanCode => {
+        const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
+            TableName: tableName,
+            IndexName: indexName,
+            KeyConditionExpression: 'NaptanCode = :v_code',
+            ExpressionAttributeValues: {
+                ':v_code': naptanCode,
+            },
+        };
+        return dynamoDbClient.query(queryInput).promise();
+    });
+    try {
+        const results = await Promise.all(queryPromises);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const atcoItems: RawDynamoNaptanIndex[] = flatMap(results, (item: any) => item.Items);
+        return atcoItems.map(item => ({ atcoCode: item.Partition, naptanCode: item.NaptanCode }));
+    } catch (error) {
+        console.error(
+            `Error performing queries for ATCO Codes using Naptan Codes: ${naptanCodes}. Error: ${error.stack}`,
+        );
         throw new Error(error);
     }
 };
