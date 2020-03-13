@@ -7,7 +7,7 @@ import PeriodType from '../../src/pages/periodType';
 describe('pages', () => {
     describe('periodtype', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodType />);
+            const tree = shallow(<PeriodType error={false} />);
             expect(tree).toMatchSnapshot();
         });
     });
