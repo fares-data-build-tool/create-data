@@ -102,6 +102,18 @@ Resources:
         - Key: Name
           Value: !Sub ${ProductName}-dataSubnetA
 
+  DataSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 1
+        - Fn::GetAZs: !Ref "AWS::Region"
+      VpcId: !Ref "VPC"
+      CidrBlock: !FindInMap ["SubnetConfig", "DataB", "CIDR"]
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-dataSubnetB
+
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -240,3 +252,7 @@ Outputs:
     Value: !Ref "DataSubnetA"
     Export:
       Name: !Sub ${Stage}:DataSubnetA
+  DataSubnetB:
+    Value: !Ref "DataSubnetB"
+    Export:
+      Name: !Sub ${Stage}:DataSubnetB
