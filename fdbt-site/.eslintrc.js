@@ -61,7 +61,6 @@ module.exports = {
             },
         ],
         'no-unused-expressions': 'off',
-        'react/jsx-props-no-spreading': 0,
         '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
         'react/jsx-indent': [2, 4],
