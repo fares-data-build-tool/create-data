@@ -35,7 +35,7 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
     });
 };
 
-export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
     setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
     redirectTo(res, '/csvZoneUpload');
@@ -51,21 +51,20 @@ export const fileIsValid = (
     const fileType = formData['csv-upload'].type;
 
     if (!fileContent) {
-        setCookieAndRedirect(req, res, 'Select a CSV file to upload');
+        setUploadCookieAndRedirect(req, res, 'Select a CSV file to upload');
         console.warn('No file attached.');
         return false;
     }
 
     if (fileSize > MAX_FILE_SIZE) {
-        setCookieAndRedirect(req, res, 'The selected file must be smaller than 5MB');
+        setUploadCookieAndRedirect(req, res, 'The selected file must be smaller than 5MB');
         console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
         return false;
     }
 
     if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
-        setCookieAndRedirect(req, res, 'The selected file must be a CSV');
+        setUploadCookieAndRedirect(req, res, 'The selected file must be a CSV');
         console.warn(`File not of allowed type, uploaded file is ${fileType}`);
-
         return false;
     }
 
