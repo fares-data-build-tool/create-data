@@ -25,15 +25,11 @@ describe('apiUtils', () => {
 
     describe('setCookieOnResponseObject', () => {
         it('to call set cookie library', () => {
-            // create the objects to be passed in
             const domain = 'localhost';
             const cookieName = 'test';
             const cookieValue = 'cookieValue';
             const { req, res } = getMockRequestAndResponse();
-            // mock the library and its implementation of the set cookie method
-
             setCookieOnResponseObject(domain, cookieName, cookieValue, req, res);
-            // making sure our mock is being called with what we passed it
             expect(Cookies.prototype.set).toBeCalledWith(cookieName, cookieValue, {
                 domain,
                 path: '/',

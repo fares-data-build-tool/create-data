@@ -1,10 +1,19 @@
 import React, { FC } from 'react';
 import FileAttachment from './FileAttachment';
-import { UserDataUploadsProps } from '../utils/types';
-
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
 import { STATIC_FILES_PATH } from '../constants';
+
+export type UserDataUploadsProps = {
+    csvUploadApiRoute: string;
+    csvUploadHintText: string;
+    guidanceDocDisplayName: string;
+    guidanceDocAttachmentUrl: string;
+    guidanceDocSize: string;
+    csvTemplateDisplayName: string;
+    csvTemplateAttachmentUrl: string;
+    csvTemplateSize: string;
+};
 
 const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
     csvUploadApiRoute,

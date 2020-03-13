@@ -2,8 +2,7 @@
 import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import Layout from '../layout/Layout';
-import UserDataUploadComponent from '../components/UserDataUploads';
-import { UserDataUploadsProps } from '../utils/types';
+import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
