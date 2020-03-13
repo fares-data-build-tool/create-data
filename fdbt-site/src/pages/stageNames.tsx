@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
@@ -54,7 +53,7 @@ export const renderInputFields = (numberOfFareStages: number, inputChecks: Input
     return elements;
 };
 
-export const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactElement => (
+const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/stageNames" method="post">
@@ -80,7 +79,8 @@ export const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps):
     </Layout>
 );
 
-StageNames.getInitialProps = (ctx: NextPageContext): {} => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
     let inputChecks: InputCheck[] = [];
@@ -96,7 +96,7 @@ StageNames.getInitialProps = (ctx: NextPageContext): {} => {
         const fareStagesObject = JSON.parse(fareStagesCookie);
         const numberOfFareStages = Number(fareStagesObject.fareStages);
 
-        return { numberOfFareStages, inputChecks };
+        return { props: { numberOfFareStages, inputChecks } };
     }
 
     throw new Error('Failed to retrieve fareStageCookie info for Stage Names page.');

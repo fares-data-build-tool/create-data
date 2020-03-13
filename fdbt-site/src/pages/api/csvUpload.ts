@@ -4,7 +4,7 @@ import fs from 'fs';
 import flatMap from 'array.prototype.flatmap';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
-import { ALLOWED_CSV_FILE_TYPES } from '../../constants';
+import { ALLOWED_CSV_FILE_TYPES, RAW_USER_DATA_BUCKET_NAME, USER_DATA_BUCKET_NAME } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;
 
@@ -59,15 +59,11 @@ export const putDataInS3 = async (data: UserFareStages | string, key: string, pr
     let contentType = '';
     let bucketName = '';
 
-    if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
-        throw new Error('Bucket name environment variables not set.');
-    }
-
     if (processed) {
-        bucketName = process.env.USER_DATA_BUCKET_NAME;
+        bucketName = USER_DATA_BUCKET_NAME;
         contentType = 'application/json; charset=utf-8';
     } else {
-        bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
+        bucketName = RAW_USER_DATA_BUCKET_NAME;
         contentType = 'text/csv; charset=utf-8';
     }
 

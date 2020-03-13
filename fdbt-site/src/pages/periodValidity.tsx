@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import Layout from '../layout/Layout';
 

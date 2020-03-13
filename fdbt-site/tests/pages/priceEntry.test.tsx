@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { NextPageContext } from 'next';
-import PriceEntry from '../../src/pages/priceEntry';
+import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
 import { STAGE_NAMES_COOKIE } from '../../src/constants';
 
 const mockFareStages: string[] = [
@@ -60,7 +60,7 @@ describe('Price Entry Page', () => {
             AppTree: () => <div />,
         };
 
-        expect(() => PriceEntry.getInitialProps(ctx)).toThrow();
+        expect(() => getServerSideProps(ctx)).toThrowError();
     });
 
     it('throws error if no stage names can be found', () => {
@@ -91,6 +91,6 @@ describe('Price Entry Page', () => {
             AppTree: () => <div />,
         };
 
-        expect(() => PriceEntry.getInitialProps(ctx)).toThrow();
+        expect(() => getServerSideProps(ctx)).toThrowError();
     });
 });

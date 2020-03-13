@@ -1,29 +1,15 @@
-import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
 import inputMethod from '../../../src/pages/api/inputMethod';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('inputMethod', () => {
-    let res: mockReqRes.ResponseOutput;
-    let writeHeadMock: jest.Mock;
+    const writeHeadMock = jest.fn();
 
-    beforeEach(() => {
+    afterEach(() => {
         jest.resetAllMocks();
-        writeHeadMock = jest.fn();
-        res = mockResponse({
-            writeHead: writeHeadMock,
-        });
     });
 
     it('should return 302 redirect to /inputMethod when no input method is selected', () => {
-        const req = mockRequest({
-            connection: {
-                encrypted: true,
-            },
-            body: {},
-            headers: {
-                host: 'localhost:5000',
-                cookie: '',
-            },
-        });
+        const { req, res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
         inputMethod(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -32,16 +18,7 @@ describe('inputMethod', () => {
     });
 
     it('should return 302 redirect to /error when an input method value we dont expect is passed', () => {
-        const req = mockRequest({
-            connection: {
-                encrypted: true,
-            },
-            body: { inputMethod: 'pdf' },
-            headers: {
-                host: 'localhost:5000',
-                cookie: '',
-            },
-        });
+        const { req, res } = getMockRequestAndResponse({}, { inputMethod: 'pdf' }, {}, writeHeadMock);
 
         inputMethod(req, res);
 
@@ -51,16 +28,7 @@ describe('inputMethod', () => {
     });
 
     it('should return 302 redirect to /csvUpload when csv is the passed input method', () => {
-        const req = mockRequest({
-            connection: {
-                encrypted: true,
-            },
-            body: { inputMethod: 'csv' },
-            headers: {
-                host: 'localhost:5000',
-                cookie: '',
-            },
-        });
+        const { req, res } = getMockRequestAndResponse({}, { inputMethod: 'csv' }, {}, writeHeadMock);
 
         inputMethod(req, res);
 

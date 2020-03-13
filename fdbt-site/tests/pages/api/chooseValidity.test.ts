@@ -1,9 +1,10 @@
-import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
+import { mockRequest, mockResponse } from 'mock-req-res';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import chooseValidity from '../../../src/pages/api/chooseValidity';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('chooseValidity', () => {
-    let res: mockReqRes.ResponseOutput;
+    let { res } = getMockRequestAndResponse();
     let writeHeadMock: jest.Mock;
 
     beforeEach(() => {
@@ -16,18 +17,18 @@ describe('chooseValidity', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cases: any[] = [
         [{}, { Location: '/chooseValidity' }],
-        [{ validityInput: 'abcdefghijk' }, { Location: '/error' }],
-        [{ validityInput: '1.2' }, { Location: '/error' }],
-        [{ validityInput: 1.2 }, { Location: '/error' }],
-        [{ validityInput: '367' }, { Location: '/error' }],
-        [{ validityInput: 367 }, { Location: '/error' }],
-        [{ validityInput: '0' }, { Location: '/error' }],
-        [{ validityInput: 0 }, { Location: '/error' }],
+        [{ validityInput: 'abcdefghijk' }, { Location: '/chooseValidity' }],
+        [{ validityInput: '1.2' }, { Location: '/chooseValidity' }],
+        [{ validityInput: 1.2 }, { Location: '/chooseValidity' }],
+        [{ validityInput: '367' }, { Location: '/chooseValidity' }],
+        [{ validityInput: 367 }, { Location: '/chooseValidity' }],
+        [{ validityInput: '0' }, { Location: '/chooseValidity' }],
+        [{ validityInput: 0 }, { Location: '/chooseValidity' }],
         [{ validityInput: '1' }, { Location: '/periodValidity' }],
-        [{ validityInput: "[]'l..33" }, { Location: '/error' }],
+        [{ validityInput: "[]'l..33" }, { Location: '/chooseValidity' }],
         [{ validityInput: '366' }, { Location: '/periodValidity' }],
         [{ validityInput: 6 }, { Location: '/periodValidity' }],
-        [{ validityInput: '-1' }, { Location: '/error' }],
+        [{ validityInput: '-1' }, { Location: '/chooseValidity' }],
     ];
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {

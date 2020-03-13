@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { NextPageContext } from 'next';
-import { mockRequest } from 'mock-req-res';
-import MockRes from 'mock-res';
 
-import { StageNames, renderInputFields, InputCheck } from '../../src/pages/stageNames';
-import { FARE_STAGES_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
+import StageNames, { renderInputFields, InputCheck, getServerSideProps } from '../../src/pages/stageNames';
+import { getMockContext } from '../testData/mockData';
 
 describe('pages', () => {
     describe('renderInputFields', () => {
@@ -30,11 +27,6 @@ describe('pages', () => {
     });
 
     describe('stageNames', () => {
-        const mockOperatorCookie =
-            '%7B%22operator%22%3A%22HCTY%22%2C%22uuid%22%3A%221e0459b3-082e-4e70-89db-96e8ae173e10%22%2C%22nocCode%22%3A%22HCTY%22%7D';
-        const mockFareStagesCookie = '%7B%22fareStages%22%3A%226%22%7D';
-        const mockCombinedCookie = `${OPERATOR_COOKIE}=${mockOperatorCookie}; ${FARE_STAGES_COOKIE}=${mockFareStagesCookie}`;
-
         it('should render correctly when a user first visits the page', () => {
             const mockNumberOfFareStages = 6;
             const mockInputChecks: InputCheck[] = [];
@@ -73,31 +65,13 @@ describe('pages', () => {
         });
 
         it('displays a number of input fields which matches the number of fare stages in the fareStagesCookie ', () => {
-            const res = new MockRes();
-            const req = mockRequest({
-                connection: {
-                    encrypted: true,
-                },
-                headers: {
-                    host: 'localhost:5000',
-                    cookie: mockCombinedCookie,
-                },
-                cookies: {
-                    FARE_STAGES_COOKIE: mockFareStagesCookie,
-                    OPERATOR_COOKIE: mockOperatorCookie,
-                },
-            });
-            const ctx: NextPageContext = {
-                res,
-                req,
-                pathname: '',
-                query: {},
-                AppTree: () => <div />,
-            };
-            const result = StageNames.getInitialProps(ctx);
+            const ctx = getMockContext();
+            const result = getServerSideProps(ctx);
             expect(result).toEqual({
-                numberOfFareStages: 6,
-                inputChecks: [],
+                props: {
+                    numberOfFareStages: 6,
+                    inputChecks: [],
+                },
             });
         });
     });

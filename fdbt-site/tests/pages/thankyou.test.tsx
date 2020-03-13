@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { NextPageContext } from 'next';
-import { mockRequest, mockResponse } from 'mock-req-res';
-import { OPERATOR_COOKIE } from '../../src/constants';
-import Thankyou from '../../src/pages/thankyou';
+import Thankyou, { getServerSideProps } from '../../src/pages/thankyou';
+import { getMockContext } from '../testData/mockData';
 
 describe('pages', () => {
     describe('thankyou', () => {
@@ -14,39 +12,17 @@ describe('pages', () => {
     });
 });
 
-describe('getInitialProps', () => {
+describe('getServerSideProps', () => {
     it('retrieves the uuid correctly', () => {
-        const req = mockRequest({
-            connection: {
-                encrypted: true,
-            },
-            body: {},
-            cookies: {
-                OPERATOR_COOKIE:
-                    '%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%2284c7b1b4-e178-4849-bc49-bd32cdb2db39%22%2C%22nocCode%22%3A%22HCTY%22%7D',
-            },
-            headers: {
-                host: 'localhost',
-                cookie: `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22Connexions%20Buses%22%2C%22uuid%22%3A%2284c7b1b4-e178-4849-bc49-bd32cdb2db39%22%2C%22nocCode%22%3A%22HCTY%22%7D`,
-            },
-        });
-
-        const res = mockResponse({});
+        const ctx = getMockContext({}, null, { operatorUuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39' });
 
         const expectedResults = {
-            uuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39',
-        };
-
-        const props: NextPageContext = {
-            pathname: '',
-            query: {},
-            req,
-            res,
-            AppTree: () => {
-                return <div />;
+            props: {
+                uuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39',
             },
         };
-        const results = Thankyou.getInitialProps(props);
+
+        const results = getServerSideProps(ctx);
         expect(results).toEqual(expectedResults);
     });
 });
