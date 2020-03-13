@@ -22,6 +22,8 @@ export const VALIDITY_COOKIE = 'fdbt-days-valid';
 
 export const PERIOD_PRODUCT = 'fdbt-period-product';
 
+export const PERIOD_TYPE = 'fdbt-period-type';
+
 export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
 
 export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
