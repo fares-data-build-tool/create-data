@@ -1,0 +1,9 @@
+{
+    "name": "0v6jz9-c5t2ge9",
+    "arn": "arn:aws:iam::442445088537:role/0v6jz9-c5t2ge9",
+    "service": ["edgelambda.amazonaws.com", "lambda.amazonaws.com"],
+    "policy": {
+        "arn": "arn:aws:iam::442445088537:policy/next-lambda-policy"
+    },
+    "region": "us-east-1"
+}

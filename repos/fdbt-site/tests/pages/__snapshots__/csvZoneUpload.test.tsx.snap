@@ -13,13 +13,11 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     <UserDataUploadComponent
       csvTemplateAttachmentUrl="/assets/files/Fare-Zone-Example.csv"
       csvTemplateDisplayName="Download Fare Zone CSV Example"
-      csvTemplateImageUrl="/assets/images/csv.png"
       csvTemplateSize="600B"
       csvUploadApiRoute="/api/csvZoneUpload"
       csvUploadHintText="Please upload your fare zone as a csv below. You can refer to the documents section to down a template and help file."
       guidanceDocAttachmentUrl="/assets/files/How-to-Upload-a-Fare-Zone.pdf"
       guidanceDocDisplayName="Download Help File"
-      guidanceDocImageUrl="/assets/images/Guidance-doc-front-page.png"
       guidanceDocSize="1.0MB"
     />
   </main>

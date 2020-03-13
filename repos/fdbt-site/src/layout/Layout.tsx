@@ -1,10 +1,11 @@
-import '../design/Layout.scss';
 import React, { FC, PropsWithChildren } from 'react';
 import Head from 'next/head';
 import Header from './Header';
 import AlphaBanner from './AlphaBanner';
 import Footer from './Footer';
 import LogoBanner from './LogoBanner';
+
+import favicon from '../assets/images/favicon.ico';
 
 type LayoutProps = {
     title: string;
@@ -14,7 +15,7 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ title, description, children }: PropsWithChildren<LayoutProps>) => (
     <div>
         <Head>
-            <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+            <link rel="shortcut icon" href={favicon} />
             <title>{title || 'Fares Data Build Tool'}</title>
             <meta name="description" content={description || 'Fares Data Build Tool'} />
             <meta name="viewport" content="width=device-width, initial-scale=1" />

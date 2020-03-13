@@ -13,8 +13,8 @@ describe('csvZoneUpload', () => {
     let outputData = '';
 
     beforeEach(() => {
-        process.env.USER_DATA_BUCKET_NAME = 'fdbt-user-data';
-        process.env.RAW_USER_DATA_BUCKET_NAME = 'fdbt-raw-user-data';
+        process.env.USER_DATA_BUCKET_NAME = 'fdbt-user-data-dev';
+        process.env.RAW_USER_DATA_BUCKET_NAME = 'fdbt-raw-user-data-dev';
         jest.resetAllMocks();
         outputData = '';
         Cookies.prototype.set = jest.fn();
@@ -60,13 +60,13 @@ describe('csvZoneUpload', () => {
 
             expect(putStringInS3Spy.mock.calls).toEqual([
                 [
-                    'fdbt-raw-user-data',
+                    'fdbt-raw-user-data-dev',
                     expect.any(String),
                     JSON.stringify(expectedUnprocessed),
                     'text/csv; charset=utf-8',
                 ],
                 [
-                    'fdbt-user-data',
+                    'fdbt-user-data-dev',
                     expect.any(String),
                     JSON.stringify(expectedProcessed),
                     'application/json; charset=utf-8',

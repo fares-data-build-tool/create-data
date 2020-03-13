@@ -1,30 +1,20 @@
-import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
-import http from 'http';
 import operator from '../../../src/pages/api/operator';
-
-http.OutgoingMessage.prototype.setHeader = jest.fn();
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('operator', () => {
-    let res: mockReqRes.ResponseOutput;
-    let writeHeadMock: jest.Mock;
-    beforeEach(() => {
+    const writeHeadMock = jest.fn();
+
+    afterEach(() => {
         jest.resetAllMocks();
-        writeHeadMock = jest.fn();
-        res = mockResponse({
-            writeHead: writeHeadMock,
-        });
     });
 
     it('should return 302 redirect to /faretype when session operator cookie does not exist but req has operator', () => {
-        const req = mockRequest({
-            connection: {
-                encrypted: true,
-            },
-            body: { operator: '{"operatorName":"Connexions Buses","nocCode":"HCTY"}' },
-            headers: {
-                host: 'localhost:5000',
-            },
-        });
+        const { req, res } = getMockRequestAndResponse(
+            {},
+            { operator: '{"operatorName":"Connexions Buses","nocCode":"HCTY"}' },
+            {},
+            writeHeadMock,
+        );
         operator(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/faretype',
@@ -32,19 +22,10 @@ describe('operator', () => {
     });
 
     it('should return 302 redirect to /operator when session operator cookie and operator body do not exist', () => {
-        const req = mockRequest({
-            connection: {
-                encrypted: true,
-            },
-            body: {},
-            headers: {
-                host: 'localhost:5000',
-            },
-        });
+        const { req, res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
         operator(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/operator',
         });
-        expect(writeHeadMock).toBeCalledTimes(1);
     });
 });

@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React from 'react';
 import { NextPage } from 'next';
 import Layout from '../layout/Layout';

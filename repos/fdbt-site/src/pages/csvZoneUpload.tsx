@@ -14,11 +14,9 @@ const uploadProps: UserDataUploadsProps = {
         'Please upload your fare zone as a csv below. You can refer to the documents section to down a template and help file.',
     guidanceDocDisplayName: 'Download Help File',
     guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fare-Zone.pdf',
-    guidanceDocImageUrl: '/assets/images/Guidance-doc-front-page.png',
     guidanceDocSize: '1.0MB',
     csvTemplateDisplayName: 'Download Fare Zone CSV Example',
     csvTemplateAttachmentUrl: '/assets/files/Fare-Zone-Example.csv',
-    csvTemplateImageUrl: '/assets/images/csv.png',
     csvTemplateSize: '600B',
 };
 
