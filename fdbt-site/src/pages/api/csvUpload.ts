@@ -114,9 +114,10 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     return mappedFareTriangle;
 };
 
-export const setUploadCookie = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
     setCookieOnResponseObject(getDomain(req), CSV_UPLOAD_COOKIE, cookieValue, req, res);
+    redirectTo(res, '/csvUpload');
 };
 
 export const fileIsValid = (
@@ -129,22 +130,19 @@ export const fileIsValid = (
     const fileType = formData['csv-upload'].type;
 
     if (!fileContent) {
-        setUploadCookie(req, res, 'Select a CSV file to upload');
-        redirectTo(res, '/csvUpload');
+        setUploadCookieAndRedirect(req, res, 'Select a CSV file to upload');
         console.warn('No file attached.');
         return false;
     }
 
     if (fileSize > MAX_FILE_SIZE) {
-        setUploadCookie(req, res, 'The selected file must be smaller than 5MB');
-        redirectTo(res, '/csvUpload');
+        setUploadCookieAndRedirect(req, res, 'The selected file must be smaller than 5MB');
         console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
         return false;
     }
 
     if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
-        setUploadCookie(req, res, 'The selected file must be a CSV');
-        redirectTo(res, '/csvUpload');
+        setUploadCookieAndRedirect(req, res, 'The selected file must be a CSV');
         console.warn(`File not of allowed type, uploaded file is ${fileType}`);
 
         return false;
@@ -176,7 +174,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
-            setUploadCookie(req, res);
+            setUploadCookieAndRedirect(req, res);
             redirectTo(res, '/matching');
         }
     } catch (error) {
