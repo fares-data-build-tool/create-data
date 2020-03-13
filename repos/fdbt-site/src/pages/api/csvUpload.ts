@@ -23,7 +23,7 @@ interface FareTriangleData {
 }
 
 interface FileData {
-    Files: formidable.Files;
+    Files: Files;
     FileContent: string;
 }
 

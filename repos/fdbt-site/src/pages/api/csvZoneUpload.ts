@@ -12,7 +12,7 @@ const MAX_FILE_SIZE = 5242880;
 export type File = FileData;
 
 interface FileData {
-    Files: formidable.Files;
+    Files: Files;
     FileContent: string;
 }
 
