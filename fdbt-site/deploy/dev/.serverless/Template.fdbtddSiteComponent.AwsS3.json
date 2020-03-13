@@ -1,6 +1,0 @@
-{
-    "name": "fdbt-static-assets-dd-test",
-    "region": "us-east-1",
-    "accelerated": true,
-    "url": "https://fdbt-static-assets-dd-test.s3.amazonaws.com"
-}
