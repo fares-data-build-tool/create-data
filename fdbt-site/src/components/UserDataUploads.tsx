@@ -13,6 +13,7 @@ export type UserDataUploadsProps = {
     csvTemplateDisplayName: string;
     csvTemplateAttachmentUrl: string;
     csvTemplateSize: string;
+    error: string;
 };
 
 const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
@@ -24,6 +25,7 @@ const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
     csvTemplateDisplayName,
     csvTemplateAttachmentUrl,
     csvTemplateSize,
+    error,
 }: UserDataUploadsProps) => (
     <>
         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -37,23 +39,24 @@ const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
                 <form action={csvUploadApiRoute} method="post" encType="multipart/form-data">
-                    <div className="govuk-form-group input-form">
+                    <div className={`govuk-form-group input-form ${error !== '' ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset">
-                            <label className="govuk-label" htmlFor="service">
+                            <label className="govuk-label" htmlFor="csv-upload">
                                 Upload a CSV file
                             </label>
+                            <span id="csv-upload-error" className="govuk-error-message">
+                                <span className={error !== '' ? '' : 'govuk-visually-hidden'} />
+                                {error}
+                            </span>
+                            <input
+                                className={`govuk-file-upload ${error !== '' ? 'govuk-file-upload--error' : ''}`}
+                                id="csv-upload"
+                                name="csv-upload"
+                                type="file"
+                                accept=".csv"
+                                aria-describedby={error !== '' ? 'csv-upload-error' : ''}
+                            />
                         </fieldset>
-                        <div className="govuk-form-group">
-                            <label className="govuk-label" htmlFor="csv-upload">
-                                <input
-                                    className="govuk-file-upload"
-                                    id="csv-upload"
-                                    name="csv-upload"
-                                    type="file"
-                                    accept=".csv"
-                                />
-                            </label>
-                        </div>
                     </div>
                     <input
                         type="submit"

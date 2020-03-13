@@ -10,16 +10,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     id="main-content"
     role="main"
   >
-    <UserDataUploadComponent
-      csvTemplateAttachmentUrl="/assets/files/Fare-Zone-Example.csv"
-      csvTemplateDisplayName="Download Fare Zone CSV Example"
-      csvTemplateSize="600B"
-      csvUploadApiRoute="/api/csvZoneUpload"
-      csvUploadHintText="Please upload your fare zone as a csv below. You can refer to the documents section to down a template and help file."
-      guidanceDocAttachmentUrl="/assets/files/How-to-Upload-a-Fare-Zone.pdf"
-      guidanceDocDisplayName="Download Help File"
-      guidanceDocSize="1.0MB"
-    />
+    <UserDataUploadComponent />
   </main>
 </Layout>
 `;

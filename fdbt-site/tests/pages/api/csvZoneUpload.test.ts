@@ -70,8 +70,6 @@ describe('csvZoneUpload', () => {
                     'application/json; charset=utf-8',
                 ],
             ]);
-
-            expect(s3.putStringInS3).toBeCalledTimes(2);
         },
     );
 
@@ -162,7 +160,7 @@ describe('csvZoneUpload', () => {
             });
         });
 
-        it('should return 302 redirect to /error when file is too big', async () => {
+        it('should return 302 redirect to /csvZoneUpload with an error message when file is too big', async () => {
             const file = {
                 'csv-upload': {
                     size: 6000000,
@@ -185,11 +183,11 @@ describe('csvZoneUpload', () => {
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
-                Location: '/error',
+                Location: '/csvZoneUpload',
             });
         });
 
-        it('should return 302 redirect to /error when file is not an allowed type', async () => {
+        it('should return 302 redirect to /csvZoneUpload with an error message when file is not an allowed type', async () => {
             const file = {
                 'csv-upload': {
                     size: 999,
@@ -212,7 +210,7 @@ describe('csvZoneUpload', () => {
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
-                Location: '/error',
+                Location: '/csvZoneUpload',
             });
         });
     });

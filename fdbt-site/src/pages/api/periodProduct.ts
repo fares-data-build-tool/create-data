@@ -4,17 +4,7 @@ import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
 import { PERIOD_PRODUCT } from '../../constants/index';
 
-interface PeriodProductErrorHandler {
-    productNameError: boolean;
-    productPriceError: boolean;
-    productName: string;
-    productPrice: string;
-}
-
-const setPeriodProduct = (
-    periodProductNameInput: string,
-    periodProductPriceInput: string,
-): PeriodProductErrorHandler => ({
+const setPeriodProduct = (periodProductNameInput: string, periodProductPriceInput: string): PeriodProductType => ({
     productNameError: periodProductNameInput === '',
     productPriceError: periodProductPriceInput === '' || !(Number(periodProductPriceInput) > 0),
     productName: periodProductNameInput.replace(/\s+/g, ''),

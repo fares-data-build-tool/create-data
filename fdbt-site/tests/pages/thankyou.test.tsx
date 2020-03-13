@@ -13,7 +13,7 @@ describe('pages', () => {
 });
 
 describe('getServerSideProps', () => {
-    it('retrieves the uuid correctly', async () => {
+    it('retrieves the uuid correctly', () => {
         const ctx = getMockContext({}, null, { operatorUuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39' });
 
         const expectedResults = {
@@ -22,7 +22,7 @@ describe('getServerSideProps', () => {
             },
         };
 
-        const results = await getServerSideProps(ctx);
+        const results = getServerSideProps(ctx);
         expect(results).toEqual(expectedResults);
     });
 });
