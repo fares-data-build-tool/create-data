@@ -13,8 +13,6 @@ describe('csvZoneUpload', () => {
     let outputData = '';
 
     beforeEach(() => {
-        process.env.USER_DATA_BUCKET_NAME = 'fdbt-user-data-dev';
-        process.env.RAW_USER_DATA_BUCKET_NAME = 'fdbt-raw-user-data-dev';
         jest.resetAllMocks();
         outputData = '';
         Cookies.prototype.set = jest.fn();

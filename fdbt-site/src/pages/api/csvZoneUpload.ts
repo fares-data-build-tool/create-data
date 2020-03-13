@@ -144,6 +144,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/periodProduct');
         }
     } catch (error) {
+        console.log(error);
         redirectToError(res);
     }
 };
