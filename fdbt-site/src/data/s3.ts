@@ -70,10 +70,6 @@ export const putDataInS3 = async (
 ): Promise<void> => {
     let contentType = '';
     let bucketName = '';
-    console.log(`NODE_ENV is ${process.env.NODE_ENV}`);
-    console.log(
-        `USER_DATA_BUCKET_NAME is ${process.env.USER_DATA_BUCKET_NAME} and RAW_USER_DATA_BUCKET_NAME is ${process.env.RAW_USER_DATA_BUCKET_NAME}`,
-    );
     if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
         throw new Error('Bucket name environment variables not set.');
     }

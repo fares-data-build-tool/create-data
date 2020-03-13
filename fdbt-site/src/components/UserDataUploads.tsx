@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { FC } from 'react';
 import FileAttachment from './FileAttachment';
 import { UserDataUploadsProps } from '../utils/types';
