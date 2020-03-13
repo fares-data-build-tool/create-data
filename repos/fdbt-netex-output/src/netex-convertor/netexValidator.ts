@@ -1,35 +1,44 @@
-import libxml2js, { ValidationError } from '../../node_modules/libxmljs2';
+import libxmljs2, { ValidationError } from '../../node_modules/libxmljs2';
 import fs from 'fs';
 import path from 'path';
 
 export interface ValidationResults {
-    failure: boolean,
-    errors: ValidationError[]
+    success: boolean;
+    errors: ValidationError[];
 }
 
-export const validateNetex = (netex: any): ValidationResults => {
-    
-    const netexXsd = fs.readFileSync(path.resolve(__dirname, '../netex-convertor/netexXsd.xml'), 'utf-8');
-    const netexXsdDoc = libxml2js.parseXml(netexXsd);
-    const netexToValidate = netex;
-    console.log(netexToValidate.substring(0,26))
-    const netexToValidateDoc = libxml2js.parseXml(netexToValidate);
+export const cleanseXml = (xml: any): any => {
+    return xml.replace(/[^\x09\x0A\x0D\x20-\xFF\x85\xA0-\uD7FF\uE000-\uFDCF\uFDE0-\uFFFD]/gm, '');
+};
 
-    let failure: boolean;
-    let errors: ValidationError[];
+export const validateNetex = (netexToValidate: any): ValidationResults => {
+    try {
+        const netexXsd = fs.readFileSync(path.resolve(__dirname, '../netex-convertor/netexXsd.xml'), 'utf8');
+        const netexXsdDoc = libxmljs2.parseXml(netexXsd, {
+            baseUrl: path.resolve(__dirname, '../netex-convertor/netexXsd.xml'),
+        });
 
-    if (netexToValidateDoc.validate(netexXsdDoc)) {
-        failure = false;
-        errors = [];
-    } else {
-        failure = true;
-        errors = netexToValidateDoc.validationErrors;
+        const cleansedNetex = cleanseXml(netexToValidate);
+
+        const netexToValidateDoc = libxmljs2.parseXml(cleansedNetex);
+
+        let success: boolean;
+        let errors: ValidationError[];
+
+        if (netexToValidateDoc.validate(netexXsdDoc)) {
+            success = true;
+            errors = [];
+        } else {
+            success = false;
+            errors = netexToValidateDoc.validationErrors;
+        }
+
+        return {
+            success,
+            errors,
+        };
+    } catch (err) {
+        console.log(err.stack);
+        throw new Error();
     }
-
-    return {
-        failure,
-        errors
-    }
-
-
-}
+};
