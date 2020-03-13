@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
@@ -16,9 +15,9 @@ type ValidityProps = {
 };
 
 const ChooseValidity = ({ productName, productPrice, daysValid, error }: ValidityProps): ReactElement => {
-    let isError: boolean = false;
+    let isError = false;
 
-    if (error != '') {
+    if (error !== '') {
         isError = true;
     }
 
@@ -47,9 +46,7 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
                                     be 14
                                 </label>
                                 <span id="product-price-error" className="govuk-error-message">
-                                    <span className={isError ? '' : 'govuk-visually-hidden'}>
-                                        {error}
-                                    </span>
+                                    <span className={isError ? '' : 'govuk-visually-hidden'}>{error}</span>
                                 </span>
                                 <input
                                     className={`govuk-input govuk-input--width-2 ${
@@ -75,7 +72,7 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
     );
 };
 
-ChooseValidity.getInitialProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const productCookie = cookies[PERIOD_PRODUCT];
     const validityCookie = cookies[VALIDITY_COOKIE];
@@ -90,13 +87,18 @@ ChooseValidity.getInitialProps = (ctx: NextPageContext): {} => {
 
     if (validityCookie) {
         validity = JSON.parse(validityCookie);
+        if (validity.error === undefined) {
+            validity.error = '';
+        }
     }
 
     return {
-        productName: product.productName,
-        productPrice: product.productPrice,
-        daysValid: !validityCookie ? '' : validity.daysValid,
-        error: !validityCookie ? '' : validity.error,
+        props: {
+            productName: product.productName,
+            productPrice: product.productPrice,
+            daysValid: !validityCookie ? '' : validity.daysValid,
+            error: !validityCookie ? '' : validity.error,
+        },
     };
 };
 

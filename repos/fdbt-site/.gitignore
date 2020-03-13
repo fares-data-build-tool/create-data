@@ -7,10 +7,6 @@ jspm_packages
 buckets
 .idea
 .next
-sls-next-build
-.serverless_nextjs
-deploy/dev/serverless.yml
-**/.serverless
 
 coverage
 .vscode

@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
@@ -51,8 +50,9 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
     </Layout>
 );
 
-ThankYou.getInitialProps = (ctx: NextPageContext): {} => {
-    return { uuid: getUuidFromCookies(ctx) };
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = (ctx: NextPageContext): {} => {
+    return { props: { uuid: getUuidFromCookies(ctx) } };
 };
 
 export default ThankYou;

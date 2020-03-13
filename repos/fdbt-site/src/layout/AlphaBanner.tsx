@@ -1,4 +1,3 @@
-import '../design/Layout.scss';
 import React, { FC } from 'react';
 import { FEEDBACK_LINK } from '../constants';
 

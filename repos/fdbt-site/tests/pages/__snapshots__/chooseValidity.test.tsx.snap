@@ -15,7 +15,7 @@ exports[`Choose Validity Page should render correctly 1`] = `
       method="post"
     >
       <div
-        className="govuk-form-group"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -57,16 +57,19 @@ exports[`Choose Validity Page should render correctly 1`] = `
             >
               Please enter a whole number, for example a day ticket would be 1 and two weeks would be 14
             </label>
+            <span
+              className="govuk-error-message"
+              id="product-price-error"
+            >
+              <span
+                className=""
+              />
+            </span>
             <input
-              className="govuk-input govuk-input--width-2"
+              className="govuk-input govuk-input--width-2 govuk-input--error"
               id="validity"
-              max="366"
-              maxLength={3}
-              min="1"
               name="validityInput"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
           </div>
         </fieldset>

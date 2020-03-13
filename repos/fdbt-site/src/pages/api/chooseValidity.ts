@@ -21,44 +21,45 @@ export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
     return false;
 };
 
-export const setCookie = (req: NextApiRequest, res: NextApiResponse, error: string = ""): void => {
-
-    if (error === "") {
-        const numberOfDaysValidFor = req.body.validityInput;
-        const cookieValue = JSON.stringify({ daysValid: numberOfDaysValidFor });
+export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+    if (error === '') {
+        const daysValid = req.body.validityInput;
+        const cookieValue = JSON.stringify({ daysValid });
         setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
         return;
     }
 
-    const numberOfDaysValidFor = req.body.validityInput;
-    const cookieValue = JSON.stringify({ daysValid: numberOfDaysValidFor, error: error });
+    const daysValid = req.body.validityInput;
+    const cookieValue = JSON.stringify({ daysValid, error });
     setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
-    return;
-}
+};
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (req.body.validityInput === 0) {
-            setCookie(req, res, "The value of days your product is valid for cannot be 0.");
+            setCookie(req, res, 'The value of days your product is valid for cannot be 0.');
             redirectTo(res, '/chooseValidity');
             return;
         }
 
         if (!req.body.validityInput) {
-            setCookie(req, res, "The value of days your product is valid for cannot be empty.");
+            setCookie(req, res, 'The value of days your product is valid for cannot be empty.');
             redirectTo(res, '/chooseValidity');
             return;
         }
 
         if (isInvalidValidityNumber(req)) {
-            setCookie(req, res, "The value of days your product is valid for has to be a whole number between 1 and 366.");
+            setCookie(
+                req,
+                res,
+                'The value of days your product is valid for has to be a whole number between 1 and 366.',
+            );
             redirectTo(res, '/chooseValidity');
             return;
         }
 
         setCookie(req, res);
         redirectTo(res, '/periodValidity');
-
     } catch (error) {
         redirectToError(res);
     }

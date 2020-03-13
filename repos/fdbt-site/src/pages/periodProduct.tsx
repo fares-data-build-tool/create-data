@@ -1,4 +1,3 @@
-import '../design/Pages.scss';
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
@@ -88,7 +87,8 @@ const PeriodProduct = ({ product, operator }: PeriodProduct): ReactElement => {
     );
 };
 
-PeriodProduct.getInitialProps = (ctx: NextPageContext): {} => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const periodProductCookie = cookies[PERIOD_PRODUCT];
     const operatorCookie = cookies[OPERATOR_COOKIE];
@@ -97,15 +97,13 @@ PeriodProduct.getInitialProps = (ctx: NextPageContext): {} => {
         throw new Error('Failed to retrieve fareStageCookie info for Stage Names page.');
     }
 
-    if (!periodProductCookie) {
-        return {};
-    }
-
     const operatorObject = JSON.parse(operatorCookie);
 
     return {
-        product: JSON.parse(periodProductCookie),
-        operator: operatorObject.operator,
+        props: {
+            product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
+            operator: operatorObject.operator,
+        },
     };
 };
 

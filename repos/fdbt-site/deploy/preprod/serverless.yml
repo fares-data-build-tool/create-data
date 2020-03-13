@@ -1,9 +1,0 @@
-name: fdbtPreprodSiteComponent
-
-fdbtPreprodSiteComponent:
-    component: serverless-next.js
-    inputs:
-        domain: tfn-preprod.infinityworks.com
-        bucketName: fdbt-static-assets-preprod
-        policy: arn:aws:iam::077142786865:policy/fdbt-nextjs-lambda-policy
-        nextConfigDir: ../../
