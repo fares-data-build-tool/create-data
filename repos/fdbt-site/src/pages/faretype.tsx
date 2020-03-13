@@ -72,7 +72,7 @@ const FareType = (): ReactElement => (
 );
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, FARETYPE_COOKIE);
 
     return { props: {} };

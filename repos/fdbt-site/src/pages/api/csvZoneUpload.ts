@@ -12,7 +12,7 @@ const MAX_FILE_SIZE = 5242880;
 export type File = FileData;
 
 interface FileData {
-    Files: Files;
+    Files: formidable.Files;
     FileContent: string;
 }
 
@@ -35,26 +35,35 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
     });
 };
 
-export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
+export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+    const cookieValue = JSON.stringify({ error });
+    setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+    redirectTo(res, '/csvZoneUpload');
+};
+
+export const fileIsValid = (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    formData: formidable.Files,
+    fileContent: string,
+): boolean => {
     const fileSize = formData['csv-upload'].size;
     const fileType = formData['csv-upload'].type;
 
     if (!fileContent) {
-        redirectTo(res, '/csvZoneUpload');
+        setCookieAndRedirect(req, res, 'Select a CSV file to upload');
         console.warn('No file attached.');
-
         return false;
     }
 
     if (fileSize > MAX_FILE_SIZE) {
-        redirectToError(res);
+        setCookieAndRedirect(req, res, 'The selected file must be smaller than 5MB');
         console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
-
         return false;
     }
 
     if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
-        redirectToError(res);
+        setCookieAndRedirect(req, res, 'The selected file must be a CSV');
         console.warn(`File not of allowed type, uploaded file is ${fileType}`);
 
         return false;
@@ -107,28 +116,36 @@ export const formatDynamoResponse = async (
 
 export const processCsvUpload = async (fileContent: string): Promise<UserFareZone[]> => {
     const parsedFileContent = csvParser(fileContent);
-    const { FareZoneName } = parsedFileContent[0];
-    const rawUserFareZones = parsedFileContent
-        .map(parsedItem => ({
-            FareZoneName,
-            NaptanCodes: parsedItem.NaptanCodes,
-            AtcoCodes: parsedItem.AtcoCodes,
-        }))
-        .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
-    let userFareZones = rawUserFareZones;
-    const naptanCodesToQuery = rawUserFareZones
-        .filter(rawUserFareZone => rawUserFareZone.AtcoCodes === '')
-        .map(rawUserFareZone => rawUserFareZone.NaptanCodes);
-    if (naptanCodesToQuery.length !== 0) {
-        userFareZones = await formatDynamoResponse(rawUserFareZones, naptanCodesToQuery);
+    try {
+        const { FareZoneName } = parsedFileContent[0];
+        const rawUserFareZones = parsedFileContent
+            .map(parsedItem => {
+                const item = { FareZoneName, NaptanCodes: parsedItem.NaptanCodes, AtcoCodes: parsedItem.AtcoCodes };
+                if (item.FareZoneName === undefined || item.NaptanCodes === undefined || item.AtcoCodes === undefined) {
+                    throw new Error(
+                        'The uploaded CSV was not of the correct format. One of the required columns of information is missing or misnamed.',
+                    );
+                }
+                return item;
+            })
+            .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
+        let userFareZones = rawUserFareZones;
+        const naptanCodesToQuery = rawUserFareZones
+            .filter(rawUserFareZone => rawUserFareZone.AtcoCodes === '')
+            .map(rawUserFareZone => rawUserFareZone.NaptanCodes);
+        if (naptanCodesToQuery.length !== 0) {
+            userFareZones = await formatDynamoResponse(rawUserFareZones, naptanCodesToQuery);
+        }
+        return userFareZones;
+    } catch (error) {
+        throw new Error(error.stack);
     }
-    return userFareZones;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
-        if (!fileIsValid(res, formData.Files, formData.FileContent)) {
+        if (!fileIsValid(req, res, formData.Files, formData.FileContent)) {
             return;
         }
 
@@ -144,7 +161,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/periodProduct');
         }
     } catch (error) {
-        console.log(error);
         redirectToError(res);
     }
 };

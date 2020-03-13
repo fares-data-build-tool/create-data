@@ -51,7 +51,7 @@ describe('csvUpload', () => {
         expect(outputData).toBe('No file attached.');
     });
 
-    it('should return 302 redirect to /error when a the attached file is too large', async () => {
+    it('should return 302 redirect to /csvUpload with an error message when a the attached file is too large', async () => {
         const file = {
             'csv-upload': {
                 size: 999999999999999,
@@ -74,13 +74,12 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/csvUpload',
         });
-        expect(writeHeadMock).toHaveBeenCalledTimes(1);
         expect(outputData).toBe('File is too large. Uploaded file is 999999999999999 Bytes, max size is 5242880 Bytes');
     });
 
-    it('should return 302 redirect to /error when the attached file is not a csv', async () => {
+    it('should return 302 redirect to /csvUpload with an error message when the attached file is not a csv', async () => {
         const file = {
             'csv-upload': {
                 size: 999,
@@ -103,9 +102,8 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/csvUpload',
         });
-        expect(writeHeadMock).toHaveBeenCalledTimes(1);
         expect(outputData).toBe('File not of allowed type, uploaded file is text/pdf');
     });
 
@@ -149,8 +147,6 @@ describe('csvUpload', () => {
                 JSON.stringify(expectedProcessed),
                 'application/json; charset=utf-8',
             );
-
-            expect(s3.putStringInS3).toBeCalledTimes(2);
         },
     );
 
@@ -179,8 +175,6 @@ describe('csvUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/matching',
         });
-
-        expect(writeHeadMock).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error if the fares triangle data has non-numerical prices', async () => {
@@ -208,8 +202,6 @@ describe('csvUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
-
-        expect(writeHeadMock).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error if the fares triangle data has missing prices', async () => {
@@ -237,7 +229,5 @@ describe('csvUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
-
-        expect(writeHeadMock).toHaveBeenCalledTimes(1);
     });
 });

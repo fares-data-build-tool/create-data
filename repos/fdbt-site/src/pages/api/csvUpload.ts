@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { Files } from 'formidable';
 import fs from 'fs';
 import flatMap from 'array.prototype.flatmap';
-import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
+import { getUuidFromCookie, redirectToError, redirectTo, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { ALLOWED_CSV_FILE_TYPES } from '../../constants';
+import { ALLOWED_CSV_FILE_TYPES, CSV_UPLOAD_COOKIE } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;
 
@@ -23,7 +23,7 @@ interface FareTriangleData {
 }
 
 interface FileData {
-    Files: Files;
+    Files: formidable.Files;
     FileContent: string;
 }
 
@@ -114,26 +114,37 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     return mappedFareTriangle;
 };
 
-export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
+export const setUploadCookie = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+    const cookieValue = JSON.stringify({ error });
+    setCookieOnResponseObject(getDomain(req), CSV_UPLOAD_COOKIE, cookieValue, req, res);
+};
+
+export const fileIsValid = (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    formData: formidable.Files,
+    fileContent: string,
+): boolean => {
     const fileSize = formData['csv-upload'].size;
     const fileType = formData['csv-upload'].type;
 
     if (!fileContent) {
+        setUploadCookie(req, res, 'Select a CSV file to upload');
         redirectTo(res, '/csvUpload');
         console.warn('No file attached.');
-
         return false;
     }
 
     if (fileSize > MAX_FILE_SIZE) {
-        redirectToError(res);
+        setUploadCookie(req, res, 'The selected file must be smaller than 5MB');
+        redirectTo(res, '/csvUpload');
         console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
-
         return false;
     }
 
     if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
-        redirectToError(res);
+        setUploadCookie(req, res, 'The selected file must be a CSV');
+        redirectTo(res, '/csvUpload');
         console.warn(`File not of allowed type, uploaded file is ${fileType}`);
 
         return false;
@@ -155,7 +166,7 @@ export const getFormData = async (req: NextApiRequest): Promise<File> => {
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
-        if (!fileIsValid(res, formData.Files, formData.FileContent)) {
+        if (!fileIsValid(req, res, formData.Files, formData.FileContent)) {
             return;
         }
 
@@ -165,6 +176,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
+            setUploadCookie(req, res);
             redirectTo(res, '/matching');
         }
     } catch (error) {
