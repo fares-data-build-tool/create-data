@@ -36,7 +36,7 @@ export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = '')
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
-        if (req.body.validityInput === 0) {
+        if (req.body.validityInput === '0') {
             setCookie(req, res, 'The value of days your product is valid for cannot be 0.');
             redirectTo(res, '/chooseValidity');
             return;
