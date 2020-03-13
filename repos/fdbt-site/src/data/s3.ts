@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import { USER_DATA_BUCKET_NAME } from '../constants';
+import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME } from '../constants';
 
 export interface FareStage {
     stageName: string;
@@ -70,15 +70,12 @@ export const putDataInS3 = async (
 ): Promise<void> => {
     let contentType = '';
     let bucketName = '';
-    if (!process.env.USER_DATA_BUCKET_NAME || !process.env.RAW_USER_DATA_BUCKET_NAME) {
-        throw new Error('Bucket name environment variables not set.');
-    }
 
     if (processed) {
-        bucketName = process.env.USER_DATA_BUCKET_NAME;
+        bucketName = USER_DATA_BUCKET_NAME;
         contentType = 'application/json; charset=utf-8';
     } else {
-        bucketName = process.env.RAW_USER_DATA_BUCKET_NAME;
+        bucketName = RAW_USER_DATA_BUCKET_NAME;
         contentType = 'text/csv; charset=utf-8';
     }
 
