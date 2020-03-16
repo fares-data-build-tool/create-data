@@ -7,7 +7,7 @@ import { PERIOD_PRODUCT } from '../../constants/index';
 const setPeriodProduct = (periodProductNameInput: string, periodProductPriceInput: string): PeriodProductType => ({
     productNameError: periodProductNameInput === '',
     productPriceError: periodProductPriceInput === '' || !(Number(periodProductPriceInput) > 0),
-    productName: periodProductNameInput.replace(/\s+/g, ''),
+    productName: periodProductNameInput.replace(/^\s+|\s+$/g, ''),
     productPrice: periodProductPriceInput,
 });
 
