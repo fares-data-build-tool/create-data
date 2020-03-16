@@ -167,7 +167,7 @@ workflows:
                       - aws-ecr/build-and-push-image
                   family: '${SITE_ECS_FAMILY}'
                   cluster-name: '${SITE_ECS_CLUSTER}'
-                  container-image-name-updates: 'container=${SITE_ECS_CONTAINER},tag=${CIRCLE_SHA1}'
+                  container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
                   context: tfn-fdbt-test
                   filters:
                       branches:
@@ -186,7 +186,7 @@ workflows:
                       - hold-preprod-deployment
                   family: '${SITE_ECS_FAMILY}'
                   cluster-name: '${SITE_ECS_CLUSTER}'
-                  container-image-name-updates: 'container=${SITE_ECS_CONTAINER},tag=${CIRCLE_SHA1}'
+                  container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
                   context: tfn-fdbt-preprod
                   filters:
                       branches:
