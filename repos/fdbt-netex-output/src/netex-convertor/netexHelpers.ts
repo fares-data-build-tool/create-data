@@ -40,15 +40,13 @@ export const getFareZoneList = (fareZones: FareZone[]): {}[] =>
         version: '1.0',
         id: `fs@${getIdName(zone.name)}`,
         Name: { $t: zone.name },
-        members: {
-            stopPoints: zone.stops.map(stop => ({
-                ScheduledStopPointRef: {
-                    ref: `naptan:${stop.atcoCode}`,
-                    version: 'any',
-                    $t: `${stop.stopName}, ${stop.localityName}`,
-                },
-            })),
-        },
+        members: zone.stops.map(stop => ({
+            ScheduledStopPointRef: {
+                ref: `naptan:${stop.atcoCode}`,
+                version: 'any',
+                $t: `${stop.stopName}, ${stop.localityName}`,
+            },
+        })),
     }));
 
 export const getDistanceMatrixElements = (fareZones: FareZone[]): {}[] =>
