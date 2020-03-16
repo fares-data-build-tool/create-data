@@ -30,7 +30,6 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
         }
     }
 
-    console.log({ csvZoneUploadCookie });
     const uploadProps = {
         props: {
             csvUploadApiRoute: '/api/csvZoneUpload',
