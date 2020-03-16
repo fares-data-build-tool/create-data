@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PERIOD_PRODUCT } from '../constants';
+import { OPERATOR_COOKIE, PERIOD_PRODUCT, CSV_ZONE_UPLOAD_COOKIE } from '../constants';
 import { PeriodProductType } from '../interfaces';
 
 const title = 'FareType - Fares data build tool';
@@ -11,9 +11,10 @@ const description = 'Fare Type selection page of the Fares data build tool';
 type PeriodProduct = {
     product: PeriodProductType;
     operator: string;
+    zoneName: string;
 };
 
-const PeriodProduct = ({ product, operator }: PeriodProduct): ReactElement => {
+const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactElement => {
     const productName = product && product.productName;
     const productPrice = product && product.productPrice;
     const productNameError = product && product.productNameError;
@@ -30,7 +31,7 @@ const PeriodProduct = ({ product, operator }: PeriodProduct): ReactElement => {
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-hint">
-                            {operator}
+                            {operator} - {zoneName}
                         </span>
                     </fieldset>
                     <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
@@ -92,17 +93,25 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const periodProductCookie = cookies[PERIOD_PRODUCT];
     const operatorCookie = cookies[OPERATOR_COOKIE];
+    const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
 
     if (!operatorCookie) {
-        throw new Error('Failed to retrieve fareStageCookie info for Stage Names page.');
+        throw new Error('Failed to retrieve operator cookie info for period product page.');
     }
 
     const operatorObject = JSON.parse(operatorCookie);
+
+    if (!zoneCookie) {
+        throw new Error('Failed to retrieve zone cookie info for period product page.');
+    }
+
+    const zoneObject = JSON.parse(zoneCookie);
 
     return {
         props: {
             product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
             operator: operatorObject.operator,
+            zoneName: zoneObject.fareZoneName,
         },
     };
 };

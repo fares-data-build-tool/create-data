@@ -33,6 +33,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           id="service-operator-hint"
         >
           bus company
+           - 
         </span>
       </fieldset>
       <div
