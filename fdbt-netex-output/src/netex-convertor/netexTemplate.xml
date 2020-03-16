@@ -4,17 +4,44 @@
 	xmlns:siri="http://www.siri.org.uk/siri" 
 	xmlns:gml="http://www.opengis.net/gml/3.2" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<PublicationTimestamp>2020-12-17T09:30:47.0Z</PublicationTimestamp>
+	<ParticipantRef>SYS001</ParticipantRef>
+	<!-- ======WHAT WAS REQUESTED ========== -->
+	<PublicationRequest version="1.0">
+		<RequestTimestamp>2020-12-17T09:30:46.0Z</RequestTimestamp>
+		<ParticipantRef>SYS002</ParticipantRef>
+		<Description>Request for HCTY line_16.</Description>
+		<topics>
+			<NetworkFrameTopic>
+				<selectionValidityConditions>
+					<AvailabilityCondition version="any" id="r1">
+						<FromDate>2020-01-01T00:00:00Z</FromDate>
+					</AvailabilityCondition>
+				</selectionValidityConditions>
+				<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
+				<NetworkFilterByValue>
+					<objectReferences>
+						<OperatorRef version="1.0" ref="noc:HCTY">noc:137122</OperatorRef>
+						<LineRef version="1.0" ref="016"/>
+					</objectReferences>
+				</NetworkFilterByValue>
+			</NetworkFrameTopic>
+		</topics>
+		<RequestPolicy>
+			<RequestDetail>AllWithXref</RequestDetail>
+		</RequestPolicy>
+	</PublicationRequest>
 	<Description>Example  of simple point to point fares</Description>
 	<!-- =============== RESULTS =========== -->
 	<dataObjects>
 		<CompositeFrame version="1.0" id="operator@Products@Trip@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
 			<ValidBetween>
-				<FromDate></FromDate>
-				<ToDate></ToDate>
+				<FromDate>2020-01-01T00:00:00</FromDate>
+				<ToDate>2022-12-31T12:00:00</ToDate>
 			</ValidBetween>
 			<Name></Name>
 			<Description></Description>
-			<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@composite" version="fxc:v1.0"/>
+			<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP" version="fxc:v1.0"/>
 			<!--==== CODESPACEs ==== -->
 			<codespaces>
 				<CodespaceRef ref="napt"/>
@@ -28,14 +55,14 @@
 			<FrameDefaults>
 				<!---  The default means that actually we could leave off all ids that belong to the  namespace. -->
 				<DefaultCodespaceRef ref="op"/>
-				<DefaultDataSourceRef ref="op:operator" version="1.0"/>
+				<DefaultDataSourceRef ref="operator" version="1.0"/>
 				<DefaultCurrency>GBP</DefaultCurrency>
 			</FrameDefaults>
 			<frames>
 				<!--==== STEP 1:: Define some data regarding the operator - OPERATOR COMMON RESOURCES ====-->
 				<ResourceFrame version="1.0" id="operator" dataSourceRef="op:operator" responsibilitySetRef="network_data">
 					<Name>Operator specific common resources</Name>
-					<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@operator_resources" version="fxc:v1.0"/>
+					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0"/>
 					<codespaces>
 						<Codespace id="op">
 							<Xmlns>op</Xmlns>
@@ -101,14 +128,67 @@
 								<PostalRegion></PostalRegion>
 							</Address>
 							<PrimaryMode>bus</PrimaryMode>
+							<CustomerServiceContactDetails>
+								<Email>operations@connexionsbuses.com</Email>
+							</CustomerServiceContactDetails>
 						</Operator>
 					</organisations>
 				</ResourceFrame>
+				<SiteFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_NETWORK:Line_16:op" responsibilitySetRef="nptg:data" dataSourceRef="nptg:dft">
+					<Name>NPTG localities used by Route</Name>
+					<Description>This frame contains the NPTG locality definitions used by the stops  the service. It Could also be exchanged separately.</Description>
+					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP"/>
+					<prerequisites>
+						<ResourceFrameRef version="1.0" ref="epd:UK:HCTY:ResourceFrame_UK_PI_COMMON:op"/>
+					</prerequisites>
+					<topographicPlaces>
+						<TopographicPlace responsibilitySetRef="nptgAdminArea:068" created="2005-10-05T10:45:19Z" changed="2005-10-05T10:45:19Z" version="0" id="nptgLocality:E0055251">
+							<Centroid>
+								<Location id="nptgLocality:E0055251">
+									<gml:pos srsName="UKOS">376748  452260</gml:pos>
+								</Location>
+							</Centroid>
+							<ParentZoneRef ref="nptgUkDistrict:310" versionRef="nptg:v2.1">EXTERNAL</ParentZoneRef>
+							<Descriptor>
+								<Name lang="EN">York</Name>
+							</Descriptor>
+							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-ENG"/>
+						</TopographicPlace>
+						<TopographicPlace responsibilitySetRef="nptgAdminArea:068" created="2005-10-05T10:45:19Z" changed="2005-10-05T10:45:19Z" version="0" id="nptgLocality:E0043573">
+							<Centroid>
+								<Location id="nptgLocality:E0043573">
+									<gml:pos srsName="UKOS">457239	451260</gml:pos>
+								</Location>
+							</Centroid>
+							<ParentZoneRef ref="nptgUkDistrict:310" versionRef="nptg:v2.1">EXTERNAL</ParentZoneRef>
+							<Descriptor>
+								<Name lang="EN">Acomb</Name>
+								<Qualify>
+									<QualifierName>York</QualifierName>
+									<TopographicPlaceRef version="0" ref="nptgLocality:E0055251"/>
+								</Qualify>
+							</Descriptor>
+							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-ENG"/>
+						</TopographicPlace>
+						<TopographicPlace responsibilitySetRef="nptgAdminArea:068" created="2005-10-05T10:45:19Z" changed="2005-10-05T10:45:19Z" version="0" id="nptgLocality:E0043596">
+							<Centroid>
+								<Location id="nptgLocality:E0043596">
+									<gml:pos srsName="UKOS">458484   451536</gml:pos>
+								</Location>
+							</Centroid>
+							<ParentZoneRef ref="nptgUkDistrict:310" versionRef="nptg:v2.1">EXTERNAL</ParentZoneRef>
+							<Descriptor>
+								<Name lang="EN">Holgate</Name>
+							</Descriptor>
+							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-ENG"/>
+						</TopographicPlace>
+					</topographicPlaces>
+				</SiteFrame>
 				<!--==== STEP 3:: Define EACH BUS STOP IN THE ENTIRE SERVICE, IN ALL ZONES ====-->
 				<ServiceFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
-					<Name></Name>
+					<Name/>
 					<Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
-					<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@service_network@line" version="fxc:v1.0"/>
+					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
 					<!--==== LINEs ==== -->
 					<lines>
 						<Line version="1.0" id="Line_1">
@@ -127,7 +207,7 @@
 				<!--==== STEP 4:: THIS IS OUR FARE STAGES DEFINED IN HERE AND LINKED TO THE SERVICE FRAME ====-->
 				<FareFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="network_data">
 					<Name></Name>
-					<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@fare_network" version="fxc:v1.0"/>
+					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
 					<!--==== Fare zones ===     NB These are just a guess from the map  and may be bogus.in places -->
 					<fareZones>
 						<FareZone version="1.0" id="fs@Bewbush_West">

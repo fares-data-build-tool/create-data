@@ -7,21 +7,60 @@ export default {
         'xmlns:gml': 'http://www.opengis.net/gml/3.2',
         'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
         Description: 'Example  of simple point to point fares',
+        ParticipantRef: 'SYS001',
+        PublicationRequest: {
+            Description: 'Request for HCTY line_16.',
+            ParticipantRef: 'SYS002',
+            RequestPolicy: {
+                RequestDetail: 'AllWithXref',
+            },
+            RequestTimestamp: '2020-12-17T09:30:46.0Z',
+            topics: {
+                NetworkFrameTopic: {
+                    NetworkFilterByValue: {
+                        objectReferences: {
+                            LineRef: {
+                                ref: '016',
+                                version: '1.0',
+                            },
+                            OperatorRef: {
+                                $t: 'noc:137122',
+                                ref: 'noc:HCTY',
+                                version: '1.0',
+                            },
+                        },
+                    },
+                    TypeOfFrameRef: {
+                        ref: 'fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP',
+                        version: 'fxc:v1.0',
+                    },
+                    selectionValidityConditions: {
+                        AvailabilityCondition: {
+                            FromDate: '2020-01-01T00:00:00Z',
+                            id: 'r1',
+                            version: 'any',
+                        },
+                    },
+                },
+            },
+            version: '1.0',
+        },
+        PublicationTimestamp: '2020-12-17T09:30:47.0Z',
         dataObjects: {
             CompositeFrame: [
                 {
                     version: '1.0',
                     id: 'operator@Products@Trip@Line_1',
-                    dataSourceRef: 'op:operator',
+                    dataSourceRef: 'operator',
                     responsibilitySetRef: 'tariffs',
                     ValidBetween: {
-                        FromDate: {},
-                        ToDate: {},
+                        FromDate: '2020-01-01T00:00:00',
+                        ToDate: '2022-12-31T12:00:00',
                     },
                     Name: {},
                     Description: {},
                     TypeOfFrameRef: {
-                        ref: 'fxc:UK_Bus_tariff_profile@composite',
+                        ref: 'fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP',
                         version: 'fxc:v1.0',
                     },
                     codespaces: {
@@ -51,7 +90,7 @@ export default {
                             ref: 'op',
                         },
                         DefaultDataSourceRef: {
-                            ref: 'op:operator',
+                            ref: 'operator',
                             version: '1.0',
                         },
                         DefaultCurrency: 'GBP',
@@ -59,7 +98,7 @@ export default {
                     frames: {
                         ResourceFrame: {
                             version: '1.0',
-                            id: 'operator',
+                            id: 'epd:UK:TLCT:ResourceFrame_UK_PI_COMMON:op',
                             dataSourceRef: 'op:operator',
                             responsibilitySetRef: 'network_data',
                             Name: 'Operator specific common resources',
@@ -163,7 +202,7 @@ export default {
                         ServiceFrame: {
                             version: '1.0',
                             id: 'operator@Network@Line_354',
-                            dataSourceRef: 'op:operator',
+                            dataSourceRef: 'operator',
                             responsibilitySetRef: 'tariffs',
                             Name: {},
                             Description:
@@ -785,7 +824,7 @@ export default {
                             {
                                 version: '1.0',
                                 id: 'operator@Products@Trip@Line_354',
-                                dataSourceRef: 'op:operator',
+                                dataSourceRef: 'operator',
                                 responsibilitySetRef: 'tariffs',
                                 Name: 'IWBus Transport 354',
                                 TypeOfFrameRef: {
@@ -1585,7 +1624,7 @@ export default {
                             {
                                 version: '1.0',
                                 id: 'operator@Products@Trip@prices@Line_354',
-                                dataSourceRef: 'op:operator',
+                                dataSourceRef: 'operator',
                                 responsibilitySetRef: 'tariffs',
                                 TypeOfFrameRef: {
                                     ref: 'fxc:UK_Bus_tariff_profile@prices',
