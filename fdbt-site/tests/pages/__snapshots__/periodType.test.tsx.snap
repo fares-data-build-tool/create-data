@@ -15,7 +15,7 @@ exports[`pages periodtype should render correctly 1`] = `
       method="post"
     >
       <div
-        className="govuk-form-group "
+        className="govuk-form-group"
       >
         <fieldset
           aria-describedby="periodtype-page-heading"
