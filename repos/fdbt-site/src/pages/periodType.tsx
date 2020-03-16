@@ -17,7 +17,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/periodType" method="post">
-                    <div className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}>
+                    <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
