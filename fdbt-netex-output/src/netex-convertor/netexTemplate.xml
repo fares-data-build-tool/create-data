@@ -331,14 +331,35 @@
 					</fareZones>
 				</FareFrame>
 				<!--==== STEP 5:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
-				<FareFrame version="1.0" id="operator@Products@Trip@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+				<FareFrame version="1.0" id="operator@Products@Trip@Line_1" dataSourceRef="operator" responsibilitySetRef="tariffs">
 					<Name></Name>
-					<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@products@by_Line" versionRef="fxc:v1.0"/>
+					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" versionRef="fxc:v1.0"/>
 					<!--==== Pricing Parameters ====-->
 					<PricingParameterSet version="1.0" id="operator">
 					</PricingParameterSet>
 					<!--==== Fare Prices ==== -->
 					<priceGroups>
+						<PriceGroup version="1.0" id="return@price_band_1.10">
+							<members>
+								<UsageParameterPrice version="1.0" id="return@price_band_1.10@adult">
+									<Amount>1.10</Amount>
+								</UsageParameterPrice>
+							</members>
+						</PriceGroup>
+						<PriceGroup version="1.0" id="return@price_band_1.70">
+							<members>
+								<UsageParameterPrice version="1.0" id="return@price_band_1.70@adult">
+									<Amount>1.70</Amount>
+								</UsageParameterPrice>
+							</members>
+						</PriceGroup>
+						<PriceGroup version="1.0" id="return@price_band_1.00">
+							<members>
+								<UsageParameterPrice version="1.0" id="return@price_band_1.00@adult">
+									<Amount>1.00</Amount>
+								</UsageParameterPrice>
+							</members>
+						</PriceGroup>
 					</priceGroups>
 					<!--==== Fare Structure ==== -->
 					<tariffs>
@@ -346,9 +367,9 @@
 							<validityConditions>
 							</validityConditions>
 							<Name></Name>
-							<documentLinks></documentLinks>
 							<OperatorRef version="1.0" ref="">								<!-- METR --></OperatorRef>
 							<LineRef version="1.0" ref=""/>
+							<TariffBasis>zoneToZone</TariffBasis>
 							<fareStructureElements>
 								<FareStructureElement version="1.0" id="Tariff@single@lines">
 									<Name></Name>
@@ -379,6 +400,40 @@
 													</CompanionProfile>
 												</companionProfiles>
 											</UserProfile>
+											<UserProfile version="1.0" id="infant">
+												<Name>Infant</Name>
+												<Description>Infant up to 5 years. Must be with adult</Description>
+												<Url>http://www.connexionsbuses.com/concessions/</Url>
+												<MaximumAge>5</MaximumAge>
+												<DiscountBasis>free</DiscountBasis>
+												<companionProfiles>
+													<CompanionProfile version="1.0" id="adult">
+														<UserProfileRef ref="adult" version="1.0"/>
+														<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
+													</CompanionProfile>
+												</companionProfiles>
+											</UserProfile>
+											<UserProfile version="1.0" id="youth">
+												<!-- NK NB1 NeTExSchema: CORRECTION add missing element -->
+												<Name>Youth</Name>
+												<Description>Youth 5 to 19 </Description>
+												<Url>http://www.connexionsbuses.com/concessions/</Url>
+												<MinimumAge>6</MinimumAge>
+												<!--  NK NB4 DataCorrectness -->
+												<MaximumAge>18</MaximumAge>
+												<DiscountBasis>discount</DiscountBasis>
+											</UserProfile>
+											<UserProfile version="1.0" id="senior">
+												<!-- NK NB1 NeTExSchema: CORRECTION add missing element -->
+												<Name>Senior</Name>
+												<Description> Senior over 60 with pass</Description>
+												<Url>http://www.connexionsbuses.com/concessions/</Url>
+												<MinimumAge>6</MinimumAge>
+												<!--   NK NB4 DataCorrectness -->
+												<MaximumAge>18</MaximumAge>
+												<ProofRequired>membershipCard</ProofRequired>
+												<DiscountBasis>discount</DiscountBasis>
+											</UserProfile>
 										</limitations>
 									</GenericParameterAssignment>
 								</FareStructureElement>
@@ -405,9 +460,6 @@
 									</GenericParameterAssignment>
 								</FareStructureElement>
 							</fareStructureElements>
-							<fareTables>
-								<FareTableRef version="1.0" ref=""/>
-							</fareTables>
 						</Tariff>
 					</tariffs>
 					<!--==== Fare Usage Parameters ==== -->
@@ -447,11 +499,11 @@
 								<DistributionAssignment version="10" id="Trip@single-SOP@p-ticket@atStop" order="1">
 									<Name>atStop</Name>
 									<Description>Pay for ticket atStop</Description>
-									<DistributionChannelRef version="fxc:v1.0" ref="fxc:on_board"/>
+									<DistributionChannelRef version="fxc:v1.0" ref="fxc:at_stop"/>
 									<DistributionChannelType>atStop</DistributionChannelType>
 									<TicketingServiceFacilityList>purchase</TicketingServiceFacilityList>
 									<PaymentMethods>cashAndCard</PaymentMethods>
-									<FulfilmentMethodRef ref="fxc:collect_on_board" version="fxc:v1.0"/>
+									<FulfilmentMethodRef ref="fxc:collect_on_machine" version="fxc:v1.0"/>
 								</DistributionAssignment>
 								<DistributionAssignment version="1.0" id="Trip@single-SOP@p-ticket@onBoard" order="2">
 									<Name>Onboard</Name>
