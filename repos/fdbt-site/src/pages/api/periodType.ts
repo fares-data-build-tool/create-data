@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { PERIOD_TYPE } from '../../constants/index';
+import { PERIOD_TYPE } from '../../constants';
 
 import { PeriodTypeInterface } from '../periodType';
 
@@ -16,10 +16,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        const requestBody = JSON.stringify(req.body);
-        const parsedBody = JSON.parse(requestBody);
-
-        const { periodGeoZone } = parsedBody;
+        const { periodGeoZone } = req.body;
 
         if (!periodGeoZone) {
             const error: PeriodTypeInterface = { error: true };
@@ -31,7 +28,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const periodType: PeriodTypeInterface = { error: false, periodType: periodGeoZone };
 
         setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(periodType), req, res);
-        redirectTo(res, '/csvUploadZone');
+        redirectTo(res, '/csvZoneUpload');
     } catch (error) {
         redirectToError(res);
     }

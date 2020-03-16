@@ -13,10 +13,6 @@ export interface PeriodTypeInterface {
 }
 
 const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
-    console.log('error', error);
-
-    // const selectedValidation = validationError && validationError.validationError;
-
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
