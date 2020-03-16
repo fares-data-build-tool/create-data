@@ -117,7 +117,10 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
 export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
     setCookieOnResponseObject(getDomain(req), CSV_UPLOAD_COOKIE, cookieValue, req, res);
-    redirectTo(res, '/csvUpload');
+
+    if (error) {
+        redirectTo(res, '/csvUpload');
+    }
 };
 
 export const fileIsValid = (
