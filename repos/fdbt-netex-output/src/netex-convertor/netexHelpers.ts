@@ -41,12 +41,10 @@ export const getFareZoneList = (fareZones: FareZone[]): {}[] =>
         id: `fs@${getIdName(zone.name)}`,
         Name: { $t: zone.name },
         members: {
-            stopPoints: zone.stops.map(stop => ({
-                ScheduledStopPointRef: {
-                    ref: `naptan:${stop.atcoCode}`,
-                    version: 'any',
-                    $t: `${stop.stopName}, ${stop.localityName}`,
-                },
+            ScheduledStopPointRef: zone.stops.map(stop => ({
+                ref: `naptan:${stop.atcoCode}`,
+                version: 'any',
+                $t: `${stop.stopName}, ${stop.localityName}`,
             })),
         },
     }));
