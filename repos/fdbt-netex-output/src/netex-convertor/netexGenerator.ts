@@ -18,7 +18,7 @@ interface NetexObject {
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
         const fileData = await fs.promises.readFile(`${__dirname}/netexTemplate.xml`, { encoding: 'utf8' });
-        const json = JSON.parse(parser.toJson(fileData, { reversible: true }));
+        const json = JSON.parse(parser.toJson(fileData, { reversible: true, trim: true }));
 
         return json;
     } catch (error) {
@@ -46,8 +46,8 @@ const netexGenerator = (
     const lineIdName = `Line_${matchingData.lineName}`;
     const currentDate = new Date(Date.now());
 
-    const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
-        const publicationTimeStampToUpdate = { ...publicationTimeStamp };
+    const updatePublicationTimeStamp = (publicationDelivery: NetexObject): NetexObject => {
+        const publicationTimeStampToUpdate = { ...publicationDelivery };
         publicationTimeStampToUpdate.PublicationTimestamp.$t = currentDate;
 
         return publicationTimeStampToUpdate;
@@ -75,7 +75,6 @@ const netexGenerator = (
 
     const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
         const resourceFrameToUpdate = { ...resourceFrame };
-
         resourceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ResourceFrame_UK_PI_COMMON:op`;
         resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = operatorData.website;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
@@ -101,7 +100,6 @@ const netexGenerator = (
 
     const updateSiteFrame = (siteFrame: NetexObject): NetexObject => {
         const siteFrameToUpdate = { ...siteFrame };
-
         siteFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:SiteFrame_UK_PI_NETWORK:${lineIdName}:op`;
 
         return siteFrameToUpdate;
@@ -109,7 +107,6 @@ const netexGenerator = (
 
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject => {
         const serviceFrameToUpdate = { ...serviceFrame };
-
         serviceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ServiceFrame_UK_PI_NETWORK:${lineIdName}:op`;
         serviceFrameToUpdate.lines.Line.id = matchingData.lineName;
         serviceFrameToUpdate.lines.Line.Name.$t = operatorPublicNameLineNameFormat;
@@ -127,7 +124,6 @@ const netexGenerator = (
 
     const updateZoneFareFrame = (zoneFareFrame: NetexObject): NetexObject => {
         const zoneFareFrameToUpdate = { ...zoneFareFrame };
-
         zoneFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${lineIdName}:op`;
         zoneFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
         zoneFareFrameToUpdate.fareZones.FareZone = getFareZoneList(matchingData.fareZones);
@@ -137,11 +133,8 @@ const netexGenerator = (
 
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
-
         priceFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${lineIdName}:op`;
         priceFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
-        priceFareFrameToUpdate.PricingParameterSet = {};
-        priceFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
         priceFareFrameToUpdate.tariffs.Tariff.id = `Tariff@single@${lineIdName}`;
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
@@ -149,7 +142,6 @@ const netexGenerator = (
                 ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
             },
         };
-
         priceFareFrameToUpdate.tariffs.Tariff.Name = { $t: `${operatorPublicNameLineNameFormat} - Single Fares` };
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = opIdNocFormat;
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = matchingData.nocCode;
@@ -167,14 +159,13 @@ const netexGenerator = (
         for (userProfile=1; userProfile<4; userProfile++) {
             arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
         };
-        console.log(priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.limitations.UserProfile);
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
+
         return priceFareFrameToUpdate;
     };
 
     const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
-
         fareTableFareFrameToUpdate.id = `operator@Products@Trip@prices@${lineIdName}`;
         fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
         fareTableFareFrameToUpdate.priceGroups.PriceGroup.push({
@@ -186,19 +177,16 @@ const netexGenerator = (
         fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = serviceData.serviceDescription;
         fareTableFareFrameToUpdate.fareTables.FareTable.usedIn.TariffRef.ref = `Tariff@single@${lineIdName}`;
         fareTableFareFrameToUpdate.fareTables.FareTable.specifics.LineRef.ref = lineIdName;
-
         fareTableFareFrameToUpdate.fareTables.FareTable.columns.FareTableColumn = getFareTableElements(
             [...matchingData.fareZones],
             lineIdName,
             'c',
         );
-
         fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow = getFareTableElements(
             [...matchingData.fareZones].reverse(),
             lineIdName,
             'r',
         );
-
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable = getFareTables(
             [...matchingData.fareZones].slice(0, -1),
             lineIdName,
@@ -210,13 +198,9 @@ const netexGenerator = (
     const generate = async (): Promise<string> => {
         const netexJson = await getNetexTemplateAsJson();
 
-        const netexPublicationDelivery = netexJson.PublicationDelivery;
-
-        netexPublicationDelivery.PublicationTimestamp = updatePublicationTimeStamp(netexPublicationDelivery);
-        netexPublicationDelivery.PublicationRequest = updatePublicationRequest(netexPublicationDelivery.PublicationRequest);
-        
-        netexPublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(netexPublicationDelivery.dataObjects.CompositeFrame[0]);
-
+        netexJson.PublicationDelivery = updatePublicationTimeStamp(netexJson.PublicationDelivery);
+        netexJson.PublicationDelivery.PublicationRequest = updatePublicationRequest(netexJson.PublicationDelivery.PublicationRequest);
+        netexJson.PublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(netexJson.PublicationDelivery.dataObjects.CompositeFrame[0]);
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
         netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
