@@ -2,7 +2,7 @@ import fs from 'fs';
 import format from 'xml-formatter';
 import matchingdata from './testdata/matchingdata';
 import { OperatorData, ServiceData } from './types';
-import netexGenerator from './netexGenerator';
+import singleNetexGenerator from './singleNetexGenerator';
 
 const website = 'www.iwbus.co.uk';
 const ttrteEnq = 'email@iwbus.co.uk';
@@ -28,7 +28,7 @@ const service: ServiceData = {
     serviceDescription: 'Test Description',
 };
 
-const netexGen = netexGenerator(matchingdata, operator, service);
+const netexGen = singleNetexGenerator(matchingdata, operator, service);
 
 netexGen.generate().then((data: string) => {
     fs.writeFile('./output/output.xml', format(data), {}, () => {

@@ -17,7 +17,7 @@ interface NetexObject {
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
-        const fileData = await fs.promises.readFile(`${__dirname}/netexTemplate.xml`, { encoding: 'utf8' });
+        const fileData = await fs.promises.readFile(`${__dirname}/singleNetexTemplate.xml`, { encoding: 'utf8' });
         const json = JSON.parse(parser.toJson(fileData, { reversible: true }));
 
         return json;
@@ -33,7 +33,7 @@ const convertJsonToXml = (netexFileAsJsObject: NetexObject): string => {
     return netexFileAsXmlString;
 };
 
-const netexGenerator = (
+const singleNetexGenerator = (
     matchingData: MatchingData,
     operatorData: OperatorData,
     serviceData: ServiceData,
@@ -180,4 +180,4 @@ const netexGenerator = (
     return { generate };
 };
 
-export default netexGenerator;
+export default singleNetexGenerator;

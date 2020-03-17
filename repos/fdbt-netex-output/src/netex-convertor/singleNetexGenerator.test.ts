@@ -2,7 +2,7 @@
 import parser from 'xml2json';
 import { OperatorData, ServiceData } from './types';
 import matchingdata from './testdata/matchingdata';
-import netexGenerator from './netexGenerator';
+import singleNetexGenerator from './singleNetexGenerator';
 import expectedNetex from './testdata/expectedNetex';
 
 const website = 'www.iwbus.co.uk';
@@ -34,7 +34,7 @@ jest.spyOn(Date, 'now').mockImplementation(() => new Date(Date.UTC(2020, 2, 16, 
 describe('NeTEx Generator', () => {
     let netexGen: { generate: Function };
     beforeEach(() => {
-        netexGen = netexGenerator(matchingdata, operator, service);
+        netexGen = singleNetexGenerator(matchingdata, operator, service);
     });
 
     it('gets a list of stops from matching data', async () => {
