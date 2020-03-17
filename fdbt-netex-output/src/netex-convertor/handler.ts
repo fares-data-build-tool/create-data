@@ -1,5 +1,5 @@
 import { S3Event } from 'aws-lambda';
-import netexGenerator from './netexGenerator';
+import singleNetexGenerator from './singleNetexGenerator';
 import * as dynamodb from './data/dynamodb';
 import * as s3 from './data/s3';
 import { OperatorData, ServiceData, MatchingData } from './types';
@@ -55,7 +55,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const operatorData = await getOperatorsTableData(matchingData.nocCode);
         const servicesData = await getServicesTableData(matchingData.nocCode, matchingData.lineName);
 
-        const netexGen = netexGenerator(matchingData, operatorData, servicesData);
+        const netexGen = singleNetexGenerator(matchingData, operatorData, servicesData);
         const generatedNetex = await netexGen.generate();
 
         const fileName = `${matchingData.operatorShortName}_${matchingData.lineName}_${new Date().toISOString()}.xml`;

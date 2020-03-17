@@ -90,4 +90,4 @@ plugins:
 
 package:
     include:
-        - ./src/netex-convertor/netexTemplate.xml
+        - ./src/netex-convertor/singleNetexTemplate.xml
