@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import http from 'http';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../../src/constants';
 import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-http.OutgoingMessage.prototype.setHeader = jest.fn();
-
 describe('stageNames', () => {
-    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    let setCookieSpy: any;
+
+    beforeEach(() => {
+        setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    });
 
     afterEach(() => {
         jest.resetAllMocks();

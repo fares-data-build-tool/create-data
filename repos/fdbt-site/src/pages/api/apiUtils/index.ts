@@ -57,5 +57,4 @@ export const redirectTo = (res: NextApiResponse | ServerResponse, location: stri
 
 export const redirectToError = (res: NextApiResponse | ServerResponse): void => {
     redirectTo(res, '/error');
-    res.end();
 };

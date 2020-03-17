@@ -2,23 +2,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { Files } from 'formidable';
 import fs from 'fs';
 import flatMap from 'array.prototype.flatmap';
-import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
-import { putStringInS3 } from '../../data/s3';
-import { ALLOWED_CSV_FILE_TYPES, RAW_USER_DATA_BUCKET_NAME, USER_DATA_BUCKET_NAME } from '../../constants';
+import { getUuidFromCookie, redirectToError, redirectTo, setCookieOnResponseObject, getDomain } from './apiUtils';
+import { putDataInS3, UserFareStages } from '../../data/s3';
+import { ALLOWED_CSV_FILE_TYPES, CSV_UPLOAD_COOKIE } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;
 
 export type File = FileData;
-
-export interface UserFareStages {
-    fareStages: {
-        stageName: string;
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
 
 interface FareTriangleData {
     fareStages: {
@@ -37,6 +27,7 @@ interface FileData {
     FileContent: string;
 }
 
+// The below 'config' needs to be exported for the formidable library to work.
 export const config = {
     api: {
         bodyParser: false,
@@ -53,21 +44,6 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
             return resolve(file);
         });
     });
-};
-
-export const putDataInS3 = async (data: UserFareStages | string, key: string, processed: boolean): Promise<void> => {
-    let contentType = '';
-    let bucketName = '';
-
-    if (processed) {
-        bucketName = USER_DATA_BUCKET_NAME;
-        contentType = 'application/json; charset=utf-8';
-    } else {
-        bucketName = RAW_USER_DATA_BUCKET_NAME;
-        contentType = 'text/csv; charset=utf-8';
-    }
-
-    await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };
 
 export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
@@ -138,26 +114,38 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     return mappedFareTriangle;
 };
 
-export const fileIsValid = (res: NextApiResponse, formData: formidable.Files, fileContent: string): boolean => {
+export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+    const cookieValue = JSON.stringify({ error });
+    setCookieOnResponseObject(getDomain(req), CSV_UPLOAD_COOKIE, cookieValue, req, res);
+
+    if (error) {
+        redirectTo(res, '/csvUpload');
+    }
+};
+
+export const fileIsValid = (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    formData: formidable.Files,
+    fileContent: string,
+): boolean => {
     const fileSize = formData['csv-upload'].size;
     const fileType = formData['csv-upload'].type;
 
     if (!fileContent) {
-        redirectTo(res, '/csvUpload');
+        setUploadCookieAndRedirect(req, res, 'Select a CSV file to upload');
         console.warn('No file attached.');
-
         return false;
     }
 
     if (fileSize > MAX_FILE_SIZE) {
-        redirectToError(res);
+        setUploadCookieAndRedirect(req, res, 'The selected file must be smaller than 5MB');
         console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
-
         return false;
     }
 
     if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
-        redirectToError(res);
+        setUploadCookieAndRedirect(req, res, 'The selected file must be a CSV');
         console.warn(`File not of allowed type, uploaded file is ${fileType}`);
 
         return false;
@@ -179,7 +167,7 @@ export const getFormData = async (req: NextApiRequest): Promise<File> => {
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
-        if (!fileIsValid(res, formData.Files, formData.FileContent)) {
+        if (!fileIsValid(req, res, formData.Files, formData.FileContent)) {
             return;
         }
 
@@ -189,6 +177,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
+            setUploadCookieAndRedirect(req, res);
             redirectTo(res, '/matching');
         }
     } catch (error) {

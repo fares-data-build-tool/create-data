@@ -36,7 +36,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         if (!userInputValidity.some(el => el.Error !== '')) {
             const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
             setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
-            // deleteCookieOnResponseObject(getDomain(req), STAGE_NAME_VALIDATION_COOKIE, req, res);
             redirectTo(res, '/priceEntry');
         } else {
             const validationCookieValue = JSON.stringify(userInputValidity);
