@@ -42,7 +42,7 @@
 			<codespaces>
 				<CodespaceRef ref="napt" />
 				<CodespaceRef ref="naptStop" />
-				<CodespaceRef ref="nptgUkLocality" />
+				<CodespaceRef ref="nptgLocality" />
 				<CodespaceRef ref="nptgUkAdministrativeArea" />
 				<CodespaceRef ref="noc" />
 				<CodespaceRef ref="op" />
@@ -328,7 +328,7 @@
 				<!--==== STEP 5:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
 				<FareFrame version="1.0" id="operator@Products@Trip@Line_1" dataSourceRef="operator" responsibilitySetRef="tariffs">
 					<Name></Name>
-					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" versionRef="fxc:v1.0" />
+					<TypeOfFrameRef ref="fxc:uk:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP" versionRef="fxc:v1.0" />
 					<!--==== Fare Structure ==== -->
 					<tariffs>
 						<Tariff version="1.0" id="Tariff@single@Line_1">
@@ -460,8 +460,7 @@
 					<!--==== Sales Packages==== -->
 					<salesOfferPackages>
 						<SalesOfferPackage version="1.0" id="Trip@single-SOP@p-ticket">
-							<BrandingRef version="1.0" ref="operator@brand" />
-							<Name></Name>
+							<BrandingRef ref="operator@brand" />
 							<TypeOfSalesOfferPackageRef version="fxc:v1.0" ref="fxc:standard_product@operator" />
 							<distributionAssignments>
 								<DistributionAssignment version="10" id="Trip@single-SOP@p-ticket@atStop" order="1">
@@ -498,21 +497,6 @@
 						<!-- Fares are shown in pence. -->
 						<DefaultCurrency>GBP</DefaultCurrency>
 					</FrameDefaults>
-					<!--==== Notices ==== -->
-					<noticeAssignments>
-						<!-- <NoticeAssignment version="1.0" id="operator@Products@Trip@prices@Line_1@Footnote" order="1">
-							<Notice version="1.0" id="operator@Products@Trip@prices@Footnote@1">
-								<Text>Fares are shown in pence. Eg. 170 = �1.70</Text>
-							</Notice>
-							<NoticedObjectRef xsi:type="FareTableRefStructure" version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult"/>
-						</NoticeAssignment>
-						<NoticeAssignment version="1.0" id="operator@Products@Trip@prices@Line_1@Footnote" order="2">
-							<Notice version="1.0" id="operator@Products@Trip@prices@Footnote@2">
-								<Text>To calculate your fare, find your location, and your destination, where the row and the column cross is your fare.</Text>
-							</Notice>
-							<NoticedObjectRef xsi:type="TariffRefStructure" version="1.0" ref="Tariff@single@Line_1"/>
-						</NoticeAssignment> -->
-					</noticeAssignments>
 					<!--==== Fare Prices ==== -->
 					<priceGroups>
 						<!--  === PRICE BANDS  === -->
@@ -597,7 +581,7 @@
 								<TariffRef version="1.0" ref="Tariff@single@Line_1" />
 							</usedIn>
 							<specifics>
-								<LineRef version="1.0" ref="Line_1" />
+								<LineRef ref="Line_1" />
 								<TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:printed_ticket" />
 							</specifics>
 							<columns>
@@ -714,38 +698,36 @@
 			</frames>
 		</CompositeFrame>
 		<!--   ========== UK BUs Fares Generic Metadata ========== -->
-		<CompositeFrame id="fxc:DfT@Generic" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:common">
+		<CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:common">
 			<ValidBetween>
 				<FromDate>2015-02-01T00:00:00</FromDate>
 				<ToDate>2020-12-31T12:00:00</ToDate>
 			</ValidBetween>
-			<Name>UK Bus Profile common resources</Name>
-			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK_Bus_tariff_profile@UK_common_resources_composite" />
+			<Name>UK FXCP Passenger Information Profile common resources</Name>
+			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc"/>
 			<FrameDefaults>
-				<DefaultCodespaceRef ref="fxc" />
-				<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
-				<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
+				<DefaultCodespaceRef ref="fxc"/>
+				<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0"/>
+				<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0"/>
 			</FrameDefaults>
 			<frames>
-				<!-- ==== NPTG Data for COMMON UK Bus Fare RESOURCEs======== -->
-				<!-- ====COMMON UK Bus Fare RESOURCEs======== -->
 				<FareFrame id="fxc:Common_UK_Fare_Components" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata">
 					<Name>Common Country independent fare component</Name>
 					<FrameDefaults>
-						<DefaultCodespaceRef ref="fxc" />
-						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
-						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
+						<DefaultCodespaceRef ref="fxc"/>
+						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0"/>
+						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0"/>
 					</FrameDefaults>
 					<PricingParameterSet id="fxc:Common_Resources" version="fxc:v1.0">
 						<priceUnits>
 							<PriceUnit id="fxc:GBP" version="fxc:v1.0">
 								<Name>Pound Sterling</Name>
-								<PrivateCode>&#163;</PrivateCode>
+								<PrivateCode>�</PrivateCode>
 								<Precision>2</Precision>
 							</PriceUnit>
 							<PriceUnit id="fxc:EUR" version="fxc:v1.0">
 								<Name>Euro</Name>
-								<PrivateCode>&#8364;</PrivateCode>
+								<PrivateCode>�</PrivateCode>
 								<Precision>2</Precision>
 							</PriceUnit>
 						</priceUnits>
@@ -761,14 +743,13 @@
 							<Name>Distance Unit Stage</Name>
 						</GeographicalUnit>
 					</geographicalUnits>
-					<!-- === USAGE PARAMETERS === -->
 					<usageParameters>
 						<UserProfile version="fxc:v1.0" id="fxc:adult">
 							<Name>Adult</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none" />
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
 							<companionProfiles>
 								<CompanionProfile version="fxc:v1.0" id="fxc:adult@infant">
-									<UserProfileRef ref="fxc:infant" version="fxc:v1.0" />
+									<UserProfileRef ref="fxc:infant" version="fxc:v1.0"/>
 									<MinimumNumberOfPersons>0</MinimumNumberOfPersons>
 									<MaximumNumberOfPersons>3</MaximumNumberOfPersons>
 								</CompanionProfile>
@@ -776,38 +757,33 @@
 						</UserProfile>
 						<UserProfile version="fxc:v1.0" id="fxc:child">
 							<Name>Child</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child" />
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
 							<MinimumAge>5</MinimumAge>
 							<MaximumAge>15</MaximumAge>
 						</UserProfile>
 						<UserProfile version="fxc:v1.0" id="fxc:infant">
 							<Name>Infant</Name>
 							<Description>Up to three children under 5 years of age, accompanied by a fare paying adult or child passenger, and not occupying a seat, may travel free of charge on the Company's services.</Description>
-							<prices>
-								<UsageParameterPrice version="fxc:v1.0" id="fxc:infant">
-									<Amount>0</Amount>
-								</UsageParameterPrice>
-							</prices>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:infant" />
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:infant"/>
 							<MinimumAge>0</MinimumAge>
 							<MaximumAge>4</MaximumAge>
+							<DiscountBasis>free</DiscountBasis>
 							<companionProfiles>
 								<CompanionProfile id="fxc:infant@adult" version="fxc:v1.0">
-									<UserProfileRef ref="fxc:adult" version="fxc:v1.0" />
+									<UserProfileRef ref="fxc:adult" version="fxc:v1.0"/>
 									<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
 									<MaximumNumberOfPersons>1</MaximumNumberOfPersons>
 									<DiscountBasis>none</DiscountBasis>
 								</CompanionProfile>
 							</companionProfiles>
 						</UserProfile>
-						<UserProfile version="fxc:v1.0" id="fxc:student">
-							<Name>Student</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:student" />
+						<UserProfile version="fxc:v1.0" id="fxc:senior">
+							<Name>Senior</Name>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
 							<ProofRequired>membershipCard</ProofRequired>
 							<DiscountBasis>discount</DiscountBasis>
 						</UserProfile>
 					</usageParameters>
-					<!-- ====CHANNELS -->
 					<distributionChannels>
 						<DistributionChannel id="fxc:online" version="fxc:v1.0">
 							<ShortName>Internet sales</ShortName>
@@ -884,8 +860,8 @@
 							<Name>Collect on board</Name>
 							<FulfilmentMethodType>conductor</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_from_machine" version="fxc:v1.0">
@@ -893,78 +869,78 @@
 							<FulfilmentMethodType>ticketMachine</FulfilmentMethodType>
 							<RequiresBookingReference>true</RequiresBookingReference>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_at_counter" version="fxc:v1.0">
 							<Name>Collect at counter</Name>
 							<FulfilmentMethodType>ticketOffice</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_from_agent" version="fxc:v1.0">
 							<Name>Travel agent issues ticket directly</Name>
 							<FulfilmentMethodType>agent</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:mobile_app" version="fxc:v1.0">
 							<Name>Mobile App</Name>
 							<FulfilmentMethodType>mobileApp</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:self_print" version="fxc:v1.0">
 							<Name>Self Print</Name>
 							<FulfilmentMethodType>selfprint</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:online_propagation" version="fxc:v1.0">
 							<Name>Online propagation</Name>
 							<FulfilmentMethodType>validator</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:email" version="fxc:v1.0">
 							<Name>EMAIL</Name>
 							<FulfilmentMethodType>email</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:post" version="fxc:v1.0">
 							<Name>Send ticket by post</Name>
 							<FulfilmentMethodType>post</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:courier" version="fxc:v1.0">
 							<Name>Send ticket by courier</Name>
 							<FulfilmentMethodType>other</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 					</fulfilmentMethods>
@@ -1027,7 +1003,7 @@
 							<Description>NaPTAN metadata</Description>
 						</Codespace>
 						<Codespace id="naptStop">
-							<Xmlns>naptStop"></Xmlns>
+							<Xmlns>naptStop"&gt;</Xmlns>
 							<XmlnsUrl>http://naptan.org.uk/stops</XmlnsUrl>
 							<Description>T stop data</Description>
 						</Codespace>
@@ -1036,8 +1012,8 @@
 							<XmlnsUrl>http://nptg.org.uk/</XmlnsUrl>
 							<Description>National Public Transport gazetteer</Description>
 						</Codespace>
-						<Codespace id="nptgUkLocality">
-							<Xmlns>nptgUkLocality</Xmlns>
+						<Codespace id="nptgLocality">
+							<Xmlns>nptgLocality</Xmlns>
 							<XmlnsUrl>http://nptg.org.uk/locations</XmlnsUrl>
 							<Description>National Public Transport gazetteer locations</Description>
 						</Codespace>
@@ -1058,9 +1034,9 @@
 						</Codespace>
 					</codespaces>
 					<FrameDefaults>
-						<DefaultCodespaceRef ref="fxc" />
-						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
-						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
+						<DefaultCodespaceRef ref="fxc"/>
+						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0"/>
+						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0"/>
 						<DefaultLocale>
 							<TimeZoneOffset>0</TimeZoneOffset>
 							<TimeZone>GMT</TimeZone>
@@ -1069,7 +1045,8 @@
 							<DefaultLanguage>en</DefaultLanguage>
 						</DefaultLocale>
 						<DefaultLocationSystem>WGS84</DefaultLocationSystem>
-						<DefaultSystemOfUnits>SiKilometersAndMetres</DefaultSystemOfUnits>
+						<DefaultSystemOfUnits>SiKilometresAndMetres</DefaultSystemOfUnits>
+						<!-- NB NK invalid content  -->
 						<DefaultCurrency>GBP</DefaultCurrency>
 					</FrameDefaults>
 					<versions>
@@ -1083,7 +1060,6 @@
 							<Email>standards@nptg.org.uk</Email>
 						</DataSource>
 					</dataSources>
-					<!-- ========Responsibility Sets========== -->
 					<responsibilitySets>
 						<ResponsibilitySet version="fxc:v1.0" id="fxc:FXC_metadata">
 							<Name>Common</Name>
@@ -1091,86 +1067,112 @@
 								<ResponsibilityRoleAssignment version="fxc:v1.0" id="fxc:FXC_metadata:DfT">
 									<DataRoleType>creates distributes</DataRoleType>
 									<StakeholderRoleType>DataRegistrar</StakeholderRoleType>
-									<ResponsibleOrganisationRef ref="fxc:DfT" version="fxc:v1.0" />
+									<ResponsibleOrganisationRef ref="fxc:DfT" version="fxc:v1.0"/>
 									<ResponsibleAreaRef ref="fxc:UK">TODO</ResponsibleAreaRef>
 								</ResponsibilityRoleAssignment>
 							</roles>
 						</ResponsibilitySet>
 					</responsibilitySets>
-					<!-- ======== Code sets ========= -->
 					<typesOfValue>
-						<ValueSet version="fxc:v1.0" id="fxc:TypeOfFrame" classOfValues="TypeOfFrame">
-							<Name>Types of UK Frame</Name>
+						<!-- ======== TYPE S OF   FRAME========= -->
+						<ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_Basic" classOfValues="TypeOfFrame">
+							<Name>Types of FXC Specific  Frame Basic </Name>
 							<values>
-								<TypeOfFrame version="fxc:v1.0" id="nptg:UK_general_profile@locations">
-									<Name>NPTG Locations Frame</Name>
+								<!-- === ANCILLARY  ==== -->
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP">
+									<Name>UK FXCP  common Local resources</Name>
+									<FrameClassRef nameOfClass="ResourceFrame"/>
 								</TypeOfFrame>
-								<!-- -->
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@fare_network">
-									<Name>UK Bus Profile fare network</Name>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_CALENDAR:FXCP">
+									<Name>UK FXCP  Service calendar</Name>
+									<FrameClassRef nameOfClass="ServiceCalendarFrame"/>
 								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@service_network">
-									<Name>UK Bus Profile service network</Name>
-									<FrameClassRef nameOfClass="ServiceFrame" />
+								<!-- === PAYLOAD  ==== -->
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP">
+									<Name>UK FXCP Stops: NapTAN Stop Place  and NPTG Locations Frame</Name>
+									<FrameClassRef nameOfClass="SiteFrame"/>
 								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@service_network@line">
-									<Name>UK Bus Profile  service network</Name>
-									<FrameClassRef nameOfClass="ServiceFrame" />
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP">
+									<Name>UK FXCP Network</Name>
+									<FrameClassRef nameOfClass="ServiceFrame"/>
 								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@site_network">
-									<Name>UK Bus Profile site network</Name>
-									<FrameClassRef nameOfClass="SiteFrame" />
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_TIMETABLE:FXCP">
+									<Name>UK FXCP Tietable: N</Name>
+									<FrameClassRef nameOfClass="TimetableFrame"/>
 								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@products">
-									<Name>UK Bus Profile products</Name>
-									<FrameClassRef nameOfClass="FareFrame" />
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc::UK_Bus_tariff_profile@products@by_Line">
-									<Name>UK Bus Profile tariff by line</Name>
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@prices">
-									<Name>UK Bus Profile prices</Name>
-									<FrameClassRef nameOfClass="FareFrame" />
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@calendar">
-									<Name>UK Bus Profile Operator calendar</Name>
-									<FrameClassRef nameOfClass="ServiceCalendarFrame" />
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@operator_resources">
-									<Name>UK Bus Profile Operator resources</Name>
-									<FrameClassRef nameOfClass="ResourceFrame" />
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@operator_fare_resources">
-									<Name>UK Bus Profile Operator resources</Name>
-									<FrameClassRef nameOfClass="FareFrame" />
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@transactions">
-									<Name>UK Bus Profile Operator sample transactions</Name>
-									<FrameClassRef nameOfClass="SalesTransactionFrame" />
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@transactions_composite">
-									<Name>UK Bus Profile Operator sample transactions - container</Name>
-									<FrameClassRef nameOfClass="SalesTransactionFrame" />
-								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@composite">
-									<Name>UK Bus Profile coposite used to group other UK bus tariff frames</Name>
-									<FrameClassRef nameOfClass="CompositeFrame" />
-								</TypeOfFrame>
-								<!--- for fixed elements -->
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@UK_common_resources">
+								<!-- === METADATA   ==== -->
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA:FXCP">
 									<Name>UK Bus Profile common resources</Name>
-									<FrameClassRef nameOfClass="ResourceFrame" />
+									<FrameClassRef nameOfClass="ResourceFrame"/>
 								</TypeOfFrame>
-								<TypeOfFrame version="fxc:v1.0" id="fxc:UK_Bus_tariff_profile@UK_common_resources_composite">
-									<Name>UK Bus Profile common resources composite container</Name>
-									<FrameClassRef nameOfClass="CompositeFrame" />
+							</values>
+						</ValueSet>
+						<ValueSet version="fxc::v2.4" id="fxc:Types_of_Offer_Frame_Basic" classOfValues="TypeOfFrame">
+							<Name>Types of UK Offer Frame</Name>
+							<values>
+								<!-- === COMPOSITE ====  -->
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP_OFFER:FXCP">
+									<Name>UK FXCP   composite container STOP OFFER</Name>
+									<FrameClassRef nameOfClass="CompositeFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_OFFER:FXCP">
+									<Name>UK FXCP   composite container LINE OFFER</Name>
+									<FrameClassRef nameOfClass="CompositeFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_OFFER:FXCP">
+									<Name>UK FXCP   composite container LINE OFFER</Name>
+									<FrameClassRef nameOfClass="CompositeFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc">
+									<Name>UK FXCP composite used to group other UKmetadta</Name>
+									<FrameClassRef nameOfClass="CompositeFrame"/>
+								</TypeOfFrame>
+							</values>
+						</ValueSet>
+						<!-- ======== TYPE S OF   FRAME========= -->
+						<ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_for_Fares" classOfValues="TypeOfFrame">
+							<Name>Types of FXC Specific  Frame</Name>
+							<values>
+								<!-- === PAYLOAD  ==== -->
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
+									<Name>UK Bus Profile fare common paramaters</Name>
+									<FrameClassRef nameOfClass="FareFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
+									<Name>UK Bus Profile fare network</Name>
+									<FrameClassRef nameOfClass="ServiceFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
+									<Name>UK FXCP Fare Porducts Frame</Name>
+									<FrameClassRef nameOfClass="FareFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">
+									<Name>UK FXCP Fare Prices Frame</Name>
+									<FrameClassRef nameOfClass="FareFrame"/>
+								</TypeOfFrame>
+							</values>
+						</ValueSet>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_Offer_Frame_for_Fares" classOfValues="TypeOfFrame">
+							<Name>Types of UK Offer Frame</Name>
+							<values>
+								<!-- === COMPOSITE ====  -->
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP_FARE_OFFER:FXCP">
+									<Name>UK FXCP   composite container STOP OFFER</Name>
+									<FrameClassRef nameOfClass="CompositeFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP">
+									<Name>UK FXCP   composite container LINE OFFER</Name>
+									<FrameClassRef nameOfClass="CompositeFrame"/>
+								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP">
+									<Name>UK FXCP   composite container NETWORK OFFER</Name>
+									<FrameClassRef nameOfClass="CompositeFrame"/>
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
 						<ValueSet version="fxc:v1.0" id="fxc:PointOfInterestClassification" classOfValues="PointOfInterestClassification">
 							<Name>Types of POI</Name>
 							<values>
-								<!--- ====Type of Product category ========= -->
 								<PointOfInterestClassification version="fxc:v1.0" id="fxc:operator_travel_shop">
 									<Name>Travel Shop</Name>
 								</PointOfInterestClassification>
@@ -1182,7 +1184,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:TypeOfFareZone" classOfValues="TypeOfZone">
 							<Name>Types of Fare Zone</Name>
 							<values>
-								<!--- ====Type of Product category ========= -->
 								<TypeOfZone version="fxc:v1.0" id="fxc:fare_zone@operator">
 									<Name>Operator defined zone</Name>
 								</TypeOfZone>
@@ -1197,7 +1198,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:TypesOfProductCategory" classOfValues="TypeOfProductCategory">
 							<Name>Types of Product Category</Name>
 							<values>
-								<!--- ====Type of Product category ========= -->
 								<TypeOfProductCategory version="fxc:v1.0" id="fxc:urban_bus">
 									<Name>Urban Bus</Name>
 								</TypeOfProductCategory>
@@ -1212,7 +1212,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:PurposesOfGrouping" classOfValues="PurposeOfGrouping">
 							<Name>Purposes of Grouping</Name>
 							<values>
-								<!--- ====Type of Product category ========= -->
 								<PurposeOfGrouping version="fxc:v1.0" id="fxc:route_exclusion">
 									<Name>Routes to be ommited</Name>
 								</PurposeOfGrouping>
@@ -1221,7 +1220,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:ChargingMoments" classOfValues="ChargingMoment">
 							<Name>Charging Moments</Name>
 							<values>
-								<!--- ==== TypeOfChargingMoment ========= -->
 								<ChargingMoment version="fxc:v1.0" id="fxc:prepayment">
 									<Name>Prepaid</Name>
 								</ChargingMoment>
@@ -1246,16 +1244,15 @@
 									<Name>Short hop fare</Name>
 								</TypeOfFareProduct>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@trip@single">
-									<Name>Single fare</Name>
+									<Name>single fare</Name>
 								</TypeOfFareProduct>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:era:standard_product@trip@time_limited">
 									<Name>Time Limited fare</Name>
 								</TypeOfFareProduct>
-								<!--- Special -->
-								<TypeOfFareProduct version="fxc:v1.0" id="fxc:special_product@Trip@period_return">
-									<Name>Period return fare</Name>
+								<TypeOfFareProduct version="fxc:v1.0" id="fxc:special_product@Trip@period_single">
+									<Name>Period single fare</Name>
 								</TypeOfFareProduct>
-								<TypeOfFareProduct version="fxc:v1.0" id="fxc:era:special_produc@tript@day_return">
+								<TypeOfFareProduct version="fxc:v1.0" id="fxc:era:special_produc@tript@day_single">
 									<Name>Day retirn fare</Name>
 								</TypeOfFareProduct>
 							</values>
@@ -1305,7 +1302,7 @@
 							</values>
 						</ValueSet>
 						<ValueSet version="fxc:v1.0" id="fxc:TypesOfSalesOfferPackage" classOfValues="TypeOfSalesOfferPackage">
-							<Name>Types Of Sales Offer  Product </Name>
+							<Name>Types Of Sales Offer  Product</Name>
 							<values>
 								<TypeOfSalesOfferPackage version="fxc:v1.0" id="fxc:standard_product@all_operators">
 									<Name>Product is standrad and supported by all operators</Name>
@@ -1314,17 +1311,16 @@
 									<Name>Product is standrad and supported by all operators</Name>
 								</TypeOfSalesOfferPackage>
 								<TypeOfSalesOfferPackage version="fxc:v1.0" id="fxc:standard_product@operator">
-									<Name>Single operator standard product</Name>
+									<Name>single operator standard product</Name>
 								</TypeOfSalesOfferPackage>
 								<TypeOfSalesOfferPackage version="fxc:v1.0" id="fxc:special_product@operator">
-									<Name>Single operator special product</Name>
+									<Name>single operator special product</Name>
 								</TypeOfSalesOfferPackage>
 							</values>
 						</ValueSet>
 						<ValueSet version="fxc:v1.0" id="fxc:ClassesOfUse" classOfValues="ClassOfUse">
 							<Name>Classes of Use</Name>
 							<values>
-								<!--- ====ClassOfUse ========= -->
 								<ClassOfUse version="fxc:v1.0" id="fxc:first">
 									<Name>First Class</Name>
 								</ClassOfUse>
@@ -1336,7 +1332,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:TypesOfProjection" classOfValues="TypeOfProjection">
 							<Name>TypesOf Projection</Name>
 							<values>
-								<!--- ====ClassOfUse ========= -->
 								<TypeOfProjection version="fxc:v1.0" id="fxc:tariff_zone_border">
 									<Name>The boundary stops for a fare_zone</Name>
 								</TypeOfProjection>
@@ -1345,7 +1340,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:TypesOfFareContractEntry" classOfValues="TypeOfFareContractEntry">
 							<Name>Types of fare contract entry</Name>
 							<values>
-								<!--- ====TypeOfFareContractEntry ========= -->
 								<TypeOfFareContractEntry version="fxc:v1.0" id="fxc:product_purchase">
 									<Name>Purchase</Name>
 								</TypeOfFareContractEntry>
@@ -1363,7 +1357,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:TypesOfConcession" classOfValues="TypeOfConcession">
 							<Name>Types of concession</Name>
 							<values>
-								<!--- ====TypeOfConcession method========= -->
 								<TypeOfConcession version="fxc:v1.0" id="fxc:none">
 									<Name>Adult</Name>
 								</TypeOfConcession>
@@ -1405,7 +1398,6 @@
 						<ValueSet version="fxc:v1.0" id="fxc:TypesOfTariff" classOfValues="TypeOfTariff">
 							<Name>Types of Tariff</Name>
 							<values>
-								<!--- ====Types OfTariff ========= -->
 								<TypeOfTariff version="fxc:v1.0" id="fxc:Distance_kilometers">
 									<Name>Kilometer Distance Kilometers</Name>
 								</TypeOfTariff>
@@ -1504,14 +1496,12 @@
 							</values>
 						</ValueSet>
 					</typesOfValue>
-					<!-- ========Operators ========== -->
 					<organisations>
 						<GeneralOrganisation version="fxc:v1.0" id="fxc:DfT">
 							<Name>Department for Transport</Name>
 							<ShortName>DfT</ShortName>
 							<OrganisationType>statutoryBody</OrganisationType>
 						</GeneralOrganisation>
-						<!-- === UIC RUs ==== -->
 						<Operator version="fxc:v1.0" id="uic:operator:1170">
 							<PublicCode>ATOC</PublicCode>
 							<Name>Association of Train Operating Companies Limited</Name>
@@ -1520,7 +1510,7 @@
 								<FromDate>2001-01-01T00:00:00Z</FromDate>
 								<ToDate>2020-01-01T00:00:00Z</ToDate>
 							</ValidityPeriod>
-							<CountryRef ref="uk" refPrincipality="GB-UKM" />
+							<CountryRef ref="uk" refPrincipality="GB-UKM"/>
 						</Operator>
 						<Operator version="fxc:v1.0" id="uic:Station_Management:0070">
 							<PublicCode>NR</PublicCode>
@@ -1530,7 +1520,7 @@
 								<FromDate>2003-09-22T00:00:00Z</FromDate>
 								<ToDate>2020-01-01T00:00:00Z</ToDate>
 							</ValidityPeriod>
-							<CountryRef ref="uk" refPrincipality="GB-UKM" />
+							<CountryRef ref="uk" refPrincipality="GB-UKM"/>
 						</Operator>
 					</organisations>
 				</ResourceFrame>

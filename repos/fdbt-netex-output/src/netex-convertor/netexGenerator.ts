@@ -39,7 +39,6 @@ const netexGenerator = (
     serviceData: ServiceData,
 ): { generate: Function } => {
     const opIdNocFormat = `noc:${operatorData.opId}`;
-    const nocCodeNocFormat = `noc:${matchingData.nocCode}`
     const opIdBrandFormat = `${operatorData.opId}@brand`;
     const operatorPublicNameLineNameFormat = `${operatorData.publicName} ${matchingData.lineName}`;
     const noccodeLineNameFormat = `${matchingData.nocCode}_${matchingData.lineName}`;
@@ -57,7 +56,7 @@ const netexGenerator = (
         const publicationRequestToUpdate = { ...publicationRequest };
         publicationRequestToUpdate.RequestTimestamp.$t = currentDate;
         publicationRequestToUpdate.Description.$t = `Request for ${matchingData.nocCode} ${lineIdName}.`;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = opIdNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref = matchingData.lineName;
 
@@ -101,6 +100,7 @@ const netexGenerator = (
     const updateSiteFrame = (siteFrame: NetexObject): NetexObject => {
         const siteFrameToUpdate = { ...siteFrame };
         siteFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:SiteFrame_UK_PI_NETWORK:${lineIdName}:op`;
+        siteFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${matchingData.nocCode}:ResourceFrame_UK_PI_COMMON:op`;
 
         return siteFrameToUpdate;
     };
