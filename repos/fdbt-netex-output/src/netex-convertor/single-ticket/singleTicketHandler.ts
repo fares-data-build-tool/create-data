@@ -1,8 +1,8 @@
 import { S3Event } from 'aws-lambda';
-import singleNetexGenerator from './single-ticket/singleNetexGenerator';
-import * as dynamodb from './data/dynamodb';
-import * as s3 from './data/s3';
-import { OperatorData, ServiceData, MatchingData } from './types';
+import singleNetexGenerator from './singleTicketNetexGenerator';
+import * as dynamodb from '../data/dynamodb';
+import * as s3 from '../data/s3';
+import { OperatorData, ServiceData, MatchingData } from '../types';
 
 const getOperatorsTableData = async (nocCode: string): Promise<OperatorData> => {
     try {
@@ -48,9 +48,9 @@ const getServicesTableData = async (nocCode: string, lineName: string): Promise<
     }
 };
 
-export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
+export const singleTicketNetexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
-        const matchingData: MatchingData = await s3.fetchMatchingDataFromS3(event);
+        const matchingData: MatchingData = await s3.fetchDataFromS3(event);
 
         const operatorData = await getOperatorsTableData(matchingData.nocCode);
         const servicesData = await getServicesTableData(matchingData.nocCode, matchingData.lineName);
@@ -67,4 +67,4 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     }
 };
 
-export default netexConvertorHandler;
+export default singleTicketNetexConvertorHandler;

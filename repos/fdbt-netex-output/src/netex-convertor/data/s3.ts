@@ -4,7 +4,7 @@ import AWS from 'aws-sdk';
 const s3: AWS.S3 = new AWS.S3();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const fetchMatchingDataFromS3 = async (event: S3Event): Promise<any> => {
+export const fetchDataFromS3 = async (event: S3Event): Promise<any> => {
     try {
         const s3BucketName: string = event.Records[0].s3.bucket.name;
         const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
