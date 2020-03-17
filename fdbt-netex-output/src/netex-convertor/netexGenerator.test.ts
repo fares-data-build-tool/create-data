@@ -1,7 +1,8 @@
-import fs from 'fs';
-import matchingdata from './testdata/matchingdata';
+import parser from 'xml2json';
 import { OperatorData, ServiceData } from './types';
+import matchingdata from './testdata/matchingdata';
 import netexGenerator from './netexGenerator';
+import expectedNetex from './testdata/expectedNetex';
 
 const website = 'www.iwbus.co.uk';
 const ttrteEnq = 'email@iwbus.co.uk';
@@ -11,7 +12,6 @@ const vosaPSVLicenseName = 'IWBus Transport Ltd'; // eslint-disable-line @typesc
 const fareEnq = '0113 111 1111';
 const complEnq = 'Apsley Hpuse, 1 Wellington Street, Leeds, LS1 AAA';
 const mode = 'bus';
-
 const operator: OperatorData = {
     website,
     ttrteEnq,
@@ -22,15 +22,18 @@ const operator: OperatorData = {
     complEnq,
     mode,
 };
-
 const service: ServiceData = {
     serviceDescription: 'Test Description',
 };
-
-const netexGen = netexGenerator(matchingdata, operator, service);
-
-netexGen.generate().then((data: string) => {
-    fs.writeFile('./output/output.xml', data, {}, () => {
-        console.log('Written');
+jest.spyOn(Date, 'now').mockImplementation(() => new Date(Date.UTC(2020, 2, 16, 0, 0, 0, 0)).valueOf());
+describe('NeTEx Generator', () => {
+    let netexGen: { generate: Function };
+    beforeEach(() => {
+        netexGen = netexGenerator(matchingdata, operator, service);
+    });
+    it('gets a list of stops from matching data', async () => {
+        const netex = await netexGen.generate();
+        const netexJson = parser.toJson(netex, { reversible: false });
+        expect(JSON.parse(netexJson)).toEqual(expectedNetex);
     });
 });
