@@ -1,13 +1,11 @@
-/* eslint-disable global-require */
-
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import PeriodType from '../../src/pages/periodType';
+import CsvZoneUpload from '../../src/pages/csvZoneUpload';
 
 describe('pages', () => {
-    describe('periodtype', () => {
+    describe('csvzoneupload', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodType error={false} />);
+            const tree = shallow(<CsvZoneUpload />);
             expect(tree).toMatchSnapshot();
         });
     });

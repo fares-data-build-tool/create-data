@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages csvzoneupload should render correctly 1`] = `
+<Layout
+  description="CSV Zone Upload page of the Fares data build tool"
+  title="CSV Zone Upload Method - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <UserDataUploadComponent />
+  </main>
+</Layout>
+`;

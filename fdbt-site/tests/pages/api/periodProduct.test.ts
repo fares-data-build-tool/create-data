@@ -1,22 +1,15 @@
-import mockReqRes, { mockRequest, mockResponse } from 'mock-req-res';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 import { PERIOD_PRODUCT } from '../../../src/constants';
 import periodProduct from '../../../src/pages/api/periodProduct';
 import * as validator from '../../../src/pages/api/service/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 
 describe('periodProduct', () => {
-    let res: mockReqRes.ResponseOutput;
-    let writeHeadMock: jest.Mock;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let setCookieSpy: any;
 
     beforeEach(() => {
         jest.resetAllMocks();
-        writeHeadMock = jest.fn();
-        res = mockResponse({
-            writeHead: writeHeadMock,
-        });
-
         jest.spyOn(validator, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(true);
@@ -25,21 +18,23 @@ describe('periodProduct', () => {
     });
 
     it('should set period product cookie with errors on submit', () => {
-        const req = mockRequest({
-            body: { periodProductNameInput: '', periodProductPriceInput: '' },
-        });
-
+        const writeHeadMock = jest.fn();
         const mockPeriodProductCookies = {
             productNameError: true,
             productPriceError: true,
             productName: '',
             productPrice: '',
         };
-
+        const { req, res } = getMockRequestAndResponse(
+            mockPeriodProductCookies,
+            { periodProductNameInput: '', periodProductPriceInput: '' },
+            {},
+            writeHeadMock,
+        );
         periodProduct(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            '',
+            'localhost',
             PERIOD_PRODUCT,
             JSON.stringify(mockPeriodProductCookies),
             req,
@@ -48,21 +43,23 @@ describe('periodProduct', () => {
     });
 
     it('should create period product cookie if submit is valid', () => {
-        const req = mockRequest({
-            body: { periodProductNameInput: 'ProductA', periodProductPriceInput: '121' },
-        });
-
+        const writeHeadMock = jest.fn();
         const mockPeriodProductCookies = {
             productNameError: false,
             productPriceError: false,
             productName: 'ProductA',
             productPrice: '121',
         };
-
+        const { req, res } = getMockRequestAndResponse(
+            mockPeriodProductCookies,
+            { periodProductNameInput: 'ProductA', periodProductPriceInput: '121' },
+            {},
+            writeHeadMock,
+        );
         periodProduct(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            '',
+            'localhost',
             PERIOD_PRODUCT,
             JSON.stringify(mockPeriodProductCookies),
             req,
@@ -71,21 +68,23 @@ describe('periodProduct', () => {
     });
 
     it('should remove leading trailing spaces and tabs', () => {
-        const req = mockRequest({
-            body: { periodProductNameInput: '     ProductBA', periodProductPriceInput: '121' },
-        });
-
+        const writeHeadMock = jest.fn();
         const mockPeriodProductCookies = {
             productNameError: false,
             productPriceError: false,
-            productName: 'ProductBA',
+            productName: 'Product BA',
             productPrice: '121',
         };
-
+        const { req, res } = getMockRequestAndResponse(
+            mockPeriodProductCookies,
+            { periodProductNameInput: '     Product BA  ', periodProductPriceInput: '121' },
+            {},
+            writeHeadMock,
+        );
         periodProduct(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            '',
+            'localhost',
             PERIOD_PRODUCT,
             JSON.stringify(mockPeriodProductCookies),
             req,
