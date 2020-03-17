@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" 
-	xmlns="http://www.netex.org.uk/netex" 
-	xmlns:siri="http://www.siri.org.uk/siri" 
-	xmlns:gml="http://www.opengis.net/gml/3.2" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<PublicationTimestamp>2017-12-17T09:30:47.0Z</PublicationTimestamp>
 	<ParticipantRef>SYS001</ParticipantRef>
 	<!-- ======WHAT WAS REQUESTED ========== -->
@@ -21,9 +17,13 @@
 				<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP" />
 				<NetworkFilterByValue>
 					<objectReferences>
-						<OperatorRef version="1.0" ref="noc:FYSO" />
+
+						<!-- DYNAMIC HERE... -->
+						<OperatorRef version="1.0" ref=""></OperatorRef>
 						<TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period" />
 						<PreassignedFareProductRef version="1.0" ref="op:Pass@FirstPass" />
+						<!-- ...TO HERE -->
+
 					</objectReferences>
 				</NetworkFilterByValue>
 			</NetworkFrameTopic>
@@ -36,13 +36,20 @@
 	<Description>Example of simple zonal pass fares.</Description>
 	<!-- =============== RESULTS =========== -->
 	<dataObjects>
+
+		<!-- DYNAMIC HERE?-->
 		<CompositeFrame version="1.0" id="epd:UK:FYSO:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@FirstPass:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
+
 			<ValidBetween>
 				<FromDate>2017-01-01T00:00:00</FromDate>
 				<ToDate>2020-12-31T12:00:00</ToDate>
 			</ValidBetween>
+
+			<!-- DYNAMIC HERE... -->
 			<Name>FirstPass - Fares Example</Name>
 			<Description>This is an example showing how one might encode part of the FirstPass fare table for a zonal pass of different durations  in NeTEx.</Description>
+			<!-- ...TO HERE -->
+
 			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP" />
 			<!--==== CODESPACEs ==== -->
 			<codespaces>
@@ -65,14 +72,20 @@
 				<CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" />
 			</prerequisites>
 			<frames>
+
+				<!-- DYNAMIC HERE? -->
 				<ResourceFrame version="1.0" id="epd:UK:FYSO:ResourceFrame_UK_PI_COMMON:FYSO:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
+
 					<Name>Operator specific common resources</Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0" />
 					<codespaces>
 						<Codespace id="op_data">
 							<Xmlns>op</Xmlns>
+
+							<!-- DYNAMIC HERE -->
 							<XmlnsUrl>https://www.firstgroup.com/</XmlnsUrl>
-							<Description>First data.</Description>
+
+							<Description>Operator data</Description>
 						</Codespace>
 					</codespaces>
 					<FrameDefaults>
@@ -83,18 +96,24 @@
 					</FrameDefaults>
 					<dataSources>
 						<DataSource id="op:src" version="1.0">
+
+							<!-- DYNAMIC HERE -->
 							<Email>feedback@firstgroup.co</Email>
+
 						</DataSource>
 					</dataSources>
 					<!-- ========Responsibility Sets========== -->
 					<responsibilitySets>
 						<ResponsibilitySet version="1.0" id="op:tariffs">
-							<Name>Operator tariff data</Name>
+							<Name>Operator Tariffs</Name>
 							<roles>
 								<ResponsibilityRoleAssignment version="1.0" id="op:tariff_data@creates">
 									<DataRoleType>creates</DataRoleType>
 									<StakeholderRoleType>FareManagement</StakeholderRoleType>
+
+									<!-- DYNAMIC HERE -->
 									<ResponsibleOrganisationRef ref="noc:FYSO" version="1.0">METR</ResponsibleOrganisationRef>
+
 								</ResponsibilityRoleAssignment>
 							</roles>
 						</ResponsibilitySet>
@@ -104,24 +123,33 @@
 								<ResponsibilityRoleAssignment version="1.0" id="op:network_data@creates">
 									<DataRoleType>creates</DataRoleType>
 									<StakeholderRoleType>Planning</StakeholderRoleType>
+
+									<!-- DYNAMIC HERE -->
 									<ResponsibleOrganisationRef ref="noc:FYSO" version="1.0">METR</ResponsibleOrganisationRef>
+
 								</ResponsibilityRoleAssignment>
 							</roles>
 						</ResponsibilitySet>
 					</responsibilitySets>
+					<!--==== CODE VALUES  ==== -->
 					<typesOfValue>
 						<ValueSet version="1.0" id="op:Branding" classOfValues="Branding">
 							<Name>Operator Branding</Name>
 							<values>
+
+								<!-- DYNAMIC HERE -->
 								<Branding version="1.0" id="op:FirstGroup@brand">
 									<Name>First South Yorkshire</Name>
 									<Url>https://www.firstgroup.com/sites/all/themes/custom/fg2015/assets/img/branding/first-bus-logo.svg</Url>
 								</Branding>
+
 							</values>
 						</ValueSet>
 						<ValueSet version="1.0" id="op:TypeOfTravelDocument" nameOfClass="TypeOfTravelDocument">
 							<values>
 								<!--- ==== ClassOfUse========= -->
+
+								<!-- DYNAMIC HERE... -->
 								<TypeOfTravelDocument version="1.0" id="op:p-ticket">
 									<Name>Bought on the bus with Cash</Name>
 									<Description>Paper ticket.</Description>
@@ -135,11 +163,15 @@
 									<IsSmartCard>false</IsSmartCard>
 									<MediaType>mobileApp</MediaType>
 								</TypeOfTravelDocument>
+								<!-- ...TO HERE -->
+
 							</values>
 						</ValueSet>
 					</typesOfValue>
 					<organisations>
 						<!--==== Operators ==== -->
+
+						<!-- DYNAMIC HERE... -->
 						<Operator version="1.0" id="noc:FYSO">
 							<PublicCode>FYSO</PublicCode>
 							<PrivateCode type="nocn">nocn:10129</PrivateCode>
@@ -159,21 +191,32 @@
 							</Address>
 							<PrimaryMode>bus</PrimaryMode>
 						</Operator>
+						<!-- ...TO HERE -->
+
 					</organisations>
 				</ResourceFrame>
 				<!--==== FAREs ==== -->
 				<!-- Metrobus Pass  products -->
+
+				<!-- DYNAMIC HERE... -->
 				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_NETWORK:FirstPass@pass:op" responsibilitySetRef="op:network_data">
 					<Name>FirstPass &amp; M  network </Name>
+					<!-- ...TO HERE? -->
+
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP" />
 					<FrameDefaults>
 						<DefaultResponsibilitySetRef version="1.0" ref="op:network_data" />
 					</FrameDefaults>
 					<prerequisites>
+
+						<!-- DYNAMIC HERE? -->
 						<ResourceFrameRef version="1.0" ref="epd:UK:FYSO:ResourceFrame_UK_PI_COMMON:FYSO:op" />
+
 					</prerequisites>
 					<!--==== Fare zones === NB These are just a guess from the map s -->
 					<fareZones>
+
+						<!-- DYNAMIC HERE... -->
 						<FareZone version="1.0" id="op:FirstPass@South_Yorkshire">
 							<Name>South Yorks</Name>
 							<Description>South Yorskshire FirstPAss  zone.</Description>
@@ -3948,6 +3991,8 @@
 						</FareZone>
 					</fareZones>
 				</FareFrame>
+				<!-- ...TO HERE? -->
+
 				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_PRODUCT:FirstPass@pass:op" responsibilitySetRef="op:tariffs">
 					<Name>First Pass  fare products and  </Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" />
@@ -5277,6 +5322,7 @@
 			</frames>
 		</CompositeFrame>
 		<!--   === COMMON UK FARE RESOURCES===  -->
+		<!-- What do we do with the below composite frame? -->
 		<CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
 			<ValidBetween>
 				<FromDate>2019-05-01T00:00:00</FromDate>
@@ -5867,7 +5913,7 @@
 									<Name>Period return fare</Name>
 								</TypeOfFareProduct>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:era:special_produc@trip@day_return">
-									<Name>Day retirn fare</Name>
+									<Name>Day return fare</Name>
 								</TypeOfFareProduct>
 							</values>
 						</ValueSet>

@@ -9,37 +9,34 @@ import {
     getDistanceMatrixElementsPriceRefs,
     getFareTables,
     getFareTableElements,
-} from '../netexHelpers';
-
-interface NetexObject {
-    [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-}
+    NetexObject,
+} from './singleTicketNetexHelpers';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
         const fileData = await fs.promises.readFile(`${__dirname}/singleNetexTemplate.xml`, { encoding: 'utf8' });
-        const json = JSON.parse(parser.toJson(fileData, { reversible: true }));
+        const json = JSON.parse(parser.toJson(fileData, { reversible: true, trim: true }));
 
         return json;
     } catch (error) {
-        throw new Error(`Error converting NeTEx template to JSON: ${error.message}`);
+        throw new Error(`Error converting NeTEx template to JSON: ${error.stack}`);
     }
 };
 
-const convertJsonToXml = (netexFileAsJsObject: NetexObject): string => {
-    const netexFileAsJsonString = JSON.stringify(netexFileAsJsObject);
+const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => {
+    const netexFileAsJsonString = JSON.stringify(netexFileAsJsonObject);
     const netexFileAsXmlString = parser.toXml(netexFileAsJsonString, { sanitize: true });
 
     return netexFileAsXmlString;
 };
 
-const singleNetexGenerator = (
+const singleTicketNetexGenerator = (
     matchingData: MatchingData,
     operatorData: OperatorData,
     serviceData: ServiceData,
 ): { generate: Function } => {
     const opIdNocFormat = `noc:${operatorData.opId}`;
-    const nocCodeNocFormat = `noc:${matchingData.nocCode}`
+    const nocCodeNocFormat = `noc:${matchingData.nocCode}`;
     const opIdBrandFormat = `${operatorData.opId}@brand`;
     const operatorPublicNameLineNameFormat = `${operatorData.publicName} ${matchingData.lineName}`;
     const noccodeLineNameFormat = `${matchingData.nocCode}_${matchingData.lineName}`;
@@ -59,7 +56,8 @@ const singleNetexGenerator = (
         publicationRequestToUpdate.Description.$t = `Request for ${matchingData.nocCode} ${lineIdName}.`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref = matchingData.lineName;
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref =
+            matchingData.lineName;
 
         return publicationRequestToUpdate;
     };
@@ -160,14 +158,20 @@ const singleNetexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].distanceMatrixElements.DistanceMatrixElement = getDistanceMatrixElements(
             matchingData.fareZones,
         );
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref = matchingData.lineName;
-        const arrayofUserProfiles = priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.limitations.UserProfile;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref =
+            matchingData.lineName;
+        const arrayofUserProfiles =
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
+                .GenericParameterAssignment.limitations.UserProfile;
         let userProfile;
         // eslint-disable-next-line no-plusplus
-        for (userProfile=1; userProfile<4; userProfile++) {
+        for (userProfile = 1; userProfile < 4; userProfile++) {
             arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
-        };
-        console.log(priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.limitations.UserProfile);
+        }
+        console.log(
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
+                .GenericParameterAssignment.limitations.UserProfile,
+        );
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
         return priceFareFrameToUpdate;
     };
@@ -213,10 +217,13 @@ const singleNetexGenerator = (
         const netexPublicationDelivery = netexJson.PublicationDelivery;
 
         netexPublicationDelivery.PublicationTimestamp = updatePublicationTimeStamp(netexPublicationDelivery);
-        netexPublicationDelivery.PublicationRequest = updatePublicationRequest(netexPublicationDelivery.PublicationRequest);
-        
-        netexPublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(netexPublicationDelivery.dataObjects.CompositeFrame[0]);
+        netexPublicationDelivery.PublicationRequest = updatePublicationRequest(
+            netexPublicationDelivery.PublicationRequest,
+        );
 
+        netexPublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(
+            netexPublicationDelivery.dataObjects.CompositeFrame[0],
+        );
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
         netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
@@ -232,4 +239,4 @@ const singleNetexGenerator = (
     return { generate };
 };
 
-export default singleNetexGenerator;
+export default singleTicketNetexGenerator;

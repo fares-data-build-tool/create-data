@@ -39,3 +39,15 @@ export interface MatchingData {
     operatorShortName: string;
     fareZones: FareZone[];
 }
+
+export interface GeoZonePeriodData {
+    operatorName: string;
+    nocCode: string;
+    type: string;
+    productName: string;
+    productPrice: string;
+    fareZoneName: string;
+    stops: Stop[];
+    daysValid: string;
+    expiryRules: string;
+}
