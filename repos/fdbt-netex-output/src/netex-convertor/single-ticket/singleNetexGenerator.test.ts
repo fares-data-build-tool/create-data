@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import parser from 'xml2json';
-import { OperatorData, ServiceData } from './types';
-import matchingdata from './testdata/matchingdata';
+import { OperatorData, ServiceData } from '../types';
+import matchingdata from '../testdata/matchingdata';
 import singleNetexGenerator from './singleNetexGenerator';
-import expectedNetex from './testdata/expectedNetex';
+import expectedNetex from '../testdata/expectedNetex';
 
 const website = 'www.iwbus.co.uk';
 const ttrteEnq = 'email@iwbus.co.uk';

@@ -2,7 +2,7 @@ import fs from 'fs';
 import format from 'xml-formatter';
 import matchingdata from './testdata/matchingdata';
 import { OperatorData, ServiceData } from './types';
-import singleNetexGenerator from './singleNetexGenerator';
+import singleNetexGenerator from './single-ticket/singleNetexGenerator';
 
 const website = 'www.iwbus.co.uk';
 const ttrteEnq = 'email@iwbus.co.uk';

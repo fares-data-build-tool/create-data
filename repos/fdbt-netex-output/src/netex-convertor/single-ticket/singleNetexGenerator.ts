@@ -1,6 +1,6 @@
 import parser from 'xml2json';
 import fs from 'fs';
-import { MatchingData, OperatorData, ServiceData } from './types';
+import { MatchingData, OperatorData, ServiceData } from '../types';
 import {
     getScheduledStopPointsList,
     getFareZoneList,
@@ -9,7 +9,7 @@ import {
     getDistanceMatrixElementsPriceRefs,
     getFareTables,
     getFareTableElements,
-} from './netexHelpers';
+} from '../netexHelpers';
 
 interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any

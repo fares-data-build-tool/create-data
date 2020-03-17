@@ -1,5 +1,5 @@
 import { S3Event } from 'aws-lambda';
-import singleNetexGenerator from './singleNetexGenerator';
+import singleNetexGenerator from './single-ticket/singleNetexGenerator';
 import * as dynamodb from './data/dynamodb';
 import * as s3 from './data/s3';
 import { OperatorData, ServiceData, MatchingData } from './types';
