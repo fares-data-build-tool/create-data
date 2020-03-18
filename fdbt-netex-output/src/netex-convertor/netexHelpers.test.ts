@@ -84,7 +84,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA03623',
                     version: 'any',
@@ -94,7 +94,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA00077',
                     version: 'any',
@@ -104,7 +104,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA00359',
                     version: 'any',
@@ -114,7 +114,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA00357',
                     version: 'any',
@@ -280,21 +280,6 @@ describe('Netex Helpers', () => {
                     priceGroups: { PriceGroupRef: { ref: 'price_band_1.10', version: '1.0' } },
                     version: '1.0',
                 },
-            ]);
-        });
-    });
-
-    describe('getDistanceMatrixElementsPriceRefs', () => {
-        it('creates a list of NeTEx distance matrix element price refs for fares table', () => {
-            const priceRefs = netexHelpers.getDistanceMatrixElementsPriceRefs(fareZones, lineIdName);
-
-            expect(priceRefs).toEqual([
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Mattison_Way', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Nursery_Drive', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Holl_Bank/Beech_Ave', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way+Nursery_Drive', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way+Holl_Bank/Beech_Ave', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Nursery_Drive+Holl_Bank/Beech_Ave', version: '1.0' },
             ]);
         });
     });

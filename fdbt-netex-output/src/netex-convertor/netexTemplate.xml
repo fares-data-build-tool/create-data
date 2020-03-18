@@ -131,7 +131,6 @@
 					</organisations>
 				</ResourceFrame>
 				<SiteFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_NETWORK:Line_16:op" responsibilitySetRef="nptg:data" dataSourceRef="nptg:dft">
-					<Name>NPTG localities used by Route</Name>
 					<Description>This frame contains the NPTG locality definitions used by the stops  the service. It Could also be exchanged separately.</Description>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP" />
 					<prerequisites>
@@ -182,7 +181,6 @@
 				</SiteFrame>
 				<!--==== STEP 3:: Define EACH BUS STOP IN THE ENTIRE SERVICE, IN ALL ZONES ====-->
 				<ServiceFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
-					<Name />
 					<Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== LINEs ==== -->
@@ -201,7 +199,6 @@
 				</ServiceFrame>
 				<!--==== STEP 4:: THIS IS OUR FARE STAGES DEFINED IN HERE AND LINKED TO THE SERVICE FRAME ====-->
 				<FareFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="network_data">
-					<Name></Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== Fare zones ===     NB These are just a guess from the map  and may be bogus.in places -->
 					<fareZones>
@@ -327,8 +324,7 @@
 				</FareFrame>
 				<!--==== STEP 5:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
 				<FareFrame version="1.0" id="operator@Products@Trip@Line_1" dataSourceRef="operator" responsibilitySetRef="tariffs">
-					<Name></Name>
-					<TypeOfFrameRef ref="fxc:uk:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP" versionRef="fxc:v1.0" />
+					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" versionRef="fxc:v1.0" />
 					<!--==== Fare Structure ==== -->
 					<tariffs>
 						<Tariff version="1.0" id="Tariff@single@Line_1">
@@ -492,7 +488,7 @@
 					</salesOfferPackages>
 				</FareFrame>
 				<FareFrame version="1.0" id="operator@Products@Trip@prices@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
-					<TypeOfFrameRef ref="fxc:UK_Bus_tariff_profile@prices" version="fxc:v1.0" />
+					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0" />
 					<FrameDefaults>
 						<!-- Fares are shown in pence. -->
 						<DefaultCurrency>GBP</DefaultCurrency>
@@ -500,7 +496,7 @@
 					<!--==== Fare Prices ==== -->
 					<priceGroups>
 						<!--  === PRICE BANDS  === -->
-						<!-- <PriceGroup version="1.0" id="price_band_A">
+						<PriceGroup version="1.0" id="price_band_A">
 							<members>
 								<GeographicalIntervalPrice version="1.0" id="price_band_A@adult">
 									<Amount>1.60</Amount>
@@ -508,8 +504,8 @@
 								<GeographicalIntervalPrice version="1.0" id="price_band_A@child">
 									<Name>Child price -  derived from the adult</Name>
 									<Amount>0.80</Amount>
-									<GeographicalIntervalPriceRef version="1.0" ref="price_band_A@adult"/>
-									<DiscountingRuleRef version="1.0" ref="half_price"/>
+									<GeographicalIntervalPriceRef version="1.0" ref="price_band_A@adult" />
+									<DiscountingRuleRef version="1.0" ref="half_price" />
 								</GeographicalIntervalPrice>
 							</members>
 						</PriceGroup>
@@ -521,52 +517,11 @@
 								<GeographicalIntervalPrice version="1.0" id="price_band_B@child">
 									<Name>Child price -  derived from the adult</Name>
 									<Amount>1.60</Amount>
-									<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-									<DiscountingRuleRef version="1.0" ref="half_price"/>
+									<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult" />
+									<DiscountingRuleRef version="1.0" ref="half_price" />
 								</GeographicalIntervalPrice>
 							</members>
-						</PriceGroup> -->
-						<!-- <PriceGroup version="1.0" id="operator@Products@Trip@Line_1@adults">
-							<Name>A list of all the prices</Name>
-							<members>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Bewbush"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Gossops_Green"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+West_Green"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Crawley"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Southgate_Avenue"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Southgate"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Broadfield"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Pease_Pottage"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush+Gossops_Green"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush+West_Green"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush+Crawley"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush+Southgate_Avenue"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush+Southgate"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush+Broadfield"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush+Pease_Pottage"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Gossops_Green+West_Green"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Gossops_Green+Crawley"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Gossops_Green+Southgate_Avenue"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Gossops_Green+Southgate"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Gossops_Green+Broadfield"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Gossops_Green+Pease_Pottage"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@West_Green+Crawley"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@West_Green+Southgate_Avenue"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@West_Green+Southgate"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@West_Green+Broadfield"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@West_Green+Pease_Pottage"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Crawley+Southgate_Avenue"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Crawley+Southgate"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Crawley+Broadfield"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Crawley+Pease_Pottage"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Southgate_Avenue+Southgate"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Southgate_Avenue+Broadfield"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Southgate_Avenue+Pease_Pottage"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Southgate+Broadfield"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Southgate+Pease_Pottage"/>
-								<DistanceMatrixElementPriceRef version="1.0" ref="Trip@single-SOP@p-ticket@Line_1@adult@Broadfield+Pease_Pottage"/>
-							</members>
-						</PriceGroup> -->
+						</PriceGroup>
 					</priceGroups>
 					<fareTables>
 						<FareTable version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult">
@@ -704,19 +659,19 @@
 				<ToDate>2020-12-31T12:00:00</ToDate>
 			</ValidBetween>
 			<Name>UK FXCP Passenger Information Profile common resources</Name>
-			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc"/>
+			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" />
 			<FrameDefaults>
-				<DefaultCodespaceRef ref="fxc"/>
-				<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0"/>
-				<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0"/>
+				<DefaultCodespaceRef ref="fxc" />
+				<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
+				<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
 			</FrameDefaults>
 			<frames>
 				<FareFrame id="fxc:Common_UK_Fare_Components" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata">
 					<Name>Common Country independent fare component</Name>
 					<FrameDefaults>
-						<DefaultCodespaceRef ref="fxc"/>
-						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0"/>
-						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0"/>
+						<DefaultCodespaceRef ref="fxc" />
+						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
+						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
 					</FrameDefaults>
 					<PricingParameterSet id="fxc:Common_Resources" version="fxc:v1.0">
 						<priceUnits>
@@ -746,10 +701,10 @@
 					<usageParameters>
 						<UserProfile version="fxc:v1.0" id="fxc:adult">
 							<Name>Adult</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none" />
 							<companionProfiles>
 								<CompanionProfile version="fxc:v1.0" id="fxc:adult@infant">
-									<UserProfileRef ref="fxc:infant" version="fxc:v1.0"/>
+									<UserProfileRef ref="fxc:infant" version="fxc:v1.0" />
 									<MinimumNumberOfPersons>0</MinimumNumberOfPersons>
 									<MaximumNumberOfPersons>3</MaximumNumberOfPersons>
 								</CompanionProfile>
@@ -757,20 +712,20 @@
 						</UserProfile>
 						<UserProfile version="fxc:v1.0" id="fxc:child">
 							<Name>Child</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child" />
 							<MinimumAge>5</MinimumAge>
 							<MaximumAge>15</MaximumAge>
 						</UserProfile>
 						<UserProfile version="fxc:v1.0" id="fxc:infant">
 							<Name>Infant</Name>
 							<Description>Up to three children under 5 years of age, accompanied by a fare paying adult or child passenger, and not occupying a seat, may travel free of charge on the Company's services.</Description>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:infant"/>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:infant" />
 							<MinimumAge>0</MinimumAge>
 							<MaximumAge>4</MaximumAge>
 							<DiscountBasis>free</DiscountBasis>
 							<companionProfiles>
 								<CompanionProfile id="fxc:infant@adult" version="fxc:v1.0">
-									<UserProfileRef ref="fxc:adult" version="fxc:v1.0"/>
+									<UserProfileRef ref="fxc:adult" version="fxc:v1.0" />
 									<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
 									<MaximumNumberOfPersons>1</MaximumNumberOfPersons>
 									<DiscountBasis>none</DiscountBasis>
@@ -779,7 +734,7 @@
 						</UserProfile>
 						<UserProfile version="fxc:v1.0" id="fxc:senior">
 							<Name>Senior</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior" />
 							<ProofRequired>membershipCard</ProofRequired>
 							<DiscountBasis>discount</DiscountBasis>
 						</UserProfile>
@@ -860,8 +815,8 @@
 							<Name>Collect on board</Name>
 							<FulfilmentMethodType>conductor</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_from_machine" version="fxc:v1.0">
@@ -869,78 +824,78 @@
 							<FulfilmentMethodType>ticketMachine</FulfilmentMethodType>
 							<RequiresBookingReference>true</RequiresBookingReference>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_at_counter" version="fxc:v1.0">
 							<Name>Collect at counter</Name>
 							<FulfilmentMethodType>ticketOffice</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_from_agent" version="fxc:v1.0">
 							<Name>Travel agent issues ticket directly</Name>
 							<FulfilmentMethodType>agent</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:mobile_app" version="fxc:v1.0">
 							<Name>Mobile App</Name>
 							<FulfilmentMethodType>mobileApp</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:self_print" version="fxc:v1.0">
 							<Name>Self Print</Name>
 							<FulfilmentMethodType>selfprint</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:online_propagation" version="fxc:v1.0">
 							<Name>Online propagation</Name>
 							<FulfilmentMethodType>validator</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:email" version="fxc:v1.0">
 							<Name>EMAIL</Name>
 							<FulfilmentMethodType>email</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:post" version="fxc:v1.0">
 							<Name>Send ticket by post</Name>
 							<FulfilmentMethodType>post</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:courier" version="fxc:v1.0">
 							<Name>Send ticket by courier</Name>
 							<FulfilmentMethodType>other</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0"/>
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0"/>
+								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 					</fulfilmentMethods>
@@ -1034,9 +989,9 @@
 						</Codespace>
 					</codespaces>
 					<FrameDefaults>
-						<DefaultCodespaceRef ref="fxc"/>
-						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0"/>
-						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0"/>
+						<DefaultCodespaceRef ref="fxc" />
+						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
+						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
 						<DefaultLocale>
 							<TimeZoneOffset>0</TimeZoneOffset>
 							<TimeZone>GMT</TimeZone>
@@ -1067,7 +1022,7 @@
 								<ResponsibilityRoleAssignment version="fxc:v1.0" id="fxc:FXC_metadata:DfT">
 									<DataRoleType>creates distributes</DataRoleType>
 									<StakeholderRoleType>DataRegistrar</StakeholderRoleType>
-									<ResponsibleOrganisationRef ref="fxc:DfT" version="fxc:v1.0"/>
+									<ResponsibleOrganisationRef ref="fxc:DfT" version="fxc:v1.0" />
 									<ResponsibleAreaRef ref="fxc:UK">TODO</ResponsibleAreaRef>
 								</ResponsibilityRoleAssignment>
 							</roles>
@@ -1081,29 +1036,29 @@
 								<!-- === ANCILLARY  ==== -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP">
 									<Name>UK FXCP  common Local resources</Name>
-									<FrameClassRef nameOfClass="ResourceFrame"/>
+									<FrameClassRef nameOfClass="ResourceFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_CALENDAR:FXCP">
 									<Name>UK FXCP  Service calendar</Name>
-									<FrameClassRef nameOfClass="ServiceCalendarFrame"/>
+									<FrameClassRef nameOfClass="ServiceCalendarFrame" />
 								</TypeOfFrame>
 								<!-- === PAYLOAD  ==== -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP">
 									<Name>UK FXCP Stops: NapTAN Stop Place  and NPTG Locations Frame</Name>
-									<FrameClassRef nameOfClass="SiteFrame"/>
+									<FrameClassRef nameOfClass="SiteFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP">
 									<Name>UK FXCP Network</Name>
-									<FrameClassRef nameOfClass="ServiceFrame"/>
+									<FrameClassRef nameOfClass="ServiceFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_TIMETABLE:FXCP">
 									<Name>UK FXCP Tietable: N</Name>
-									<FrameClassRef nameOfClass="TimetableFrame"/>
+									<FrameClassRef nameOfClass="TimetableFrame" />
 								</TypeOfFrame>
 								<!-- === METADATA   ==== -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA:FXCP">
 									<Name>UK Bus Profile common resources</Name>
-									<FrameClassRef nameOfClass="ResourceFrame"/>
+									<FrameClassRef nameOfClass="ResourceFrame" />
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
@@ -1113,19 +1068,19 @@
 								<!-- === COMPOSITE ====  -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP_OFFER:FXCP">
 									<Name>UK FXCP   composite container STOP OFFER</Name>
-									<FrameClassRef nameOfClass="CompositeFrame"/>
+									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_OFFER:FXCP">
 									<Name>UK FXCP   composite container LINE OFFER</Name>
-									<FrameClassRef nameOfClass="CompositeFrame"/>
+									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_OFFER:FXCP">
 									<Name>UK FXCP   composite container LINE OFFER</Name>
-									<FrameClassRef nameOfClass="CompositeFrame"/>
+									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc">
 									<Name>UK FXCP composite used to group other UKmetadta</Name>
-									<FrameClassRef nameOfClass="CompositeFrame"/>
+									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
@@ -1136,19 +1091,19 @@
 								<!-- === PAYLOAD  ==== -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
 									<Name>UK Bus Profile fare common paramaters</Name>
-									<FrameClassRef nameOfClass="FareFrame"/>
+									<FrameClassRef nameOfClass="FareFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
 									<Name>UK Bus Profile fare network</Name>
-									<FrameClassRef nameOfClass="ServiceFrame"/>
+									<FrameClassRef nameOfClass="ServiceFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
 									<Name>UK FXCP Fare Porducts Frame</Name>
-									<FrameClassRef nameOfClass="FareFrame"/>
+									<FrameClassRef nameOfClass="FareFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">
 									<Name>UK FXCP Fare Prices Frame</Name>
-									<FrameClassRef nameOfClass="FareFrame"/>
+									<FrameClassRef nameOfClass="FareFrame" />
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
@@ -1158,15 +1113,15 @@
 								<!-- === COMPOSITE ====  -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP_FARE_OFFER:FXCP">
 									<Name>UK FXCP   composite container STOP OFFER</Name>
-									<FrameClassRef nameOfClass="CompositeFrame"/>
+									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP">
 									<Name>UK FXCP   composite container LINE OFFER</Name>
-									<FrameClassRef nameOfClass="CompositeFrame"/>
+									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP">
 									<Name>UK FXCP   composite container NETWORK OFFER</Name>
-									<FrameClassRef nameOfClass="CompositeFrame"/>
+									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
@@ -1510,7 +1465,7 @@
 								<FromDate>2001-01-01T00:00:00Z</FromDate>
 								<ToDate>2020-01-01T00:00:00Z</ToDate>
 							</ValidityPeriod>
-							<CountryRef ref="uk" refPrincipality="GB-UKM"/>
+							<CountryRef ref="uk" refPrincipality="GB-UKM" />
 						</Operator>
 						<Operator version="fxc:v1.0" id="uic:Station_Management:0070">
 							<PublicCode>NR</PublicCode>
@@ -1520,10 +1475,11 @@
 								<FromDate>2003-09-22T00:00:00Z</FromDate>
 								<ToDate>2020-01-01T00:00:00Z</ToDate>
 							</ValidityPeriod>
-							<CountryRef ref="uk" refPrincipality="GB-UKM"/>
+							<CountryRef ref="uk" refPrincipality="GB-UKM" />
 						</Operator>
 					</organisations>
 				</ResourceFrame>
 			</frames>
 		</CompositeFrame>
 	</dataObjects>
+</PublicationDelivery>
