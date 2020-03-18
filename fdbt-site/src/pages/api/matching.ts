@@ -7,6 +7,7 @@ import { isCookiesUUIDMatch } from './service/validator';
 import { MATCHING_DATA_BUCKET_NAME } from '../../constants';
 
 interface MatchingData {
+    type: string;
     lineName: string;
     nocCode: string;
     operatorShortName: string;
@@ -68,6 +69,7 @@ const getMatchingJson = (
     matchingFareZones: MatchingFareZones,
 ): MatchingData => ({
     ...service,
+    type: 'pointToPoint',
     fareZones: userFareStages.fareStages
         .filter(userStage => matchingFareZones[userStage.stageName])
         .map(userStage => {
