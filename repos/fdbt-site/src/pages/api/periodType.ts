@@ -16,30 +16,30 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        const { periodGeoZone } = req.body;
+        const { periodType } = req.body;
 
-        if (!periodGeoZone) {
+        if (!periodType) {
             const error: PeriodTypeInterface = { error: true };
             setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(error), req, res);
             redirectTo(res, '/periodType');
             return;
         }
 
-        const periodType: PeriodTypeInterface = { error: false, periodType: periodGeoZone };
+        const periodTypeCookie: PeriodTypeInterface = { error: false, periodType };
 
-        setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(periodType), req, res);
+        setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(periodTypeCookie), req, res);
 
-        if (!periodGeoZone) {
+        if (!periodType) {
             redirectTo(res, '/csvZoneUpload');
             return;
         }
 
-        if (periodGeoZone === 'geozone') {
+        if (periodType === 'geozone') {
             redirectTo(res, '/geoZone');
             return;
         }
 
-        if (periodGeoZone === 'singleset') {
+        if (periodType === 'singleset') {
             redirectTo(res, '/singleSet');
             return;
         }
