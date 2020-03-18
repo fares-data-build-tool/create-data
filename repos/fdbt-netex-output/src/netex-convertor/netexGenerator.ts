@@ -6,7 +6,6 @@ import {
     getFareZoneList,
     getPriceGroups,
     getDistanceMatrixElements,
-    getDistanceMatrixElementsPriceRefs,
     getFareTables,
     getFareTableElements,
 } from './netexHelpers';
@@ -58,7 +57,8 @@ const netexGenerator = (
         publicationRequestToUpdate.Description.$t = `Request for ${matchingData.nocCode} ${lineIdName}.`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = opIdNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref = matchingData.lineName;
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref =
+            matchingData.lineName;
 
         return publicationRequestToUpdate;
     };
@@ -66,7 +66,6 @@ const netexGenerator = (
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
         compositeFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@${lineIdName}:op`;
-        compositeFrameToUpdate.Name.$t = `Fares for ${lineIdName}`;
         compositeFrameToUpdate.Description.$t = `${matchingData.nocCode} ${lineIdName} is a accessible as a single trip fare.  Prices are given zone to zone, where each zone is a linear group of stops, i.e. fare stage.`;
 
         return compositeFrameToUpdate;
@@ -125,7 +124,6 @@ const netexGenerator = (
     const updateZoneFareFrame = (zoneFareFrame: NetexObject): NetexObject => {
         const zoneFareFrameToUpdate = { ...zoneFareFrame };
         zoneFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${lineIdName}:op`;
-        zoneFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
         zoneFareFrameToUpdate.fareZones.FareZone = getFareZoneList(matchingData.fareZones);
 
         return zoneFareFrameToUpdate;
@@ -134,7 +132,6 @@ const netexGenerator = (
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
         priceFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${lineIdName}:op`;
-        priceFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
         priceFareFrameToUpdate.tariffs.Tariff.id = `Tariff@single@${lineIdName}`;
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
@@ -152,13 +149,16 @@ const netexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].distanceMatrixElements.DistanceMatrixElement = getDistanceMatrixElements(
             matchingData.fareZones,
         );
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref = matchingData.lineName;
-        const arrayofUserProfiles = priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.limitations.UserProfile;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref =
+            matchingData.lineName;
+        const arrayofUserProfiles =
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
+                .GenericParameterAssignment.limitations.UserProfile;
         let userProfile;
         // eslint-disable-next-line no-plusplus
-        for (userProfile=1; userProfile<4; userProfile++) {
+        for (userProfile = 1; userProfile < 4; userProfile++) {
             arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
-        };
+        }
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
 
         return priceFareFrameToUpdate;
@@ -168,11 +168,6 @@ const netexGenerator = (
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
         fareTableFareFrameToUpdate.id = `operator@Products@Trip@prices@${lineIdName}`;
         fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
-        fareTableFareFrameToUpdate.priceGroups.PriceGroup.push({
-            id: `operator@Products@Trip@${lineIdName}@adults`,
-            Name: { $t: 'A list of all the prices' },
-            DistanceMatrixElementPriceRef: getDistanceMatrixElementsPriceRefs(matchingData.fareZones, lineIdName),
-        });
         fareTableFareFrameToUpdate.fareTables.FareTable.id = `Trip@single-SOP@p-ticket@${lineIdName}@adult`;
         fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = serviceData.serviceDescription;
         fareTableFareFrameToUpdate.fareTables.FareTable.usedIn.TariffRef.ref = `Tariff@single@${lineIdName}`;
@@ -199,8 +194,12 @@ const netexGenerator = (
         const netexJson = await getNetexTemplateAsJson();
 
         netexJson.PublicationDelivery = updatePublicationTimeStamp(netexJson.PublicationDelivery);
-        netexJson.PublicationDelivery.PublicationRequest = updatePublicationRequest(netexJson.PublicationDelivery.PublicationRequest);
-        netexJson.PublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(netexJson.PublicationDelivery.dataObjects.CompositeFrame[0]);
+        netexJson.PublicationDelivery.PublicationRequest = updatePublicationRequest(
+            netexJson.PublicationDelivery.PublicationRequest,
+        );
+        netexJson.PublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(
+            netexJson.PublicationDelivery.dataObjects.CompositeFrame[0],
+        );
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
         netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
@@ -209,6 +208,8 @@ const netexGenerator = (
         netexFrames.FareFrame[0] = updateZoneFareFrame(netexFrames.FareFrame[0]);
         netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
         netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
+
+        console.log(netexJson);
 
         return convertJsonToXml(netexJson);
     };
