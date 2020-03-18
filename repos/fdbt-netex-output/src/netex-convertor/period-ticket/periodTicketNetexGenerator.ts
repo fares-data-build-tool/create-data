@@ -5,7 +5,7 @@ import { NetexObject } from './periodTicketNetexHelpers';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
-        const fileData = await fs.promises.readFile(`${__dirname}/periodNetexTemplate.xml`, { encoding: 'utf8' });
+        const fileData = await fs.promises.readFile(`${__dirname}/periodTicketNetexTemplate.xml`, { encoding: 'utf8' });
         const json = JSON.parse(parser.toJson(fileData, { reversible: true, trim: true }));
 
         return json;
@@ -29,6 +29,7 @@ const periodTicketNetexGenerator = (
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${geoZonePeriodData.nocCode}`;
     const periodProductNameOpFormat = `op:Pass@${geoZonePeriodData.productName}`
+    // Should the below contain operatorData.publicName OR operatorData.opId?
     const opIdBrandFormat = `${operatorData.opId}@brand`;
     const currentDate = new Date(Date.now());
 
@@ -45,45 +46,47 @@ const periodTicketNetexGenerator = (
         publicationRequestToUpdate.Description.$t = `Request for ${geoZonePeriodData.nocCode} bus pass fares`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef.ref = `op:Pass@${periodProductName}`;
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef.ref = periodProductNameOpFormat;
 
         return publicationRequestToUpdate;
     };
 
-    // const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
-    //     const compositeFrameToUpdate = { ...compositeFrame };
-    //     compositeFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@${lineIdName}:op`;
-    //     compositeFrameToUpdate.Name.$t = `Fares for ${lineIdName}`;
-    //     compositeFrameToUpdate.Description.$t = `${matchingData.nocCode} ${lineIdName} is a accessible as a single trip fare.  Prices are given zone to zone, where each zone is a linear group of stops, i.e. fare stage.`;
+    const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
+        const compositeFrameToUpdate = { ...compositeFrame };
+        compositeFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@${geoZonePeriodData.productName}:op`;
+        compositeFrameToUpdate.Name.$t = `Fares for ${geoZonePeriodData.operatorName} - ${geoZonePeriodData.fareZoneName}`;
+        compositeFrameToUpdate.Description.$t = `${geoZonePeriodData.operatorName} - ${geoZonePeriodData.fareZoneName} is accessible under a period pass. A price is given for a geographical zone, which contains a selection of stops as a fare zone.`;
 
-    //     return compositeFrameToUpdate;
-    // };
+        return compositeFrameToUpdate;
+    };
 
-    // const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
-    //     const resourceFrameToUpdate = { ...resourceFrame };
+    const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
+        const resourceFrameToUpdate = { ...resourceFrame };
 
-    //     resourceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ResourceFrame_UK_PI_COMMON:op`;
-    //     resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = operatorData.website;
-    //     resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
-    //     resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = opIdNocFormat;
-    //     resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-    //         operatorData.publicName;
-    //     resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = opIdNocFormat;
-    //     resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-    //         operatorData.publicName;
-    //     resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.id = opIdBrandFormat;
-    //     resourceFrameToUpdate.organisations.Operator.id = opIdNocFormat;
-    //     resourceFrameToUpdate.organisations.Operator.PublicCode.$t = matchingData.nocCode;
-    //     resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.publicName;
-    //     resourceFrameToUpdate.organisations.Operator.ShortName.$t = matchingData.operatorShortName;
-    //     resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.vosaPSVLicenseName; // eslint-disable-line @typescript-eslint/camelcase
-    //     resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
-    //     resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
-    //     resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = operatorData.mode;
-    //     resourceFrameToUpdate.organisations.Operator.CustomerServiceContactDetails.Email.$t = operatorData.ttrteEnq;
+        resourceFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:ResourceFrame_UK_PI_COMMON:${geoZonePeriodData.nocCode}:op`;
+        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = operatorData.website;
+        resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
+            operatorData.publicName;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
+            operatorData.publicName;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.id = opIdBrandFormat;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = operatorData.publicName;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = operatorData.website;
+        resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
+        resourceFrameToUpdate.organisations.Operator.PublicCode.$t = geoZonePeriodData.nocCode;
+        resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.publicName;
+        resourceFrameToUpdate.organisations.Operator.ShortName.$t = geoZonePeriodData.operatorName;
+        resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.vosaPSVLicenseName; // eslint-disable-line @typescript-eslint/camelcase
+        resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
+        resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = operatorData.website;
+        resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
+        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = operatorData.mode;
 
-    //     return resourceFrameToUpdate;
-    // };
+        return resourceFrameToUpdate;
+    };
 
     // const updateSiteFrame = (siteFrame: NetexObject): NetexObject => {
     //     const siteFrameToUpdate = { ...siteFrame };
@@ -93,22 +96,22 @@ const periodTicketNetexGenerator = (
     //     return siteFrameToUpdate;
     // };
 
-    // const updateServiceFrame = (serviceFrame: NetexObject): NetexObject => {
-    //     const serviceFrameToUpdate = { ...serviceFrame };
+    // const updateServiceCalendarFrame = (serviceCalendarFrame: NetexObject): NetexObject => {
+    //     const serviceCalendarFrameToUpdate = { ...serviceCalendarFrame };
 
-    //     serviceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ServiceFrame_UK_PI_NETWORK:${lineIdName}:op`;
-    //     serviceFrameToUpdate.lines.Line.id = matchingData.lineName;
-    //     serviceFrameToUpdate.lines.Line.Name.$t = operatorPublicNameLineNameFormat;
-    //     serviceFrameToUpdate.lines.Line.Description.$t = serviceData.serviceDescription;
-    //     serviceFrameToUpdate.lines.Line.PublicCode.$t = matchingData.lineName;
-    //     serviceFrameToUpdate.lines.Line.PrivateCode.$t = noccodeLineNameFormat;
-    //     serviceFrameToUpdate.lines.Line.OperatorRef.ref = opIdNocFormat;
-    //     serviceFrameToUpdate.lines.Line.OperatorRef.$t = matchingData.nocCode;
-    //     serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getScheduledStopPointsList(
+    //     serviceCalendarFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ServiceCalendarFrame_UK_PI_NETWORK:${lineIdName}:op`;
+    //     serviceCalendarFrameToUpdate.lines.Line.id = matchingData.lineName;
+    //     serviceCalendarFrameToUpdate.lines.Line.Name.$t = operatorPublicNameLineNameFormat;
+    //     serviceCalendarFrameToUpdate.lines.Line.Description.$t = serviceData.serviceDescription;
+    //     serviceCalendarFrameToUpdate.lines.Line.PublicCode.$t = matchingData.lineName;
+    //     serviceCalendarFrameToUpdate.lines.Line.PrivateCode.$t = noccodeLineNameFormat;
+    //     serviceCalendarFrameToUpdate.lines.Line.OperatorRef.ref = opIdNocFormat;
+    //     serviceCalendarFrameToUpdate.lines.Line.OperatorRef.$t = matchingData.nocCode;
+    //     serviceCalendarFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getScheduledStopPointsList(
     //         matchingData.fareZones,
     //     );
 
-    //     return serviceFrameToUpdate;
+    //     return serviceCalendarFrameToUpdate;
     // };
 
     // const updateZoneFareFrame = (zoneFareFrame: NetexObject): NetexObject => {
@@ -208,15 +211,18 @@ const periodTicketNetexGenerator = (
         netexPublicationDelivery.PublicationRequest = updatePublicationRequest(
             netexPublicationDelivery.PublicationRequest,
         );
+        // console.log(netexPublicationDelivery.PublicationTimestamp)
+        // console.log(netexPublicationDelivery.PublicationRequest)
 
-        // netexPublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(
-        //     netexPublicationDelivery.dataObjects.CompositeFrame[0],
-        // );
+        netexPublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(
+            netexPublicationDelivery.dataObjects.CompositeFrame[0],
+        );
+        // console.log(netexPublicationDelivery.dataObjects.CompositeFrame[0])
 
-        // const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
+        const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
         // netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
-        // netexFrames.ResourceFrame = updateResourceFrame(netexFrames.ResourceFrame);
-        // netexFrames.ServiceFrame = updateServiceFrame(netexFrames.ServiceFrame);
+        netexFrames.ResourceFrame = updateResourceFrame(netexFrames.ResourceFrame);
+        // netexFrames.ServiceCalendarFrame = updateServiceCalendarFrame(netexFrames.ServiceCalendarFrame);
         // netexFrames.FareFrame[0] = updateZoneFareFrame(netexFrames.FareFrame[0]);
         // netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
         // netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);

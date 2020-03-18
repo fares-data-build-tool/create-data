@@ -1,8 +1,10 @@
 import fs from 'fs';
 import format from 'xml-formatter';
-import matchingdata from './testdata/matchingdata';
-import { OperatorData, ServiceData } from './types';
-import singleNetexGenerator from './single-ticket/singleTicketNetexGenerator';
+// import matchingdata from './testdata/matchingdata';
+import geoZonePeriodData from './testdata/geoZonePeriodData';
+import { OperatorData } from './types';
+// import singleTicketNetexGenerator from './single-ticket/singleTicketNetexGenerator';
+import periodTicketNetexGenerator from './period-ticket/periodTicketNetexGenerator';
 
 const website = 'www.iwbus.co.uk';
 const ttrteEnq = 'email@iwbus.co.uk';
@@ -24,11 +26,12 @@ const operator: OperatorData = {
     mode,
 };
 
-const service: ServiceData = {
-    serviceDescription: 'Test Description',
-};
+// const service: ServiceData = {
+//     serviceDescription: 'Test Description',
+// };
 
-const netexGen = singleNetexGenerator(matchingdata, operator, service);
+// const netexGen = singleTicketNetexGenerator(matchingdata, operator, service);
+const netexGen = periodTicketNetexGenerator(geoZonePeriodData, operator);
 
 netexGen.generate().then((data: string) => {
     fs.writeFile('./output/output.xml', format(data), {}, () => {

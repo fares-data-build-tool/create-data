@@ -31,7 +31,7 @@ const service: ServiceData = {
 
 jest.spyOn(Date, 'now').mockImplementation(() => new Date(Date.UTC(2020, 2, 16, 0, 0, 0, 0)).valueOf());
 
-describe('NeTEx Generator', () => {
+describe('singleTicketNetexGenerator', () => {
     let netexGen: { generate: Function };
     beforeEach(() => {
         netexGen = singleTicketNetexGenerator(matchingdata, operator, service);

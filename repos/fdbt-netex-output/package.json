@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "build": "tsc --noEmit",
-        "test": "jest --testRegex src/**/*.test.ts",
+        "test": "jest --runInBand",
         "test:ci": "CI=true jest --testRegex src/**/*.test.ts -w 1",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts"

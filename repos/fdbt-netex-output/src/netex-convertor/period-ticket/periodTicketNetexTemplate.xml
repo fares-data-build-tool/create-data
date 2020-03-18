@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 <PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<PublicationTimestamp>2017-12-17T09:30:47.0Z</PublicationTimestamp>
+	<PublicationTimestamp></PublicationTimestamp>
 	<ParticipantRef>SYS001</ParticipantRef>
 	<!-- ======WHAT WAS REQUESTED ========== -->
 	<PublicationRequest version="1.0">
-		<RequestTimestamp>2017-12-17T09:30:46.0Z</RequestTimestamp>
+		<RequestTimestamp></RequestTimestamp>
 		<ParticipantRef>SYS002</ParticipantRef>
-		<Description>Request for FSYO bus pass fares</Description>
+		<Description></Description>
 		<topics>
 			<NetworkFrameTopic>
 				<selectionValidityConditions>
@@ -17,13 +17,9 @@
 				<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP" />
 				<NetworkFilterByValue>
 					<objectReferences>
-
-						<!-- DYNAMIC HERE... -->
 						<OperatorRef version="1.0" ref=""></OperatorRef>
 						<TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period" />
-						<PreassignedFareProductRef version="1.0" ref="op:Pass@FirstPass" />
-						<!-- ...TO HERE -->
-
+						<PreassignedFareProductRef version="1.0" ref="" />
 					</objectReferences>
 				</NetworkFilterByValue>
 			</NetworkFrameTopic>
@@ -36,20 +32,13 @@
 	<Description>Example of simple zonal pass fares.</Description>
 	<!-- =============== RESULTS =========== -->
 	<dataObjects>
-
-		<!-- DYNAMIC HERE?-->
-		<CompositeFrame version="1.0" id="epd:UK:FYSO:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@FirstPass:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
-
+		<CompositeFrame version="1.0" id="" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
 			<ValidBetween>
 				<FromDate>2017-01-01T00:00:00</FromDate>
 				<ToDate>2020-12-31T12:00:00</ToDate>
 			</ValidBetween>
-
-			<!-- DYNAMIC HERE... -->
-			<Name>FirstPass - Fares Example</Name>
-			<Description>This is an example showing how one might encode part of the FirstPass fare table for a zonal pass of different durations  in NeTEx.</Description>
-			<!-- ...TO HERE -->
-
+			<Name></Name>
+			<Description></Description>
 			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP" />
 			<!--==== CODESPACEs ==== -->
 			<codespaces>
@@ -72,19 +61,14 @@
 				<CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" />
 			</prerequisites>
 			<frames>
-
-				<!-- DYNAMIC HERE? -->
+				<!-- Should the id for the ResourceFrame be contain the second FYSO? -->
 				<ResourceFrame version="1.0" id="epd:UK:FYSO:ResourceFrame_UK_PI_COMMON:FYSO:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
-
 					<Name>Operator specific common resources</Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0" />
 					<codespaces>
 						<Codespace id="op_data">
 							<Xmlns>op</Xmlns>
-
-							<!-- DYNAMIC HERE -->
-							<XmlnsUrl>https://www.firstgroup.com/</XmlnsUrl>
-
+							<XmlnsUrl></XmlnsUrl>
 							<Description>Operator data</Description>
 						</Codespace>
 					</codespaces>
@@ -96,10 +80,7 @@
 					</FrameDefaults>
 					<dataSources>
 						<DataSource id="op:src" version="1.0">
-
-							<!-- DYNAMIC HERE -->
-							<Email>feedback@firstgroup.co</Email>
-
+							<Email></Email>
 						</DataSource>
 					</dataSources>
 					<!-- ========Responsibility Sets========== -->
@@ -110,10 +91,7 @@
 								<ResponsibilityRoleAssignment version="1.0" id="op:tariff_data@creates">
 									<DataRoleType>creates</DataRoleType>
 									<StakeholderRoleType>FareManagement</StakeholderRoleType>
-
-									<!-- DYNAMIC HERE -->
-									<ResponsibleOrganisationRef ref="noc:FYSO" version="1.0">METR</ResponsibleOrganisationRef>
-
+									<ResponsibleOrganisationRef ref="" version="1.0"></ResponsibleOrganisationRef>
 								</ResponsibilityRoleAssignment>
 							</roles>
 						</ResponsibilitySet>
@@ -125,7 +103,7 @@
 									<StakeholderRoleType>Planning</StakeholderRoleType>
 
 									<!-- DYNAMIC HERE -->
-									<ResponsibleOrganisationRef ref="noc:FYSO" version="1.0">METR</ResponsibleOrganisationRef>
+									<ResponsibleOrganisationRef ref="" version="1.0"></ResponsibleOrganisationRef>
 
 								</ResponsibilityRoleAssignment>
 							</roles>
@@ -136,30 +114,27 @@
 						<ValueSet version="1.0" id="op:Branding" classOfValues="Branding">
 							<Name>Operator Branding</Name>
 							<values>
-
-								<!-- DYNAMIC HERE -->
-								<Branding version="1.0" id="op:FirstGroup@brand">
-									<Name>First South Yorkshire</Name>
-									<Url>https://www.firstgroup.com/sites/all/themes/custom/fg2015/assets/img/branding/first-bus-logo.svg</Url>
+								<Branding version="1.0" id="">
+									<Name></Name>
+									<Url></Url>
 								</Branding>
-
 							</values>
 						</ValueSet>
 						<ValueSet version="1.0" id="op:TypeOfTravelDocument" nameOfClass="TypeOfTravelDocument">
 							<values>
 								<!--- ==== ClassOfUse========= -->
 
-								<!-- DYNAMIC HERE... -->
+								<!-- DYNAMIC HERE IN THE FUTURE -->
 								<TypeOfTravelDocument version="1.0" id="op:p-ticket">
 									<Name>Bought on the bus with Cash</Name>
-									<Description>Paper ticket.</Description>
-									<Url>https://www.firstgroup.com/south-yorkshire/tickets/ticket-prices</Url>
+									<Description>Paper ticket</Description>
+									<Url></Url>
 									<IsSmartCard>false</IsSmartCard>
 									<MediaType>paperTicket</MediaType>
 								</TypeOfTravelDocument>
 								<TypeOfTravelDocument version="1.0" id="op:m-ticket">
 									<Name>Stored on your mobile phone as m-tickets</Name>
-									<Url>https://www.firstgroup.com/south-yorkshire/tickets/ticket-types/mtickets</Url>
+									<Url></Url>
 									<IsSmartCard>false</IsSmartCard>
 									<MediaType>mobileApp</MediaType>
 								</TypeOfTravelDocument>
@@ -170,29 +145,28 @@
 					</typesOfValue>
 					<organisations>
 						<!--==== Operators ==== -->
+						<Operator version="1.0" id="">
+							<PublicCode></PublicCode>
 
-						<!-- DYNAMIC HERE... -->
-						<Operator version="1.0" id="noc:FYSO">
-							<PublicCode>FYSO</PublicCode>
+							<!-- What goes here? -->
 							<PrivateCode type="nocn">nocn:10129</PrivateCode>
-							<Name>First</Name>
-							<ShortName>First South Yorkshire</ShortName>
-							<TradingName>First South Yorkshire Ltd</TradingName>
+							
+							<Name></Name>
+							<ShortName></ShortName>
+							<TradingName></TradingName>
 							<ContactDetails>
-								<Phone>0345 646 0707</Phone>
-								<Url>https://www.firstgroup.com/south-yorkshire</Url>
+								<Phone></Phone>
+								<Url></Url>
 							</ContactDetails>
 							<OrganisationType>operator</OrganisationType>
 							<Address>
-								<Street>395 King Street</Street>
-								<Town>Aberdeen</Town>
-								<PostCode>AB24 5RP</PostCode>
-								<PostalRegion>Aberdeen</PostalRegion>
+								<Street></Street>
+								<Town></Town>
+								<PostCode></PostCode>
+								<PostalRegion></PostalRegion>
 							</Address>
-							<PrimaryMode>bus</PrimaryMode>
+							<PrimaryMode></PrimaryMode>
 						</Operator>
-						<!-- ...TO HERE -->
-
 					</organisations>
 				</ResourceFrame>
 				<!--==== FAREs ==== -->
