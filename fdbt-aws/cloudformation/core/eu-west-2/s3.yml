@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "CloudFormation template for S3 resources"
+
+Parameters:
+  TestAccountId:
+    Type: String
+  PreProdAccountId:
+    Type: String
+
+Resources:
+  SlackAlertsCodeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tfn-slack-alerts-code
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: false
+
+  SlackAlertsCodeBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref SlackAlertsCodeBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - !Ref SlackAlertsCodeBucket
+                  - "/*"
+            Principal:
+              AWS:
+                - !Sub arn:aws:iam::${TestAccountId}:root
+                - !Sub arn:aws:iam::${PreProdAccountId}:root

@@ -12,7 +12,7 @@ Parameters:
 
 Resources:
   AdminRole:
-    Type: "AWS::IAM::Role"
+    Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -31,7 +31,7 @@ Resources:
         - arn:aws:iam::aws:policy/AdministratorAccess
 
   ReadOnlyRole:
-    Type: "AWS::IAM::Role"
+    Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -50,7 +50,7 @@ Resources:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
 
   BillingRole:
-    Type: "AWS::IAM::Role"
+    Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -115,10 +115,59 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 
-  Policy:
-    Type: "AWS::IAM::ManagedPolicy"
+  RdsEnhancedMonitoringRole:
+    Type: AWS::IAM::Role
     Properties:
-      Description: "Policy for cicd accounts"
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [monitoring.rds.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole
+
+  SlackLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [lambda.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                Resource:
+                  - arn:aws:s3:::tfn-slack-alerts-code/*
+          PolicyName: allow-slack-alerts-code-access
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  BastionSsmRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  Policy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Policy for cicd accounts
       Path: /
       PolicyDocument:
         Version: "2012-10-17"
@@ -146,9 +195,9 @@ Resources:
             Resource: "*"
 
   NextJsLambdaPolicy:
-    Type: "AWS::IAM::ManagedPolicy"
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      Description: "Policy for lambda@edge execution role"
+      Description: Policy for lambda@edge execution role
       Path: /
       ManagedPolicyName: fdbt-nextjs-lambda-policy
       PolicyDocument:
@@ -173,16 +222,16 @@ Resources:
             Resource: "*"
 
   Group:
-    Type: "AWS::IAM::Group"
+    Type: AWS::IAM::Group
     Properties:
-      GroupName: "fdbt-cicd-group"
+      GroupName: fdbt-cicd-group
       ManagedPolicyArns:
         - !Ref Policy
 
   User:
-    Type: "AWS::IAM::User"
+    Type: AWS::IAM::User
     Properties:
-      UserName: "fdbt-circleci-user"
+      UserName: fdbt-circleci-user
       Groups:
         - !Ref Group
 
@@ -195,3 +244,15 @@ Outputs:
     Value: !GetAtt EcsTaskExecutionRole.Arn
     Export:
       Name: !Sub ${Stage}:EcsTaskExecutionRoleArn
+  RdsEnhancedMonitoringRoleArn:
+    Value: !GetAtt RdsEnhancedMonitoringRole.Arn
+    Export:
+      Name: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+  SlackLambdaRoleArn:
+    Value: !GetAtt SlackLambdaRole.Arn
+    Export:
+      Name: !Sub ${Stage}:SlackLambdaRoleArn
+  BastionSsmRoleName:
+    Value: !Ref BastionSsmRole
+    Export:
+      Name: !Sub ${Stage}:BastionSsmRoleName

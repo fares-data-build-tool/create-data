@@ -35,7 +35,7 @@ Resources:
   LogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub ${ProductName}-${Stage}-log-group
+      LogGroupName: !Sub ${ProductName}-fargate-loggroup-${Stage}
 
   ContainerSG:
     Type: AWS::EC2::SecurityGroup
@@ -65,12 +65,12 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: !Sub ${ProductName}-${Stage}-cluster
+      ClusterName: !Sub ${ProductName}-fargate-cluster-${Stage}
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Ref ProductName
+      Family: !Sub ${ProductName}-fargate-${Stage}
       Cpu: !Ref ContainerCpu
       Memory: !Ref ContainerMemory
       NetworkMode: awsvpc
@@ -81,7 +81,7 @@ Resources:
       TaskRoleArn:
         Fn::ImportValue: !Sub ${Stage}:EcsTaskRoleArn
       ContainerDefinitions:
-        - Name: !Ref ProductName
+        - Name: !Sub ${ProductName}-fargate-${Stage}
           Cpu: !Ref ContainerCpu
           Memory: !Ref ContainerMemory
           Image: !Ref ImageUrl
@@ -90,7 +90,7 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-group: !Sub ${ProductName}-${Stage}-log-group
+              awslogs-group: !Ref LogGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: !Ref ProductName
           Environment:
@@ -106,7 +106,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerRule
     Properties:
-      ServiceName: !Ref ProductName
+      ServiceName: !Sub ${ProductName}-fargate-${Stage}
       Cluster: !Ref ECSCluster
       LaunchType: FARGATE
       DeploymentConfiguration:
@@ -123,7 +123,7 @@ Resources:
             - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
-        - ContainerName: !Ref ProductName
+        - ContainerName: !Sub ${ProductName}-fargate-${Stage}
           ContainerPort: !Ref ContainerPort
           TargetGroupArn: !Ref TargetGroup
 
@@ -149,7 +149,7 @@ Resources:
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       TargetType: ip
-      Name: !Sub ${ProductName}-${Stage}-target-group
+      Name: !Sub ${ProductName}-target-group-${Stage}
       Port: !Ref ContainerPort
       Protocol: HTTP
       UnhealthyThresholdCount: 2
@@ -181,6 +181,21 @@ Resources:
             - "*"
       ListenerArn: !Ref PublicLoadBalancerListener
       Priority: 1
+
+  ALBRedirectHttpsListener:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      DefaultActions:
+        - RedirectConfig:
+            Host: "#{host}"
+            Path: "/#{path}"
+            Port: "443"
+            Protocol: HTTPS
+            StatusCode: HTTP_302
+          Type: redirect
+      LoadBalancerArn: !Ref PublicLoadBalancer
+      Port: 80
+      Protocol: HTTP
 
 Outputs:
   LoadbalancerArn:

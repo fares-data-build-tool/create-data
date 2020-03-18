@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: "CloudFormation template for alert resources"
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
+  HookUrl:
+    Type: String
+
+Resources:
+  SlackAlertsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Slack Alerts Topic
+
+  SlackAlertsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: tfn-slack-alerts-code
+        S3Key: v2/index.zip
+      Description: Lambda to send CloudWatch alerts to Slack
+      Environment:
+        Variables:
+          HOOK_URL: !Ref HookUrl
+      FunctionName: !Sub slack-alert-${Stage}
+      Handler: slackAlerts.handler
+      Role:
+        Fn::ImportValue: !Sub ${Stage}:SlackLambdaRoleArn
+      Runtime: nodejs12.x
+
+  SnsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt SlackAlertsFunction.Arn
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref SlackAlertsTopic
+
+  SnsLambdaSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt SlackAlertsFunction.Arn
+      Protocol: lambda
+      TopicArn: !Ref SlackAlertsTopic
+
+Outputs:
+  SlackAlertsTopicArn:
+    Value: !Ref SlackAlertsTopic
+    Export:
+      Name: !Sub ${Stage}:SlackAlertsTopicArn

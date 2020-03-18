@@ -1,0 +1,13 @@
+instance=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Bastion,Values=true | jq -r '.Reservations[0].Instances[0]')
+db=$(aws rds describe-db-instances --region eu-west-2 | jq -r '.DBInstances[0].Endpoint.Address')
+
+instanceId=`echo $instance | jq -r '.InstanceId'`
+az=`echo $instance | jq -r '.Placement.AvailabilityZone'`
+
+ssh-keygen -t rsa -f /tmp/bastion-tunnel -N ''
+aws ec2-instance-connect send-ssh-public-key --region eu-west-2 --instance-id $instanceId --availability-zone $az --instance-os-user ssm-user --ssh-public-key file://temp.pub
+ssh -i temp -N -f -M -S temp-ssh.sock -L 13306:$db:3306 ssm-user@$instanceId -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o ProxyCommand="aws ssm start-session --region eu-west-2 --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
+echo "Exposing DB on port 13306..."
+read -rsn1 -p "Press any key to close session."; echo
+ssh -O exit -S temp-ssh.sock *
+rm /tmp/bastion-tunnel*

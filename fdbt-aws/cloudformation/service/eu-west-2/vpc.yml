@@ -38,7 +38,7 @@ Resources:
       CidrBlock: !FindInMap ["SubnetConfig", "VPC", "CIDR"]
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-vpc
+          Value: !Sub ${ProductName}-vpc-${Stage}
 
   PublicSubnetA:
     Type: AWS::EC2::Subnet
@@ -51,7 +51,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-publicSubnetA
+          Value: !Sub ${ProductName}-publicSubnetA-${Stage}
 
   PublicSubnetB:
     Type: AWS::EC2::Subnet
@@ -64,7 +64,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-publicSubnetB
+          Value: !Sub ${ProductName}-publicSubnetB-${Stage}
 
   PrivateSubnetA:
     Type: AWS::EC2::Subnet
@@ -76,7 +76,7 @@ Resources:
       CidrBlock: !FindInMap ["SubnetConfig", "PrivateA", "CIDR"]
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-privateSubnetA
+          Value: !Sub ${ProductName}-privateSubnetA-${Stage}
 
   PrivateSubnetB:
     Type: AWS::EC2::Subnet
@@ -88,7 +88,7 @@ Resources:
       CidrBlock: !FindInMap ["SubnetConfig", "PrivateB", "CIDR"]
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-privateSubnetB
+          Value: !Sub ${ProductName}-privateSubnetB-${Stage}
 
   DataSubnetA:
     Type: AWS::EC2::Subnet
@@ -100,7 +100,7 @@ Resources:
       CidrBlock: !FindInMap ["SubnetConfig", "DataA", "CIDR"]
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-dataSubnetA
+          Value: !Sub ${ProductName}-dataSubnetA-${Stage}
 
   DataSubnetB:
     Type: AWS::EC2::Subnet
@@ -112,7 +112,7 @@ Resources:
       CidrBlock: !FindInMap ["SubnetConfig", "DataB", "CIDR"]
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-dataSubnetB
+          Value: !Sub ${ProductName}-dataSubnetB-${Stage}
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -133,7 +133,7 @@ Resources:
       VpcId: !Ref "VPC"
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-publicRouteTable
+          Value: !Sub ${ProductName}-publicRouteTable-${Stage}
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -168,7 +168,7 @@ Resources:
       SubnetId: !Ref PublicSubnetA
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-natGateway
+          Value: !Sub ${ProductName}-natGateway-${Stage}
 
   PrivateRouteTable:
     Type: AWS::EC2::RouteTable
@@ -176,7 +176,7 @@ Resources:
       VpcId: !Ref "VPC"
       Tags:
         - Key: Name
-          Value: !Sub ${ProductName}-privateRouteTable
+          Value: !Sub ${ProductName}-privateRouteTable-${Stage}
 
   PrivateRoute:
     Type: AWS::EC2::Route

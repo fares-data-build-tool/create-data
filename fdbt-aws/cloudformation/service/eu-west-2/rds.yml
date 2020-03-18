@@ -1,0 +1,184 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: "CloudFormation template for an RDS resources"
+
+Parameters:
+  DatabaseUsername:
+    AllowedPattern: "[a-zA-Z0-9]+"
+    ConstraintDescription: must be between 1 to 16 alphanumeric characters.
+    Description: The database admin account user name, between 1 to 16 alphanumeric characters.
+    MaxLength: "16"
+    MinLength: "1"
+    Default: admin
+    Type: String
+
+  DatabasePassword:
+    AllowedPattern: "[a-zA-Z0-9]+"
+    ConstraintDescription: must be between 8 to 41 alphanumeric characters.
+    Description: The database admin account password, between 8 to 41 alphanumeric characters.
+    MaxLength: "41"
+    MinLength: "8"
+    NoEcho: "true"
+    Type: String
+
+  InstanceType:
+    AllowedValues:
+      - db.t3.small
+      - db.t3.medium
+    Type: String
+
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
+  ProductName:
+    Type: String
+    Default: fdbt
+
+Resources:
+  DatabaseSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the DB
+      VpcId:
+        Fn::ImportValue: !Sub ${Stage}:VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref BastionSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-db-sg-${Stage}
+
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: !Sub Subnet Group for ${ProductName} Aurora
+      SubnetIds:
+        - Fn::ImportValue: !Sub ${Stage}:DataSubnetA
+        - Fn::ImportValue: !Sub ${Stage}:DataSubnetB
+
+  DatabaseCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora
+      EngineVersion: 5.6.10a
+      DatabaseName: !Sub ${ProductName}
+      MasterUsername: !Ref DatabaseUsername
+      MasterUserPassword: !Ref DatabasePassword
+      PreferredBackupWindow: 01:00-02:00
+      PreferredMaintenanceWindow: mon:03:00-mon:04:00
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      StorageEncrypted: true
+      VpcSecurityGroupIds:
+        - !Ref DatabaseSG
+
+  DatabaseMasterInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora
+      DBClusterIdentifier: !Ref DatabaseCluster
+      DBInstanceClass: !Ref InstanceType
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      MonitoringInterval: 60
+      MonitoringRoleArn:
+        Fn::ImportValue: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+      Tags:
+        - Key: Master
+          Value: "true"
+
+  DatabaseMasterCPUAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Master database CPU utilization is over 80%.
+      Namespace: AWS/RDS
+      MetricName: CPUUtilization
+      Unit: Percent
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 80
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: DBInstanceIdentifier
+          Value: !Ref DatabaseMasterInstance
+      AlarmActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      InsufficientDataActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      OKActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+
+  DatabaseMasterMemoryAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Master database freeable memory is under 300MB.
+      Namespace: AWS/RDS
+      MetricName: FreeableMemory
+      Unit: Bytes
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 300000000
+      ComparisonOperator: LessThanOrEqualToThreshold
+      Dimensions:
+        - Name: DBInstanceIdentifier
+          Value: !Ref DatabaseMasterInstance
+      AlarmActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      InsufficientDataActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      OKActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+
+  BastionInstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      InstanceProfileName: !Sub ${ProductName}-bastion-instance-profile-${Stage}
+      Path: /
+      Roles:
+        - Fn::ImportValue: !Sub ${Stage}:BastionSsmRoleName
+
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Bastion
+      VpcId:
+        Fn::ImportValue: !Sub ${Stage}:VpcId
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-bastion-sg-${Stage}
+
+  BastionLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub ${ProductName}-bastion-launch-template-${Stage}
+      LaunchTemplateData:
+        IamInstanceProfile:
+          Arn: !GetAtt BastionInstanceProfile.Arn
+        ImageId: ami-0cb790308f7591fa6
+        InstanceType: t3.micro
+        SecurityGroupIds:
+          - !Ref BastionSecurityGroup
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: Bastion
+                Value: "true"
+
+  BastionAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      DesiredCapacity: "1"
+      LaunchTemplate:
+        LaunchTemplateId: !Ref BastionLaunchTemplate
+        Version: !GetAtt BastionLaunchTemplate.LatestVersionNumber
+      MaxSize: "1"
+      MinSize: "1"
+      VPCZoneIdentifier:
+        - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
+        - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
