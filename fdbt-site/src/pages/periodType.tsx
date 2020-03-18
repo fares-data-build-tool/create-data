@@ -44,11 +44,9 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                     <input
                                         className="govuk-radios__input"
                                         id="periodtype-single-set-service"
-                                        name="periodtypeSingle"
+                                        name="periodGeoZone"
                                         type="radio"
                                         value="singleset"
-                                        disabled
-                                        aria-disabled="true"
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label"
@@ -61,7 +59,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                     <input
                                         className="govuk-radios__input"
                                         id="periodtype-network"
-                                        name="periodtypeNetwork"
+                                        name="periodGeoZone"
                                         type="radio"
                                         value="network"
                                         disabled
