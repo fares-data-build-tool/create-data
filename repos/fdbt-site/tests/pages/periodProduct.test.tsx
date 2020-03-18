@@ -10,6 +10,7 @@ const mockPeriodProduct: PeriodProductType = {
     productName: '',
     productNameError: false,
     productPriceError: false,
+    uuid: '',
 };
 
 describe('pages', () => {
