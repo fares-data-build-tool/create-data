@@ -14,7 +14,7 @@ import {
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
-        const fileData = await fs.promises.readFile(`${__dirname}/singleNetexTemplate.xml`, { encoding: 'utf8' });
+        const fileData = await fs.promises.readFile(`${__dirname}/singleTicketNetexTemplate.xml`, { encoding: 'utf8' });
         const json = JSON.parse(parser.toJson(fileData, { reversible: true, trim: true }));
 
         return json;
