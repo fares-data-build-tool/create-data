@@ -7,7 +7,7 @@ MYUSER=${IAMUSERNAME:=`whoami`}
 MASTER_ACCT=tfn-core
 MASTER_ACCT_ID=827855331226
 MASTER_ACCT_PROFILE=tfn-core
-VALID_ACCOUNTS=( tfn-test tfn-preprod-ro tfn-preprod-admin iw-sandpit )
+VALID_ACCOUNTS=( tfn-test tfn-preprod-ro tfn-preprod-admin tfn-core iw-sandpit )
 
 # Script should be run in current environment not forked
 if [[ ${BASH_SOURCE[0]} = "${0}" ]]; then
