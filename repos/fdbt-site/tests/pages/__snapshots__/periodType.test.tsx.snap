@@ -50,7 +50,7 @@ exports[`pages periodtype should render correctly 1`] = `
               <input
                 className="govuk-radios__input"
                 id="periodtype-geo-zone"
-                name="periodGeoZone"
+                name="periodType"
                 type="radio"
                 value="geozone"
               />
@@ -65,11 +65,9 @@ exports[`pages periodtype should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                aria-disabled="true"
                 className="govuk-radios__input"
-                disabled={true}
                 id="periodtype-single-set-service"
-                name="periodtypeSingle"
+                name="periodType"
                 type="radio"
                 value="singleset"
               />
@@ -88,7 +86,7 @@ exports[`pages periodtype should render correctly 1`] = `
                 className="govuk-radios__input"
                 disabled={true}
                 id="periodtype-network"
-                name="periodtypeNetwork"
+                name="periodType"
                 type="radio"
                 value="network"
               />
