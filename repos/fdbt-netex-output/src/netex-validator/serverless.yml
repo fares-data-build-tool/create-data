@@ -2,7 +2,7 @@ service: netex-validator
 
 provider:
   name: aws
-  runtime: java8
+  runtime: java11
   region: eu-west-2
   stage: ${opt:stage, 'test'}
   timeout: 900
@@ -10,12 +10,23 @@ provider:
   iamRoleStatements:
       - Effect: 'Allow'
         Action:
-            - 's3:S3'
+            - 's3:getObject'
             - 's3:PutObject'
+        Resource:
+          - !Sub 'arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*'
+          - !Sub 'arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*'
+
+  environment:
+      XSD_URL: 'http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd'
+      VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
+      UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
 
 package:
-  artifact: target/hello-dev.jar
+  artifact: target/netex-validator-dev.jar
 
 functions:
-  hello:
+  NetexValidator:
     handler: com.serverless.Handler
+    events:
+      - s3: fdbt-unvalidated-netex-data-${self:provider.stage}
+        event: s3:ObjectCreated:*

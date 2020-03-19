@@ -30,7 +30,7 @@ export const uploadNetexToS3 = async (netex: string, fileName: string): Promise<
     try {
         await s3
             .putObject({
-                Bucket: process.env.NETEX_BUCKET as string,
+                Bucket: process.env.UNVALIDATED_NETEX_BUCKET as string,
                 Key: fileName,
                 ContentType: 'application/xml',
                 Body: Buffer.from(netex, 'binary'),

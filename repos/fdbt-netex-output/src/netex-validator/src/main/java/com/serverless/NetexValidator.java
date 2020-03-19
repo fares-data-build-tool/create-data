@@ -23,7 +23,7 @@ class NetexValidator {
     public ValidationResult isNetexValid(String netex) {
         URL schemaFile = null;
         try {
-            schemaFile = new URL("http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd");
+            schemaFile = new URL(System.getenv("XSD_URL"));
         } catch (MalformedURLException e1) {
             e1.printStackTrace();
         }
@@ -54,13 +54,10 @@ class NetexValidator {
                 });
                 validator.validate(xmlFile);
                 if (exceptions.size() > 0) {
-                    for (SAXParseException e : exceptions) {
-                        System.out.println(e);
-                        System.out.println('\n');
-                    }
                     return validationResult = new ValidationResult(false, exceptions);
                 }
-                return validationResult = new ValidationResult(true,null);
+                return validationResult = new ValidationResult(true);
+
             } catch (SAXException e) {
                 e.printStackTrace();
             } catch (IOException e) {

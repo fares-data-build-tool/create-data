@@ -23,7 +23,7 @@ public class Handler implements RequestHandler<S3Event, String> {
 		try {
 			content = s3.getObjectContentAsStringFromS3(bucketName,key);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 
 		NetexValidator netexValidator = new NetexValidator();
@@ -41,10 +41,9 @@ public class Handler implements RequestHandler<S3Event, String> {
 		} else{
 			System.out.println("Netex validation failed. Errors are: \n");
 
-			for(int i = 0; i < result.getErrors().size(); i++){
-				SAXParseException error = result.getErrors().get(0);
+			for(SAXParseException e : result.getErrors()){
 				System.out.println(String.format("Error Line number: %s , Error Column number: %s, Error Message: %s",
-						error.getLineNumber(), error.getColumnNumber(), error.toString()));
+						e.getLineNumber(), e.getColumnNumber(), e.toString()));
 			}
 		}
 
