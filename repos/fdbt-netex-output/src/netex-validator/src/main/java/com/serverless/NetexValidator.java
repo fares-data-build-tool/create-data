@@ -19,7 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 class NetexValidator {
-    public boolean isNetexValid(String netex) {
+    ValidationResult validationResult;
+    public ValidationResult isNetexValid(String netex) {
         URL schemaFile = null;
         try {
             schemaFile = new URL("http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd");
@@ -57,15 +58,15 @@ class NetexValidator {
                         System.out.println(e);
                         System.out.println('\n');
                     }
-                    return false;
+                    return validationResult = new ValidationResult(false, exceptions);
                 }
-                return true;
+                return validationResult = new ValidationResult(true,null);
             } catch (SAXException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return false;
+        return validationResult = new ValidationResult(false, null);
     }
 }
