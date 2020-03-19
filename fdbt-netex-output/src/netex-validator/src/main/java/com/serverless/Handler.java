@@ -31,7 +31,7 @@ public class Handler implements RequestHandler<S3Event, String> {
 			throw new Error("No content found.");
 		}
 
-		boolean result = netexValidator.isNetexValid(content);
+		final boolean result = netexValidator.isNetexValid(content);
 
 		final String validatedBucketname = "";
 
