@@ -9,16 +9,20 @@ public class ValidationResult {
     private boolean valid;
     private List<SAXParseException> errors;
 
-    public ValidationResult (boolean i, List<SAXParseException> k){
-        valid = i;
-        errors = k;
+    ValidationResult (boolean valid, List<SAXParseException> errors){
+        this.valid = valid;
+        this.errors = errors;
     }
 
-    public boolean getValidity(){
+    ValidationResult (boolean valid){
+        this.valid = valid;
+    }
+
+    boolean getValidity(){
         return this.valid;
     }
 
-    public List<SAXParseException> getErrors(){
+    List<SAXParseException> getErrors(){
         return this.errors;
     }
 
