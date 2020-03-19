@@ -122,48 +122,48 @@ const periodTicketNetexGenerator = (
         return networkFareFrameToUpdate;
     };
 
-    // const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
-    //     const priceFareFrameToUpdate = { ...priceFareFrame };
+    const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
+        const priceFareFrameToUpdate = { ...priceFareFrame };
 
-    //     priceFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${lineIdName}:op`;
-    //     priceFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
-    //     priceFareFrameToUpdate.PricingParameterSet = {};
-    //     priceFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
-    //     priceFareFrameToUpdate.tariffs.Tariff.id = `Tariff@single@${lineIdName}`;
-    //     priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
-    //         ValidBetween: {
-    //             FromDate: { $t: currentDate.toISOString() },
-    //             ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
-    //         },
-    //     };
+        priceFareFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${geoZonePeriodData.nocCode}@pass:op`;
+        // priceFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
+        // priceFareFrameToUpdate.PricingParameterSet = {};
+        // priceFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
+        // priceFareFrameToUpdate.tariffs.Tariff.id = `Tariff@single@${lineIdName}`;
+        // priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
+        //     ValidBetween: {
+        //         FromDate: { $t: currentDate.toISOString() },
+        //         ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
+        //     },
+        // };
 
-    //     priceFareFrameToUpdate.tariffs.Tariff.Name = { $t: `${operatorPublicNameLineNameFormat} - Single Fares` };
-    //     priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = opIdNocFormat;
-    //     priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = matchingData.nocCode;
-    //     priceFareFrameToUpdate.tariffs.Tariff.LineRef.ref = matchingData.lineName;
-    //     priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].Name = {
-    //         $t: `O/D pairs for ${matchingData.lineName}`,
-    //     };
-    //     priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].distanceMatrixElements.DistanceMatrixElement = getDistanceMatrixElements(
-    //         matchingData.fareZones,
-    //     );
-    //     priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref =
-    //         matchingData.lineName;
-    //     const arrayofUserProfiles =
-    //         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
-    //             .GenericParameterAssignment.limitations.UserProfile;
-    //     let userProfile;
-    //     // eslint-disable-next-line no-plusplus
-    //     for (userProfile = 1; userProfile < 4; userProfile++) {
-    //         arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
-    //     }
-    //     console.log(
-    //         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
-    //             .GenericParameterAssignment.limitations.UserProfile,
-    //     );
-    //     priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
-    //     return priceFareFrameToUpdate;
-    // };
+        // priceFareFrameToUpdate.tariffs.Tariff.Name = { $t: `${operatorPublicNameLineNameFormat} - Single Fares` };
+        // priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = opIdNocFormat;
+        // priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = matchingData.nocCode;
+        // priceFareFrameToUpdate.tariffs.Tariff.LineRef.ref = matchingData.lineName;
+        // priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].Name = {
+        //     $t: `O/D pairs for ${matchingData.lineName}`,
+        // };
+        // priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].distanceMatrixElements.DistanceMatrixElement = getDistanceMatrixElements(
+        //     matchingData.fareZones,
+        // );
+        // priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref =
+        //     matchingData.lineName;
+        // const arrayofUserProfiles =
+        //     priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
+        //         .GenericParameterAssignment.limitations.UserProfile;
+        // let userProfile;
+        // // eslint-disable-next-line no-plusplus
+        // for (userProfile = 1; userProfile < 4; userProfile++) {
+        //     arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
+        // }
+        // console.log(
+        //     priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
+        //         .GenericParameterAssignment.limitations.UserProfile,
+        // );
+        // priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
+        return priceFareFrameToUpdate;
+    };
 
     // const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
     //     const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
