@@ -209,8 +209,6 @@ const netexGenerator = (
         netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
         netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
 
-        console.log(netexJson);
-
         return convertJsonToXml(netexJson);
     };
 
