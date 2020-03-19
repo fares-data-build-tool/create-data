@@ -1,0 +1,21 @@
+service: netex-validator
+
+provider:
+  name: aws
+  runtime: java8
+  region: eu-west-2
+  stage: ${opt:stage, 'test'}
+  timeout: 900
+  memorySize: 2048
+  iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+            - 's3:S3'
+            - 's3:PutObject'
+
+package:
+  artifact: target/hello-dev.jar
+
+functions:
+  hello:
+    handler: com.serverless.Handler
