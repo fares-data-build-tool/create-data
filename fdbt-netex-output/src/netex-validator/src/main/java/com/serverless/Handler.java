@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.event.S3EventNotification;
+import org.xml.sax.SAXParseException;
 
 import java.io.IOException;
 
@@ -31,14 +32,20 @@ public class Handler implements RequestHandler<S3Event, String> {
 			throw new Error("No content found.");
 		}
 
-		final boolean result = netexValidator.isNetexValid(content);
+		final ValidationResult result = netexValidator.isNetexValid(content);
 
 		final String validatedBucketname = "";
 
-		if(result){
+		if(result.getValidity()){
 			s3.putObjectInValidatedBucket(validatedBucketname, key, content);
 		} else{
-			throw new Error("Netex is invalid. Errors are:");
+			System.out.println("Netex validation failed. Errors are: \n");
+
+			for(int i = 0; i < result.getErrors().size(); i++){
+				SAXParseException error = result.getErrors().get(0);
+				System.out.println(String.format("Error Line number: %s , Error Column number: %s, Error Message: %s",
+						error.getLineNumber(), error.getColumnNumber(), error.toString()));
+			}
 		}
 
 		return "Netex Validation complete.";
