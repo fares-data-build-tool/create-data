@@ -221,7 +221,7 @@ const periodTicketNetexGenerator = (
         // The second FareFrame is the ProductFareFrame which relates to the validity/name/price of the sales offer package
         // netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
 
-
+        // The third FareFrame is the FareTableFareFrame which ties together each ParentFareZone/FareZone, with Prices, Validity, Media (TicketTypes) and UserTypes
         // netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
 
         return convertJsonToXml(netexJson);
