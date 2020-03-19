@@ -61,7 +61,7 @@
 				<CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" />
 			</prerequisites>
 			<frames>
-				<!-- Should the id for the ResourceFrame be contain the second FYSO? -->
+				<!-- Should the id for the ResourceFrame contain the second FYSO? -->
 				<ResourceFrame version="1.0" id="epd:UK:FYSO:ResourceFrame_UK_PI_COMMON:FYSO:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
 					<Name>Operator specific common resources</Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0" />
@@ -191,6 +191,7 @@
 					<fareZones>
 
 						<!-- DYNAMIC HERE... -->
+						<!-- What is this FareZone? Is this the ParentFareZoneRef referenced in the below FareZones? The FareZones below it are specific for a 'FareZoneName' from the user but this is not? -->
 						<FareZone version="1.0" id="op:FirstPass@South_Yorkshire">
 							<Name>South Yorks</Name>
 							<Description>South Yorskshire FirstPAss  zone.</Description>
@@ -212,10 +213,13 @@
 							<Name>Sheffield</Name>
 							<Description>Sheffield FirstPass zone.</Description>
 							<infoLinks>
+
+								<!-- Is the below relevant considering we aren't using a map? -->
 								<InfoLink typeOfInfoLink="map">https://www.travelsouthyorkshire.com/SheffieldBusNetworkMap/</InfoLink>
+							
 							</infoLinks>
 							<members>
-								<!-- THis is all teyh Naptan stops i in SHeffield -->
+								<!-- Is this ALL the stops in an area/region or just the stops the user gives us? -->
 								<ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:370010124">Sheffield Interchange C2(C2),Sheffield Centre</ScheduledStopPointRef>
 								<ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:370020002">Cherry Street(opp),Highfield</ScheduledStopPointRef>
 								<ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:370020003">Cherry Street(adj),Highfield</ScheduledStopPointRef>
@@ -3878,6 +3882,7 @@
 							<types>
 								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
 							</types>
+							<!-- How do projections relate to the stops above? Do we need ALL nptg localities or a filtered selection based on stops given by the user? -->
 							<projections>
 								<TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0077767">Sheffield</TopographicProjectionRef>
 								<!-- This is a simple dump of NPTG localities for Sheffiled  -->
@@ -3923,6 +3928,7 @@
 								<TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0078699">Ellesmere,Sheffield</TopographicProjectionRef>
 								<!-- MORE TO DO -->
 							</projections>
+							<!-- How do we define the ParentFareZoneRef from the data we get from the user? -->
 							<ParentFareZoneRef version="1.0" ref="op:South_Yorkshire" />
 							<ZoneTopology>nested</ZoneTopology>
 							<ScopingMethod>explicitStops</ScopingMethod>
@@ -3965,8 +3971,9 @@
 						</FareZone>
 					</fareZones>
 				</FareFrame>
-				<!-- ...TO HERE? -->
+				<!-- ...TO HERE -->
 
+				<!-- DYNAMIC HERE... -->
 				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_PRODUCT:FirstPass@pass:op" responsibilitySetRef="op:tariffs">
 					<Name>First Pass  fare products and  </Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" />
@@ -4357,6 +4364,9 @@
 					</salesOfferPackages>
 					<!-- === GroupOf SALES OFFER PACKAGES === -->
 				</FareFrame>
+				<!-- ...TO HERE -->
+
+				<!-- DYNAMIC HERE... -->
 				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_PRICE:FirstPass@pass:op" responsibilitySetRef="op:tariffs">
 					<Name>FirstPass prices</Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" />
@@ -5132,9 +5142,11 @@
 						</FareTable>
 					</fareTables>
 				</FareFrame>
+				<!-- ...TO HERE -->
+
 				<!-- ====== Travel shops Advanced stuff - This just to show that we can capture access sdetails about travel shops  -->
-				<SiteFrame version="1.0" id="epd:UK:FYSO:SiteFrame_UK_PI_STOP:sale_pois:op" responsibilitySetRef="op:tariffs">
-					<Name>Common site elements for FYSO: Travel Shops</Name>
+				<SiteFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
+					<Name></Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP" />
 					<FrameDefaults>
 						<DefaultCodespaceRef ref="op_data" />
@@ -5142,63 +5154,63 @@
 						<DefaultResponsibilitySetRef ref="op:tariffs" version="1.0" />
 					</FrameDefaults>
 					<pointsOfInterest>
-						<PointOfInterest version="1.0" id="op:travel_shop@Doncaster">
+						<PointOfInterest version="1.0" id="op:travel_shop@PLACE1">
 							<validityConditions>
-								<AvailabilityCondition version="1.0" id="op:travel_shop@Doncaster">
-									<Name>Opening Hours</Name>
-									<IsAvailable>true</IsAvailable>
+								<AvailabilityCondition version="1.0" id="op:travel_shop@PLACE1">
+									<Name></Name>
+									<IsAvailable></IsAvailable>
 									<dayTypes>
-										<DayTypeRef version="1.0" ref="op:travel_shop@Doncaster@M-F" />
-										<DayTypeRef version="1.0" ref="op:travel_shop@Doncaster@Sat" />
+										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE1@M-F" />
+										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE1@Sat" />
 									</dayTypes>
 								</AvailabilityCondition>
 							</validityConditions>
-							<Name>Doncaster Tourist Information Centre</Name>
+							<Name></Name>
 							<Centroid>
 								<Location>
-									<gml:pos srsName="WGS84">12345 6789</gml:pos>
+									<gml:pos srsName="WGS84"></gml:pos>
 								</Location>
 							</Centroid>
-							<Url>https://www.firstgroup.com/south-yorkshire/tickets/where-buy#shop</Url>
-							<PostalAddress id="op:travel_shop@Doncaster@address" version="1.0">
-								<BuildingName>Doncaster Tourist Information Centre</BuildingName>
-								<Street>1, Priory Place</Street>
-								<Town>Doncaster</Town>
-								<PostCode>DN1 1BN</PostCode>
+							<Url></Url>
+							<PostalAddress id="op:travel_shop@PLACE1@address" version="1.0">
+								<BuildingName></BuildingName>
+								<Street></Street>
+								<Town></Town>
+								<PostCode></PostCode>
 							</PostalAddress>
-							<SiteType>retail</SiteType>
+							<SiteType></SiteType>
 							<classifications>
 								<PointOfInterestClassificationRef ref="fxc:operator_travel_shop" version="fxc:v1.0" />
 							</classifications>
 						</PointOfInterest>
-						<PointOfInterest version="1.0" id="op:travel_shop@Rotherham">
+						<PointOfInterest version="1.0" id="op:travel_shop@PLACE">
 							<validityConditions>
-								<AvailabilityCondition version="1.0" id="op:travel_shop@Rotherham">
-									<Name>Opening Hours</Name>
-									<IsAvailable>true</IsAvailable>
+								<AvailabilityCondition version="1.0" id="op:travel_shop@PLACE">
+									<Name></Name>
+									<IsAvailable></IsAvailable>
 									<dayTypes>
-										<DayTypeRef version="1.0" ref="op:travel_shop@Rotherham@M-F" />
-										<DayTypeRef version="1.0" ref="op:travel_shop@Rotherham@Sat" />
+										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE@M-F" />
+										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE@Sat" />
 									</dayTypes>
 								</AvailabilityCondition>
 							</validityConditions>
-							<Name>Rotherham Visitor Centre</Name>
+							<Name></Name>
 							<Centroid>
 								<Location>
-									<gml:pos srsName="WGS84">12345 6789</gml:pos>
+									<gml:pos srsName="WGS84"></gml:pos>
 								</Location>
 							</Centroid>
-							<Url>https://www.firstgroup.com/south-yorkshire/tickets/where-buy#shop</Url>
-							<PostalAddress id="op:travel_shop@Rotherham@address" version="1.0">
-								<BuildingName>Rotherham Tourist Information Centre</BuildingName>
-								<Street>40, Bridgegate</Street>
-								<Town>Rotherham</Town>
-								<PostCode>S60 1PQ</PostCode>
+							<Url></Url>
+							<PostalAddress id="op:travel_shop@PLACE@address" version="1.0">
+								<BuildingName></BuildingName>
+								<Street></Street>
+								<Town></Town>
+								<PostCode></PostCode>
 							</PostalAddress>
-							<SiteType>retail</SiteType>
+							<SiteType></SiteType>
 							<OperatingOrganisationView>
 								<ContactDetails>
-									<Phone>01709 835904</Phone>
+									<Phone></Phone>
 								</ContactDetails>
 							</OperatingOrganisationView>
 							<classifications>
@@ -5207,7 +5219,8 @@
 						</PointOfInterest>
 					</pointsOfInterest>
 				</SiteFrame>
-				<ServiceCalendarFrame version="1.0" id="epd:UK:FSYO:ServiceCalendarFrame_UK_PI_CALENDAR:sale_pois:op" responsibilitySetRef="op:tariffs">
+
+				<ServiceCalendarFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
 					<Name> Specific Calendar: openng times for Travel shops</Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_CALENDAR:FXCP" />
 					<FrameDefaults>
@@ -5216,87 +5229,87 @@
 						<DefaultResponsibilitySetRef ref="op:tariffs" version="1.0" />
 					</FrameDefaults>
 					<dayTypes>
-						<FareDayType version="1.0" id="op:travel_shop@Doncaster@M-F">
-							<Name>Doncaster Travel shop Working day</Name>
-							<Description>0930-1700 on Mondays to Fridays 0830-1700 on Saturdays 1030-1630 on Sundays &amp; Public Holidays.</Description>
-							<EarliestTime>09:30:00</EarliestTime>
+						<FareDayType version="1.0" id="op:travel_shop@PLACE1@M-F">
+							<Name></Name>
+							<Description></Description>
+							<EarliestTime></EarliestTime>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek>Weekdays</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
+									<DaysOfWeek></DaysOfWeek>
+									<HolidayTypes></HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@Doncaster@M-F">
-									<StartTime>09:30:00</StartTime>
-									<EndTime>17:00:00</EndTime>
+								<Timeband version="1.0" id="op:travel_shop@PLACE1@M-F">
+									<StartTime></StartTime>
+									<EndTime></EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
-						<FareDayType version="1.0" id="op:travel_shop@Doncaster@Sat">
-							<Name>Doncaster Travel shop Working day</Name>
-							<Description>1000-1530 on Saturdays.</Description>
+						<FareDayType version="1.0" id="op:travel_shop@PLACE1@Sat">
+							<Name></Name>
+							<Description></Description>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek>Weekend</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
+									<DaysOfWeek></DaysOfWeek>
+									<HolidayTypes></HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@Doncaster@Sat">
-									<StartTime>10:17:00</StartTime>
-									<EndTime>15:30:00</EndTime>
+								<Timeband version="1.0" id="op:travel_shop@PLACE1@Sat">
+									<StartTime></StartTime>
+									<EndTime></EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
-						<FareDayType version="1.0" id="op:travel_shop@Rotherham@M-F">
-							<Name>Rotherham Travel shop Working day</Name>
-							<Description>090-1700 on Mondays to Fridays 0830-1700 on Saturdays 1030-1630 on Sundays &amp; Public Holidays.</Description>
-							<EarliestTime>09:00:00</EarliestTime>
+						<FareDayType version="1.0" id="op:travel_shop@PLACE2@M-F">
+							<Name></Name>
+							<Description></Description>
+							<EarliestTime></EarliestTime>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek>Weekdays</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
+									<DaysOfWeek></DaysOfWeek>
+									<HolidayTypes></HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@Rotherham@M-F">
-									<StartTime>09:00:00</StartTime>
-									<EndTime>17:00:00</EndTime>
+								<Timeband version="1.0" id="op:travel_shop@PLACE2@M-F">
+									<StartTime></StartTime>
+									<EndTime></EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
-						<FareDayType version="1.0" id="op:travel_shop@Rotherham@Sat">
-							<Name>Rotherham Travel shop Working day</Name>
-							<Description>0930-1600 on Saturdays.</Description>
+						<FareDayType version="1.0" id="op:travel_shop@PLACE2@Sat">
+							<Name></Name>
+							<Description></Description>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek>Weekend</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
+									<DaysOfWeek></DaysOfWeek>
+									<HolidayTypes></HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@Rotherham@Sat">
-									<StartTime>09:16:00</StartTime>
-									<EndTime>16:00:00</EndTime>
+								<Timeband version="1.0" id="op:travel_shop@PLACE2@Sat">
+									<StartTime></StartTime>
+									<EndTime></EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
 						<FareDayType version="1.0" id="op:anytime">
-							<Name>Anytime</Name>
+							<Name></Name>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek>Everyday</DaysOfWeek>
-									<HolidayTypes>AnyDay</HolidayTypes>
+									<DaysOfWeek></DaysOfWeek>
+									<HolidayTypes></HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 						</FareDayType>
 					</dayTypes>
 				</ServiceCalendarFrame>
+				
 			</frames>
 		</CompositeFrame>
 		<!--   === COMMON UK FARE RESOURCES===  -->
-		<!-- What do we do with the below composite frame? -->
 		<CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
 			<ValidBetween>
 				<FromDate>2019-05-01T00:00:00</FromDate>

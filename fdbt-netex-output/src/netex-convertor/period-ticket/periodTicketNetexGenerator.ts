@@ -88,31 +88,22 @@ const periodTicketNetexGenerator = (
         return resourceFrameToUpdate;
     };
 
-    // const updateSiteFrame = (siteFrame: NetexObject): NetexObject => {
-    //     const siteFrameToUpdate = { ...siteFrame };
+    const updateSiteFrame = (siteFrame: NetexObject): NetexObject => {
+        const siteFrameToUpdate = { ...siteFrame };
 
-    //     siteFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:SiteFrame_UK_PI_NETWORK:${lineIdName}:op`;
+        siteFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:SiteFrame_UK_PI_STOP:sale_pois:op`;
+        siteFrameToUpdate.Name.$t = `Common site elements for ${geoZonePeriodData.nocCode}: Travel Shops`
 
-    //     return siteFrameToUpdate;
-    // };
+        return siteFrameToUpdate;
+    };
 
-    // const updateServiceCalendarFrame = (serviceCalendarFrame: NetexObject): NetexObject => {
-    //     const serviceCalendarFrameToUpdate = { ...serviceCalendarFrame };
+    const updateServiceCalendarFrame = (serviceCalendarFrame: NetexObject): NetexObject => {
+        const serviceCalendarFrameToUpdate = { ...serviceCalendarFrame };
 
-    //     serviceCalendarFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ServiceCalendarFrame_UK_PI_NETWORK:${lineIdName}:op`;
-    //     serviceCalendarFrameToUpdate.lines.Line.id = matchingData.lineName;
-    //     serviceCalendarFrameToUpdate.lines.Line.Name.$t = operatorPublicNameLineNameFormat;
-    //     serviceCalendarFrameToUpdate.lines.Line.Description.$t = serviceData.serviceDescription;
-    //     serviceCalendarFrameToUpdate.lines.Line.PublicCode.$t = matchingData.lineName;
-    //     serviceCalendarFrameToUpdate.lines.Line.PrivateCode.$t = noccodeLineNameFormat;
-    //     serviceCalendarFrameToUpdate.lines.Line.OperatorRef.ref = opIdNocFormat;
-    //     serviceCalendarFrameToUpdate.lines.Line.OperatorRef.$t = matchingData.nocCode;
-    //     serviceCalendarFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getScheduledStopPointsList(
-    //         matchingData.fareZones,
-    //     );
+        serviceCalendarFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:ServiceCalendarFrame_UK_PI_CALENDAR:sale_pois:op`;
 
-    //     return serviceCalendarFrameToUpdate;
-    // };
+        return serviceCalendarFrameToUpdate;
+    };
 
     // const updateZoneFareFrame = (zoneFareFrame: NetexObject): NetexObject => {
     //     const zoneFareFrameToUpdate = { ...zoneFareFrame };
@@ -220,11 +211,17 @@ const periodTicketNetexGenerator = (
         // console.log(netexPublicationDelivery.dataObjects.CompositeFrame[0])
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
-        // netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
+        netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
         netexFrames.ResourceFrame = updateResourceFrame(netexFrames.ResourceFrame);
-        // netexFrames.ServiceCalendarFrame = updateServiceCalendarFrame(netexFrames.ServiceCalendarFrame);
+        netexFrames.ServiceCalendarFrame = updateServiceCalendarFrame(netexFrames.ServiceCalendarFrame);
+
+        // The first FareFrame is the NetworkFareFrame which relates to the FareZone given by the user on the csvZoneUpload page.
         // netexFrames.FareFrame[0] = updateZoneFareFrame(netexFrames.FareFrame[0]);
+
+        // The second FareFrame is the ProductFareFrame which relates to the validity/name/price of the sales offer package
         // netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
+
+
         // netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
 
         return convertJsonToXml(netexJson);
