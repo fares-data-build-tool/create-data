@@ -40,14 +40,14 @@ export interface MatchingData {
     fareZones: FareZone[];
 }
 
-export interface GeoZonePeriodData {
+export interface GeographicalFareZonePass {
     operatorName: string;
     nocCode: string;
     type: string;
     productName: string;
     productPrice: string;
     fareZoneName: string;
-    stops: Stop[];
+    stopAtcoCodes: string[];
     daysValid: string;
     expiryRules: string;
 }

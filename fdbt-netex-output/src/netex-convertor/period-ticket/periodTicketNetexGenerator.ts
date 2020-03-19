@@ -1,6 +1,6 @@
 import parser from 'xml2json';
 import fs from 'fs';
-import { OperatorData, GeoZonePeriodData } from '../types';
+import { OperatorData, GeographicalFareZonePass } from '../types';
 import { NetexObject } from './periodTicketNetexHelpers';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
@@ -22,13 +22,13 @@ const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => {
 };
 
 const periodTicketNetexGenerator = (
-    geoZonePeriodData: GeoZonePeriodData,
+    geoFareZonePass: GeographicalFareZonePass,
     operatorData: OperatorData,
 ): { generate: Function } => {
     // What is the difference between opId and nocCode below?
     const opIdNocFormat = `noc:${operatorData.opId}`;
-    const nocCodeNocFormat = `noc:${geoZonePeriodData.nocCode}`;
-    const periodProductNameOpFormat = `op:Pass@${geoZonePeriodData.productName}`
+    const nocCodeNocFormat = `noc:${geoFareZonePass.nocCode}`;
+    const periodProductNameOpFormat = `op:Pass@${geoFareZonePass.productName}`
     // Should the below contain operatorData.publicName OR operatorData.opId?
     const opIdBrandFormat = `${operatorData.opId}@brand`;
     const currentDate = new Date(Date.now());
@@ -43,7 +43,7 @@ const periodTicketNetexGenerator = (
     const updatePublicationRequest = (publicationRequest: NetexObject): NetexObject => {
         const publicationRequestToUpdate = { ...publicationRequest };
         publicationRequestToUpdate.RequestTimestamp.$t = currentDate;
-        publicationRequestToUpdate.Description.$t = `Request for ${geoZonePeriodData.nocCode} bus pass fares`;
+        publicationRequestToUpdate.Description.$t = `Request for ${geoFareZonePass.nocCode} bus pass fares`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef.ref = periodProductNameOpFormat;
@@ -53,9 +53,9 @@ const periodTicketNetexGenerator = (
 
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
-        compositeFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@${geoZonePeriodData.productName}:op`;
-        compositeFrameToUpdate.Name.$t = `Fares for ${geoZonePeriodData.operatorName} - ${geoZonePeriodData.fareZoneName}`;
-        compositeFrameToUpdate.Description.$t = `${geoZonePeriodData.operatorName} - ${geoZonePeriodData.fareZoneName} is accessible under a period pass. A price is given for a geographical zone, which contains a selection of stops as a fare zone.`;
+        compositeFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@${geoFareZonePass.productName}:op`;
+        compositeFrameToUpdate.Name.$t = `Fares for ${geoFareZonePass.operatorName} - ${geoFareZonePass.fareZoneName}`;
+        compositeFrameToUpdate.Description.$t = `${geoFareZonePass.operatorName} - ${geoFareZonePass.fareZoneName} is accessible under a period pass. A price is given for a geographical zone, which contains a selection of stops as a fare zone.`;
 
         return compositeFrameToUpdate;
     };
@@ -63,7 +63,7 @@ const periodTicketNetexGenerator = (
     const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
         const resourceFrameToUpdate = { ...resourceFrame };
 
-        resourceFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:ResourceFrame_UK_PI_COMMON:${geoZonePeriodData.nocCode}:op`;
+        resourceFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:ResourceFrame_UK_PI_COMMON:${geoFareZonePass.nocCode}:op`;
         resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = operatorData.website;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
@@ -76,9 +76,9 @@ const periodTicketNetexGenerator = (
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = operatorData.publicName;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = operatorData.website;
         resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
-        resourceFrameToUpdate.organisations.Operator.PublicCode.$t = geoZonePeriodData.nocCode;
+        resourceFrameToUpdate.organisations.Operator.PublicCode.$t = geoFareZonePass.nocCode;
         resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.publicName;
-        resourceFrameToUpdate.organisations.Operator.ShortName.$t = geoZonePeriodData.operatorName;
+        resourceFrameToUpdate.organisations.Operator.ShortName.$t = geoFareZonePass.operatorName;
         resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.vosaPSVLicenseName; // eslint-disable-line @typescript-eslint/camelcase
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = operatorData.website;
@@ -91,8 +91,8 @@ const periodTicketNetexGenerator = (
     const updateSiteFrame = (siteFrame: NetexObject): NetexObject => {
         const siteFrameToUpdate = { ...siteFrame };
 
-        siteFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:SiteFrame_UK_PI_STOP:sale_pois:op`;
-        siteFrameToUpdate.Name.$t = `Common site elements for ${geoZonePeriodData.nocCode}: Travel Shops`
+        siteFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:SiteFrame_UK_PI_STOP:sale_pois:op`;
+        siteFrameToUpdate.Name.$t = `Common site elements for ${geoFareZonePass.nocCode}: Travel Shops`
 
         return siteFrameToUpdate;
     };
@@ -100,20 +100,27 @@ const periodTicketNetexGenerator = (
     const updateServiceCalendarFrame = (serviceCalendarFrame: NetexObject): NetexObject => {
         const serviceCalendarFrameToUpdate = { ...serviceCalendarFrame };
 
-        serviceCalendarFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:ServiceCalendarFrame_UK_PI_CALENDAR:sale_pois:op`;
+        serviceCalendarFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:ServiceCalendarFrame_UK_PI_CALENDAR:sale_pois:op`;
 
         return serviceCalendarFrameToUpdate;
     };
 
-    // const updateZoneFareFrame = (zoneFareFrame: NetexObject): NetexObject => {
-    //     const zoneFareFrameToUpdate = { ...zoneFareFrame };
+    const updateNetworkFareFrame = (networkFareFrame: NetexObject): NetexObject => {
+        const networkFareFrameToUpdate = { ...networkFareFrame };
 
-    //     zoneFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${lineIdName}:op`;
-    //     zoneFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
-    //     zoneFareFrameToUpdate.fareZones.FareZone = getFareZoneList(matchingData.fareZones);
+        networkFareFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${geoFareZonePass.productName}@pass:op`;
+        networkFareFrameToUpdate.Name.$t = `${geoFareZonePass.productName} Network`;
+        networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${geoFareZonePass.nocCode}:ResourceFrame_UK_PI_COMMON:${geoFareZonePass.nocCode}:op`
+        networkFareFrameToUpdate.fareZones.FareZone[0].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
+        networkFareFrameToUpdate.fareZones.FareZone[0].Name = `${geoFareZonePass.fareZoneName}`;
+        networkFareFrameToUpdate.fareZones.FareZone[0].Description = `${geoFareZonePass.fareZoneName} ${geoFareZonePass.productName} Zone`;
 
-    //     return zoneFareFrameToUpdate;
-    // };
+        // TODO: NEED TO USE THE STOPS ON GEOFAREZONEPASS TO QUERY THE NAPTAN TABLE FOR STOPS INFO AND NPTG LOCALITY INFO
+        // networkFareFrameToUpdate.fareZones.FareZone[0].members = getScheduledStopPointsList()
+        // networkFareFrameToUpdate.fareZones.FareZone[0].projections = 
+
+        return networkFareFrameToUpdate;
+    };
 
     // const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
     //     const priceFareFrameToUpdate = { ...priceFareFrame };
@@ -216,7 +223,7 @@ const periodTicketNetexGenerator = (
         netexFrames.ServiceCalendarFrame = updateServiceCalendarFrame(netexFrames.ServiceCalendarFrame);
 
         // The first FareFrame is the NetworkFareFrame which relates to the FareZone given by the user on the csvZoneUpload page.
-        // netexFrames.FareFrame[0] = updateZoneFareFrame(netexFrames.FareFrame[0]);
+        netexFrames.FareFrame[0] = updateNetworkFareFrame(netexFrames.FareFrame[0]);
 
         // The second FareFrame is the ProductFareFrame which relates to the validity/name/price of the sales offer package
         // netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
