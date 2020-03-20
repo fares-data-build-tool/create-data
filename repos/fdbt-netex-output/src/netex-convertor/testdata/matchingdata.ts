@@ -128,7 +128,7 @@ const matchingData = {
             prices: [
                 {
                     price: '1.10',
-                    fareZones: ['Holl Bank/Beech Ave', 'Cambridge Street (York)', 'Blossom Street'],
+                    fareZones: ['Holl Bank/Beech Ave', 'Cambridge Street', 'Blossom Street'],
                 },
                 {
                     price: '1.70',
@@ -176,7 +176,7 @@ const matchingData = {
             ],
         },
         {
-            name: 'Cambridge Street (York)',
+            name: 'Cambridge Street',
             stops: [
                 {
                     stopName: 'Barbara Grove',
