@@ -14,7 +14,7 @@ export const getScheduledStopPointsList = (fareZones: FareZone[]): {}[] =>
         id: `naptan:${stop.atcoCode}`,
         Name: { $t: stop.stopName },
         TopographicPlaceView: {
-            TopographicPlaceRef: { ref: `nptgUkLocality:${stop.localityCode}`, version: '0' },
+            TopographicPlaceRef: { ref: `nptgLocality:${stop.localityCode}` },
             Name: { $t: stop.localityName },
             QualifierName: { $t: stop.qualifierName },
         },
@@ -41,12 +41,10 @@ export const getFareZoneList = (fareZones: FareZone[]): {}[] =>
         id: `fs@${getIdName(zone.name)}`,
         Name: { $t: zone.name },
         members: {
-            stopPoints: zone.stops.map(stop => ({
-                ScheduledStopPointRef: {
-                    ref: `naptan:${stop.atcoCode}`,
-                    version: 'any',
-                    $t: `${stop.stopName}, ${stop.localityName}`,
-                },
+            ScheduledStopPointRef: zone.stops.map(stop => ({
+                ref: `naptan:${stop.atcoCode}`,
+                version: 'any',
+                $t: `${stop.stopName}, ${stop.localityName}`,
             })),
         },
     }));
@@ -75,16 +73,6 @@ export const getDistanceMatrixElements = (fareZones: FareZone[]): {}[] =>
         ),
     );
 
-export const getDistanceMatrixElementsPriceRefs = (fareZones: FareZone[], lineIdName: string): {}[] =>
-    fareZones.flatMap(zone =>
-        zone.prices.flatMap(price =>
-            price.fareZones.map(secondZone => ({
-                version: '1.0',
-                ref: `Trip@single-SOP@p-ticket@${lineIdName}@adult@${getIdName(zone.name)}+${getIdName(secondZone)}`,
-            })),
-        ),
-    );
-
 export const getFareTableElements = (fareZones: FareZone[], lineIdName: string, elementPrefix: string): {}[] =>
     fareZones.slice(0, -1).map((zone, index) => ({
         version: '1.0',
@@ -97,8 +85,11 @@ export const getFareTables = (columns: FareZone[], lineIdName: string): {}[] =>
     columns.flatMap((zone, columnNum) => {
         let rowCount = columns.length - columnNum;
         let order = 0;
+        const columnRef = `Trip@single-SOP@p-ticket@${lineIdName}@adult@c${columnNum + 1}@${getIdName(zone.name)}`;
 
         return {
+            id: columnRef,
+            version: '1.0',
             Name: { $t: zone.name },
             Description: { $t: `Column ${columnNum + 1}` },
             cells: {
@@ -127,9 +118,7 @@ export const getFareTables = (columns: FareZone[], lineIdName: string): {}[] =>
                             },
                             ColumnRef: {
                                 versionRef: '1',
-                                ref: `Trip@single-SOP@p-ticket@${lineIdName}@adult@c${columnNum + 1}@${getIdName(
-                                    zone.name,
-                                )}`,
+                                ref: columnRef,
                             },
                             RowRef: {
                                 versionRef: '1',
@@ -143,3 +132,14 @@ export const getFareTables = (columns: FareZone[], lineIdName: string): {}[] =>
             },
         };
     });
+
+export const getNetexMode = (mode: string): string => {
+    const modeMap: { [key: string]: string } = {
+        Bus: 'bus',
+        Coach: 'coach',
+        Tram: 'tram',
+        Ferry: 'ferry',
+    };
+
+    return modeMap[mode] ?? 'other';
+};
