@@ -4101,40 +4101,6 @@
 										<LimitationGroupingType>OR</LimitationGroupingType>
 										<limitations>
 											<UserProfileRef version="1.0" ref="op:adult" />
-											<UserProfileRef version="1.0" ref="op:child" />
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@durations@student">
-									<Name>Available duration combination- </Name>
-									<Description>All periods allowed, 60 mins, but no evening - used in for some mticket, single FirstPass zone.</Description>
-									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations" />
-									<timeIntervals>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1week" />
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@4week" />
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1term" />
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1academic_year" />
-									</timeIntervals>
-									<GenericParameterAssignment version="1.0" id="op:Tariff@FirstPass@durations@student" order="1">
-										<Description>Student  Cash ticket Only available for  1week</Description>
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access_when" />
-										<limitations>
-											<UserProfileRef version="1.0" ref="op:student" />
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@durations@group">
-									<Name>Available duration combination- </Name>
-									<Description>All periods allowed, 60 mins, but no evening - used in for some mticket, single FirstPass zone.</Description>
-									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations" />
-									<timeIntervals>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1day" />
-									</timeIntervals>
-									<GenericParameterAssignment version="1.0" id="op:Tariff@FirstPass@durations@group" order="1">
-										<Description> Group  ticket Only available for  1day</Description>
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access_when" />
-										<limitations>
-											<GroupTicketRef version="1.0" ref="op:family" />
 										</limitations>
 									</GenericParameterAssignment>
 								</FareStructureElement>
@@ -4165,7 +4131,7 @@
 					<fareProducts>
 						<!--==== Other Products ==== -->
 						<PreassignedFareProduct version="1.0" id="op:Pass@FirstPass">
-							<Name>FirstPass Pass</Name>
+							<Name></Name>
 							<!--==== VALIDABLE ELEMENTs ==== -->
 							<ChargingMomentType>beforeTravel</ChargingMomentType>
 							<typesOfFareProduct>
@@ -4180,8 +4146,6 @@
 										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@eligibility" />
 										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@durations@adult" />
 										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@durations@adult_cash" />
-										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@durations@student" />
-										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@durations@group" />
 										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@conditions_of_travel" />
 									</fareStructureElements>
 								</ValidableElement>
@@ -4200,7 +4164,7 @@
 						<SalesOfferPackage version="1.0" id="op:Pass@FirstPass-SOP@p-ticket">
 							<BrandingRef version="1.0" ref="op:FirstGroup@brand" />
 							<Name>FirstPass - paper ticket</Name>
-							<Description>Unlimited Travel in a given FirstPass zon. Can be bought onbvoard e Student and child  Tickets available.</Description>
+							<Description>Unlimited Travel in a given zone. </Description>
 							<distributionAssignments>
 								<DistributionAssignment version="1.0" id="op:Pass@FirstPass-GSOP@p-ticket@on_board" order="1">
 									<Name>Onboard</Name>
@@ -4249,7 +4213,6 @@
 							</salesOfferPackageElements>
 						</SalesOfferPackage>
 						<SalesOfferPackage version="1.0" id="op:Pass@FirstPass-SOP@subscription">
-							<BrandingRef version="1.0" ref="op:FirstGroup@brand" />
 							<Name>FirstUnlimited</Name>
 							<Description>Unlimited Travel in the   FirstPass area. Subscription.</Description>
 							<validityParameterAssignments>

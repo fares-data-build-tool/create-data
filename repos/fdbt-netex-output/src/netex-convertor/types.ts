@@ -47,7 +47,7 @@ export interface GeographicalFareZonePass {
     productName: string;
     productPrice: string;
     fareZoneName: string;
-    stopAtcoCodes: string[];
+    stopAtcoCodes: {}[];
     daysValid: string;
     expiryRules: string;
 }

@@ -2,6 +2,7 @@ import parser from 'xml2json';
 import fs from 'fs';
 import { OperatorData, GeographicalFareZonePass } from '../types';
 import { NetexObject } from './periodTicketNetexHelpers';
+import geoZonePeriodData from '../testdata/geoZonePeriodData';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
@@ -156,27 +157,33 @@ const periodTicketNetexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[2].ref = `op:Tariff@${geoZonePeriodData.nocCode}@4week`;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[3].ref = `op:Tariff@${geoZonePeriodData.nocCode}@1year`;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.id = `op:Tariff@${geoZonePeriodData.nocCode}@adult_or_child`;
-        // priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].Name = {
-        //     $t: `O/D pairs for ${matchingData.lineName}`,
-        // };
-        // priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].distanceMatrixElements.DistanceMatrixElement = getDistanceMatrixElements(
-        //     matchingData.fareZones,
-        // );
-        // priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref =
-        //     matchingData.lineName;
-        // const arrayofUserProfiles =
-        //     priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
-        //         .GenericParameterAssignment.limitations.UserProfile;
-        // let userProfile;
-        // // eslint-disable-next-line no-plusplus
-        // for (userProfile = 1; userProfile < 4; userProfile++) {
-        //     arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
-        // }
-        // console.log(
-        //     priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1]
-        //         .GenericParameterAssignment.limitations.UserProfile,
-        // );
-        // priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].id = `op:Tariff@${geoZonePeriodData.nocCode}@duration@adult_cash`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].timeIntervals.TimeIntervalRef[0].ref = `op:Tariff@${geoZonePeriodData.nocCode}@1day`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].timeIntervals.TimeIntervalRef[1].ref = `op:Tariff@${geoZonePeriodData.nocCode}@1week`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].GenericParameterAssignment.id = `op:Pass@${geoZonePeriodData.nocCode}@duration@1D_1W`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].id = `op:Tariff@${geoZonePeriodData.nocCode}@conditions of travel`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.id = `op:Tariff@${geoZonePeriodData.nocCode}@conditions of travel`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.limitations.Transferability.id = `op:Pass@${geoZonePeriodData.nocCode}@transferability`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.limitations.FrequencyOfUse.id = `op:Pass@${geoZonePeriodData.nocCode}@frequency`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.limitations.Interchanging.id = `op:Pass@${geoZonePeriodData.nocCode}@interchanging`;
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.id = `op:Pass@${geoZonePeriodData.nocCode}`;
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.Name.$t = `${geoZonePeriodData.nocCode} Pass`;
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.OperatorRef.ref = nocCodeNocFormat;
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.OperatorRef.$t = opIdNocFormat;
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.accessRightsInProduct.AccessRightInProduct.id = `op:Pass@${geoZonePeriodData.nocCode}@travel`;
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.accessRightsInProduct.AccessRightInProduct.ValidableElementRef.ref = `op:Pass@${geoZonePeriodData.nocCode}@travel`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@p-ticket`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].BrandingRef.ref = `op:@${geoZonePeriodData.operatorName}@brand`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].Name.$t = `${geoZonePeriodData.operatorName} - paper ticket`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].distributionAssignments.DistributionAssignment.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-GSOP@p-ticketon_board`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@m-ticket`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${geoZonePeriodData.nocCode}Pass`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@subscription`;
+
+
+
+
+        
         return priceFareFrameToUpdate;
     };
 
