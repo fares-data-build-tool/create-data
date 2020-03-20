@@ -150,7 +150,7 @@
 
 							<!-- What goes here? -->
 							<PrivateCode type="nocn">nocn:10129</PrivateCode>
-							
+
 							<Name></Name>
 							<ShortName></ShortName>
 							<TradingName></TradingName>
@@ -173,8 +173,8 @@
 				<!-- Metrobus Pass  products -->
 
 				<!-- DYNAMIC HERE... -->
-				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_NETWORK:FirstPass@pass:op" responsibilitySetRef="op:network_data">
-					<Name>FirstPass &amp; M  network </Name>
+				<FareFrame version="1.0" id="" responsibilitySetRef="op:network_data">
+					<Name></Name>
 					<!-- ...TO HERE? -->
 
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP" />
@@ -182,10 +182,7 @@
 						<DefaultResponsibilitySetRef version="1.0" ref="op:network_data" />
 					</FrameDefaults>
 					<prerequisites>
-
-						<!-- DYNAMIC HERE? -->
-						<ResourceFrameRef version="1.0" ref="epd:UK:FYSO:ResourceFrame_UK_PI_COMMON:FYSO:op" />
-
+						<ResourceFrameRef version="1.0" ref="" />
 					</prerequisites>
 					<!--==== Fare zones === NB These are just a guess from the map s -->
 					<fareZones>
@@ -196,12 +193,14 @@
 							<Name>South Yorks</Name>
 							<Description>South Yorskshire FirstPAss  zone.</Description>
 							<infoLinks>
-								<InfoLink typeOfInfoLink="map">https://www.travelsouthyorkshire.com/SheffieldBusNetworkMap/</InfoLink>
+								<InfoLink typeOfInfoLink="map"></InfoLink>
 							</infoLinks>
 							<types>
 								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
 							</types>
+							<members></members>
 							<projections>
+								<!-- How doe we get the below information for each fareZone? -->
 								<TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0077767">Sheffield</TopographicProjectionRef>
 								<TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0077771">Doncaster</TopographicProjectionRef>
 								<TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0077772">Rotherham</TopographicProjectionRef>
@@ -216,7 +215,7 @@
 
 								<!-- Is the below relevant considering we aren't using a map? -->
 								<InfoLink typeOfInfoLink="map">https://www.travelsouthyorkshire.com/SheffieldBusNetworkMap/</InfoLink>
-							
+
 							</infoLinks>
 							<members>
 								<!-- Is this ALL the stops in an area/region or just the stops the user gives us? -->
@@ -5230,7 +5229,7 @@
 						</FareDayType>
 					</dayTypes>
 				</ServiceCalendarFrame>
-				
+
 			</frames>
 		</CompositeFrame>
 		<!--   === COMMON UK FARE RESOURCES===  -->
