@@ -4,9 +4,14 @@ import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
 import { PERIOD_PRODUCT } from '../../constants/index';
 
+const isCurrency = (periodPriceInput: string) => {
+    const regex = /^\d+(\.\d{1,2})?$/
+    return regex.test(periodPriceInput)
+}
+
 const setPeriodProduct = (periodProductNameInput: string, periodProductPriceInput: string): PeriodProductType => ({
     productNameError: periodProductNameInput === '',
-    productPriceError: periodProductPriceInput === '' || !(Number(periodProductPriceInput) > 0),
+    productPriceError: periodProductPriceInput === '' || !(Number(periodProductPriceInput) > 0) || !isCurrency(periodProductPriceInput),
     productName: periodProductNameInput.replace(/^\s+|\s+$/g, ''),
     productPrice: periodProductPriceInput,
 });
