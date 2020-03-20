@@ -1,15 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
-import { PERIOD_PRODUCT } from '../../constants/index';
+import { PERIOD_PRODUCT } from '../../constants';
 
 const isCurrency = (periodPriceInput: string) => {
     const regex = /^\d+(\.\d{1,2})?$/;
     return regex.test(periodPriceInput);
 };
 
-const setPeriodProduct = (periodProductNameInput: string, periodProductPriceInput: string): PeriodProductType => ({
+const setPeriodProduct = (
+    periodProductNameInput: string,
+    periodProductPriceInput: string,
+    uuid: string,
+): PeriodProductType => ({
+    uuid,
     productNameError: periodProductNameInput === '',
     productPriceError:
         periodProductPriceInput === '' ||
@@ -26,6 +31,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
+        const uuid = getUuidFromCookie(req, res);
+
         const requestBody = JSON.stringify(req.body);
         const parsedBody = JSON.parse(requestBody);
 
@@ -38,7 +45,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             isNaN(periodProductPriceInput)
             // !Number.isInteger(Number(periodProductPriceInput)
         ) {
-            const validation: PeriodProductType = setPeriodProduct(periodProductNameInput, periodProductPriceInput);
+            const validation: PeriodProductType = setPeriodProduct(
+                periodProductNameInput,
+                periodProductPriceInput,
+                uuid,
+            );
 
             const validInputs = JSON.stringify(validation);
 
@@ -47,7 +58,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        const inputProductValues: PeriodProductType = setPeriodProduct(periodProductNameInput, periodProductPriceInput);
+        const inputProductValues: PeriodProductType = setPeriodProduct(
+            periodProductNameInput,
+            periodProductPriceInput,
+            uuid,
+        );
 
         setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT, JSON.stringify(inputProductValues), req, res);
 
