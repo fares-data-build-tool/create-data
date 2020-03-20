@@ -8,8 +8,9 @@ const title = 'Period Type - Fares data build tool';
 const description = 'Period Type selection page of the Fares data build tool';
 
 export interface PeriodTypeInterface {
+    uuid: string;
     error: boolean;
-    periodType?: string;
+    periodTypeName?: string;
 }
 
 const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {

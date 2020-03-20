@@ -24,10 +24,7 @@ describe('chooseValidity', () => {
         [{ validityInput: 367 }, { Location: '/chooseValidity' }],
         [{ validityInput: '0' }, { Location: '/chooseValidity' }],
         [{ validityInput: 0 }, { Location: '/chooseValidity' }],
-        [{ validityInput: '1' }, { Location: '/periodValidity' }],
         [{ validityInput: "[]'l..33" }, { Location: '/chooseValidity' }],
-        [{ validityInput: '366' }, { Location: '/periodValidity' }],
-        [{ validityInput: 6 }, { Location: '/periodValidity' }],
         [{ validityInput: '-1' }, { Location: '/chooseValidity' }],
     ];
 
@@ -38,10 +35,7 @@ describe('chooseValidity', () => {
     });
 
     it('should set the validity stages cookie according to the specified number of fare stages', () => {
-        const req = mockRequest({
-            body: { validityInput: '6' },
-            headers: { origin: 'test' },
-        });
+        const { req } = getMockRequestAndResponse({}, { validityInput: '6' });
 
         const mockSetCookies = jest.fn();
 
