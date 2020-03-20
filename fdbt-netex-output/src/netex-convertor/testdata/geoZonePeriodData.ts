@@ -5,7 +5,7 @@ const geoZonePeriodData = {
     productName: 'Leeds Park and Ride',
     productPrice: '20',
     fareZoneName: 'Leeds',
-    stops: [
+    stopAtcoCodes: [
         {
             stopName: 'Queenswood Grove',
             naptanCode: '32903623',
