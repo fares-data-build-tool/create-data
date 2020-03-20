@@ -3975,7 +3975,7 @@
 
 				<!-- DYNAMIC HERE... -->
 				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_PRODUCT:FirstPass@pass:op" responsibilitySetRef="op:tariffs">
-					<Name>First Pass  fare products and  </Name>
+					<Name>Fare products </Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" />
 					<FrameDefaults>
 						<DefaultCodespaceRef ref="op_data" />
@@ -4046,9 +4046,6 @@
 										<ValidityParameterGroupingType>XOR</ValidityParameterGroupingType>
 										<validityParameters>
 											<FareZoneRef version="1.0" ref="op:FirstPass@Sheffield" />
-											<FareZoneRef version="1.0" ref="op:FirstPass@Doncaster" />
-											<FareZoneRef version="1.0" ref="op:FirstPass@Rotherham" />
-											<FareZoneRef version="1.0" ref="op:FirstPass@South_Yorkshire" />
 										</validityParameters>
 									</GenericParameterAssignment>
 								</FareStructureElement>
@@ -4067,86 +4064,13 @@
 												</prices>
 												<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none" />
 											</UserProfile>
-											<UserProfile version="1.0" id="op:child">
-												<Name>Child</Name>
-												<Description>Available to children under 11.</Description>
-												<prices>
-													<UsageParameterPrice version="1.0" id="op:child">
-														<UsageParameterPriceRef version="1.0" ref="op:adult" />
-														<DiscountingRuleRef version="1.0" ref="op:half_price" />
-													</UsageParameterPrice>
-												</prices>
-												<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child" />
-												<MinimumAge>6</MinimumAge>
-												<MaximumAge>10</MaximumAge>
-											</UserProfile>
-											<UserProfile version="1.0" id="op:youth">
-												<Name>Child</Name>
-												<Description>Available to  young people aged 11-16 who show a Mega Travel Pass and young people aged 16-18 who show a Student Pass, issued by travelsouthyorkshire.com. Click to see more information on tickets for young people.</Description>
-												<prices>
-													<UsageParameterPrice version="1.0" id="op:youth">
-														<UsageParameterPriceRef version="1.0" ref="op:adult" />
-														<DiscountingRuleRef version="1.0" ref="op:half_price" />
-													</UsageParameterPrice>
-												</prices>
-												<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child" />
-												<MinimumAge>11</MinimumAge>
-												<MaximumAge>16</MaximumAge>
-												<ProofRequired>membershipCard</ProofRequired>
-											</UserProfile>
-											<UserProfile version="1.0" id="op:student">
-												<Name>Student</Name>
-												<prices>
-													<UsageParameterPrice version="1.0" id="op:student">
-														<UsageParameterPriceRef version="1.0" ref="op:adult" />
-														<DiscountingRuleRef version="1.0" ref="op:half_price" />
-													</UsageParameterPrice>
-												</prices>
-												<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:student" />
-												<MinimumAge>16</MinimumAge>
-												<ProofRequired>membershipCard</ProofRequired>
-											</UserProfile>
 										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@groups">
-									<Name>Available group tickets</Name>
-									<Description>Family ticket only for 1 day, cash or m-ticket.</Description>
-									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:groups" />
-									<GenericParameterAssignment id="op:Tariff@FirstPass@groups" version="1.0" order="1">
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible" />
-										<LimitationGroupingType>XOR</LimitationGroupingType>
-										<limitations>
-											<GroupTicket version="1.0" id="op:family">
-												<Name>Family</Name>
-												<Description>Up to 5 people. Minimum of 1 adult &amp; maximum of 2 adults.</Description>
-												<MaximumNumberOfPersons>5</MaximumNumberOfPersons>
-												<companionProfiles>
-													<CompanionProfile version="1.0" id="op:family@adult">
-														<UserProfileRef version="1.0" ref="op:adult" />
-														<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-														<MaximumNumberOfPersons>2</MaximumNumberOfPersons>
-													</CompanionProfile>
-													<CompanionProfile version="1.0" id="op:family@child">
-														<UserProfileRef version="1.0" ref="op:child" />
-														<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-														<MaximumNumberOfPersons>4</MaximumNumberOfPersons>
-													</CompanionProfile>
-												</companionProfiles>
-											</GroupTicket>
-										</limitations>
-										<ValidityParameterGroupingType>XOR</ValidityParameterGroupingType>
-										<validityParameters>
-											<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
-											<TypeOfTravelDocumentRef version="1.0" ref="op:m-ticket" />
-										</validityParameters>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1day" />
 									</GenericParameterAssignment>
 								</FareStructureElement>
 								<!-- allowed combinations of durations -->
 								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@durations@adult">
 									<Name>Available duration combination- </Name>
-									<Description>All periods allowed, 60 mins, but no evening - used in for some mticket, single FirstPass zone.</Description>
+									<Description>All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.</Description>
 									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations" />
 									<timeIntervals>
 										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1day" />

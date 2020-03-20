@@ -119,21 +119,36 @@ const periodTicketNetexGenerator = (
         const priceFareFrameToUpdate = { ...priceFareFrame };
 
         priceFareFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${geoZonePeriodData.nocCode}@pass:op`;
-        // priceFareFrameToUpdate.Name = { $t: operatorPublicNameLineNameFormat };
-        // priceFareFrameToUpdate.PricingParameterSet = {};
-        // priceFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
-        // priceFareFrameToUpdate.tariffs.Tariff.id = `Tariff@single@${lineIdName}`;
-        // priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
-        //     ValidBetween: {
-        //         FromDate: { $t: currentDate.toISOString() },
-        //         ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
-        //     },
-        // };
-
-        // priceFareFrameToUpdate.tariffs.Tariff.Name = { $t: `${operatorPublicNameLineNameFormat} - Single Fares` };
-        // priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = opIdNocFormat;
-        // priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = matchingData.nocCode;
-        // priceFareFrameToUpdate.tariffs.Tariff.LineRef.ref = matchingData.lineName;
+        priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${geoZonePeriodData.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${geoZonePeriodData.nocCode}@pass:op`;
+        priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${geoZonePeriodData.nocCode}`;
+        priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
+            ValidBetween: {
+                FromDate: { $t: currentDate.toISOString() },
+                ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
+            },
+        };
+        priceFareFrameToUpdate.tariffs.Tariff.Name = { $t: `${geoZonePeriodData.nocCode} - Tariff` };
+        priceFareFrameToUpdate.tariffs.Tariff.Description = { $t: `${geoZonePeriodData.nocCode} single zone tariff` };
+        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
+        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;
+        priceFareFrameToUpdate.tariffs.Tariff.geographicalIntervals.GeographicalInterval.id = `op:Tarfiff@${geoZonePeriodData.nocCode}@1zone`;
+        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[0].id = `op:Tarfiff@${geoZonePeriodData.nocCode}@1day`;
+        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[1].id = `op:Tarfiff@${geoZonePeriodData.nocCode}@1week`;
+        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[2].id = `op:Tarfiff@${geoZonePeriodData.nocCode}@4week`;
+        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[3].id = `op:Tarfiff@${geoZonePeriodData.nocCode}@1year`;
+        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[4].id = `op:Tarfiff@${geoZonePeriodData.nocCode}@1term`;
+        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[5].id = `op:Tarfiff@${geoZonePeriodData.nocCode}@1academic_year`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].id = `op:Tariff@${geoZonePeriodData.nocCode}@access_zones`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.id = `op:Tariff@${geoZonePeriodData.nocCode}@access_zones`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.FareZoneRef.ref = `op:${geoZonePeriodData.nocCode}@${geoZonePeriodData.fareZoneName}`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].id = `op:Tariff@${geoZonePeriodData.nocCode}@eligibitity`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.id = `op:Tariff@${geoZonePeriodData.nocCode}@eligibitity`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].id = `op:Tariff@${geoZonePeriodData.nocCode}@durations@adult`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[0].ref = `op:Tariff@${geoZonePeriodData.nocCode}@1day`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[1].ref = `op:Tariff@${geoZonePeriodData.nocCode}@1week`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[2].ref = `op:Tariff@${geoZonePeriodData.nocCode}@4week`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[3].ref = `op:Tariff@${geoZonePeriodData.nocCode}@1year`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.id = `op:Tariff@${geoZonePeriodData.nocCode}@adult_or_child`;
         // priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].Name = {
         //     $t: `O/D pairs for ${matchingData.lineName}`,
         // };
@@ -219,7 +234,7 @@ const periodTicketNetexGenerator = (
         // netexFrames.FareFrame[0] = updateZoneFareFrame(netexFrames.FareFrame[0]);
 
         // The second FareFrame is the ProductFareFrame which relates to the validity/name/price of the sales offer package
-        // netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
+        netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
 
         // The third FareFrame is the FareTableFareFrame which ties together each ParentFareZone/FareZone, with Prices, Validity, Media (TicketTypes) and UserTypes
         // netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
