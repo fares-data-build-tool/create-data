@@ -19,3 +19,22 @@
         }
     }
 }
+
+.govuk-currency-input {
+    &__inner {
+        position: relative;
+
+        &__unit {
+            font-family: Arial, Helvetica, sans-serif;
+            position: relative;
+            font-size: 20px;
+            left: 20px;
+            font-weight: bold;
+            vertical-align: baseline;
+        }
+
+        &__input {
+            padding-left: 25px;
+        }
+    }
+}

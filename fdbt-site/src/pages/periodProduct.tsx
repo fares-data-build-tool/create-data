@@ -63,22 +63,30 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                 Product Price
                             </label>
                             <span className="govuk-hint" id="product-price-hint">
-                                Please enter the price in pence for example £1.20 would be 120
+                                For example, £2.99
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
                                 <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
                                     Product price is a required field
                                 </span>
                             </span>
-                            <input
-                                className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input ${
-                                    productPriceError ? 'govuk-input--error' : ''
-                                } `}
-                                id="periodProductPrice"
-                                name="periodProductPriceInput"
-                                type="text"
-                                defaultValue={productPrice}
-                            />
+                            <div className="govuk-currency-input">
+                                <div className="govuk-currency-input__inner">
+                                    <span className="govuk-currency-input__inner__unit">£</span>
+                                    <input
+                                        className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input 
+                                        ${productPriceError ? 'govuk-input--error' : ''} 
+                                        `}
+                                        aria-label="Enter amount in pounds"
+                                        name="periodProductPriceInput"
+                                        data-non-numeric
+                                        type="text"
+                                        id="periodProductPrice"
+                                        pattern="^\d+(\.\d{1,2})?$"
+                                        defaultValue={productPrice}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <input
