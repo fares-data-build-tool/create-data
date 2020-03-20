@@ -1,5 +1,4 @@
 import fs from 'fs';
-import format from 'xml-formatter';
 import matchingdata from './testdata/matchingdata';
 import { OperatorData, ServiceData } from './types';
 import netexGenerator from './netexGenerator';
@@ -31,7 +30,7 @@ const service: ServiceData = {
 const netexGen = netexGenerator(matchingdata, operator, service);
 
 netexGen.generate().then((data: string) => {
-    fs.writeFile('./output/output.xml', format(data), {}, () => {
+    fs.writeFile('./output/output.xml', data, {}, () => {
         console.log('Written');
     });
 });
