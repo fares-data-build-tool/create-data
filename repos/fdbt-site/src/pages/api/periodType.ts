@@ -18,7 +18,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const uuid = getUuidFromCookie(req, res);
 
-        console.log('req', req.body);
         const { periodType } = req.body;
 
         if (!periodType) {
