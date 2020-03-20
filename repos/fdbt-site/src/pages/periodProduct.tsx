@@ -71,18 +71,20 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                 </span>
                             </span>
                             <div className="govuk-currency-input">
-                                <div className="govuk-currency-input__inner" >
+                                <div className="govuk-currency-input__inner">
                                     <span className="govuk-currency-input__inner__unit">£</span>
-                                        <input className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input 
+                                    <input
+                                        className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input 
                                         ${productPriceError ? 'govuk-input--error' : ''} 
-                                        `} 
-                                        aria-label="Enter amount in pounds" 
-                                        name="periodProductPriceInput" 
-                                        data-non-numeric type="text" 
-                                        id="periodProductPrice" 
+                                        `}
+                                        aria-label="Enter amount in pounds"
+                                        name="periodProductPriceInput"
+                                        data-non-numeric
+                                        type="text"
+                                        id="periodProductPrice"
                                         pattern="^\d+(\.\d{1,2})?$"
                                         defaultValue={productPrice}
-                                        />
+                                    />
                                 </div>
                             </div>
                         </div>
