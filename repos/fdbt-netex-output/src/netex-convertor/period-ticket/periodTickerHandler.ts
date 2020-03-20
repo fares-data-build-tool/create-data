@@ -2,7 +2,7 @@ import { S3Event } from 'aws-lambda';
 import periodTicketNetexGenerator from './periodTicketNetexGenerator';
 import * as dynamodb from '../data/dynamodb';
 import * as s3 from '../data/s3';
-import { OperatorData, GeoZonePeriodData } from '../types';
+import { OperatorData, GeographicalFareZonePass } from '../types';
 
 const getOperatorsTableData = async (nocCode: string): Promise<OperatorData> => {
     try {
@@ -37,11 +37,11 @@ const getOperatorsTableData = async (nocCode: string): Promise<OperatorData> => 
 
 export const periodTicketNetexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
-        const geoZonePeriodData: GeoZonePeriodData = await s3.fetchDataFromS3(event);
+        const geoFareZonePass: GeographicalFareZonePass = await s3.fetchDataFromS3(event);
 
-        const operatorData = await getOperatorsTableData(geoZonePeriodData.nocCode);
+        const operatorData = await getOperatorsTableData(geoFareZonePass.nocCode);
 
-        const netexGen = periodTicketNetexGenerator(geoZonePeriodData, operatorData);
+        const netexGen = periodTicketNetexGenerator(geoFareZonePass, operatorData);
         const generatedNetex = await netexGen.generate();
 
         const fileName = `.xml`;
