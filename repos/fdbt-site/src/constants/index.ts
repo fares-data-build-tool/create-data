@@ -28,6 +28,8 @@ export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
 
 export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
 
+export const PERIOD_EXPIRY = 'fdbt-period-expiry';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',

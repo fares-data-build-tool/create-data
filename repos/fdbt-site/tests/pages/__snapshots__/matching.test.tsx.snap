@@ -1317,7 +1317,7 @@ exports[`Matching Page should render correctly 1`] = `
       <input
         name="service"
         type="hidden"
-        value="{\\"lineName\\":\\"215\\",\\"nocCode\\":\\"DCCL\\",\\"operatorShortName\\":\\"DCC\\"}"
+        value="{\\"type\\":\\"pointToPoint\\",\\"lineName\\":\\"215\\",\\"nocCode\\":\\"DCCL\\",\\"operatorShortName\\":\\"DCC\\"}"
       />
       <input
         name="userfarestages"

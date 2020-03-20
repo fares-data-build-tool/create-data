@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { PERIOD_TYPE } from '../../constants';
 
@@ -16,18 +16,20 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
+        const uuid = getUuidFromCookie(req, res);
+
         const { periodType } = req.body;
 
         if (!periodType) {
-            const error: PeriodTypeInterface = { error: true };
+            const error: PeriodTypeInterface = { error: true, uuid };
             setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(error), req, res);
             redirectTo(res, '/periodType');
             return;
         }
 
-        const periodTypeCookie: PeriodTypeInterface = { error: false, periodType };
+        const periodTypeObject: PeriodTypeInterface = { error: false, periodTypeName: periodType, uuid };
 
-        setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(periodTypeCookie), req, res);
+        setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(periodTypeObject), req, res);
 
         if (periodType === 'geozone') {
             redirectTo(res, '/csvZoneUpload');
