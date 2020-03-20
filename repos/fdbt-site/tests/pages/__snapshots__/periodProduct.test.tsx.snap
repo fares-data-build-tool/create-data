@@ -86,7 +86,7 @@ exports[`pages periodProduct should render correctly 1`] = `
             className="govuk-hint"
             id="product-price-hint"
           >
-            Please enter the price in pence for example £1.20 would be 120
+            For example, £2.99
           </span>
           <span
             className="govuk-error-message"
@@ -98,13 +98,31 @@ exports[`pages periodProduct should render correctly 1`] = `
               Product price is a required field
             </span>
           </span>
-          <input
-            className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input  "
-            defaultValue=""
-            id="periodProductPrice"
-            name="periodProductPriceInput"
-            type="text"
-          />
+          <div
+            className="govuk-currency-input"
+          >
+            <div
+              className="govuk-currency-input__inner"
+            >
+              <span
+                className="govuk-currency-input__inner__unit"
+              >
+                £
+              </span>
+              <input
+                aria-label="Enter amount in pounds"
+                className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input 
+                                         
+                                        "
+                data-non-numeric={true}
+                defaultValue=""
+                id="periodProductPrice"
+                name="periodProductPriceInput"
+                pattern="^\\\\d+(\\\\.\\\\d{1,2})?$"
+                type="text"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <input

@@ -4,6 +4,11 @@ import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
 import { PERIOD_PRODUCT } from '../../constants';
 
+const isCurrency = (periodPriceInput: string) => {
+    const regex = /^\d+(\.\d{1,2})?$/;
+    return regex.test(periodPriceInput);
+};
+
 const setPeriodProduct = (
     periodProductNameInput: string,
     periodProductPriceInput: string,
@@ -11,7 +16,10 @@ const setPeriodProduct = (
 ): PeriodProductType => ({
     uuid,
     productNameError: periodProductNameInput === '',
-    productPriceError: periodProductPriceInput === '' || !(Number(periodProductPriceInput) > 0),
+    productPriceError:
+        periodProductPriceInput === '' ||
+        !(Number(periodProductPriceInput) > 0) ||
+        !isCurrency(periodProductPriceInput),
     productName: periodProductNameInput.replace(/^\s+|\s+$/g, ''),
     productPrice: periodProductPriceInput,
 });
@@ -34,8 +42,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             periodProductNameInput === '' ||
             periodProductPriceInput === '' ||
             // eslint-disable-next-line no-restricted-globals
-            isNaN(periodProductPriceInput) ||
-            !Number.isInteger(Number(periodProductPriceInput))
+            isNaN(periodProductPriceInput)
         ) {
             const validation: PeriodProductType = setPeriodProduct(
                 periodProductNameInput,
