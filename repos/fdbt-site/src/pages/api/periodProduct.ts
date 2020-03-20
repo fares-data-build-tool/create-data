@@ -43,7 +43,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             periodProductPriceInput === '' ||
             // eslint-disable-next-line no-restricted-globals
             isNaN(periodProductPriceInput)
-            // !Number.isInteger(Number(periodProductPriceInput)
         ) {
             const validation: PeriodProductType = setPeriodProduct(
                 periodProductNameInput,
