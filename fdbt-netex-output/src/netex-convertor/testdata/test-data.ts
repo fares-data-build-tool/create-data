@@ -488,6 +488,8 @@ export const fareZoneList = {
 
 export const expectedFareTables = [
     {
+        id: 'Trip@single-SOP@p-ticket@line_123@adult@c1@Acomb_Green_Lane',
+        version: '1.0',
         Description: { $t: 'Column 1' },
         Name: { $t: 'Acomb Green Lane' },
         cells: {
@@ -556,6 +558,8 @@ export const expectedFareTables = [
         },
     },
     {
+        id: 'Trip@single-SOP@p-ticket@line_123@adult@c2@Mattison_Way',
+        version: '1.0',
         Description: { $t: 'Column 2' },
         Name: { $t: 'Mattison Way' },
         cells: {
@@ -605,6 +609,8 @@ export const expectedFareTables = [
         },
     },
     {
+        id: 'Trip@single-SOP@p-ticket@line_123@adult@c3@Nursery_Drive',
+        version: '1.0',
         Description: { $t: 'Column 3' },
         Name: { $t: 'Nursery Drive' },
         cells: {
