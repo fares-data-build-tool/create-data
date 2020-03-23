@@ -31,6 +31,17 @@ jobs:
                   paths:
                       - './node_modules'
 
+    audit-netex-output-resources:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      npx audit-ci --moderate
+
     test-netex-output-resources:
         docker:
             - image: circleci/node:12
@@ -97,6 +108,15 @@ workflows:
             - build-netex-output-resources:
                   requires:
                       - checkout-repo
+                  filters:
+                      branches:
+                          only:
+                              - develop
+                              - master
+
+            - audit-netex-output-resources:
+                  requires:
+                      - build-netex-output-resources
                   filters:
                       branches:
                           only:

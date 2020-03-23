@@ -14,7 +14,7 @@ export const getScheduledStopPointsList = (fareZones: FareZone[]): {}[] =>
         id: `naptan:${stop.atcoCode}`,
         Name: { $t: stop.stopName },
         TopographicPlaceView: {
-            TopographicPlaceRef: { ref: `nptgLocality:${stop.localityCode}`},
+            TopographicPlaceRef: { ref: `nptgLocality:${stop.localityCode}` },
             Name: { $t: stop.localityName },
             QualifierName: { $t: stop.qualifierName },
         },
@@ -132,3 +132,14 @@ export const getFareTables = (columns: FareZone[], lineIdName: string): {}[] =>
             },
         };
     });
+
+export const getNetexMode = (mode: string): string => {
+    const modeMap: { [key: string]: string } = {
+        Bus: 'bus',
+        Coach: 'coach',
+        Tram: 'tram',
+        Ferry: 'ferry',
+    };
+
+    return modeMap[mode] ?? 'other';
+};
