@@ -40,6 +40,7 @@ interface DynamoNaptanInfo {
     ATCOCode: string;
     NptgLocalityCode: string;
     LocalityName: string;
+    ParentLocalityName: string;
     Indicator: string;
     Street: string;
 }
@@ -60,6 +61,7 @@ export interface Stop {
     atcoCode: string;
     localityCode: string;
     localityName: string;
+    parentLocalityName: string;
     indicator: string;
     street: string;
     qualifierName?: string;
@@ -156,7 +158,8 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
                     Keys: batch.map(code => ({
                         Partition: code,
                     })),
-                    ProjectionExpression: 'LocalityName,#in,Street,CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
+                    ProjectionExpression:
+                        'LocalityName,ParentLocalityName#in,Street,CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
                 },
             },
         };
@@ -176,6 +179,10 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
             atcoCode: item.ATCOCode,
             localityCode: item.NptgLocalityCode,
             localityName: item.LocalityName,
+            parentLocalityName:
+                item.ParentLocalityName && item.ParentLocalityName !== 'true' && item.ParentLocalityName !== 'false'
+                    ? item.ParentLocalityName
+                    : '',
             indicator: item.Indicator,
             street: item.Street,
         }));
