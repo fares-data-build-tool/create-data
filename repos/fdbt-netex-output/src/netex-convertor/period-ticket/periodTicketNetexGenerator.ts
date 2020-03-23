@@ -179,48 +179,67 @@ const periodTicketNetexGenerator = (
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@m-ticket`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${geoZonePeriodData.nocCode}Pass`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@subscription`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].Name.$t = operatorData.publicName;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@subscription@subscribing`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.limitations.Subscribing.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@subscription@subscribing`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.limitations.Subscribing.possibleInstallmentIntervals.TimeIntervalRef.ref = `op:Tariff@${geoZonePeriodData.nocCode}@4week`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].distributionAssignments.DistributionAssignment.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-GSOP@subscription@online`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].salesOfferPackageElements.SalesOfferPackageElement.id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@subscription`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${geoZonePeriodData.nocCode}Pass`;
 
-
-
-
-        
         return priceFareFrameToUpdate;
     };
 
-    // const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
-    //     const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
+    const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
+        const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
 
-    //     fareTableFareFrameToUpdate.id = `operator@Products@Trip@prices@${lineIdName}`;
-    //     fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
-    //     fareTableFareFrameToUpdate.priceGroups.PriceGroup.push({
-    //         id: `operator@Products@Trip@${lineIdName}@adults`,
-    //         Name: { $t: 'A list of all the prices' },
-    //         DistanceMatrixElementPriceRef: getDistanceMatrixElementsPriceRefs(matchingData.fareZones, lineIdName),
-    //     });
-    //     fareTableFareFrameToUpdate.fareTables.FareTable.id = `Trip@single-SOP@p-ticket@${lineIdName}@adult`;
-    //     fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = serviceData.serviceDescription;
-    //     fareTableFareFrameToUpdate.fareTables.FareTable.usedIn.TariffRef.ref = `Tariff@single@${lineIdName}`;
-    //     fareTableFareFrameToUpdate.fareTables.FareTable.specifics.LineRef.ref = lineIdName;
-
-    //     fareTableFareFrameToUpdate.fareTables.FareTable.columns.FareTableColumn = getFareTableElements(
-    //         [...matchingData.fareZones],
-    //         lineIdName,
-    //         'c',
-    //     );
-
-    //     fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow = getFareTableElements(
-    //         [...matchingData.fareZones].reverse(),
-    //         lineIdName,
-    //         'r',
-    //     );
-
-    //     fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable = getFareTables(
-    //         [...matchingData.fareZones].slice(0, -1),
-    //         lineIdName,
-    //     );
-
-    //     return fareTableFareFrameToUpdate;
-    // };
+        fareTableFareFrameToUpdate.id = `epd:UK:${geoZonePeriodData.nocCode}:FareFrame_UK_PI_FARE_PRICE:${operatorData.publicName}Pass@pass:op`;
+        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${geoZonePeriodData.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${operatorData.publicName}Pass@pass:op`;
+        fareTableFareFrameToUpdate.PricingParameterSet.id = `op:Pass@${operatorData.publicName}Pass`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.id = `op:Pass@${operatorData.publicName}Pass`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.pricesFor.PreassignedFareProductRef.ref = `op:Pass@${operatorData.publicName}Pass`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.usedIn.TariffRef.ref = `op:Tariff@${operatorData.publicName}Pass`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[0].id = `op:${operatorData.publicName}Pass@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[0].representing.TimeIntervalRef.ref = `op:Tariff@${operatorData.publicName}Pass@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[1].id = `op:${operatorData.publicName}Pass@1week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[1].representing.TimeIntervalRef.ref = `op:Tariff@${operatorData.publicName}Pass@1week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[2].id = `op:${operatorData.publicName}Pass@4week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[2].representing.TimeIntervalRef.ref = `op:Tariff@${operatorData.publicName}Pass@4week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[3].id = `op:${operatorData.publicName}Pass@4week-Unlimited`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[3].representing.TimeIntervalRef.ref = `op:Tariff@${operatorData.publicName}Pass@4week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].id = `op:${operatorData.publicName}Pass@1year`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].representing.TimeIntervalRef.ref = `op:Tariff@${operatorData.publicName}Pass@1year`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].id = `op:${operatorData.publicName}Pass@1term`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].representing.TimeIntervalRef.ref = `op:Tariff@${operatorData.publicName}Pass@1term`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].id = `op:${operatorData.publicName}Pass@1academic_year`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].representing.TimeIntervalRef.ref = `op:Tariff@${operatorData.publicName}Pass@1academic_year`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.Name.$t = geoZonePeriodData.fareZoneName;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.specifics.TariffZoneRef.ref = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.Name.$t = operatorData.publicName;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.representing.TariffZoneRef.ref = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.Name.$t = `${operatorData.publicName}Pass - Cash`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.pricesFor.SalesOfferPackageRef.ref = `op:Pass@${operatorData.publicName}Pass-SOP@p-ticket`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.specifics.TypeOfTravelDocumentRef.ref = `op:p-ticket`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.Name.$t = `${operatorData.publicName}Pass - Cash - Adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].TimeIntervalPrice.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].TimeIntervalPrice.TimeIntervalRef.ref = `op:@Tariff@${operatorData.publicName}@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].ColumnRef.ref = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].RowRef.ref = `op:${operatorData.publicName}Pass@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult@1week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].TimeIntervalPrice.id = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult@1week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].TimeIntervalPrice.TimeIntervalRef.ref = `op:@Tariff@${operatorData.publicName}@1week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].ColumnRef.ref = `op:${operatorData.publicName}Pass@${geoZonePeriodData.fareZoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].RowRef.ref = `op:${operatorData.publicName}Pass@1week`;
+        
+        return fareTableFareFrameToUpdate;
+    };
 
     const generate = async (): Promise<string> => {
         const netexJson = await getNetexTemplateAsJson();
@@ -231,13 +250,10 @@ const periodTicketNetexGenerator = (
         netexPublicationDelivery.PublicationRequest = updatePublicationRequest(
             netexPublicationDelivery.PublicationRequest,
         );
-        // console.log(netexPublicationDelivery.PublicationTimestamp)
-        // console.log(netexPublicationDelivery.PublicationRequest)
 
         netexPublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(
             netexPublicationDelivery.dataObjects.CompositeFrame[0],
         );
-        // console.log(netexPublicationDelivery.dataObjects.CompositeFrame[0])
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
         netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
@@ -251,7 +267,7 @@ const periodTicketNetexGenerator = (
         netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
 
         // The third FareFrame is the FareTableFareFrame which ties together each ParentFareZone/FareZone, with Prices, Validity, Media (TicketTypes) and UserTypes
-        // netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
+        netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
 
         return convertJsonToXml(netexJson);
     };
