@@ -19,7 +19,10 @@ export interface Stop {
     atcoCode: string;
     localityCode: string;
     localityName: string;
-    qualifierName: string;
+    parentLocalityName: string;
+    qualifierName?: string;
+    indicator?: string;
+    street?: string;
 }
 
 export interface FareZonePrices {
@@ -47,7 +50,7 @@ export interface GeographicalFareZonePass {
     productName: string;
     productPrice: string;
     fareZoneName: string;
-    stopAtcoCodes: {}[];
+    stops: Stop[];
     daysValid: string;
     expiryRules: string;
 }
