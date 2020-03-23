@@ -10,7 +10,7 @@ const publicName = 'IWBus Transport';
 const vosaPSVLicenseName = 'IWBus Transport Ltd'; // eslint-disable-line @typescript-eslint/camelcase
 const fareEnq = '0113 111 1111';
 const complEnq = 'Apsley Hpuse, 1 Wellington Street, Leeds, LS1 AAA';
-const mode = 'bus';
+const mode = 'Bus';
 
 const operator: OperatorData = {
     website,

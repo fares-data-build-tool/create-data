@@ -8,6 +8,7 @@ import {
     getDistanceMatrixElements,
     getFareTables,
     getFareTableElements,
+    getNetexMode,
 } from './netexHelpers';
 
 interface NetexObject {
@@ -27,7 +28,7 @@ const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
 
 const convertJsonToXml = (netexFileAsJsObject: NetexObject): string => {
     const netexFileAsJsonString = JSON.stringify(netexFileAsJsObject);
-    const netexFileAsXmlString = parser.toXml(netexFileAsJsonString, { sanitize: true });
+    const netexFileAsXmlString = parser.toXml(netexFileAsJsonString, { sanitize: true, ignoreNull: true });
 
     return netexFileAsXmlString;
 };
@@ -90,7 +91,7 @@ const netexGenerator = (
         resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.vosaPSVLicenseName; // eslint-disable-line @typescript-eslint/camelcase
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
         resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
-        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = operatorData.mode;
+        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(operatorData.mode);
         resourceFrameToUpdate.organisations.Operator.CustomerServiceContactDetails.Email.$t = operatorData.ttrteEnq;
 
         return resourceFrameToUpdate;
