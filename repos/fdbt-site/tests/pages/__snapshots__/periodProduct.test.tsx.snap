@@ -50,7 +50,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           </label>
           <span
             className="govuk-hint"
-            id="product-price-hint"
+            id="product-name-hint"
           >
             Please enter the name of your product
           </span>
@@ -78,7 +78,7 @@ exports[`pages periodProduct should render correctly 1`] = `
         >
           <label
             className="govuk-label"
-            htmlFor="periodProductName"
+            htmlFor="periodProductPrice"
           >
             Product Price
           </label>
