@@ -15,9 +15,10 @@ import java.io.IOException;
 
 public class S3 {
 
-    public String getObjectContentAsStringFromS3(String bucketName, String key) throws IOException {
-        Regions clientRegion = Regions.DEFAULT_REGION;
+    Regions clientRegion = Regions.EU_WEST_2;
 
+    public String getObjectContentAsStringFromS3(String bucketName, String key) throws IOException {
+    
         S3Object fullObject = null;
 
         try {
@@ -46,14 +47,13 @@ public class S3 {
                 fullObject.close();
             }
         }
-
     }
 
     public void putObjectInValidatedBucket(String bucketName, String key, String content){
 
         System.out.format("Uploading %s to S3 bucket %s...\n", key, bucketName);
 
-        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.DEFAULT_REGION).build();
+        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(clientRegion).build();
 
         try {
             s3.putObject(bucketName, key, content);

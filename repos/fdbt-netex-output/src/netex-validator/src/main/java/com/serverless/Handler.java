@@ -26,6 +26,8 @@ public class Handler implements RequestHandler<S3Event, String> {
 			System.err.println(e.getMessage());
 		}
 
+		System.out.println(content);
+
 		NetexValidator netexValidator = new NetexValidator();
 
 		if(content == null || content.isEmpty()){

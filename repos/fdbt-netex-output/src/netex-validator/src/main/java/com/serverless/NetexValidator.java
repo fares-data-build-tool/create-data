@@ -18,15 +18,27 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
-class NetexValidator {
+public class NetexValidator {
     ValidationResult validationResult;
+
     public ValidationResult isNetexValid(String netex) {
+
         URL schemaFile = null;
-        try {
-            schemaFile = new URL(System.getenv("XSD_URL"));
-        } catch (MalformedURLException e1) {
-            e1.printStackTrace();
+
+        if (System.getenv("XSD_URL") == null) {
+            try {
+                schemaFile = new URL("http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                schemaFile = new URL(System.getenv("XSD_URL"));
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
         }
+        
         if (schemaFile != null) {
 
             final ByteArrayInputStream netexAsStream = new ByteArrayInputStream(netex.getBytes(StandardCharsets.UTF_8));
