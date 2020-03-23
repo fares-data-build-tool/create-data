@@ -82,7 +82,6 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                         data-non-numeric
                                         type="text"
                                         id="periodProductPrice"
-                                        pattern="^\d+(\.\d{1,2})?$"
                                         defaultValue={productPrice}
                                     />
                                 </div>
