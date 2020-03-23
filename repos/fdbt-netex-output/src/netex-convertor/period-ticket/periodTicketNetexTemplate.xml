@@ -171,12 +171,8 @@
 				</ResourceFrame>
 				<!--==== FAREs ==== -->
 				<!-- Metrobus Pass  products -->
-
-				<!-- DYNAMIC HERE... -->
 				<FareFrame version="1.0" id="" responsibilitySetRef="op:network_data">
 					<Name></Name>
-					<!-- ...TO HERE? -->
-
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP" />
 					<FrameDefaults>
 						<DefaultResponsibilitySetRef version="1.0" ref="op:network_data" />
@@ -186,12 +182,9 @@
 					</prerequisites>
 					<!--==== Fare zones === NB These are just a guess from the map s -->
 					<fareZones>
-						<FareZone version="1.0" id="op:FirstPass@South_Yorkshire">
+						<FareZone version="1.0" id="">
 							<Name></Name>
 							<Description></Description>
-							<infoLinks>
-								<InfoLink typeOfInfoLink="map"></InfoLink>
-							</infoLinks>
 							<types>
 								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
 							</types>
