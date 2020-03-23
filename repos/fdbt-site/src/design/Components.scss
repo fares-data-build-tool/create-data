@@ -23,15 +23,15 @@
 .govuk-currency-input {
     &__inner {
         position: relative;
-        margin-left: -10px;
 
         &__unit {
-            font-family: Arial, Helvetica, sans-serif;
-            position: relative;
+            font-family: Arial,Helvetica,sans-serif;
+            position: absolute;
             font-size: 20px;
-            left: 20px;
-            font-weight: bold;
-            vertical-align: baseline;
+            left: 10px;
+            top: 50%;
+            font-weight: 700;
+            transform: translateY(-50%);
         }
 
         &__input {
