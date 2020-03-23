@@ -23,6 +23,7 @@
 .govuk-currency-input {
     &__inner {
         position: relative;
+        margin-left: -10px;
 
         &__unit {
             font-family: Arial, Helvetica, sans-serif;
@@ -34,7 +35,7 @@
         }
 
         &__input {
-            padding-left: 25px;
+            padding-left: 20px;
         }
     }
 }
