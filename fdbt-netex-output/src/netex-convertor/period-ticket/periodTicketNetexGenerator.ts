@@ -1,7 +1,7 @@
 import parser from 'xml2json';
 import fs from 'fs';
 import { OperatorData, GeographicalFareZonePass } from '../types';
-import { NetexObject } from './periodTicketNetexHelpers';
+import { NetexObject, getScheduledStopPointsList, getTopographicProjectionRef } from './periodTicketNetexHelpers';
 import geoZonePeriodData from '../testdata/geoZonePeriodData';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
@@ -29,7 +29,7 @@ const periodTicketNetexGenerator = (
     // What is the difference between opId and nocCode below?
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${geoFareZonePass.nocCode}`;
-    const periodProductNameOpFormat = `op:Pass@${geoFareZonePass.productName}`
+    const periodProductNameOpFormat = `op:Pass@${geoFareZonePass.productName}`;
     // Should the below contain operatorData.publicName OR operatorData.opId?
     const opIdBrandFormat = `${operatorData.opId}@brand`;
     const currentDate = new Date(Date.now());
@@ -93,7 +93,7 @@ const periodTicketNetexGenerator = (
         const siteFrameToUpdate = { ...siteFrame };
 
         siteFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:SiteFrame_UK_PI_STOP:sale_pois:op`;
-        siteFrameToUpdate.Name.$t = `Common site elements for ${geoFareZonePass.nocCode}: Travel Shops`
+        siteFrameToUpdate.Name.$t = `Common site elements for ${geoFareZonePass.nocCode}: Travel Shops`;
 
         return siteFrameToUpdate;
     };
@@ -111,14 +111,14 @@ const periodTicketNetexGenerator = (
 
         networkFareFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${geoFareZonePass.productName}@pass:op`;
         networkFareFrameToUpdate.Name.$t = `${geoFareZonePass.productName} Network`;
-        networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${geoFareZonePass.nocCode}:ResourceFrame_UK_PI_COMMON:${geoFareZonePass.nocCode}:op`
+        networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${geoFareZonePass.nocCode}:ResourceFrame_UK_PI_COMMON:${geoFareZonePass.nocCode}:op`;
         networkFareFrameToUpdate.fareZones.FareZone[0].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
         networkFareFrameToUpdate.fareZones.FareZone[0].Name = `${geoFareZonePass.fareZoneName}`;
         networkFareFrameToUpdate.fareZones.FareZone[0].Description = `${geoFareZonePass.fareZoneName} ${geoFareZonePass.productName} Zone`;
-
-        // TODO: NEED TO USE THE STOPS ON GEOFAREZONEPASS TO QUERY THE NAPTAN TABLE FOR STOPS INFO AND NPTG LOCALITY INFO
-        // networkFareFrameToUpdate.fareZones.FareZone[0].members = getScheduledStopPointsList()
-        // networkFareFrameToUpdate.fareZones.FareZone[0].projections = 
+        networkFareFrameToUpdate.fareZones.FareZone[0].members.ScheduledStopPointRef = getScheduledStopPointsList(
+            geoFareZonePass.stops,
+        );
+        networkFareFrameToUpdate.fareZones.FareZone[0].projections.TopopgraphicProjectionRef = getTopographicProjectionRef(geoFareZonePass.stops);
 
         return networkFareFrameToUpdate;
     };
@@ -180,10 +180,6 @@ const periodTicketNetexGenerator = (
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${geoZonePeriodData.nocCode}Pass`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].id = `op:Pass@${geoZonePeriodData.nocCode}Pass-SOP@subscription`;
 
-
-
-
-        
         return priceFareFrameToUpdate;
     };
 
