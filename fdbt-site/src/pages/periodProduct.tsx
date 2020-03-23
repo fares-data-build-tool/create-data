@@ -39,7 +39,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             <label className="govuk-label" htmlFor="periodProductName">
                                 Product Name
                             </label>
-                            <span className="govuk-hint" id="product-price-hint">
+                            <span className="govuk-hint" id="product-name-hint">
                                 Please enter the name of your product
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
@@ -59,7 +59,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             />
                         </div>
                     <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                        <label className="govuk-label" htmlFor="periodProductName">
+                        <label className="govuk-label" htmlFor="periodProductPrice">
                             Product Price
                         </label>
                         <span className="govuk-hint" id="product-price-hint">
