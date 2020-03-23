@@ -62,8 +62,8 @@ export interface Stop {
     localityCode: string;
     localityName: string;
     parentLocalityName: string;
-    indicator: string;
-    street: string;
+    indicator?: string;
+    street?: string;
     qualifierName?: string;
 }
 

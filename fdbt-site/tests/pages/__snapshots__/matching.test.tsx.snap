@@ -86,49 +86,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -170,49 +170,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -254,49 +254,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -338,49 +338,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -422,49 +422,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -506,49 +506,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -590,49 +590,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -674,49 +674,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -758,49 +758,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -842,49 +842,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -926,49 +926,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -1010,49 +1010,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -1094,49 +1094,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -1178,49 +1178,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
@@ -1262,49 +1262,49 @@ exports[`Matching Page should render correctly 1`] = `
                   </option>
                   <option
                     key="Acomb Green Lane"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
                   >
                     Acomb Green Lane
                   </option>
                   <option
                     key="Mattison Way"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Mattison Way\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Mattison Way\\"}"
                   >
                     Mattison Way
                   </option>
                   <option
                     key="Nursery Drive"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Nursery Drive\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Nursery Drive\\"}"
                   >
                     Nursery Drive
                   </option>
                   <option
                     key="Holl Bank/Beech Ave"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Holl Bank/Beech Ave\\"}"
                   >
                     Holl Bank/Beech Ave
                   </option>
                   <option
                     key="Cambridge Street (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Cambridge Street (York)\\"}"
                   >
                     Cambridge Street (York)
                   </option>
                   <option
                     key="Blossom Street"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Blossom Street\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Blossom Street\\"}"
                   >
                     Blossom Street
                   </option>
                   <option
                     key="Rail Station (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Rail Station (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Rail Station (York)\\"}"
                   >
                     Rail Station (York)
                   </option>
                   <option
                     key="Piccadilly (York)"
-                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
+                    value="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Piccadilly (York)\\"}"
                   >
                     Piccadilly (York)
                   </option>
