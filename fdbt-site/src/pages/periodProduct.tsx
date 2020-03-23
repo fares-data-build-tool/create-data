@@ -48,7 +48,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                 </span>
                             </span>
                             <input
-                                className={`govuk-input govuk-input--width-30 govuk-currency-input__inner__input ${
+                                className={`govuk-input govuk-input--width-30 govuk-product-name-input__inner__input ${
                                     productNameError ? 'govuk-input--error' : ''
                                 } `}
                                 id="periodProductName"
@@ -58,35 +58,33 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                 defaultValue={productName}
                             />
                         </div>
-                        <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductName">
-                                Product Price
-                            </label>
-                            <span className="govuk-hint" id="product-price-hint">
-                                For example, £2.99
+                    <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
+                        <label className="govuk-label" htmlFor="periodProductName">
+                            Product Price
+                        </label>
+                        <span className="govuk-hint" id="product-price-hint">
+                            For example, £2.99
+                        </span>
+                        <span id="product-price-error" className="govuk-error-message">
+                            <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
+                                Product price is a required field
                             </span>
-                            <span id="product-price-error" className="govuk-error-message">
-                                <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
-                                    Product price is a required field
-                                </span>
-                            </span>
-                            <div className="govuk-currency-input">
-                                <div className="govuk-currency-input__inner">
-                                    <span className="govuk-currency-input__inner__unit">£</span>
-                                    <input
-                                        className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input 
-                                        ${productPriceError ? 'govuk-input--error' : ''} 
-                                        `}
-                                        aria-label="Enter amount in pounds"
-                                        name="periodProductPriceInput"
-                                        data-non-numeric
-                                        type="text"
-                                        id="periodProductPrice"
-                                        defaultValue={productPrice}
-                                    />
-                                </div>
+                        </span>
+                        <div className="govuk-currency-input">
+                            <div className="govuk-currency-input__inner">
+                                <span className="govuk-currency-input__inner__unit">£</span>
+                                <input
+                                    className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input ${productPriceError ? 'govuk-input--error' : ''}`}
+                                    aria-label="Enter amount in pounds"
+                                    name="periodProductPriceInput"
+                                    data-non-numeric
+                                    type="text"
+                                    id="periodProductPrice"
+                                    defaultValue={productPrice}
+                                />
                             </div>
                         </div>
+                    </div>
                     </div>
                     <input
                         type="submit"
