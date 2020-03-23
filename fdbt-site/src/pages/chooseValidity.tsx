@@ -25,27 +25,25 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/chooseValidity" method="post">
-                    <div className={`govuk-form-group ${isError ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                    <div className="govuk-form-group">
+                        <fieldset className="govuk-fieldset" aria-describedby="choose-validity-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
                                     What duration is your product valid for?
                                 </h1>
-                            </legend>
-                            <div>
-                                <label className="govuk-hint hint-text" htmlFor="validity">
+                                <p className="govuk-hint hint-text">
                                     Product: {productName} - {productPrice}
+                                </p>
+                            </legend>
+                            <div className={`govuk-form-group ${isError ? 'govuk-form-group--error' : ''}`}>
+                                <label className="govuk-label" htmlFor="validity">
+                                    How many days is your product valid for?
                                 </label>
-                            </div>
-                            <label className="govuk-label" htmlFor="validity">
-                                How many days is your product valid for?
-                            </label>
-                            <div className="govuk-form-group">
-                                <label className="govuk-hint hint-text" htmlFor="validity">
+                                <p className="govuk-hint hint-text">
                                     Please enter a whole number, for example a day ticket would be 1 and two weeks would
                                     be 14
-                                </label>
-                                <span id="product-price-error" className="govuk-error-message">
+                                </p>
+                                <span id="product-validity-error" className="govuk-error-message">
                                     <span className={isError ? '' : 'govuk-visually-hidden'}>{error}</span>
                                 </span>
                                 <input
