@@ -11,7 +11,7 @@ export const getScheduledStopPointsList = (stops: Stop[]): {}[] => stops.map((st
 }));
 
 export const getTopographicProjectionRef = (stops: Stop[]): {}[] => stops.map((stop: Stop) => ({
-    versionRef: "nptg:EXTERNAL",
+    versionRef: 'nptg:EXTERNAL',
     ref: `nptgLocality:${stop.localityCode}`,
     $t: `${stop.street}, ${stop.localityName}, ${stop.parentLocalityName}`
 }))
