@@ -25,19 +25,11 @@ public class NetexValidator {
 
         URL schemaFile = null;
 
-        if (System.getenv("XSD_URL") == null) {
-            try {
-                schemaFile = new URL("http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd");
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        } else {
             try {
                 schemaFile = new URL(System.getenv("XSD_URL"));
             } catch (MalformedURLException e1) {
                 e1.printStackTrace();
             }
-        }
         
         if (schemaFile != null) {
 
