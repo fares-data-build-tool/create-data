@@ -48,6 +48,7 @@ public class NetexValidator {
                 final Schema schema = schemaFactory.newSchema(schemaFile);
                 final Validator validator = schema.newValidator();
                 final List<SAXParseException> exceptions = new LinkedList<SAXParseException>();
+
                 validator.setErrorHandler(new ErrorHandler() {
                     @Override
                     public void warning(SAXParseException exception) throws SAXException {
@@ -64,10 +65,13 @@ public class NetexValidator {
                         exceptions.add(exception);
                     }
                 });
+
                 validator.validate(xmlFile);
+
                 if (exceptions.size() > 0) {
                     return validationResult = new ValidationResult(false, exceptions);
                 }
+
                 return validationResult = new ValidationResult(true);
 
             } catch (SAXException e) {
@@ -76,6 +80,7 @@ public class NetexValidator {
                 e.printStackTrace();
             }
         }
-        return validationResult = new ValidationResult(false, null);
+        System.out.println("HIT");
+        return validationResult = new ValidationResult(false);
     }
 }
