@@ -3,7 +3,8 @@ import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
-import { OPERATOR_COOKIE } from '../constants';
+import { ALL_COOKIES, OPERATOR_COOKIE } from '../constants/index';
+
 import { Stop } from '../data/dynamodb';
 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
@@ -13,6 +14,16 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
         const domain = host ? host.split(':')[0] : '';
 
         cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
+    }
+};
+
+export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
+    if (ctx.req && ctx.res) {
+        const cookies = new Cookies(ctx.req, ctx.res);
+        const host = ctx?.req?.headers?.host;
+        const domain = host ? host.split(':')[0] : '';
+
+        ALL_COOKIES.map(cookieName => cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' }));
     }
 };
 

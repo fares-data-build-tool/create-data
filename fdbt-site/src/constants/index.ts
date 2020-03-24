@@ -28,6 +28,23 @@ export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
 
 export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
 
+export const ALL_COOKIES: string[] = [
+    'fdbt-operator',
+    'fdbt-faretype',
+    'fdbt-service',
+    'fdbt-journey',
+    'fdbt-fare-stages',
+    'fdbt-stage-names-validation',
+    'fdbt-stage-names',
+    'fdbt-price-entry',
+    'fdbt-days-valid',
+    'fdbt-period-product',
+    'fdbt-period-type',
+    'fdbt-csv-upload',
+    'fdbt-csv-zone-upload',
+    'fdbt-period-expiry',
+];
+
 export const PERIOD_EXPIRY = 'fdbt-period-expiry';
 
 export const ALLOWED_CSV_FILE_TYPES = [
