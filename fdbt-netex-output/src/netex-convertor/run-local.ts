@@ -26,15 +26,9 @@ const operator: OperatorData = {
     mode,
 };
 
-const service: ServiceData = {
-    serviceDescription: 'Test Description',
-};
 
-const netexGen = singleTicketNetexGenerator(matchingdata, operator, service);
-// const netexGen = periodTicketNetexGenerator(geoZonePeriodData, operator);
 
 netexGen.generate().then((data: string) => {
-    fs.writeFile('./output/output.xml', data, {}, () => {
         console.log('Written');
     });
 });
