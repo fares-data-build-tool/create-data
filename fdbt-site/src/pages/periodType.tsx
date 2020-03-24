@@ -53,7 +53,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                         className="govuk-label govuk-radios__label"
                                         htmlFor="periodtype-single-set-service"
                                     >
-                                        A ticket for a single or select set of services
+                                        A ticket for some or all of your network of services
                                     </label>
                                 </div>
                                 <div className="govuk-radios__item">
@@ -67,7 +67,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                         aria-disabled="true"
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
-                                        A ticket for your network of services
+                                        A ticket for services across multiple operators
                                     </label>
                                 </div>
                             </div>
