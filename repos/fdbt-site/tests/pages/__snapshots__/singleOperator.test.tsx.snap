@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages singleOperator should render correctly 1`] = `
+<Layout
+  description="Single Operator selection page of the Fares data build tool"
+  title="Which service(s) is the ticket valid for"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/singleOperator"
+      method="post"
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          aria-describedby="periodtype-page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="periodtype-page-heading"
+            >
+              Which services(s)?
+            </h1>
+          </legend>
+          <span
+            className="govuk-error-message"
+            id="radio-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Please select an option
+            </span>
+          </span>
+        </fieldset>
+        <fieldset
+          aria-describedby="waste-hint"
+          className="govuk-fieldset"
+        >
+          <span
+            className="govuk-hint"
+            id="waste-hint"
+          >
+            Select all service that apply
+          </span>
+          <div
+            className="govuk-checkboxes"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
