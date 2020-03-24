@@ -1,5 +1,4 @@
 import fs from 'fs';
-import format from 'xml-formatter';
 // import matchingdata from './testdata/matchingdata';
 import geoZonePeriodData from './testdata/geoZonePeriodData';
 import { OperatorData } from './types';
@@ -34,7 +33,7 @@ const operator: OperatorData = {
 const netexGen = periodTicketNetexGenerator(geoZonePeriodData, operator);
 
 netexGen.generate().then((data: string) => {
-    fs.writeFile('./output/output.xml', format(data), {}, () => {
+    fs.writeFile('./output/output.xml', data, {}, () => {
         console.log('Written');
     });
 });
