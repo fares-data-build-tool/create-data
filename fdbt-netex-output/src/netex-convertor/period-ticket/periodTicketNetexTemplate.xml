@@ -182,17 +182,33 @@
 						<FareZone version="1.0" id="">
 							<Name></Name>
 							<Description></Description>
+							<infoLinks>
+								<InfoLink typeOfInfoLink="map"></InfoLink>
+							</infoLinks>
 							<types>
 								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
 							</types>
-							<members></members>
-							<projections></projections>
+							<ZoneTopology>nested</ZoneTopology>
+						</FareZone>
+						<FareZone version="1.0" id="">
+							<Name></Name>
+							<Description></Description>
+							<types>
+								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
+							</types>
+							<members>
+								<ScheduledStopPointRef></ScheduledStopPointRef>
+							</members>
+							<projections>
+								<TopographicProjectionRef></TopographicProjectionRef>
+							</projections>
+							<ParentFareZoneRef version="1.0" ref=""/>
 							<ZoneTopology>nested</ZoneTopology>
 							<ScopingMethod>explicitStops</ScopingMethod>
 						</FareZone>
 					</fareZones>
 				</FareFrame>
-				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_PRODUCT:FirstPass@pass:op" responsibilitySetRef="op:tariffs">
+				<FareFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
 					<Name>Fare products </Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" />
 					<FrameDefaults>
@@ -200,77 +216,77 @@
 						<DefaultResponsibilitySetRef version="1.0" ref="op:tariffs" />
 					</FrameDefaults>
 					<prerequisites>
-						<FareFrameRef version="1.0" ref="epd:UK:FYSO:FareFrame_UK_PI_FARE_NETWORK:FirstPass@pass:op" />
+						<FareFrameRef version="1.0" ref="" />
 					</prerequisites>
 					<!--====Tariff Structure ==== -->
 					<tariffs>
-						<Tariff version="1.0" id="op:Tariff@FirstPass">
+						<Tariff version="1.0" id="">
 							<validityConditions>
 								<ValidBetween>
 									<FromDate>2017-01-01T00:00:00Z</FromDate>
 									<ToDate>2018-01-01T00:00:00Z</ToDate>
 								</ValidBetween>
 							</validityConditions>
-							<Name>FirstPass - Tariff</Name>
-							<Description>Firs Pass single zone tariff.</Description>
+							<Name></Name>
+							<Description></Description>
 							<documentLinks>
 								<InfoLink typeOfInfoLink="fareSheet">http://assets.goaheadbus.com/media/cms_page_media/3111/FARES%20CHART%20FOR%20WEB%20Jan%202017%20Proof%203.pdf</InfoLink>
 							</documentLinks>
-							<OperatorRef version="1.0" ref="noc:FYSO">noc:137122</OperatorRef>
+							<OperatorRef version="1.0" ref=""></OperatorRef>
 							<TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal" />
 							<!--- ====Fare Structure======= -->
 							<geographicalIntervals>
-								<GeographicalInterval version="1.0" id="op:Tariff@FirstPass@1zone">
+								<GeographicalInterval version="1.0" id="">
 									<Name>Travel in one zone</Name>
 									<NumberOfUnits>1</NumberOfUnits>
 									<IntervalType>tariffZone</IntervalType>
 								</GeographicalInterval>
 							</geographicalIntervals>
 							<timeIntervals>
-								<TimeInterval version="1.0" id="op:Tariff@FirstPass@1day">
+								<TimeInterval version="1.0" id="">
 									<Name>1 day</Name>
 									<StartTime>00:00:00</StartTime>
 									<EndTime>24:00:00</EndTime>
 									<Duration>P1D</Duration>
 								</TimeInterval>
-								<TimeInterval version="1.0" id="op:Tariff@FirstPass@1week">
+								<TimeInterval version="1.0" id="">
 									<Name>1 week</Name>
 									<Duration>P7D</Duration>
 								</TimeInterval>
-								<TimeInterval version="1.0" id="op:Tariff@FirstPass@4week">
+								<TimeInterval version="1.0" id="">
 									<Name>4 week</Name>
 									<Duration>P28D</Duration>
 								</TimeInterval>
-								<TimeInterval version="1.0" id="op:Tariff@FirstPass@1year">
+								<TimeInterval version="1.0" id="">
 									<Name>Annual</Name>
 									<Duration>P1Y</Duration>
 								</TimeInterval>
-								<TimeInterval version="1.0" id="op:Tariff@FirstPass@1term">
+								<TimeInterval version="1.0" id="">
 									<Name>1 term</Name>
 								</TimeInterval>
-								<TimeInterval version="1.0" id="op:Tariff@FirstPass@1academic_year">
+								<TimeInterval version="1.0" id="">
 									<Name>1 term</Name>
 								</TimeInterval>
 							</timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
 							<fareStructureElements>
-								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@access_zones">
+								<FareStructureElement version="1.0" id="">
 									<Name>Availablel zones</Name>
 									<Description>single zone.</Description>
 									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access" />
 
-									<GenericParameterAssignment id="op:Tariff@FirstPass@access_zones" version="1.0" order="1">
+									<GenericParameterAssignment id="" version="1.0" order="1">
 										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access" />
 										<ValidityParameterGroupingType>XOR</ValidityParameterGroupingType>
 										<validityParameters>
-											<FareZoneRef version="1.0" ref="op:FirstPass@Sheffield" />
+											<FareZoneRef version="1.0" ref="" />
 										</validityParameters>
 									</GenericParameterAssignment>
 								</FareStructureElement>
-								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@eligibility">
+								<FareStructureElement version="1.0" id="">
 									<Name>Eligible user types</Name>
 									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility" />
-									<GenericParameterAssignment order="1" id="op:Tariff@FirstPass@eligibility" version="1.0">
+									<GenericParameterAssignment order="1" id="" version="1.0">
 										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible" />
 										<LimitationGroupingType>XOR</LimitationGroupingType>
 										<limitations>
@@ -286,35 +302,34 @@
 									</GenericParameterAssignment>
 								</FareStructureElement>
 								<!-- allowed combinations of durations -->
-								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@durations@adult">
+								<FareStructureElement version="1.0" id="">
 									<Name>Available duration combination- </Name>
 									<Description>All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.</Description>
 									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations" />
 									<timeIntervals>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1day" />
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1week" />
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@4week" />
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1year" />
+										<TimeIntervalRef version="1.0" ref="" />
+										<TimeIntervalRef version="1.0" ref="" />
+										<TimeIntervalRef version="1.0" ref="" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</timeIntervals>
-									<GenericParameterAssignment version="1.0" id="op:Tariff@FirstPass@adult_or_child" order="1">
+									<GenericParameterAssignment version="1.0" id="" order="1">
 										<Description>Adult/Child Cash ticket Only available for 1 Day or 1week</Description>
 										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access" />
 										<LimitationGroupingType>OR</LimitationGroupingType>
 										<limitations>
 											<UserProfileRef version="1.0" ref="op:adult" />
-											<UserProfileRef version="1.0" ref="op:child" />
 										</limitations>
 									</GenericParameterAssignment>
 								</FareStructureElement>
-								<FareStructureElement version="1.0" id="op:Tariff@FirstPass@durations@adult_cash">
+								<FareStructureElement version="1.0" id="">
 									<Name>Available duration combination- </Name>
-									<Description>All periods allowed, 60 mins, but no evening - used in for some mticket, single FirstPass zone.</Description>
+									<Description>All periods allowed, 60 mins, but no evening - used in for some m-ticket and single zones</Description>
 									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations" />
 									<timeIntervals>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1day" />
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1week" />
+										<TimeIntervalRef version="1.0" ref="" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</timeIntervals>
-									<GenericParameterAssignment version="1.0" id="op:Pass@FirstPass@durations@1D_1W" order="1">
+									<GenericParameterAssignment version="1.0" id="" order="1">
 										<Description>Adult/Child Cash ticket Only available for 1 Day or 1week</Description>
 										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access" />
 										<LimitationGroupingType>OR</LimitationGroupingType>
@@ -323,20 +338,20 @@
 										</limitations>
 									</GenericParameterAssignment>
 								</FareStructureElement>
-								<FareStructureElement id="op:Tariff@FirstPass@conditions_of_travel" version="1.0">
+								<FareStructureElement id="" version="1.0">
 									<Name>Conditions of travel</Name>
-									<GenericParameterAssignment version="1.0" order="1" id="op:Tariff@FirstPass@conditions_of_travel">
+									<GenericParameterAssignment version="1.0" order="1" id="">
 										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use" />
 										<LimitationGroupingType>AND</LimitationGroupingType>
 										<limitations>
-											<Transferability version="1.0" id="op:Pass@FirstPass@transferability">
+											<Transferability version="1.0" id="">
 												<Name>Ticket is not transferable</Name>
 												<CanTransfer>false</CanTransfer>
 											</Transferability>
-											<FrequencyOfUse version="1.0" id="op:Pass@FirstPass@frequency">
+											<FrequencyOfUse version="1.0" id="">
 												<FrequencyOfUseType>unlimited</FrequencyOfUseType>
 											</FrequencyOfUse>
-											<Interchanging version="1.0" id="op:Pass@FirstPass@interchanging">
+											<Interchanging version="1.0" id="">
 												<CanInterchange>true</CanInterchange>
 											</Interchanging>
 										</limitations>
@@ -349,7 +364,7 @@
 					<!--==== Fare Product ==== -->
 					<fareProducts>
 						<!--==== Other Products ==== -->
-						<PreassignedFareProduct version="1.0" id="op:Pass@FirstPass">
+						<PreassignedFareProduct version="1.0" id="">
 							<Name></Name>
 							<!--==== VALIDABLE ELEMENTs ==== -->
 							<ChargingMomentType>beforeTravel</ChargingMomentType>
@@ -358,21 +373,21 @@
 							</typesOfFareProduct>
 							<OperatorRef version="1.0" ref="noc:FYSO">noc:137122</OperatorRef>
 							<validableElements>
-								<ValidableElement version="1.0" id="op:Pass@FirstPass@travel">
+								<ValidableElement version="1.0" id="">
 									<Name>Unlimited rides available for specified durations</Name>
 									<fareStructureElements>
-										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@access_zones" />
-										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@eligibility" />
-										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@durations@adult" />
-										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@durations@adult_cash" />
-										<FareStructureElementRef version="1.0" ref="op:Tariff@FirstPass@conditions_of_travel" />
+										<FareStructureElementRef version="1.0" ref="" />
+										<FareStructureElementRef version="1.0" ref="" />
+										<FareStructureElementRef version="1.0" ref="" />
+										<FareStructureElementRef version="1.0" ref="" />
+										<FareStructureElementRef version="1.0" ref="" />
 									</fareStructureElements>
 								</ValidableElement>
 							</validableElements>
 							<!--==== ACCESS RIGHTs ===== -->
 							<accessRightsInProduct>
-								<AccessRightInProduct version="1.0" id="op:Pass@FirstPass@travel" order="1">
-									<ValidableElementRef version="1.0" ref="op:Pass@FirstPass@travel" />
+								<AccessRightInProduct version="1.0" id="" order="1">
+									<ValidableElementRef version="1.0" ref="" />
 								</AccessRightInProduct>
 							</accessRightsInProduct>
 							<ProductType>periodPass</ProductType>
@@ -380,12 +395,12 @@
 					</fareProducts>
 					<!-- === SALES OFFER PACKAGES === -->
 					<salesOfferPackages>
-						<SalesOfferPackage version="1.0" id="op:Pass@FirstPass-SOP@p-ticket">
-							<BrandingRef version="1.0" ref="op:FirstGroup@brand" />
-							<Name>FirstPass - paper ticket</Name>
-							<Description>Unlimited Travel in a given zone. </Description>
+						<SalesOfferPackage version="1.0" id="">
+							<BrandingRef version="1.0" ref="" />
+							<Name></Name>
+							<Description>Unlimited Travel in a given zone</Description>
 							<distributionAssignments>
-								<DistributionAssignment version="1.0" id="op:Pass@FirstPass-GSOP@p-ticket@on_board" order="1">
+								<DistributionAssignment version="1.0" id="" order="1">
 									<Name>Onboard</Name>
 									<Description>Pay for ticket onboard.</Description>
 									<DistributionChannelRef version="fxc:v1.0" ref="fxc:on_board" />
@@ -393,7 +408,7 @@
 									<PaymentMethods>cash contactlessPaymentCard  </PaymentMethods>
 									<FulfilmentMethodRef ref="fxc:collect_on_board" version="fxc:v1.0" />
 								</DistributionAssignment>
-								<DistributionAssignment version="1.0" id="op:Pass@FirstPass-SOP@p-ticket@travel_shop" order="1">
+								<DistributionAssignment version="1.0" id="" order="1">
 									<Name>Travel shop</Name>
 									<Description>Buy in travel shop.</Description>
 									<DistributionChannelRef ref="fxc:operator_travel_shop" version="fxc:v1.0" />
@@ -404,18 +419,18 @@
 								</DistributionAssignment>
 							</distributionAssignments>
 							<salesOfferPackageElements>
-								<SalesOfferPackageElement version="1.0" id="op:Pass@FirstPass-SOP@p-ticket" order="3">
+								<SalesOfferPackageElement version="1.0" id="" order="3">
 									<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
-									<PreassignedFareProductRef version="1.0" ref="op:Pass@FirstPass" />
+									<PreassignedFareProductRef version="1.0" ref="" />
 								</SalesOfferPackageElement>
 							</salesOfferPackageElements>
 						</SalesOfferPackage>
-						<SalesOfferPackage version="1.0" id="op:Pass@FirstPass-SOP@m-ticket">
-							<BrandingRef version="1.0" ref="op:FirstGroup@brand" />
-							<Name>FirstPass - mobile app</Name>
-							<Description>Unlimited Travel in a FirstPass area. Student and  Group Tickets available.</Description>
+						<SalesOfferPackage version="1.0" id="">
+							<BrandingRef version="1.0" ref="" />
+							<Name></Name>
+							<Description>Unlimited Travel in a given zone</Description>
 							<distributionAssignments>
-								<DistributionAssignment version="1.0" id="op:Pass@FirstPass-GSOP@m-ticket@mobile_app" order="1">
+								<DistributionAssignment version="1.0" id="" order="1">
 									<Name>Mobile app</Name>
 									<Description>Pay for pass online with mobile app.</Description>
 									<DistributionChannelRef version="fxc:v1.0" ref="fxc:online" />
@@ -425,32 +440,32 @@
 								</DistributionAssignment>
 							</distributionAssignments>
 							<salesOfferPackageElements>
-								<SalesOfferPackageElement version="1.0" id="op:Pass@FirstPass-SOP@m-ticket" order="1">
+								<SalesOfferPackageElement version="1.0" id="" order="1">
 									<TypeOfTravelDocumentRef version="1.0" ref="op:m-ticket" />
-									<PreassignedFareProductRef version="1.0" ref="op:Pass@FirstPass" />
+									<PreassignedFareProductRef version="1.0" ref="" />
 								</SalesOfferPackageElement>
 							</salesOfferPackageElements>
 						</SalesOfferPackage>
-						<SalesOfferPackage version="1.0" id="op:Pass@FirstPass-SOP@subscription">
-							<Name>FirstUnlimited</Name>
+						<SalesOfferPackage version="1.0" id="">
+							<Name></Name>
 							<Description>Unlimited Travel. Subscription.</Description>
 							<validityParameterAssignments>
-								<GenericParameterAssignment version="1.0" order="1" id="op:Pass@FirstPass-SOP@subscription@subscribing">
+								<GenericParameterAssignment version="1.0" order="1" id="">
 									<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_purchase_when" />
 									<LimitationGroupingType>AND</LimitationGroupingType>
 									<limitations>
-										<Subscribing version="1.0" id="op:Pass@FirstPass-SOP@subscription@subscribing">
+										<Subscribing version="1.0" id="">
 											<SubscriptionRenewalPolicy>automatic</SubscriptionRenewalPolicy>
-											<possibleInstallmentIntervals>
-												<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@4week" />
-											</possibleInstallmentIntervals>
+											<possibleInstallmenttIntervals>
+												<TimeIntervalRef version="1.0" ref="" />
+											</possibleInstallmenttIntervals>
 											<InstallmentPaymentMethods>directDebit</InstallmentPaymentMethods>
 										</Subscribing>
 									</limitations>
 								</GenericParameterAssignment>
 							</validityParameterAssignments>
 							<distributionAssignments>
-								<DistributionAssignment version="1.0" id="op:Pass@FirstPass-GSOP@subscription@online" order="1">
+								<DistributionAssignment version="1.0" id="" order="1">
 									<Name>Online</Name>
 									<Description>Order pass online and update online.</Description>
 									<DistributionChannelRef version="fxc:v1.0" ref="fxc:online" />
@@ -460,27 +475,27 @@
 								</DistributionAssignment>
 							</distributionAssignments>
 							<salesOfferPackageElements>
-								<SalesOfferPackageElement version="1.0" id="op:Pass@FirstPass-SOP@subscription" order="1">
+								<SalesOfferPackageElement version="1.0" id="" order="1">
 									<TypeOfTravelDocumentRef version="1.0" ref="op:m-ticket" />
-									<PreassignedFareProductRef version="1.0" ref="op:Pass@FirstPass" />
+									<PreassignedFareProductRef version="1.0" ref="" />
 								</SalesOfferPackageElement>
 							</salesOfferPackageElements>
 						</SalesOfferPackage>
 					</salesOfferPackages>
 					<!-- === GroupOf SALES OFFER PACKAGES === -->
 				</FareFrame>
-				<FareFrame version="1.0" id="epd:UK:FYSO:FareFrame_UK_PI_FARE_PRICE:FirstPass@pass:op" responsibilitySetRef="op:tariffs">
-					<Name>FirstPass prices</Name>
+				<FareFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
+					<Name></Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" />
 					<FrameDefaults>
 						<DefaultCodespaceRef ref="op_data" />
 						<DefaultResponsibilitySetRef version="1.0" ref="op:tariffs" />
 					</FrameDefaults>
 					<prerequisites>
-						<FareFrameRef version="1.0" ref="epd:UK:FYSO:FareFrame_UK_PI_FARE_PRODUCT:FirstPass@pass:op" />
+						<FareFrameRef version="1.0" ref="" />
 					</prerequisites>
 					<!--==== Pricing Parameters ====-->
-					<PricingParameterSet version="1.0" id="op:Pass@FirstPass">
+					<PricingParameterSet version="1.0" id="">
 						<pricingRules>
 							<DiscountingRule version="1.0" id="op:half_price">
 								<Name>Discount for concession  fares></Name>
@@ -492,97 +507,97 @@
 						</pricingRules>
 					</PricingParameterSet>
 					<fareTables>
-						<FareTable version="1.0" id="op:Pass@FirstPass">
-							<Name>FirstPass Fares</Name>
+						<FareTable version="1.0" id="">
+							<Name></Name>
 							<pricesFor>
-								<PreassignedFareProductRef version="1.0" ref="op:Pass@FirstPass" />
+								<PreassignedFareProductRef version="1.0" ref="" />
 							</pricesFor>
 							<usedIn>
-								<TariffRef version="1.0" ref="op:Tariff@FirstPass" />
+								<TariffRef version="1.0" ref="" />
 							</usedIn>
 							<rows>
-								<FareTableRow version="1.0" id="op:FirstPass@1day" order="2">
+								<FareTableRow version="1.0" id="" order="2">
 									<Name>1 day</Name>
 									<representing>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1day" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</representing>
 								</FareTableRow>
-								<FareTableRow version="1.0" id="op:FirstPass@1week" order="5">
+								<FareTableRow version="1.0" id="" order="5">
 									<Name>1 week</Name>
 									<representing>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1week" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</representing>
 								</FareTableRow>
-								<FareTableRow version="1.0" id="op:FirstPass@4week" order="6">
+								<FareTableRow version="1.0" id="" order="6">
 									<Name>4 week</Name>
 									<representing>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@4week" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</representing>
 								</FareTableRow>
-								<FareTableRow version="1.0" id="op:FirstPass@4week-Unlimited" order="6">
+								<FareTableRow version="1.0" id="" order="6">
 									<Name>4 week</Name>
 									<representing>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@4week" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</representing>
 								</FareTableRow>
-								<FareTableRow version="1.0" id="op:FirstPass@1year" order="8">
+								<FareTableRow version="1.0" id="" order="8">
 									<Name>1 year</Name>
 									<representing>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1year" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</representing>
 								</FareTableRow>
-								<FareTableRow version="1.0" id="op:FirstPass@1term" order="7">
+								<FareTableRow version="1.0" id="" order="7">
 									<Name>13 week</Name>
 									<representing>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1term" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</representing>
 								</FareTableRow>
-								<FareTableRow version="1.0" id="op:FirstPass@1academic_year" order="9">
+								<FareTableRow version="1.0" id="" order="9">
 									<Name>Evening</Name>
 									<representing>
-										<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1academic_year" />
+										<TimeIntervalRef version="1.0" ref="" />
 									</representing>
 								</FareTableRow>
 							</rows>
 							<includes>
-								<FareTable version="1.0" id="op:FirstPass@Sheffield">
+								<FareTable version="1.0" id="">
 									<Name>Sheffield</Name>
 									<specifics>
-										<TariffZoneRef version="1.0" ref="op:FirstPass@Sheffield" />
+										<TariffZoneRef version="1.0" ref="" />
 									</specifics>
 									<columns>
-										<FareTableColumn version="1.0" id="op:FirstPass@Sheffield@p-ticket">
+										<FareTableColumn version="1.0" id="">
 											<Name>Sheffield</Name>
 											<representing>
-												<TariffZoneRef version="1.0" ref="op:FirstPass@Sheffield" />
+												<TariffZoneRef version="1.0" ref="" />
 											</representing>
 										</FareTableColumn>
 									</columns>
 									<includes>
-										<FareTable version="1.0" id="op:FirstPass@Sheffield@p-ticket">
-											<Name>FirstPass - Cash</Name>
+										<FareTable version="1.0" id="">
+											<Name></Name>
 											<pricesFor>
-												<SalesOfferPackageRef version="1.0" ref="op:Pass@FirstPass-SOP@p-ticket" />
+												<SalesOfferPackageRef version="1.0" ref="" />
 											</pricesFor>
 											<specifics>
 												<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
 											</specifics>
 											<columns>
-												<FareTableColumn version="1.0" id="op:FirstPass@Sheffield@p-ticket">
-													<Name>Cash </Name>
+												<FareTableColumn version="1.0" id="">
+													<Name>Cash</Name>
 													<representing>
 														<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
 													</representing>
 												</FareTableColumn>
 											</columns>
 											<includes>
-												<FareTable version="1.0" id="op:FirstPass@Sheffield@p-ticket@adult">
-													<Name>FirstPass - Cash - Adult</Name>
+												<FareTable version="1.0" id="">
+													<Name></Name>
 													<limitations>
 														<UserProfileRef version="1.0" ref="op:adult" />
 													</limitations>
 													<columns>
-														<FareTableColumn version="1.0" id="op:FirstPass@Sheffield@p-ticket@adult">
+														<FareTableColumn version="1.0" id="">
 															<Name>Adult</Name>
 															<representing>
 																<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
@@ -591,21 +606,21 @@
 														</FareTableColumn>
 													</columns>
 													<cells>
-														<Cell version="1.0" id="op:FirstPass@Sheffield@p-ticket@adult@1day" order="1">
-															<TimeIntervalPrice version="1.0" id="op:FirstPass@Sheffield@p-ticket@adult@1day">
+														<Cell version="1.0" id="" order="1">
+															<TimeIntervalPrice version="1.0" id="">
 																<Amount>4.40</Amount>
-																<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1day" />
+																<TimeIntervalRef version="1.0" ref="" />
 															</TimeIntervalPrice>
-															<ColumnRef version="1.0" ref="op:FirstPass@Sheffield@p-ticket@adult" />
-															<RowRef version="1.0" ref="op:FirstPass@1day" />
+															<ColumnRef version="1.0" ref="" />
+															<RowRef version="1.0" ref="" />
 														</Cell>
-														<Cell version="1.0" id="op:FirstPass@Sheffield@p-ticket@adult@1week" order="2">
-															<TimeIntervalPrice version="1.0" id="op:FirstPass@Sheffield@p-ticket@adult@1week">
+														<Cell version="1.0" id="" order="2">
+															<TimeIntervalPrice version="1.0" id="">
 																<Amount>14.50</Amount>
-																<TimeIntervalRef version="1.0" ref="op:Tariff@FirstPass@1week" />
+																<TimeIntervalRef version="1.0" ref="" />
 															</TimeIntervalPrice>
-															<ColumnRef version="1.0" ref="op:FirstPass@Sheffield@p-ticket@adult" />
-															<RowRef version="1.0" ref="op:FirstPass@1week" />
+															<ColumnRef version="1.0" ref="" />
+															<RowRef version="1.0" ref="" />
 														</Cell>
 													</cells>
 												</FareTable>
@@ -630,60 +645,60 @@
 						<PointOfInterest version="1.0" id="op:travel_shop@PLACE1">
 							<validityConditions>
 								<AvailabilityCondition version="1.0" id="op:travel_shop@PLACE1">
-									<Name></Name>
-									<IsAvailable></IsAvailable>
+									<Name>PLACE1</Name>
+									<IsAvailable>false</IsAvailable>
 									<dayTypes>
 										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE1@M-F" />
 										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE1@Sat" />
 									</dayTypes>
 								</AvailabilityCondition>
 							</validityConditions>
-							<Name></Name>
+							<Name>PLACE1</Name>
 							<Centroid>
 								<Location>
-									<gml:pos srsName="WGS84"></gml:pos>
+									<gml:pos srsName="WGS84">12345 6789</gml:pos>
 								</Location>
 							</Centroid>
-							<Url></Url>
+							<Url>PLACE1</Url>
 							<PostalAddress id="op:travel_shop@PLACE1@address" version="1.0">
-								<BuildingName></BuildingName>
-								<Street></Street>
-								<Town></Town>
-								<PostCode></PostCode>
+								<BuildingName>PLACE1</BuildingName>
+								<Street>PLACE1</Street>
+								<Town>PLACE1</Town>
+								<PostCode>PLACE1</PostCode>
 							</PostalAddress>
-							<SiteType></SiteType>
+							<SiteType>retail</SiteType>
 							<classifications>
 								<PointOfInterestClassificationRef ref="fxc:operator_travel_shop" version="fxc:v1.0" />
 							</classifications>
 						</PointOfInterest>
-						<PointOfInterest version="1.0" id="op:travel_shop@PLACE">
+						<PointOfInterest version="1.0" id="op:travel_shop@PLACE2">
 							<validityConditions>
-								<AvailabilityCondition version="1.0" id="op:travel_shop@PLACE">
-									<Name></Name>
-									<IsAvailable></IsAvailable>
+								<AvailabilityCondition version="1.0" id="op:travel_shop@PLACE2">
+									<Name>PLACE2</Name>
+									<IsAvailable>false</IsAvailable>
 									<dayTypes>
-										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE@M-F" />
-										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE@Sat" />
+										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE2@M-F" />
+										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE2@Sat" />
 									</dayTypes>
 								</AvailabilityCondition>
 							</validityConditions>
-							<Name></Name>
+							<Name>PLACE2</Name>
 							<Centroid>
 								<Location>
-									<gml:pos srsName="WGS84"></gml:pos>
+									<gml:pos srsName="WGS84">12345 6789</gml:pos>
 								</Location>
 							</Centroid>
-							<Url></Url>
-							<PostalAddress id="op:travel_shop@PLACE@address" version="1.0">
-								<BuildingName></BuildingName>
-								<Street></Street>
-								<Town></Town>
-								<PostCode></PostCode>
+							<Url>PLACE2</Url>
+							<PostalAddress id="op:travel_shop@PLACE2@address" version="1.0">
+								<BuildingName>PLACE2</BuildingName>
+								<Street>PLACE2</Street>
+								<Town>PLACE2</Town>
+								<PostCode>PLACE2</PostCode>
 							</PostalAddress>
-							<SiteType></SiteType>
+							<SiteType>retail</SiteType>
 							<OperatingOrganisationView>
 								<ContactDetails>
-									<Phone></Phone>
+									<Phone>0123456789</Phone>
 								</ContactDetails>
 							</OperatingOrganisationView>
 							<classifications>
@@ -703,77 +718,77 @@
 					</FrameDefaults>
 					<dayTypes>
 						<FareDayType version="1.0" id="op:travel_shop@PLACE1@M-F">
-							<Name></Name>
-							<Description></Description>
-							<EarliestTime></EarliestTime>
+							<Name>PLACE1 Working Day</Name>
+							<Description>PLACE1 Weekday</Description>
+							<EarliestTime>00:00:00</EarliestTime>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek></DaysOfWeek>
-									<HolidayTypes></HolidayTypes>
+									<DaysOfWeek>Weekdays</DaysOfWeek>
+									<HolidayTypes>NotHoliday</HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
 								<Timeband version="1.0" id="op:travel_shop@PLACE1@M-F">
-									<StartTime></StartTime>
-									<EndTime></EndTime>
+									<StartTime>00:00:00</StartTime>
+									<EndTime>00:00:00</EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
 						<FareDayType version="1.0" id="op:travel_shop@PLACE1@Sat">
-							<Name></Name>
-							<Description></Description>
+							<Name>PLACE1 Working Day</Name>
+							<Description>PLACE1 Weekend</Description>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek></DaysOfWeek>
-									<HolidayTypes></HolidayTypes>
+									<DaysOfWeek>Weekend</DaysOfWeek>
+									<HolidayTypes>NotHoliday</HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
 								<Timeband version="1.0" id="op:travel_shop@PLACE1@Sat">
-									<StartTime></StartTime>
-									<EndTime></EndTime>
+									<StartTime>00:00:00</StartTime>
+									<EndTime>00:00:00</EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
 						<FareDayType version="1.0" id="op:travel_shop@PLACE2@M-F">
-							<Name></Name>
-							<Description></Description>
-							<EarliestTime></EarliestTime>
+							<Name>PLACE2 Working Day</Name>
+							<Description>PLACE2 Weekday</Description>
+							<EarliestTime>00:00:00</EarliestTime>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek></DaysOfWeek>
-									<HolidayTypes></HolidayTypes>
+									<DaysOfWeek>Weekdays</DaysOfWeek>
+									<HolidayTypes>NotHoliday</HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
 								<Timeband version="1.0" id="op:travel_shop@PLACE2@M-F">
-									<StartTime></StartTime>
-									<EndTime></EndTime>
+									<StartTime>00:00:00</StartTime>
+									<EndTime>00:00:00</EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
 						<FareDayType version="1.0" id="op:travel_shop@PLACE2@Sat">
-							<Name></Name>
-							<Description></Description>
+							<Name>PLACE2 Working Day</Name>
+							<Description>PLACE2 Weekend</Description>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek></DaysOfWeek>
-									<HolidayTypes></HolidayTypes>
+									<DaysOfWeek>Weekend</DaysOfWeek>
+									<HolidayTypes>NotHoliday</HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 							<timebands>
 								<Timeband version="1.0" id="op:travel_shop@PLACE2@Sat">
-									<StartTime></StartTime>
-									<EndTime></EndTime>
+									<StartTime>00:00:00</StartTime>
+									<EndTime>00:00:00</EndTime>
 								</Timeband>
 							</timebands>
 						</FareDayType>
 						<FareDayType version="1.0" id="op:anytime">
-							<Name></Name>
+							<Name>Anytime</Name>
 							<properties>
 								<PropertyOfDay>
-									<DaysOfWeek></DaysOfWeek>
-									<HolidayTypes></HolidayTypes>
+									<DaysOfWeek>Everyday</DaysOfWeek>
+									<HolidayTypes>AnyDay</HolidayTypes>
 								</PropertyOfDay>
 							</properties>
 						</FareDayType>
@@ -1392,7 +1407,7 @@
 							</values>
 						</ValueSet>
 						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareProduct@carnet" classOfValues="TypeOfFareProduct">
-							<Name>Types Of FARE PRODUC- Pass</Name>
+							<Name>Types Of FARE PRODUCT- Pass</Name>
 							<values>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@carnet@trips">
 									<Name>Carnet of trips.</Name>
