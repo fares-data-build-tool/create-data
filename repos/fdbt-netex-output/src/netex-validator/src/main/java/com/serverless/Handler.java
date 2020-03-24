@@ -12,25 +12,23 @@ public class Handler implements RequestHandler<S3Event, String> {
 	@Override
 	public String handleRequest(S3Event event, Context ctx) {
 
-		S3EventNotification.S3EventNotificationRecord record = event.getRecords().get(0);
+		final S3EventNotification.S3EventNotificationRecord record = event.getRecords().get(0);
 		final String bucketName = record.getS3().getBucket().getName();
 		final String key = record.getS3().getObject().getKey();
 
-		S3 s3 =  new S3();
+		final S3 s3 = new S3();
 
 		String content = null;
 
 		try {
-			content = s3.getObjectContentAsStringFromS3(bucketName,key);
+			content = s3.getObjectContentAsStringFromS3(bucketName, key);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 
-		System.out.println(content);
+		final NetexValidator netexValidator = new NetexValidator();
 
-		NetexValidator netexValidator = new NetexValidator();
-
-		if(content == null || content.isEmpty()){
+		if (content == null || content.isEmpty()) {
 			throw new Error("No content found.");
 		}
 
@@ -38,12 +36,12 @@ public class Handler implements RequestHandler<S3Event, String> {
 
 		final String validatedBucketname = "";
 
-		if(result.getValidity()){
+		if (result.getValidity()) {
 			s3.putObjectInValidatedBucket(validatedBucketname, key, content);
-		} else{
+		} else {
 			System.out.println("Netex validation failed. Errors are: \n");
 
-			for(SAXParseException e : result.getErrors()){
+			for (SAXParseException e : result.getErrors()) {
 				System.out.println(String.format("Error Line number: %s , Error Column number: %s, Error Message: %s",
 						e.getLineNumber(), e.getColumnNumber(), e.toString()));
 			}
