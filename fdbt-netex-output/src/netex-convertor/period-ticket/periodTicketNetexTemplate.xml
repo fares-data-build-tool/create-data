@@ -182,23 +182,23 @@
 						<FareZone version="1.0" id="">
 							<Name></Name>
 							<Description></Description>
-							<infoLinks>
-								<InfoLink typeOfInfoLink="map"></InfoLink>
-							</infoLinks>
 							<types>
 								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
 							</types>
+							<projections>
+								<TopographicProjectionRef></TopographicProjectionRef>
+							</projections>
 							<ZoneTopology>nested</ZoneTopology>
 						</FareZone>
 						<FareZone version="1.0" id="">
 							<Name></Name>
 							<Description></Description>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
 							<members>
 								<ScheduledStopPointRef></ScheduledStopPointRef>
 							</members>
+							<types>
+								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
+							</types>
 							<projections>
 								<TopographicProjectionRef></TopographicProjectionRef>
 							</projections>
@@ -209,7 +209,7 @@
 					</fareZones>
 				</FareFrame>
 				<FareFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
-					<Name>Fare products </Name>
+					<Name>Fare products</Name>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" />
 					<FrameDefaults>
 						<DefaultCodespaceRef ref="op_data" />
