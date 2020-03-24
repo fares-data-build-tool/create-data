@@ -159,7 +159,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
                         Partition: code,
                     })),
                     ProjectionExpression:
-                        'LocalityName,ParentLocalityName,#in,Street,CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
+                        'LocalityName, ParentLocalityName, #in, Street, CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
                 },
             },
         };
@@ -179,10 +179,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
             atcoCode: item.ATCOCode,
             localityCode: item.NptgLocalityCode,
             localityName: item.LocalityName,
-            parentLocalityName:
-                item.ParentLocalityName && item.ParentLocalityName !== 'true' && item.ParentLocalityName !== 'false'
-                    ? item.ParentLocalityName
-                    : '',
+            parentLocalityName: item.ParentLocalityName !== null ? item.ParentLocalityName : '',
             indicator: item.Indicator,
             street: item.Street,
         }));
