@@ -90,5 +90,5 @@ plugins:
 
 package:
     include:
-        - ./src/netex-convertor/singleTicketNetexTemplate.xml
-        - ./src/netex-convertor/periodTicketNetexTemplate.xml
+        - ./src/netex-convertor/single-ticket/singleTicketNetexTemplate.xml
+        - ./src/netex-convertor/period-ticket/periodTicketNetexTemplate.xml
