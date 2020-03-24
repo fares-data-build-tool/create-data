@@ -42,6 +42,7 @@ export const ALL_COOKIES: string[] = [
     'fdbt-period-type',
     'fdbt-csv-upload',
     'fdbt-csv-zone-upload',
+    'fdbt-period-expiry',
 ];
 
 export const PERIOD_EXPIRY = 'fdbt-period-expiry';
