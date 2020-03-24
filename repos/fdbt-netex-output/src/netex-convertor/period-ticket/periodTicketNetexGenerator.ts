@@ -1,7 +1,7 @@
 import parser from 'xml2json';
 import fs from 'fs';
 import { OperatorData, GeographicalFareZonePass } from '../types';
-import { NetexObject, getScheduledStopPointsList, getTopographicProjectionRef } from './periodTicketNetexHelpers';
+import { NetexObject, getScheduledStopPointsList, getTopographicProjectionRefList } from './periodTicketNetexHelpers';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
@@ -114,6 +114,7 @@ const periodTicketNetexGenerator = (
         networkFareFrameToUpdate.fareZones.FareZone[0].id = `op:${geoFareZonePass.productName}@${parentFareZoneLocality}`;
         networkFareFrameToUpdate.fareZones.FareZone[0].Name.$t = parentFareZoneLocality;
         networkFareFrameToUpdate.fareZones.FareZone[0].Description.$t = `${parentFareZoneLocality} ${geoFareZonePass.productName} Parent Fare Zone`;
+        networkFareFrameToUpdate.fareZones.FareZone[0].projections.TopographicProjectionRef = getTopographicProjectionRefList(geoFareZonePass.stops);
         
         networkFareFrameToUpdate.fareZones.FareZone[1].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
         networkFareFrameToUpdate.fareZones.FareZone[1].Name.$t = `${geoFareZonePass.fareZoneName}`;
@@ -121,7 +122,7 @@ const periodTicketNetexGenerator = (
         networkFareFrameToUpdate.fareZones.FareZone[1].members.ScheduledStopPointRef = getScheduledStopPointsList(
             geoFareZonePass.stops,
         );
-        networkFareFrameToUpdate.fareZones.FareZone[1].projections.TopographicProjectionRef = getTopographicProjectionRef(geoFareZonePass.stops);
+        networkFareFrameToUpdate.fareZones.FareZone[1].projections.TopographicProjectionRef = getTopographicProjectionRefList(geoFareZonePass.stops);
         networkFareFrameToUpdate.fareZones.FareZone[1].ParentFareZoneRef.ref = `op:${parentFareZoneLocality}`;
         
         return networkFareFrameToUpdate;
