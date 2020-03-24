@@ -13,6 +13,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Kingsthorpe',
@@ -21,6 +22,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Green Lane',
@@ -29,6 +31,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Green Lane',
@@ -37,6 +40,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Harold Court',
@@ -45,6 +49,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Kingsthorpe',
@@ -53,6 +58,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Queenswood Grove',
@@ -61,6 +67,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
@@ -84,6 +91,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Mattison Way',
@@ -92,6 +100,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
@@ -115,6 +124,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Campbell Avenue',
@@ -123,6 +133,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
@@ -146,6 +157,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Hob Moor Drive',
@@ -154,6 +166,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Holly Bank Road',
@@ -162,6 +175,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
@@ -185,6 +199,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Holgate Hill',
@@ -193,6 +208,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
@@ -212,6 +228,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Rail Station',
@@ -220,6 +237,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Blossom Street',
@@ -228,6 +246,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
@@ -247,6 +266,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
@@ -266,6 +286,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Low Ousegate',
@@ -274,6 +295,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Rougier Street',
@@ -282,6 +304,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Micklegate',
@@ -290,6 +313,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
                 {
                     stopName: 'Merchantgate',
@@ -298,6 +322,7 @@ const matchingData = {
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
                     qualifierName: 'West Sussex',
+                    parentLocalityName: 'West Sussex',
                 },
             ],
             prices: [
