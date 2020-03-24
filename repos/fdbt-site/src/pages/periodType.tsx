@@ -47,7 +47,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                         id="periodtype-single-set-service"
                                         name="periodType"
                                         type="radio"
-                                        value="singleset"
+                                        value="singleOperator"
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label"
