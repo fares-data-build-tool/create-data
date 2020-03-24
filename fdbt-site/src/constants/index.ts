@@ -47,6 +47,8 @@ export const ALL_COOKIES: string[] = [
 
 export const PERIOD_EXPIRY = 'fdbt-period-expiry';
 
+export const PERIOD_SINGLE_OPERATOR_SERVICES = 'fdbt-period-single-services';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',

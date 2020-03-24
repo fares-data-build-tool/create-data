@@ -36,8 +36,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        if (periodType === 'singleset') {
-            redirectTo(res, '/singleSet');
+        if (periodType === 'singleOperator') {
+            redirectTo(res, '/singleOperator');
             return;
         }
     } catch (error) {
