@@ -8,7 +8,5 @@ CREATE TABLE tndsService(
     `regionOperatorCode` varchar(255) DEFAULT NULL,
     `serviceCode` varchar(255) DEFAULT NULL,
     `description` varchar(255) DEFAULT NULL,
-    INDEX idx_nocCode (nocCode),
-    INDEX idx_lineName (lineName),
-    INDEX idx_startDate (startDate)
+    INDEX idx_nocCode (nocCode)
 ) ENGINE = InnoDB CHARACTER SET = utf8;

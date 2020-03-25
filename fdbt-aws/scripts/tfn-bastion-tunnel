@@ -6,7 +6,7 @@ db=$(aws rds describe-db-instances --region eu-west-2 | jq -r '.DBInstances[0].E
 instanceId=`echo $instance | jq -r '.InstanceId'`
 az=`echo $instance | jq -r '.Placement.AvailabilityZone'`
 
-rm /tmp/bastion-tunnel*
+rm -f /tmp/bastion-tunnel*
 
 ssh-keygen -t rsa -f /tmp/bastion-tunnel -N ''
 aws ec2-instance-connect send-ssh-public-key --region eu-west-2 --instance-id $instanceId --availability-zone $az --instance-os-user ssm-user --ssh-public-key file:///tmp/bastion-tunnel.pub
