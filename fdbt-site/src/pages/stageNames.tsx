@@ -58,12 +58,12 @@ const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactE
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/stageNames" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
+                    <fieldset className="govuk-fieldset" aria-describedby="stage-names-input">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading">
                                 Please enter the names of your fare stages in order from first to last
                             </h1>
-                            <p className="govuk-hint">Fare stage names are limited to 30 characters</p>
+                            <p className="govuk-hint hint-text">Fare stage names are limited to 30 characters</p>
                         </legend>
                         <div>{renderInputFields(numberOfFareStages, inputChecks)}</div>
                     </fieldset>

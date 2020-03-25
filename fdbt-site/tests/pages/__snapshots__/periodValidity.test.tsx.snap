@@ -32,7 +32,7 @@ exports[`pages periodValidity should render correctly 1`] = `
           className="govuk-hint"
           id="heading-period-validity-hint"
         >
-          We need to know the time this product would expire on its final day
+          We need to know the time that this product would be valid until
         </span>
         <div
           className="govuk-form-group"
@@ -61,17 +61,17 @@ exports[`pages periodValidity should render correctly 1`] = `
                 value="endOfCalendarDay"
               />
               <label
-                className="govuk-label govuk-radios__label"
+                className="govuk-label govuk-radios__label govuk-label--s"
                 htmlFor="period-end-calendar"
               >
-                At the end of the calendar day
-                <span
-                  className="govuk-hint"
-                  id="product-price-hint"
-                >
-                  For example on its last day the ticket would expire at midnight
-                </span>
+                At the end of a calendar day
               </label>
+              <span
+                className="govuk-hint govuk-radios__hint"
+                id="period-end-calendar-hint"
+              >
+                For example, a ticket purchased at 3pm would be valid until midnight on it&aposs day of expiry
+              </span>
             </div>
             <div
               className="govuk-radios__item"
@@ -81,20 +81,20 @@ exports[`pages periodValidity should render correctly 1`] = `
                 id="period-twenty-four-hours"
                 name="periodValid"
                 type="radio"
-                value="twentyFoursHoursAfterPurchase"
+                value="24hr"
               />
               <label
-                className="govuk-label govuk-radios__label"
+                className="govuk-label govuk-radios__label govuk-label--s"
                 htmlFor="period-twenty-four-hours"
               >
-                24 hours after purchase
-                <span
-                  className="govuk-hint"
-                  id="product-price-hint"
-                >
-                  For example if a ticket is bought at 3pm it will expire at 3pm on its final day
-                </span>
+                At the end of a 24 hour period from purchase
               </label>
+              <span
+                className="govuk-hint govuk-radios__hint"
+                id="period-twenty-four-hours-hint"
+              >
+                For example, a ticket purchased at 3pm will be valid until 3pm on it&aposs day of expiry
+              </span>
             </div>
           </div>
         </div>

@@ -10,14 +10,15 @@ import {
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/dynamodb';
-import { getPeriodData, putStringInS3 } from '../../data/s3';
+import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch } from './service/validator';
 
 interface DecisionData {
+    operatorName: string;
     type: string;
     productName: string;
     productPrice: string;
-    zoneName: string;
+    fareZoneName: string;
     stops: Stop[];
     daysValid: string;
     expiryRules: string;
@@ -54,11 +55,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const { fareZoneName } = JSON.parse(fareZoneCookie);
         const { productName, productPrice } = JSON.parse(periodProduct);
         const { daysValid } = JSON.parse(daysValidCookie);
-        const { uuid, nocCode } = JSON.parse(operatorCookie);
+        const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
 
-        const attoCodes: string[] = await getPeriodData(uuid);
+        const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
 
-        const zoneStops: Stop[] = await batchGetStopsByAtcoCode(attoCodes);
+        const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
         setCookieOnResponseObject(
             getDomain(req),
@@ -69,8 +70,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         );
 
         const period: DecisionData = {
+            operatorName: operator,
             type: 'period',
-            zoneName: fareZoneName,
+            fareZoneName,
             stops: zoneStops,
             productName,
             productPrice,

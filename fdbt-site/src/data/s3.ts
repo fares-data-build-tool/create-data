@@ -47,7 +47,7 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
     return JSON.parse(dataAsString);
 };
 
-export const getPeriodData = async (uuid: string): Promise<string[]> => {
+export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
     const params = {
         Bucket: USER_DATA_BUCKET_NAME,
         Key: `${uuid}.json`,
@@ -59,9 +59,9 @@ export const getPeriodData = async (uuid: string): Promise<string[]> => {
 
     const parsedData: UserFareZone[] = JSON.parse(dataAsString);
 
-    const arrayAtcoCodes: string[] = parsedData.map(data => data.AtcoCodes);
+    const atcoCodes: string[] = parsedData.map(data => data.AtcoCodes);
 
-    return arrayAtcoCodes;
+    return atcoCodes;
 };
 
 export const putStringInS3 = async (
