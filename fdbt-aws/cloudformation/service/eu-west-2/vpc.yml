@@ -197,6 +197,26 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
       SubnetId: !Ref PrivateSubnetB
 
+  DataRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref "VPC"
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-dataRouteTable-${Stage}
+
+  DataRouteTableAAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref DataRouteTable
+      SubnetId: !Ref DataSubnetA
+
+  DataRouteTableBAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref DataRouteTable
+      SubnetId: !Ref DataSubnetB
+
   DynamoDBEndpoint:
     Type: AWS::EC2::VPCEndpoint
     Properties:
@@ -224,6 +244,7 @@ Resources:
             Resource: "*"
       RouteTableIds:
         - !Ref "PrivateRouteTable"
+        - !Ref "DataRouteTable"
       ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
       VpcId: !Ref "VPC"
 

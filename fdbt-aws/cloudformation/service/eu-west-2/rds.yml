@@ -62,6 +62,15 @@ Resources:
         - Fn::ImportValue: !Sub ${Stage}:DataSubnetA
         - Fn::ImportValue: !Sub ${Stage}:DataSubnetB
 
+  DatabaseClusterParameterGroup:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Description: Parameter Group for master DB
+      Family: aurora5.6
+      Parameters:
+        aurora_load_from_s3_role:
+          Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
+
   DatabaseCluster:
     Type: AWS::RDS::DBCluster
     Properties:
@@ -74,6 +83,10 @@ Resources:
       PreferredMaintenanceWindow: mon:03:00-mon:04:00
       DBSubnetGroupName: !Ref DatabaseSubnetGroup
       StorageEncrypted: true
+      DBClusterParameterGroupName: !Ref DatabaseClusterParameterGroup
+      AssociatedRoles:
+        - RoleArn:
+            Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
       VpcSecurityGroupIds:
         - !Ref DatabaseSG
 

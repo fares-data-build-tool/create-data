@@ -86,18 +86,6 @@ Resources:
                 Resource:
                   - "arn:aws:iam::442445088537:role/tfn-admin-test-eu-west-2"
                   - "arn:aws:iam::077142786865:role/tfn-readonly-preprod-eu-west-2"
-        - PolicyName: "allow-manage-own-user"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "iam:GetAccountPasswordPolicy"
-                  - "iam:GetAccountSummary"
-                  - "iam:ListAccountAliases"
-                  - "iam:ListUsers"
-                  - "iam:ListVirtualMFADevices"
-                Resource: "*"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref ManageOwnUserPolicy

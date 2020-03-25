@@ -128,6 +128,37 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole
 
+  RdsAuroraS3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [rds.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-noc-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-naptan-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-tnds-data-${Stage}/*
+              - Effect: Allow
+                Action:
+                  - "s3:ListBucket"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-noc-data-${Stage}
+                  - !Sub arn:aws:s3:::fdbt-naptan-data-${Stage}
+                  - !Sub arn:aws:s3:::fdbt-tnds-data-${Stage}
+          PolicyName: allow-aurora-s3-access
+
   SlackLambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -252,6 +283,10 @@ Outputs:
     Value: !GetAtt SlackLambdaRole.Arn
     Export:
       Name: !Sub ${Stage}:SlackLambdaRoleArn
+  RdsAuroraS3RoleArn:
+    Value: !GetAtt RdsAuroraS3Role.Arn
+    Export:
+      Name: !Sub ${Stage}:RdsAuroraS3RoleArn
   BastionSsmRoleName:
     Value: !Ref BastionSsmRole
     Export:
