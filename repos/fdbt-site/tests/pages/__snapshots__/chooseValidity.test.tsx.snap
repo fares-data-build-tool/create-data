@@ -35,7 +35,7 @@ exports[`Choose Validity Page should render correctly 1`] = `
             >
               Product: 
               bus company
-               - 
+               - £
               £3.00
             </p>
           </legend>
