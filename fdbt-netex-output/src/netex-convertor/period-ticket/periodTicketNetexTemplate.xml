@@ -61,7 +61,6 @@
 				<CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" />
 			</prerequisites>
 			<frames>
-				<!-- Should the id for the ResourceFrame contain the second FYSO? -->
 				<ResourceFrame version="1.0" id="epd:UK:FYSO:ResourceFrame_UK_PI_COMMON:FYSO:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
 					<Name>Operator specific common resources</Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0" />
@@ -145,8 +144,8 @@
 						<Operator version="1.0" id="">
 							<PublicCode></PublicCode>
 
-							<!-- What goes here? -->
-							<PrivateCode type="nocn">nocn:10129</PrivateCode>
+							<!-- What is a nocn code? -->
+							<PrivateCode type="nocn">nocn:00000</PrivateCode>
 
 							<Name></Name>
 							<ShortName></ShortName>
