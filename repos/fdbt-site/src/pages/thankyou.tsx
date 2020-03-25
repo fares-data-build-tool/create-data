@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
 import { FEEDBACK_LINK } from '../constants';
-import { getUuidFromCookies } from '../utils';
+import { getUuidFromCookies, deleteAllCookiesOnServerSide } from '../utils';
 
 const title = 'Thank You - Fares data build tool';
 const description = 'Thank you page for the Fares Data Build Tool';
@@ -52,7 +52,9 @@ const ThankYou = ({ uuid }: ThankyouProps): ReactElement => (
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
-    return { props: { uuid: getUuidFromCookies(ctx) } };
+    const uuid = getUuidFromCookies(ctx);
+    deleteAllCookiesOnServerSide(ctx);
+    return { props: { uuid } };
 };
 
 export default ThankYou;

@@ -4,7 +4,7 @@ import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
 import { PERIOD_PRODUCT } from '../../constants';
 
-const isCurrency = (periodPriceInput: string) => {
+const isCurrency = (periodPriceInput: string): boolean => {
     const regex = /^\d+(\.\d{1,2})?$/;
     return regex.test(periodPriceInput);
 };
