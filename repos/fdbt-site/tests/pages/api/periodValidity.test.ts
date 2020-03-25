@@ -16,18 +16,13 @@ describe('Period Validity API', () => {
     const atcoCodes: string[] = ['13003305E', '13003622B', '13003655B'];
 
     beforeEach(() => {
-        jest.spyOn(s3, 'getPeriodData').mockImplementation(() => Promise.resolve(atcoCodes));
+        jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
 
         jest.spyOn(dynamodb, 'batchGetStopsByAtcoCode').mockImplementation(() => Promise.resolve(naptanStopInfo));
     });
 
     it('correctly generates JSON for period data and uploads to S3', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            '',
-            { periodValid: 'twentyFoursHoursAfterPurchase' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
         await periodValidity(req, res);
 
         expect(putStringInS3Spy).toBeCalledTimes(1);
@@ -50,12 +45,7 @@ describe('Period Validity API', () => {
     });
 
     it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            '',
-            { periodValid: 'twentyFoursHoursAfterPurchase' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
         await periodValidity(req, res);
 
         expect(writeHeadMock).toBeCalled();

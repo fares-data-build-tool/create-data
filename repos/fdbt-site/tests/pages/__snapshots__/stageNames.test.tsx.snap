@@ -18,7 +18,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="selection-hint"
+          aria-describedby="stage-names-input"
           className="govuk-fieldset"
         >
           <legend
@@ -30,7 +30,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
               Please enter the names of your fare stages in order from first to last
             </h1>
             <p
-              className="govuk-hint"
+              className="govuk-hint hint-text"
             >
               Fare stage names are limited to 30 characters
             </p>
@@ -182,7 +182,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="selection-hint"
+          aria-describedby="stage-names-input"
           className="govuk-fieldset"
         >
           <legend
@@ -194,7 +194,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               Please enter the names of your fare stages in order from first to last
             </h1>
             <p
-              className="govuk-hint"
+              className="govuk-hint hint-text"
             >
               Fare stage names are limited to 30 characters
             </p>
@@ -344,7 +344,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="selection-hint"
+          aria-describedby="stage-names-input"
           className="govuk-fieldset"
         >
           <legend
@@ -356,7 +356,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               Please enter the names of your fare stages in order from first to last
             </h1>
             <p
-              className="govuk-hint"
+              className="govuk-hint hint-text"
             >
               Fare stage names are limited to 30 characters
             </p>
