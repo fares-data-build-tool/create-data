@@ -119,7 +119,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),
     };
 
-    if (!service && ctx.res) {
+    if (!service) {
         throw new Error(
             `No service info could be retrieved for nocCode: ${operatorObject.nocCode} and lineName: ${lineName}`,
         );
