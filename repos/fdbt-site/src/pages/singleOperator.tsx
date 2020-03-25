@@ -10,7 +10,6 @@ const title = 'Which service(s) is the ticket valid for';
 const description = 'Single Operator selection page of the Fares data build tool';
 
 const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement => {
-    console.log('error', selectedServices);
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -30,24 +29,39 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
                             <span id="waste-hint" className="govuk-hint">
                                 Select all service that apply
                             </span>
+                            <button
+                                className="govuk-button govuk-button--secondary"
+                                data-module="govuk-button"
+                                type="button"
+                            >
+                                Select All
+                            </button>
                             <div className="govuk-checkboxes">
-                                {selectedServices.map((service, index) => (
-                                    <div className="govuk-checkboxes__item">
-                                        <input
-                                            className="govuk-checkboxes__input"
-                                            id={`checkbox-${index}`}
-                                            name={service.lineName}
-                                            type="checkbox"
-                                            value={service.startDate}
-                                        />
-                                        <label
-                                            className="govuk-label govuk-checkboxes__label"
-                                            htmlFor={service.lineName}
-                                        >
-                                            {service.lineName}-{service.startDate}
-                                        </label>
-                                    </div>
-                                ))}
+                                {selectedServices.map((service, index) => {
+                                    let checkboxTitles = `${service.lineName}-${service.description}-${service.startDate}`;
+
+                                    if (checkboxTitles.length > 80) {
+                                        checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
+                                    }
+
+                                    return (
+                                        <div className="govuk-checkboxes__item">
+                                            <input
+                                                className="govuk-checkboxes__input"
+                                                id={`checkbox-${index}`}
+                                                name={service.lineName}
+                                                type="checkbox"
+                                                value={service.startDate}
+                                            />
+                                            <label
+                                                className="govuk-label govuk-checkboxes__label"
+                                                htmlFor={service.lineName}
+                                            >
+                                                {checkboxTitles}
+                                            </label>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </fieldset>
                     </div>

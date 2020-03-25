@@ -9,6 +9,7 @@ export interface PeriodProductType {
 export interface ServicesInfo {
     lineName: string;
     startDate: string;
+    description: string;
 }
 
 export interface ServiceLists {
