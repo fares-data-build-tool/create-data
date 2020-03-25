@@ -20,6 +20,37 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     const productNameError = product && product.productNameError;
     const productPriceError = product && product.productPriceError;
 
+    let priceErrorMessage = '';
+    let nameErrorMessage = '';
+    if (product.productPriceError !== '') {
+        switch (productPriceError) {
+            case 'empty':
+                priceErrorMessage = 'Product Price cannot be empty.';
+                break;
+            case 'notCurrency':
+                priceErrorMessage = 'Product Price must be a valid currency.';
+                break;
+            case 'zero':
+                priceErrorMessage = 'Product Price cannot be zero.';
+                break;
+            default:
+                priceErrorMessage = 'Invalid input.';
+        }
+
+        if (product.productNameError !== '') {
+            switch (productNameError) {
+                case 'empty':
+                    nameErrorMessage = 'Product Name cannot be empty.';
+                    break;
+                case 'short':
+                    nameErrorMessage = 'Product Name cannot be 1 character.';
+                    break;
+                default:
+                    nameErrorMessage = 'Invalid input.';
+            }
+        }
+    }
+
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -44,7 +75,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
                                 <span className={productNameError ? '' : 'govuk-visually-hidden'}>
-                                    Product name is a required field
+                                    {nameErrorMessage}
                                 </span>
                             </span>
                             <input
@@ -54,7 +85,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                 id="periodProductName"
                                 name="periodProductNameInput"
                                 type="text"
-                                maxLength={30}
+                                maxLength={50}
                                 defaultValue={productName}
                             />
                         </div>
@@ -67,7 +98,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
                                 <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
-                                    Product price is a required field
+                                    {priceErrorMessage}
                                 </span>
                             </span>
                             <div className="govuk-currency-input">
@@ -118,6 +149,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     }
 
     const zoneObject = JSON.parse(zoneCookie);
+
+    if (periodProductCookie) {
+        JSON.parse(periodProductCookie);
+    }
 
     return {
         props: {
