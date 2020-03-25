@@ -22,6 +22,7 @@ export const getMockRequestAndResponse = (
     uuid: any = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
+    requestHeaders: any = {},
 ): { req: mockReqRes.RequestOutput; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -91,6 +92,7 @@ export const getMockRequestAndResponse = (
             host: 'localhost:5000',
             cookie: cookieString,
             origin: 'localhost:5000',
+            ...requestHeaders,
         },
         cookies: cookieValues,
     });

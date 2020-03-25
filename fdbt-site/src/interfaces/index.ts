@@ -10,6 +10,7 @@ export interface ServicesInfo {
     lineName: string;
     startDate: string;
     description: string;
+    checked: boolean;
 }
 
 export interface ServiceLists {

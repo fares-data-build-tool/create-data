@@ -52,13 +52,13 @@ exports[`pages singleOperator should render correctly 1`] = `
           >
             Select all service that apply
           </span>
-          <button
+          <input
             className="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-            type="button"
-          >
-            Select All
-          </button>
+            id="select-all-button"
+            name="selectAll"
+            type="submit"
+            value="Select All"
+          />
           <div
             className="govuk-checkboxes"
           />
