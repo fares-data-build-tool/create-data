@@ -9,9 +9,8 @@ export const isCurrency = (periodPriceInput: string): boolean => {
     return regex.test(periodPriceInput);
 };
 
-export const cleanPeriodNameInput = (periodNameInput: string): string => {
-    const trimmedName = periodNameInput.trim();
-    return trimmedName.replace(/\s+/g, ' ');
+export const trimPeriodNameInput = (periodNameInput: string): string => {
+    return periodNameInput.trim().replace(/\s+/g, ' ');
 };
 
 const checkIfInputInvalid = (
@@ -22,7 +21,7 @@ const checkIfInputInvalid = (
     let productNameError = '';
     let productPriceError = '';
 
-    const cleanedNameInput = cleanPeriodNameInput(periodProductNameInput);
+    const cleanedNameInput = trimPeriodNameInput(periodProductNameInput);
 
     if (cleanedNameInput === '') {
         productNameError = 'empty';

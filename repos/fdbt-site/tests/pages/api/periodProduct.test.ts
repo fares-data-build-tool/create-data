@@ -1,4 +1,4 @@
-import periodProduct, { isCurrency, cleanPeriodNameInput } from '../../../src/pages/api/periodProduct';
+import periodProduct, { isCurrency, trimPeriodNameInput } from '../../../src/pages/api/periodProduct';
 import { PERIOD_PRODUCT } from '../../../src/constants';
 
 import * as validator from '../../../src/pages/api/service/validator';
@@ -109,7 +109,7 @@ describe('Current and product name checks', () => {
         expect(isCurrency('1.0006')).toBe(false);
     });
 
-    it('should return false for a nonsense input', () => {
+    it('should return false for an mixed-invalid input', () => {
         expect(isCurrency('1.ff4')).toBe(false);
     });
 
@@ -117,6 +117,6 @@ describe('Current and product name checks', () => {
         const input = '   This is     my   product      ';
         const expected = 'This is my product';
 
-        expect(cleanPeriodNameInput(input)).toBe(expected);
+        expect(trimPeriodNameInput(input)).toBe(expected);
     });
 });
