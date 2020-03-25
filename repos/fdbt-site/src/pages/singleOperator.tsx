@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES } from '../constants';
 import { getServicesByNocCode } from '../data/dynamodb';
-import { ServiceLists } from '../interfaces';
+import { ServiceLists, ServicesInfo } from '../interfaces';
 
 const title = 'Which service(s) is the ticket valid for';
 const description = 'Single Operator selection page of the Fares data build tool';
@@ -29,13 +29,13 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
                             <span id="waste-hint" className="govuk-hint">
                                 Select all service that apply
                             </span>
-                            <button
+                            <input
+                                type="submit"
+                                name="selectAll"
+                                value="Select All"
+                                id="select-all-button"
                                 className="govuk-button govuk-button--secondary"
-                                data-module="govuk-button"
-                                type="button"
-                            >
-                                Select All
-                            </button>
+                            />
                             <div className="govuk-checkboxes">
                                 {selectedServices.map((service, index) => {
                                     let checkboxTitles = `${service.lineName}-${service.description}-${service.startDate}`;
@@ -52,6 +52,7 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
                                                 name={service.lineName}
                                                 type="checkbox"
                                                 value={service.startDate}
+                                                defaultChecked={service.checked}
                                             />
                                             <label
                                                 className="govuk-label govuk-checkboxes__label"
@@ -92,11 +93,19 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const { nocCode } = operatorObject;
     const servicesList = await getServicesByNocCode(nocCode);
 
+    const { selectAll } = ctx.query;
+    const checkedServiceList: ServicesInfo[] = servicesList.map(service => {
+        return {
+            ...service,
+            checked: selectAll !== 'false',
+        };
+    });
+
     if (!periodSingleOperatorCookie) {
         return {
             props: {
                 error: false,
-                selectedServices: servicesList,
+                selectedServices: checkedServiceList,
             },
         };
     }
@@ -108,7 +117,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     return {
         props: {
             error,
-            selectedServices: servicesList,
+            selectedServices: checkedServiceList,
         },
     };
 };

@@ -37,7 +37,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         if (periodType === 'singleOperator') {
-            redirectTo(res, '/singleOperator');
+            redirectTo(res, '/singleOperator?selectAll=false');
             return;
         }
     } catch (error) {
