@@ -32,7 +32,7 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
                                     What duration is your product valid for?
                                 </h1>
                                 <p className="govuk-hint hint-text">
-                                    Product: {productName} - {productPrice}
+                                    Product: {productName} - £{productPrice}
                                 </p>
                             </legend>
                             <div className={`govuk-form-group ${isError ? 'govuk-form-group--error' : ''}`}>
