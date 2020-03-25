@@ -82,7 +82,7 @@ const periodTicketNetexGenerator = (
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = website;
         resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
-        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = operatorData.mode;
+        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = (operatorData.mode).toLowerCase();
 
         return resourceFrameToUpdate;
     };

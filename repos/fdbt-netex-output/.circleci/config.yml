@@ -104,7 +104,6 @@ workflows:
                           only:
                               - develop
                               - master
-                              - feature/TFN-261_netex_output_period_ticket
 
             - audit-netex-output-resources:
                   requires:
@@ -114,7 +113,6 @@ workflows:
                           only:
                               - develop
                               - master
-                              - feature/TFN-261_netex_output_period_ticket
 
             - build-netex-output-resources:
                   requires:
@@ -124,7 +122,6 @@ workflows:
                           only:
                               - develop
                               - master
-                              - feature/TFN-261_netex_output_period_ticket
 
             - test-netex-output-resources:
                   requires:
@@ -134,7 +131,6 @@ workflows:
                           only:
                               - develop
                               - master
-                              - feature/TFN-261_netex_output_period_ticket
 
             - lint-netex-output-resources:
                   requires:
@@ -144,7 +140,6 @@ workflows:
                           only:
                               - develop
                               - master
-                              - feature/TFN-261_netex_output_period_ticket
 
             - deploy-netex-output-resources-to-test:
                   requires:
@@ -155,7 +150,6 @@ workflows:
                       branches:
                           only:
                               - develop
-                              - feature/TFN-261_netex_output_period_ticket
 
             - hold-preprod-deployment:
                   type: approval
