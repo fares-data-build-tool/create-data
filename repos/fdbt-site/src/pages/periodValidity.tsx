@@ -44,8 +44,8 @@ const PeriodValidity = ({ error }: PeriodValidityInterface): ReactElement => (
                                     At the end of a calendar day
                                 </label>
                                 <span className="govuk-hint govuk-radios__hint" id="period-end-calendar-hint">
-                                    For example, a ticket purchased at 3pm would be valid until midnight on it&aposs day
-                                    of expiry
+                                    For example, a ticket purchased at 3pm would be valid until midnight on its day of
+                                    expiry
                                 </span>
                             </div>
                             <div className="govuk-radios__item">
