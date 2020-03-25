@@ -11,6 +11,7 @@ import {
     getNetexMode,
     NetexObject,
 } from './singleTicketNetexHelpers';
+import { getCleanWebsite } from '../sharedHelpers';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
@@ -42,6 +43,7 @@ const singleTicketNetexGenerator = (
     const noccodeLineNameFormat = `${matchingData.nocCode}_${matchingData.lineName}`;
     const lineIdName = `Line_${matchingData.lineName}`;
     const currentDate = new Date(Date.now());
+    const website = getCleanWebsite(operatorData.website);
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
         const publicationTimeStampToUpdate = { ...publicationTimeStamp };
@@ -74,16 +76,16 @@ const singleTicketNetexGenerator = (
     const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
         const resourceFrameToUpdate = { ...resourceFrame };
         resourceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ResourceFrame_UK_PI_COMMON:op`;
-        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = operatorData.website;
+        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = website;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = opIdNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
             operatorData.publicName;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = opIdNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
             operatorData.publicName;
         resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.id = opIdBrandFormat;
-        resourceFrameToUpdate.organisations.Operator.id = opIdNocFormat;
+        resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
         resourceFrameToUpdate.organisations.Operator.PublicCode.$t = matchingData.nocCode;
         resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.publicName;
         resourceFrameToUpdate.organisations.Operator.ShortName.$t = matchingData.operatorShortName;
@@ -112,8 +114,8 @@ const singleTicketNetexGenerator = (
         serviceFrameToUpdate.lines.Line.Description.$t = serviceData.serviceDescription;
         serviceFrameToUpdate.lines.Line.PublicCode.$t = matchingData.lineName;
         serviceFrameToUpdate.lines.Line.PrivateCode.$t = noccodeLineNameFormat;
-        serviceFrameToUpdate.lines.Line.OperatorRef.ref = opIdNocFormat;
-        serviceFrameToUpdate.lines.Line.OperatorRef.$t = matchingData.nocCode;
+        serviceFrameToUpdate.lines.Line.OperatorRef.ref = nocCodeNocFormat;
+        serviceFrameToUpdate.lines.Line.OperatorRef.$t = opIdNocFormat;
         serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getScheduledStopPointsList(
             matchingData.fareZones,
         );
@@ -140,8 +142,8 @@ const singleTicketNetexGenerator = (
             },
         };
         priceFareFrameToUpdate.tariffs.Tariff.Name = { $t: `${operatorPublicNameLineNameFormat} - Single Fares` };
-        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = opIdNocFormat;
-        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = matchingData.nocCode;
+        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
+        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;
         priceFareFrameToUpdate.tariffs.Tariff.LineRef.ref = matchingData.lineName;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].Name = {
             $t: `O/D pairs for ${matchingData.lineName}`,
@@ -157,7 +159,7 @@ const singleTicketNetexGenerator = (
         let userProfile;
         // eslint-disable-next-line no-plusplus
         for (userProfile = 1; userProfile < 4; userProfile++) {
-            arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
+            arrayofUserProfiles[userProfile].Url.$t = website;
         }
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
 
