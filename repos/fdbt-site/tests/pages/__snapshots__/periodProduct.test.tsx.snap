@@ -61,14 +61,14 @@ exports[`pages periodProduct should render correctly 1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Product name is a required field
+              Invalid input.
             </span>
           </span>
           <input
             className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input  "
             defaultValue=""
             id="periodProductName"
-            maxLength={30}
+            maxLength={50}
             name="periodProductNameInput"
             type="text"
           />
@@ -95,7 +95,7 @@ exports[`pages periodProduct should render correctly 1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Product price is a required field
+              Invalid input.
             </span>
           </span>
           <div

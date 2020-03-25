@@ -1,5 +1,6 @@
+import periodProduct, { isCurrency, cleanPeriodNameInput } from '../../../src/pages/api/periodProduct';
 import { PERIOD_PRODUCT } from '../../../src/constants';
-import periodProduct from '../../../src/pages/api/periodProduct';
+
 import * as validator from '../../../src/pages/api/service/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -23,10 +24,10 @@ describe('periodProduct', () => {
 
         const mockPeriodProductCookies = {
             uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-            productNameError: true,
-            productPriceError: true,
             productName: '',
             productPrice: '',
+            productNameError: 'empty',
+            productPriceError: 'empty',
         };
 
         periodProduct(req, res);
@@ -52,10 +53,10 @@ describe('periodProduct', () => {
 
         const mockPeriodProductCookies = {
             uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-            productNameError: false,
-            productPriceError: false,
             productName: 'ProductA',
             productPrice: '121',
+            productNameError: '',
+            productPriceError: '',
         };
 
         periodProduct(req, res);
@@ -81,10 +82,10 @@ describe('periodProduct', () => {
 
         const mockPeriodProductCookies = {
             uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-            productNameError: false,
-            productPriceError: false,
             productName: 'ProductBA',
             productPrice: '121',
+            productNameError: '',
+            productPriceError: '',
         };
 
         periodProduct(req, res);
@@ -96,5 +97,26 @@ describe('periodProduct', () => {
             req,
             res,
         );
+    });
+});
+
+describe('Current and product name checks', () => {
+    it('should return true for a currency', () => {
+        expect(isCurrency('1.50')).toBe(true);
+    });
+
+    it('should return false for a non-currency', () => {
+        expect(isCurrency('1.0006')).toBe(false);
+    });
+
+    it('should return false for a nonsense input', () => {
+        expect(isCurrency('1.ff4')).toBe(false);
+    });
+
+    it('should return a product name with no excessive whitespace', () => {
+        const input = '   This is     my   product      ';
+        const expected = 'This is my product';
+
+        expect(cleanPeriodNameInput(input)).toBe(expected);
     });
 });
