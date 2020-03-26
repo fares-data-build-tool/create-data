@@ -7,13 +7,18 @@ import { ServiceLists } from '../../interfaces';
 const redirectUrl = '/singleOperator';
 const serviceListObject: ServiceLists = { error: false, selectedServices: [] };
 
-const setSingleOperatorCookie = (req: NextApiRequest, res: NextApiResponse, error?: boolean) => {
+const setSingleOperatorCookie = (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    error?: boolean,
+    checkServiceList?: any[],
+) => {
     const uuid = getUuidFromCookie(req, res);
 
     setCookieOnResponseObject(
         getDomain(req),
         PERIOD_SINGLE_OPERATOR_SERVICES,
-        JSON.stringify({ ...serviceListObject, selectedServices: JSON.stringify(req.body), error: !!error, uuid }),
+        JSON.stringify({ ...serviceListObject, selectedServices: checkServiceList, error: !!error, uuid }),
         req,
         res,
     );
@@ -42,7 +47,13 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        setSingleOperatorCookie(req, res);
+        const checkedServiceList: any[] = [];
+
+        Object.entries(req.body).forEach(entry => {
+            checkedServiceList.push({ lineNumber: entry[0], startDate: entry[1] });
+        });
+
+        setSingleOperatorCookie(req, res, false, checkedServiceList);
         redirectTo(res, '/periodProduct');
         return;
     } catch (error) {
