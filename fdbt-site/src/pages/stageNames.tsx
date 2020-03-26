@@ -81,24 +81,24 @@ const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactE
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
+    deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
+
+    if (!fareStagesCookie) {
+        throw new Error('Necessary fare stage cookie not found to show stage names page');
+    }
+
+    const fareStagesObject = JSON.parse(fareStagesCookie);
+    const numberOfFareStages = Number(fareStagesObject.fareStages);
+
     let inputChecks: InputCheck[] = [];
     if (cookies[STAGE_NAME_VALIDATION_COOKIE]) {
         const validationCookie = cookies[STAGE_NAME_VALIDATION_COOKIE];
         inputChecks = JSON.parse(validationCookie);
     }
 
-    deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
-
-    if (fareStagesCookie) {
-        const fareStagesObject = JSON.parse(fareStagesCookie);
-        const numberOfFareStages = Number(fareStagesObject.fareStages);
-
-        return { props: { numberOfFareStages, inputChecks } };
-    }
-
-    throw new Error('Failed to retrieve fareStageCookie info for Stage Names page.');
+    return { props: { numberOfFareStages, inputChecks } };
 };
 
 export default StageNames;
