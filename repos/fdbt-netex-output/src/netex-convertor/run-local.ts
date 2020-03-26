@@ -1,5 +1,4 @@
 import fs from 'fs';
-import format from 'xml-formatter';
 import matchingdata from './testdata/matchingdata';
 import { OperatorData, ServiceData } from './types';
 import netexGenerator from './netexGenerator';
@@ -11,7 +10,7 @@ const publicName = 'IWBus Transport';
 const vosaPSVLicenseName = 'IWBus Transport Ltd'; // eslint-disable-line @typescript-eslint/camelcase
 const fareEnq = '0113 111 1111';
 const complEnq = 'Apsley Hpuse, 1 Wellington Street, Leeds, LS1 AAA';
-const mode = 'bus';
+const mode = 'Bus';
 
 const operator: OperatorData = {
     website,
@@ -31,7 +30,7 @@ const service: ServiceData = {
 const netexGen = netexGenerator(matchingdata, operator, service);
 
 netexGen.generate().then((data: string) => {
-    fs.writeFile('./output/output.xml', format(data), {}, () => {
+    fs.writeFile('./output/output.xml', data, {}, () => {
         console.log('Written');
     });
 });
