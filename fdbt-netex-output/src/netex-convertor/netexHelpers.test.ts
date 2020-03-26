@@ -84,7 +84,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA03623',
                     version: 'any',
@@ -94,7 +94,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA00077',
                     version: 'any',
@@ -104,7 +104,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA00359',
                     version: 'any',
@@ -114,7 +114,7 @@ describe('Netex Helpers', () => {
                     TopographicPlaceView: {
                         Name: { $t: 'Bewbush' },
                         QualifierName: { $t: 'West Sussex' },
-                        TopographicPlaceRef: { ref: 'nptgUkLocality:E0026633', version: '0' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0026633' },
                     },
                     id: 'naptan:3290YYA00357',
                     version: 'any',
@@ -180,20 +180,16 @@ describe('Netex Helpers', () => {
                     Name: { $t: 'Acomb Green Lane' },
                     id: 'fs@Acomb_Green_Lane',
                     members: {
-                        stopPoints: [
+                        ScheduledStopPointRef: [
                             {
-                                ScheduledStopPointRef: {
-                                    $t: 'Queenswood Grove, Bewbush',
-                                    ref: 'naptan:3290YYA03623',
-                                    version: 'any',
-                                },
+                                $t: 'Queenswood Grove, Bewbush',
+                                ref: 'naptan:3290YYA03623',
+                                version: 'any',
                             },
                             {
-                                ScheduledStopPointRef: {
-                                    $t: 'Kingsthorpe, Bewbush',
-                                    ref: 'naptan:3290YYA00077',
-                                    version: 'any',
-                                },
+                                $t: 'Kingsthorpe, Bewbush',
+                                ref: 'naptan:3290YYA00077',
+                                version: 'any',
                             },
                         ],
                     },
@@ -203,13 +199,11 @@ describe('Netex Helpers', () => {
                     Name: { $t: 'Mattison Way' },
                     id: 'fs@Mattison_Way',
                     members: {
-                        stopPoints: [
+                        ScheduledStopPointRef: [
                             {
-                                ScheduledStopPointRef: {
-                                    $t: 'Mattison Way, Bewbush',
-                                    ref: 'naptan:3290YYA00359',
-                                    version: 'any',
-                                },
+                                $t: 'Mattison Way, Bewbush',
+                                ref: 'naptan:3290YYA00359',
+                                version: 'any',
                             },
                         ],
                     },
@@ -219,13 +213,11 @@ describe('Netex Helpers', () => {
                     Name: { $t: 'Nursery Drive' },
                     id: 'fs@Nursery_Drive',
                     members: {
-                        stopPoints: [
+                        ScheduledStopPointRef: [
                             {
-                                ScheduledStopPointRef: {
-                                    $t: 'Campbell Avenue, Bewbush',
-                                    ref: 'naptan:3290YYA00357',
-                                    version: 'any',
-                                },
+                                $t: 'Campbell Avenue, Bewbush',
+                                ref: 'naptan:3290YYA00357',
+                                version: 'any',
                             },
                         ],
                     },
@@ -234,7 +226,7 @@ describe('Netex Helpers', () => {
                 {
                     Name: { $t: 'Holl Bank/Beech Ave' },
                     id: 'fs@Holl_Bank/Beech_Ave',
-                    members: { stopPoints: [] },
+                    members: { ScheduledStopPointRef: [] },
                     version: '1.0',
                 },
             ]);
@@ -288,21 +280,6 @@ describe('Netex Helpers', () => {
                     priceGroups: { PriceGroupRef: { ref: 'price_band_1.10', version: '1.0' } },
                     version: '1.0',
                 },
-            ]);
-        });
-    });
-
-    describe('getDistanceMatrixElementsPriceRefs', () => {
-        it('creates a list of NeTEx distance matrix element price refs for fares table', () => {
-            const priceRefs = netexHelpers.getDistanceMatrixElementsPriceRefs(fareZones, lineIdName);
-
-            expect(priceRefs).toEqual([
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Mattison_Way', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Nursery_Drive', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Acomb_Green_Lane+Holl_Bank/Beech_Ave', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way+Nursery_Drive', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Mattison_Way+Holl_Bank/Beech_Ave', version: '1.0' },
-                { ref: 'Trip@single-SOP@p-ticket@line_123@adult@Nursery_Drive+Holl_Bank/Beech_Ave', version: '1.0' },
             ]);
         });
     });
