@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { PERIOD_SINGLE_OPERATOR_SERVICES } from '../../constants';
-import { ServiceLists } from '../../interfaces';
+import { ServiceLists, ServicesInfo } from '../../interfaces';
 
 const redirectUrl = '/singleOperator';
 const serviceListObject: ServiceLists = { error: false, selectedServices: [] };
@@ -11,8 +11,8 @@ const setSingleOperatorCookie = (
     req: NextApiRequest,
     res: NextApiResponse,
     error?: boolean,
-    checkServiceList?: any[],
-) => {
+    checkServiceList?: ServicesInfo[],
+): void => {
     const uuid = getUuidFromCookie(req, res);
 
     setCookieOnResponseObject(
@@ -46,10 +46,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        const checkedServiceList: any[] = [];
+        const checkedServiceList: ServicesInfo[] = [];
+        const requestBody: { [key: string]: string } = req.body;
 
-        Object.entries(req.body).forEach(entry => {
-            checkedServiceList.push({ lineNumber: entry[0], startDate: entry[1] });
+        Object.entries(requestBody).forEach(entry => {
+            const data: ServicesInfo = { lineName: entry[0], startDate: entry[1] };
+            checkedServiceList.push(data);
         });
 
         setSingleOperatorCookie(req, res, false, checkedServiceList);
