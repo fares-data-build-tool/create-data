@@ -14,11 +14,11 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/singleOperator" method="post">
-                    <div className="govuk-form-group">
+                    <div className={`govuk-form-group ${error ? ' govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
-                                    Which services(s)?
+                                    Which service(s)?
                                 </h1>
                             </legend>
                             <span id="radio-error" className="govuk-error-message">
