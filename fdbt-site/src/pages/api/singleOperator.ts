@@ -27,7 +27,8 @@ const setSingleOperatorCookie = (
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid');
+            redirectTo(res, '/error');
+            return;
         }
 
         const refererUrl = req?.headers?.referer;
@@ -58,6 +59,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/periodProduct');
         return;
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem selecting the selecting the services for a single operator:';
+        redirectToError(res, message, error);
     }
 };
