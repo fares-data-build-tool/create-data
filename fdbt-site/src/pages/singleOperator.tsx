@@ -38,26 +38,25 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
                             />
                             <div className="govuk-checkboxes">
                                 {selectedServices.map((service, index) => {
-                                    let checkboxTitles = `${service.lineName}-${service.description}-${service.startDate}`;
+                                    const { lineName, startDate, checked } = service;
+
+                                    let checkboxTitles = `${lineName}-${description}-${startDate}`;
 
                                     if (checkboxTitles.length > 80) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
                                     }
 
                                     return (
-                                        <div className="govuk-checkboxes__item">
+                                        <div className="govuk-checkboxes__item" key={`chexkbox-item-${lineName}`}>
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
-                                                name={service.lineName}
+                                                name={lineName}
                                                 type="checkbox"
-                                                value={service.startDate}
-                                                defaultChecked={service.checked}
+                                                value={startDate}
+                                                defaultChecked={checked}
                                             />
-                                            <label
-                                                className="govuk-label govuk-checkboxes__label"
-                                                htmlFor={service.lineName}
-                                            >
+                                            <label className="govuk-label govuk-checkboxes__label" htmlFor={lineName}>
                                                 {checkboxTitles}
                                             </label>
                                         </div>
