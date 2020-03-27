@@ -49,7 +49,7 @@ export interface GeographicalFareZonePass {
     type: string;
     productName: string;
     productPrice: string;
-    fareZoneName: string;
+    zoneName: string;
     stops: Stop[];
     daysValid: string;
     expiryRules: string;

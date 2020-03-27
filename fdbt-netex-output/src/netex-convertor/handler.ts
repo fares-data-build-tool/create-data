@@ -63,15 +63,14 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             }_${new Date().toISOString()}.xml`;
             const fileNameWithoutSlashes = fileName.replace('/', '_');
             await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
-        }
-        else if (s3Data.type === 'period') {
+        } else if (s3Data.type === 'period') {
             const geoFareZonePass: GeographicalFareZonePass = s3Data;
             const operatorData = await getOperatorsTableData(geoFareZonePass.nocCode);
             const netexGen = periodTicketNetexGenerator(geoFareZonePass, operatorData);
             const generatedNetex = await netexGen.generate();
-            const fileName = `${geoFareZonePass.operatorName}_${
-                geoFareZonePass.fareZoneName
-            }_${geoFareZonePass.productName}_${new Date().toISOString()}.xml`;
+            const fileName = `${geoFareZonePass.operatorName}_${geoFareZonePass.zoneName}_${
+                geoFareZonePass.productName
+            }_${new Date().toISOString()}.xml`;
             const fileNameWithoutSlashes = fileName.replace('/', '_');
             await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
         } else {
@@ -83,7 +82,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         }
     } catch (error) {
         console.error(error.stack);
-        throw new Error(error)
+        throw new Error(error);
     }
 };
 
