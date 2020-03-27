@@ -1,224 +1,59 @@
-service: reference-data-service
+service: reference-data-service-uploaders
 
 provider:
-    name: aws
-    runtime: nodejs12.x
-    region: eu-west-2
-    stage: ${opt:stage, 'test'}
-    stackName: ${self:service}-${self:provider.stage}
-    timeout: 900
-    memorySize: 2048
-    iamRoleStatements:
-        - Effect: 'Allow'
-          Action:
-              - 's3:GetObject'
-              - 's3:ListBucket'
-          Resource:
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-naptan-data-${self:provider.stage}
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-naptan-data-${self:provider.stage}
-                      - '/*'
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-noc-data-${self:provider.stage}
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-noc-data-${self:provider.stage}
-                      - '/*'
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-tnds-data-${self:provider.stage}
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-tnds-data-${self:provider.stage}
-                      - '/*'
-        - Effect: 'Allow'
-          Action:
-              - dynamodb:DescribeTable
-              - dynamodb:Query
-              - dynamodb:Scan
-              - dynamodb:GetItem
-              - dynamodb:PutItem
-              - dynamodb:BatchWriteItem
-              - dynamodb:UpdateItem
-              - dynamodb:DeleteItem
-          Resource:
-              - !GetAtt NaptanTable.Arn
-              - !GetAtt NocTable.Arn
-              - !GetAtt ServicesTable.Arn
-              - !GetAtt TndsTable.Arn
-
-    environment:
-        NAPTAN_TABLE_NAME: !Ref NaptanTable
-        NOC_TABLE_NAME: !Ref NocTable
-        TNDS_TABLE_NAME: !Ref TndsTable
-        SERVICES_TABLE_NAME: !Ref ServicesTable
-        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
-
-plugins:
-    - serverless-plugin-typescript
-    - serverless-s3-local
-    - serverless-dynamodb-local
-    - serverless-offline
+  name: aws
+  runtime: python3.7
+  region: eu-west-2
+  stage: ${opt:stage, 'test'}
+  stackName: ${self:service}-${self:provider.stage}
+  timeout: 900
+  memorySize: 2048
+  iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "ssm:GetParameter"
+        Resource: "*"
+      - Effect: "Allow"
+        Action:
+          - "s3:GetObject"
+        Resource: 
+          - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
+          - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
 
 functions:
-    NaptanUploader:
-        handler: handlers/naptan-uploader/handler.s3NaptanHandler
-        memorySize: 3008
-        events:
-            - s3: fdbt-naptan-data-${self:provider.stage}
-              event: s3:ObjectCreated:*
+  CsvUploader:
+    handler: handlers/csv-uploader/handler
+    vpc:
+      securityGroupIds:
+        - fdbt-referenceDataUploaders-sg-${self:provider.stage}
+      subnetIds:
+        - fdbt-privateSubnetA-${self:provider.stage}
+        - fdbt-privateSubnetB-${self:provider.stage}
+    environment:
+      RDS_HOST: value
+    events:
+      - s3:
+          bucket: fdbt-csv-reference-data-${self:provider.stage}
+          event: s3:ObjectCreated:*
 
-    NocUploader:
-        handler: handlers/noc-uploader/handler.s3NocHandler
-        events:
-            - s3: fdbt-noc-data-${self:provider.stage}
-              event: s3:ObjectCreated:*
+  XmlUploader:
+    handler: handlers/xml-uploader/handler
+    vpc:
+      securityGroupIds:
+        - fdbt-referenceDataUploaders-sg-${self:provider.stage}
+      subnetIds:
+        - fdbt-privateSubnetA-${self:provider.stage}
+        - fdbt-privateSubnetB-${self:provider.stage}
+    environment:
+      RDS_HOST: value
+    events:
+      - s3:
+          bucket: fdbt-xml-reference-data-${self:provider.stage}
+          event: s3:ObjectCreated:*
 
-    NptgUploader:
-        handler: handlers/nptg-uploader/handler.s3NptgHandler
-        events:
-            - s3: fdbt-nptg-data-${self:provider.stage}
-              event: s3:ObjectCreated:*
-
-    TndsUploader:
-        handler: handlers/tnds-uploader/handler.s3TndsHandler
-        reservedConcurrency: 50
-        events:
-            - s3: fdbt-tnds-data-${self:provider.stage}
-              event: s3:ObjectCreated:*
-
-resources:
-    Resources:
-        NaptanTable:
-            Type: AWS::DynamoDB::Table
-            Properties:
-                TableName: ${self:provider.stage}-Stops
-                AttributeDefinitions:
-                    - AttributeName: 'Partition'
-                      AttributeType: 'S'
-                    - AttributeName: 'NaptanCode'
-                      AttributeType: 'S'
-                KeySchema:
-                    - AttributeName: 'Partition'
-                      KeyType: 'HASH'
-                BillingMode: PAY_PER_REQUEST
-                GlobalSecondaryIndexes:
-                - IndexName: NaptanIndex
-                  KeySchema:
-                  - AttributeName: 'NaptanCode'
-                    KeyType: 'HASH'
-                  Projection:
-                    ProjectionType: 'KEYS_ONLY'
-
-        NocTable:
-            Type: AWS::DynamoDB::Table
-            Properties:
-                TableName: ${self:provider.stage}-Operators
-                AttributeDefinitions:
-                    - AttributeName: 'Partition'
-                      AttributeType: 'S'
-                KeySchema:
-                    - AttributeName: 'Partition'
-                      KeyType: 'HASH'
-                BillingMode: PAY_PER_REQUEST
-
-        ServicesTable:
-            Type: AWS::DynamoDB::Table
-            Properties:
-                TableName: ${self:provider.stage}-Services
-                AttributeDefinitions:
-                    - AttributeName: 'Partition'
-                      AttributeType: 'S'
-                    - AttributeName: 'Sort'
-                      AttributeType: 'S'
-                KeySchema:
-                    - AttributeName: 'Partition'
-                      KeyType: 'HASH'
-                    - AttributeName: 'Sort'
-                      KeyType: 'RANGE'
-                BillingMode: PAY_PER_REQUEST
-
-        TndsTable:
-            Type: AWS::DynamoDB::Table
-            Properties:
-                TableName: ${self:provider.stage}-TNDS
-                AttributeDefinitions:
-                    - AttributeName: 'Partition'
-                      AttributeType: 'S'
-                    - AttributeName: 'Sort'
-                      AttributeType: 'S'
-                KeySchema:
-                    - AttributeName: 'Partition'
-                      KeyType: 'HASH'
-                    - AttributeName: 'Sort'
-                      KeyType: 'RANGE'
-                BillingMode: PAY_PER_REQUEST
-
-    Outputs:
-        NaptanTableName:
-            Value: !Ref NaptanTable
-            Export:
-                Name: ${self:service}:${self:provider.stage}:NaptanTableName
-        NocTableName:
-            Value: !Ref NocTable
-            Export:
-                Name: ${self:service}:${self:provider.stage}:NocTableName
-        ServicesTableName:
-            Value: !Ref ServicesTable
-            Export:
-                Name: ${self:service}:${self:provider.stage}:ServicesTableName
-        TndsTableName:
-            Value: !Ref TndsTable
-            Export:
-                Name: ${self:service}:${self:provider.stage}:TndsTableName
-        NaptanTableArn:
-            Value: !GetAtt NaptanTable.Arn
-            Export:
-                Name: ${self:service}:${self:provider.stage}:NaptanTableArn
-        NocTableArn:
-            Value: !GetAtt NocTable.Arn
-            Export:
-                Name: ${self:service}:${self:provider.stage}:NocTableArn
-        ServicesTableArn:
-            Value: !GetAtt ServicesTable.Arn
-            Export:
-                Name: ${self:service}:${self:provider.stage}:ServicesTableArn
-        TndsTableArn:
-            Value: !GetAtt TndsTable.Arn
-            Export:
-                Name: ${self:service}:${self:provider.stage}:TndsTableArn
-# The below custom section is for local testing of dynamodb using serverless-dynamodb-local.
-custom:
-    dynamodb:
-        stages:
-            - dev
-            - test
-        start:
-            port: 9100
-            inMemory: true
-            heapInitial: 200m
-            heapMax: 1g
-            migrate: true
-            seed: true
-
-        seed:
-            domain:
-                sources:
-                    - table: ${self:provider.stage}-Stops
-                      sources: [./dev/seeddata/stops.json]
-                    - table: ${self:provider.stage}-Operators
-                      sources: [./dev/seeddata/operators.json]
-                    - table: ${self:provider.stage}-Services
-                      sources: [./dev/seeddata/services.json]
-                    - table: ${self:provider.stage}-TNDS
-                      sources: [./dev/seeddata/tnds.json]
+package:
+    exclude:
+        - '*'
+    include:
+        - ./csv-uploader/*
+        - ./xml-uploader/*
