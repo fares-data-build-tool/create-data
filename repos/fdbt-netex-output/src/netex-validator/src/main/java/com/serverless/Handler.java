@@ -1,12 +1,13 @@
 package com.serverless;
 
+import java.io.IOException;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.event.S3EventNotification;
-import org.xml.sax.SAXParseException;
 
-import java.io.IOException;
+import org.xml.sax.SAXParseException;
 
 public class Handler implements RequestHandler<S3Event, String> {
 	@Override
@@ -18,33 +19,31 @@ public class Handler implements RequestHandler<S3Event, String> {
 
 		final S3 s3 = new S3();
 
-		String content = null;
-
-		try {
-			content = s3.getObjectContentAsStringFromS3(bucketName, key);
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-
 		final NetexValidator netexValidator = new NetexValidator();
 
-		if (content == null || content.isEmpty()) {
-			throw new Error("No content found.");
-		}
+		byte[] s3ByteArray = null;
 
-		final ValidationResult result = netexValidator.isNetexValid(content);
+		try {
+			final String validatedBucketname = "";
+			s3ByteArray = s3.getS3ObjectAsByteArray(bucketName, key);
+			final ValidationResult result = netexValidator.isNetexValid(bucketName, key, s3ByteArray.clone());
 
-		final String validatedBucketname = "";
+			if (result.getValidity()) {
+				System.out.println("NeTEx valid, writing to validated bucket");
+				s3.putObjectInValidatedBucket(validatedBucketname, key, s3ByteArray.clone());
+			} else {
+				System.out.println("NeTEx validation failed. Errors are: \n");
 
-		if (result.getValidity()) {
-			s3.putObjectInValidatedBucket(validatedBucketname, key, content);
-		} else {
-			System.out.println("Netex validation failed. Errors are: \n");
-
-			for (SAXParseException e : result.getErrors()) {
-				System.out.println(String.format("Error Line number: %s , Error Column number: %s, Error Message: %s",
-						e.getLineNumber(), e.getColumnNumber(), e.toString()));
+				for (SAXParseException e : result.getErrors()) {
+					System.out
+							.println(String.format("Error Line number: %s , Error Column number: %s, Error Message: %s",
+									e.getLineNumber(), e.getColumnNumber(), e.toString()));
+				}
 			}
+		} catch (IOException e) {
+			System.out.println(e.getStackTrace());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return "Netex Validation complete.";

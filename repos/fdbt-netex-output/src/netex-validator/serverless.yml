@@ -8,18 +8,18 @@ provider:
   timeout: 900
   memorySize: 2048
   iamRoleStatements:
-      - Effect: 'Allow'
-        Action:
-            - 's3:getObject'
-            - 's3:PutObject'
-        Resource:
-          - !Sub 'arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*'
-          - !Sub 'arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*'
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+        - "s3:PutObject"
+      Resource:
+        - !Sub "arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*"
+        - !Sub "arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*"
 
   environment:
-      XSD_URL: 'http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd'
-      VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
-      UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
+    XSD_URL: "http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd"
+    VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
+    UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
 
 package:
   artifact: target/netex-validator-dev.jar
