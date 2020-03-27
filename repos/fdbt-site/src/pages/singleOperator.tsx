@@ -77,7 +77,6 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceLists }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];

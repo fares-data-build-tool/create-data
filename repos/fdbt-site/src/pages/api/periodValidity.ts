@@ -63,8 +63,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (fareZoneCookie) {
             const { fareZoneName } = JSON.parse(fareZoneCookie);
-            const attoCodes: string[] = await getCsvZoneUploadData(uuid);
-            const zoneStops: Stop[] = await batchGetStopsByAtcoCode(attoCodes);
+            const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
+            const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
             props = {
                 zoneName: fareZoneName,
