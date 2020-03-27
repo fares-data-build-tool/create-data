@@ -11,6 +11,9 @@ import {
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
+    CSV_ZONE_UPLOAD_COOKIE,
+    PERIOD_PRODUCT,
+    VALIDITY_COOKIE,
 } from '../../src/constants';
 
 export const getMockRequestAndResponse = (
@@ -31,6 +34,10 @@ export const getMockRequestAndResponse = (
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
+        productName = 'Product A',
+        productPrice = '1234',
+        fareZoneName = 'fare zone 1',
+        daysValid = '2',
     } = cookieValues;
 
     const {
@@ -38,6 +45,9 @@ export const getMockRequestAndResponse = (
         faretypeUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
+        csvUploadZoneUuid = defaultUuid,
+        periodProductUuid = defaultUuid,
+        daysValidUuid = defaultUuid,
     } = uuid;
 
     let cookieString = '';
@@ -58,6 +68,18 @@ export const getMockRequestAndResponse = (
         startPoint && endPoint
             ? `${JOURNEY_COOKIE}=%7B%22journeyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
             : '';
+
+    cookieString += productName
+        ? `${PERIOD_PRODUCT}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
+        : '';
+
+    cookieString += fareZoneName
+        ? `${CSV_ZONE_UPLOAD_COOKIE}=%7B%22fareZoneName%22%3A%22${fareZoneName}%22%2C%22uuid%22%3A%22${csvUploadZoneUuid}%22%7D;`
+        : '';
+
+    cookieString += daysValid
+        ? `${VALIDITY_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
+        : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
@@ -509,6 +531,7 @@ export const naptanStopInfo = [
         atcoCode: '13003305E',
         localityCode: 'N0077347',
         localityName: 'New Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'S-bound',
         street: 'B1285 Stockton Road',
     },
@@ -518,6 +541,7 @@ export const naptanStopInfo = [
         atcoCode: '13003622B',
         localityCode: 'E0010170',
         localityName: 'Deneside',
+        parentLocalityName: 'IW Test',
         indicator: 'NE-bound',
         street: 'The Avenue',
     },
@@ -527,6 +551,7 @@ export const naptanStopInfo = [
         atcoCode: '13003655B',
         localityCode: 'E0045957',
         localityName: 'Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'B',
         street: 'South Crescent',
     },
@@ -536,6 +561,7 @@ export const naptanStopInfo = [
         atcoCode: '13003635B',
         localityCode: 'E0045957',
         localityName: 'Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'NE-bound',
         street: 'South Terrace',
     },
@@ -545,6 +571,7 @@ export const naptanStopInfo = [
         atcoCode: '13003618B',
         localityCode: 'E0010170',
         localityName: 'Deneside',
+        parentLocalityName: 'IW Test',
         indicator: 'NE-bound',
         street: 'The Avenue',
     },
@@ -554,6 +581,7 @@ export const naptanStopInfo = [
         atcoCode: '13003612D',
         localityCode: 'E0045957',
         localityName: 'Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'SE-bound',
         street: 'New Stranford Road',
     },
@@ -563,6 +591,7 @@ export const naptanStopInfo = [
         atcoCode: '13003611B',
         localityCode: 'E0045957',
         localityName: 'Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'NE-bound',
         street: 'Tempest Road',
     },
@@ -572,6 +601,7 @@ export const naptanStopInfo = [
         atcoCode: '13003306B',
         localityCode: 'N0077347',
         localityName: 'New Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'NE-bound',
         street: 'The Avenue',
     },
@@ -581,6 +611,7 @@ export const naptanStopInfo = [
         atcoCode: '13003949C',
         localityCode: 'E0045957',
         localityName: 'Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'E-bound',
         street: 'Viceroy street',
     },
@@ -590,6 +621,7 @@ export const naptanStopInfo = [
         atcoCode: '13003609E',
         localityCode: 'E0045957',
         localityName: 'Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'S-bound',
         street: 'Vane Terrace',
     },
@@ -599,6 +631,7 @@ export const naptanStopInfo = [
         atcoCode: '13003921A',
         localityCode: 'N0077347',
         localityName: 'New Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'N-bound',
         street: 'Windermere Road',
     },
@@ -608,6 +641,7 @@ export const naptanStopInfo = [
         atcoCode: '13003923B',
         localityCode: 'E0010170',
         localityName: 'Deneside',
+        parentLocalityName: 'IW Test',
         indicator: 'NE-bound',
         street: 'Kingston Avenue',
     },
@@ -617,6 +651,7 @@ export const naptanStopInfo = [
         atcoCode: '13003625C',
         localityCode: 'E0010170',
         localityName: 'Deneside',
+        parentLocalityName: 'IW Test',
         indicator: 'E-bound',
         street: 'The Avenue',
     },
@@ -626,6 +661,7 @@ export const naptanStopInfo = [
         atcoCode: '13003939H',
         localityCode: 'E0010170',
         localityName: 'Deneside',
+        parentLocalityName: 'IW Test',
         indicator: 'NW-bound',
         street: 'Laurel Avenue',
     },
@@ -635,12 +671,13 @@ export const naptanStopInfo = [
         atcoCode: '13003661E',
         localityCode: 'E0045957',
         localityName: 'Seaham',
+        parentLocalityName: 'IW Test',
         indicator: 'S-bound',
         street: 'Sophia Street',
     },
 ];
 
-export const service = { lineName: '215', nocCode: 'DCCL', operatorShortName: 'DCC' };
+export const service = { type: 'pointToPoint', lineName: '215', nocCode: 'DCCL', operatorShortName: 'DCC' };
 
 export const mockService: Service = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
@@ -789,6 +826,7 @@ export const mockMatchingUserFareStages = {
 };
 
 export const expectedMatchingJson = {
+    type: 'pointToPoint',
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
@@ -899,4 +937,16 @@ export const expectedMatchingJson = {
             prices: {},
         },
     ],
+};
+
+export const expectedPeriodValidity = {
+    operatorName: 'test',
+    type: 'period',
+    fareZoneName: 'fare zone 1',
+    stops: naptanStopInfo,
+    productName: 'Product A',
+    productPrice: '1234',
+    daysValid: '2',
+    expiryRules: '24hr',
+    nocCode: 'HCTY',
 };

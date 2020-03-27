@@ -8,14 +8,17 @@ import { PeriodProductType } from '../../src/interfaces';
 const mockPeriodProduct: PeriodProductType = {
     productPrice: '',
     productName: '',
-    productNameError: false,
-    productPriceError: false,
+    productNameError: '',
+    productPriceError: '',
+    uuid: '',
 };
 
 describe('pages', () => {
     describe('periodProduct', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodProduct product={mockPeriodProduct} operator="bus company" />);
+            const tree = shallow(
+                <PeriodProduct product={mockPeriodProduct} operator="bus company" zoneName="Test Zone" />,
+            );
             expect(tree).toMatchSnapshot();
         });
     });

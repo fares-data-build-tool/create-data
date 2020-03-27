@@ -20,6 +20,37 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     const productNameError = product && product.productNameError;
     const productPriceError = product && product.productPriceError;
 
+    let priceErrorMessage = '';
+    let nameErrorMessage = '';
+    if (product.productPriceError !== '') {
+        switch (productPriceError) {
+            case 'empty':
+                priceErrorMessage = 'Product Price cannot be empty.';
+                break;
+            case 'notCurrency':
+                priceErrorMessage = 'Product Price must be a valid currency.';
+                break;
+            case 'zero':
+                priceErrorMessage = 'Product Price cannot be zero.';
+                break;
+            default:
+                priceErrorMessage = 'Invalid input.';
+        }
+
+        if (product.productNameError !== '') {
+            switch (productNameError) {
+                case 'empty':
+                    nameErrorMessage = 'Product Name cannot be empty.';
+                    break;
+                case 'short':
+                    nameErrorMessage = 'Product Name cannot be 1 character.';
+                    break;
+                default:
+                    nameErrorMessage = 'Invalid input.';
+            }
+        }
+    }
+
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -39,46 +70,53 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             <label className="govuk-label" htmlFor="periodProductName">
                                 Product Name
                             </label>
-                            <span className="govuk-hint" id="product-price-hint">
+                            <span className="govuk-hint" id="product-name-hint">
                                 Please enter the name of your product
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
                                 <span className={productNameError ? '' : 'govuk-visually-hidden'}>
-                                    Product name is a required field
+                                    {nameErrorMessage}
                                 </span>
                             </span>
                             <input
-                                className={`govuk-input govuk-input--width-30 govuk-currency-input__inner__input ${
+                                className={`govuk-input govuk-input--width-30 govuk-product-name-input__inner__input ${
                                     productNameError ? 'govuk-input--error' : ''
                                 } `}
                                 id="periodProductName"
                                 name="periodProductNameInput"
                                 type="text"
-                                maxLength={30}
+                                maxLength={50}
                                 defaultValue={productName}
                             />
                         </div>
                         <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductName">
+                            <label className="govuk-label" htmlFor="periodProductPrice">
                                 Product Price
                             </label>
                             <span className="govuk-hint" id="product-price-hint">
-                                Please enter the price in pence for example £1.20 would be 120
+                                For example, £2.99
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
                                 <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
-                                    Product price is a required field
+                                    {priceErrorMessage}
                                 </span>
                             </span>
-                            <input
-                                className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input ${
-                                    productPriceError ? 'govuk-input--error' : ''
-                                } `}
-                                id="periodProductPrice"
-                                name="periodProductPriceInput"
-                                type="text"
-                                defaultValue={productPrice}
-                            />
+                            <div className="govuk-currency-input">
+                                <div className="govuk-currency-input__inner">
+                                    <span className="govuk-currency-input__inner__unit">£</span>
+                                    <input
+                                        className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input ${
+                                            productPriceError ? 'govuk-input--error' : ''
+                                        }`}
+                                        aria-label="Enter amount in pounds"
+                                        name="periodProductPriceInput"
+                                        data-non-numeric
+                                        type="text"
+                                        id="periodProductPrice"
+                                        defaultValue={productPrice}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <input
@@ -111,6 +149,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     }
 
     const zoneObject = JSON.parse(zoneCookie);
+
+    if (periodProductCookie) {
+        JSON.parse(periodProductCookie);
+    }
 
     return {
         props: {

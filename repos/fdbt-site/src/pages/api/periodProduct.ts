@@ -1,15 +1,50 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
-import { PERIOD_PRODUCT } from '../../constants/index';
+import { PERIOD_PRODUCT } from '../../constants';
 
-const setPeriodProduct = (periodProductNameInput: string, periodProductPriceInput: string): PeriodProductType => ({
-    productNameError: periodProductNameInput === '',
-    productPriceError: periodProductPriceInput === '' || !(Number(periodProductPriceInput) > 0),
-    productName: periodProductNameInput.replace(/^\s+|\s+$/g, ''),
-    productPrice: periodProductPriceInput,
-});
+export const isCurrency = (periodPriceInput: string): boolean => {
+    const regex = /^\d+(\.\d{1,2})?$/;
+    return regex.test(periodPriceInput);
+};
+
+export const trimPeriodNameInput = (periodNameInput: string): string => {
+    return periodNameInput.trim().replace(/\s+/g, ' ');
+};
+
+const checkIfInputInvalid = (
+    periodProductNameInput: string,
+    periodProductPriceInput: string,
+    uuid: string,
+): PeriodProductType => {
+    let productNameError = '';
+    let productPriceError = '';
+
+    const cleanedNameInput = trimPeriodNameInput(periodProductNameInput);
+
+    if (cleanedNameInput === '') {
+        productNameError = 'empty';
+    } else if (cleanedNameInput.length < 2) {
+        productNameError = 'short';
+    }
+
+    if (periodProductPriceInput === '') {
+        productPriceError = 'empty';
+    } else if (!isCurrency(periodProductPriceInput)) {
+        productPriceError = 'notCurrency';
+    } else if (!(Number(periodProductPriceInput) > 0)) {
+        productPriceError = 'zero';
+    }
+
+    return {
+        uuid,
+        productName: cleanedNameInput,
+        productPrice: periodProductPriceInput,
+        productNameError,
+        productPriceError,
+    };
+};
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
@@ -18,30 +53,26 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
+        const uuid = getUuidFromCookie(req, res);
+
         const requestBody = JSON.stringify(req.body);
         const parsedBody = JSON.parse(requestBody);
 
         const { periodProductNameInput, periodProductPriceInput } = parsedBody;
 
-        if (
-            periodProductNameInput === '' ||
-            periodProductPriceInput === '' ||
-            // eslint-disable-next-line no-restricted-globals
-            isNaN(periodProductPriceInput) ||
-            !Number.isInteger(Number(periodProductPriceInput))
-        ) {
-            const validation: PeriodProductType = setPeriodProduct(periodProductNameInput, periodProductPriceInput);
+        const periodProduct = checkIfInputInvalid(periodProductNameInput, periodProductPriceInput, uuid);
 
-            const validInputs = JSON.stringify(validation);
+        if (periodProduct.productNameError !== '' || periodProduct.productPriceError !== '') {
+            const invalidInputs = JSON.stringify(periodProduct);
 
-            setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT, validInputs, req, res);
+            setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT, invalidInputs, req, res);
             redirectTo(res, '/periodProduct');
             return;
         }
 
-        const inputProductValues: PeriodProductType = setPeriodProduct(periodProductNameInput, periodProductPriceInput);
+        const validInputs = JSON.stringify(periodProduct);
 
-        setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT, JSON.stringify(inputProductValues), req, res);
+        setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT, validInputs, req, res);
 
         redirectTo(res, '/chooseValidity');
     } catch (error) {
