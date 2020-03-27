@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "build": "tsc --noEmit",
-        "test": "jest --testRegex src/**/*.test.ts",
+        "test": "jest --runInBand",
         "test:ci": "CI=true jest --testRegex src/**/*.test.ts -w 1",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts"
@@ -54,6 +54,6 @@
         "serverless-offline": "^5.12.1",
         "serverless-plugin-typescript": "^1.1.9",
         "serverless-s3-local": "^0.5.3",
-        "ts-jest": "^24.2.0"
+        "ts-jest": "^24.3.0"
     }
 }
