@@ -8,6 +8,14 @@ provider:
   stackName: ${self:service}-${self:provider.stage}
   timeout: 900
   memorySize: 2048
+  vpc:
+    securityGroupIds:
+      - ??
+    subnetIds:
+      - 'Fn::ImportValue': '${self:provider.stage}:PrivateSubnetA'
+      - 'Fn::ImportValue': '${self:provider.stage}:PrivateSubnetB'
+  environment:
+    RDS_HOST: ??
   iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -18,19 +26,11 @@ provider:
           - "s3:GetObject"
         Resource: 
           - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
-          - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
+          - !Sub arn:aws:s3:::fdbt-xml-reference-data-${self:provider.stage}/*
 
 functions:
   CsvUploader:
     handler: handlers/csv-uploader/handler
-    vpc:
-      securityGroupIds:
-        - fdbt-referenceDataUploaders-sg-${self:provider.stage}
-      subnetIds:
-        - fdbt-privateSubnetA-${self:provider.stage}
-        - fdbt-privateSubnetB-${self:provider.stage}
-    environment:
-      RDS_HOST: value
     events:
       - s3:
           bucket: fdbt-csv-reference-data-${self:provider.stage}
@@ -38,14 +38,6 @@ functions:
 
   XmlUploader:
     handler: handlers/xml-uploader/handler
-    vpc:
-      securityGroupIds:
-        - fdbt-referenceDataUploaders-sg-${self:provider.stage}
-      subnetIds:
-        - fdbt-privateSubnetA-${self:provider.stage}
-        - fdbt-privateSubnetB-${self:provider.stage}
-    environment:
-      RDS_HOST: value
     events:
       - s3:
           bucket: fdbt-xml-reference-data-${self:provider.stage}
