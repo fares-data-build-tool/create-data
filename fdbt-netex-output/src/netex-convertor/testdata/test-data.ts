@@ -1049,7 +1049,7 @@ export const mockSingleTicketMatchingDataUpload = {
 export const mockPeriodTicketMatchingDataUpload = {
     operatorName: 'Pilkington Bus',
     type: 'period',
-    fareZoneName: 'Test Town Centre',
+    zoneName: 'Test Town Centre',
     stops: [
         {
             stopName: 'Bridge End',
@@ -1241,7 +1241,7 @@ export const mockPeriodTicketMatchingDataUpload = {
 
 export const mockMatchingDataUploadWithNoType = {
     operatorName: 'IW Bus',
-    fareZoneName: 'Test Town Centre',
+    zoneName: 'Test Town Centre',
     stops: [
         {
             stopName: 'Bridge End',
