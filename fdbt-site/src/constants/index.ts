@@ -53,6 +53,7 @@ export const ALLOWED_CSV_FILE_TYPES = [
     'application/vnd.ms-excel',
     'application/csv',
     'application/x-csv',
+    'application/octet-stream',
     'text/csv',
     'text/comma-separated-values',
     'text/x-comma-separated-values',
