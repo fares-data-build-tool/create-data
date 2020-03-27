@@ -112,6 +112,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         redirectTo(res, '/thankyou');
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem generating the matching JSON:';
+        redirectToError(res, message, error);
     }
 };
