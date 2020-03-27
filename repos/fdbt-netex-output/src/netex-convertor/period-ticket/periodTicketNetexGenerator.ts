@@ -17,7 +17,7 @@ const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
 
 const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => {
     const netexFileAsJsonString = JSON.stringify(netexFileAsJsonObject);
-    const netexFileAsXmlString = parser.toXml(netexFileAsJsonString, { sanitize: true });
+    const netexFileAsXmlString = parser.toXml(netexFileAsJsonString, { sanitize: true, ignoreNull: true });
 
     return netexFileAsXmlString;
 };
