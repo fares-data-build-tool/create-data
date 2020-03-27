@@ -47,6 +47,23 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
     return JSON.parse(dataAsString);
 };
 
+export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
+    const params = {
+        Bucket: USER_DATA_BUCKET_NAME,
+        Key: `${uuid}.json`,
+    };
+
+    const response = await s3.getObject(params).promise();
+
+    const dataAsString = response.Body?.toString('utf-8') ?? '';
+
+    const parsedData: UserFareZone[] = JSON.parse(dataAsString);
+
+    const atcoCodes: string[] = parsedData.map(data => data.AtcoCodes);
+
+    return atcoCodes;
+};
+
 export const putStringInS3 = async (
     bucketName: string,
     key: string,

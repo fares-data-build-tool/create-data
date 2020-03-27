@@ -15,10 +15,10 @@ exports[`Choose Validity Page should render correctly 1`] = `
       method="post"
     >
       <div
-        className="govuk-form-group govuk-form-group--error"
+        className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="page-heading"
+          aria-describedby="choose-validity-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -30,36 +30,32 @@ exports[`Choose Validity Page should render correctly 1`] = `
             >
               What duration is your product valid for?
             </h1>
-          </legend>
-          <div>
-            <label
+            <p
               className="govuk-hint hint-text"
-              htmlFor="validity"
             >
               Product: 
               bus company
-               - 
+               - £
               £3.00
-            </label>
-          </div>
-          <label
-            className="govuk-label"
-            htmlFor="validity"
-          >
-            How many days is your product valid for?
-          </label>
+            </p>
+          </legend>
           <div
-            className="govuk-form-group"
+            className="govuk-form-group govuk-form-group--error"
           >
             <label
-              className="govuk-hint hint-text"
+              className="govuk-label"
               htmlFor="validity"
             >
-              Please enter a whole number, for example a day ticket would be 1 and two weeks would be 14
+              How many days is your product valid for?
             </label>
+            <p
+              className="govuk-hint hint-text"
+            >
+              Please enter a whole number, for example a day ticket would be 1 and two weeks would be 14
+            </p>
             <span
               className="govuk-error-message"
-              id="product-price-error"
+              id="product-validity-error"
             >
               <span
                 className=""

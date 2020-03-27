@@ -13,6 +13,7 @@ create-local-buckets:
 	awslocal s3 mb s3://fdbt-raw-user-data-dev
 	awslocal s3 mb s3://fdbt-user-data-dev
 	awslocal s3 mb s3://fdbt-matching-data-dev
+	awslocal s3 mb s3://fdbt-netex-data-dev
 
 run-local:
 	export STAGE=dev && npm run dev

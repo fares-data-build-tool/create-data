@@ -8,8 +8,9 @@ const title = 'Period Type - Fares data build tool';
 const description = 'Period Type selection page of the Fares data build tool';
 
 export interface PeriodTypeInterface {
+    uuid: string;
     error: boolean;
-    periodType?: string;
+    periodTypeName?: string;
 }
 
 const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
@@ -32,7 +33,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                     <input
                                         className="govuk-radios__input"
                                         id="periodtype-geo-zone"
-                                        name="periodGeoZone"
+                                        name="periodType"
                                         type="radio"
                                         value="geozone"
                                     />
@@ -44,31 +45,29 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                     <input
                                         className="govuk-radios__input"
                                         id="periodtype-single-set-service"
-                                        name="periodtypeSingle"
+                                        name="periodType"
                                         type="radio"
                                         value="singleset"
-                                        disabled
-                                        aria-disabled="true"
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label"
                                         htmlFor="periodtype-single-set-service"
                                     >
-                                        A ticket for a single or select set of services
+                                        A ticket for some or all of your network of services
                                     </label>
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
                                         id="periodtype-network"
-                                        name="periodtypeNetwork"
+                                        name="periodType"
                                         type="radio"
                                         value="network"
                                         disabled
                                         aria-disabled="true"
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
-                                        A ticket for your network of services
+                                        A ticket for services across multiple operators
                                     </label>
                                 </div>
                             </div>

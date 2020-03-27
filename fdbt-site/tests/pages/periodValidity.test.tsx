@@ -2,12 +2,12 @@
 
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import PeriodType from '../../src/pages/periodType';
+import PeriodValidity from '../../src/pages/periodValidity';
 
 describe('pages', () => {
-    describe('periodtype', () => {
+    describe('periodValidity', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodType error={false} uuid="1234-abcdd-test" />);
+            const tree = shallow(<PeriodValidity error={false} />);
             expect(tree).toMatchSnapshot();
         });
     });
