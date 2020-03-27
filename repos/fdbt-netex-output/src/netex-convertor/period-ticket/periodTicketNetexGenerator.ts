@@ -53,8 +53,8 @@ const periodTicketNetexGenerator = (
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
         compositeFrameToUpdate.id = `epd:UK:${geoFareZonePass.nocCode}:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@${geoFareZonePass.productName}:op`;
-        compositeFrameToUpdate.Name.$t = `Fares for ${geoFareZonePass.operatorName} - ${geoFareZonePass.fareZoneName}`;
-        compositeFrameToUpdate.Description.$t = `${geoFareZonePass.operatorName} - ${geoFareZonePass.fareZoneName} is accessible under a period pass. A price is given for a geographical zone, which contains a selection of stops as a fare zone.`;
+        compositeFrameToUpdate.Name.$t = `Fares for ${geoFareZonePass.operatorName} - ${geoFareZonePass.zoneName}`;
+        compositeFrameToUpdate.Description.$t = `${geoFareZonePass.operatorName} - ${geoFareZonePass.zoneName} is accessible under a period pass. A price is given for a geographical zone, which contains a selection of stops as a fare zone.`;
 
         return compositeFrameToUpdate;
     };
@@ -82,7 +82,7 @@ const periodTicketNetexGenerator = (
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = website;
         resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
-        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = (operatorData.mode).toLowerCase();
+        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = operatorData.mode.toLowerCase();
 
         return resourceFrameToUpdate;
     };
@@ -122,9 +122,9 @@ const periodTicketNetexGenerator = (
             geoFareZonePass.stops,
         );
 
-        networkFareFrameToUpdate.fareZones.FareZone[1].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
-        networkFareFrameToUpdate.fareZones.FareZone[1].Name.$t = `${geoFareZonePass.fareZoneName}`;
-        networkFareFrameToUpdate.fareZones.FareZone[1].Description.$t = `${geoFareZonePass.fareZoneName} ${geoFareZonePass.productName} Zone`;
+        networkFareFrameToUpdate.fareZones.FareZone[1].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}`;
+        networkFareFrameToUpdate.fareZones.FareZone[1].Name.$t = `${geoFareZonePass.zoneName}`;
+        networkFareFrameToUpdate.fareZones.FareZone[1].Description.$t = `${geoFareZonePass.zoneName} ${geoFareZonePass.productName} Zone`;
         networkFareFrameToUpdate.fareZones.FareZone[1].members.ScheduledStopPointRef = getScheduledStopPointsList(
             geoFareZonePass.stops,
         );
@@ -161,7 +161,7 @@ const periodTicketNetexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[5].id = `op:Tariff@${geoFareZonePass.productName}@1academic_year`;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].id = `op:Tariff@${geoFareZonePass.productName}@access_zones`;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.id = `op:Tariff@${geoFareZonePass.productName}@access_zones`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.FareZoneRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.FareZoneRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}`;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].id = `op:Tariff@${geoFareZonePass.productName}@eligibility`;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.id = `op:Tariff@${geoFareZonePass.productName}@eligibitity`;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].id = `op:Tariff@${geoFareZonePass.productName}@durations@adult`;
@@ -241,29 +241,29 @@ const periodTicketNetexGenerator = (
         fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[5].representing.TimeIntervalRef.ref = `op:Tariff@${geoFareZonePass.productName}@1term`;
         fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[6].id = `op:${geoFareZonePass.productName}@1academic_year`;
         fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[6].representing.TimeIntervalRef.ref = `op:Tariff@${geoFareZonePass.productName}@1academic_year`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.Name.$t = geoFareZonePass.fareZoneName;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.specifics.TariffZoneRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.Name.$t = geoFareZonePass.zoneName;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.specifics.TariffZoneRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.Name.$t =
-            geoFareZonePass.fareZoneName;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.representing.TariffZoneRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket`;
+            geoFareZonePass.zoneName;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.columns.FareTableColumn.representing.TariffZoneRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.Name.$t = `${geoFareZonePass.productName} - Cash`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.pricesFor.SalesOfferPackageRef.ref = `op:Pass@${geoFareZonePass.productName}-SOP@p-ticket`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.Name.$t = `${geoFareZonePass.productName} - Cash - Adult`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult@1day`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].TimeIntervalPrice.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.columns.FareTableColumn.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult@1day`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].TimeIntervalPrice.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult@1day`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].TimeIntervalPrice.TimeIntervalRef.ref = `op:Tariff@${geoFareZonePass.productName}@1day`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].ColumnRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].ColumnRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[0].RowRef.ref = `op:${geoFareZonePass.productName}@1day`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult@1week`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].TimeIntervalPrice.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult@1week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult@1week`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].TimeIntervalPrice.id = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult@1week`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].TimeIntervalPrice.TimeIntervalRef.ref = `op:Tariff@${geoFareZonePass.productName}@1week`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].ColumnRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.fareZoneName}@p-ticket@adult`;
+        fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].ColumnRef.ref = `op:${geoFareZonePass.productName}@${geoFareZonePass.zoneName}@p-ticket@adult`;
         fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable.includes.FareTable.includes.FareTable.cells.Cell[1].RowRef.ref = `op:${geoFareZonePass.productName}@1week`;
 
         return fareTableFareFrameToUpdate;
