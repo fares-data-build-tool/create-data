@@ -59,9 +59,9 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const generatedNetex = await netexGen.generate();
 
         const fileName = `${matchingData.operatorShortName}_${matchingData.lineName}_${new Date().toISOString()}.xml`;
-        const fileNameWithoutSlashes = fileName.replace('/', '_');
+        const cleanFilename = fileName.replace(/\/|\s/g, '_');
 
-        await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
+        await s3.uploadNetexToS3(generatedNetex, cleanFilename);
     } catch (error) {
         console.error(error.message);
     }
