@@ -105,7 +105,7 @@ workflows:
                               - develop
                               - master
 
-            - build-netex-output-resources:
+            - audit-netex-output-resources:
                   requires:
                       - checkout-repo
                   filters:
@@ -114,9 +114,9 @@ workflows:
                               - develop
                               - master
 
-            - audit-netex-output-resources:
+            - build-netex-output-resources:
                   requires:
-                      - build-netex-output-resources
+                      - audit-netex-output-resources
                   filters:
                       branches:
                           only:
