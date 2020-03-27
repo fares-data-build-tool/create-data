@@ -10,7 +10,7 @@ provider:
   memorySize: 2048
   vpc:
     securityGroupIds:
-      - ??
+      - 'Fn::ImportValue': '${self:provider.stage}:RefDataUploaderLambdaSG'
     subnetIds:
       - 'Fn::ImportValue': '${self:provider.stage}:PrivateSubnetA'
       - 'Fn::ImportValue': '${self:provider.stage}:PrivateSubnetB'
