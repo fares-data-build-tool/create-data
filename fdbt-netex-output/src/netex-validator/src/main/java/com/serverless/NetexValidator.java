@@ -10,32 +10,31 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
 public class NetexValidator {
     ValidationResult validationResult;
 
-    public ValidationResult isNetexValid(String netex) {
-
+    public ValidationResult isNetexValid(String bucketName, String key, byte[] s3ByteArray) {
         URL schemaFile = null;
 
-            try {
-                schemaFile = new URL(System.getenv("XSD_URL"));
-            } catch (MalformedURLException e1) {
-                e1.printStackTrace();
-            }
-        
-        if (schemaFile != null) {
+        try {
+            schemaFile = new URL(System.getenv("XSD_URL"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
-            final ByteArrayInputStream netexAsStream = new ByteArrayInputStream(netex.getBytes(StandardCharsets.UTF_8));
-            final Source xmlFile = new StreamSource(netexAsStream);
+        if (schemaFile != null) {
+            ByteArrayInputStream bais = new ByteArrayInputStream(s3ByteArray);
+            final Source netexStream = new StreamSource(bais);
             final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
             try {
                 final Schema schema = schemaFactory.newSchema(schemaFile);
                 final Validator validator = schema.newValidator();
@@ -58,7 +57,7 @@ public class NetexValidator {
                     }
                 });
 
-                validator.validate(xmlFile);
+                validator.validate(netexStream);
 
                 if (exceptions.size() > 0) {
                     return validationResult = new ValidationResult(false, exceptions);
