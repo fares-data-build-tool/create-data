@@ -1,9 +1,0 @@
-name: fdbtgdSiteComponent
-
-fdbt${INITIALS}SiteComponent:
-    component: serverless-next.js
-    inputs:
-        domain: ['gd', 'tfn-test.infinityworks.com']
-        bucketName: fdbt-static-assets-gd-test
-        policy: arn:aws:iam::442445088537:policy/next-lambda-policy
-        nextConfigDir: ../../

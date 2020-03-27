@@ -6,6 +6,7 @@ import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME, NAPTAN_TABLE_G
 export interface ServiceType {
     lineName: string;
     startDate: string;
+    description: string;
 }
 
 export interface JourneyPattern {
@@ -130,7 +131,11 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
         const { Items } = await dynamoDbClient.query(queryInput).promise();
         return (
             Items?.map(
-                (item): ServiceType => ({ lineName: item.LineName, startDate: convertDateFormat(item.StartDate) }),
+                (item): ServiceType => ({
+                    lineName: item.LineName,
+                    startDate: convertDateFormat(item.StartDate),
+                    description: item.Description,
+                }),
             ) || []
         );
     } catch (err) {
