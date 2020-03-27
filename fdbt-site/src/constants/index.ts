@@ -28,6 +28,10 @@ export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
 
 export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
 
+export const PERIOD_EXPIRY = 'fdbt-period-expiry';
+
+export const PERIOD_SINGLE_OPERATOR_SERVICES = 'fdbt-period-single-services';
+
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
     'fdbt-faretype',
@@ -43,9 +47,8 @@ export const ALL_COOKIES: string[] = [
     'fdbt-csv-upload',
     'fdbt-csv-zone-upload',
     'fdbt-period-expiry',
+    'fdbt-period-single-services',
 ];
-
-export const PERIOD_EXPIRY = 'fdbt-period-expiry';
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
@@ -53,6 +56,7 @@ export const ALLOWED_CSV_FILE_TYPES = [
     'application/vnd.ms-excel',
     'application/csv',
     'application/x-csv',
+    'application/octet-stream',
     'text/csv',
     'text/comma-separated-values',
     'text/x-comma-separated-values',

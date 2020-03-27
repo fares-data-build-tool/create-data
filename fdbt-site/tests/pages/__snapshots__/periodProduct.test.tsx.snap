@@ -37,6 +37,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           >
             bus company
              - 
+            Test Zone
           </span>
         </fieldset>
         <div
@@ -60,9 +61,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           >
             <span
               className="govuk-visually-hidden"
-            >
-              Invalid input.
-            </span>
+            />
           </span>
           <input
             className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input  "
@@ -94,9 +93,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           >
             <span
               className="govuk-visually-hidden"
-            >
-              Invalid input.
-            </span>
+            />
           </span>
           <div
             className="govuk-currency-input"
