@@ -1,6 +1,6 @@
 const geoZonePeriodData = {
     type: 'period',
-    fareZoneName: 'IW Village',
+    zoneName: 'IW Village',
     stops: [
         {
             stopName: 'Woodcock Park',
