@@ -32,7 +32,7 @@ def lambda_handler(event, context):
 
 def insert_in_database(key, bucket):
     rds_host = os.getenv('RDS_HOST')
-    db_name = "fdbt"
+    db_name = "FDBT"
     username = ssm.get_parameter(
         Name='fdbt-rds-reference-data-username',
         WithDecryption=True
@@ -43,8 +43,7 @@ def insert_in_database(key, bucket):
     )
 
     try:
-        conn = pymysql.connect(rds_host, user=username,
-                               passwd=password, db=db_name, connect_timeout=5)
+        conn = pymysql.connect(rds_host, user=username, passwd=password, db=db_name, connect_timeout=5)
     except pymysql.MySQLError as e:
         logger.error(
             "ERROR: Unexpected error: Could not connect to MySQL instance.")
