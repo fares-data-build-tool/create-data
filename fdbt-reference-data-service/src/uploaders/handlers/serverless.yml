@@ -57,3 +57,10 @@ package:
     include:
         - ./csv-uploader/*
         - ./xml-uploader/*
+
+plugins:
+    - serverless-python-requirements
+
+custom:
+    pythonRequirements:
+        dockerizePip: true
