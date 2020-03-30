@@ -22,6 +22,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 throw new Error('Input method we expect was not found.');
         }
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem selecting the input method for the triangle:';
+        redirectToError(res, message, error);
     }
 };

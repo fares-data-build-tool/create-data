@@ -18,6 +18,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 throw new Error('Number of fare stages was not found.');
         }
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem selecting how many fares stages the triangle has:';
+        redirectToError(res, message, error);
     }
 };

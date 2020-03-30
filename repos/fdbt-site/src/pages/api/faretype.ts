@@ -7,8 +7,7 @@ import { isSessionValid } from './service/validator';
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            redirectToError(res);
-            return;
+            throw new Error('Session is invalid.');
         }
 
         const cookies = new Cookies(req, res);
@@ -38,6 +37,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         redirectTo(res, '/service');
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem selecting the faretype:';
+        redirectToError(res, message, error);
     }
 };

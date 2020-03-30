@@ -56,34 +56,24 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
 );
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
-    if (!ctx.res) {
-        throw new Error('Unexpected null res');
-    }
     deleteCookieOnServerSide(ctx, SERVICE_COOKIE);
 
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
-    if (operatorCookie) {
-        const operatorObject = JSON.parse(operatorCookie);
-        let services: ServiceType[] = [];
-
-        try {
-            if (ctx.req) {
-                services = await getServicesByNocCode(operatorObject.nocCode);
-            }
-
-            if (services.length === 0) {
-                throw new Error(`No services found for NOC Code: ${operatorObject.nocCode}`);
-            }
-
-            return { props: { operator: operatorObject.operator, services } };
-        } catch (err) {
-            throw new Error(err);
-        }
+    if (!operatorCookie) {
+        throw new Error('Necessary operator cookie not found to show matching page');
     }
 
-    throw new Error('Operator cookie not found');
+    const operatorObject = JSON.parse(operatorCookie);
+
+    const services = await getServicesByNocCode(operatorObject.nocCode);
+
+    if (services.length === 0) {
+        throw new Error(`No services found for NOC Code: ${operatorObject.nocCode}`);
+    }
+
+    return { props: { operator: operatorObject.operator, services } };
 };
 
 export default Service;
