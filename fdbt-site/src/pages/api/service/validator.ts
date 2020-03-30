@@ -16,7 +16,7 @@ export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boole
     if (operatorCookie) {
         return true;
     }
-    console.debug('Invalid session');
+    console.debug('Invalid session - no operator cookie found.');
     return false;
 };
 

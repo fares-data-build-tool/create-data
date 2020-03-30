@@ -8,12 +8,11 @@ import { PeriodTypeInterface } from '../periodType';
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            redirectToError(res);
-            return;
+            throw new Error('Session is invalid.');
         }
 
         if (!req.body) {
-            return;
+            throw new Error('No request body received.');
         }
 
         const uuid = getUuidFromCookie(req, res);
@@ -41,6 +40,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem selecting the type of period ticket:';
+        redirectToError(res, message, error);
     }
 };

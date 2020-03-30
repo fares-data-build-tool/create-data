@@ -80,20 +80,17 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
 
-    if (stageNamesCookie) {
-        const stageNamesArray = JSON.parse(stageNamesCookie);
-
-        try {
-            if (stageNamesArray.length === 0 && ctx.res) {
-                throw new Error('No stages in cookie data');
-            }
-            return { props: { stageNamesArray } };
-        } catch (err) {
-            throw new Error(err.stack);
-        }
+    if (!stageNamesCookie) {
+        throw new Error('Necessary stage names cookies not found to show price entry page');
     }
 
-    throw new Error('Stage Name cookie not set');
+    const stageNamesArray = JSON.parse(stageNamesCookie);
+
+    if (stageNamesArray.length === 0 && ctx.res) {
+        throw new Error('No stages in cookie data');
+    }
+
+    return { props: { stageNamesArray } };
 };
 
 export default PriceEntry;

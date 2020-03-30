@@ -102,8 +102,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         await putDataInS3(uuid, JSON.stringify(mappedData));
         redirectTo(res, '/matching');
     } catch (error) {
-        console.error(`There was a problem generating the priceEntry JSON: ${error.stack}`);
-        redirectToError(res);
+        const message = 'There was a problem generating the priceEntry JSON:';
+        redirectToError(res, message, error);
     }
     res.end();
 };
