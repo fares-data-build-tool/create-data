@@ -9,6 +9,8 @@ Parameters:
       - test
       - preprod
       - prod
+  CoreAccountId:
+    Type: String
 
 Resources:
   AdminRole:
@@ -20,7 +22,7 @@ Resources:
           - Effect: Allow
             Principal:
               AWS:
-                - 827855331226
+                - !Ref CoreAccountId
             Action:
               - "sts:AssumeRole"
             Condition:
@@ -39,7 +41,7 @@ Resources:
           - Effect: Allow
             Principal:
               AWS:
-                - 827855331226
+                - !Ref CoreAccountId
             Action:
               - "sts:AssumeRole"
             Condition:
@@ -58,7 +60,7 @@ Resources:
           - Effect: Allow
             Principal:
               AWS:
-                - 827855331226
+                - !Ref CoreAccountId
             Action:
               - "sts:AssumeRole"
             Condition:

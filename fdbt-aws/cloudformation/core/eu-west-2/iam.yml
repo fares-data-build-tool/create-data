@@ -2,6 +2,12 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 Description: "CloudFormation template for IAM resources"
 
+Parameters:
+  TestAccountId:
+    Type: String
+  PreProdAccountId:
+    Type: String
+
 Resources:
   ManageOwnUserPolicy:
     Type: "AWS::IAM::ManagedPolicy"
@@ -84,8 +90,8 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - "arn:aws:iam::442445088537:role/tfn-admin-test-eu-west-2"
-                  - "arn:aws:iam::077142786865:role/tfn-readonly-preprod-eu-west-2"
+                  - !Sub "arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2"
+                  - !Sub "arn:aws:iam::${PreProdAccountId}:role/tfn-readonly-preprod-eu-west-2"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref ManageOwnUserPolicy
@@ -103,8 +109,8 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - "arn:aws:iam::442445088537:role/tfn-billing-test-eu-west-2"
-                  - "arn:aws:iam::077142786865:role/tfn-billing-preprod-eu-west-2"
+                  - !Sub "arn:aws:iam::${TestAccountId}:role/tfn-billing-test-eu-west-2"
+                  - !Sub "arn:aws:iam::${PreProdAccountId}:role/tfn-billing-preprod-eu-west-2"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/Billing
         - !Ref ManageOwnUserPolicy
