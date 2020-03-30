@@ -2,20 +2,20 @@ service: reference-data-service-uploaders
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.8
   region: eu-west-2
   stage: ${opt:stage, 'test'}
   stackName: ${self:service}-${self:provider.stage}
-  timeout: 900
-  memorySize: 2048
+  timeout: 10
+  memorySize: 256
   vpc:
     securityGroupIds:
-      - 'Fn::ImportValue': '${self:provider.stage}:RefDataUploaderLambdaSG'
+      - Fn::ImportValue: '${self:provider.stage}:RefDataUploaderLambdaSG'
     subnetIds:
-      - 'Fn::ImportValue': '${self:provider.stage}:PrivateSubnetA'
-      - 'Fn::ImportValue': '${self:provider.stage}:PrivateSubnetB'
+      - Fn::ImportValue: '${self:provider.stage}:PrivateSubnetA'
+      - Fn::ImportValue: '${self:provider.stage}:PrivateSubnetB'
   environment:
-    RDS_HOST: ??
+    RDS_HOST: '${self:provider.stage}:RdsHostName'
   iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -27,21 +27,29 @@ provider:
         Resource: 
           - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
           - !Sub arn:aws:s3:::fdbt-xml-reference-data-${self:provider.stage}/*
+      - Effect: "Allow"
+        Action:
+          - ec2:CreateNetworkInterface
+          - ec2:DescribeNetworkInterfaces
+          - ec2:DeleteNetworkInterface
+          - ec2:DescribeSecurityGroups
+          - ec2:DescribeSubnets
+          - ec2:DescribeVpcs
 
 functions:
   CsvUploader:
     handler: handlers/csv-uploader/handler
     events:
       - s3:
-          bucket: fdbt-csv-reference-data-${self:provider.stage}
-          event: s3:ObjectCreated:*
+        bucket: fdbt-csv-reference-data-${self:provider.stage}
+        event: s3:ObjectCreated:*
 
   XmlUploader:
     handler: handlers/xml-uploader/handler
     events:
       - s3:
-          bucket: fdbt-xml-reference-data-${self:provider.stage}
-          event: s3:ObjectCreated:*
+        bucket: fdbt-xml-reference-data-${self:provider.stage}
+        event: s3:ObjectCreated:*
 
 package:
     exclude:
