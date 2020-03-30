@@ -8,14 +8,11 @@ import { PeriodTypeInterface } from '../periodType';
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            redirectTo(res, '/error');
-            return;
+            throw new Error('Session is invalid.');
         }
 
         if (!req.body) {
-            console.error('No request body received.');
-            redirectTo(res, '/error');
-            return;
+            throw new Error('No request body received.');
         }
 
         const uuid = getUuidFromCookie(req, res);

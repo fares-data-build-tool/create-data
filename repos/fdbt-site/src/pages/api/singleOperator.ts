@@ -27,8 +27,7 @@ const setSingleOperatorCookie = (
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            redirectTo(res, '/error');
-            return;
+            throw new Error('Session is invalid.');
         }
 
         const refererUrl = req?.headers?.referer;

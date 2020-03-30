@@ -25,8 +25,7 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            redirectTo(res, '/error');
-            return;
+            throw new Error('Session is invalid.');
         }
 
         if (!req.body.stageNameInput || req.body.stageNameInput.length === 0) {
