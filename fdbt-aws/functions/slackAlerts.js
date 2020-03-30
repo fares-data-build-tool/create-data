@@ -1,6 +1,14 @@
 const url = require("url");
 const https = require("https");
 
+const getParsedJsObject = string => {
+  try {
+    return JSON.parse(string);
+  } catch (e) {
+    return null;
+  }
+};
+
 const postMessage = (message, callback) => {
   const body = JSON.stringify(message);
   const options = url.parse(process.env.HOOK_URL);
@@ -86,22 +94,29 @@ const handleCatchAll = event => {
   const record = event.Records[0];
   const subject = record.Sns.Subject;
   const timestamp = new Date(record.Sns.Timestamp).getTime() / 1000;
-  const message = JSON.parse(record.Sns.Message);
+  const message = record.Sns.Message;
+  const messageAttributes = record.Sns.MessageAttributes;
+
   let color = "warning";
 
-  if (message.NewStateValue === "ALARM") {
+  if (
+    messageAttributes.NewStateValue &&
+    messageAttributes.NewStateValue.Value === "ALARM"
+  ) {
     color = "danger";
-  } else if (message.NewStateValue === "OK") {
+  } else if (
+    messageAttributes.NewStateValue &&
+    messageAttributes.NewStateValue.Value === "OK"
+  ) {
     color = "good";
   }
 
   let description = "";
 
-  for (let key in message) {
+  for (let key in messageAttributes) {
+    const value = messageAttributes[key].Value;
     const renderedMessage =
-      typeof message[key] === "object"
-        ? JSON.stringify(message[key])
-        : message[key];
+      typeof value === "object" ? JSON.stringify(value) : value;
 
     description = `${description}\n${key}: ${renderedMessage}`;
   }
@@ -112,7 +127,7 @@ const handleCatchAll = event => {
       {
         color: color,
         fields: [
-          { title: "Message", value: subject, short: false },
+          { title: "Message", value: message, short: false },
           { title: "Description", value: description, short: false }
         ],
         ts: timestamp
@@ -127,13 +142,7 @@ const processEvent = (event, context) => {
   console.info("SNS received:" + JSON.stringify(event, null, 2));
   let slackMessage = null;
   const eventSnsMessageRaw = event.Records[0].Sns.Message;
-  let eventSnsMessage = null;
-
-  try {
-    eventSnsMessage = JSON.parse(eventSnsMessageRaw);
-  } catch (e) {
-    throw new Error(`Unable to parse SNS message: ${eventSnsMessageRaw}`);
-  }
+  const eventSnsMessage = getParsedJsObject(eventSnsMessageRaw);
 
   if (
     eventSnsMessage &&

@@ -24,7 +24,7 @@ Resources:
     Properties:
       Code:
         S3Bucket: tfn-slack-alerts-code
-        S3Key: v2/index.zip
+        S3Key: v4/index.zip
       Description: Lambda to send CloudWatch alerts to Slack
       Environment:
         Variables:

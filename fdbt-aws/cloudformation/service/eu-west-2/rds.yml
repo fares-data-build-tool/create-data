@@ -195,3 +195,9 @@ Resources:
       VPCZoneIdentifier:
         - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
         - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
+
+Outputs:
+  RdsHostName:
+    Value: !GetAtt DatabaseMasterInstance.Endpoint.Address
+    Export:
+      Name: !Sub ${Stage}:RdsHostName
