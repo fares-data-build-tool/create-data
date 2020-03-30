@@ -86,8 +86,8 @@ def lambda_handler(event, context):
                     }
                 }
             )
-        except:
-            logger.error(f'There was an error when validating NeTEx file: {key}')
+        except Exception as e:
+            logger.error(f'There was an error when validating NeTEx file: {key}, error: {e}')
 
             sns_client.publish(
                 TopicArn=SNS_ALERTS_ARN,

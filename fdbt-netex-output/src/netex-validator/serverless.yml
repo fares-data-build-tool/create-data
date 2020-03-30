@@ -22,7 +22,7 @@ provider:
               - Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
 
     environment:
-        UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
+        VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
         SNS_ALERTS_ARN:
             Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
 
@@ -31,7 +31,7 @@ plugins:
 
 custom:
     pythonRequirements:
-        dockerizePip: true
+        dockerizePip: false
 
 package:
     include:
