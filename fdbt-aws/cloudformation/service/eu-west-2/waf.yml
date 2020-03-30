@@ -14,6 +14,15 @@ Parameters:
     Type: String
     Default: fdbt
 
+  IwIpSetList:
+    Type: CommaDelimitedList
+
+  TfnIpSetList:
+    Type: CommaDelimitedList
+
+  TesterIpSetList:
+    Type: CommaDelimitedList
+
 Resources:
   IwIpSet:
     Type: AWS::WAFv2::IPSet
@@ -22,9 +31,7 @@ Resources:
       Name: IwIpSet
       Scope: REGIONAL
       IPAddressVersion: IPV4
-      Addresses:
-        - 52.51.7.138/32
-        - 156.67.242.53/32
+      Addresses: !Ref IwIpSetList
 
   TfnIpSet:
     Type: AWS::WAFv2::IPSet
@@ -33,9 +40,7 @@ Resources:
       Name: TfnIpSet
       Scope: REGIONAL
       IPAddressVersion: IPV4
-      Addresses:
-        - 213.104.199.0/24
-        - 148.252.255.0/24
+      Addresses: !Ref TfnIpSetList
 
   TesterIpSet:
     Type: AWS::WAFv2::IPSet
@@ -44,10 +49,7 @@ Resources:
       Name: TesterIpSet
       Scope: REGIONAL
       IPAddressVersion: IPV4
-      Addresses:
-        - 91.240.227.66/32
-        - 86.188.217.2/32
-        - 62.255.235.96/27
+      Addresses: !Ref TesterIpSetList
 
   RestrictAccessAcl:
     Type: AWS::WAFv2::WebACL
