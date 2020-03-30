@@ -18,7 +18,6 @@ export type SelectedServiceProps = {
 };
 
 const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
-    console.log('ser', serviceProps);
     const {
         service: { error, selectedServices },
         buttonText,
@@ -113,12 +112,13 @@ export const getServerSideProps = async (
     const servicesList = await getServicesByNocCode(nocCode);
 
     const { selectAll } = ctx.query;
+
     const buttonText = selectAll === 'true' ? buttonUnselectedText : buttonSelectedText;
 
     const checkedServiceList: ServicesInfo[] = servicesList.map(service => {
         return {
             ...service,
-            checked: selectAll !== 'false',
+            checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
         };
     });
 
