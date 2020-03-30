@@ -6,7 +6,7 @@ provider:
   region: eu-west-2
   stage: ${opt:stage, 'test'}
   stackName: ${self:service}-${self:provider.stage}
-  timeout: 10
+  timeout: 30
   memorySize: 256
   vpc:
     securityGroupIds:
