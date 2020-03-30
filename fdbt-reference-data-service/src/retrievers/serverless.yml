@@ -3,7 +3,7 @@ service: reference-data-service-retrievers
 provider:
     name: aws
     region: eu-west-2
-    runtime: python3.7
+    runtime: python3.8
     stage: ${opt:stage, 'test'}
     stackName: ${self:service}-${self:provider.stage}
     timeout: 900
