@@ -8,8 +8,9 @@ jspm_packages
 buckets
 .idea
 
+# VSCode settings
 .vscode
-
-src/netex-convertor/output
-
 **/.DS_Store
+
+# NeTEX output directory
+src/netex-convertor/output

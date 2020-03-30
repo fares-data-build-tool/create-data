@@ -1,8 +1,9 @@
 import { S3Event } from 'aws-lambda';
-import netexGenerator from './netexGenerator';
+import singleTicketNetexGenerator from './single-ticket/singleTicketNetexGenerator';
+import periodTicketNetexGenerator from './period-ticket/periodTicketNetexGenerator';
 import * as dynamodb from './data/dynamodb';
 import * as s3 from './data/s3';
-import { OperatorData, ServiceData, MatchingData } from './types';
+import { OperatorData, ServiceData, MatchingData, GeographicalFareZonePass } from './types';
 
 const getOperatorsTableData = async (nocCode: string): Promise<OperatorData> => {
     try {
@@ -50,20 +51,38 @@ const getServicesTableData = async (nocCode: string, lineName: string): Promise<
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
-        const matchingData: MatchingData = await s3.fetchMatchingDataFromS3(event);
-
-        const operatorData = await getOperatorsTableData(matchingData.nocCode);
-        const servicesData = await getServicesTableData(matchingData.nocCode, matchingData.lineName);
-
-        const netexGen = netexGenerator(matchingData, operatorData, servicesData);
-        const generatedNetex = await netexGen.generate();
-
-        const fileName = `${matchingData.operatorShortName}_${matchingData.lineName}_${new Date().toISOString()}.xml`;
-        const cleanFilename = fileName.replace(/\/|\s/g, '_');
-
-        await s3.uploadNetexToS3(generatedNetex, cleanFilename);
+        const s3Data = await s3.fetchDataFromS3(event);
+        if (s3Data.type === 'pointToPoint') {
+            const matchingData: MatchingData = s3Data;
+            const operatorData = await getOperatorsTableData(matchingData.nocCode);
+            const servicesData = await getServicesTableData(matchingData.nocCode, matchingData.lineName);
+            const netexGen = singleTicketNetexGenerator(matchingData, operatorData, servicesData);
+            const generatedNetex = await netexGen.generate();
+            const fileName = `${matchingData.operatorShortName.replace(/\/|\s/g, '_')}_${
+                matchingData.lineName
+            }_${new Date().toISOString()}.xml`;
+            const fileNameWithoutSlashes = fileName.replace('/', '_');
+            await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
+        } else if (s3Data.type === 'period') {
+            const geoFareZonePass: GeographicalFareZonePass = s3Data;
+            const operatorData = await getOperatorsTableData(geoFareZonePass.nocCode);
+            const netexGen = periodTicketNetexGenerator(geoFareZonePass, operatorData);
+            const generatedNetex = await netexGen.generate();
+            const fileName = `${geoFareZonePass.operatorName.replace(/\/|\s/g, '_')}_${geoFareZonePass.zoneName}_${
+                geoFareZonePass.productName
+            }_${new Date().toISOString()}.xml`;
+            const fileNameWithoutSlashes = fileName.replace('/', '_');
+            await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
+        } else {
+            throw new Error(
+                `The JSON object '${decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '))}' in the '${
+                    event.Records[0].s3.bucket.name
+                }' bucket does not contain a 'type' attribute to distinguish product type.`,
+            );
+        }
     } catch (error) {
-        console.error(error.message);
+        console.error(error.stack);
+        throw new Error(error);
     }
 };
 
