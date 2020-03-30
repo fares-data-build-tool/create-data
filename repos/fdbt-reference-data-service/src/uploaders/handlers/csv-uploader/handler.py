@@ -20,7 +20,6 @@ def lambda_handler(event, context):
     try:
 
         bucket = event['Records'][0]['s3']['bucket']['name']
-        # unsure if unquote is needed
         key = unquote_plus(event['Records'][0]['s3']['object']['key'])
 
         insert_in_database(key, bucket)
