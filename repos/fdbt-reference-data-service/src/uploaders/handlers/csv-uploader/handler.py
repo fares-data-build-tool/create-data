@@ -32,7 +32,7 @@ def lambda_handler(event, context):
 
 def insert_in_database(key, bucket):
     rds_host = os.getenv('RDS_HOST')
-    db_name = "FDBT"
+    db_name = "fdbt"
     username = ssm.get_parameter(
         Name='fdbt-rds-reference-data-username',
         WithDecryption=True
