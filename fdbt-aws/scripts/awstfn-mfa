@@ -3,11 +3,13 @@ AWSCLI=`which aws`
 JQCLI=`which jq`
 IAMUSERNAME=$2
 MYUSER=${IAMUSERNAME:=`whoami`}
+
 # The master acct where IAM identities are managed
 MASTER_ACCT=tfn-core
-MASTER_ACCT_ID=827855331226
+MASTER_ACCT_ID=$TFN_CORE_ACCOUNT_ID
 MASTER_ACCT_PROFILE=tfn-core
-VALID_ACCOUNTS=( tfn-test tfn-preprod-ro tfn-preprod-admin tfn-core iw-sandpit )
+
+VALID_ACCOUNTS=( tfn-test tfn-preprod-ro tfn-preprod-admin tfn-core )
 
 # Script should be run in current environment not forked
 if [[ ${BASH_SOURCE[0]} = "${0}" ]]; then
@@ -24,21 +26,17 @@ if [ -z "$1" ]; then
   return
 else
 	case "$1" in
-        tfn-test) AWSID=442445088537
+        tfn-test) AWSID=$TFN_TEST_ACCOUNT_ID
              export DEVOPS_ROLE=tfn-admin-test-eu-west-2
              export AWS_REGION=eu-west-2
              ;;
-        tfn-preprod-ro) AWSID=077142786865
+        tfn-preprod-ro) AWSID=TFN_PREPROD_ACCOUNT_ID
              export DEVOPS_ROLE=tfn-readonly-preprod-eu-west-2
              export AWS_REGION=eu-west-2
              ;;
-        tfn-preprod-admin) AWSID=077142786865
+        tfn-preprod-admin) AWSID=TFN_PREPROD_ACCOUNT_ID
              export DEVOPS_ROLE=tfn-admin-preprod-eu-west-2
              export AWS_REGION=eu-west-2
-             ;;
-        iw-sandpit) AWSID=455073406672
-             export DEVOPS_ROLE=OrganizationAccountAccessRole
-             export AWS_REGION=eu-west-1
              ;;
         tfn-core) AWSID=$MASTER_ACCT_ID
             export AWS_REGION=eu-west-2
