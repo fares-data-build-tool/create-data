@@ -3,7 +3,7 @@ service: reference-data-service-retrievers
 provider:
     name: aws
     region: eu-west-2
-    runtime: python3.7
+    runtime: python3.8
     stage: ${opt:stage, 'test'}
     stackName: ${self:service}-${self:provider.stage}
     timeout: 900
@@ -18,9 +18,8 @@ provider:
               - 's3:PutObject'
               - 's3:GetObject'
           Resource:
-              - !Sub arn:aws:s3:::fdbt-naptan-data-${self:provider.stage}/*
-              - !Sub arn:aws:s3:::fdbt-noc-data-${self:provider.stage}/*
-              - !Sub arn:aws:s3:::fdbt-tnds-data-${self:provider.stage}/*
+              - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
+              - !Sub arn:aws:s3:::fdbt-xml-reference-data-${self:provider.stage}/*
               - !Sub arn:aws:s3:::fdbt-tnds-data-zipped-${self:provider.stage}/*
 
 custom:
@@ -34,7 +33,7 @@ functions:
         handler: csv-retriever/main.lambda_handler
         environment:
             DATA_URL: https://www.travelinedata.org.uk/wp-content/themes/desktop/nocadvanced_download.php?reportFormat=csvFlatFile&allTable%5B%5D=table_noclines&allTable%5B%5D=table_noc_table&allTable%5B%5D=table_public_name&submit=Submit
-            BUCKET_NAME: fdbt-noc-data-${self:provider.stage}
+            BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
             CONTENT_TYPE: text/csv
         events:
             - schedule:
@@ -45,7 +44,7 @@ functions:
         handler: csv-retriever/main.lambda_handler
         environment:
             DATA_URL: http://naptan.app.dft.gov.uk/DataRequest/Naptan.ashx?format=csv
-            BUCKET_NAME: fdbt-naptan-data-${self:provider.stage}
+            BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
             CONTENT_TYPE: text/csv
             TARGET_FILE: Stops.csv
         events:
@@ -57,7 +56,7 @@ functions:
         handler: tnds-ftp-retriever/main.lambda_handler
         environment:
             FTP_HOST: ftp.tnds.basemap.co.uk
-            BUCKET_NAME: fdbt-tnds-data-${self:provider.stage}
+            BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
             ZIPPED_BUCKET_NAME: fdbt-tnds-data-zipped-${self:provider.stage}
         events:
             - schedule:
@@ -67,7 +66,7 @@ functions:
     TndsUnzipper:
         handler: tnds-ftp-retriever/unzipper.lambda_handler
         environment:
-            BUCKET_NAME: fdbt-tnds-data-${self:provider.stage}
+            BUCKET_NAME: fdbt-xml-reference-data-${self:provider.stage}
         events:
             - s3: fdbt-tnds-data-zipped-${self:provider.stage}
               event: s3:ObjectCreated:*
