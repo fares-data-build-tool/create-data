@@ -9,7 +9,21 @@ import { ServiceLists, ServicesInfo } from '../interfaces';
 const title = 'Which service(s) is the ticket valid for';
 const description = 'Single Operator selection page of the Fares data build tool';
 
-const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement => {
+const buttonSelectedText = 'Select All';
+const buttonUnselectedText = 'Unselect All';
+
+export type SelectedServiceProps = {
+    service: ServiceLists;
+    buttonText: string;
+};
+
+const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
+    console.log('ser', serviceProps);
+    const {
+        service: { error, selectedServices },
+        buttonText,
+    } = serviceProps;
+
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -18,21 +32,23 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
                         <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
-                                    Which service(s)?
+                                    {title}
                                 </h1>
                             </legend>
                             <span id="radio-error" className="govuk-error-message">
-                                <span className={error ? '' : 'govuk-visually-hidden'}>Please select an option</span>
+                                <span className={error ? '' : 'govuk-visually-hidden'}>
+                                    Select one or more service(s)
+                                </span>
                             </span>
                         </fieldset>
                         <fieldset className="govuk-fieldset" aria-describedby="waste-hint">
                             <span id="waste-hint" className="govuk-hint">
-                                Select all service that apply
+                                Select all services that apply
                             </span>
                             <input
                                 type="submit"
                                 name="selectAll"
-                                value="Select All"
+                                value={buttonText}
                                 id="select-all-button"
                                 className="govuk-button govuk-button--secondary"
                             />
@@ -40,14 +56,14 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
                                 {selectedServices.map((service, index) => {
                                     const { lineName, startDate, checked } = service;
 
-                                    let checkboxTitles = `${lineName}-${description}-${startDate}`;
+                                    let checkboxTitles = `${lineName} - ${description} (Start Date ${startDate})`;
 
-                                    if (checkboxTitles.length > 80) {
+                                    if (checkboxTitles.length > 110) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
                                     }
 
                                     return (
-                                        <div className="govuk-checkboxes__item" key={`chexkbox-item-${lineName}`}>
+                                        <div className="govuk-checkboxes__item" key={`checkbox-item-${lineName}`}>
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
@@ -56,7 +72,10 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
                                                 value={startDate}
                                                 defaultChecked={checked}
                                             />
-                                            <label className="govuk-label govuk-checkboxes__label" htmlFor={lineName}>
+                                            <label
+                                                className="govuk-label govuk-checkboxes__label"
+                                                htmlFor={`checkbox-${index}`}
+                                            >
                                                 {checkboxTitles}
                                             </label>
                                         </div>
@@ -77,7 +96,9 @@ const SingleOperator = ({ error, selectedServices }: ServiceLists): ReactElement
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceLists }> => {
+export const getServerSideProps = async (
+    ctx: NextPageContext,
+): Promise<{ props: { service: ServiceLists; buttonText: string } }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const periodSingleOperatorCookie = cookies[PERIOD_SINGLE_OPERATOR_SERVICES];
@@ -92,6 +113,8 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const servicesList = await getServicesByNocCode(nocCode);
 
     const { selectAll } = ctx.query;
+    const buttonText = selectAll === 'true' ? buttonUnselectedText : buttonSelectedText;
+
     const checkedServiceList: ServicesInfo[] = servicesList.map(service => {
         return {
             ...service,
@@ -102,8 +125,11 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     if (!periodSingleOperatorCookie) {
         return {
             props: {
-                error: false,
-                selectedServices: checkedServiceList,
+                service: {
+                    error: false,
+                    selectedServices: checkedServiceList,
+                },
+                buttonText,
             },
         };
     }
@@ -114,8 +140,11 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
 
     return {
         props: {
-            error,
-            selectedServices: checkedServiceList,
+            service: {
+                error,
+                selectedServices: checkedServiceList,
+            },
+            buttonText,
         },
     };
 };
