@@ -12,7 +12,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - '*'
+                      - "*"
 
     build-netex-output-resources:
         docker:
@@ -29,7 +29,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - './node_modules'
+                      - "./node_modules"
 
     audit-netex-output-resources:
         docker:
@@ -105,7 +105,7 @@ workflows:
                               - develop
                               - master
 
-            - build-netex-output-resources:
+            - audit-netex-output-resources:
                   requires:
                       - checkout-repo
                   filters:
@@ -114,9 +114,9 @@ workflows:
                               - develop
                               - master
 
-            - audit-netex-output-resources:
+            - build-netex-output-resources:
                   requires:
-                      - build-netex-output-resources
+                      - audit-netex-output-resources
                   filters:
                       branches:
                           only:
@@ -148,7 +148,8 @@ workflows:
                   context: tfn-fdbt-test
                   filters:
                       branches:
-                          only: develop
+                          only:
+                              - develop
 
             - hold-preprod-deployment:
                   type: approval

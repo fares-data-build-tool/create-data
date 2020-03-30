@@ -1,6 +1,6 @@
-import * as netexHelpers from './netexHelpers';
-import { FareZone } from './types';
-import { fareZoneList, expectedFareTables } from './testdata/test-data';
+import * as netexHelpers from './singleTicketNetexHelpers';
+import { FareZone } from '../types';
+import { fareZoneList, expectedFareTables } from '../testdata/test-data';
 
 describe('Netex Helpers', () => {
     let fareZones: FareZone[];
@@ -20,6 +20,7 @@ describe('Netex Helpers', () => {
                     atcoCode: '3290YYA03623',
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
+                    parentLocalityName: 'IW Test',
                     naptanCode: '32903623',
                     qualifierName: 'West Sussex',
                     stopName: 'Queenswood Grove',
@@ -28,6 +29,7 @@ describe('Netex Helpers', () => {
                     atcoCode: '3290YYA00077',
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
+                    parentLocalityName: 'IW Test',
                     naptanCode: '32900077',
                     qualifierName: 'West Sussex',
                     stopName: 'Kingsthorpe',
@@ -36,6 +38,7 @@ describe('Netex Helpers', () => {
                     atcoCode: '3290YYA00359',
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
+                    parentLocalityName: 'IW Test',
                     naptanCode: '32900359',
                     qualifierName: 'West Sussex',
                     stopName: 'Mattison Way',
@@ -44,6 +47,7 @@ describe('Netex Helpers', () => {
                     atcoCode: '3290YYA00357',
                     localityCode: 'E0026633',
                     localityName: 'Bewbush',
+                    parentLocalityName: 'IW Test',
                     naptanCode: '32900357',
                     qualifierName: 'West Sussex',
                     stopName: 'Campbell Avenue',

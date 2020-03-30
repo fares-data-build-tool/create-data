@@ -1,6 +1,6 @@
 import parser from 'xml2json';
 import fs from 'fs';
-import { MatchingData, OperatorData, ServiceData } from './types';
+import { MatchingData, OperatorData, ServiceData } from '../types';
 import {
     getScheduledStopPointsList,
     getFareZoneList,
@@ -9,44 +9,44 @@ import {
     getFareTables,
     getFareTableElements,
     getNetexMode,
-} from './netexHelpers';
-
-interface NetexObject {
-    [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-}
+    NetexObject,
+} from './singleTicketNetexHelpers';
+import { getCleanWebsite } from '../sharedHelpers';
 
 const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
     try {
-        const fileData = await fs.promises.readFile(`${__dirname}/netexTemplate.xml`, { encoding: 'utf8' });
+        const fileData = await fs.promises.readFile(`${__dirname}/singleTicketNetexTemplate.xml`, { encoding: 'utf8' });
         const json = JSON.parse(parser.toJson(fileData, { reversible: true, trim: true }));
 
         return json;
     } catch (error) {
-        throw new Error(`Error converting NeTEx template to JSON: ${error.message}`);
+        throw new Error(`Error converting NeTEx template to JSON: ${error.stack}`);
     }
 };
 
-const convertJsonToXml = (netexFileAsJsObject: NetexObject): string => {
-    const netexFileAsJsonString = JSON.stringify(netexFileAsJsObject);
+const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => {
+    const netexFileAsJsonString = JSON.stringify(netexFileAsJsonObject);
     const netexFileAsXmlString = parser.toXml(netexFileAsJsonString, { sanitize: true, ignoreNull: true });
 
     return netexFileAsXmlString;
 };
 
-const netexGenerator = (
+const singleTicketNetexGenerator = (
     matchingData: MatchingData,
     operatorData: OperatorData,
     serviceData: ServiceData,
 ): { generate: Function } => {
     const opIdNocFormat = `noc:${operatorData.opId}`;
+    const nocCodeNocFormat = `noc:${matchingData.nocCode}`;
     const opIdBrandFormat = `${operatorData.opId}@brand`;
     const operatorPublicNameLineNameFormat = `${operatorData.publicName} ${matchingData.lineName}`;
     const noccodeLineNameFormat = `${matchingData.nocCode}_${matchingData.lineName}`;
     const lineIdName = `Line_${matchingData.lineName}`;
     const currentDate = new Date(Date.now());
+    const website = getCleanWebsite(operatorData.website);
 
-    const updatePublicationTimeStamp = (publicationDelivery: NetexObject): NetexObject => {
-        const publicationTimeStampToUpdate = { ...publicationDelivery };
+    const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
+        const publicationTimeStampToUpdate = { ...publicationTimeStamp };
         publicationTimeStampToUpdate.PublicationTimestamp.$t = currentDate;
 
         return publicationTimeStampToUpdate;
@@ -56,7 +56,7 @@ const netexGenerator = (
         const publicationRequestToUpdate = { ...publicationRequest };
         publicationRequestToUpdate.RequestTimestamp.$t = currentDate;
         publicationRequestToUpdate.Description.$t = `Request for ${matchingData.nocCode} ${lineIdName}.`;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = opIdNocFormat;
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref =
             matchingData.lineName;
@@ -67,6 +67,7 @@ const netexGenerator = (
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
         compositeFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@${lineIdName}:op`;
+        compositeFrameToUpdate.Name.$t = `Fares for ${lineIdName}`;
         compositeFrameToUpdate.Description.$t = `${matchingData.nocCode} ${lineIdName} is a accessible as a single trip fare.  Prices are given zone to zone, where each zone is a linear group of stops, i.e. fare stage.`;
 
         return compositeFrameToUpdate;
@@ -75,16 +76,16 @@ const netexGenerator = (
     const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
         const resourceFrameToUpdate = { ...resourceFrame };
         resourceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ResourceFrame_UK_PI_COMMON:op`;
-        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = operatorData.website;
+        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = website;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = opIdNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
             operatorData.publicName;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = opIdNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
             operatorData.publicName;
         resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.id = opIdBrandFormat;
-        resourceFrameToUpdate.organisations.Operator.id = opIdNocFormat;
+        resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
         resourceFrameToUpdate.organisations.Operator.PublicCode.$t = matchingData.nocCode;
         resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.publicName;
         resourceFrameToUpdate.organisations.Operator.ShortName.$t = matchingData.operatorShortName;
@@ -113,8 +114,8 @@ const netexGenerator = (
         serviceFrameToUpdate.lines.Line.Description.$t = serviceData.serviceDescription;
         serviceFrameToUpdate.lines.Line.PublicCode.$t = matchingData.lineName;
         serviceFrameToUpdate.lines.Line.PrivateCode.$t = noccodeLineNameFormat;
-        serviceFrameToUpdate.lines.Line.OperatorRef.ref = opIdNocFormat;
-        serviceFrameToUpdate.lines.Line.OperatorRef.$t = matchingData.nocCode;
+        serviceFrameToUpdate.lines.Line.OperatorRef.ref = nocCodeNocFormat;
+        serviceFrameToUpdate.lines.Line.OperatorRef.$t = opIdNocFormat;
         serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getScheduledStopPointsList(
             matchingData.fareZones,
         );
@@ -141,8 +142,8 @@ const netexGenerator = (
             },
         };
         priceFareFrameToUpdate.tariffs.Tariff.Name = { $t: `${operatorPublicNameLineNameFormat} - Single Fares` };
-        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = opIdNocFormat;
-        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = matchingData.nocCode;
+        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
+        priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;
         priceFareFrameToUpdate.tariffs.Tariff.LineRef.ref = matchingData.lineName;
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].Name = {
             $t: `O/D pairs for ${matchingData.lineName}`,
@@ -158,7 +159,7 @@ const netexGenerator = (
         let userProfile;
         // eslint-disable-next-line no-plusplus
         for (userProfile = 1; userProfile < 4; userProfile++) {
-            arrayofUserProfiles[userProfile].Url.$t = operatorData.website;
+            arrayofUserProfiles[userProfile].Url.$t = website;
         }
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage.BrandingRef.ref = `${matchingData.nocCode}@brand`;
 
@@ -216,4 +217,4 @@ const netexGenerator = (
     return { generate };
 };
 
-export default netexGenerator;
+export default singleTicketNetexGenerator;
