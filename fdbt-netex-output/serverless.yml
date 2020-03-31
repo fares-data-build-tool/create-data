@@ -15,6 +15,7 @@ provider:
           Resource:
               - !Sub arn:aws:s3:::fdbt-matching-data-${self:provider.stage}/*
               - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*
+              - !Sub arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*
         - Effect: 'Allow'
           Action:
               - dynamodb:DescribeTable
