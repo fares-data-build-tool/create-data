@@ -11,28 +11,10 @@ provider:
         - Effect: 'Allow'
           Action:
               - 's3:GetObject'
-              - 's3:ListBucket'
-              - 's3:ListObjectsV2'
               - 's3:PutObject'
           Resource:
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-matching-data-${self:provider.stage}
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-matching-data-${self:provider.stage}
-                      - '/*'
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-netex-data-${self:provider.stage}
-              - Fn::Join:
-                    - ''
-                    - - 'arn:aws:s3:::'
-                      - fdbt-netex-data-${self:provider.stage}
-                      - '/*'
+              - !Sub arn:aws:s3:::fdbt-matching-data-${self:provider.stage}/*
+              - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*
         - Effect: 'Allow'
           Action:
               - dynamodb:DescribeTable
@@ -45,11 +27,10 @@ provider:
               - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:TndsTableArn'
         - Effect: 'Allow'
           Action:
-            - ses:SendEmail
-            - ses:SendRawEmail
+              - ses:SendEmail
+              - ses:SendRawEmail
           Resource:
-            - '*'
-
+              - '*'
 
     environment:
         NAPTAN_TABLE_NAME: ${self:provider.stage}-Stops
