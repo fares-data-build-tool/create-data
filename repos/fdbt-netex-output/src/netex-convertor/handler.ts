@@ -58,7 +58,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const servicesData = await getServicesTableData(matchingData.nocCode, matchingData.lineName);
             const netexGen = singleTicketNetexGenerator(matchingData, operatorData, servicesData);
             const generatedNetex = await netexGen.generate();
-            const fileName = `${matchingData.operatorShortName}_${
+            const fileName = `${matchingData.operatorShortName.replace(/\/|\s/g, '_')}_${
                 matchingData.lineName
             }_${new Date().toISOString()}.xml`;
             const fileNameWithoutSlashes = fileName.replace('/', '_');
@@ -68,7 +68,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const operatorData = await getOperatorsTableData(geoFareZonePass.nocCode);
             const netexGen = periodTicketNetexGenerator(geoFareZonePass, operatorData);
             const generatedNetex = await netexGen.generate();
-            const fileName = `${geoFareZonePass.operatorName}_${geoFareZonePass.zoneName}_${
+            const fileName = `${geoFareZonePass.operatorName.replace(/\/|\s/g, '_')}_${geoFareZonePass.zoneName}_${
                 geoFareZonePass.productName
             }_${new Date().toISOString()}.xml`;
             const fileNameWithoutSlashes = fileName.replace('/', '_');
