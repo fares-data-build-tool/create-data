@@ -53,9 +53,9 @@ const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
                             />
                             <div className="govuk-checkboxes">
                                 {selectedServices.map((service, index) => {
-                                    const { lineName, startDate, checked } = service;
+                                    const { lineName, startDate, serviceDescription, checked } = service;
 
-                                    let checkboxTitles = `${lineName} - ${description} (Start Date ${startDate})`;
+                                    let checkboxTitles = `${lineName} - ${serviceDescription} (Start Date ${startDate})`;
 
                                     if (checkboxTitles.length > 110) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
@@ -118,6 +118,7 @@ export const getServerSideProps = async (
     const checkedServiceList: ServicesInfo[] = servicesList.map(service => {
         return {
             ...service,
+            serviceDescription: service.description,
             checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
         };
     });
