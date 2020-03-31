@@ -228,6 +228,15 @@ describe('csvZoneUpload', () => {
 
             expect(result).toEqual(expectedProcessed);
         });
+
+        it('should throw an error when a csv upload contains no stops info', async () => {
+            const fileContent = csvData.testCsvWithNoStopsInfo;
+            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+                .mockImplementation()
+                .mockResolvedValue([]);
+
+            await expect(csvZoneUpload.processCsvUpload(fileContent)).rejects.toThrow()
+        })
     });
 
     describe('formatDynamoResponse', () => {
