@@ -6,7 +6,7 @@ import { OPERATOR_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES } from '../constants';
 import { getServicesByNocCode } from '../data/dynamodb';
 import { ServiceLists, ServicesInfo } from '../interfaces';
 
-const title = 'Which service(s) is the ticket valid for';
+const title = 'Which service(s) is the ticket valid for?';
 const description = 'Single Operator selection page of the Fares data build tool';
 
 const buttonSelectedText = 'Select All';
