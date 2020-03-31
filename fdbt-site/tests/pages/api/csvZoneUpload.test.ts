@@ -235,8 +235,8 @@ describe('csvZoneUpload', () => {
                 .mockImplementation()
                 .mockResolvedValue([]);
 
-            await expect(csvZoneUpload.processCsvUpload(fileContent)).rejects.toThrow()
-        })
+            await expect(csvZoneUpload.processCsvUpload(fileContent)).rejects.toThrow();
+        });
     });
 
     describe('formatDynamoResponse', () => {
