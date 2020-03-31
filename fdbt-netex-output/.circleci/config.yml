@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-    semver-orb: tv2norge/semver-orb@0.0.1
 
 jobs:
     checkout-repo:
@@ -12,7 +10,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - "*"
+                      - '*'
 
     build-netex-output-resources:
         docker:
@@ -29,7 +27,7 @@ jobs:
             - persist_to_workspace:
                   root: ~/project
                   paths:
-                      - "./node_modules"
+                      - './node_modules'
 
     audit-netex-output-resources:
         docker:
@@ -94,6 +92,54 @@ jobs:
                       export SLS_DEBUG="*" && sls deploy --stage=preprod
                       echo "Finished deploy"
 
+    audit-netex-validator:
+        docker:
+            - image: circleci/node:12
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      cd src/netex-validator
+                      npx audit-ci --moderate
+
+    deploy-netex-validator-to-test:
+        docker:
+            - image: circleci/python:3.8
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Deploying..."
+                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      sudo apt-get install -y nodejs
+                      sudo npm i -g serverless
+                      cd src/netex-validator
+                      npm install
+                      export SLS_DEBUG="*" && sls deploy --stage=test
+                      echo "Finished deploy"
+
+    deploy-netex-validator-to-preprod:
+        docker:
+            - image: circleci/python:3.8
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/project
+            - run:
+                  command: |
+                      echo "Deploying..."
+                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      sudo apt-get install -y nodejs
+                      sudo npm i -g serverless
+                      cd src/netex-validator
+                      npm install
+                      export SLS_DEBUG="*" && sls deploy --stage=preprod
+                      echo "Finished deploy"
+
 workflows:
     version: 2
     build-test-and-deploy-netex-output-lambdas:
@@ -112,6 +158,41 @@ workflows:
                       branches:
                           only:
                               - develop
+                              - master
+
+            - audit-netex-validator:
+                  requires:
+                      - checkout-repo
+                  filters:
+                      branches:
+                          only:
+                              - develop
+                              - master
+
+            - deploy-netex-validator-to-test:
+                  requires:
+                      - audit-netex-validator
+                  context: tfn-fdbt-test
+                  filters:
+                      branches:
+                          only:
+                              - develop
+
+            - hold-netex-validator-preprod-deployment:
+                  type: approval
+                  requires:
+                      - audit-netex-validator
+                  filters:
+                      branches:
+                          only: master
+
+            - deploy-netex-validator-to-preprod:
+                  requires:
+                      - hold-netex-validator-preprod-deployment
+                  context: tfn-fdbt-preprod
+                  filters:
+                      branches:
+                          only:
                               - master
 
             - build-netex-output-resources:
