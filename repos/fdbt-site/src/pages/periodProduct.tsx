@@ -145,11 +145,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         throw new Error('Failed to retrieve operator cookie info for period product page.');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
-
     if (!zoneCookie && !singleOperatorCookie) {
         throw new Error('Failed to retrieve zone cookie info for period product page.');
     }
+
+    const operatorObject = JSON.parse(operatorCookie);
 
     if (zoneCookie) {
         const { fareZoneName } = JSON.parse(zoneCookie);
@@ -158,8 +158,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         };
     }
 
-    if (periodProductCookie) {
-        JSON.parse(periodProductCookie);
+    if (singleOperatorCookie) {
+        const { selectedServices } = JSON.parse(singleOperatorCookie);
+        props = {
+            zoneName: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
+        };
     }
 
     return {

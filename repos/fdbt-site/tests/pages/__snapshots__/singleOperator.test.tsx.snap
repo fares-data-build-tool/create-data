@@ -3,7 +3,7 @@
 exports[`pages singleOperator should render correctly 1`] = `
 <Layout
   description="Single Operator selection page of the Fares data build tool"
-  title="Which service(s) is the ticket valid for"
+  title="Which service(s) is the ticket valid for?"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -28,7 +28,7 @@ exports[`pages singleOperator should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="periodtype-page-heading"
             >
-              Which service(s)?
+              Which service(s) is the ticket valid for?
             </h1>
           </legend>
           <span
@@ -38,7 +38,7 @@ exports[`pages singleOperator should render correctly 1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Please select an option
+              Select one or more service(s)
             </span>
           </span>
         </fieldset>
@@ -50,7 +50,7 @@ exports[`pages singleOperator should render correctly 1`] = `
             className="govuk-hint"
             id="waste-hint"
           >
-            Select all service that apply
+            Select all services that apply
           </span>
           <input
             className="govuk-button govuk-button--secondary"
