@@ -37,7 +37,7 @@ def parse_netex_xml(netex):
 
 def validate_netex(download_path):
     netex_file = open(download_path, 'r')
-    netex = netex_file.read()
+    netex = netex_file.read().encode()
 
     try:
         parsed_netex = parse_netex_xml(netex)
