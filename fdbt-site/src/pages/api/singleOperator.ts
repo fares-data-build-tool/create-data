@@ -5,6 +5,7 @@ import { PERIOD_SINGLE_OPERATOR_SERVICES } from '../../constants';
 import { ServiceLists, ServicesInfo } from '../../interfaces';
 
 const redirectUrl = '/singleOperator';
+const selectAllText = 'Select All';
 const serviceListObject: ServiceLists = { error: false, selectedServices: [] };
 
 const setSingleOperatorCookie = (
@@ -34,9 +35,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
         const { selectAll } = req.body;
 
+        const isSelected = selectAll === selectAllText;
+
         if (selectAll && queryString) {
             setSingleOperatorCookie(req, res);
-            redirectTo(res, `${redirectUrl}?selectAll=true`);
+            redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
             return;
         }
 

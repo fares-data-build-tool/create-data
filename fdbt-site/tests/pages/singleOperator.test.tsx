@@ -2,12 +2,14 @@
 
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import SingleOperator from '../../src/pages/singleOperator';
-import { ServiceLists } from '../../src/interfaces';
+import SingleOperator, { SelectedServiceProps } from '../../src/pages/singleOperator';
 
-const serviceInfo: ServiceLists = {
-    selectedServices: [],
-    error: false,
+const serviceInfo: SelectedServiceProps = {
+    service: {
+        selectedServices: [],
+        error: false,
+    },
+    buttonText: 'Select All',
 };
 
 describe('pages', () => {
