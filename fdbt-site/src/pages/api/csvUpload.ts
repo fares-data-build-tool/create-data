@@ -181,6 +181,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/matching');
         }
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem uploading the csv:';
+        redirectToError(res, message, error);
     }
 };

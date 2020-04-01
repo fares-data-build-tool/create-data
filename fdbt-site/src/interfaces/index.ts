@@ -5,3 +5,15 @@ export interface PeriodProductType {
     productNameError: string;
     productPriceError: string;
 }
+
+export interface ServicesInfo {
+    lineName: string;
+    startDate: string;
+    serviceDescription?: string;
+    checked?: boolean;
+}
+
+export interface ServiceLists {
+    selectedServices: ServicesInfo[];
+    error: boolean;
+}

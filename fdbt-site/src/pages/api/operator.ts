@@ -16,7 +16,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieValue, req, res);
         redirectTo(res, '/faretype');
     } catch (error) {
-        console.error(error.stack);
-        redirectToError(res);
+        const message = 'There was a problem selecting thr operator:';
+        redirectToError(res, message, error);
     }
 };

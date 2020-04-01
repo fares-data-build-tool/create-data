@@ -40,12 +40,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (req.body.validityInput === '0') {
             setCookie(req, res, 'The value of days your product is valid for cannot be 0.');
+            console.warn('0 entered as value for days your product is valid for.');
             redirectTo(res, '/chooseValidity');
             return;
         }
 
         if (!req.body.validityInput) {
             setCookie(req, res, 'The value of days your product is valid for cannot be empty.');
+            console.warn('Nothing entered as value for days your product is valid for.');
             redirectTo(res, '/chooseValidity');
             return;
         }
@@ -56,6 +58,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 res,
                 'The value of days your product is valid for has to be a whole number between 1 and 366.',
             );
+            console.warn('Invalid number entered as value for days your product is valid for.');
             redirectTo(res, '/chooseValidity');
             return;
         }
@@ -63,6 +66,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookie(req, res);
         redirectTo(res, '/periodValidity');
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem inputting the number of days the product is valid for:';
+        redirectToError(res, message, error);
     }
 };
