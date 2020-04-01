@@ -1,3 +1,5 @@
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
 DROP TABLE IF EXISTS naptanStop;
 
 CREATE TABLE naptanStop(
@@ -47,3 +49,5 @@ CREATE TABLE naptanStop(
     INDEX idx_atcoCode (atcoCode),
     INDEX idx_naptanCode (naptanCode)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
+
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

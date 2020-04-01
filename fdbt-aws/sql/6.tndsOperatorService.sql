@@ -1,3 +1,5 @@
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
 DROP TABLE IF EXISTS tndsOperatorService;
 
 CREATE TABLE tndsOperatorService(
@@ -13,3 +15,5 @@ CREATE TABLE tndsOperatorService(
     CONSTRAINT fk_tndsOperatorService_nocTable_nocCode FOREIGN KEY (nocCode) REFERENCES nocTable(nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
+
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

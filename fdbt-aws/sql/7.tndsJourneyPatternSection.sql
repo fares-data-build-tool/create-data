@@ -1,3 +1,5 @@
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
 DROP TABLE IF EXISTS tndsJourneyPatternSection;
 
 CREATE TABLE tndsJourneyPatternSection(
@@ -7,3 +9,5 @@ CREATE TABLE tndsJourneyPatternSection(
     CONSTRAINT fk_tndsJourneyPatternSection_tndsOperatorService_id FOREIGN KEY (operatorServiceId) REFERENCES tndsOperatorService(id),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
+
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -1,3 +1,5 @@
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
 DROP TABLE IF EXISTS tndsJourneyPatternLink;
 
 CREATE TABLE tndsJourneyPatternLink(
@@ -15,3 +17,5 @@ CREATE TABLE tndsJourneyPatternLink(
     CONSTRAINT fk_tndsJourneyPatternLink_toAtcoCode_naptanStop_atcoCode FOREIGN KEY (toAtcoCode) REFERENCES naptanStop(atcoCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
+
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
