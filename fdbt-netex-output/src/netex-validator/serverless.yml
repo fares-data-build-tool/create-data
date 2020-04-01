@@ -1,0 +1,47 @@
+service: netex-validator
+
+provider:
+    name: aws
+    runtime: python3.8
+    region: eu-west-2
+    stage: ${opt:stage, 'test'}
+    timeout: 180
+    memorySize: 512
+    iamRoleStatements:
+        - Effect: 'Allow'
+          Action:
+              - 's3:GetObject'
+              - 's3:PutObject'
+          Resource:
+              - !Sub 'arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*'
+              - !Sub 'arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*'
+        - Effect: 'Allow'
+          Action:
+              - 'sns:Publish'
+          Resource:
+              - Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
+
+    environment:
+        VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
+        SNS_ALERTS_ARN:
+            Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
+
+plugins:
+    - serverless-python-requirements
+
+custom:
+    pythonRequirements:
+        dockerizePip: false
+
+package:
+    include:
+        - xsd/*
+    exclude:
+        - node_modules/**
+
+functions:
+    NetexValidator:
+        handler: main.lambda_handler
+        events:
+            - s3: fdbt-unvalidated-netex-data-${self:provider.stage}
+              event: s3:ObjectCreated:*
