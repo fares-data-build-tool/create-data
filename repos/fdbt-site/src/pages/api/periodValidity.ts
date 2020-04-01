@@ -7,6 +7,7 @@ import {
     MATCHING_DATA_BUCKET_NAME,
     CSV_ZONE_UPLOAD_COOKIE,
     VALIDITY_COOKIE,
+    PERIOD_SINGLE_OPERATOR_SERVICES,
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/dynamodb';
@@ -18,8 +19,6 @@ interface DecisionData {
     type: string;
     productName: string;
     productPrice: string;
-    fareZoneName: string;
-    stops: Stop[];
     daysValid: string;
     expiryRules: string;
     nocCode: string;
@@ -47,19 +46,38 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const daysValidCookie = unescape(decodeURI(cookies.get(VALIDITY_COOKIE) || ''));
         const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
         const fareZoneCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
+        const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
 
-        if (periodProduct === '' || daysValidCookie === '' || operatorCookie === '' || fareZoneCookie === '') {
+        if (
+            periodProduct === '' ||
+            daysValidCookie === '' ||
+            (operatorCookie === '' && (fareZoneCookie === '' || singleOperatorCookie))
+        ) {
             throw new Error('Necessary cookies not found for period validity page');
         }
 
-        const { fareZoneName } = JSON.parse(fareZoneCookie);
+        let props = {};
         const { productName, productPrice } = JSON.parse(periodProduct);
         const { daysValid } = JSON.parse(daysValidCookie);
         const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
 
-        const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
+        if (fareZoneCookie) {
+            const { fareZoneName } = JSON.parse(fareZoneCookie);
+            const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
+            const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
-        const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+            props = {
+                zoneName: fareZoneName,
+                stops: zoneStops,
+            };
+        }
+
+        if (singleOperatorCookie) {
+            const { selectedServices } = JSON.parse(singleOperatorCookie);
+            props = {
+                selectedServices,
+            };
+        }
 
         setCookieOnResponseObject(
             getDomain(req),
@@ -72,13 +90,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const period: DecisionData = {
             operatorName: operator,
             type: 'period',
-            fareZoneName,
-            stops: zoneStops,
             productName,
             productPrice,
             daysValid,
             expiryRules: periodValid,
             nocCode,
+            ...props,
         };
 
         await putStringInS3(
@@ -90,6 +107,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         redirectTo(res, '/thankyou');
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem selecting the period validity:';
+        redirectToError(res, message, error);
     }
 };

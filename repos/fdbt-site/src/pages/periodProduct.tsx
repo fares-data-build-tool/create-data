@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PERIOD_PRODUCT, CSV_ZONE_UPLOAD_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, PERIOD_PRODUCT, CSV_ZONE_UPLOAD_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES } from '../constants';
 import { PeriodProductType } from '../interfaces';
 
 const title = 'FareType - Fares data build tool';
@@ -11,7 +11,7 @@ const description = 'Fare Type selection page of the Fares data build tool';
 type PeriodProduct = {
     product: PeriodProductType;
     operator: string;
-    zoneName: string;
+    zoneName?: string;
 };
 
 const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactElement => {
@@ -137,28 +137,39 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const periodProductCookie = cookies[PERIOD_PRODUCT];
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
+    const singleOperatorCookie = cookies[PERIOD_SINGLE_OPERATOR_SERVICES];
+
+    let props = {};
 
     if (!operatorCookie) {
         throw new Error('Failed to retrieve operator cookie info for period product page.');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
-
-    if (!zoneCookie) {
+    if (!zoneCookie && !singleOperatorCookie) {
         throw new Error('Failed to retrieve zone cookie info for period product page.');
     }
 
-    const zoneObject = JSON.parse(zoneCookie);
+    const operatorObject = JSON.parse(operatorCookie);
 
-    if (periodProductCookie) {
-        JSON.parse(periodProductCookie);
+    if (zoneCookie) {
+        const { fareZoneName } = JSON.parse(zoneCookie);
+        props = {
+            zoneName: fareZoneName,
+        };
+    }
+
+    if (singleOperatorCookie) {
+        const { selectedServices } = JSON.parse(singleOperatorCookie);
+        props = {
+            zoneName: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
+        };
     }
 
     return {
         props: {
             product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
             operator: operatorObject.operator,
-            zoneName: zoneObject.fareZoneName,
+            ...props,
         },
     };
 };

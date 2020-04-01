@@ -7,8 +7,7 @@ import { getDomain, setCookieOnResponseObject, redirectTo, redirectToError } fro
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            redirectToError(res);
-            return;
+            throw new Error('Session is invalid.');
         }
 
         const cookies = new Cookies(req, res);
@@ -32,6 +31,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
         redirectTo(res, '/inputMethod');
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem selecting the direction:';
+        redirectToError(res, message, error);
     }
 };

@@ -49,8 +49,7 @@ const checkIfInputInvalid = (
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            redirectToError(res);
-            return;
+            throw new Error('Session is invalid.');
         }
 
         const uuid = getUuidFromCookie(req, res);
@@ -76,6 +75,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         redirectTo(res, '/chooseValidity');
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem inputtng the product name and price:';
+        redirectToError(res, message, error);
     }
 };

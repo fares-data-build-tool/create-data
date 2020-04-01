@@ -313,3 +313,16 @@ export const processedTestCsvWithEmptyLinesAndEmptyCells = {
     ],
     ContentType: 'application/json; charset=utf-8',
 };
+
+// Test data for a csv with no stops info
+export const testCsvWithNoStopsInfo: string =
+    'FareZoneName,NaptanCodes,AtcoCodes,\n' +
+    'Town Centre,,,\n' +
+    ',,,\n' +
+    ',,,\n' +
+    ',,,\n' +
+    ',,,\n' +
+    ',,,\n' +
+    ',,,\n' +
+    ',,,\n' +
+    ',,,\n';

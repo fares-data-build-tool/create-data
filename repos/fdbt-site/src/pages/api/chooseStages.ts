@@ -24,8 +24,7 @@ export const isInvalidFareStageNumber = (req: NextApiRequest): boolean => {
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (req.body.fareStageInput === 0) {
-            redirectToError(res);
-            return;
+            throw new Error('0 farestages selected.');
         }
 
         if (!req.body.fareStageInput) {
@@ -34,14 +33,15 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         if (isInvalidFareStageNumber(req)) {
-            redirectToError(res);
-            return;
+            throw new Error('Invalid number of farestages selected.');
         }
+
         const numberOfFareStages = req.body.fareStageInput;
         const cookieValue = JSON.stringify({ fareStages: numberOfFareStages });
         setCookieOnResponseObject(getDomain(req), FARE_STAGES_COOKIE, cookieValue, req, res);
         redirectTo(res, '/stageNames');
     } catch (error) {
-        redirectToError(res);
+        const message = 'There was a problem inputting the number of fare stages:';
+        redirectToError(res, message, error);
     }
 };
