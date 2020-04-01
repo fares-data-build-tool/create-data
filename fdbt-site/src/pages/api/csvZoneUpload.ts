@@ -128,6 +128,9 @@ export const processCsvUpload = async (fileContent: string): Promise<UserFareZon
                 return item;
             })
             .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
+        if (rawUserFareZones.length === 0) {
+            throw new Error('The uploaded CSV contained no Naptan Codes or Atco Codes');
+        }
         let userFareZones = rawUserFareZones;
         const naptanCodesToQuery = rawUserFareZones
             .filter(rawUserFareZone => rawUserFareZone.AtcoCodes === '')
