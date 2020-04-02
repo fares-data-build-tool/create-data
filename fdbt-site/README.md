@@ -2,29 +2,13 @@
 
 [![CircleCI](https://circleci.com/bb/infinityworksconsulting/fdbt-site.svg?style=svg)](https://circleci.com/bb/infinityworksconsulting/fdbt-site)
 
-## Requirements
-
--   Node.js 12+
--   Localstack & Localstack AWS CLI
--   AWS CLI
--   Python 3 / Pip
--   Docker
-
-## Installing localstack
-
--   To install localstack, you will need pip installed first, then you can run `pip install localstack`
--   To install localstack AWS CLI, run `pip install awscli-local`
--   To test it is working make sure docker is running then run `localstack`
-    -- By default, localstack will try and mount in a `/private` directory into the docker container, if this is failing, you will need to navigate to Docker for Mac > Preferences> File Sharing and add in `/private` as a directory
+This is the main site for the Fares Data Build Tool. It is built using Next.js and deployed into AWS Fargate.
+The site follows the gov.uk design system using govuk-frontend for styling.
 
 ## Running locally
 
--   The site depends on both DynamoDB and S3 which are ran locally using serverless-dynamodb-local and localstack respectively
--   In order to start dynamo locally navigate to the `fdbt-reference-data-service` and run `make run-dynamodb-local`, this will start dynamo and seed it with some test data
--   After that you should be able to run `make` in the root of this directory to start localstack and the site together
+To run the site locally, checkout the [fdbt-dev](https://github.com/fares-data-build-tool/fdbt-dev) repo and follow the instructions to run the site within docker. The site can be ran directly but requires LocalStack and MySQL which are also brought up by the dev repo scripts.
 
-## Deploy your version onto AWS
+## Assets
 
--   Navigate to the `deploy/dev` folder and copy `serverless.yml.example` into a new file called `serverless.yml`.
--   Replace all instances of `${INITIALS}` with your initials eg. lj
--   In the root folder, now run `make deploy-dev STAGE=${STAGE}` where stage will need to match the stage that your desired DynamoDB tables have been deployed with.
+All images should be placed in the `src/assets/images` folder and imported into the component they need to be rendered in. All other assets (pdf, csv etc.) will need to placed in the `public` folder and will need to be referenced in the code using the `STATIC_FILES_PATH` env var, eg. `${STATIC_FILES_PATH}/assets/files/Fare-Zone-Example.csv`.
