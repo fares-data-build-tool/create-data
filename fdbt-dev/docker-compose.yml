@@ -29,7 +29,7 @@ services:
       context: ${FDBT_ROOT}/repos/fdbt-site
       dockerfile: Dockerfile-dev
     volumes:
-      - ../repos/fdbt-site:/home/node/app
+      - ${FDBT_ROOT}/repos/fdbt-site:/home/node/app
       - /home/node/app/node_modules
       - /home/node/app/.next
     ports:

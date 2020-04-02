@@ -2,7 +2,7 @@
 
 set -e
 
-for i in `ls -1 $TFN_ROOT/fdbt-dev/sql/*.sql`; do
+for i in $(ls -1 $FDBT_ROOT/fdbt-dev/sql/*.sql); do
     mysql -h127.0.0.1 -uroot -proot fdbt < $i 2>/dev/null
 done
 
