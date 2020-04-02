@@ -1,0 +1,36 @@
+version: "3.3"
+
+services:
+  mysql:
+    container_name: fdbt_mysql
+    image: mysql:5.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fdbt
+    ports:
+      - "3306:3306"
+
+  localstack:
+    container_name: fdbt_localstack
+    image: localstack/localstack:0.10.9
+    tty: true
+    stdin_open: true
+    environment:
+      SERVICES: s3,s3api
+      DATA_DIR: /tmp/localstack/data
+    ports:
+      - "4572:4572"
+
+  site:
+    container_name: fdbt_site
+    tty: true
+    build:
+      context: ${FDBT_ROOT}/repos/fdbt-site
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ../repos/fdbt-site:/home/node/app
+      - /home/node/app/node_modules
+      - /home/node/app/.next
+    ports:
+      - "5555:5555"
