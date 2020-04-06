@@ -149,12 +149,12 @@ Resources:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
                 Resource:
-                  - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
+                  - !Sub arn:aws:s3:::fdbt-csv-reference-data-${Stage}/*
               - Effect: Allow
                 Action:
                   - "s3:ListBucket"
                 Resource:
-                  - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
+                  - !Sub arn:aws:s3:::fdbt-csv-reference-data-${Stage}
           PolicyName: allow-aurora-s3-access
 
   SlackLambdaRole:
