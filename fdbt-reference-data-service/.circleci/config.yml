@@ -1,198 +1,155 @@
 version: 2.1
 
 jobs:
-    checkout-repo:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - checkout
-            - persist_to_workspace:
-                  root: ~/project
-                  paths:
-                      - '*'
+  checkout-repo:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "*"
 
-    build-reference-data-resources:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Starting build"
-                      npm --prefix src/uploaders install
-                      npm --prefix src/uploaders run build
-            - persist_to_workspace:
-                  root: ~/project
-                  paths:
-                      - './src/uploaders/node_modules'
+  audit-reference-data-uploaders:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            cd src/uploaders
+            npx audit-ci --moderate
 
-    test-reference-data-resources:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Running tests"
-                      npm --prefix src/uploaders run test:ci
+  deploy-reference-data-uploaders-to-test:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/uploaders
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=test
+            echo "Finished deploy"
 
-    lint-reference-data-resources:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Linting site"
-                      npm --prefix src/uploaders run lint
+  deploy-reference-data-uploaders-to-preprod:
+    docker:
+      - image: circleci/node:python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/uploaders
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=preprod
+            echo "Finished deploy"
 
-    deploy-reference-data-uploaders-to-test:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      sudo npm i -g serverless
-                      cd src/uploaders
-                      export SLS_DEBUG="*" && sls deploy --stage=test
-                      echo "Finished deploy"
+  deploy-reference-data-retrievers-to-test:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/retrievers
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=test
+            echo "Finished deploy"
 
-    deploy-reference-data-uploaders-to-preprod:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      sudo npm i -g serverless
-                      cd src/uploaders
-                      export SLS_DEBUG="*" && sls deploy --stage=preprod
-                      echo "Finished deploy"
-
-    deploy-reference-data-retrievers-to-test:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      sudo npm i -g serverless
-                      cd src/retrievers
-                      export SLS_DEBUG="*" && sls deploy --stage=test
-                      echo "Finished deploy"
-
-    deploy-reference-data-retrievers-to-preprod:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      sudo npm i -g serverless
-                      cd src/retrievers
-                      export SLS_DEBUG="*" && sls deploy --stage=preprod
-                      echo "Finished deploy"
+  deploy-reference-data-retrievers-to-preprod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/retrievers
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=preprod
+            echo "Finished deploy"
 
 workflows:
-    version: 2
-    build-test-and-deploy-reference-data-lambdas:
-        jobs:
-            - checkout-repo:
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
+  version: 2
+  audit-and-deploy-reference-data-lambdas:
+    jobs:
+      - checkout-repo
 
-            - build-reference-data-resources:
-                  requires:
-                      - checkout-repo
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
+      - deploy-reference-data-retrievers-to-test:
+          requires:
+            - checkout-repo
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only: develop
 
-            - test-reference-data-resources:
-                  requires:
-                      - build-reference-data-resources
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
+      - hold-reference-data-retrievers-preprod-deployment:
+          type: approval
+          requires:
+            - checkout-repo
+          filters:
+            branches:
+              only: master
 
-            - lint-reference-data-resources:
-                  requires:
-                      - build-reference-data-resources
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
+      - deploy-reference-data-retrievers-to-preprod:
+          requires:
+            - hold-reference-data-retrievers-preprod-deployment
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only: master
 
-            - deploy-reference-data-uploaders-to-test:
-                  requires:
-                      - test-reference-data-resources
-                      - lint-reference-data-resources
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only: develop
+      - audit-reference-data-uploaders:
+          requires:
+            - checkout-repo
 
-            - hold-reference-data-uploaders-preprod-deployment:
-                  type: approval
-                  requires:
-                      - test-reference-data-resources
-                      - lint-reference-data-resources
-                  filters:
-                      branches:
-                          only: master
+      - deploy-reference-data-uploaders-to-test:
+          requires:
+            - audit-reference-data-uploaders
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only: develop
 
-            - deploy-reference-data-uploaders-to-preprod:
-                  requires:
-                      - hold-reference-data-uploaders-preprod-deployment
-                  context: tfn-fdbt-preprod
-                  filters:
-                      branches:
-                          only: master
+      - hold-reference-data-uploaders-preprod-deployment:
+          type: approval
+          requires:
+            - audit-reference-data-uploaders
+          filters:
+            branches:
+              only: master
 
-            - deploy-reference-data-retrievers-to-test:
-                  requires:
-                      - checkout-repo
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only: develop
-
-            - hold-reference-data-retrievers-preprod-deployment:
-                  type: approval
-                  requires:
-                      - checkout-repo
-                  filters:
-                      branches:
-                          only: master
-
-            - deploy-reference-data-retrievers-to-preprod:
-                  requires:
-                      - hold-reference-data-retrievers-preprod-deployment
-                  context: tfn-fdbt-preprod
-                  filters:
-                      branches:
-                          only: master
+      - deploy-reference-data-uploaders-to-preprod:
+          requires:
+            - hold-reference-data-uploaders-preprod-deployment
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only: master
