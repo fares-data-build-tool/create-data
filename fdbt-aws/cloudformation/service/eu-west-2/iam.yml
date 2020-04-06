@@ -149,16 +149,12 @@ Resources:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
                 Resource:
-                  - !Sub arn:aws:s3:::fdbt-noc-data-${Stage}/*
-                  - !Sub arn:aws:s3:::fdbt-naptan-data-${Stage}/*
-                  - !Sub arn:aws:s3:::fdbt-tnds-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
               - Effect: Allow
                 Action:
                   - "s3:ListBucket"
                 Resource:
-                  - !Sub arn:aws:s3:::fdbt-noc-data-${Stage}
-                  - !Sub arn:aws:s3:::fdbt-naptan-data-${Stage}
-                  - !Sub arn:aws:s3:::fdbt-tnds-data-${Stage}
+                  - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
           PolicyName: allow-aurora-s3-access
 
   SlackLambdaRole:
