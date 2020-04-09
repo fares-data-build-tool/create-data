@@ -86,48 +86,22 @@ workflows:
     version: 2
     build-test-and-deploy-site:
         jobs:
-            - checkout-repo:
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
-
+            - checkout-repo
             - build-site:
                   requires:
                       - checkout-repo
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
 
             - audit-site:
                   requires:
                       - build-site
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
 
             - test-site:
                   requires:
                       - audit-site
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
 
             - lint-site:
                   requires:
                       - audit-site
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
 
             - sync-static-files:
                   requires:
