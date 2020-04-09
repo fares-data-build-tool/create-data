@@ -10,7 +10,7 @@ import {
     RawService,
     RawJourneyPatternSection,
 } from '../data/dynamodb';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages, FareStage } from '../data/s3';
 import { formatStopName } from '../utils';
 
@@ -27,16 +27,22 @@ interface MatchingProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     service: BasicService;
+    error: boolean;
 }
 
-const Matching = ({ userFareStages, stops, service }: MatchingProps): ReactElement => (
+const Matching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class matching-page" id="main-content" role="main">
             <form action="/api/matching" method="post">
-                <div className="govuk-form-group">
+                <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                         <h1 className="govuk-fieldset__heading">Match stops to fares stages</h1>
                     </legend>
+                    <span id="dropdown-error" className="govuk-error-message">
+                        <span className={error ? '' : 'govuk-visually-hidden'}>
+                            Ensure each fare stage is assigned at least once.
+                        </span>
+                    </span>
                     <span className="govuk-hint" id="match-fares-hint">
                         Please select the correct fare stages for each stop.
                     </span>
@@ -109,6 +115,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
+    const matchingCookie = cookies[MATCHING_COOKIE];
 
     if (!operatorCookie || !serviceCookie || !journeyCookie) {
         throw new Error('Necessary cookies not found to show matching page');
@@ -117,11 +124,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const operatorObject = JSON.parse(operatorCookie);
     const serviceObject = JSON.parse(serviceCookie);
     const journeyObject = JSON.parse(journeyCookie);
-
     const lineName = serviceObject.service.split('#')[0];
     const { nocCode } = operatorObject;
     const [selectedStartPoint, selectedEndPoint] = journeyObject.journeyPattern.split('#');
-
     const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
@@ -147,6 +152,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 nocCode,
                 operatorShortName: service.operatorShortName,
             },
+            error: !matchingCookie ? false : JSON.parse(matchingCookie).error,
         },
     };
 };
