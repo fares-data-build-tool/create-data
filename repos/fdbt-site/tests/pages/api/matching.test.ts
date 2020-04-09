@@ -3,7 +3,8 @@ import matching from '../../../src/pages/api/matching';
 import {
     getMockRequestAndResponse,
     service,
-    mockMatchingUserFareStages,
+    mockMatchingUserFareStagesWithUnassignedStages,
+    mockMatchingUserFareStagesWithAllStagesAssigned,
     expectedMatchingJson,
 } from '../../testData/mockData';
 import * as s3 from '../../../src/data/s3';
@@ -38,7 +39,7 @@ describe('Matching API', () => {
             {
                 ...selections,
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStages),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
             {},
             writeHeadMock,
@@ -54,14 +55,32 @@ describe('Matching API', () => {
         );
     });
 
-    it('redirects to error page if no stops are allocated to fare stages', async () => {
+    it('correctly redirects to matching page when there are fare stages that have not been assigned to stops', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            {},
+            {
+                ...selections,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
+            },
+            {},
+            writeHeadMock,
+        );
+        await matching(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/matching',
+        });
+    });
+
+    it('redirects to matching page if no stops are allocated to fare stages', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
             {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStages),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
             {},
             writeHeadMock,
@@ -70,7 +89,7 @@ describe('Matching API', () => {
         await matching(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/matching',
         });
     });
 
@@ -80,7 +99,7 @@ describe('Matching API', () => {
             {
                 ...selections,
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStages),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
             {},
             writeHeadMock,
@@ -107,7 +126,11 @@ describe('Matching API', () => {
     it('redirects back to matching page if no service info in body', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
-            { ...selections, service: '', userfarestages: JSON.stringify(mockMatchingUserFareStages) },
+            {
+                ...selections,
+                service: '',
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
             {},
             writeHeadMock,
         );

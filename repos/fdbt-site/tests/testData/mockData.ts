@@ -729,7 +729,7 @@ export const mockService: Service = {
     ],
 };
 
-export const mockMatchingUserFareStages = {
+export const mockMatchingUserFareStagesWithUnassignedStages = {
     fareStages: [
         {
             stageName: 'Acomb Green Lane',
@@ -817,6 +817,73 @@ export const mockMatchingUserFareStages = {
                 {
                     price: '1.00',
                     fareZones: ['Piccadilly (York)'],
+                },
+            ],
+        },
+        {
+            stageName: 'Piccadilly (York)',
+            prices: {},
+        },
+    ],
+};
+
+export const mockMatchingUserFareStagesWithAllStagesAssigned = {
+    fareStages: [
+        {
+            stageName: 'Acomb Green Lane',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            stageName: 'Mattison Way',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            stageName: 'Holl Bank/Beech Ave',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Cambridge Street (York)', 'Blossom Street'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+                },
+            ],
+        },
+        {
+            stageName: 'Blossom Street',
+            prices: [
+                {
+                    price: '1.00',
+                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
                 },
             ],
         },
