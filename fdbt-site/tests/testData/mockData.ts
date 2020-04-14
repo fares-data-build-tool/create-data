@@ -14,6 +14,7 @@ import {
     CSV_ZONE_UPLOAD_COOKIE,
     PERIOD_PRODUCT,
     VALIDITY_COOKIE,
+    PERIOD_TYPE,
 } from '../../src/constants';
 
 export const getMockRequestAndResponse = (
@@ -39,6 +40,7 @@ export const getMockRequestAndResponse = (
         productPrice = '1234',
         fareZoneName = 'fare zone 1',
         daysValid = '2',
+        periodTypeName = 'period',
     } = cookieValues;
 
     const {
@@ -83,6 +85,10 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
+
+    cookieString += periodTypeName
+        ? `${PERIOD_TYPE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        : '';
 
     const req = mockRequest({
         connection: {
