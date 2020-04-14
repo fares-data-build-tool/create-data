@@ -8,6 +8,7 @@ import {
     CSV_ZONE_UPLOAD_COOKIE,
     VALIDITY_COOKIE,
     PERIOD_SINGLE_OPERATOR_SERVICES,
+    PERIOD_TYPE,
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/dynamodb';
@@ -42,14 +43,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const cookies = new Cookies(req, res);
 
-        const periodProduct = unescape(decodeURI(cookies.get(PERIOD_PRODUCT) || ''));
+        const periodProductCookie = unescape(decodeURI(cookies.get(PERIOD_PRODUCT) || ''));
         const daysValidCookie = unescape(decodeURI(cookies.get(VALIDITY_COOKIE) || ''));
         const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
         const fareZoneCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
         const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
+        const periodTypeCookie = unescape(decodeURI(cookies.get(PERIOD_TYPE) || ''));
 
         if (
-            periodProduct === '' ||
+            periodProductCookie === '' ||
             daysValidCookie === '' ||
             (operatorCookie === '' && (fareZoneCookie === '' || singleOperatorCookie))
         ) {
@@ -57,9 +59,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         let props = {};
-        const { productName, productPrice } = JSON.parse(periodProduct);
+        const { productName, productPrice } = JSON.parse(periodProductCookie);
         const { daysValid } = JSON.parse(daysValidCookie);
         const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
+        const { periodTypeName } = JSON.parse(periodTypeCookie);
 
         if (fareZoneCookie) {
             const { fareZoneName } = JSON.parse(fareZoneCookie);
@@ -89,7 +92,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const period: DecisionData = {
             operatorName: operator,
-            type: 'period',
+            type: periodTypeName,
             productName,
             productPrice,
             daysValid,

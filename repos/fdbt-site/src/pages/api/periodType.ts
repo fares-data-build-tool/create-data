@@ -30,13 +30,18 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         setCookieOnResponseObject(getDomain(req), PERIOD_TYPE, JSON.stringify(periodTypeObject), req, res);
 
-        if (periodType === 'geozone') {
+        if (periodType === 'periodGeoZone') {
             redirectTo(res, '/csvZoneUpload');
             return;
         }
 
-        if (periodType === 'singleOperator') {
+        if (periodType === 'periodMultipleServices') {
             redirectTo(res, '/singleOperator?selectAll=false');
+            return;
+        }
+
+        if (periodType === 'periodMultipleOperators') {
+            // redirect to page not made yet
             return;
         }
     } catch (error) {
