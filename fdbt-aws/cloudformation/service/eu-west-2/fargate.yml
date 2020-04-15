@@ -41,6 +41,11 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Access to the Fargate containers
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref PublicLoadBalancerSG
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
       VpcId:
         Fn::ImportValue: !Sub ${Stage}:VpcId
 
@@ -50,17 +55,11 @@ Resources:
       GroupDescription: Public access to the load balancer
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
-          IpProtocol: "-1"
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
       VpcId:
         Fn::ImportValue: !Sub ${Stage}:VpcId
-
-  EcsSecurityGroupIngressFromPublicALB:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: Ingress from the public ALB
-      GroupId: !Ref ContainerSG
-      IpProtocol: "-1"
-      SourceSecurityGroupId: !Ref PublicLoadBalancerSG
 
   ECSCluster:
     Type: AWS::ECS::Cluster

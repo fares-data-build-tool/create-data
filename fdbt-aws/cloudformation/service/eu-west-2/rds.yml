@@ -59,17 +59,17 @@ Resources:
           Value: !Sub ${ProductName}-db-sg-${Stage}
 
   UploaderSecurityGroup:
-      Type: "AWS::EC2::SecurityGroup"
-      Properties:
-        GroupDescription: Allow all outbound traffic, no inbound
-        SecurityGroupEgress:
-          - IpProtocol: -1
-            CidrIp: 0.0.0.0/0
-        VpcId:
-          Fn::ImportValue: !Sub ${Stage}:VpcId
-        Tags:
-          - Key: Name
-            Value: !Sub ${ProductName}-ref-data-uploader-sg-${Stage}
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: Allow all outbound traffic, no inbound
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+      VpcId:
+        Fn::ImportValue: !Sub ${Stage}:VpcId
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-ref-data-uploader-sg-${Stage}
 
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
