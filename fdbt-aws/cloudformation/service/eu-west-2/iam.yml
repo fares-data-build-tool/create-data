@@ -102,6 +102,10 @@ Resources:
                   - "dynamodb:GetItem"
                   - "dynamodb:Query"
                 Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "ssm:GetParameter"
+                Resource: "*"
           PolicyName: allow-s3-dynamo-access
 
   EcsTaskExecutionRole:
