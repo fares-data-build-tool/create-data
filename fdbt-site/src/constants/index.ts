@@ -32,6 +32,8 @@ export const PERIOD_EXPIRY = 'fdbt-period-expiry';
 
 export const PERIOD_SINGLE_OPERATOR_SERVICES = 'fdbt-period-single-services';
 
+export const MATCHING_COOKIE = 'fdbt-matching';
+
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
     'fdbt-faretype',
@@ -48,6 +50,7 @@ export const ALL_COOKIES: string[] = [
     'fdbt-csv-zone-upload',
     'fdbt-period-expiry',
     'fdbt-period-single-services',
+    'fdbt-matching',
 ];
 
 export const ALLOWED_CSV_FILE_TYPES = [
