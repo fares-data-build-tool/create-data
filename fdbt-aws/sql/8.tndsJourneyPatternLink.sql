@@ -13,8 +13,6 @@ CREATE TABLE tndsJourneyPatternLink(
     `orderInSequence` int(11) NOT NULL,
     INDEX idx_journeyPatternId (journeyPatternId),
     CONSTRAINT fk_tndsJourneyPatternLink_tndsJourneyPattern_id FOREIGN KEY (journeyPatternId) REFERENCES tndsJourneyPattern(id),
-    CONSTRAINT fk_tndsJourneyPatternLink_fromAtcoCode_naptanStop_atcoCode FOREIGN KEY (fromAtcoCode) REFERENCES naptanStop(atcoCode),
-    CONSTRAINT fk_tndsJourneyPatternLink_toAtcoCode_naptanStop_atcoCode FOREIGN KEY (toAtcoCode) REFERENCES naptanStop(atcoCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
 
