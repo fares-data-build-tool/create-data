@@ -248,6 +248,70 @@ Resources:
       ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
       VpcId: !Ref "VPC"
 
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the DB
+      VpcId: !Ref "VPC"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref BastionSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref UploaderSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref FargateContainerSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-db-sg-${Stage}
+
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Bastion
+      VpcId: !Ref "VPC"
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-bastion-sg-${Stage}
+
+  UploaderSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: Allow all outbound traffic, no inbound
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref "VPC"
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-ref-data-uploader-sg-${Stage}
+
+  FargateContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Fargate containers
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+      VpcId: !Ref "VPC"
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Public access to the load balancer
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+      VpcId: !Ref "VPC"
 Outputs:
   VpcId:
     Value: !Ref "VPC"
@@ -277,3 +341,24 @@ Outputs:
     Value: !Ref "DataSubnetB"
     Export:
       Name: !Sub ${Stage}:DataSubnetB
+  BastionSecurityGroup:
+    Value: !Ref BastionSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:BastionSecurityGroup
+  DatabaseSecurityGroup:
+    Value: !Ref DatabaseSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:DatabaseSecurityGroup
+  ReferenceDataUploaderLambdaSG:
+    Value: !Ref "UploaderSecurityGroup"
+    Export:
+      Name: !Sub ${Stage}:ReferenceDataUploaderLambdaSG
+  FargateContainerSecurityGroup:
+    Value: !Ref FargateContainerSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:FargateContainerSecurityGroup
+  LoadBalancerSecurityGroup:
+    Value: !Ref LoadBalancerSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:LoadBalancerSecurityGroup
+

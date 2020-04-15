@@ -39,38 +39,6 @@ Parameters:
     Default: fdbt
 
 Resources:
-  DatabaseSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Access to the DB
-      VpcId:
-        Fn::ImportValue: !Sub ${Stage}:VpcId
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
-          SourceSecurityGroupId: !Ref BastionSecurityGroup
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
-          SourceSecurityGroupId: !Ref UploaderSecurityGroup
-      Tags:
-        - Key: Name
-          Value: !Sub ${ProductName}-db-sg-${Stage}
-
-  UploaderSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
-    Properties:
-      GroupDescription: Allow all outbound traffic, no inbound
-      SecurityGroupEgress:
-        - IpProtocol: "-1"
-          CidrIp: 0.0.0.0/0
-      VpcId:
-        Fn::ImportValue: !Sub ${Stage}:VpcId
-      Tags:
-        - Key: Name
-          Value: !Sub ${ProductName}-ref-data-uploader-sg-${Stage}
-
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -105,7 +73,7 @@ Resources:
         - RoleArn:
             Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
       VpcSecurityGroupIds:
-        - !Ref DatabaseSG
+        - Fn::ImportValue: !Sub ${Stage}:DatabaseSecurityGroup
 
   DatabaseMasterInstance:
     Type: AWS::RDS::DBInstance
@@ -173,16 +141,6 @@ Resources:
       Roles:
         - Fn::ImportValue: !Sub ${Stage}:BastionSsmRoleName
 
-  BastionSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Access to the Bastion
-      VpcId:
-        Fn::ImportValue: !Sub ${Stage}:VpcId
-      Tags:
-        - Key: Name
-          Value: !Sub ${ProductName}-bastion-sg-${Stage}
-
   BastionLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
@@ -193,7 +151,7 @@ Resources:
         ImageId: ami-0cb790308f7591fa6
         InstanceType: t3.micro
         SecurityGroupIds:
-          - !Ref BastionSecurityGroup
+          - Fn::ImportValue: !Sub ${Stage}:BastionSecurityGroup
         TagSpecifications:
           - ResourceType: instance
             Tags:
@@ -218,8 +176,3 @@ Outputs:
     Value: !GetAtt DatabaseMasterInstance.Endpoint.Address
     Export:
       Name: !Sub ${Stage}:RdsHostName
-
-  RefDataUploaderLambdaSG:
-    Value: !Ref "UploaderSecurityGroup"
-    Export:
-      Name: !Sub ${Stage}:RefDataUploaderLambdaSG

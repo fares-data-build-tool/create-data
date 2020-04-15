@@ -37,30 +37,6 @@ Resources:
     Properties:
       LogGroupName: !Sub ${ProductName}-fargate-loggroup-${Stage}
 
-  ContainerSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Access to the Fargate containers
-      SecurityGroupIngress:
-        - SourceSecurityGroupId: !Ref PublicLoadBalancerSG
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-      VpcId:
-        Fn::ImportValue: !Sub ${Stage}:VpcId
-
-  PublicLoadBalancerSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Public access to the load balancer
-      SecurityGroupIngress:
-        - CidrIp: 0.0.0.0/0
-          IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-      VpcId:
-        Fn::ImportValue: !Sub ${Stage}:VpcId
-
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
@@ -100,6 +76,9 @@ Resources:
             - Name: STATIC_FILES_BUCKET_URL
               Value:
                 Fn::ImportValue: !Sub ${Stage}:StaticFilesBucketUrl
+            - Name: RDS_HOST
+              Value:
+                Fn::ImportValue: !Sub ${Stage}:RdsHostName
 
   Service:
     Type: AWS::ECS::Service
@@ -116,7 +95,7 @@ Resources:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
           SecurityGroups:
-            - !Ref ContainerSG
+            - Fn::ImportValue: !Sub ${Stage}:FargateContainerSecurityGroup
           Subnets:
             - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
             - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
@@ -137,7 +116,7 @@ Resources:
         - Fn::ImportValue: !Sub ${Stage}:PublicSubnetA
         - Fn::ImportValue: !Sub ${Stage}:PublicSubnetB
       SecurityGroups:
-        - !Ref PublicLoadBalancerSG
+        - Fn::ImportValue: !Sub ${Stage}:LoadBalancerSecurityGroup
 
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
