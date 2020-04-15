@@ -3,7 +3,7 @@ LOCK TABLES `tndsJourneyPatternLink` WRITE;
 
 TRUNCATE TABLE tndsJourneyPatternLink;
 
-INSERT INTO `tndsJourneyPatternLink` (`id`, `journeyPatternSectionId`, `fromAtcoCode`, `fromTimingStatus`, `toAtcoCode`, `toTimingStatus`, `runtime`, `order`)
+INSERT INTO `tndsJourneyPatternLink` (`id`, `journeyPatternId`, `fromAtcoCode`, `fromTimingStatus`, `toAtcoCode`, `toTimingStatus`, `runtime`, `orderInSequence`)
 VALUES
 	(1, 1, '0100053316', NULL, '0100053264', NULL, NULL, 1),
 	(2, 1, '0100053264', NULL, '0100053308', NULL, NULL, 2),
