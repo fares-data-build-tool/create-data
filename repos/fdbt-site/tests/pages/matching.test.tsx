@@ -8,6 +8,7 @@ import {
     userFareStages,
     naptanStopInfo,
     service,
+    error,
     getMockContext,
     mockRawServiceWithDuplicates,
 } from '../testData/mockData';
@@ -31,7 +32,9 @@ describe('Matching Page', () => {
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
-        wrapper = shallow(<Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} />);
+        wrapper = shallow(
+            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={error} />,
+        );
     });
 
     afterEach(() => {

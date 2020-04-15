@@ -14,6 +14,7 @@ import {
     CSV_ZONE_UPLOAD_COOKIE,
     PERIOD_PRODUCT,
     VALIDITY_COOKIE,
+    PERIOD_TYPE,
 } from '../../src/constants';
 
 export const getMockRequestAndResponse = (
@@ -39,6 +40,7 @@ export const getMockRequestAndResponse = (
         productPrice = '1234',
         fareZoneName = 'fare zone 1',
         daysValid = '2',
+        periodTypeName = 'period',
     } = cookieValues;
 
     const {
@@ -83,6 +85,10 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
+
+    cookieString += periodTypeName
+        ? `${PERIOD_TYPE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        : '';
 
     const req = mockRequest({
         connection: {
@@ -729,7 +735,7 @@ export const mockService: Service = {
     ],
 };
 
-export const mockMatchingUserFareStages = {
+export const mockMatchingUserFareStagesWithUnassignedStages = {
     fareStages: [
         {
             stageName: 'Acomb Green Lane',
@@ -817,6 +823,73 @@ export const mockMatchingUserFareStages = {
                 {
                     price: '1.00',
                     fareZones: ['Piccadilly (York)'],
+                },
+            ],
+        },
+        {
+            stageName: 'Piccadilly (York)',
+            prices: {},
+        },
+    ],
+};
+
+export const mockMatchingUserFareStagesWithAllStagesAssigned = {
+    fareStages: [
+        {
+            stageName: 'Acomb Green Lane',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            stageName: 'Mattison Way',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            stageName: 'Holl Bank/Beech Ave',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Cambridge Street (York)', 'Blossom Street'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+                },
+            ],
+        },
+        {
+            stageName: 'Blossom Street',
+            prices: [
+                {
+                    price: '1.00',
+                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
                 },
             ],
         },

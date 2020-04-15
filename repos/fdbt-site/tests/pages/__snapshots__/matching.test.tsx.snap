@@ -27,6 +27,16 @@ exports[`Matching Page should render correctly 1`] = `
           </h1>
         </legend>
         <span
+          className="govuk-error-message"
+          id="dropdown-error"
+        >
+          <span
+            className="govuk-visually-hidden"
+          >
+            Ensure each fare stage is assigned at least once.
+          </span>
+        </span>
+        <span
           className="govuk-hint"
           id="match-fares-hint"
         >

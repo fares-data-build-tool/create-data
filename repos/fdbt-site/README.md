@@ -1,6 +1,6 @@
 # Fares Data Build Tool Site
 
-[![CircleCI](https://circleci.com/bb/infinityworksconsulting/fdbt-site.svg?style=svg)](https://circleci.com/bb/infinityworksconsulting/fdbt-site)
+[![CircleCI](https://circleci.com/gh/fares-data-build-tool/fdbt-site.svg?style=svg)](https://circleci.com/gh/fares-data-build-tool/fdbt-site)
 
 This is the main site for the Fares Data Build Tool. It is built using Next.js and deployed into AWS Fargate.
 The site follows the gov.uk design system using govuk-frontend for styling.
