@@ -1,6 +1,6 @@
 # Fares Data Build Tool NeTEx Output
 
-[![CircleCI](https://circleci.com/bb/infinityworksconsulting/fdbt-netex-output/tree/develop.svg?style=svg)](https://circleci.com/bb/infinityworksconsulting/fdbt-netex-output/tree/develop)
+[![CircleCI](https://circleci.com/gh/fares-data-build-tool/fdbt-netex-output.svg?style=svg)](https://circleci.com/gh/fares-data-build-tool/fdbt-netex-output)
 
 Code for creating, validating and uploading NeTEx data.
 
