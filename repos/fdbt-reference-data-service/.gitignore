@@ -1,5 +1,7 @@
 # package directories
 __pycache__
+.pytest_cache
+node_modules
 
 # settings directories
 .vscode
@@ -9,3 +11,7 @@ __pycache__
 
 **/coverage/
 node_modules
+
+.idea
+
+.DS_Store

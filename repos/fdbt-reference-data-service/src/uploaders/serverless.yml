@@ -5,18 +5,16 @@ provider:
   runtime: python3.8
   region: eu-west-2
   stage: ${opt:stage, 'test'}
-  stackName: ${self:service}-${self:provider.stage}
-  timeout: 30
   memorySize: 256
   vpc:
     securityGroupIds:
-      - Fn::ImportValue: "${self:provider.stage}:RefDataUploaderLambdaSG"
+      - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
     subnetIds:
-      - Fn::ImportValue: "${self:provider.stage}:PrivateSubnetA"
-      - Fn::ImportValue: "${self:provider.stage}:PrivateSubnetB"
+      - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
+      - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
   environment:
     RDS_HOST:
-      Fn::ImportValue: "${self:provider.stage}:RdsHostName"
+      Fn::ImportValue: ${self:provider.stage}:RdsHostName
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -27,32 +25,37 @@ provider:
         - "s3:GetObject"
         - "s3:ListBucket"
       Resource:
-        - arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
-        - arn:aws:s3:::fdbt-xml-reference-data-${self:provider.stage}/*
+        - "arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*"
+        - "arn:aws:s3:::fdbt-xml-reference-data-${self:provider.stage}/*"
+
+plugins:
+  - serverless-python-requirements
 
 custom:
   pythonRequirements:
     dockerizePip: false
 
-plugins:
-  - serverless-python-requirements
-
 functions:
   CsvUploader:
-    handler: csv-uploader/handler.lambda_handler
+    handler: csv_uploader/csv_uploader_handler.handler
+    module: csv_uploader
+    timeout: 30
     events:
       - s3: fdbt-csv-reference-data-${self:provider.stage}
         event: s3:ObjectCreated:*
 
   XmlUploader:
-    handler: xml-uploader/handler.xml_uploader_handler
+    handler: xml_uploader/xml_uploader_handler.handler
+    module: xml_uploader
+    timeout: 120
     events:
       - s3: fdbt-xml-reference-data-${self:provider.stage}
         event: s3:ObjectCreated:*
+    reservedConcurrency: 40
 
 package:
   include:
     - ./csv-uploader/*
     - ./xml-uploader/*
   exclude:
-    - node_modules/**
+    - ./node_modules/**
