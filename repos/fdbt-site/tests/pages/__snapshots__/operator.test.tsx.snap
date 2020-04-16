@@ -14,8 +14,12 @@ exports[`pages operator should render correctly 1`] = `
       action="/api/operator"
       method="post"
     >
+      <ErrorSummary
+        errorHref="#page-heading"
+        errors={Array []}
+      />
       <div
-        className="govuk-form-group"
+        className="govuk-form-group "
       >
         <fieldset
           aria-describedby="page-heading"
@@ -39,7 +43,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Blackpool Transport"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name0"
                 name="operator"
                 type="radio"
@@ -57,7 +61,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Connexions Buses"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name1"
                 name="operator"
                 type="radio"
@@ -75,7 +79,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Durham County Council"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name2"
                 name="operator"
                 type="radio"
@@ -93,7 +97,7 @@ exports[`pages operator should render correctly 1`] = `
               key="East Yorkshire Council"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name3"
                 name="operator"
                 type="radio"
@@ -111,7 +115,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Lancashire County Council"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name4"
                 name="operator"
                 type="radio"
@@ -129,7 +133,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Manchester Community Transport"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name5"
                 name="operator"
                 type="radio"
@@ -147,7 +151,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Pilkington Bus"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name6"
                 name="operator"
                 type="radio"
@@ -165,7 +169,7 @@ exports[`pages operator should render correctly 1`] = `
               key="TLC Travel"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name7"
                 name="operator"
                 type="radio"
@@ -183,7 +187,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Transport for Greater Manchester"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name8"
                 name="operator"
                 type="radio"
@@ -201,7 +205,7 @@ exports[`pages operator should render correctly 1`] = `
               key="Warrington's Own Buses"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="operator-name9"
                 name="operator"
                 type="radio"

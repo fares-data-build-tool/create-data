@@ -8,7 +8,7 @@ describe('operator', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /faretype when session operator cookie does not exist but req has operator', () => {
+    it('should return 302 redirect to /fareType when session operator cookie does not exist but req has operator', () => {
         const { req, res } = getMockRequestAndResponse(
             {},
             { operator: '{"operatorName":"Connexions Buses","nocCode":"HCTY"}' },
@@ -17,7 +17,7 @@ describe('operator', () => {
         );
         operator(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/faretype',
+            Location: '/fareType',
         });
     });
 

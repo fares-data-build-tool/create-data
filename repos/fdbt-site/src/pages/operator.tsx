@@ -1,8 +1,11 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
+import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import ErrorSummary from '../components/ErrorSummary';
+import { ErrorInfo } from '../types';
+import { buildTitle } from '../utils/index';
 
 const title = 'Operator - Fares data build tool';
 const description = 'Operator selection page of the Fares data build tool';
@@ -10,6 +13,10 @@ const description = 'Operator selection page of the Fares data build tool';
 type Operator = {
     operatorName: string;
     nocCode: string;
+};
+
+type OperatorProps = {
+    errors: ErrorInfo[];
 };
 
 const hardCodedOperators: Operator[] = [
@@ -25,54 +32,74 @@ const hardCodedOperators: Operator[] = [
     { operatorName: "Warrington's Own Buses", nocCode: 'WBTR' },
 ];
 
-const Operator = (): ReactElement => (
-    <Layout title={title} description={description}>
-        <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <form action="/api/operator" method="post">
-                <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading" id="page-heading">
-                                Which operator are you representing?
-                            </h1>
-                        </legend>
-                        <div className="govuk-radios">
-                            {hardCodedOperators.map(
-                                (operator, index): ReactElement => (
-                                    <div className="govuk-radios__item" key={operator.operatorName}>
-                                        <input
-                                            className="govuk-radios__input"
-                                            id={`operator-name${index}`}
-                                            name="operator"
-                                            type="radio"
-                                            value={JSON.stringify(operator)}
-                                        />
-                                        <label
-                                            className="govuk-label govuk-radios__label"
-                                            htmlFor={`operator-name${index}`}
-                                        >
-                                            {`${operator.operatorName}`}
-                                        </label>
-                                    </div>
-                                ),
-                            )}
-                        </div>
-                    </fieldset>
-                </div>
-                <input
-                    type="submit"
-                    value="Continue"
-                    id="continue-button"
-                    className="govuk-button govuk-button--start"
-                />
-            </form>
-        </main>
-    </Layout>
-);
+const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
+    return (
+        <Layout title={buildTitle(errors, title)} description={description}>
+            <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
+                <form action="/api/operator" method="post">
+                    <ErrorSummary errorHref="#page-heading" errors={errors} />
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                        <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                                <h1 className="govuk-fieldset__heading" id="page-heading">
+                                    Which operator are you representing?
+                                </h1>
+                                {errors.length > 0 && (
+                                    <span id="operator-error" className="govuk-error-message error-message-padding">
+                                        <span>{errors[0].errorMessage}</span>
+                                    </span>
+                                )}
+                            </legend>
+                            <div className="govuk-radios">
+                                {hardCodedOperators.map(
+                                    (operator, index): ReactElement => (
+                                        <div className="govuk-radios__item" key={operator.operatorName}>
+                                            <input
+                                                className={`govuk-radios__input ${
+                                                    errors.length > 0 ? 'govuk-input--error' : ''
+                                                } `}
+                                                id={`operator-name${index}`}
+                                                name="operator"
+                                                type="radio"
+                                                value={JSON.stringify(operator)}
+                                            />
+                                            <label
+                                                className="govuk-label govuk-radios__label"
+                                                htmlFor={`operator-name${index}`}
+                                            >
+                                                {`${operator.operatorName}`}
+                                            </label>
+                                        </div>
+                                    ),
+                                )}
+                            </div>
+                        </fieldset>
+                    </div>
+                    <input
+                        type="submit"
+                        value="Continue"
+                        id="continue-button"
+                        className="govuk-button govuk-button--start"
+                    />
+                </form>
+            </main>
+        </Layout>
+    );
+};
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
-    deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
+    const cookies = parseCookies(ctx);
+
+    if (cookies[OPERATOR_COOKIE]) {
+        const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
+        const parsedOperatorCookie = JSON.parse(operatorCookie);
+
+        if (parsedOperatorCookie.errorMessage) {
+            const { errorMessage } = parsedOperatorCookie;
+            return { props: { errors: [{ errorMessage }] } };
+        }
+    }
+
     return { props: {} };
 };
 

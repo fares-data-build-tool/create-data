@@ -5,7 +5,7 @@ import ChooseValidity from '../../src/pages/chooseValidity';
 
 describe('Choose Validity Page', () => {
     it('should render correctly', () => {
-        const tree = shallow(<ChooseValidity productName="bus company" productPrice="£3.00" />);
+        const tree = shallow(<ChooseValidity productName="bus company" productPrice="£3.00" daysValid="" error="" />);
         expect(tree).toMatchSnapshot();
     });
 });

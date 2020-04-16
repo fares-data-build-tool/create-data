@@ -106,9 +106,9 @@ export const getServerSideProps = async (
         throw new Error('Failed to retrieve operator cookie for single operator page');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
 
-    const { nocCode } = operatorObject;
+    const { nocCode } = operatorInfo;
     const servicesList = await getServicesByNocCode(nocCode);
 
     const { selectAll } = ctx.query;

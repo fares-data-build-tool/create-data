@@ -9,9 +9,9 @@ import { getMockContext } from '../testData/mockData';
 jest.mock('../../src/data/dynamodb');
 
 const mockServices: ServiceType[] = [
-    { lineName: '123', startDate: '05/02/2020' },
-    { lineName: 'X1', startDate: '06/02/2020' },
-    { lineName: 'Infinity Line', startDate: '07/02/2020' },
+    { lineName: '123', startDate: '05/02/2020', description: 'this bus service is 123' },
+    { lineName: 'X1', startDate: '06/02/2020', description: 'this bus service is X1' },
+    { lineName: 'Infinity Line', startDate: '07/02/2020', description: 'this bus service is Infinity Line' },
 ];
 
 describe('pages', () => {
@@ -52,14 +52,17 @@ describe('pages', () => {
                         {
                             lineName: '123',
                             startDate: '05/02/2020',
+                            description: 'this bus service is 123',
                         },
                         {
                             lineName: 'X1',
                             startDate: '06/02/2020',
+                            description: 'this bus service is X1',
                         },
                         {
                             lineName: 'Infinity Line',
                             startDate: '07/02/2020',
+                            description: 'this bus service is Infinity Line',
                         },
                     ],
                 },

@@ -41,7 +41,7 @@ describe('Single Operator API', () => {
                 {
                     lineName: '205',
                     startDate: '24/03/2020',
-                    description: 'service for line number 205',
+                    serviceDescription: 'service for line number 205',
                     checked: false,
                 },
             ],

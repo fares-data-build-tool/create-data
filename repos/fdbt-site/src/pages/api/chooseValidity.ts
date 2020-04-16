@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { VALIDITY_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils';
+import { isSessionValid } from './service/validator';
 
 export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
     const { validityInput } = req.body;
@@ -38,6 +39,10 @@ export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = '')
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         if (req.body.validityInput === '0') {
             setCookie(req, res, 'The value of days your product is valid for cannot be 0.');
             console.warn('0 entered as value for days your product is valid for.');

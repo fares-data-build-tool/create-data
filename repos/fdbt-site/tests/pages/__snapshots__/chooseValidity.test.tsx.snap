@@ -40,7 +40,7 @@ exports[`Choose Validity Page should render correctly 1`] = `
             </p>
           </legend>
           <div
-            className="govuk-form-group govuk-form-group--error"
+            className="govuk-form-group "
           >
             <label
               className="govuk-label"
@@ -58,11 +58,12 @@ exports[`Choose Validity Page should render correctly 1`] = `
               id="product-validity-error"
             >
               <span
-                className=""
+                className="govuk-visually-hidden"
               />
             </span>
             <input
-              className="govuk-input govuk-input--width-2 govuk-input--error"
+              className="govuk-input govuk-input--width-2 "
+              defaultValue=""
               id="validity"
               name="validityInput"
               type="text"
