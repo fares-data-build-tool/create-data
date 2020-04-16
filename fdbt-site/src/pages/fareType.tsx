@@ -2,29 +2,29 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
+import { FARETYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
-import { INPUT_METHOD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide, buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
+import { deleteCookieOnServerSide, buildTitle } from '../utils/index';
 
-const title = 'Input Method - Fares data build tool';
-const description = 'Input method selection page of the Fares data build tool';
+const title = 'FareType - Fares data build tool';
+const description = 'Fare Type selection page of the Fares data build tool';
 
-type InputMethodProps = {
+type FareTypeProps = {
     errors: ErrorInfo[];
 };
 
-const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
+const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
     return (
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/inputMethod" method="post">
-                    <ErrorSummary errorHref="#input-method-heading" errors={errors} />
+                <form action="/api/fareType" method="post">
+                    <ErrorSummary errorHref="#fareType-page-heading" errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="fareType-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 id="input-method-heading" className="govuk-fieldset__heading">
-                                    Please select your preferred input method
+                                <h1 className="govuk-fieldset__heading" id="fareType-page-heading">
+                                    What type of fare would you like to provide?
                                 </h1>
                                 {errors.length > 0 && (
                                     <span id="fareType-error" className="govuk-error-message error-message-padding">
@@ -32,19 +32,19 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                                     </span>
                                 )}
                             </legend>
-                            <div className="govuk-radios" id="radio-buttons">
+                            <div className="govuk-radios">
                                 <div className="govuk-radios__item">
                                     <input
                                         className={`govuk-radios__input ${
                                             errors.length > 0 ? 'govuk-input--error' : ''
                                         } `}
-                                        id="csv-upload"
-                                        name="inputMethod"
+                                        id="fareType-single"
+                                        name="fareType"
                                         type="radio"
-                                        value="csv"
+                                        value="single"
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="csv-upload">
-                                        Upload (.csv)
+                                    <label className="govuk-label govuk-radios__label" htmlFor="fareType-single">
+                                        Single - Point to Point
                                     </label>
                                 </div>
                                 <div className="govuk-radios__item">
@@ -52,13 +52,13 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                                         className={`govuk-radios__input ${
                                             errors.length > 0 ? 'govuk-input--error' : ''
                                         } `}
-                                        id="manual-entry"
-                                        name="inputMethod"
+                                        id="fareType-period"
+                                        name="fareType"
                                         type="radio"
-                                        value="manual"
+                                        value="period"
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
-                                        Manual Fares Triangle input
+                                    <label className="govuk-label govuk-radios__label" htmlFor="fareType-period">
+                                        Period Tickets
                                     </label>
                                 </div>
                                 <div className="govuk-radios__item">
@@ -66,15 +66,15 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                                         className={`govuk-radios__input ${
                                             errors.length > 0 ? 'govuk-input--error' : ''
                                         } `}
-                                        id="interactive-map"
-                                        name="inputMethod"
+                                        id="fareType-return"
+                                        name="fareType"
                                         type="radio"
-                                        value="interactiveMap"
+                                        value="return"
                                         disabled
                                         aria-disabled="true"
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="interactive-map">
-                                        Interactive Map (Beta)
+                                    <label className="govuk-label govuk-radios__label" htmlFor="fareType-return">
+                                        Return
                                     </label>
                                 </div>
                             </div>
@@ -95,13 +95,13 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[INPUT_METHOD_COOKIE]) {
-        const inputMethodCookie = unescape(decodeURI(cookies[INPUT_METHOD_COOKIE]));
-        const parsedInputMethodCookie = JSON.parse(inputMethodCookie);
+    if (cookies[FARETYPE_COOKIE]) {
+        const fareTypeCookie = unescape(decodeURI(cookies[FARETYPE_COOKIE]));
+        const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
 
-        if (parsedInputMethodCookie.errorMessage) {
-            const { errorMessage } = parsedInputMethodCookie;
-            deleteCookieOnServerSide(ctx, INPUT_METHOD_COOKIE);
+        if (parsedFareTypeCookie.errorMessage) {
+            const { errorMessage } = parsedFareTypeCookie;
+            deleteCookieOnServerSide(ctx, FARETYPE_COOKIE);
             return { props: { errors: [{ errorMessage }] } };
         }
     }
@@ -109,4 +109,4 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     return { props: {} };
 };
 
-export default InputMethod;
+export default FareType;

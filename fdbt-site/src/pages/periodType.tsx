@@ -3,35 +3,41 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { PERIOD_TYPE } from '../constants';
+import { ErrorInfo } from '../types';
+import { buildTitle } from '../utils';
+import ErrorSummary from '../components/ErrorSummary';
 
 const title = 'Period Type - Fares data build tool';
 const description = 'Period Type selection page of the Fares data build tool';
 
-export interface PeriodTypeInterface {
-    uuid: string;
-    error: boolean;
-    periodTypeName?: string;
-}
+type PeriodTypeProps = {
+    errors: ErrorInfo[];
+};
 
-const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
+const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
     return (
-        <Layout title={title} description={description}>
+        <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/periodType" method="post">
-                    <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
+                    <ErrorSummary errorHref="#periodtype-page-heading" errors={errors} />
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
                                     What type of Period Ticket?
                                 </h1>
                             </legend>
-                            <span id="radio-error" className="govuk-error-message">
-                                <span className={error ? '' : 'govuk-visually-hidden'}>Please select an option</span>
-                            </span>
+                            {errors.length > 0 && (
+                                <span id="operator-error" className="govuk-error-message error-message-padding">
+                                    <span>{errors[0].errorMessage}</span>
+                                </span>
+                            )}
                             <div className="govuk-radios">
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="periodtype-geo-zone"
                                         name="periodType"
                                         type="radio"
@@ -43,7 +49,9 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="periodtype-single-set-service"
                                         name="periodType"
                                         type="radio"
@@ -58,7 +66,9 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="periodtype-network"
                                         name="periodType"
                                         type="radio"
@@ -85,24 +95,20 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const periodTypeCookie = cookies[PERIOD_TYPE];
 
-    if (!periodTypeCookie) {
-        return {
-            props: {},
-        };
+    if (cookies[PERIOD_TYPE]) {
+        const periodTypeCookie = unescape(decodeURI(cookies[PERIOD_TYPE]));
+        const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
+
+        if (parsedPeriodTypeCookie.errorMessage) {
+            const { errorMessage } = parsedPeriodTypeCookie;
+            return { props: { errors: [{ errorMessage }] } };
+        }
     }
 
-    const { error } = JSON.parse(periodTypeCookie);
-
-    return {
-        props: {
-            error: !periodTypeCookie ? {} : error,
-        },
-    };
+    return { props: {} };
 };
 
 export default PeriodType;

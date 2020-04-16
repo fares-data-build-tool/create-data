@@ -109,11 +109,11 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
-    const serviceObject = JSON.parse(serviceCookie);
-    const lineName = serviceObject.service.split('#')[0];
+    const operatorInfo = JSON.parse(operatorCookie);
+    const serviceInfo = JSON.parse(serviceCookie);
+    const lineName = serviceInfo.service.split('#')[0];
 
-    const rawService: RawService = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
+    const rawService: RawService = await getServiceByNocCodeAndLineName(operatorInfo.nocCode, lineName);
     const service: Service = {
         ...rawService,
         journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),
@@ -121,7 +121,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
 
     if (!service) {
         throw new Error(
-            `No service info could be retrieved for nocCode: ${operatorObject.nocCode} and lineName: ${lineName}`,
+            `No service info could be retrieved for nocCode: ${operatorInfo.nocCode} and lineName: ${lineName}`,
         );
     }
 
@@ -133,7 +133,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
             ) === index,
     );
 
-    return { props: { operator: operatorObject.operator, lineName, service } };
+    return { props: { operator: operatorInfo.operator, lineName, service } };
 };
 
 export default Direction;

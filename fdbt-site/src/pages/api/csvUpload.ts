@@ -5,6 +5,7 @@ import flatMap from 'array.prototype.flatmap';
 import { getUuidFromCookie, redirectToError, redirectTo, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
 import { ALLOWED_CSV_FILE_TYPES, CSV_UPLOAD_COOKIE } from '../../constants';
+import { isSessionValid } from './service/validator';
 
 const MAX_FILE_SIZE = 5242880;
 
@@ -166,6 +167,10 @@ export const getFormData = async (req: NextApiRequest): Promise<File> => {
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         const formData = await getFormData(req);
         if (!fileIsValid(req, res, formData.Files, formData.FileContent)) {
             return;

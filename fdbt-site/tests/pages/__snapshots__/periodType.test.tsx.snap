@@ -14,8 +14,12 @@ exports[`pages periodtype should render correctly 1`] = `
       action="/api/periodType"
       method="post"
     >
+      <ErrorSummary
+        errorHref="#periodtype-page-heading"
+        errors={Array []}
+      />
       <div
-        className="govuk-form-group"
+        className="govuk-form-group "
       >
         <fieldset
           aria-describedby="periodtype-page-heading"
@@ -31,16 +35,6 @@ exports[`pages periodtype should render correctly 1`] = `
               What type of Period Ticket?
             </h1>
           </legend>
-          <span
-            className="govuk-error-message"
-            id="radio-error"
-          >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Please select an option
-            </span>
-          </span>
           <div
             className="govuk-radios"
           >
@@ -48,7 +42,7 @@ exports[`pages periodtype should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="periodtype-geo-zone"
                 name="periodType"
                 type="radio"
@@ -65,7 +59,7 @@ exports[`pages periodtype should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="periodtype-single-set-service"
                 name="periodType"
                 type="radio"
@@ -83,7 +77,7 @@ exports[`pages periodtype should render correctly 1`] = `
             >
               <input
                 aria-disabled="true"
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 disabled={true}
                 id="periodtype-network"
                 name="periodType"

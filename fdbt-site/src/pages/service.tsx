@@ -65,15 +65,15 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error('Necessary operator cookie not found to show matching page');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
 
-    const services = await getServicesByNocCode(operatorObject.nocCode);
+    const services = await getServicesByNocCode(operatorInfo.nocCode);
 
     if (services.length === 0) {
-        throw new Error(`No services found for NOC Code: ${operatorObject.nocCode}`);
+        throw new Error(`No services found for NOC Code: ${operatorInfo.nocCode}`);
     }
 
-    return { props: { operator: operatorObject.operator, services } };
+    return { props: { operator: operatorInfo.operator, services } };
 };
 
 export default Service;

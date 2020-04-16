@@ -8,7 +8,6 @@ import {
     userFareStages,
     naptanStopInfo,
     service,
-    error,
     getMockContext,
     mockRawServiceWithDuplicates,
 } from '../testData/mockData';
@@ -33,7 +32,7 @@ describe('Matching Page', () => {
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
         wrapper = shallow(
-            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={error} />,
+            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
         );
     });
 

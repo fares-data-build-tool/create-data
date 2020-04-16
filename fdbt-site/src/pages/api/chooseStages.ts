@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { FARE_STAGES_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { isSessionValid } from './service/validator';
 
 export const isInvalidFareStageNumber = (req: NextApiRequest): boolean => {
     const { fareStageInput } = req.body;
@@ -23,6 +24,10 @@ export const isInvalidFareStageNumber = (req: NextApiRequest): boolean => {
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         if (req.body.fareStageInput === 0) {
             throw new Error('0 farestages selected.');
         }

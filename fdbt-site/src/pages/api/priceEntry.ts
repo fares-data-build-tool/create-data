@@ -3,6 +3,7 @@ import Cookies from 'cookies';
 import { FARE_STAGES_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
+import { isSessionValid } from './service/validator';
 
 interface UserFareStages {
     fareStages: {
@@ -93,6 +94,10 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         if (!numberOfInputsIsValid(req, res) || !priceIsValid(req)) {
             redirectTo(res, '/priceEntry');
             return;

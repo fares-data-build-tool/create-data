@@ -10,7 +10,17 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     id="main-content"
     role="main"
   >
-    <UserDataUploadComponent />
+    <UserDataUploadComponent
+      csvTemplateAttachmentUrl=""
+      csvTemplateDisplayName=""
+      csvTemplateSize=""
+      csvUploadApiRoute=""
+      csvUploadHintText=""
+      error=""
+      guidanceDocAttachmentUrl=""
+      guidanceDocDisplayName=""
+      guidanceDocSize=""
+    />
   </main>
 </Layout>
 `;

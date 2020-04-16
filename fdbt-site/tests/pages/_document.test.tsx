@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { DocumentProps } from 'next/dist/pages/_document';
@@ -38,6 +37,7 @@ describe('_document', () => {
         htmlProps: {},
         bodyTags: [{}],
         headTags: [{}],
+        lowPriorityFiles: [],
     };
 
     it('should render correctly', () => {

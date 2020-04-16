@@ -1,13 +1,12 @@
-/* eslint-disable global-require */
-
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import FareType from '../../src/pages/faretype';
+// eslint-disable-next-line import/no-unresolved
+import FareType from '../../src/pages/fareType';
 
 describe('pages', () => {
-    describe('faretype', () => {
+    describe('fareType', () => {
         it('should render correctly', () => {
-            const tree = shallow(<FareType />);
+            const tree = shallow(<FareType errors={[]} />);
             expect(tree).toMatchSnapshot();
         });
     });

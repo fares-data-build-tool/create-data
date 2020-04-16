@@ -14,8 +14,12 @@ exports[`pages inputMethod should render correctly 1`] = `
       action="/api/inputMethod"
       method="post"
     >
+      <ErrorSummary
+        errorHref="#input-method-heading"
+        errors={Array []}
+      />
       <div
-        className="govuk-form-group"
+        className="govuk-form-group "
       >
         <fieldset
           aria-describedby="input-method-heading"
@@ -33,12 +37,13 @@ exports[`pages inputMethod should render correctly 1`] = `
           </legend>
           <div
             className="govuk-radios"
+            id="radio-buttons"
           >
             <div
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="csv-upload"
                 name="inputMethod"
                 type="radio"
@@ -55,7 +60,7 @@ exports[`pages inputMethod should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="manual-entry"
                 name="inputMethod"
                 type="radio"
@@ -73,7 +78,7 @@ exports[`pages inputMethod should render correctly 1`] = `
             >
               <input
                 aria-disabled="true"
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 disabled={true}
                 id="interactive-map"
                 name="inputMethod"

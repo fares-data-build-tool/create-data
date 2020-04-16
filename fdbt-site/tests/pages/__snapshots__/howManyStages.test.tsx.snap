@@ -14,8 +14,12 @@ exports[`pages howManyStages should render correctly 1`] = `
       action="/api/howManyStages"
       method="post"
     >
+      <ErrorSummary
+        errorHref="#selection-hint"
+        errors={Array []}
+      />
       <div
-        className="govuk-form-group"
+        className="govuk-form-group "
       >
         <fieldset
           aria-describedby="selection-hint"
@@ -38,12 +42,13 @@ exports[`pages howManyStages should render correctly 1`] = `
           </span>
           <div
             className="govuk-radios"
+            id="radio-buttons"
           >
             <div
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="lessThan20FareStages"
                 name="howManyStages"
                 type="radio"
@@ -66,7 +71,7 @@ exports[`pages howManyStages should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="moreThan20FareStages"
                 name="howManyStages"
                 type="radio"

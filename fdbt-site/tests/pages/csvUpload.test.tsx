@@ -5,7 +5,7 @@ import InputMethod from '../../src/pages/inputMethod';
 describe('pages', () => {
     describe('csvUpload', () => {
         it('should render correctly', () => {
-            const tree = shallow(<InputMethod />);
+            const tree = shallow(<InputMethod errors={[]} />);
             expect(tree).toMatchSnapshot();
         });
     });

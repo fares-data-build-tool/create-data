@@ -1,17 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { SERVICE_COOKIE, OPERATOR_COOKIE } from '../../constants/index';
+import { getUuidFromCookie, getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils/index';
+import { SERVICE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-
-        const cookies = new Cookies(req, res);
-
         const { service } = req.body;
 
         if (!service) {
@@ -19,9 +15,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-        const operatorObject = JSON.parse(operatorCookie);
-        const { uuid } = operatorObject;
+        const uuid = getUuidFromCookie(req, res);
 
         if (!uuid) {
             throw new Error('No UUID found');

@@ -21,7 +21,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && tsc"
         }
     },
     "lint-staged": {

@@ -14,38 +14,32 @@ exports[`pages periodValidity should render correctly 1`] = `
       action="/api/periodValidity"
       method="post"
     >
-      <fieldset
-        aria-describedby="periodValidity-page-heading"
-        className="govuk-fieldset"
+      <ErrorSummary
+        errorHref="#periodValidity-page-heading"
+        errors={Array []}
+      />
+      <div
+        className="govuk-form-group "
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+        <fieldset
+          aria-describedby="periodValidity-page-heading"
+          className="govuk-fieldset"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="periodValidity-page-heading"
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
           >
-            When does the product expire?
-          </h1>
-        </legend>
-        <span
-          className="govuk-hint"
-          id="heading-period-validity-hint"
-        >
-          We need to know the time that this product would be valid until
-        </span>
-        <div
-          className="govuk-form-group"
-        >
-          <span
-            className="govuk-error-message"
-            id="radio-error"
-          >
-            <span
-              className="govuk-visually-hidden"
+            <h1
+              className="govuk-fieldset__heading"
+              id="periodValidity-page-heading"
             >
-              Please select an option
-            </span>
+              When does the product expire?
+            </h1>
+          </legend>
+          <span
+            className="govuk-hint"
+            id="heading-period-validity-hint"
+          >
+            We need to know the time that this product would be valid until
           </span>
           <div
             className="govuk-radios"
@@ -54,7 +48,7 @@ exports[`pages periodValidity should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="period-end-calendar"
                 name="periodValid"
                 type="radio"
@@ -77,7 +71,7 @@ exports[`pages periodValidity should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="period-twenty-four-hours"
                 name="periodValid"
                 type="radio"
@@ -97,8 +91,8 @@ exports[`pages periodValidity should render correctly 1`] = `
               </span>
             </div>
           </div>
-        </div>
-      </fieldset>
+        </fieldset>
+      </div>
       <input
         className="govuk-button govuk-button--start"
         id="continue-button"

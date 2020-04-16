@@ -6,6 +6,7 @@ import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToErro
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/dynamodb';
 import { CSV_ZONE_UPLOAD_COOKIE, ALLOWED_CSV_FILE_TYPES } from '../../constants';
+import { isSessionValid } from './service/validator';
 
 const MAX_FILE_SIZE = 5242880;
 
@@ -146,6 +147,10 @@ export const processCsvUpload = async (fileContent: string): Promise<UserFareZon
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         const formData = await getFormData(req);
         if (!fileIsValid(req, res, formData.Files, formData.FileContent)) {
             return;

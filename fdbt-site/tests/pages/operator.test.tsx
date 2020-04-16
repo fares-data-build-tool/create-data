@@ -5,7 +5,7 @@ import Operator from '../../src/pages/operator';
 describe('pages', () => {
     describe('operator', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Operator />);
+            const tree = shallow(<Operator errors={[]} />);
             expect(tree).toMatchSnapshot();
         });
     });
