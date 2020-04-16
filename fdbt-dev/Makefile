@@ -1,6 +1,6 @@
 PROJECT_NAME=fdbt
 
-dev: docker-up wait-for-mysql data-reset wait-for-s3 create-local-buckets print-help
+dev: docker-up wait-for-mysql data-reset wait-for-s3 create-local-buckets print-help start-site
 
 
 # DOCKER
@@ -13,6 +13,12 @@ docker-down:
 
 docker-restart:
 	docker-compose restart
+
+
+# NPM
+
+start-site:
+	npm --prefix ${FDBT_ROOT}/repos/fdbt-site run dev
 
 
 # DATA
@@ -42,18 +48,6 @@ print-help:
 	@echo "S3 running on http://localhost:4572\n"
 	@echo "MySQL running on 127.0.0.1:3306\n"
 	@echo "**************************\n"
-
-
-# LOG TAILS
-
-logs-site:
-	./scripts/docker_logs.sh site
-
-
-# TEST
-
-test-site:
-	./scripts/container_command.sh site npm run test:ci
 
 
 # DELETE

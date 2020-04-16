@@ -21,16 +21,3 @@ services:
       DATA_DIR: /tmp/localstack/data
     ports:
       - "4572:4572"
-
-  site:
-    container_name: fdbt_site
-    tty: true
-    build:
-      context: ${FDBT_ROOT}/repos/fdbt-site
-      dockerfile: Dockerfile-dev
-    volumes:
-      - ${FDBT_ROOT}/repos/fdbt-site/:/home/node/app/
-      - ${FDBT_ROOT}/repos/fdbt-site/node_modules:/home/node/app/node_modules
-      - ${FDBT_ROOT}/repos/fdbt-site/.next:/home/node/app/.next
-    ports:
-      - "5555:5555"
