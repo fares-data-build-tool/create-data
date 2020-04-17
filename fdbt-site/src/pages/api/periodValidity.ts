@@ -11,7 +11,7 @@ import {
     PERIOD_TYPE,
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
-import { batchGetStopsByAtcoCode, Stop } from '../../data/dynamodb';
+import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
 

@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES } from '../constants';
-import { getServicesByNocCode } from '../data/dynamodb';
+import { getServicesByNocCode } from '../data/auroradb';
 import { ServiceLists, ServicesInfo } from '../interfaces';
 
 const title = 'Which service(s) is the ticket valid for?';

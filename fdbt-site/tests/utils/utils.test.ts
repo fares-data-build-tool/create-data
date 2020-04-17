@@ -1,6 +1,6 @@
 import MockReq from 'mock-req';
 import { getHost, formatStopName } from '../../src/utils';
-import { Stop } from '../../src/data/dynamodb';
+import { Stop } from '../../src/data/auroradb';
 
 describe('utils', () => {
     describe('getHost', () => {

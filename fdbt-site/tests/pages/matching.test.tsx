@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { shallow } from 'enzyme';
-import * as dynamodb from '../../src/data/dynamodb';
+import * as auroradb from '../../src/data/auroradb';
 import * as s3 from '../../src/data/s3';
 import {
     mockRawService,
@@ -13,7 +13,7 @@ import {
 } from '../testData/mockData';
 import Matching, { getServerSideProps } from '../../src/pages/matching';
 
-jest.mock('../../src/data/dynamodb.ts');
+jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
 
 describe('Matching Page', () => {
@@ -23,8 +23,8 @@ describe('Matching Page', () => {
     let getUserFareStagesSpy: any;
 
     beforeEach(() => {
-        getServiceByNocCodeAndLineNameSpy = jest.spyOn(dynamodb, 'getServiceByNocCodeAndLineName');
-        batchGetStopsByAtcoCodeSpy = jest.spyOn(dynamodb, 'batchGetStopsByAtcoCode');
+        getServiceByNocCodeAndLineNameSpy = jest.spyOn(auroradb, 'getServiceByNocCodeAndLineName');
+        batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
         getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
         getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
@@ -59,8 +59,8 @@ describe('Matching Page', () => {
 
             await getServerSideProps(ctx);
 
-            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
-            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledWith([
+            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
+            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledWith([
                 '13003921A',
                 '13003305E',
                 '13003306B',
@@ -108,8 +108,8 @@ describe('Matching Page', () => {
 
             await getServerSideProps(ctx);
 
-            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
-            expect(dynamodb.batchGetStopsByAtcoCode).toBeCalledWith([
+            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
+            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledWith([
                 '13003655B',
                 '13003654G',
                 '13003609A',

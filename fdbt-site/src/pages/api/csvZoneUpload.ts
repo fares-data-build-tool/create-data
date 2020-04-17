@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
 import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
-import { getAtcoCodesByNaptanCodes } from '../../data/dynamodb';
+import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
 import { processFileUpload } from './apiUtils/fileUpload';

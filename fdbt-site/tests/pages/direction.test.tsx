@@ -2,16 +2,16 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import Direction, { getServerSideProps } from '../../src/pages/direction';
-import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/dynamodb';
+import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
 
-jest.mock('../../src/data/dynamodb');
+jest.mock('../../src/data/auroradb.ts');
 
 describe('pages', () => {
     describe('direction', () => {
         beforeEach(() => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
-            (({ ...batchGetStopsByAtcoCode } as jest.Mock).mockImplementation(() => [{ localityName: '' }]));
+            (getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
+            (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
         it('should render correctly', () => {
