@@ -15,7 +15,6 @@ exports[`pages periodtype should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#periodtype-page-heading"
         errors={Array []}
       />
       <div
@@ -35,63 +34,69 @@ exports[`pages periodtype should render correctly 1`] = `
               What type of Period Ticket?
             </h1>
           </legend>
-          <div
-            className="govuk-radios"
+          <FormElementWrapper
+            errorClass="govuk-radios--errors"
+            errorId="period-type-error"
+            errors={Array []}
           >
             <div
-              className="govuk-radios__item"
+              className="govuk-radios"
             >
-              <input
-                className="govuk-radios__input  "
-                id="periodtype-geo-zone"
-                name="periodType"
-                type="radio"
-                value="periodGeoZone"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="periodtype-geo-zone"
+              <div
+                className="govuk-radios__item"
               >
-                A ticket within a geographical zone
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="periodtype-single-set-service"
-                name="periodType"
-                type="radio"
-                value="periodMultipleServices"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="periodtype-single-set-service"
+                <input
+                  className="govuk-radios__input  "
+                  id="periodtype-geo-zone"
+                  name="periodType"
+                  type="radio"
+                  value="periodGeoZone"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="periodtype-geo-zone"
+                >
+                  A ticket within a geographical zone
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
               >
-                A ticket for some or all of your network of services
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                aria-disabled="true"
-                className="govuk-radios__input  "
-                disabled={true}
-                id="periodtype-network"
-                name="periodType"
-                type="radio"
-                value="periodMultipleOperators"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="periodtype-network"
+                <input
+                  className="govuk-radios__input  "
+                  id="periodtype-single-set-service"
+                  name="periodType"
+                  type="radio"
+                  value="periodMultipleServices"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="periodtype-single-set-service"
+                >
+                  A ticket for some or all of your network of services
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
               >
-                A ticket for services across multiple operators
-              </label>
+                <input
+                  aria-disabled="true"
+                  className="govuk-radios__input  "
+                  disabled={true}
+                  id="periodtype-network"
+                  name="periodType"
+                  type="radio"
+                  value="periodMultipleOperators"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="periodtype-network"
+                >
+                  A ticket for services across multiple operators
+                </label>
+              </div>
             </div>
-          </div>
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input

@@ -3,7 +3,7 @@
 exports[`pages fareType should render correctly 1`] = `
 <Layout
   description="Fare Type selection page of the Fares data build tool"
-  title="FareType - Fares data build tool"
+  title="Fare Type - Fares data build tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -15,7 +15,6 @@ exports[`pages fareType should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#fareType-page-heading"
         errors={Array []}
       />
       <div
@@ -35,63 +34,69 @@ exports[`pages fareType should render correctly 1`] = `
               What type of fare would you like to provide?
             </h1>
           </legend>
-          <div
-            className="govuk-radios"
+          <FormElementWrapper
+            errorClass="govuk-radios--error"
+            errorId="fare-type-error"
+            errors={Array []}
           >
             <div
-              className="govuk-radios__item"
+              className="govuk-radios"
             >
-              <input
-                className="govuk-radios__input  "
-                id="fareType-single"
-                name="fareType"
-                type="radio"
-                value="single"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="fareType-single"
+              <div
+                className="govuk-radios__item"
               >
-                Single - Point to Point
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="fareType-period"
-                name="fareType"
-                type="radio"
-                value="period"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="fareType-period"
+                <input
+                  className="govuk-radios__input"
+                  id="fareType-single"
+                  name="fareType"
+                  type="radio"
+                  value="single"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="fareType-single"
+                >
+                  Single - Point to Point
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
               >
-                Period Tickets
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                aria-disabled="true"
-                className="govuk-radios__input  "
-                disabled={true}
-                id="fareType-return"
-                name="fareType"
-                type="radio"
-                value="return"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="fareType-return"
+                <input
+                  className="govuk-radios__input"
+                  id="fareType-period"
+                  name="fareType"
+                  type="radio"
+                  value="period"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="fareType-period"
+                >
+                  Period Tickets
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
               >
-                Return
-              </label>
+                <input
+                  aria-disabled="true"
+                  className="govuk-radios__input"
+                  disabled={true}
+                  id="fareType-return"
+                  name="fareType"
+                  type="radio"
+                  value="return"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="fareType-return"
+                >
+                  Return
+                </label>
+              </div>
             </div>
-          </div>
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input

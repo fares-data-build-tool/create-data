@@ -1,4 +1,5 @@
 import * as csvUpload from '../../../src/pages/api/csvUpload';
+import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
 import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -35,11 +36,11 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(csvUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: '',
+                files: file,
+                fileContents: '',
             });
 
         await csvUpload.default(req, res);
@@ -48,7 +49,7 @@ describe('csvUpload', () => {
             Location: '/csvUpload',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
-        expect(outputData).toBe('No file attached.');
+        expect(outputData).toBe('Empty CSV Selected, name: string');
     });
 
     it('should return 302 redirect to /csvUpload with an error message when a the attached file is too large', async () => {
@@ -64,11 +65,11 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(csvUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.testCsv,
+                files: file,
+                fileContents: csvData.testCsv,
             });
 
         await csvUpload.default(req, res);
@@ -92,11 +93,11 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(csvUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.testCsv,
+                files: file,
+                fileContents: csvData.testCsv,
             });
 
         await csvUpload.default(req, res);
@@ -125,11 +126,11 @@ describe('csvUpload', () => {
                 },
             };
 
-            jest.spyOn(csvUpload, 'getFormData')
+            jest.spyOn(fileUpload, 'getFormData')
                 .mockImplementation()
                 .mockResolvedValue({
-                    Files: file,
-                    FileContent: csv,
+                    files: file,
+                    fileContents: csv,
                 });
 
             await csvUpload.default(req, res);
@@ -163,11 +164,11 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(csvUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.testCsv,
+                files: file,
+                fileContents: csvData.testCsv,
             });
 
         await csvUpload.default(req, res);
@@ -190,21 +191,21 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(csvUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.nonNumericPricesTestCsv,
+                files: file,
+                fileContents: csvData.nonNumericPricesTestCsv,
             });
 
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/csvUpload',
         });
     });
 
-    it('should throw an error if the fares triangle data has missing prices', async () => {
+    it('should return 302 redirect to /csvUpload with an error message if the fares triangle data has missing prices', async () => {
         const file = {
             'csv-upload': {
                 size: 999,
@@ -217,17 +218,17 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(csvUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.missingPricesTestCsv,
+                files: file,
+                fileContents: csvData.missingPricesTestCsv,
             });
 
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+            Location: '/csvUpload',
         });
     });
 });

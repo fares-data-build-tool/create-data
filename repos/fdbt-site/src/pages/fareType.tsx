@@ -6,9 +6,12 @@ import { FARETYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, buildTitle } from '../utils/index';
+import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'FareType - Fares data build tool';
+const title = 'Fare Type - Fares data build tool';
 const description = 'Fare Type selection page of the Fares data build tool';
+
+const errorId = 'fare-type-error';
 
 type FareTypeProps = {
     errors: ErrorInfo[];
@@ -19,65 +22,56 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/fareType" method="post">
-                    <ErrorSummary errorHref="#fareType-page-heading" errors={errors} />
+                    <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="fareType-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="fareType-page-heading">
                                     What type of fare would you like to provide?
                                 </h1>
-                                {errors.length > 0 && (
-                                    <span id="fareType-error" className="govuk-error-message error-message-padding">
-                                        <span>{errors[0].errorMessage}</span>
-                                    </span>
-                                )}
                             </legend>
-                            <div className="govuk-radios">
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="fareType-single"
-                                        name="fareType"
-                                        type="radio"
-                                        value="single"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="fareType-single">
-                                        Single - Point to Point
-                                    </label>
+                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                                <div className="govuk-radios">
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="fareType-single"
+                                            name="fareType"
+                                            type="radio"
+                                            value="single"
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="fareType-single">
+                                            Single - Point to Point
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="fareType-period"
+                                            name="fareType"
+                                            type="radio"
+                                            value="period"
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="fareType-period">
+                                            Period Tickets
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="fareType-return"
+                                            name="fareType"
+                                            type="radio"
+                                            value="return"
+                                            disabled
+                                            aria-disabled="true"
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="fareType-return">
+                                            Return
+                                        </label>
+                                    </div>
                                 </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="fareType-period"
-                                        name="fareType"
-                                        type="radio"
-                                        value="period"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="fareType-period">
-                                        Period Tickets
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="fareType-return"
-                                        name="fareType"
-                                        type="radio"
-                                        value="return"
-                                        disabled
-                                        aria-disabled="true"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="fareType-return">
-                                        Return
-                                    </label>
-                                </div>
-                            </div>
+                            </FormElementWrapper>
                         </fieldset>
                     </div>
                     <input
@@ -102,7 +96,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         if (parsedFareTypeCookie.errorMessage) {
             const { errorMessage } = parsedFareTypeCookie;
             deleteCookieOnServerSide(ctx, FARETYPE_COOKIE);
-            return { props: { errors: [{ errorMessage }] } };
+            return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }
 
