@@ -1,6 +1,7 @@
 import Cookies from 'cookies';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
+import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
 import * as dynamo from '../../../src/data/dynamodb';
@@ -43,11 +44,11 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(csvZoneUpload, 'getFormData')
+            jest.spyOn(fileUpload, 'getFormData')
                 .mockImplementation()
                 .mockResolvedValue({
-                    Files: file,
-                    FileContent: csv,
+                    files: file,
+                    fileContents: csv,
                 });
 
             jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
@@ -86,11 +87,11 @@ describe('csvZoneUpload', () => {
             },
         };
 
-        jest.spyOn(csvZoneUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.testCsv,
+                files: file,
+                fileContents: csvData.testCsv,
             });
 
         await csvZoneUpload.default(req, res);
@@ -114,11 +115,11 @@ describe('csvZoneUpload', () => {
         };
         const dynamoError = 'Could not fetch data from dynamo in test';
 
-        jest.spyOn(csvZoneUpload, 'getFormData')
+        jest.spyOn(fileUpload, 'getFormData')
             .mockImplementation()
             .mockResolvedValue({
-                Files: file,
-                FileContent: csvData.testCsvWithEmptyCells,
+                files: file,
+                fileContents: csvData.testCsvWithEmptyCells,
             });
 
         jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes').mockImplementation(() => {
@@ -146,11 +147,11 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(csvZoneUpload, 'getFormData')
+            jest.spyOn(fileUpload, 'getFormData')
                 .mockImplementation()
                 .mockResolvedValue({
-                    Files: file,
-                    FileContent: '',
+                    files: file,
+                    fileContents: '',
                 });
 
             await csvZoneUpload.default(req, res);
@@ -173,11 +174,11 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(csvZoneUpload, 'getFormData')
+            jest.spyOn(fileUpload, 'getFormData')
                 .mockImplementation()
                 .mockResolvedValue({
-                    Files: file,
-                    FileContent: csvData.testCsv,
+                    files: file,
+                    fileContents: csvData.testCsv,
                 });
 
             await csvZoneUpload.default(req, res);
@@ -200,11 +201,11 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(csvZoneUpload, 'getFormData')
+            jest.spyOn(fileUpload, 'getFormData')
                 .mockImplementation()
                 .mockResolvedValue({
-                    Files: file,
-                    FileContent: csvData.testCsv,
+                    files: file,
+                    fileContents: csvData.testCsv,
                 });
 
             await csvZoneUpload.default(req, res);
@@ -215,7 +216,7 @@ describe('csvZoneUpload', () => {
         });
     });
 
-    describe('processCsvUpload', () => {
+    describe('processCsv', () => {
         it.each([
             [csvData.testCsvWithEmptyLines, csvData.processedTestCsvWithEmptyLines.Body],
             [csvData.testCsvWithEmptyLinesAndEmptyCells, csvData.processedTestCsvWithEmptyLinesAndEmptyCells.Body],
@@ -224,22 +225,24 @@ describe('csvZoneUpload', () => {
                 .mockImplementation()
                 .mockResolvedValue([{ atcoCode: 'TestATCO-TC4', naptanCode: 'TestNaptan-TC4' }]);
 
-            const result = await csvZoneUpload.processCsvUpload(fileContent);
+            const result = await csvZoneUpload.processCsv(fileContent, req, res);
 
             expect(result).toEqual(expectedProcessed);
         });
 
-        it('should throw an error when a csv upload contains no stops info', async () => {
+        it('returns null when a csv upload contains no stops info', async () => {
             const fileContent = csvData.testCsvWithNoStopsInfo;
             jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
                 .mockResolvedValue([]);
 
-            await expect(csvZoneUpload.processCsvUpload(fileContent)).rejects.toThrow();
+            const result = await csvZoneUpload.processCsv(fileContent, req, res);
+
+            expect(result).toBeNull();
         });
     });
 
-    describe('formatDynamoResponse', () => {
+    describe('getAtcoCodesForStops', () => {
         it('should return an array of UserFareZone objects when called with an array of naptan codes', async () => {
             const mockRawUserFareZones = csvData.partProcessedTestCsvWithEmptyCells.Body;
             const mockNaptanCodesToQuery: string[] = ['TestNaptan-TC5'];
@@ -249,7 +252,7 @@ describe('csvZoneUpload', () => {
                 .mockImplementation()
                 .mockResolvedValue([{ atcoCode: 'TestATCO-TC5', naptanCode: 'TestNaptan-TC5' }]);
 
-            const mockUserFareZones = await csvZoneUpload.formatDynamoResponse(
+            const mockUserFareZones = await csvZoneUpload.getAtcoCodesForStops(
                 mockRawUserFareZones,
                 mockNaptanCodesToQuery,
             );

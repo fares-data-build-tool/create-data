@@ -1,15 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import formidable, { Files } from 'formidable';
-import fs from 'fs';
 import flatMap from 'array.prototype.flatmap';
 import { getUuidFromCookie, redirectToError, redirectTo, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { ALLOWED_CSV_FILE_TYPES, CSV_UPLOAD_COOKIE } from '../../constants';
+import { CSV_UPLOAD_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
-
-const MAX_FILE_SIZE = 5242880;
-
-export type File = FileData;
+import { processFileUpload } from './apiUtils/fileUpload';
 
 interface FareTriangleData {
     fareStages: {
@@ -23,31 +18,26 @@ interface FareTriangleData {
     }[];
 }
 
-interface FileData {
-    Files: formidable.Files;
-    FileContent: string;
-}
-
-// The below 'config' needs to be exported for the formidable library to work.
 export const config = {
     api: {
         bodyParser: false,
     },
 };
 
-export const formParse = async (req: NextApiRequest): Promise<Files> => {
-    return new Promise<Files>((resolve, reject) => {
-        const form = new formidable.IncomingForm();
-        form.parse(req, (err, _fields, file) => {
-            if (err) {
-                return reject(err);
-            }
-            return resolve(file);
-        });
-    });
+export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+    const cookieValue = JSON.stringify({ error });
+    setCookieOnResponseObject(getDomain(req), CSV_UPLOAD_COOKIE, cookieValue, req, res);
+
+    if (error) {
+        redirectTo(res, '/csvUpload');
+    }
 };
 
-export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
+export const faresTriangleDataMapper = (
+    dataToMap: string,
+    req: NextApiRequest,
+    res: NextApiResponse,
+): UserFareStages | null => {
     const fareTriangle: FareTriangleData = {
         fareStages: [],
     };
@@ -57,7 +47,10 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     const fareStageCount = dataAsLines.length;
 
     if (fareStageCount < 2) {
-        throw new Error(`At least 2 fare stages are needed, only ${fareStageCount} found`);
+        console.warn(`At least 2 fare stages are needed, only ${fareStageCount} found`);
+
+        setUploadCookieAndRedirect(req, res, 'At least 2 fare stages are needed');
+        return null;
     }
 
     let expectedNumberOfPrices = 0;
@@ -107,62 +100,15 @@ export const faresTriangleDataMapper = (dataToMap: string): UserFareStages => {
     ).length;
 
     if (numberOfPrices !== expectedNumberOfPrices) {
-        throw new Error(
+        console.warn(
             `Data conversion has not worked properly. Expected ${expectedNumberOfPrices}, got ${numberOfPrices}`,
         );
+
+        setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
+        return null;
     }
 
     return mappedFareTriangle;
-};
-
-export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
-    const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(getDomain(req), CSV_UPLOAD_COOKIE, cookieValue, req, res);
-
-    if (error) {
-        redirectTo(res, '/csvUpload');
-    }
-};
-
-export const fileIsValid = (
-    req: NextApiRequest,
-    res: NextApiResponse,
-    formData: formidable.Files,
-    fileContent: string,
-): boolean => {
-    const fileSize = formData['csv-upload'].size;
-    const fileType = formData['csv-upload'].type;
-
-    if (!fileContent) {
-        setUploadCookieAndRedirect(req, res, 'Select a CSV file to upload');
-        console.warn('No file attached.');
-        return false;
-    }
-
-    if (fileSize > MAX_FILE_SIZE) {
-        setUploadCookieAndRedirect(req, res, 'The selected file must be smaller than 5MB');
-        console.warn(`File is too large. Uploaded file is ${fileSize} Bytes, max size is ${MAX_FILE_SIZE} Bytes`);
-        return false;
-    }
-
-    if (!ALLOWED_CSV_FILE_TYPES.includes(fileType)) {
-        setUploadCookieAndRedirect(req, res, 'The selected file must be a CSV');
-        console.warn(`File not of allowed type, uploaded file is ${fileType}`);
-
-        return false;
-    }
-
-    return true;
-};
-
-export const getFormData = async (req: NextApiRequest): Promise<File> => {
-    const files = await formParse(req);
-    const fileContent = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
-
-    return {
-        Files: files,
-        FileContent: fileContent,
-    };
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -171,18 +117,23 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Session is invalid.');
         }
 
-        const formData = await getFormData(req);
-        if (!fileIsValid(req, res, formData.Files, formData.FileContent)) {
+        const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
+
+        if (fileError) {
+            setUploadCookieAndRedirect(req, res, fileError);
             return;
         }
 
-        if (formData.FileContent) {
+        if (fileContents) {
             const uuid = getUuidFromCookie(req, res);
-            await putDataInS3(formData.FileContent, `${uuid}.csv`, false);
-            const fareTriangleData = faresTriangleDataMapper(formData.FileContent);
+            await putDataInS3(fileContents, `${uuid}.csv`, false);
+            const fareTriangleData = faresTriangleDataMapper(fileContents, req, res);
+            if (!fareTriangleData) {
+                return;
+            }
+
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
-            setUploadCookieAndRedirect(req, res);
             redirectTo(res, '/matching');
         }
     } catch (error) {

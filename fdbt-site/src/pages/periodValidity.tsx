@@ -6,9 +6,12 @@ import { PERIOD_EXPIRY } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { buildTitle } from '../utils';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Period Validity - Fares data build tool';
 const description = 'Period Validity selection page of the Fares data build tool';
+
+const errorId = 'period-validity-error';
 
 type PeriodValidityProps = {
     errors: ErrorInfo[];
@@ -19,7 +22,7 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/periodValidity" method="post">
-                    <ErrorSummary errorHref="#periodValidity-page-heading" errors={errors} />
+                    <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="periodValidity-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -30,55 +33,55 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
                             <span className="govuk-hint" id="heading-period-validity-hint">
                                 We need to know the time that this product would be valid until
                             </span>
-                            {errors.length > 0 && (
-                                <span id="operator-error" className="govuk-error-message error-message-padding">
-                                    <span>{errors[0].errorMessage}</span>
-                                </span>
-                            )}
-                            <div className="govuk-radios">
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="period-end-calendar"
-                                        name="periodValid"
-                                        type="radio"
-                                        value="endOfCalendarDay"
-                                    />
-                                    <label
-                                        className="govuk-label govuk-radios__label govuk-label--s"
-                                        htmlFor="period-end-calendar"
-                                    >
-                                        At the end of a calendar day
-                                    </label>
-                                    <span className="govuk-hint govuk-radios__hint" id="period-end-calendar-hint">
-                                        For example, a ticket purchased at 3pm would be valid until midnight on its day
-                                        of expiry
-                                    </span>
+                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                                <div className="govuk-radios">
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="period-end-calendar"
+                                            name="periodValid"
+                                            type="radio"
+                                            value="endOfCalendarDay"
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label govuk-label--s"
+                                            htmlFor="period-end-calendar"
+                                        >
+                                            At the end of a calendar day
+                                        </label>
+                                        <span className="govuk-hint govuk-radios__hint" id="period-end-calendar-hint">
+                                            For example, a ticket purchased at 3pm would be valid until midnight on its
+                                            day of expiry
+                                        </span>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="period-twenty-four-hours"
+                                            name="periodValid"
+                                            type="radio"
+                                            value="24hr"
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label govuk-label--s"
+                                            htmlFor="period-twenty-four-hours"
+                                        >
+                                            At the end of a 24 hour period from purchase
+                                        </label>
+                                        <span
+                                            className="govuk-hint govuk-radios__hint"
+                                            id="period-twenty-four-hours-hint"
+                                        >
+                                            For example, a ticket purchased at 3pm will be valid until 3pm on its day of
+                                            expiry
+                                        </span>
+                                    </div>
                                 </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="period-twenty-four-hours"
-                                        name="periodValid"
-                                        type="radio"
-                                        value="24hr"
-                                    />
-                                    <label
-                                        className="govuk-label govuk-radios__label govuk-label--s"
-                                        htmlFor="period-twenty-four-hours"
-                                    >
-                                        At the end of a 24 hour period from purchase
-                                    </label>
-                                    <span className="govuk-hint govuk-radios__hint" id="period-twenty-four-hours-hint">
-                                        For example, a ticket purchased at 3pm will be valid until 3pm on its day of
-                                        expiry
-                                    </span>
-                                </div>
-                            </div>
+                            </FormElementWrapper>
                         </fieldset>
                     </div>
                     <input
@@ -102,7 +105,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
         if (parsedPeriodValidityCookie.errorMessage) {
             const { errorMessage } = parsedPeriodValidityCookie;
-            return { props: { errors: [{ errorMessage }] } };
+            return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }
 

@@ -1,7 +1,4 @@
-export type ErrorInfo = {
+export interface ErrorInfo {
     errorMessage: string;
-};
-
-export type Uuid = {
-    uuid: string;
-};
+    id: string;
+}
