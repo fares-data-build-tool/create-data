@@ -5,7 +5,7 @@ import axios from 'axios';
 import { parseCookies } from 'nookies';
 import { ALL_COOKIES, OPERATOR_COOKIE } from '../constants/index';
 
-import { Stop } from '../data/dynamodb';
+import { Stop } from '../data/auroradb';
 import { ErrorInfo } from '../types';
 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {

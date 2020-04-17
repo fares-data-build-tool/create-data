@@ -8,8 +8,8 @@ import {
     batchGetStopsByAtcoCode,
     Stop,
     RawService,
-    RawJourneyPatternSection,
-} from '../data/dynamodb';
+    RawJourneyPatternStops,
+} from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages, FareStage } from '../data/s3';
 import { formatStopName } from '../utils';
@@ -98,15 +98,15 @@ const getJourneysByStartAndEndPoint = (
     service: RawService,
     selectedStartPoint: string,
     selectedEndPoint: string,
-): RawJourneyPatternSection[] =>
-    flatMap(service.journeyPatterns, journey => journey.JourneyPatternSections).filter(
+): RawJourneyPatternStops[] =>
+    flatMap(service.journeyPatterns, journey => journey.JourneyPattern).filter(
         item =>
             item.OrderedStopPoints[0].StopPointRef === selectedStartPoint &&
             item.OrderedStopPoints.slice(-1)[0].StopPointRef === selectedEndPoint,
     );
 
 // Gets a unique set of stop point refs from an array of journey pattern sections
-const getMasterStopList = (journeys: RawJourneyPatternSection[]): string[] => [
+const getMasterStopList = (journeys: RawJourneyPatternStops[]): string[] => [
     ...new Set(flatMap(journeys, journey => journey.OrderedStopPoints.map(item => item.StopPointRef))),
 ];
 

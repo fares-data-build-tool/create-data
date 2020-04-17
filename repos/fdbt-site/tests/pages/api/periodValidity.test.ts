@@ -1,5 +1,5 @@
 import * as s3 from '../../../src/data/s3';
-import * as dynamodb from '../../../src/data/dynamodb';
+import * as dynamodb from '../../../src/data/auroradb';
 import { expectedPeriodValidity, getMockRequestAndResponse, naptanStopInfo } from '../../testData/mockData';
 import periodValidity from '../../../src/pages/api/periodValidity';
 

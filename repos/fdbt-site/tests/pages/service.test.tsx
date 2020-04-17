@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
-import { getServicesByNocCode, ServiceType } from '../../src/data/dynamodb';
+import { getServicesByNocCode, ServiceType } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
 
-jest.mock('../../src/data/dynamodb');
+jest.mock('../../src/data/auroradb');
 
 const mockServices: ServiceType[] = [
     { lineName: '123', startDate: '05/02/2020', description: 'this bus service is 123' },

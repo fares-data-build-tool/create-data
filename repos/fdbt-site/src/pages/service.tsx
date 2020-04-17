@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
-import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
+import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 
 const title = 'Service - Fares data build tool';
 const description = 'Service selection page of the Fares data build tool';
