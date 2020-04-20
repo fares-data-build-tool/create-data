@@ -58,7 +58,7 @@ jobs:
 
   deploy-reference-data-uploaders-to-preprod:
     docker:
-      - image: circleci/node:python:3.8
+      - image: circleci/python:3.8
     working_directory: ~/project
     steps:
       - attach_workspace:
