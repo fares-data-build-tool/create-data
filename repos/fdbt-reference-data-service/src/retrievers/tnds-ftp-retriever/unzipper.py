@@ -32,7 +32,7 @@ queries = [
     'SET FOREIGN_KEY_CHECKS=0',
     'TRUNCATE TABLE tndsOperatorService',
     'TRUNCATE TABLE tndsJourneyPattern',
-    'TRUNCATE TABLE `tndsJourneyPatternLink',
+    'TRUNCATE TABLE tndsJourneyPatternLink',
     'SET FOREIGN_KEY_CHECKS=1'
 ]
 
