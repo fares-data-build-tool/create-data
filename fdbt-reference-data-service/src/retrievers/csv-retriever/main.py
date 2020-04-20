@@ -1,11 +1,15 @@
 import boto3
-import sys
 import os
+import logging
 from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
 s3 = boto3.resource('s3')
+
 
 def lambda_handler(event, context):
     try:
@@ -24,5 +28,5 @@ def lambda_handler(event, context):
                     }
                 )
     except Exception as e:
-        print(e)
+        logger.error(e)
         raise e

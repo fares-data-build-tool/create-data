@@ -1,12 +1,16 @@
 import boto3
 import os
+import logging
 from ftplib import FTP
-from pathlib import Path
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 file_dir = '/tmp/'
 
 s3 = boto3.resource('s3')
 ssm = boto3.client('ssm')
+
 
 def lambda_handler(event, context):
     try:
@@ -51,5 +55,5 @@ def lambda_handler(event, context):
                 }
             )
     except Exception as e:
-        print(e)
+        logger.error(e)
         raise e
