@@ -225,6 +225,7 @@ Resources:
               - "dynamodb:*"
               - "events:*"
               - "ecs:*"
+              - "ec2:*"
             Resource: "*"
 
   NextJsLambdaPolicy:
