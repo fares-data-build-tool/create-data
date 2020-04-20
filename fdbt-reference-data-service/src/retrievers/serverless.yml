@@ -63,26 +63,26 @@ functions:
       FTP_HOST: ftp.tnds.basemap.co.uk
       BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
       ZIPPED_BUCKET_NAME: fdbt-tnds-data-zipped-${self:provider.stage}
+      RDS_HOST:
+        Fn::ImportValue: ${self:provider.stage}:RdsHostName
     events:
       - schedule:
           rate: cron(15 2 * * ? *)
           enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
-
-  TndsUnzipper:
-    handler: tnds-ftp-retriever/unzipper.lambda_handler
-    environment:
-      BUCKET_NAME: fdbt-xml-reference-data-${self:provider.stage}
-      RDS_HOST:
-        Fn::ImportValue: ${self:provider.stage}:RdsHostName
-    events:
-      - s3: fdbt-tnds-data-zipped-${self:provider.stage}
-        event: s3:ObjectCreated:*
     vpc:
       securityGroupIds:
         - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
       subnetIds:
         - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
         - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
+
+  TndsUnzipper:
+    handler: tnds-ftp-retriever/unzipper.lambda_handler
+    environment:
+      BUCKET_NAME: fdbt-xml-reference-data-${self:provider.stage}
+    events:
+      - s3: fdbt-tnds-data-zipped-${self:provider.stage}
+        event: s3:ObjectCreated:*
 
 package:
   exclude:
