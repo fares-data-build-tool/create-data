@@ -62,12 +62,10 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                             id="fareType-return"
                                             name="fareType"
                                             type="radio"
-                                            value="return"
-                                            disabled
-                                            aria-disabled="true"
+                                            value="returnSingle"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="fareType-return">
-                                            Return
+                                            Return - Single Service
                                         </label>
                                     </div>
                                 </div>

@@ -11,6 +11,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         if (req.body.fareType) {
+            const cookieValue = JSON.stringify({
+                errorMessage: '',
+                uuid: getUuidFromCookie(req, res),
+                fareType: req.body.fareType,
+            });
+
+            setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
+
             switch (req.body.fareType) {
                 case 'period':
                     redirectTo(res, '/periodType');
@@ -18,8 +26,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 case 'single':
                     redirectTo(res, '/service');
                     return;
-                case 'return':
-                    // redirect to return page
+                case 'returnSingle':
+                    redirectTo(res, '/service');
                     return;
                 default:
                     throw new Error('Fare Type we expect was not received.');
