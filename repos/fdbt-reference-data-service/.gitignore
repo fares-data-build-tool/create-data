@@ -1,15 +1,17 @@
 # package directories
+__pycache__
+.pytest_cache
 node_modules
-jspm_packages
 
 # settings directories
 .vscode
 
 # Serverless directories
 .serverless
-.build
-buckets
-.idea
-.dynamodb
 
 **/coverage/
+node_modules
+
+.idea
+
+.DS_Store
