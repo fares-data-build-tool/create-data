@@ -18,6 +18,15 @@ describe('fareType', () => {
         });
     });
 
+    it('should return 302 redirect to /service when return single option is selected', () => {
+        const writeHeadMock = jest.fn();
+        const { req, res } = getMockRequestAndResponse({}, { fareType: 'returnSingle' }, {}, writeHeadMock);
+        fareType(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/service',
+        });
+    });
+
     it('should return 302 redirect to /fareType when session is valid but there is neither a service cookie nor has one been set', () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({ service: null }, null, {}, writeHeadMock);

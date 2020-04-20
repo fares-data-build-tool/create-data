@@ -80,19 +80,17 @@ exports[`pages fareType should render correctly 1`] = `
                 className="govuk-radios__item"
               >
                 <input
-                  aria-disabled="true"
                   className="govuk-radios__input"
-                  disabled={true}
                   id="fareType-return"
                   name="fareType"
                   type="radio"
-                  value="return"
+                  value="returnSingle"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
                   htmlFor="fareType-return"
                 >
-                  Return
+                  Return - Single Service
                 </label>
               </div>
             </div>
