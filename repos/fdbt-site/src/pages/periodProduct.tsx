@@ -131,7 +131,6 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const periodProductCookie = cookies[PERIOD_PRODUCT];

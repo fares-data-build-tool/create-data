@@ -97,7 +97,7 @@ describe('csvZoneUpload', () => {
         await csvZoneUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodProduct',
+            Location: '/howManyProducts',
         });
     });
 

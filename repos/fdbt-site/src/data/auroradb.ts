@@ -121,8 +121,7 @@ export const convertDateFormat = (startDate: string): string => {
 
 let connectionPool: Pool;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const executeQuery = async (query: string, values: any[]) => {
+const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
     if (!connectionPool) {
         connectionPool = getAuroraDBClient();
     }
@@ -134,17 +133,17 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     try {
         const queryInput = 'SELECT * FROM `tndsService` WHERE `nocCode` = ?';
 
-        const queryResult = await executeQuery(queryInput, [nocCode]);
+        const queryResult = await executeQuery<ServiceType[]>(queryInput, [nocCode]);
 
         return (
-            queryResult?.map((item: ServiceType) => ({
+            queryResult.map(item => ({
                 lineName: item.lineName,
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
             })) || []
         );
-    } catch (err) {
-        throw new Error(`Could not retrieve services from AuroraDB: ${err.name}, ${err.message}`);
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
     }
 };
 
@@ -153,9 +152,9 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
         const substitution = atcoCodes.map(() => '?').join(',');
         const batchQuery = `SELECT * FROM naptanStop WHERE atcoCode IN (${substitution})`;
 
-        const queryResults = await executeQuery(batchQuery, atcoCodes);
+        const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
 
-        return queryResults.map((item: NaptanInfo) => ({
+        return queryResults.map(item => ({
             stopName: item.commonName,
             naptanCode: item.naptanCode,
             atcoCode: item.atcoCode,
@@ -166,24 +165,25 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
             street: item.street,
         }));
     } catch (error) {
-        console.error(`Error performing batch get for naptan info for stop list: ${atcoCodes}, error: ${error}`);
-        throw new Error(error);
+        throw new Error(
+            `Error performing batch get for naptan info for stop list '${JSON.stringify(atcoCodes)}': ${error.stack}`,
+        );
     }
 };
 
 export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
-    const listOfNaptanCodes = naptanCodes.toString();
-    const atcoCodesByNaptanCodeQuery = `SELECT * FROM naptanStop WHERE naptanCode IN ?`;
+    const substitution = naptanCodes.map(() => '?').join(',');
+    const atcoCodesByNaptanCodeQuery = `SELECT * FROM naptanStop WHERE naptanCode IN (${substitution})`;
 
     try {
-        const queryResults = await executeQuery(atcoCodesByNaptanCodeQuery, [listOfNaptanCodes]);
-
-        return queryResults.map((item: any) => ({ atcoCode: item.atcoCode, naptanCode: item.NaptanCode }));
+        const queryResults = await executeQuery<NaptanAtcoCodes[]>(atcoCodesByNaptanCodeQuery, naptanCodes);
+        return queryResults.map(item => ({ atcoCode: item.atcoCode, naptanCode: item.naptanCode }));
     } catch (error) {
-        console.error(
-            `Error performing queries for ATCO Codes using Naptan Codes: ${naptanCodes}. Error: ${error.stack}`,
+        throw new Error(
+            `Error performing queries for ATCO Codes using Naptan Codes '${JSON.stringify(naptanCodes)}': ${
+                error.stack
+            }`,
         );
-        throw new Error(error);
     }
 };
 
@@ -202,11 +202,11 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 
     try {
         queryResult = await executeQuery(serviceQuery, [nocCode, lineName]);
-    } catch (err) {
-        throw new Error(`Could not get journey patterns from Aurora DB: ${err.name}, ${err.message}`);
+    } catch (error) {
+        throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
     }
 
-    const service = queryResult?.[0];
+    const service = queryResult[0];
     const rawPatternService: RawJourneyPattern[] = [];
 
     // allows to get the unique journey's for the operator e.g. [1,2,3]

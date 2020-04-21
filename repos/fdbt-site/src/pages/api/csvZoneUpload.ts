@@ -141,7 +141,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const cookieValue = JSON.stringify({ fareZoneName, uuid });
             setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
 
-            redirectTo(res, '/periodProduct');
+            redirectTo(res, '/howManyProducts');
         }
     } catch (error) {
         const message = 'There was a problem uploading the csv:';

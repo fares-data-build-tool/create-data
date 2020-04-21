@@ -47,8 +47,7 @@ describe('Price Entry API', () => {
             jest.resetAllMocks();
         });
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const cases: any[] = [
+        const cases: {}[] = [
             [{}, { Location: '/priceEntry' }],
             [{ ChorltonBewbush: 'abcdefghijk' }, { Location: '/priceEntry' }],
             [{ ChorltonBewbush: '1.2' }, { Location: '/priceEntry' }],

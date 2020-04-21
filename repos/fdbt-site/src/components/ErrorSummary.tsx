@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../types';
 
-export interface ErrorSummaryInfo {
+export interface ErrorSummary {
     errors: ErrorInfo[];
 }
 
-const ErrorSummary = ({ errors }: ErrorSummaryInfo): null | ReactElement => {
+const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
     if (!errors || errors.length === 0) {
         return null;
     }

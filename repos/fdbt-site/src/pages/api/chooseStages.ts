@@ -6,8 +6,7 @@ import { isSessionValid } from './service/validator';
 export const isInvalidFareStageNumber = (req: NextApiRequest): boolean => {
     const { fareStageInput } = req.body;
 
-    // eslint-disable-next-line no-restricted-globals
-    if (isNaN(fareStageInput)) {
+    if (Number.isNaN(fareStageInput)) {
         return true;
     }
 

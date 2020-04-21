@@ -1,0 +1,561 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 1`] = `
+<Layout
+  description="How many products page of the Fares data build tool"
+  title="Error: How Many Products - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error input-error"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <span
+            className="govuk-error-message"
+            id="numberOfProducts-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Error:
+            </span>
+             
+            Enter a whole number between 1 and 10
+          </span>
+          <input
+            aria-describedby="numberOfProducts-error"
+            className="govuk-input govuk-input--width-2 govuk-input--error"
+            defaultValue=""
+            id="numberOfProducts"
+            name="numberOfProductsInput"
+            type="text"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 2`] = `
+<Layout
+  description="How many products page of the Fares data build tool"
+  title="Error: How Many Products - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error input-error"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <span
+            className="govuk-error-message"
+            id="numberOfProducts-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Error:
+            </span>
+             
+            Enter a whole number between 1 and 10
+          </span>
+          <input
+            aria-describedby="numberOfProducts-error"
+            className="govuk-input govuk-input--width-2 govuk-input--error"
+            defaultValue=""
+            id="numberOfProducts"
+            name="numberOfProductsInput"
+            type="text"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 3`] = `
+<Layout
+  description="How many products page of the Fares data build tool"
+  title="Error: How Many Products - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error input-error"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <span
+            className="govuk-error-message"
+            id="numberOfProducts-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Error:
+            </span>
+             
+            Enter a whole number between 1 and 10
+          </span>
+          <input
+            aria-describedby="numberOfProducts-error"
+            className="govuk-input govuk-input--width-2 govuk-input--error"
+            defaultValue=""
+            id="numberOfProducts"
+            name="numberOfProductsInput"
+            type="text"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 4`] = `
+<Layout
+  description="How many products page of the Fares data build tool"
+  title="Error: How Many Products - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error input-error"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <span
+            className="govuk-error-message"
+            id="numberOfProducts-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Error:
+            </span>
+             
+            Enter a whole number between 1 and 10
+          </span>
+          <input
+            aria-describedby="numberOfProducts-error"
+            className="govuk-input govuk-input--width-2 govuk-input--error"
+            defaultValue=""
+            id="numberOfProducts"
+            name="numberOfProductsInput"
+            type="text"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 5`] = `
+<Layout
+  description="How many products page of the Fares data build tool"
+  title="Error: How Many Products - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a number",
+              "id": "page-heading",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error input-error"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <span
+            className="govuk-error-message"
+            id="numberOfProducts-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Error:
+            </span>
+             
+            Enter a number
+          </span>
+          <input
+            aria-describedby="numberOfProducts-error"
+            className="govuk-input govuk-input--width-2 govuk-input--error"
+            defaultValue=""
+            id="numberOfProducts"
+            name="numberOfProductsInput"
+            type="text"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 6`] = `
+<Layout
+  description="How many products page of the Fares data build tool"
+  title="Error: How Many Products - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error input-error"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <span
+            className="govuk-error-message"
+            id="numberOfProducts-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Error:
+            </span>
+             
+            Enter a whole number between 1 and 10
+          </span>
+          <input
+            aria-describedby="numberOfProducts-error"
+            className="govuk-input govuk-input--width-2 govuk-input--error"
+            defaultValue=""
+            id="numberOfProducts"
+            name="numberOfProductsInput"
+            type="text"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 7`] = `
+<Layout
+  description="How many products page of the Fares data build tool"
+  title="Error: How Many Products - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error input-error"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <span
+            className="govuk-error-message"
+            id="numberOfProducts-error"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Error:
+            </span>
+             
+            Enter a whole number between 1 and 10
+          </span>
+          <input
+            aria-describedby="numberOfProducts-error"
+            className="govuk-input govuk-input--width-2 govuk-input--error"
+            defaultValue=""
+            id="numberOfProducts"
+            name="numberOfProductsInput"
+            type="text"
+          />
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
