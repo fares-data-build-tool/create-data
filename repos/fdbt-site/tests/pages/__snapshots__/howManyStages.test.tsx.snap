@@ -14,8 +14,11 @@ exports[`pages howManyStages should render correctly 1`] = `
       action="/api/howManyStages"
       method="post"
     >
+      <ErrorSummary
+        errors={Array []}
+      />
       <div
-        className="govuk-form-group"
+        className="govuk-form-group "
       >
         <fieldset
           aria-describedby="selection-hint"
@@ -36,56 +39,63 @@ exports[`pages howManyStages should render correctly 1`] = `
           >
             You'll need to upload a CSV if your fares triangle has more than 20 fares stages.
           </span>
-          <div
-            className="govuk-radios"
+          <FormElementWrapper
+            errorClass="govuk-radios--error"
+            errorId="how-many-stages-error"
+            errors={Array []}
           >
             <div
-              className="govuk-radios__item"
+              className="govuk-radios"
+              id="radio-buttons"
             >
-              <input
-                className="govuk-radios__input"
-                id="lessThan20FareStages"
-                name="howManyStages"
-                type="radio"
-                value="lessThan20"
-              />
-              <label
-                className="govuk-label govuk-radios__label govuk-label--s"
-                htmlFor="selection"
+              <div
+                className="govuk-radios__item"
               >
-                20 fare stages or less
-              </label>
-              <span
-                className="govuk-hint govuk-radios__hint"
-                id="selection-item-hint"
+                <input
+                  className="govuk-radios__input  "
+                  id="lessThan20FareStages"
+                  name="howManyStages"
+                  type="radio"
+                  value="lessThan20"
+                />
+                <label
+                  className="govuk-label govuk-radios__label govuk-label--s"
+                  htmlFor="selection"
+                >
+                  20 fare stages or less
+                </label>
+                <span
+                  className="govuk-hint govuk-radios__hint"
+                  id="selection-item-hint"
+                >
+                  You'll need to add the fare stages, prices and match the stops on your route to your fare stages.
+                </span>
+              </div>
+              <div
+                className="govuk-radios__item"
               >
-                You'll need to add the fare stages, prices and match the stops on your route to your fare stages.
-              </span>
+                <input
+                  className="govuk-radios__input  "
+                  id="moreThan20FareStages"
+                  name="howManyStages"
+                  type="radio"
+                  value="moreThan20"
+                />
+                <label
+                  className="govuk-label govuk-radios__label govuk-label--s"
+                  htmlFor="selection-2"
+                >
+                  More than 20 fare stages
+                </label>
+                <span
+                  className="govuk-hint govuk-radios__hint"
+                  id="selection-2-item-hint"
+                >
+                  You'll need to upload a CSV fares triangle. A template will be provided for you to complete.
+                </span>
+              </div>
             </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input"
-                id="moreThan20FareStages"
-                name="howManyStages"
-                type="radio"
-                value="moreThan20"
-              />
-              <label
-                className="govuk-label govuk-radios__label govuk-label--s"
-                htmlFor="selection-2"
-              >
-                More than 20 fare stages
-              </label>
-              <span
-                className="govuk-hint govuk-radios__hint"
-                id="selection-2-item-hint"
-              >
-                You'll need to upload a CSV fares triangle. A template will be provided for you to complete.
-              </span>
-            </div>
-          </div>
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { NextPageContext } from 'next';
-import mockReqRes, { mockRequest } from 'mock-req-res';
+import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { RawService, Service } from '../../src/data/dynamodb';
+import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
     OPERATOR_COOKIE,
@@ -24,7 +24,7 @@ export const getMockRequestAndResponse = (
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     requestHeaders: any = {},
-): { req: mockReqRes.RequestOutput; res: any } => {
+): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
     res.end = mockEndFn;
@@ -32,7 +32,7 @@ export const getMockRequestAndResponse = (
 
     const {
         operator = 'test',
-        faretype = 'single',
+        fareType = 'single',
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -45,7 +45,7 @@ export const getMockRequestAndResponse = (
 
     const {
         operatorUuid = defaultUuid,
-        faretypeUuid = defaultUuid,
+        fareTypeUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
@@ -59,8 +59,8 @@ export const getMockRequestAndResponse = (
         ? `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
         : '';
 
-    cookieString += faretype
-        ? `${FARETYPE_COOKIE}=%7B%22faretype%22%3A%22${faretype}%22%2C%22uuid%22%3A%22${faretypeUuid}%22%7D;`
+    cookieString += fareType
+        ? `${FARETYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
         : '';
 
     cookieString += serviceLineName
@@ -135,7 +135,7 @@ export const mockRawService: RawService = {
     operatorShortName: 'HCTY',
     journeyPatterns: [
         {
-            JourneyPatternSections: [
+            JourneyPattern: [
                 {
                     OrderedStopPoints: [
                         {
@@ -196,14 +196,11 @@ export const mockRawService: RawService = {
                             CommonName: 'Interchange Stand B',
                         },
                     ],
-                    StartPoint: 'Estate (Hail and Ride) N/B',
-                    EndPoint: 'Interchange Stand B',
-                    Id: 'JPS_I0',
                 },
             ],
         },
         {
-            JourneyPatternSections: [
+            JourneyPattern: [
                 {
                     OrderedStopPoints: [
                         {
@@ -257,9 +254,6 @@ export const mockRawService: RawService = {
                             CommonName: 'Estate (Hail and Ride) N/B',
                         },
                     ],
-                    StartPoint: 'Interchange Stand B',
-                    EndPoint: 'Estate (Hail and Ride) N/B',
-                    Id: 'JPS_O1',
                 },
             ],
         },
@@ -271,7 +265,7 @@ export const mockRawServiceWithDuplicates: RawService = {
     operatorShortName: 'HCTY',
     journeyPatterns: [
         {
-            JourneyPatternSections: [
+            JourneyPattern: [
                 {
                     OrderedStopPoints: [
                         {
@@ -332,14 +326,11 @@ export const mockRawServiceWithDuplicates: RawService = {
                             CommonName: 'Interchange Stand B',
                         },
                     ],
-                    StartPoint: 'Estate (Hail and Ride) N/B',
-                    EndPoint: 'Interchange Stand B',
-                    Id: 'JPS_I0',
                 },
             ],
         },
         {
-            JourneyPatternSections: [
+            JourneyPattern: [
                 {
                     OrderedStopPoints: [
                         {
@@ -393,14 +384,11 @@ export const mockRawServiceWithDuplicates: RawService = {
                             CommonName: 'Estate (Hail and Ride) N/B',
                         },
                     ],
-                    StartPoint: 'Interchange Stand B',
-                    EndPoint: 'Estate (Hail and Ride) N/B',
-                    Id: 'JPS_I1',
                 },
             ],
         },
         {
-            JourneyPatternSections: [
+            JourneyPattern: [
                 {
                     OrderedStopPoints: [
                         {
@@ -433,9 +421,6 @@ export const mockRawServiceWithDuplicates: RawService = {
                             CommonName: 'Estate (Hail and Ride) N/B',
                         },
                     ],
-                    StartPoint: 'Interchange Stand B',
-                    EndPoint: 'Estate (Hail and Ride) N/B',
-                    Id: 'JPS_I2',
                 },
             ],
         },

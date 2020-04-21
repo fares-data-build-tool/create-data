@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES } from '../constants';
-import { getServicesByNocCode } from '../data/dynamodb';
+import { getServicesByNocCode } from '../data/auroradb';
 import { ServiceLists, ServicesInfo } from '../interfaces';
 
 const title = 'Which service(s) is the ticket valid for?';
@@ -106,9 +106,9 @@ export const getServerSideProps = async (
         throw new Error('Failed to retrieve operator cookie for single operator page');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
 
-    const { nocCode } = operatorObject;
+    const { nocCode } = operatorInfo;
     const servicesList = await getServicesByNocCode(nocCode);
 
     const { selectAll } = ctx.query;

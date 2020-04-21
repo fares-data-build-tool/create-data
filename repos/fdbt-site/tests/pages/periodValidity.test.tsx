@@ -7,7 +7,7 @@ import PeriodValidity from '../../src/pages/periodValidity';
 describe('pages', () => {
     describe('periodValidity', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodValidity error={false} />);
+            const tree = shallow(<PeriodValidity errors={[]} />);
             expect(tree).toMatchSnapshot();
         });
     });

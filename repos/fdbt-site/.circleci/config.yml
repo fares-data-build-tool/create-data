@@ -15,6 +15,35 @@ jobs:
                   root: ~/project
                   paths:
                       - '*'
+    run-ui-tests-chrome:
+        docker:
+            - image: circleci/openjdk:13-jdk-buster
+        steps:
+            - run:
+                  command: |
+                      git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+                      cd fdbt-ui-automation
+                      mvn test -P remote-chrome
+
+    run-ui-tests-firefox:
+        docker:
+            - image: circleci/openjdk:13-jdk-buster
+        steps:
+            - run:
+                  command: |
+                      git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+                      cd fdbt-ui-automation
+                      mvn test -P remote-firefox
+
+    run-ui-tests-ie:
+        docker:
+            - image: circleci/openjdk:13-jdk-buster
+        steps:
+            - run:
+                  command: |
+                      git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+                      cd fdbt-ui-automation
+                      mvn test -P remote-ie
 
     build-site:
         docker:
@@ -87,21 +116,22 @@ workflows:
     build-test-and-deploy-site:
         jobs:
             - checkout-repo
-            - build-site:
-                  requires:
-                      - checkout-repo
 
             - audit-site:
                   requires:
-                      - build-site
+                      - checkout-repo
+
+            - build-site:
+                  requires:
+                      - audit-site
 
             - test-site:
                   requires:
-                      - audit-site
+                      - build-site
 
             - lint-site:
                   requires:
-                      - audit-site
+                      - build-site
 
             - sync-static-files:
                   requires:
@@ -139,6 +169,7 @@ workflows:
             - aws-ecs/deploy-service-update:
                   requires:
                       - aws-ecr/build-and-push-image
+                  name: deploy-site-to-test
                   family: '${SITE_ECS_FAMILY}'
                   cluster-name: '${SITE_ECS_CLUSTER}'
                   container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
@@ -146,6 +177,15 @@ workflows:
                   filters:
                       branches:
                           only: develop
+
+            - run-ui-tests-chrome:
+                  requires:
+                      - deploy-site-to-test
+                  context: tfn-fdbt-automation-test
+                  filters:
+                      branches:
+                          only:
+                              - develop
 
             - hold-preprod-deployment:
                   type: approval
@@ -159,6 +199,7 @@ workflows:
                   requires:
                       - hold-preprod-deployment
                   family: '${SITE_ECS_FAMILY}'
+                  name: deploy-site-to-preprod
                   cluster-name: '${SITE_ECS_CLUSTER}'
                   container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
                   context: tfn-fdbt-preprod

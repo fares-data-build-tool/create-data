@@ -1,21 +1,12 @@
-import { mockRequest, mockResponse } from 'mock-req-res';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import chooseValidity from '../../../src/pages/api/chooseValidity';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('chooseValidity', () => {
-    let { res } = getMockRequestAndResponse();
-    let writeHeadMock: jest.Mock;
-
     beforeEach(() => {
         jest.resetAllMocks();
-        writeHeadMock = jest.fn();
-        res = mockResponse({
-            writeHead: writeHeadMock,
-        });
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cases: any[] = [
+    const cases: {}[] = [
         [{}, { Location: '/chooseValidity' }],
         [{ validityInput: 'abcdefghijk' }, { Location: '/chooseValidity' }],
         [{ validityInput: '1.2' }, { Location: '/chooseValidity' }],
@@ -29,13 +20,15 @@ describe('chooseValidity', () => {
     ];
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+        const writeHeadMock = jest.fn();
+        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
         (setCookieOnResponseObject as {}) = jest.fn();
-        chooseValidity(mockRequest({ body: testData }), res);
+        chooseValidity(req, res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
     it('should set the validity stages cookie according to the specified number of fare stages', () => {
-        const { req } = getMockRequestAndResponse({}, { validityInput: '6' });
+        const { req, res } = getMockRequestAndResponse({}, { validityInput: '6' });
 
         const mockSetCookies = jest.fn();
 

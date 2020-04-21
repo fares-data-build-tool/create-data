@@ -25,28 +25,28 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     if (product.productPriceError !== '') {
         switch (productPriceError) {
             case 'empty':
-                priceErrorMessage = 'Product Price cannot be empty.';
+                priceErrorMessage = 'Enter a Product Price';
                 break;
             case 'notCurrency':
-                priceErrorMessage = 'Product Price must be a valid currency.';
+                priceErrorMessage = 'Enter a valid currency';
                 break;
             case 'zero':
-                priceErrorMessage = 'Product Price cannot be zero.';
+                priceErrorMessage = 'Product Price cannot be zero';
                 break;
             default:
-                priceErrorMessage = 'Invalid input.';
+                priceErrorMessage = 'Invalid input';
         }
 
         if (product.productNameError !== '') {
             switch (productNameError) {
                 case 'empty':
-                    nameErrorMessage = 'Product Name cannot be empty.';
+                    nameErrorMessage = 'Enter a Product Name';
                     break;
                 case 'short':
-                    nameErrorMessage = 'Product Name cannot be 1 character.';
+                    nameErrorMessage = 'Product Name cannot be 1 character';
                     break;
                 default:
-                    nameErrorMessage = 'Invalid input.';
+                    nameErrorMessage = 'Invalid input';
             }
         }
     }
@@ -131,7 +131,6 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const periodProductCookie = cookies[PERIOD_PRODUCT];
@@ -149,7 +148,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         throw new Error('Failed to retrieve zone cookie info for period product page.');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
 
     if (zoneCookie) {
         const { fareZoneName } = JSON.parse(zoneCookie);
@@ -168,7 +167,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     return {
         props: {
             product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
-            operator: operatorObject.operator,
+            operator: operatorInfo.operator,
             ...props,
         },
     };

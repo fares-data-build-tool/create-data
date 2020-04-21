@@ -5,14 +5,33 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_UPLOAD_COOKIE } from '../constants';
+import { buildTitle, deleteCookieOnServerSide } from '../utils';
 
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
 
+const errorId = 'csv-upload-error';
+
 const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
-    <Layout title={title} description={description}>
+    <Layout title={buildTitle(uploadProps.errors, title)} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <UserDataUploadComponent {...uploadProps} />
+            <UserDataUploadComponent
+                {...uploadProps}
+                detailBody={
+                    <>
+                        <p>
+                            Use the Help File document for more detailed help on constructing your Fares Triangle, the
+                            Fares Triangle CSV Example document provides an example of the required format.
+                        </p>
+                        <p>Some common issues with the format include:</p>
+                        <ul className="govuk-list govuk-list--bullet">
+                            <li>Commas in fare stage names</li>
+                            <li>Not filling in every price</li>
+                            <li>Not filling in every fare stage on the diagonal</li>
+                        </ul>
+                    </>
+                }
+            />
         </main>
     </Layout>
 );
@@ -41,9 +60,12 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             csvTemplateDisplayName: 'Download Fares Triangle CSV Example',
             csvTemplateAttachmentUrl: '/assets/files/Fares-Triangle-Example.csv',
             csvTemplateSize: '400B',
-            error: !csvUploadCookie ? '' : csvUpload.error,
+            errors: !csvUpload?.error ? [] : [{ errorMessage: csvUpload.error, id: errorId }],
+            detailSummary: 'Help with Fares Triangle CSV upload',
         },
     };
+
+    deleteCookieOnServerSide(ctx, CSV_UPLOAD_COOKIE);
 
     return uploadProps;
 };

@@ -1,6 +1,6 @@
 import MockReq from 'mock-req';
 import { getHost, formatStopName } from '../../src/utils';
-import { Stop } from '../../src/data/dynamodb';
+import { Stop } from '../../src/data/auroradb';
 
 describe('utils', () => {
     describe('getHost', () => {
@@ -38,6 +38,7 @@ describe('utils', () => {
             localityName: 'Test Town',
             indicator: 'SE',
             street: 'Test Street',
+            parentLocalityName: 'Another town',
         };
 
         const noLocalityName: Stop = {
@@ -48,6 +49,7 @@ describe('utils', () => {
             localityName: '',
             indicator: 'SE',
             street: 'Test Street',
+            parentLocalityName: 'different town',
         };
 
         const noStreet: Stop = {
@@ -58,6 +60,7 @@ describe('utils', () => {
             localityName: 'Test Town',
             indicator: 'SE',
             street: '',
+            parentLocalityName: 'yorkshire town',
         };
 
         const testCases = [

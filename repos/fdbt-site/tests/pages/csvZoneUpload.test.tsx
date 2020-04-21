@@ -5,7 +5,19 @@ import CsvZoneUpload from '../../src/pages/csvZoneUpload';
 describe('pages', () => {
     describe('csvzoneupload', () => {
         it('should render correctly', () => {
-            const tree = shallow(<CsvZoneUpload />);
+            const tree = shallow(
+                <CsvZoneUpload
+                    csvUploadApiRoute=""
+                    csvUploadHintText=""
+                    guidanceDocDisplayName=""
+                    guidanceDocAttachmentUrl=""
+                    guidanceDocSize=""
+                    csvTemplateDisplayName=""
+                    csvTemplateAttachmentUrl=""
+                    csvTemplateSize=""
+                    errors={[]}
+                />,
+            );
             expect(tree).toMatchSnapshot();
         });
     });

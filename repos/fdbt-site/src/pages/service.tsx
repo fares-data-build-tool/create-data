@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
-import { getServicesByNocCode, ServiceType } from '../data/dynamodb';
+import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 
 const title = 'Service - Fares data build tool';
 const description = 'Service selection page of the Fares data build tool';
@@ -65,15 +65,15 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error('Necessary operator cookie not found to show matching page');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
 
-    const services = await getServicesByNocCode(operatorObject.nocCode);
+    const services = await getServicesByNocCode(operatorInfo.nocCode);
 
     if (services.length === 0) {
-        throw new Error(`No services found for NOC Code: ${operatorObject.nocCode}`);
+        throw new Error(`No services found for NOC Code: ${operatorInfo.nocCode}`);
     }
 
-    return { props: { operator: operatorObject.operator, services } };
+    return { props: { operator: operatorInfo.operator, services } };
 };
 
 export default Service;
