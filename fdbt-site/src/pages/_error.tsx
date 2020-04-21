@@ -45,8 +45,8 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
     </Layout>
 );
 
-Error.getServerSideProps = (ctx: NextPageContext): {} => {
-    return { statusCode: ctx?.res?.statusCode };
+export const getServerSideProps = (ctx: NextPageContext): {} => {
+    return { props: { statusCode: ctx?.res?.statusCode } };
 };
 
 export default Error;

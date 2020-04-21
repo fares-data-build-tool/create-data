@@ -6,20 +6,17 @@ import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('periodProduct', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let setCookieSpy: any;
-
     beforeEach(() => {
         jest.resetAllMocks();
 
         jest.spyOn(validator, 'isSessionValid')
             .mockImplementation()
             .mockReturnValue(true);
-
-        setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
     });
 
     it('should set period product cookie with errors on submit', () => {
+        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+
         const { req, res } = getMockRequestAndResponse({}, { periodProductNameInput: '', periodProductPriceInput: '' });
 
         const mockPeriodProductCookies = {
@@ -42,6 +39,8 @@ describe('periodProduct', () => {
     });
 
     it('should create period product cookie if submit is valid', () => {
+        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+
         const { req, res } = getMockRequestAndResponse(
             {},
             {
@@ -71,6 +70,8 @@ describe('periodProduct', () => {
     });
 
     it('should remove leading trailing spaces and tabs', () => {
+        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+
         const { req, res } = getMockRequestAndResponse(
             {},
             {

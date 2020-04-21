@@ -3,7 +3,6 @@ import Cookies from 'cookies';
 import {
     OPERATOR_COOKIE,
     SERVICE_COOKIE,
-    FARETYPE_COOKIE,
     JOURNEY_COOKIE,
     PERIOD_PRODUCT,
     CSV_ZONE_UPLOAD_COOKIE,
@@ -24,18 +23,16 @@ export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): b
     const cookies = new Cookies(req, res);
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
     const serviceCookie = unescape(decodeURI(cookies.get(SERVICE_COOKIE) || ''));
-    const fareTypeCookie = unescape(decodeURI(cookies.get(FARETYPE_COOKIE) || ''));
     const journeyCookie = unescape(decodeURI(cookies.get(JOURNEY_COOKIE) || ''));
 
     try {
-        const operatorObject = JSON.parse(operatorCookie);
-        const serviceObject = JSON.parse(serviceCookie);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
-        const journeyObject = JSON.parse(journeyCookie);
+        const operatorInfo = JSON.parse(operatorCookie);
+        const serviceInfo = JSON.parse(serviceCookie);
+        const journeyInfo = JSON.parse(journeyCookie);
 
-        const { uuid } = operatorObject;
+        const { uuid } = operatorInfo;
 
-        if (serviceObject.uuid === uuid && fareTypeObject.uuid === uuid && journeyObject.uuid === uuid) {
+        if (serviceInfo.uuid === uuid && journeyInfo.uuid === uuid) {
             return true;
         }
     } catch (err) {
@@ -48,8 +45,8 @@ export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): b
 };
 
 export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    let csvZoneUploadObject;
-    let singleOperatorObject;
+    let csvZoneUpload;
+    let singleOperator;
     const cookies = new Cookies(req, res);
 
     const csvUploadZoneUploadCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
@@ -58,22 +55,19 @@ export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiRespon
     const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
 
     try {
-        const operatorObject = JSON.parse(operatorCookie);
-        const periodProductObject = JSON.parse(periodProductCookie);
+        const operatorInfo = JSON.parse(operatorCookie);
+        const periodProduct = JSON.parse(periodProductCookie);
 
         if (csvUploadZoneUploadCookie) {
-            csvZoneUploadObject = JSON.parse(csvUploadZoneUploadCookie);
+            csvZoneUpload = JSON.parse(csvUploadZoneUploadCookie);
         }
         if (singleOperatorCookie) {
-            singleOperatorObject = JSON.parse(singleOperatorCookie);
+            singleOperator = JSON.parse(singleOperatorCookie);
         }
 
-        const { uuid } = operatorObject;
+        const { uuid } = operatorInfo;
 
-        if (
-            periodProductObject.uuid === uuid &&
-            (csvZoneUploadObject?.uuid === uuid || singleOperatorObject?.uuid === uuid)
-        ) {
+        if (periodProduct.uuid === uuid && (csvZoneUpload?.uuid === uuid || singleOperator?.uuid === uuid)) {
             return true;
         }
     } catch (err) {

@@ -3,74 +3,87 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { PERIOD_TYPE } from '../constants';
+import { ErrorInfo } from '../types';
+import { buildTitle } from '../utils';
+import ErrorSummary from '../components/ErrorSummary';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Period Type - Fares data build tool';
 const description = 'Period Type selection page of the Fares data build tool';
 
-export interface PeriodTypeInterface {
-    uuid: string;
-    error: boolean;
-    periodTypeName?: string;
-}
+const errorId = 'period-type-error';
 
-const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
+type PeriodTypeProps = {
+    errors: ErrorInfo[];
+};
+
+const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
     return (
-        <Layout title={title} description={description}>
+        <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/periodType" method="post">
-                    <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
+                    <ErrorSummary errors={errors} />
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
                                     What type of Period Ticket?
                                 </h1>
                             </legend>
-                            <span id="radio-error" className="govuk-error-message">
-                                <span className={error ? '' : 'govuk-visually-hidden'}>Please select an option</span>
-                            </span>
-                            <div className="govuk-radios">
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="periodtype-geo-zone"
-                                        name="periodType"
-                                        type="radio"
-                                        value="periodGeoZone"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="periodtype-geo-zone">
-                                        A ticket within a geographical zone
-                                    </label>
+                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--errors">
+                                <div className="govuk-radios">
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="periodtype-geo-zone"
+                                            name="periodType"
+                                            type="radio"
+                                            value="periodGeoZone"
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor="periodtype-geo-zone"
+                                        >
+                                            A ticket within a geographical zone
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="periodtype-single-set-service"
+                                            name="periodType"
+                                            type="radio"
+                                            value="periodMultipleServices"
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor="periodtype-single-set-service"
+                                        >
+                                            A ticket for some or all of your network of services
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="periodtype-network"
+                                            name="periodType"
+                                            type="radio"
+                                            value="periodMultipleOperators"
+                                            disabled
+                                            aria-disabled="true"
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
+                                            A ticket for services across multiple operators
+                                        </label>
+                                    </div>
                                 </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="periodtype-single-set-service"
-                                        name="periodType"
-                                        type="radio"
-                                        value="periodMultipleServices"
-                                    />
-                                    <label
-                                        className="govuk-label govuk-radios__label"
-                                        htmlFor="periodtype-single-set-service"
-                                    >
-                                        A ticket for some or all of your network of services
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="periodtype-network"
-                                        name="periodType"
-                                        type="radio"
-                                        value="periodMultipleOperators"
-                                        disabled
-                                        aria-disabled="true"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
-                                        A ticket for services across multiple operators
-                                    </label>
-                                </div>
-                            </div>
+                            </FormElementWrapper>
                         </fieldset>
                     </div>
                     <input
@@ -85,24 +98,20 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const periodTypeCookie = cookies[PERIOD_TYPE];
 
-    if (!periodTypeCookie) {
-        return {
-            props: {},
-        };
+    if (cookies[PERIOD_TYPE]) {
+        const periodTypeCookie = unescape(decodeURI(cookies[PERIOD_TYPE]));
+        const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
+
+        if (parsedPeriodTypeCookie.errorMessage) {
+            const { errorMessage } = parsedPeriodTypeCookie;
+            return { props: { errors: [{ errorMessage, id: errorId }] } };
+        }
     }
 
-    const { error } = JSON.parse(periodTypeCookie);
-
-    return {
-        props: {
-            error: !periodTypeCookie ? {} : error,
-        },
-    };
+    return { props: {} };
 };
 
 export default PeriodType;

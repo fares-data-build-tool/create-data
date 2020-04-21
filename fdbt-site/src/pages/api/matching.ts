@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { BasicService } from '../matching';
-import { Stop } from '../../data/dynamodb';
+import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
-import { isCookiesUUIDMatch } from './service/validator';
+import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
 
 interface MatchingData {
@@ -91,6 +91,10 @@ const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         if (!isCookiesUUIDMatch(req, res)) {
             throw new Error('Cookie UUIDs do not match');
         }

@@ -14,8 +14,11 @@ exports[`pages inputMethod should render correctly 1`] = `
       action="/api/inputMethod"
       method="post"
     >
+      <ErrorSummary
+        errors={Array []}
+      />
       <div
-        className="govuk-form-group"
+        className="govuk-form-group "
       >
         <fieldset
           aria-describedby="input-method-heading"
@@ -31,63 +34,70 @@ exports[`pages inputMethod should render correctly 1`] = `
               Please select your preferred input method
             </h1>
           </legend>
-          <div
-            className="govuk-radios"
+          <FormElementWrapper
+            errorClass="govuk-radios--error"
+            errorId="input-method-error"
+            errors={Array []}
           >
             <div
-              className="govuk-radios__item"
+              className="govuk-radios"
+              id="radio-buttons"
             >
-              <input
-                className="govuk-radios__input"
-                id="csv-upload"
-                name="inputMethod"
-                type="radio"
-                value="csv"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="csv-upload"
+              <div
+                className="govuk-radios__item"
               >
-                Upload (.csv)
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input"
-                id="manual-entry"
-                name="inputMethod"
-                type="radio"
-                value="manual"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="manual-entry"
+                <input
+                  className="govuk-radios__input  "
+                  id="csv-upload"
+                  name="inputMethod"
+                  type="radio"
+                  value="csv"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="csv-upload"
+                >
+                  Upload (.csv)
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
               >
-                Manual Fares Triangle input
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                aria-disabled="true"
-                className="govuk-radios__input"
-                disabled={true}
-                id="interactive-map"
-                name="inputMethod"
-                type="radio"
-                value="interactiveMap"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="interactive-map"
+                <input
+                  className="govuk-radios__input  "
+                  id="manual-entry"
+                  name="inputMethod"
+                  type="radio"
+                  value="manual"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="manual-entry"
+                >
+                  Manual Fares Triangle input
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
               >
-                Interactive Map (Beta)
-              </label>
+                <input
+                  aria-disabled="true"
+                  className="govuk-radios__input  "
+                  disabled={true}
+                  id="interactive-map"
+                  name="inputMethod"
+                  type="radio"
+                  value="interactiveMap"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="interactive-map"
+                >
+                  Interactive Map (Beta)
+                </label>
+              </div>
             </div>
-          </div>
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input

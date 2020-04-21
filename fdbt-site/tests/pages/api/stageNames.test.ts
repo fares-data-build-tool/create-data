@@ -1,16 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../../src/constants';
 import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('stageNames', () => {
-    let setCookieSpy: any;
-
-    beforeEach(() => {
-        setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-    });
-
     afterEach(() => {
         jest.resetAllMocks();
     });
@@ -85,6 +78,7 @@ describe('stageNames', () => {
     });
 
     it('should set the STAGE_NAMES_COOKIE and STAGE_NAME_VALIDATION_COOKIE with values matching the valid data entered by the user ', () => {
+        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
         const { req, res } = getMockRequestAndResponse({}, mockBody);
         const mockStageNamesCookieValue = '["a","b","c","d"]';
@@ -93,6 +87,7 @@ describe('stageNames', () => {
     });
 
     it('should set the STAGE_NAME_VALIDATION_COOKIE with a value matching the invalid data entered by the user', () => {
+        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { stageNameInput: [' ', 'abcdefghijklmnopqrstuvwxyzabcdefgh', '   ', 'b'] };
         const { req, res } = getMockRequestAndResponse({}, mockBody);
         const mockInputCheck =

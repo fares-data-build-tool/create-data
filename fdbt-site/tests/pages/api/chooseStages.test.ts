@@ -12,8 +12,7 @@ describe('chooseStages', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cases: any[] = [
+    const cases: {}[] = [
         [{}, { Location: '/chooseStages' }],
         [{ fareStageInput: 'abcdefghijk' }, { Location: '/error' }],
         [{ fareStageInput: '1.2' }, { Location: '/error' }],

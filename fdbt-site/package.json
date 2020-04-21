@@ -21,7 +21,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && tsc"
         }
     },
     "lint-staged": {
@@ -35,6 +35,7 @@
     "dependencies": {
         "array.prototype.flatmap": "^1.2.3",
         "aws-event-mocks": "0.0.0",
+        "aws-param-store": "^3.2.0",
         "aws-sdk": "^2.636.0",
         "axios": "^0.19.2",
         "base-64": "^0.1.0",
@@ -46,6 +47,7 @@
         "govuk-frontend": "^3.6.0",
         "mock-express-request": "^0.2.2",
         "multer": "^1.4.2",
+        "mysql2": "^2.1.0",
         "next": "^9.3.0",
         "next-compose-plugins": "^2.2.0",
         "next-fonts": "^1.0.3",
@@ -60,6 +62,7 @@
         "@types/array.prototype.flatmap": "^1.2.1",
         "@types/aws-lambda": "^8.10.46",
         "@types/aws-lambda-mock-context": "^3.2.0",
+        "@types/aws-param-store": "^2.1.1",
         "@types/axios": "^0.14.0",
         "@types/cookies": "^0.7.4",
         "@types/dateformat": "^3.0.1",
@@ -71,6 +74,7 @@
         "@types/mock-req-res": "^1.1.0",
         "@types/moxios": "^0.4.9",
         "@types/multer": "^1.4.2",
+        "@types/mysql2": "github:types/mysql2",
         "@types/next": "^9.0.0",
         "@types/node": "^13.9.0",
         "@types/nookies": "^2.0.3",

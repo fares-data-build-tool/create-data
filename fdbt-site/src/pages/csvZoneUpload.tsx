@@ -5,14 +5,31 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
+import { deleteCookieOnServerSide } from '../utils';
 
 const title = 'CSV Zone Upload Method - Fares data build tool';
 const description = 'CSV Zone Upload page of the Fares data build tool';
 
+const errorId = 'csv-upload-error';
+
 const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <UserDataUploadComponent {...uploadProps} />
+            <UserDataUploadComponent
+                {...uploadProps}
+                detailBody={
+                    <>
+                        <p>
+                            Use the Help File document for more detailed help on constructing your Fare Zone CSV, the
+                            Fares Zone CSV Example document provides an example of the required format.
+                        </p>
+                        <p>Some common issues with the format include:</p>
+                        <ul className="govuk-list govuk-list--bullet">
+                            <li>Commas in Fare Zone name</li>
+                        </ul>
+                    </>
+                }
+            />
         </main>
     </Layout>
 );
@@ -41,9 +58,14 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             csvTemplateDisplayName: 'Download Fare Zone CSV Example',
             csvTemplateAttachmentUrl: '/assets/files/Fare-Zone-Example.csv',
             csvTemplateSize: '600B',
-            error: !csvZoneUploadCookie ? '' : csvZoneUpload.error,
+            errors: !csvZoneUpload?.error ? [] : [{ errorMessage: csvZoneUpload.error, id: errorId }],
+            detailSummary: 'Help with Fares Zone CSV upload',
         },
     };
+
+    if (csvZoneUpload?.error) {
+        deleteCookieOnServerSide(ctx, CSV_ZONE_UPLOAD_COOKIE);
+    }
 
     return uploadProps;
 };
