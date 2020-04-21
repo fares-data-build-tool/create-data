@@ -55,7 +55,7 @@ describe('Single Operator API', () => {
         SingleOperator(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodProduct',
+            Location: '/howManyProducts',
         });
     });
 });

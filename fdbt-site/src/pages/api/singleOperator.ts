@@ -58,7 +58,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         });
 
         setSingleOperatorCookie(req, res, false, checkedServiceList);
-        redirectTo(res, '/periodProduct');
+        redirectTo(res, '/howManyProducts');
         return;
     } catch (error) {
         const message = 'There was a problem selecting the selecting the services for a single operator:';

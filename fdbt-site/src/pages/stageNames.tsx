@@ -79,7 +79,6 @@ const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactE
     </Layout>
 );
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
     const cookies = parseCookies(ctx);

@@ -75,7 +75,6 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
     </Layout>
 );
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];

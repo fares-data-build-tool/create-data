@@ -18,9 +18,11 @@ describe('stageNames', () => {
                 { Error: 'Enter a name for this fare stage', Input: '' },
                 { Error: 'Enter a name for this fare stage', Input: '' },
             ];
+
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
         });
+        
         it('should return an array of valid input checks when the user enters correct data', () => {
             const mockBody = { stageNameInput: ['abcd', 'efg', 'hijkl', 'mn'] };
             const { req } = getMockRequestAndResponse({}, mockBody);
@@ -33,6 +35,7 @@ describe('stageNames', () => {
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
         });
+
         it('should return an array of invalid and valid input checks when the user enters incorrect data', () => {
             const mockBody = { stageNameInput: ['abcde', '   ', 'xyz', ''] };
             const { req } = getMockRequestAndResponse({}, mockBody);
