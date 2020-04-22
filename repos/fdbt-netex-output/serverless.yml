@@ -5,9 +5,14 @@ provider:
     runtime: nodejs12.x
     region: eu-west-2
     stage: ${opt:stage, 'test'}
-    timeout: 900
-    memorySize: 2048
+    stackName: ${self:service}-${self:provider.stage}
+    timeout: 30
+    memorySize: 512
     iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+              - "ssm:GetParameter"
+          Resource: "*"
         - Effect: 'Allow'
           Action:
               - 's3:GetObject'
@@ -18,38 +23,10 @@ provider:
               - !Sub arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*
         - Effect: 'Allow'
           Action:
-              - dynamodb:DescribeTable
-              - dynamodb:Query
-              - dynamodb:GetItem
-          Resource:
-              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NaptanTableArn'
-              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NocTableArn'
-              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:ServicesTableArn'
-              - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:TndsTableArn'
-        - Effect: 'Allow'
-          Action:
               - ses:SendEmail
               - ses:SendRawEmail
           Resource:
               - '*'
-
-    environment:
-        NAPTAN_TABLE_NAME: ${self:provider.stage}-Stops
-        NOC_TABLE_NAME: ${self:provider.stage}-Operators
-        SERVICES_TABLE_NAME: ${self:provider.stage}-Services
-        TNDS_TABLE_NAME: ${self:provider.stage}-TNDS
-        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
-        UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
-
-custom:
-    NaptanTableName:
-        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NaptanTableName'
-    NocTableName:
-        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:NocTableName'
-    ServicesTableName:
-        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:ServicesTableName'
-    TndsTableName:
-        - 'Fn::ImportValue': 'reference-data-service:${self:provider.stage}:TndsTableName'
 
 functions:
     NetexConvertor:
@@ -57,6 +34,17 @@ functions:
         events:
             - s3: fdbt-matching-data-${self:provider.stage}
               event: s3:ObjectCreated:*
+        vpc:
+            securityGroupIds:
+                - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
+            subnetIds:
+                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
+                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
+        environment:
+            AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+            UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
+            RDS_HOST:
+                Fn::ImportValue: ${self:provider.stage}:RdsHostName       
 
     OdhUploader:
         handler: src/odh-uploader/handler.odhUploaderHandler
@@ -67,7 +55,6 @@ functions:
 plugins:
     - serverless-plugin-typescript
     - serverless-s3-local
-    - serverless-dynamodb-local
     - serverless-offline
 
 package:

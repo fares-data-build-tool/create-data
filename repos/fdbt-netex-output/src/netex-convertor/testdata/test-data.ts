@@ -1048,7 +1048,7 @@ export const mockSingleTicketMatchingDataUpload = {
 
 export const mockPeriodTicketMatchingDataUpload = {
     operatorName: 'Pilkington Bus',
-    type: 'period',
+    type: 'periodGeoZone',
     zoneName: 'Test Town Centre',
     stops: [
         {

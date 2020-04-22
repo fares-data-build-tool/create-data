@@ -39,7 +39,7 @@ const singleTicketNetexGenerator = (
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${matchingData.nocCode}`;
     const opIdBrandFormat = `${operatorData.opId}@brand`;
-    const operatorPublicNameLineNameFormat = `${operatorData.publicName} ${matchingData.lineName}`;
+    const operatorPublicNameLineNameFormat = `${operatorData.operatorPublicName} ${matchingData.lineName}`;
     const noccodeLineNameFormat = `${matchingData.nocCode}_${matchingData.lineName}`;
     const lineIdName = `Line_${matchingData.lineName}`;
     const currentDate = new Date(Date.now());
@@ -80,16 +80,16 @@ const singleTicketNetexGenerator = (
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-            operatorData.publicName;
+            operatorData.operatorPublicName;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-            operatorData.publicName;
+            operatorData.operatorPublicName;
         resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.id = opIdBrandFormat;
         resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
         resourceFrameToUpdate.organisations.Operator.PublicCode.$t = matchingData.nocCode;
-        resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.publicName;
+        resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.operatorPublicName;
         resourceFrameToUpdate.organisations.Operator.ShortName.$t = matchingData.operatorShortName;
-        resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.vosaPSVLicenseName; // eslint-disable-line @typescript-eslint/camelcase
+        resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.operatorPublicName; // eslint-disable-line @typescript-eslint/camelcase
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
         resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
         resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(operatorData.mode);
@@ -111,7 +111,7 @@ const singleTicketNetexGenerator = (
         serviceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ServiceFrame_UK_PI_NETWORK:${lineIdName}:op`;
         serviceFrameToUpdate.lines.Line.id = matchingData.lineName;
         serviceFrameToUpdate.lines.Line.Name.$t = operatorPublicNameLineNameFormat;
-        serviceFrameToUpdate.lines.Line.Description.$t = serviceData.serviceDescription;
+        serviceFrameToUpdate.lines.Line.Description.$t = serviceData.description;
         serviceFrameToUpdate.lines.Line.PublicCode.$t = matchingData.lineName;
         serviceFrameToUpdate.lines.Line.PrivateCode.$t = noccodeLineNameFormat;
         serviceFrameToUpdate.lines.Line.OperatorRef.ref = nocCodeNocFormat;
@@ -171,7 +171,7 @@ const singleTicketNetexGenerator = (
         fareTableFareFrameToUpdate.id = `operator@Products@Trip@prices@${lineIdName}`;
         fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
         fareTableFareFrameToUpdate.fareTables.FareTable.id = `Trip@single-SOP@p-ticket@${lineIdName}@adult`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = serviceData.serviceDescription;
+        fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = serviceData.description
         fareTableFareFrameToUpdate.fareTables.FareTable.usedIn.TariffRef.ref = `Tariff@single@${lineIdName}`;
         fareTableFareFrameToUpdate.fareTables.FareTable.specifics.LineRef.ref = lineIdName;
         fareTableFareFrameToUpdate.fareTables.FareTable.columns.FareTableColumn = getFareTableElements(
