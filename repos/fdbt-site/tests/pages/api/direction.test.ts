@@ -26,7 +26,7 @@ describe('direction', () => {
         (setCookieOnResponseObject as {}) = jest.fn();
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/inputMethod',
+            Location: '/selectJourney',
         });
     });
 

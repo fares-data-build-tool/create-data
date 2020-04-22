@@ -130,6 +130,37 @@ export const getMockContext = (
     return ctx;
 };
 
+export const mockSingleService: RawService = {
+    serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
+    operatorShortName: 'HCTY',
+    journeyPatterns: [
+        {
+            JourneyPattern: [
+                {
+                    OrderedStopPoints: [
+                        {
+                            StopPointRef: '13003921A',
+                            CommonName: 'Estate (Hail and Ride) N/B',
+                        },
+                        {
+                            StopPointRef: '13003612D',
+                            CommonName: 'New Strangford Road SE/B',
+                        },
+                        {
+                            StopPointRef: '13003611B',
+                            CommonName: 'New Tempest Road (York House) NE/B',
+                        },
+                        {
+                            StopPointRef: '13003655B',
+                            CommonName: 'Interchange Stand B',
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
+};
+
 export const mockRawService: RawService = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',

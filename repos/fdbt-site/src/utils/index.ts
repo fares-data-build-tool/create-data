@@ -8,6 +8,16 @@ import { ALL_COOKIES, OPERATOR_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { ErrorInfo } from '../types';
 
+export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
+    if (ctx.req && ctx.res) {
+        const cookies = new Cookies(ctx.req, ctx.res);
+        const host = ctx?.req?.headers?.host;
+        const domain = host ? host.split(':')[0] : '';
+
+        cookies.set(cookieName, cookieValue, { domain, path: '/' });
+    }
+};
+
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);

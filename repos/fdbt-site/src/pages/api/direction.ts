@@ -24,7 +24,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const cookieValue = JSON.stringify({ journeyPattern, uuid });
         setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
-        redirectTo(res, '/inputMethod');
+        redirectTo(res, '/selectJourney');
     } catch (error) {
         const message = 'There was a problem selecting the direction:';
         redirectToError(res, message, error);
