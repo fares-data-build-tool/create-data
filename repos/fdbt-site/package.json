@@ -33,7 +33,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "array.prototype.flatmap": "^1.2.3",
         "aws-event-mocks": "0.0.0",
         "aws-param-store": "^3.2.0",
         "aws-sdk": "^2.636.0",
@@ -59,7 +58,6 @@
         "xml2js": "^0.4.23"
     },
     "devDependencies": {
-        "@types/array.prototype.flatmap": "^1.2.1",
         "@types/aws-lambda": "^8.10.46",
         "@types/aws-lambda-mock-context": "^3.2.0",
         "@types/aws-param-store": "^2.1.1",

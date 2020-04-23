@@ -14,11 +14,14 @@ describe('Period Validity API', () => {
     });
 
     const atcoCodes: string[] = ['13003305E', '13003622B', '13003655B'];
+    let batchGetStopsByAtcoCodeSpy: jest.SpyInstance;
 
     beforeEach(() => {
         jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
 
-        jest.spyOn(dynamodb, 'batchGetStopsByAtcoCode').mockImplementation(() => Promise.resolve(naptanStopInfo));
+        batchGetStopsByAtcoCodeSpy = jest
+            .spyOn(dynamodb, 'batchGetStopsByAtcoCode')
+            .mockImplementation(() => Promise.resolve(naptanStopInfo));
     });
 
     it('correctly generates JSON for period data and uploads to S3', async () => {
@@ -53,6 +56,17 @@ describe('Period Validity API', () => {
 
     it('should redirect to the error page if the cookie UUIDs to do not match', async () => {
         const { req, res } = getMockRequestAndResponse({}, null, { periodProductUuid: 'someUuid' }, writeHeadMock);
+
+        await periodValidity(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
+        });
+    });
+
+    it('throws an error if no stops are returned from query', async () => {
+        const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
+        batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
 
         await periodValidity(req, res);
 

@@ -66,6 +66,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
                 const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
+                if (zoneStops.length === 0) {
+                    throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
+                }
+
                 props = {
                     zoneName: fareZoneName,
                     stops: zoneStops,

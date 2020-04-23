@@ -31,15 +31,11 @@ export interface QueryData {
     journeyPatternId: string;
     order: string;
 }
-export interface RawJourneyPatternStops {
-    OrderedStopPoints: {
-        StopPointRef: string;
-        CommonName: string;
-    }[];
-}
-
 export interface RawJourneyPattern {
-    JourneyPattern: RawJourneyPatternStops[];
+    orderedStopPoints: {
+        stopPointRef: string;
+        commonName: string;
+    }[];
 }
 
 interface NaptanInfo {
@@ -131,12 +127,16 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     try {
-        const queryInput = 'SELECT * FROM `tndsService` WHERE `nocCode` = ?';
+        const queryInput = `
+            SELECT lineName, startDate, description
+            FROM tndsService
+            WHERE nocCode = ?
+        `;
 
-        const queryResult = await executeQuery<ServiceType[]>(queryInput, [nocCode]);
+        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCode]);
 
         return (
-            queryResult.map(item => ({
+            queryResults.map(item => ({
                 lineName: item.lineName,
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
@@ -150,7 +150,11 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
     try {
         const substitution = atcoCodes.map(() => '?').join(',');
-        const batchQuery = `SELECT * FROM naptanStop WHERE atcoCode IN (${substitution})`;
+        const batchQuery = `
+            SELECT commonName, naptanCode, atcoCode, nptgLocalityCode, localityName, parentLocalityName, indicator, street
+            FROM naptanStop
+            WHERE atcoCode IN (${substitution})
+        `;
 
         const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
 
@@ -160,7 +164,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
             atcoCode: item.atcoCode,
             localityCode: item.nptgLocalityCode,
             localityName: item.localityName,
-            parentLocalityName: item.parentLocalityName !== null ? item.parentLocalityName : '',
+            parentLocalityName: item.parentLocalityName ?? '',
             indicator: item.indicator,
             street: item.street,
         }));
@@ -173,10 +177,14 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 
 export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
     const substitution = naptanCodes.map(() => '?').join(',');
-    const atcoCodesByNaptanCodeQuery = `SELECT * FROM naptanStop WHERE naptanCode IN (${substitution})`;
+    const atcoCodesByNaptanCodeQuery = `
+        SELECT atcoCode, naptanCode FROM naptanStop
+        WHERE naptanCode IN (${substitution})
+    `;
 
     try {
         const queryResults = await executeQuery<NaptanAtcoCodes[]>(atcoCodesByNaptanCodeQuery, naptanCodes);
+
         return queryResults.map(item => ({ atcoCode: item.atcoCode, naptanCode: item.naptanCode }));
     } catch (error) {
         throw new Error(
@@ -188,15 +196,16 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 };
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
-    const serviceQuery =
-        'SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName ' +
-        ' FROM tndsOperatorService AS os' +
-        ' INNER JOIN tndsJourneyPattern AS ps ON ps.operatorServiceId = os.id' +
-        ' INNER JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id' +
-        ' LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode' +
-        ' LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode' +
-        ' WHERE os.nocCode = ? AND os.lineName = ?' +
-        ' ORDER BY pl.orderInSequence, pl.journeyPatternId ASC';
+    const serviceQuery = `
+        SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
+        FROM tndsOperatorService AS os
+        JOIN tndsJourneyPattern AS ps ON ps.operatorServiceId = os.id
+        JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
+        LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
+        LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
+        WHERE os.nocCode = ? AND os.lineName = ?
+        ORDER BY pl.orderInSequence, pl.journeyPatternId ASC
+    `;
 
     let queryResult: QueryData[];
 
@@ -207,35 +216,29 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
     }
 
     const service = queryResult[0];
-    const rawPatternService: RawJourneyPattern[] = [];
 
     // allows to get the unique journey's for the operator e.g. [1,2,3]
     const uniqueJourneyPatterns = queryResult
         .map(item => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
-    uniqueJourneyPatterns.forEach(journey => {
+    const rawPatternService = uniqueJourneyPatterns.map(journey => {
         const filteredJourney = queryResult.filter(item => {
             return item.journeyPatternId === journey;
         });
 
-        const journeyPatternSection: RawJourneyPatternStops = {
-            OrderedStopPoints: [
+        return {
+            orderedStopPoints: [
                 {
-                    StopPointRef: filteredJourney[0].fromAtcoCode,
-                    CommonName: filteredJourney[0].fromCommonName,
+                    stopPointRef: filteredJourney[0].fromAtcoCode,
+                    commonName: filteredJourney[0].fromCommonName,
                 },
                 ...filteredJourney.map((data: QueryData) => ({
-                    StopPointRef: data.toAtcoCode,
-                    CommonName: data.toCommonName,
+                    stopPointRef: data.toAtcoCode,
+                    commonName: data.toCommonName,
                 })),
             ],
         };
-
-        const rawPatternSection: RawJourneyPatternStops[] = [];
-        rawPatternSection.push(journeyPatternSection);
-
-        rawPatternService.push({ JourneyPattern: rawPatternSection });
     });
 
     if (!service || rawPatternService.length === 0) {
