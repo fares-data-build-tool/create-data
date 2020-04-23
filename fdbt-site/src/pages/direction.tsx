@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide, getUuidFromCookies, setCookieOnServerSide } from '../utils';
@@ -74,28 +73,26 @@ const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPa
     Promise.all(
         journeyPatterns.map(
             async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                const stopList = flatMap(item.JourneyPattern, stop => {
-                    return stop.OrderedStopPoints.map(stopPoint => stopPoint.StopPointRef);
-                });
+                const stopList = item.orderedStopPoints.map(stop => stop.stopPointRef);
 
-                const startPoint = item.JourneyPattern[0].OrderedStopPoints[0];
-                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.StopPointRef]);
+                const startPoint = item.orderedStopPoints[0];
+                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.stopPointRef]);
 
-                const endPoint = item.JourneyPattern.slice(-1)[0].OrderedStopPoints.slice(-1)[0];
-                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.StopPointRef]);
+                const endPoint = item.orderedStopPoints.slice(-1)[0];
+                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.stopPointRef]);
 
                 return {
                     startPoint: {
-                        Display: `${startPoint.CommonName}${
+                        Display: `${startPoint.commonName}${
                             startPointStopLocality?.localityName ? `, ${startPointStopLocality.localityName}` : ''
                         }`,
-                        Id: startPoint.StopPointRef,
+                        Id: startPoint.stopPointRef,
                     },
                     endPoint: {
-                        Display: `${endPoint.CommonName}${
+                        Display: `${endPoint.commonName}${
                             endPointStopLocality?.localityName ? `, ${endPointStopLocality.localityName}` : ''
                         }`,
-                        Id: endPoint.StopPointRef,
+                        Id: endPoint.stopPointRef,
                     },
                     stopList,
                 };

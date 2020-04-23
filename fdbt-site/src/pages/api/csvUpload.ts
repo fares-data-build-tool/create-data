@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import flatMap from 'array.prototype.flatmap';
 import { getUuidFromCookie, redirectToError, redirectTo, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
 import { CSV_UPLOAD_COOKIE } from '../../constants';
@@ -95,8 +94,8 @@ export const faresTriangleDataMapper = (
         })),
     };
 
-    const numberOfPrices = flatMap(mappedFareTriangle.fareStages, stage =>
-        flatMap(stage.prices, price => price.fareZones),
+    const numberOfPrices = mappedFareTriangle.fareStages.flatMap(stage =>
+        stage.prices.flatMap(price => price.fareZones),
     ).length;
 
     if (numberOfPrices !== expectedNumberOfPrices) {
