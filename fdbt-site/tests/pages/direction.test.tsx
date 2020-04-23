@@ -79,7 +79,7 @@ describe('pages', () => {
             });
         });
 
-        it('redirect to the inputMethod page when there is a circular journey', async () => {
+        it('redirects to the inputMethod page when there is a circular journey, but only when fareType is returnSingle', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockSingleService));
 
             const writeHeadMock = jest.fn();
