@@ -67,18 +67,18 @@ const periodTicketNetexGenerator = (
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = operatorData.ttrteEnq;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-            operatorData.publicName;
+            operatorData.operatorPublicName;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-            operatorData.publicName;
+            operatorData.operatorPublicName;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.id = `op:${geoFareZonePass.operatorName}@brand`;
-        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = operatorData.publicName;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = operatorData.operatorPublicName;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = website;
         resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
         resourceFrameToUpdate.organisations.Operator.PublicCode.$t = geoFareZonePass.nocCode;
-        resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.publicName;
+        resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.operatorPublicName;
         resourceFrameToUpdate.organisations.Operator.ShortName.$t = geoFareZonePass.operatorName;
-        resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.vosaPSVLicenseName; // eslint-disable-line @typescript-eslint/camelcase
+        resourceFrameToUpdate.organisations.Operator.TradingName.$t = operatorData.vosaPsvLicenseName; // eslint-disable-line @typescript-eslint/camelcase
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = website;
         resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
@@ -205,7 +205,7 @@ const periodTicketNetexGenerator = (
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.id = `op:Pass@${geoFareZonePass.productName}Pass-SOP@m-ticket`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${geoFareZonePass.productName}`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].id = `op:Pass@${geoFareZonePass.productName}-SOP@subscription`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].Name.$t = `${operatorData.publicName} Unlimited`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].Name.$t = `${operatorData.operatorPublicName} Unlimited`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.id = `op:Pass@${geoFareZonePass.productName}-SOP@subscription@subscribing`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.limitations.Subscribing.id = `op:Pass@${geoFareZonePass.productName}-SOP@subscription@subscribing`;
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.limitations.Subscribing.possibleInstallmenttIntervals.TimeIntervalRef.ref = `op:Tariff@${geoFareZonePass.productName}@4week`;
