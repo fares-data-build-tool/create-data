@@ -1,12 +1,11 @@
 import { S3Event } from 'aws-lambda';
-
 import { netexConvertorHandler } from './handler';
 import * as mocks from './testdata/test-data';
 import * as s3 from './data/s3';
 import * as singleTicketNetexGenerator from './single-ticket/singleTicketNetexGenerator';
 import * as periodTicketNetexGenerator from './period-ticket/periodTicketNetexGenerator';
 
-jest.mock('./data/dynamodb.ts');
+jest.mock('./data/auroradb.ts');
 jest.spyOn(s3, 'uploadNetexToS3').mockImplementation(() => Promise.resolve());
 
 describe('netexConvertorHandler', () => {
