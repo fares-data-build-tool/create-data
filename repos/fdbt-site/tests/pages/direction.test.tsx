@@ -3,7 +3,13 @@ import { shallow } from 'enzyme';
 
 import Direction, { getServerSideProps } from '../../src/pages/direction';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
-import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
+import {
+    mockRawService,
+    mockService,
+    mockRawServiceWithDuplicates,
+    getMockContext,
+    mockSingleService,
+} from '../testData/mockData';
 
 jest.mock('../../src/data/auroradb.ts');
 
@@ -73,9 +79,30 @@ describe('pages', () => {
             });
         });
 
+        it('redirects to the inputMethod page when there is a circular journey, but only when fareType is returnSingle', async () => {
+            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockSingleService));
+
+            const writeHeadMock = jest.fn();
+
+            const operator = 'HCTY';
+            const lineName = 'X6A';
+
+            const ctx = getMockContext(
+                { operator, serviceLineName: lineName, fareType: 'returnSingle' },
+                {},
+                '',
+                writeHeadMock,
+            );
+
+            await getServerSideProps(ctx);
+
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/inputMethod',
+            });
+        });
+
         it('throws an error if no journey patterns can be found', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
-
             const ctx = getMockContext();
 
             await expect(getServerSideProps(ctx)).rejects.toThrow();

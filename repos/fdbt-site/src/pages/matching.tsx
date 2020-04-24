@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
 import {
     getServiceByNocCodeAndLineName,
     batchGetStopsByAtcoCode,
     Stop,
     RawService,
-    RawJourneyPatternStops,
+    RawJourneyPattern,
 } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages, FareStage } from '../data/s3';
@@ -98,16 +97,16 @@ const getJourneysByStartAndEndPoint = (
     service: RawService,
     selectedStartPoint: string,
     selectedEndPoint: string,
-): RawJourneyPatternStops[] =>
-    flatMap(service.journeyPatterns, journey => journey.JourneyPattern).filter(
+): RawJourneyPattern[] =>
+    service.journeyPatterns.filter(
         item =>
-            item.OrderedStopPoints[0].StopPointRef === selectedStartPoint &&
-            item.OrderedStopPoints.slice(-1)[0].StopPointRef === selectedEndPoint,
+            item.orderedStopPoints[0].stopPointRef === selectedStartPoint &&
+            item.orderedStopPoints.slice(-1)[0].stopPointRef === selectedEndPoint,
     );
 
 // Gets a unique set of stop point refs from an array of journey pattern sections
-const getMasterStopList = (journeys: RawJourneyPatternStops[]): string[] => [
-    ...new Set(flatMap(journeys, journey => journey.OrderedStopPoints.map(item => item.StopPointRef))),
+const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
+    ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
 ];
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {

@@ -6,6 +6,7 @@ import { NUMBER_OF_PRODUCTS_COOKIE } from '../constants';
 import { deleteCookieOnServerSide, buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'How Many Products - Fares data build tool';
 const description = 'How many products page of the Fares data build tool';
@@ -25,7 +26,7 @@ const HowManyProducts = ({ inputCheck, errors }: HowManyProductProps): ReactElem
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/howManyProducts" method="post">
                 <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error input-error' : ''}`}>
+                <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
@@ -35,21 +36,20 @@ const HowManyProducts = ({ inputCheck, errors }: HowManyProductProps): ReactElem
                         <label className="govuk-label" htmlFor="numberOfProducts">
                             Number of fare products (up to a maximum of 10)
                         </label>
-                        {inputCheck?.error ? (
-                            <span id="numberOfProducts-error" className="govuk-error-message">
-                                <span className="govuk-visually-hidden">Error:</span> {inputCheck.error}
-                            </span>
-                        ) : null}
-                        <input
-                            className={`govuk-input govuk-input--width-2 ${
-                                inputCheck?.error ? 'govuk-input--error' : ''
-                            }`}
-                            id="numberOfProducts"
-                            name="numberOfProductsInput"
-                            type="text"
-                            defaultValue={!inputCheck?.error ? inputCheck?.numberOfProductsInput : ''}
-                            aria-describedby={inputCheck?.error ? `numberOfProducts-error` : ''}
-                        />
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId="how-many-products-error"
+                            errorClass="govuk-input--error"
+                        >
+                            <input
+                                className="govuk-input govuk-input--width-2"
+                                id="numberOfProducts"
+                                name="numberOfProductsInput"
+                                type="text"
+                                defaultValue={!inputCheck?.error ? inputCheck?.numberOfProductsInput : ''}
+                                aria-describedby={inputCheck?.error ? `numberOfProducts-error` : ''}
+                            />
+                        </FormElementWrapper>
                     </fieldset>
                 </div>
                 <input
@@ -65,15 +65,17 @@ const HowManyProducts = ({ inputCheck, errors }: HowManyProductProps): ReactElem
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
-
     let inputCheck: InputCheck = {};
     let errors: ErrorInfo[] = [];
+
     if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
         const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
         inputCheck = JSON.parse(numberOfProductsCookie);
-        errors = [{ errorMessage: inputCheck.error ? inputCheck.error : '', id: 'page-heading' }];
+        errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-products-error' }] : [];
     }
+
+    deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
+
     return { props: { inputCheck, errors } };
 };
 
