@@ -1,10 +1,9 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE } from '../constants';
+import { deleteCookieOnServerSide, getUuidFromCookies, setCookieOnServerSide } from '../utils';
 import {
     getServiceByNocCodeAndLineName,
     Service,
@@ -13,6 +12,7 @@ import {
     RawJourneyPattern,
     RawService,
 } from '../data/auroradb';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';
@@ -73,28 +73,26 @@ const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPa
     Promise.all(
         journeyPatterns.map(
             async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                const stopList = flatMap(item.JourneyPattern, stop => {
-                    return stop.OrderedStopPoints.map(stopPoint => stopPoint.StopPointRef);
-                });
+                const stopList = item.orderedStopPoints.map(stop => stop.stopPointRef);
 
-                const startPoint = item.JourneyPattern[0].OrderedStopPoints[0];
-                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.StopPointRef]);
+                const startPoint = item.orderedStopPoints[0];
+                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.stopPointRef]);
 
-                const endPoint = item.JourneyPattern.slice(-1)[0].OrderedStopPoints.slice(-1)[0];
-                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.StopPointRef]);
+                const endPoint = item.orderedStopPoints.slice(-1)[0];
+                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.stopPointRef]);
 
                 return {
                     startPoint: {
-                        Display: `${startPoint.CommonName}${
+                        Display: `${startPoint.commonName}${
                             startPointStopLocality?.localityName ? `, ${startPointStopLocality.localityName}` : ''
                         }`,
-                        Id: startPoint.StopPointRef,
+                        Id: startPoint.stopPointRef,
                     },
                     endPoint: {
-                        Display: `${endPoint.CommonName}${
+                        Display: `${endPoint.commonName}${
                             endPointStopLocality?.localityName ? `, ${endPointStopLocality.localityName}` : ''
                         }`,
-                        Id: endPoint.StopPointRef,
+                        Id: endPoint.stopPointRef,
                     },
                     stopList,
                 };
@@ -107,13 +105,16 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
+    const fareTypeCookie = cookies[FARETYPE_COOKIE];
 
-    if (!operatorCookie || !serviceCookie) {
+    if (!operatorCookie || !serviceCookie || !fareTypeCookie) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
+    const fareTypeInfo = JSON.parse(fareTypeCookie);
+
     const lineName = serviceInfo.service.split('#')[0];
 
     const rawService: RawService = await getServiceByNocCodeAndLineName(operatorInfo.nocCode, lineName);
@@ -135,6 +136,17 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
                 item => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
             ) === index,
     );
+
+    // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
+    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
+        if (ctx.res) {
+            const uuid = getUuidFromCookies(ctx);
+            const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
+            const cookieValue = JSON.stringify({ journeyPattern: journeyPatternCookie, uuid });
+            setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
+            redirectTo(ctx.res, '/inputMethod');
+        }
+    }
 
     return { props: { operator: operatorInfo.operator, lineName, service } };
 };

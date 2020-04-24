@@ -25,7 +25,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         }
       />
       <div
-        className="govuk-form-group govuk-form-group--error input-error"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -47,26 +47,27 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           >
             Number of fare products (up to a maximum of 10)
           </label>
-          <span
-            className="govuk-error-message"
-            id="numberOfProducts-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter a whole number between 1 and 10",
+                  "id": "page-heading",
+                },
+              ]
+            }
           >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Error:
-            </span>
-             
-            Enter a whole number between 1 and 10
-          </span>
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2 govuk-input--error"
-            defaultValue=""
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
+            <input
+              aria-describedby="numberOfProducts-error"
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input
@@ -105,7 +106,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         }
       />
       <div
-        className="govuk-form-group govuk-form-group--error input-error"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -127,26 +128,27 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           >
             Number of fare products (up to a maximum of 10)
           </label>
-          <span
-            className="govuk-error-message"
-            id="numberOfProducts-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter a whole number between 1 and 10",
+                  "id": "page-heading",
+                },
+              ]
+            }
           >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Error:
-            </span>
-             
-            Enter a whole number between 1 and 10
-          </span>
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2 govuk-input--error"
-            defaultValue=""
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
+            <input
+              aria-describedby="numberOfProducts-error"
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input
@@ -185,7 +187,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         }
       />
       <div
-        className="govuk-form-group govuk-form-group--error input-error"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -207,26 +209,27 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           >
             Number of fare products (up to a maximum of 10)
           </label>
-          <span
-            className="govuk-error-message"
-            id="numberOfProducts-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter a whole number between 1 and 10",
+                  "id": "page-heading",
+                },
+              ]
+            }
           >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Error:
-            </span>
-             
-            Enter a whole number between 1 and 10
-          </span>
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2 govuk-input--error"
-            defaultValue=""
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
+            <input
+              aria-describedby="numberOfProducts-error"
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input
@@ -265,7 +268,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         }
       />
       <div
-        className="govuk-form-group govuk-form-group--error input-error"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -287,26 +290,27 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           >
             Number of fare products (up to a maximum of 10)
           </label>
-          <span
-            className="govuk-error-message"
-            id="numberOfProducts-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter a whole number between 1 and 10",
+                  "id": "page-heading",
+                },
+              ]
+            }
           >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Error:
-            </span>
-             
-            Enter a whole number between 1 and 10
-          </span>
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2 govuk-input--error"
-            defaultValue=""
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
+            <input
+              aria-describedby="numberOfProducts-error"
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input
@@ -345,7 +349,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         }
       />
       <div
-        className="govuk-form-group govuk-form-group--error input-error"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -367,26 +371,27 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           >
             Number of fare products (up to a maximum of 10)
           </label>
-          <span
-            className="govuk-error-message"
-            id="numberOfProducts-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter a number",
+                  "id": "page-heading",
+                },
+              ]
+            }
           >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Error:
-            </span>
-             
-            Enter a number
-          </span>
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2 govuk-input--error"
-            defaultValue=""
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
+            <input
+              aria-describedby="numberOfProducts-error"
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input
@@ -425,7 +430,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         }
       />
       <div
-        className="govuk-form-group govuk-form-group--error input-error"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -447,26 +452,27 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           >
             Number of fare products (up to a maximum of 10)
           </label>
-          <span
-            className="govuk-error-message"
-            id="numberOfProducts-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter a whole number between 1 and 10",
+                  "id": "page-heading",
+                },
+              ]
+            }
           >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Error:
-            </span>
-             
-            Enter a whole number between 1 and 10
-          </span>
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2 govuk-input--error"
-            defaultValue=""
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
+            <input
+              aria-describedby="numberOfProducts-error"
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input
@@ -505,7 +511,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         }
       />
       <div
-        className="govuk-form-group govuk-form-group--error input-error"
+        className="govuk-form-group govuk-form-group--error"
       >
         <fieldset
           aria-describedby="page-heading"
@@ -527,26 +533,27 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           >
             Number of fare products (up to a maximum of 10)
           </label>
-          <span
-            className="govuk-error-message"
-            id="numberOfProducts-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter a whole number between 1 and 10",
+                  "id": "page-heading",
+                },
+              ]
+            }
           >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Error:
-            </span>
-             
-            Enter a whole number between 1 and 10
-          </span>
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2 govuk-input--error"
-            defaultValue=""
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
+            <input
+              aria-describedby="numberOfProducts-error"
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
         </fieldset>
       </div>
       <input
