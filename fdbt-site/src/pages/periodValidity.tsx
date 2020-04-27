@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { PERIOD_EXPIRY } from '../constants';
+import { PERIOD_EXPIRY_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { buildTitle } from '../utils';
+import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
 import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Period Validity - Fares data build tool';
@@ -99,8 +99,8 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[PERIOD_EXPIRY]) {
-        const periodValidityCookie = unescape(decodeURI(cookies[PERIOD_EXPIRY]));
+    if (cookies[PERIOD_EXPIRY_COOKIE]) {
+        const periodValidityCookie = unescapeAndDecodeCookieServerSide(cookies, PERIOD_EXPIRY_COOKIE);
         const parsedPeriodValidityCookie = JSON.parse(periodValidityCookie);
 
         if (parsedPeriodValidityCookie.errorMessage) {

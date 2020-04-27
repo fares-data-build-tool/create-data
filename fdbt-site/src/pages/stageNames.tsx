@@ -61,7 +61,7 @@ const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactE
                     <fieldset className="govuk-fieldset" aria-describedby="stage-names-input">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading">
-                                Please enter the names of your fare stages in order from first to last
+                                Enter the names of your fare stages in order from first to last
                             </h1>
                             <p className="govuk-hint hint-text">Fare stage names are limited to 30 characters</p>
                         </legend>

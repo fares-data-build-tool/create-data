@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { ErrorInfo } from '../types';
 import { INPUT_METHOD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide, buildTitle } from '../utils';
+import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
@@ -27,7 +27,7 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                         <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 id="input-method-heading" className="govuk-fieldset__heading">
-                                    Please select your preferred input method
+                                    Select your preferred input method
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
@@ -96,7 +96,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[INPUT_METHOD_COOKIE]) {
-        const inputMethodCookie = unescape(decodeURI(cookies[INPUT_METHOD_COOKIE]));
+        const inputMethodCookie = unescapeAndDecodeCookieServerSide(cookies, INPUT_METHOD_COOKIE);
         const parsedInputMethodCookie = JSON.parse(inputMethodCookie);
 
         if (parsedInputMethodCookie.errorMessage) {

@@ -16,29 +16,31 @@ export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com';
 
 export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
-export const PRICEENTRY_COOKIE = 'fdbt-price-entry';
+export const DAYS_VALID_COOKIE = 'fdbt-days-valid';
 
-export const VALIDITY_COOKIE = 'fdbt-days-valid';
+export const PERIOD_PRODUCT_COOKIE = 'fdbt-period-product';
 
-export const PERIOD_PRODUCT = 'fdbt-period-product';
-
-export const PERIOD_TYPE = 'fdbt-period-type';
+export const PERIOD_TYPE_COOKIE = 'fdbt-period-type';
 
 export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
 
 export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
 
-export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
+export const PERIOD_EXPIRY_COOKIE = 'fdbt-period-expiry';
 
-export const PERIOD_EXPIRY = 'fdbt-period-expiry';
-
-export const PERIOD_SINGLE_OPERATOR_SERVICES = 'fdbt-period-single-services';
+export const PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE = 'fdbt-period-single-services';
 
 export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 
 export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
 
 export const MATCHING_COOKIE = 'fdbt-matching';
+
+export const MULTIPLE_SERVICE_COOKIE = 'fdbt-multiple-service';
+
+export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
+
+export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
@@ -60,6 +62,9 @@ export const ALL_COOKIES: string[] = [
     'fdbt-input-method',
     'fdbt-matching',
     'fdbt-number-stages',
+    'fdbt-multiple-service',
+    'fdbt-number-of-products',
+    'fdbt-multiple-product',
 ];
 
 export const ALLOWED_CSV_FILE_TYPES = [

@@ -50,7 +50,7 @@ exports[`pages thankyou should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        If you would like to provide feedback on this service please click
+        If you would like to provide feedback on this service, please click
          
         <a
           className="govuk-link"

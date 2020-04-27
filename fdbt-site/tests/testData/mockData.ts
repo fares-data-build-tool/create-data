@@ -6,16 +6,20 @@ import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
+    MULTIPLE_PRODUCT_COOKIE,
+    NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
     FARETYPE_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_PRODUCT,
-    VALIDITY_COOKIE,
-    PERIOD_TYPE,
-} from '../../src/constants';
+    PERIOD_PRODUCT_COOKIE,
+    DAYS_VALID_COOKIE,
+    PERIOD_TYPE_COOKIE,
+} from '../../src/constants/index';
+
+import { MultiProduct } from '../../src/pages/api/multipleProducts';
 
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
@@ -41,6 +45,15 @@ export const getMockRequestAndResponse = (
         fareZoneName = 'fare zone 1',
         daysValid = '2',
         periodTypeName = 'period',
+        numberOfProducts = '2',
+        multipleProduct = {
+            multipleProductNameInput0: 'Best Product',
+            multipleProductPriceInput0: '2.00',
+            multipleProductDurationInput0: '-1',
+            multipleProductNameInput1: 'Second Best Product',
+            multipleProductPriceInput1: '2.05',
+            multipleProductDurationInput1: '54',
+        },
     } = cookieValues;
 
     const {
@@ -73,7 +86,7 @@ export const getMockRequestAndResponse = (
             : '';
 
     cookieString += productName
-        ? `${PERIOD_PRODUCT}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
+        ? `${PERIOD_PRODUCT_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
         : '';
 
     cookieString += fareZoneName
@@ -81,13 +94,21 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += daysValid
-        ? `${VALIDITY_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
+        ? `${DAYS_VALID_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += periodTypeName
-        ? `${PERIOD_TYPE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        : '';
+
+    cookieString += numberOfProducts
+        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        : '';
+
+    cookieString += multipleProduct
+        ? `${MULTIPLE_PRODUCT_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${multipleProduct}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
         : '';
 
     const req = mockRequest({
@@ -1017,3 +1038,158 @@ export const expectedPeriodValidity = {
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
 };
+
+export const multipleProducts: MultiProduct[] = [
+    {
+        productName: 'p',
+        productNameId: 'productOneId',
+        productNameError: 'Name too short',
+        productPrice: '3.50',
+        productPriceId: 'productOnePriceId',
+        productDuration: '66.5',
+        productDurationId: 'productOneDurationId',
+        productDurationError: 'Product duration must be a whole number',
+    },
+    {
+        productName: 'Super ticket',
+        productNameId: 'productOneId',
+        productPrice: '3.50gg',
+        productPriceId: 'productOnePriceId',
+        productPriceError: 'Product price must be a valid price',
+        productDuration: '7',
+        productDurationId: 'productOneDurationId',
+    },
+];
+
+export const multipleProductsWithoutErrors: MultiProduct[] = [
+    {
+        productName: 'Best ticket',
+        productNameId: 'productOneId',
+        productPrice: '3.50',
+        productPriceId: 'productOnePriceId',
+        productDuration: '66',
+        productDurationId: 'productOneDurationId',
+    },
+    {
+        productName: 'Super ticket',
+        productNameId: 'productOneId',
+        productPrice: '3.50',
+        productPriceId: 'productOnePriceId',
+        productDuration: '7',
+        productDurationId: 'productOneDurationId',
+    },
+];
+
+export const invalidDurationProducts: MultiProduct[] = [
+    {
+        productName: 'valid duration',
+        productNameId: 'multipleProductNameInput0',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '66',
+        productDurationId: '.',
+    },
+    {
+        productName: 'zero duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '0',
+        productDurationId: '.',
+    },
+    {
+        productName: 'negative duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '-1',
+        productDurationId: '.',
+    },
+    {
+        productName: 'empty duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '',
+        productDurationId: '.',
+    },
+    {
+        productName: 'non-numeric duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: 'ddd',
+        productDurationId: '.',
+    },
+];
+
+export const invalidPriceProducts: MultiProduct[] = [
+    {
+        productName: 'valid price',
+        productNameId: '.',
+        productPrice: '4.50',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'empty price',
+        productNameId: '.',
+        productPrice: '',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'negative price',
+        productNameId: '.',
+        productPrice: '-3.00',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'non-numeric / invalid price',
+        productNameId: '.',
+        productPrice: '3.g6',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];
+
+export const invalidNameProducts: MultiProduct[] = [
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: 'valid name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: '',
+        productNameId: 'empty name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'S',
+        productNameId: 'Too short name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName:
+            'Super Saver Bus Ticket for the cheapest you have ever seen and no other bus service will compare to this one, or your money back',
+        productNameId: 'Too Long name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];

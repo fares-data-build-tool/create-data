@@ -43,7 +43,7 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
                         </span>
                     </span>
                     <span className="govuk-hint" id="match-fares-hint">
-                        Please select the correct fare stages for each stop.
+                        Select the correct fare stages for each stop.
                     </span>
                     <div>
                         <div className="matching-wrapper">
