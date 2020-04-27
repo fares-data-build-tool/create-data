@@ -53,7 +53,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
         props: {
             csvUploadApiRoute: '/api/csvUpload',
             csvUploadHintText:
-                'Please upload your fares triangle as a csv below. You can refer to the documents section to down a template and help file.',
+                'Upload your fares triangle as a csv below. You can refer to the documents section to down a template and help file.',
             guidanceDocDisplayName: 'Download Help File',
             guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fares-Triangle.pdf',
             guidanceDocSize: '600KB',

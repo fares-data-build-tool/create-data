@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { FARE_STAGES_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
-import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
+import { getUuidFromCookie, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
 
@@ -26,7 +26,7 @@ interface FareTriangleData {
 
 export const numberOfInputsIsValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
     const cookies = new Cookies(req, res);
-    const fareStagesCookie = unescape(decodeURI(cookies.get(FARE_STAGES_COOKIE) || ''));
+    const fareStagesCookie = unescapeAndDecodeCookie(cookies, FARE_STAGES_COOKIE);
     const fareStagesObject = JSON.parse(fareStagesCookie);
     const numberOfFareStages = fareStagesObject.fareStages;
     const expectedNumberOfPriceInputs = (numberOfFareStages * (numberOfFareStages - 1)) / 2;

@@ -51,7 +51,7 @@ exports[`Choose Validity Page should render correctly 1`] = `
             <p
               className="govuk-hint hint-text"
             >
-              Please enter a whole number, for example a day ticket would be 1 and two weeks would be 14
+              Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
             </p>
             <span
               className="govuk-error-message"

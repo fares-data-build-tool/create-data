@@ -4,10 +4,11 @@ import {
     OPERATOR_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
-    PERIOD_PRODUCT,
+    PERIOD_PRODUCT_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_SINGLE_OPERATOR_SERVICES,
+    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
 } from '../../../constants';
+import { unescapeAndDecodeCookie } from '../apiUtils';
 
 export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
     const cookies = new Cookies(req, res);
@@ -21,10 +22,9 @@ export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boole
 
 export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): boolean => {
     const cookies = new Cookies(req, res);
-    const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-    const serviceCookie = unescape(decodeURI(cookies.get(SERVICE_COOKIE) || ''));
-    const journeyCookie = unescape(decodeURI(cookies.get(JOURNEY_COOKIE) || ''));
-
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const serviceCookie = unescapeAndDecodeCookie(cookies, SERVICE_COOKIE);
+    const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
     try {
         const operatorInfo = JSON.parse(operatorCookie);
         const serviceInfo = JSON.parse(serviceCookie);
@@ -49,10 +49,10 @@ export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiRespon
     let singleOperator;
     const cookies = new Cookies(req, res);
 
-    const csvUploadZoneUploadCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
-    const periodProductCookie = unescape(decodeURI(cookies.get(PERIOD_PRODUCT) || ''));
-    const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-    const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
+    const csvUploadZoneUploadCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
+    const periodProductCookie = unescapeAndDecodeCookie(cookies, PERIOD_PRODUCT_COOKIE);
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const singleOperatorCookie = unescapeAndDecodeCookie(cookies, PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE);
 
     try {
         const operatorInfo = JSON.parse(operatorCookie);

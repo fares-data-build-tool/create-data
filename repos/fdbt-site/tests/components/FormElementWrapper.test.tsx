@@ -11,7 +11,7 @@ describe('FormElementWrapper', () => {
                 </FormElementWrapper>,
             );
 
-            expect(wrapper.html()).toBe('<div><input type="text"/></div>');
+            expect(wrapper.html()).toBe('<div class=""><input type="text"/></div>');
         });
     });
 

@@ -101,3 +101,12 @@ export const buildTitle = (errors: ErrorInfo[], title: string): string => {
 
     return title;
 };
+
+export const unescapeAndDecodeCookieServerSide = (
+    cookies: {
+        [key: string]: string;
+    },
+    cookieToDecode: string,
+): string => {
+    return unescape(decodeURI(cookies[cookieToDecode] || ''));
+};

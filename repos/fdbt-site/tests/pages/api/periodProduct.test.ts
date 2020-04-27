@@ -1,6 +1,5 @@
-import periodProduct, { isCurrency, trimPeriodNameInput } from '../../../src/pages/api/periodProduct';
-import { PERIOD_PRODUCT } from '../../../src/constants';
-
+import periodProduct from '../../../src/pages/api/periodProduct';
+import { PERIOD_PRODUCT_COOKIE } from '../../../src/constants';
 import * as validator from '../../../src/pages/api/service/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -23,15 +22,15 @@ describe('periodProduct', () => {
             uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
             productName: '',
             productPrice: '',
-            productNameError: 'empty',
-            productPriceError: 'empty',
+            productNameError: 'Product name cannot have less than 2 characters',
+            productPriceError: 'This field cannot be empty',
         };
 
         periodProduct(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT,
+            PERIOD_PRODUCT_COOKIE,
             JSON.stringify(mockPeriodProductCookies),
             req,
             res,
@@ -62,7 +61,7 @@ describe('periodProduct', () => {
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT,
+            PERIOD_PRODUCT_COOKIE,
             JSON.stringify(mockPeriodProductCookies),
             req,
             res,
@@ -93,31 +92,10 @@ describe('periodProduct', () => {
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT,
+            PERIOD_PRODUCT_COOKIE,
             JSON.stringify(mockPeriodProductCookies),
             req,
             res,
         );
-    });
-});
-
-describe('Current and product name checks', () => {
-    it('should return true for a currency', () => {
-        expect(isCurrency('1.50')).toBe(true);
-    });
-
-    it('should return false for a non-currency', () => {
-        expect(isCurrency('1.0006')).toBe(false);
-    });
-
-    it('should return false for an mixed-invalid input', () => {
-        expect(isCurrency('1.ff4')).toBe(false);
-    });
-
-    it('should return a product name with no excessive whitespace', () => {
-        const input = '   This is     my   product      ';
-        const expected = 'This is my product';
-
-        expect(trimPeriodNameInput(input)).toBe(expected);
     });
 });

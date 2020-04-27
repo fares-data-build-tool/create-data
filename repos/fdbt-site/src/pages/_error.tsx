@@ -25,7 +25,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
                 ) : (
                     <div>
                         <h1 className="govuk-heading-xl">Page not found</h1>
-                        <p className="govuk-body">If you entered a web address please check it was correct.</p>
+                        <p className="govuk-body">If you entered a web address, please check it was correct.</p>
                         <p className="govuk-body">Click continue to start again.</p>
                     </div>
                 )}
