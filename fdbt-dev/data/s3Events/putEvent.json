@@ -15,8 +15,8 @@
                     "size": 1024
                 },
                 "bucket": {
-                    "arn": "arn:aws:s3:::fdbt-matching-data-dev",
-                    "name": "fdbt-matching-data-dev",
+                    "arn": "arn:aws:s3:::BUCKET_HERE",
+                    "name": "BUCKET_HERE",
                     "ownerIdentity": {
                         "principalId": "EXAMPLE"
                     }

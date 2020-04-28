@@ -17,7 +17,8 @@ services:
     tty: true
     stdin_open: true
     environment:
-      SERVICES: s3,s3api
+      SERVICES: s3,s3api,sns
       DATA_DIR: /tmp/localstack/data
     ports:
       - "4572:4572"
+      - "4575:4575"

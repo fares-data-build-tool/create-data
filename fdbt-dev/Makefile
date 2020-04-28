@@ -1,6 +1,6 @@
 PROJECT_NAME=fdbt
 
-dev: docker-up wait-for-mysql data-reset wait-for-s3 create-local-buckets add-data-to-buckets print-help start-site
+dev: docker-up wait-for-mysql data-reset wait-for-s3-and-sns create-local-buckets create-sns-topics add-data-to-buckets print-help start-site
 
 
 # DOCKER
@@ -24,13 +24,16 @@ start-site:
 # NETEX CONVERTOR
 
 generate-point-to-point:
-	./scripts/trigger_netex_convertor.sh pointToPoint
+	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev pointToPoint
 
 generate-multi-service:
-	./scripts/trigger_netex_convertor.sh periodMultiService
+	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodMultiService
 
 generate-geo-zone:
-	./scripts/trigger_netex_convertor.sh periodGeoZone
+	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodGeoZone
+
+validate-netex:
+	./scripts/trigger_netex_validator.sh fdbt-unvalidated-netex-data-dev $(file)
 
 
 # DATA
@@ -42,8 +45,8 @@ data-reset:
 
 # UTILITY
 
-wait-for-s3:
-	./scripts/wait_for_s3.sh
+wait-for-s3-and-sns:
+	./scripts/wait_for_s3_sns.sh
 
 wait-for-mysql:
 	./scripts/wait_for_mysql.sh
@@ -54,6 +57,9 @@ create-local-buckets:
 	awslocal s3 mb s3://fdbt-matching-data-dev
 	awslocal s3 mb s3://fdbt-netex-data-dev
 	awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev
+
+create-sns-topics:
+	awslocal sns create-topic --name AlertsTopic
 
 add-data-to-buckets:
 	awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/
