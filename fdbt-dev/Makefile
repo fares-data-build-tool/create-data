@@ -1,6 +1,6 @@
 PROJECT_NAME=fdbt
 
-dev: docker-up wait-for-mysql data-reset wait-for-s3 create-local-buckets print-help start-site
+dev: docker-up wait-for-mysql data-reset wait-for-s3 create-local-buckets add-data-to-buckets print-help start-site
 
 
 # DOCKER
@@ -19,6 +19,18 @@ docker-restart:
 
 start-site:
 	npm --prefix ${FDBT_ROOT}/repos/fdbt-site run dev
+
+
+# NETEX CONVERTOR
+
+generate-point-to-point:
+	./scripts/trigger_netex_convertor.sh pointToPoint
+
+generate-multi-service:
+	./scripts/trigger_netex_convertor.sh periodMultiService
+
+generate-geo-zone:
+	./scripts/trigger_netex_convertor.sh periodGeoZone
 
 
 # DATA
@@ -41,6 +53,10 @@ create-local-buckets:
 	awslocal s3 mb s3://fdbt-user-data-dev
 	awslocal s3 mb s3://fdbt-matching-data-dev
 	awslocal s3 mb s3://fdbt-netex-data-dev
+	awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev
+
+add-data-to-buckets:
+	awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/
 
 print-help:
 	@echo "\n\n**************************\n"

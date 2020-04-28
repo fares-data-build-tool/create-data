@@ -1,0 +1,23 @@
+{
+    "operatorName": "Blackpool Transport",
+    "type": "periodMultipleServices",
+    "productName": "dfvdfvd",
+    "productPrice": "123",
+    "daysValid": "4",
+    "expiryRules": "endOfCalendarDay",
+    "nocCode": "BLAC",
+    "selectedServices": [
+        {
+            "lineName": "4",
+            "startDate": "05/04/2020"
+        },
+        {
+            "lineName": "17",
+            "startDate": "05/04/2020"
+        },
+        {
+            "lineName": "2C",
+            "startDate": "05/04/2020"
+        }
+    ]
+}
