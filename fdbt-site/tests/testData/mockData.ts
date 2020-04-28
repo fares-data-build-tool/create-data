@@ -82,7 +82,7 @@ export const getMockRequestAndResponse = (
 
     cookieString +=
         startPoint && endPoint
-            ? `${JOURNEY_COOKIE}=%7B%22journeyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
+            ? `${JOURNEY_COOKIE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
             : '';
 
     cookieString += productName

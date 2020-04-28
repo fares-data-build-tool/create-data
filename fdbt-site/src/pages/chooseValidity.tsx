@@ -40,8 +40,7 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
                                     How many days is your product valid for?
                                 </label>
                                 <p className="govuk-hint hint-text">
-                                    Enter a whole number, for example a day ticket would be 1 and two weeks would
-                                    be 14
+                                    Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
                                 </p>
                                 <span id="product-validity-error" className="govuk-error-message">
                                     <span className={isError ? '' : 'govuk-visually-hidden'}>{error}</span>
