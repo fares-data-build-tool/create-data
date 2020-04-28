@@ -4,15 +4,10 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide, getUuidFromCookies, setCookieOnServerSide } from '../utils';
-import {
-    getServiceByNocCodeAndLineName,
-    Service,
-    batchGetStopsByAtcoCode,
-    JourneyPattern,
-    RawJourneyPattern,
-    RawService,
-} from '../data/auroradb';
+import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import { redirectTo } from './api/apiUtils';
+import DirectionDropdown from '../components/DirectionDropdown';
+import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';
@@ -41,20 +36,10 @@ const Direction = ({ operator, lineName, service }: DirectionProps): ReactElemen
                             <span className="govuk-hint" id="direction-journey-description-hint">
                                 {`Journey: ${service.serviceDescription}`}
                             </span>
-                            <select className="govuk-select" id="journeyPattern" name="journeyPattern" defaultValue="">
-                                <option value="" disabled>
-                                    Select One
-                                </option>
-                                {service.journeyPatterns.map((journeyPattern, i) => (
-                                    <option
-                                        key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}#${+i}`}
-                                        value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
-                                        className="journey-option"
-                                    >
-                                        {journeyPattern.startPoint.Display} TO {journeyPattern.endPoint.Display}
-                                    </option>
-                                ))}
-                            </select>
+                            <DirectionDropdown
+                                journeyPatterns={service.journeyPatterns}
+                                selectNameID="directionJourneyPattern"
+                            />
                         </fieldset>
                     </div>
                     <input
@@ -68,37 +53,6 @@ const Direction = ({ operator, lineName, service }: DirectionProps): ReactElemen
         </Layout>
     );
 };
-
-const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPattern[]): Promise<JourneyPattern[]> =>
-    Promise.all(
-        journeyPatterns.map(
-            async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                const stopList = item.orderedStopPoints.map(stop => stop.stopPointRef);
-
-                const startPoint = item.orderedStopPoints[0];
-                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.stopPointRef]);
-
-                const endPoint = item.orderedStopPoints.slice(-1)[0];
-                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.stopPointRef]);
-
-                return {
-                    startPoint: {
-                        Display: `${startPoint.commonName}${
-                            startPointStopLocality?.localityName ? `, ${startPointStopLocality.localityName}` : ''
-                        }`,
-                        Id: startPoint.stopPointRef,
-                    },
-                    endPoint: {
-                        Display: `${endPoint.commonName}${
-                            endPointStopLocality?.localityName ? `, ${endPointStopLocality.localityName}` : ''
-                        }`,
-                        Id: endPoint.stopPointRef,
-                    },
-                    stopList,
-                };
-            },
-        ),
-    );
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     deleteCookieOnServerSide(ctx, JOURNEY_COOKIE);
