@@ -5,7 +5,6 @@ provider:
   runtime: python3.8
   region: eu-west-2
   stage: ${opt:stage, 'test'}
-  memorySize: 256
   vpc:
     securityGroupIds:
       - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
@@ -39,7 +38,8 @@ functions:
   CsvUploader:
     handler: csv_uploader/csv_uploader_handler.handler
     module: csv_uploader
-    timeout: 30
+    timeout: 60
+    memorySize: 256
     events:
       - s3: fdbt-csv-reference-data-${self:provider.stage}
         event: s3:ObjectCreated:*
@@ -47,7 +47,8 @@ functions:
   XmlUploader:
     handler: xml_uploader/xml_uploader_handler.handler
     module: xml_uploader
-    timeout: 120
+    timeout: 60
+    memorySize: 1024
     events:
       - s3: fdbt-xml-reference-data-${self:provider.stage}
         event: s3:ObjectCreated:*
