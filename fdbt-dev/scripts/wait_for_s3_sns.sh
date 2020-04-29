@@ -7,7 +7,7 @@ until curl --fail --silent -w "\n" http://localhost:4572 > /dev/null; do
     sleep 1
 done
 
-until curl --fail --silent -w "\n" http://localhost:4575 > /dev/null; do
+until awslocal sns list-topics > /dev/null; do
     echo "Waiting for AWS SNS to come online"
     sleep 1
 done
