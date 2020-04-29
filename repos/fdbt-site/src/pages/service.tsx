@@ -22,7 +22,7 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
-                                Please select your service
+                                Select your service
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-hint">

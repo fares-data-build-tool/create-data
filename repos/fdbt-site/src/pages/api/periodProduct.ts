@@ -2,18 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
-import { PERIOD_PRODUCT } from '../../constants';
+import { PERIOD_PRODUCT_COOKIE } from '../../constants';
+import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 
-export const isCurrency = (periodPriceInput: string): boolean => {
-    const regex = /^\d+(\.\d{1,2})?$/;
-    return regex.test(periodPriceInput);
-};
-
-export const trimPeriodNameInput = (periodNameInput: string): string => {
-    return periodNameInput.trim().replace(/\s+/g, ' ');
-};
-
-const checkIfInputInvalid = (
+export const checkIfInputInvalid = (
     periodProductNameInput: string,
     periodProductPriceInput: string,
     uuid: string,
@@ -21,21 +13,12 @@ const checkIfInputInvalid = (
     let productNameError = '';
     let productPriceError = '';
 
-    const cleanedNameInput = trimPeriodNameInput(periodProductNameInput);
+    const cleanedNameInput = removeExcessWhiteSpace(periodProductNameInput);
+    const cleanedPriceInput = removeExcessWhiteSpace(periodProductPriceInput);
 
-    if (cleanedNameInput === '') {
-        productNameError = 'empty';
-    } else if (cleanedNameInput.length < 2) {
-        productNameError = 'short';
-    }
+    productNameError = checkProductNameIsValid(cleanedNameInput);
 
-    if (periodProductPriceInput === '') {
-        productPriceError = 'empty';
-    } else if (!isCurrency(periodProductPriceInput)) {
-        productPriceError = 'notCurrency';
-    } else if (!(Number(periodProductPriceInput) > 0)) {
-        productPriceError = 'zero';
-    }
+    productPriceError = checkPriceIsValid(cleanedPriceInput);
 
     return {
         uuid,
@@ -54,28 +37,25 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const uuid = getUuidFromCookie(req, res);
 
-        const requestBody = JSON.stringify(req.body);
-        const parsedBody = JSON.parse(requestBody);
-
-        const { periodProductNameInput, periodProductPriceInput } = parsedBody;
+        const { periodProductNameInput, periodProductPriceInput } = req.body;
 
         const periodProduct = checkIfInputInvalid(periodProductNameInput, periodProductPriceInput, uuid);
 
         if (periodProduct.productNameError !== '' || periodProduct.productPriceError !== '') {
             const invalidInputs = JSON.stringify(periodProduct);
 
-            setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT, invalidInputs, req, res);
+            setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT_COOKIE, invalidInputs, req, res);
             redirectTo(res, '/periodProduct');
             return;
         }
 
         const validInputs = JSON.stringify(periodProduct);
 
-        setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT, validInputs, req, res);
+        setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT_COOKIE, validInputs, req, res);
 
         redirectTo(res, '/chooseValidity');
     } catch (error) {
-        const message = 'There was a problem inputtng the product name and price:';
+        const message = 'There was a problem inputting the product name and price:';
         redirectToError(res, message, error);
     }
 };

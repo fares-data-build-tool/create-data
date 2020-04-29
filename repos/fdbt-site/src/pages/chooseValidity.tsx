@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
-import { PERIOD_PRODUCT, VALIDITY_COOKIE } from '../constants';
+import { PERIOD_PRODUCT_COOKIE, DAYS_VALID_COOKIE } from '../constants';
 
 const title = 'Select how long the period ticket is valid for - Fares data build tool';
 const description = 'Period ticket validity length page of the Fares data build tool';
@@ -40,8 +40,7 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
                                     How many days is your product valid for?
                                 </label>
                                 <p className="govuk-hint hint-text">
-                                    Please enter a whole number, for example a day ticket would be 1 and two weeks would
-                                    be 14
+                                    Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
                                 </p>
                                 <span id="product-validity-error" className="govuk-error-message">
                                     <span className={isError ? '' : 'govuk-visually-hidden'}>{error}</span>
@@ -72,8 +71,8 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const productCookie = cookies[PERIOD_PRODUCT];
-    const validityCookie = cookies[VALIDITY_COOKIE];
+    const productCookie = cookies[PERIOD_PRODUCT_COOKIE];
+    const validityCookie = cookies[DAYS_VALID_COOKIE];
 
     if (!productCookie) {
         throw new Error('Failed to retrieve productCookie info for choose validity page.');

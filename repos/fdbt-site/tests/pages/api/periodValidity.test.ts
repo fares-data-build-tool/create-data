@@ -37,7 +37,7 @@ describe('Period Validity API', () => {
         );
     });
 
-    it('redirects back to period validity page if there are errors', async () => {
+    it('redirects back to period validity page if there is no body', async () => {
         const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock);
 
         await periodValidity(req, res);
