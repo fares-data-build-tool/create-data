@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 import { FARETYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, buildTitle } from '../utils/index';
+import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Fare Type - Fares data build tool';
@@ -88,7 +88,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[FARETYPE_COOKIE]) {
-        const fareTypeCookie = unescape(decodeURI(cookies[FARETYPE_COOKIE]));
+        const fareTypeCookie = unescapeAndDecodeCookieServerSide(cookies, FARETYPE_COOKIE);
         const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
 
         if (parsedFareTypeCookie.errorMessage) {

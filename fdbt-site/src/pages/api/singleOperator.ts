@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { PERIOD_SINGLE_OPERATOR_SERVICES } from '../../constants';
+import { PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE } from '../../constants';
 import { ServiceLists, ServicesInfo } from '../../interfaces';
 
 const redirectUrl = '/singleOperator';
@@ -18,7 +18,7 @@ const setSingleOperatorCookie = (
 
     setCookieOnResponseObject(
         getDomain(req),
-        PERIOD_SINGLE_OPERATOR_SERVICES,
+        PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
         JSON.stringify({ ...serviceListObject, selectedServices: checkServiceList, error: !!error, uuid }),
         req,
         res,

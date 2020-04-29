@@ -2,8 +2,8 @@
 
 exports[`pages periodProduct should render correctly 1`] = `
 <Layout
-  description="Fare Type selection page of the Fares data build tool"
-  title="FareType - Fares data build tool"
+  description="Period Product page of the Fares data build tool"
+  title="Period Product - Fares data build tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -53,7 +53,7 @@ exports[`pages periodProduct should render correctly 1`] = `
             className="govuk-hint"
             id="product-name-hint"
           >
-            Please enter the name of your product
+            Enter the name of your product
           </span>
           <span
             className="govuk-error-message"

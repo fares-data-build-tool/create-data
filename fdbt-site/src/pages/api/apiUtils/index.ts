@@ -41,9 +41,13 @@ export const deleteCookieOnResponseObject = (
     cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
 };
 
+export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string): string => {
+    return unescape(decodeURI(cookies.get(cookieToDecode) || ''));
+};
+
 export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
     const cookies = new Cookies(req, res);
-    const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     return JSON.parse(operatorCookie).uuid;
 };
 

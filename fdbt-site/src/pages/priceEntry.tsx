@@ -18,9 +18,7 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">
-                                Please enter prices for all fare stages in pence
-                            </h1>
+                            <h1 className="govuk-fieldset__heading">Enter prices for all fare stages in pence</h1>
                         </legend>
                         <span className="govuk-hint" id="selection-hint">
                             For example £1 would be 100 or £2.29 would be 229

@@ -2,15 +2,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
     OPERATOR_COOKIE,
-    PERIOD_PRODUCT,
-    PERIOD_EXPIRY,
+    PERIOD_PRODUCT_COOKIE,
+    PERIOD_EXPIRY_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
     CSV_ZONE_UPLOAD_COOKIE,
-    VALIDITY_COOKIE,
-    PERIOD_SINGLE_OPERATOR_SERVICES,
-    PERIOD_TYPE,
+    DAYS_VALID_COOKIE,
+    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
+    PERIOD_TYPE_COOKIE,
 } from '../../constants';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
@@ -40,12 +40,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const cookies = new Cookies(req, res);
 
-            const periodProductCookie = unescape(decodeURI(cookies.get(PERIOD_PRODUCT) || ''));
-            const daysValidCookie = unescape(decodeURI(cookies.get(VALIDITY_COOKIE) || ''));
-            const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-            const fareZoneCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
-            const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
-            const periodTypeCookie = unescape(decodeURI(cookies.get(PERIOD_TYPE) || ''));
+            const periodProductCookie = unescapeAndDecodeCookie(cookies, PERIOD_PRODUCT_COOKIE);
+            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
+            const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+            const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
+            const singleOperatorCookie = unescapeAndDecodeCookie(cookies, PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE);
+            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
 
             if (
                 periodProductCookie === '' ||
@@ -85,7 +85,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             setCookieOnResponseObject(
                 getDomain(req),
-                PERIOD_EXPIRY,
+                PERIOD_EXPIRY_COOKIE,
                 JSON.stringify({ periodValid, error: false }),
                 req,
                 res,
@@ -114,7 +114,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose an option regarding your period ticket validity',
             });
-            setCookieOnResponseObject(getDomain(req), PERIOD_EXPIRY, cookieValue, req, res);
+            setCookieOnResponseObject(getDomain(req), PERIOD_EXPIRY_COOKIE, cookieValue, req, res);
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {

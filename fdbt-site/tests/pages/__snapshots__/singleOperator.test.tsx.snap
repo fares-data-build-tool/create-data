@@ -3,7 +3,7 @@
 exports[`pages singleOperator should render correctly 1`] = `
 <Layout
   description="Single Operator selection page of the Fares data build tool"
-  title="Which service(s) is the ticket valid for?"
+  title="Single Operator - Fares data build tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"

@@ -22,7 +22,7 @@ describe('stageNames', () => {
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
         });
-        
+
         it('should return an array of valid input checks when the user enters correct data', () => {
             const mockBody = { stageNameInput: ['abcd', 'efg', 'hijkl', 'mn'] };
             const { req } = getMockRequestAndResponse({}, mockBody);

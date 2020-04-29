@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { VALIDITY_COOKIE } from '../../constants/index';
+import { DAYS_VALID_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
 
@@ -27,13 +27,13 @@ export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = '')
 
         const uuid = getUuidFromCookie(req, res);
         const cookieValue = JSON.stringify({ daysValid, uuid });
-        setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
+        setCookieOnResponseObject(getDomain(req), DAYS_VALID_COOKIE, cookieValue, req, res);
         return;
     }
 
     const daysValid = req.body.validityInput;
     const cookieValue = JSON.stringify({ daysValid, error });
-    setCookieOnResponseObject(getDomain(req), VALIDITY_COOKIE, cookieValue, req, res);
+    setCookieOnResponseObject(getDomain(req), DAYS_VALID_COOKIE, cookieValue, req, res);
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
