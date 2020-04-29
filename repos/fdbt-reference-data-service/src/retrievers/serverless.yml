@@ -6,8 +6,6 @@ provider:
   runtime: python3.8
   stage: ${opt:stage, 'test'}
   stackName: ${self:service}-${self:provider.stage}
-  timeout: 900
-  memorySize: 2048
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -36,6 +34,8 @@ custom:
 functions:
   NocRetriever:
     handler: csv-retriever/main.lambda_handler
+    timeout: 20
+    memorySize: 256
     environment:
       DATA_URL: https://www.travelinedata.org.uk/wp-content/themes/desktop/nocadvanced_download.php?reportFormat=csvFlatFile&allTable%5B%5D=table_noclines&allTable%5B%5D=table_noc_table&allTable%5B%5D=table_public_name&submit=Submit
       BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
@@ -47,6 +47,8 @@ functions:
 
   NaptanRetriever:
     handler: csv-retriever/main.lambda_handler
+    timeout: 30
+    memorySize: 512
     environment:
       DATA_URL: http://naptan.app.dft.gov.uk/DataRequest/Naptan.ashx?format=csv
       BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
@@ -59,6 +61,8 @@ functions:
 
   TndsRetriever:
     handler: tnds-ftp-retriever/main.lambda_handler
+    timeout: 480
+    memorySize: 1024
     environment:
       FTP_HOST: ftp.tnds.basemap.co.uk
       BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
@@ -78,6 +82,8 @@ functions:
 
   TndsUnzipper:
     handler: tnds-ftp-retriever/unzipper.lambda_handler
+    timeout: 300
+    memorySize: 512
     environment:
       BUCKET_NAME: fdbt-xml-reference-data-${self:provider.stage}
     events:
