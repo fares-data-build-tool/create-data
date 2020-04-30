@@ -9,10 +9,10 @@ provider:
     timeout: 30
     memorySize: 512
     iamRoleStatements:
-        - Effect: "Allow"
+        - Effect: 'Allow'
           Action:
-              - "ssm:GetParameter"
-          Resource: "*"
+              - 'ssm:GetParameter'
+          Resource: '*'
         - Effect: 'Allow'
           Action:
               - 's3:GetObject'
@@ -44,7 +44,7 @@ functions:
             AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
             UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
             RDS_HOST:
-                Fn::ImportValue: ${self:provider.stage}:RdsHostName       
+                Fn::ImportValue: ${self:provider.stage}:RdsHostName
 
     OdhUploader:
         handler: src/odh-uploader/handler.odhUploaderHandler
@@ -54,7 +54,6 @@ functions:
 
 plugins:
     - serverless-plugin-typescript
-    - serverless-s3-local
     - serverless-offline
 
 package:

@@ -1,9 +1,5 @@
 import { FareZone, Stop } from '../types';
 
-export interface NetexObject {
-    [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-}
-
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
 export const getUniquePriceGroups = (fareZones: FareZone[]): string[] => [
