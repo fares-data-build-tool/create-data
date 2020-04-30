@@ -19,7 +19,7 @@ exports[`AlphaBanner should render correctly 1`] = `
        
       <a
         className="govuk-link"
-        href="mailto:fdbt@transportforthenorth.com"
+        href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
         id="feedback_link"
       >
         feedback
