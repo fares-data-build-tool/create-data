@@ -28,13 +28,14 @@ describe('Period Validity API', () => {
         const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
         await periodValidity(req, res);
 
-        expect(putStringInS3Spy).toBeCalledTimes(1);
+        const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
             '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
-            JSON.stringify(expectedPeriodValidity),
+            expect.any(String),
             'application/json; charset=utf-8',
         );
+        expect(actualProductData).toEqual(expectedPeriodValidity);
     });
 
     it('redirects back to period validity page if there is no body', async () => {
