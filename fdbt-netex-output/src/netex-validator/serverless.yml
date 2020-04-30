@@ -23,8 +23,7 @@ provider:
 
     environment:
         VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
-        SNS_ALERTS_ARN:
-            Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
+        SNS_ALERTS_ARN: ${self:custom.sns.alertsTopic.${self:provider.stage}, self.sns.alertsTopic.other}
 
 plugins:
     - serverless-python-requirements
@@ -32,7 +31,11 @@ plugins:
 custom:
     pythonRequirements:
         dockerizePip: false
-
+    sns:
+        alertsTopic:
+            dev: arn:aws:sns:us-east-1:000000000000:AlertsTopic
+            other:
+                Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
 package:
     include:
         - xsd/*
