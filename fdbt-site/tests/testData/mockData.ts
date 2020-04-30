@@ -698,7 +698,13 @@ export const naptanStopInfo = [
     },
 ];
 
-export const service = { type: 'pointToPoint', lineName: '215', nocCode: 'DCCL', operatorShortName: 'DCC' };
+export const service = {
+    type: 'pointToPoint',
+    lineName: '215',
+    nocCode: 'DCCL',
+    operatorShortName: 'DCC',
+    serviceDescription: 'Worthing - Seaham - Crawley',
+};
 
 export const mockService: Service = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
@@ -918,6 +924,7 @@ export const expectedMatchingJson = {
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
+    serviceDescription: 'Worthing - Seaham - Crawley',
     fareZones: [
         {
             name: 'Acomb Green Lane',
