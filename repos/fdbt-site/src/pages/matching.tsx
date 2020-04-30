@@ -20,6 +20,7 @@ export interface BasicService {
     lineName: string;
     nocCode: string;
     operatorShortName: string;
+    serviceDescription: string;
 }
 
 interface MatchingProps {
@@ -150,6 +151,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 lineName,
                 nocCode,
                 operatorShortName: service.operatorShortName,
+                serviceDescription: service.serviceDescription,
             },
             error: !matchingCookie ? false : JSON.parse(matchingCookie).error,
         },
