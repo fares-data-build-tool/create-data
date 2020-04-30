@@ -54,7 +54,7 @@ exports[`pages thankyou should render correctly 1`] = `
          
         <a
           className="govuk-link"
-          href="mailto:fdbt@transportforthenorth.com"
+          href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
         >
           here
         </a>
