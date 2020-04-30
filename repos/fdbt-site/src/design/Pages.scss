@@ -111,6 +111,56 @@
     }
 }
 
+.multiple-product-validity-page {
+    .grid-headers-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .grid-content-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 10px 0px 5px 0px;
+        justify-content: center;
+        border-top: solid 1px rgb(160, 160, 160);
+    }
+
+    .grid-column-header-one-fifth {
+        width: 20%;
+    }
+
+    .grid-column-content-one-fifth {
+        width: 20%;
+    }
+
+    .validity-select-wrapper {
+        width: 40%;
+    }
+
+    .validity-radio-button-margin {
+        margin-right: 100px;
+    }
+
+    .validity-radio-button-error-margin {
+        margin-right: 95px;
+    }
+
+    .header-text-alignment {
+        padding-right: 20px;
+    }
+
+    .visually-hidden-label {
+        position: absolute !important;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+        clip: rect(1px, 1px, 1px, 1px);
+        white-space: nowrap; /* added line */
+    }
+}
+
 .stage-name-input-field {
     margin-bottom: 10px;
 }

@@ -46,14 +46,32 @@ export const getMockRequestAndResponse = (
         daysValid = '2',
         periodTypeName = 'period',
         numberOfProducts = '2',
-        multipleProduct = {
-            multipleProductNameInput0: 'Best Product',
-            multipleProductPriceInput0: '2.00',
-            multipleProductDurationInput0: '-1',
-            multipleProductNameInput1: 'Second Best Product',
-            multipleProductPriceInput1: '2.05',
-            multipleProductDurationInput1: '54',
-        },
+        multipleProducts = [
+            {
+                productName: 'Weekly Ticket',
+                productNameId: 'multipleProductName1',
+                productPrice: '50',
+                productPriceId: 'multipleProductPrice1',
+                productDuration: '5',
+                productDurationId: 'multipleProductDuration1',
+            },
+            {
+                productName: 'Day Ticket',
+                productNameId: 'multipleProductName2',
+                productPrice: '2.50',
+                productPriceId: 'multipleProductPrice2',
+                productDuration: '1',
+                productDurationId: 'multipleProductDuration2',
+            },
+            {
+                productName: 'Monthly Ticket',
+                productNameId: 'multipleProductName3',
+                productPrice: '200',
+                productPriceId: 'multipleProductPrice3',
+                productDuration: '28',
+                productDurationId: 'multipleProductDuration3',
+            },
+        ],
     } = cookieValues;
 
     const {
@@ -100,15 +118,15 @@ export const getMockRequestAndResponse = (
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += periodTypeName
-        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += numberOfProducts
-        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
-    cookieString += multipleProduct
-        ? `${MULTIPLE_PRODUCT_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${multipleProduct}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+    cookieString += multipleProducts
+        ? `${MULTIPLE_PRODUCT_COOKIE}=${encodeURI(JSON.stringify(multipleProducts))};`
         : '';
 
     const req = mockRequest({
@@ -1037,11 +1055,43 @@ export const expectedMatchingJson = {
 export const expectedPeriodValidity = {
     operatorName: 'test',
     type: 'period',
-    productName: 'Product A',
-    productPrice: '1234',
-    daysValid: '2',
-    expiryRules: '24hr',
     nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Product A',
+            productPrice: '1234',
+            productDuration: '2',
+            productValidity: '24hr',
+        },
+    ],
+    zoneName: 'fare zone 1',
+    stops: naptanStopInfo,
+};
+
+export const expectedCsvUploadMultiProduct = {
+    operatorName: 'test',
+    type: 'period',
+    nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28',
+            productValidity: 'endOfCalendarDay',
+        },
+    ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
 };
