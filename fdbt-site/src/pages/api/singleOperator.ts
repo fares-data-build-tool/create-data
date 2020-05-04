@@ -50,10 +50,16 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const checkedServiceList: ServicesInfo[] = [];
+
         const requestBody: { [key: string]: string } = req.body;
 
         Object.entries(requestBody).forEach(entry => {
-            const data: ServicesInfo = { lineName: entry[0], startDate: entry[1] };
+            const checkedBoxValues = entry[1].split('/');
+            const data: ServicesInfo = {
+                lineName: entry[0],
+                startDate: checkedBoxValues[1],
+                serviceDescription: checkedBoxValues[0],
+            };
             checkedServiceList.push(data);
         });
 

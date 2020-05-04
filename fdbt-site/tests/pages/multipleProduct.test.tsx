@@ -20,7 +20,7 @@ describe('pages', () => {
         });
     });
 
-    describe('server side props', () => {
+    describe('multipleProductGetServerSideProps', () => {
         beforeEach(() => {
             jest.clearAllMocks();
         });
