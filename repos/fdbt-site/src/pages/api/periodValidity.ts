@@ -15,14 +15,18 @@ import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
 
+interface Product {
+    productName: string;
+    productPrice: string;
+    productDuration: string;
+    productValidity: string;
+}
+
 interface DecisionData {
     operatorName: string;
     type: string;
-    productName: string;
-    productPrice: string;
-    daysValid: string;
-    expiryRules: string;
     nocCode: string;
+    products: Product[];
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -94,11 +98,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const period: DecisionData = {
                 operatorName: operator,
                 type: periodTypeName,
-                productName,
-                productPrice,
-                daysValid,
-                expiryRules: periodValid,
                 nocCode,
+                products: [
+                    {
+                        productName,
+                        productPrice,
+                        productDuration: daysValid,
+                        productValidity: periodValid,
+                    },
+                ],
                 ...props,
             };
 

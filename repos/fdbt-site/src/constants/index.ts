@@ -12,7 +12,7 @@ export const FARE_STAGES_COOKIE = 'fdbt-fare-stages';
 
 export const STAGE_NAME_VALIDATION_COOKIE = 'fdbt-stage-names-validation';
 
-export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com';
+export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
 
 export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 

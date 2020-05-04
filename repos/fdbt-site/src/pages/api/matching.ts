@@ -11,6 +11,7 @@ interface MatchingData {
     lineName: string;
     nocCode: string;
     operatorShortName: string;
+    serviceDescription: string;
     fareZones: {
         name: string;
         stops: Stop[];
