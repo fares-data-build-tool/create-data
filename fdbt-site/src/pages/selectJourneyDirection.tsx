@@ -2,13 +2,15 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
+import { getUuidFromCookies, setCookieOnServerSide } from '../utils';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Journey Selection - Fares data build tool';
 const description = 'Inbound and Outbound journey selection page of the Fares data build tool';
@@ -91,13 +93,15 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
+    const fareTypeCookie = cookies[FARETYPE_COOKIE];
 
-    if (!operatorCookie || !serviceCookie) {
+    if (!operatorCookie || !serviceCookie || !fareTypeCookie) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
+    const fareTypeInfo = JSON.parse(fareTypeCookie);
 
     const lineName = serviceInfo.service.split('#')[0];
 
@@ -111,6 +115,17 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error(
             `No service info could be retrieved for nocCode: ${operatorInfo.nocCode} and lineName: ${lineName}`,
         );
+    }
+
+    // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
+    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
+        if (ctx.res) {
+            const uuid = getUuidFromCookies(ctx);
+            const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
+            const cookieValue = JSON.stringify({ journeyPattern: journeyPatternCookie, uuid });
+            setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
+            redirectTo(ctx.res, '/inputMethod');
+        }
     }
 
     // Remove journeys with duplicate start and end points for display purposes
