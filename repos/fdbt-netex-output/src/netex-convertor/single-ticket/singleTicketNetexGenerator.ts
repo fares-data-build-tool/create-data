@@ -1,6 +1,4 @@
-import parser from 'xml2json';
-import fs from 'fs';
-import { MatchingData, OperatorData, ServiceData } from '../types';
+import { MatchingData, OperatorData } from '../types';
 import {
     getScheduledStopPointsList,
     getFareZoneList,
@@ -9,32 +7,12 @@ import {
     getFareTables,
     getFareTableElements,
     getNetexMode,
-    NetexObject,
 } from './singleTicketNetexHelpers';
-import { getCleanWebsite } from '../sharedHelpers';
-
-const getNetexTemplateAsJson = async (): Promise<NetexObject> => {
-    try {
-        const fileData = await fs.promises.readFile(`${__dirname}/singleTicketNetexTemplate.xml`, { encoding: 'utf8' });
-        const json = JSON.parse(parser.toJson(fileData, { reversible: true, trim: true }));
-
-        return json;
-    } catch (error) {
-        throw new Error(`Error converting NeTEx template to JSON: ${error.stack}`);
-    }
-};
-
-const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => {
-    const netexFileAsJsonString = JSON.stringify(netexFileAsJsonObject);
-    const netexFileAsXmlString = parser.toXml(netexFileAsJsonString, { sanitize: true, ignoreNull: true });
-
-    return netexFileAsXmlString;
-};
+import { NetexObject, getCleanWebsite, getNetexTemplateAsJson, convertJsonToXml } from '../sharedHelpers';
 
 const singleTicketNetexGenerator = (
     matchingData: MatchingData,
     operatorData: OperatorData,
-    serviceData: ServiceData,
 ): { generate: Function } => {
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${matchingData.nocCode}`;
@@ -111,7 +89,7 @@ const singleTicketNetexGenerator = (
         serviceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ServiceFrame_UK_PI_NETWORK:${lineIdName}:op`;
         serviceFrameToUpdate.lines.Line.id = matchingData.lineName;
         serviceFrameToUpdate.lines.Line.Name.$t = operatorPublicNameLineNameFormat;
-        serviceFrameToUpdate.lines.Line.Description.$t = serviceData.description;
+        serviceFrameToUpdate.lines.Line.Description.$t = matchingData.serviceDescription;
         serviceFrameToUpdate.lines.Line.PublicCode.$t = matchingData.lineName;
         serviceFrameToUpdate.lines.Line.PrivateCode.$t = noccodeLineNameFormat;
         serviceFrameToUpdate.lines.Line.OperatorRef.ref = nocCodeNocFormat;
@@ -171,7 +149,7 @@ const singleTicketNetexGenerator = (
         fareTableFareFrameToUpdate.id = `operator@Products@Trip@prices@${lineIdName}`;
         fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData.fareZones);
         fareTableFareFrameToUpdate.fareTables.FareTable.id = `Trip@single-SOP@p-ticket@${lineIdName}@adult`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = serviceData.description
+        fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = matchingData.serviceDescription;
         fareTableFareFrameToUpdate.fareTables.FareTable.usedIn.TariffRef.ref = `Tariff@single@${lineIdName}`;
         fareTableFareFrameToUpdate.fareTables.FareTable.specifics.LineRef.ref = lineIdName;
         fareTableFareFrameToUpdate.fareTables.FareTable.columns.FareTableColumn = getFareTableElements(
@@ -193,7 +171,7 @@ const singleTicketNetexGenerator = (
     };
 
     const generate = async (): Promise<string> => {
-        const netexJson = await getNetexTemplateAsJson();
+        const netexJson = await getNetexTemplateAsJson('single-ticket/singleTicketNetexTemplate.xml');
 
         netexJson.PublicationDelivery = updatePublicationTimeStamp(netexJson.PublicationDelivery);
         netexJson.PublicationDelivery.PublicationRequest = updatePublicationRequest(

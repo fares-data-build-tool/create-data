@@ -3,33 +3,38 @@ import singleTicketNetexGenerator from './single-ticket/singleTicketNetexGenerat
 import periodTicketNetexGenerator from './period-ticket/periodTicketNetexGenerator';
 import * as db from './data/auroradb';
 import * as s3 from './data/s3';
-import { MatchingData, GeographicalFareZonePass } from './types';
+import { MatchingData, PeriodTicket } from './types';
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
         const s3Data = await s3.fetchDataFromS3(event);
-        if (s3Data.type === 'pointToPoint') {
+
+        const { type } = s3Data;
+
+        console.info(`NeTEx generation starting for type: ${type}...`);
+
+        if (type === 'pointToPoint') {
             const matchingData: MatchingData = s3Data;
             const operatorData = await db.getOperatorDataByNocCode(matchingData.nocCode);
-            const serviceData = await db.getTndsServiceDataByNocCodeAndLineName(
-                matchingData.nocCode,
-                matchingData.lineName,
-            );
-            const netexGen = singleTicketNetexGenerator(matchingData, operatorData, serviceData);
+
+            const netexGen = singleTicketNetexGenerator(matchingData, operatorData);
             const generatedNetex = await netexGen.generate();
+
             const fileName = `${matchingData.operatorShortName.replace(/\/|\s/g, '_')}_${
                 matchingData.lineName
             }_${new Date().toISOString()}.xml`;
+
             const fileNameWithoutSlashes = fileName.replace('/', '_');
             await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
-        } else if (s3Data.type === 'periodGeoZone') {
-            const geoFareZonePass: GeographicalFareZonePass = s3Data;
-            const operatorData = await db.getOperatorDataByNocCode(geoFareZonePass.nocCode);
-            const netexGen = periodTicketNetexGenerator(geoFareZonePass, operatorData);
+        } else if (type === 'periodGeoZone' || type === 'periodMultipleServices') {
+            const userPeriodTicket: PeriodTicket = s3Data;
+            const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
+            const netexGen = periodTicketNetexGenerator(userPeriodTicket, operatorData);
             const generatedNetex = await netexGen.generate();
-            const fileName = `${geoFareZonePass.operatorName.replace(/\/|\s/g, '_')}_${geoFareZonePass.zoneName}_${
-                geoFareZonePass.productName
+            const fileName = `${userPeriodTicket.operatorName.replace(/\/|\s/g, '_')}_${
+                userPeriodTicket.productName
             }_${new Date().toISOString()}.xml`;
+
             const fileNameWithoutSlashes = fileName.replace('/', '_');
             await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
         } else {
@@ -43,6 +48,8 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         console.error(error.stack);
         throw new Error(error);
     }
+
+    console.info('NeTEx generation complete!');
 };
 
 export default netexConvertorHandler;
