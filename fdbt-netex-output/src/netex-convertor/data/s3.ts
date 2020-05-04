@@ -1,7 +1,22 @@
 import { S3Event } from 'aws-lambda';
 import AWS from 'aws-sdk';
 
-const s3: AWS.S3 = new AWS.S3();
+const getS3Client = (): AWS.S3 => {
+    let options = {};
+
+    if (process.env.NODE_ENV === 'development') {
+        options = {
+            s3ForcePathStyle: true,
+            accessKeyId: 'S3RVER',
+            secretAccessKey: 'S3RVER',
+            endpoint: new AWS.Endpoint('http://localhost:4572'),
+        };
+    }
+
+    return new AWS.S3(options);
+};
+
+const s3 = getS3Client();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const fetchDataFromS3 = async (event: S3Event): Promise<any> => {

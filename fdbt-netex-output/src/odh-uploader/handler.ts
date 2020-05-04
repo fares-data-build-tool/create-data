@@ -13,7 +13,7 @@ export const createMailTransporter = (): Mail => {
     return nodemailer.createTransport({
         SES: new AWS.SES({
             apiVersion: '2010-12-01',
-            region: 'eu-west-1'
+            region: 'eu-west-1',
         }),
     });
 };
@@ -49,7 +49,6 @@ export const getNetexFileFromS3 = async (params: S3ObjectParameters): Promise<st
 };
 
 export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
-
     try {
         const s3ObjectParams = setS3ObjectParams(event);
         const pathToSavedNetex = `/tmp/${s3ObjectParams.Key}`;
@@ -63,15 +62,12 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
         const info: SentMessageInfo = await mailTransporter.sendMail(mailOptions);
 
         if (info.message) {
-            console.log(`Email sent: ${info.message.toString()}`);
+            console.info(`Email sent: ${info.message.toString()}`);
         } else {
-            console.log(`Email sent.`)
+            console.info(`Email sent.`);
         }
-
     } catch (err) {
-        throw new Error(
-            `SES SendEmail failed. Error: ${err.stack}`,
-        );
+        throw new Error(`SES SendEmail failed. Error: ${err.stack}`);
     }
 };
 
