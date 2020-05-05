@@ -1,52 +1,68 @@
 {
-    "operatorName": "Blackpool Transport",
-    "type": "periodGeoZone",
-    "productName": "Test",
-    "productPrice": "1.99",
-    "daysValid": "7",
-    "expiryRules": "endOfCalendarDay",
-    "nocCode": "BLAC",
-    "zoneName": "Test Town Centre",
-    "stops": [
-        {
-            "stopName": "Yoden Way",
-            "naptanCode": "duratdmt",
-            "atcoCode": "13003522F",
-            "localityCode": "E0010183",
-            "localityName": "Horden",
-            "parentLocalityName": "",
-            "indicator": "SW-bound",
-            "street": "Yoden Way"
-        },
-        {
-            "stopName": "Bibby Drive",
-            "naptanCode": "lanjajwt",
-            "atcoCode": "2500B0636",
-            "localityCode": "E0015867",
-            "localityName": "Staining",
-            "parentLocalityName": "",
-            "indicator": "by",
-            "street": "Chain Lane"
-        },
-        {
-            "stopName": "Meadow Park",
-            "naptanCode": "lanjamam",
-            "atcoCode": "2500B0637",
-            "localityCode": "E0015867",
-            "localityName": "Staining",
-            "parentLocalityName": "",
-            "indicator": "opp",
-            "street": "Chain Lane"
-        },
-        {
-            "stopName": "Primary School",
-            "naptanCode": "lanjamad",
-            "atcoCode": "2500B0638",
-            "localityCode": "E0015867",
-            "localityName": "Staining",
-            "parentLocalityName": "",
-            "indicator": "o/s",
-            "street": "Chain Lane"
-        }
-    ]
+  "operatorName": "Blackpool Transport",
+  "type": "periodGeoZone",
+  "products": [
+    {
+      "productName": "TestA",
+      "productPrice": "3.99",
+      "daysValid": "7",
+      "expiryRules": "endOfCalendarDay"
+    },
+    {
+      "productName": "TestB",
+      "productPrice": "1.99",
+      "daysValid": "14",
+      "expiryRules": "endOfCalendarDay"
+    },
+    {
+      "productName": "TestC",
+      "productPrice": "10.99",
+      "daysValid": "365",
+      "expiryRules": "24hr"
+    }
+  ],
+  "nocCode": "BLAC",
+  "zoneName": "Test Town Centre",
+  "stops": [
+    {
+      "stopName": "Yoden Way",
+      "naptanCode": "duratdmt",
+      "atcoCode": "13003522F",
+      "localityCode": "E0010183",
+      "localityName": "Horden",
+      "parentLocalityName": "",
+      "indicator": "SW-bound",
+      "street": "Yoden Way"
+    },
+    {
+      "stopName": "Bibby Drive",
+      "naptanCode": "lanjajwt",
+      "atcoCode": "2500B0636",
+      "localityCode": "E0015867",
+      "localityName": "Staining",
+      "parentLocalityName": "",
+      "indicator": "by",
+      "street": "Chain Lane"
+    },
+    {
+      "stopName": "Meadow Park",
+      "naptanCode": "lanjamam",
+      "atcoCode": "2500B0637",
+      "localityCode": "E0015867",
+      "localityName": "Staining",
+      "parentLocalityName": "",
+      "indicator": "opp",
+      "street": "Chain Lane"
+    },
+    {
+      "stopName": "Primary School",
+      "naptanCode": "lanjamad",
+      "atcoCode": "2500B0638",
+      "localityCode": "E0015867",
+      "localityName": "Staining",
+      "parentLocalityName": "",
+      "indicator": "o/s",
+      "street": "Chain Lane"
+    }
+  ]
 }

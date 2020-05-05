@@ -1,23 +1,43 @@
 {
-    "operatorName": "Blackpool Transport",
-    "type": "periodMultipleServices",
-    "productName": "dfvdfvd",
-    "productPrice": "123",
-    "daysValid": "4",
-    "expiryRules": "endOfCalendarDay",
-    "nocCode": "BLAC",
-    "selectedServices": [
-        {
-            "lineName": "4",
-            "startDate": "05/04/2020"
-        },
-        {
-            "lineName": "17",
-            "startDate": "05/04/2020"
-        },
-        {
-            "lineName": "2C",
-            "startDate": "05/04/2020"
-        }
-    ]
+  "operatorName": "Blackpool Transport",
+  "type": "periodMultipleServices",
+  "products": [
+    {
+      "productName": "gscafvd",
+      "productPrice": "1.23",
+      "daysValid": "4",
+      "expiryRules": "24hr"
+    },
+    {
+      "productName": "dfvdfvd",
+      "productPrice": "3.24",
+      "daysValid": "7",
+      "expiryRules": "endOfCalendarDay"
+    },
+    {
+      "productName": "dfvfgsh",
+      "productPrice": "5.66",
+      "daysValid": "8",
+      "expiryRules": "endOfCalendarDay"
+    }
+  ],
+  "nocCode": "BLAC",
+  "selectedServices": [
+    {
+      "lineName": "4",
+      "startDate": "05/04/2020",
+      "serviceDescription": "Bromley - Chatham - Greenwich"
+    },
+    {
+      "lineName": "17",
+      "startDate": "05/04/2020",
+      "serviceDescription": "Bromley - Chatham - Greenwich"
+
+    },
+    {
+      "lineName": "2C",
+      "startDate": "05/04/2020",
+      "serviceDescription": "Bromley - Chatham - Greenwich"
+    }
+  ]
 }
