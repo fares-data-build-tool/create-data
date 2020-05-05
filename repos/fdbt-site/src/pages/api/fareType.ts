@@ -26,7 +26,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 case 'single':
                     redirectTo(res, '/service');
                     return;
-                case 'returnSingle':
+                case 'return':
                     redirectTo(res, '/service');
                     return;
                 default:

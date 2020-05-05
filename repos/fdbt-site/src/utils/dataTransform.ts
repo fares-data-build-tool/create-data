@@ -1,6 +1,5 @@
-import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern } from '../data/auroradb';
+import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern, RawService } from '../data/auroradb';
 
-// eslint-disable-next-line import/prefer-default-export
 export const enrichJourneyPatternsWithNaptanInfo = async (
     journeyPatterns: RawJourneyPattern[],
 ): Promise<JourneyPattern[]> =>
@@ -33,3 +32,20 @@ export const enrichJourneyPatternsWithNaptanInfo = async (
             },
         ),
     );
+
+// Gets a list of journey pattern sections with a given start and end point
+export const getJourneysByStartAndEndPoint = (
+    service: RawService,
+    selectedStartPoint: string,
+    selectedEndPoint: string,
+): RawJourneyPattern[] =>
+    service.journeyPatterns.filter(
+        item =>
+            item.orderedStopPoints[0].stopPointRef === selectedStartPoint &&
+            item.orderedStopPoints.slice(-1)[0].stopPointRef === selectedEndPoint,
+    );
+
+// Gets a unique set of stop point refs from an array of journey pattern sections
+export const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
+    ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
+];

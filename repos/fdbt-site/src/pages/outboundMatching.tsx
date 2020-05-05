@@ -1,23 +1,18 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import {
-    getServiceByNocCodeAndLineName,
-    batchGetStopsByAtcoCode,
-    Stop,
-    RawService,
-    RawJourneyPattern,
-} from '../data/auroradb';
-import { BasicService } from '../interfaces/index';
+import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
+import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
+import { BasicService } from '../interfaces/index';
 
-const title = 'Matching - Fares data build tool';
-const description = 'Matching page of the fares data build tool';
-const heading = 'Match stops to fares stages';
-const hintText = 'Please select the correct fare stages for each stop.';
-const apiEndpoint = '/api/matching';
+const heading = 'Outbound - Match stops to fare stages';
+const title = 'Outbound Matching - Fares data build tool';
+const description = 'Outbound Matching page of the fares data build tool';
+const hintText = 'Select the correct fare stage for each stop on the outbound journey.';
+const apiEndpoint = '/api/outboundMatching';
 
 interface MatchingProps {
     userFareStages: UserFareStages;
@@ -26,7 +21,7 @@ interface MatchingProps {
     error: boolean;
 }
 
-const Matching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
+const OutboundMatching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -39,23 +34,6 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
         apiEndpoint={apiEndpoint}
     />
 );
-
-// Gets a list of journey pattern sections with a given start and end point
-const getJourneysByStartAndEndPoint = (
-    service: RawService,
-    selectedStartPoint: string,
-    selectedEndPoint: string,
-): RawJourneyPattern[] =>
-    service.journeyPatterns.filter(
-        item =>
-            item.orderedStopPoints[0].stopPointRef === selectedStartPoint &&
-            item.orderedStopPoints.slice(-1)[0].stopPointRef === selectedEndPoint,
-    );
-
-// Gets a unique set of stop point refs from an array of journey pattern sections
-const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
-    ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
-];
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
@@ -73,7 +51,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
     const { nocCode } = operatorObject;
-    const [selectedStartPoint, selectedEndPoint] = journeyObject.directionJourneyPattern.split('#');
+    const [selectedStartPoint, selectedEndPoint] = journeyObject.outboundJourney.split('#');
     const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
@@ -90,6 +68,8 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
+    const parsedMatchingCookie = !matchingCookie ? false : JSON.parse(matchingCookie);
+
     return {
         props: {
             stops: orderedStops,
@@ -100,9 +80,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: !matchingCookie ? false : JSON.parse(matchingCookie).error,
+            error: !parsedMatchingCookie.outbound ? false : JSON.parse(matchingCookie).outbound.error,
         },
     };
 };
 
-export default Matching;
+export default OutboundMatching;

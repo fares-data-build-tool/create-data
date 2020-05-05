@@ -18,14 +18,14 @@ describe('service', () => {
         });
     });
 
-    it('should return 302 redirect to /direction when session is valid and there is a service selected', () => {
+    it('should return 302 redirect to /singleDirection when session is valid and there is a service selected', () => {
         (isSessionValid as {}) = jest.fn().mockReturnValue(true);
         (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, { service: 'test' }, {}, writeHeadMock);
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/direction',
+            Location: '/singleDirection',
         });
     });
 

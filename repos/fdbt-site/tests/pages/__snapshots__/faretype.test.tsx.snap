@@ -84,7 +84,7 @@ exports[`pages fareType should render correctly 1`] = `
                   id="fareType-return"
                   name="fareType"
                   type="radio"
-                  value="returnSingle"
+                  value="return"
                 />
                 <label
                   className="govuk-label govuk-radios__label"

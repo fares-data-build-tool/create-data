@@ -1,43 +1,34 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import Direction, { getServerSideProps } from '../../src/pages/direction';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
-import {
-    mockRawService,
-    mockService,
-    mockRawServiceWithDuplicates,
-    getMockContext,
-    mockSingleService,
-} from '../testData/mockData';
+import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
+import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';
 
 jest.mock('../../src/data/auroradb.ts');
 
 describe('pages', () => {
-    describe('direction', () => {
+    describe('selectJourneyDirection', () => {
         beforeEach(() => {
             (getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
             (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
         it('should render correctly', () => {
-            const tree = shallow(<Direction operator="Connexions Buses" lineName="X6A" service={mockService} />);
+            const tree = shallow(
+                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
-        it('shows operator name above the select box', () => {
-            const wrapper = shallow(<Direction operator="Connexions Buses" lineName="X6A" service={mockService} />);
-            const journeyWelcome = wrapper.find('#direction-operator-linename-hint').first();
-
-            expect(journeyWelcome.text()).toBe('Connexions Buses - X6A');
-        });
-
-        it('shows a list of journey patterns for the service in the select box', () => {
-            const wrapper = mount(<Direction operator="Connexions Buses" lineName="X6A" service={mockService} />);
+        it('shows a list of journey patterns for the service in each of the select boxes', () => {
+            const wrapper = mount(
+                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" />,
+            );
 
             const serviceJourney = wrapper.find('.journey-option');
 
-            expect(serviceJourney).toHaveLength(2);
+            expect(serviceJourney).toHaveLength(4);
             expect(serviceJourney.first().text()).toBe('Estate (Hail and Ride) N/B TO Interchange Stand B');
             expect(serviceJourney.at(1).text()).toBe('Interchange Stand B TO Estate (Hail and Ride) N/B');
         });
@@ -53,8 +44,7 @@ describe('pages', () => {
 
             expect(result).toEqual({
                 props: {
-                    operator,
-                    lineName,
+                    errors: [],
                     service: mockService,
                 },
             });
@@ -73,32 +63,9 @@ describe('pages', () => {
 
             expect(result).toEqual({
                 props: {
-                    operator,
-                    lineName,
+                    errors: [],
                     service: mockService,
                 },
-            });
-        });
-
-        it('redirects to the inputMethod page when there is a circular journey, but only when fareType is returnSingle', async () => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockSingleService));
-
-            const writeHeadMock = jest.fn();
-
-            const operator = 'HCTY';
-            const lineName = 'X6A';
-
-            const ctx = getMockContext(
-                { operator, serviceLineName: lineName, fareType: 'returnSingle' },
-                {},
-                '',
-                writeHeadMock,
-            );
-
-            await getServerSideProps(ctx);
-
-            expect(writeHeadMock).toBeCalledWith(302, {
-                Location: '/inputMethod',
             });
         });
 
