@@ -25,17 +25,17 @@ interface DirectionProps {
     inboundJourney: string;
 }
 
-const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
+const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/selectJourneyDirection" method="post">
+                <form action="/api/returnDirection" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    Select your journey direction
+                                    Select the inbound and outbound journeys for your service
                                 </h1>
                             </legend>
                             <div className="govuk-!-margin-top-5">
@@ -44,16 +44,12 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorId={outboundErrorId}
                                     errorClass="govuk-radios--error"
                                 >
-                                    <div>
-                                        <span className="govuk-hint" id="outbound-journey-selection-hint">
-                                            Outbound Journey
-                                        </span>
-                                        <DirectionDropdown
-                                            journeyPatterns={service.journeyPatterns}
-                                            selectNameID="outboundJourney"
-                                            outboundJourney={outboundJourney}
-                                        />
-                                    </div>
+                                    <DirectionDropdown
+                                        selectNameID="outboundJourney"
+                                        dropdownLabel="Outbound Journey"
+                                        journeyPatterns={service.journeyPatterns}
+                                        outboundJourney={outboundJourney}
+                                    />
                                 </FormElementWrapper>
                             </div>
                             <div className="govuk-!-margin-top-6">
@@ -62,16 +58,12 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorId={inboundErrorId}
                                     errorClass="govuk-radios--error"
                                 >
-                                    <div>
-                                        <span className="govuk-hint" id="inbound-journey-selection-hint">
-                                            Inbound Journey
-                                        </span>
-                                        <DirectionDropdown
-                                            journeyPatterns={service.journeyPatterns}
-                                            selectNameID="inboundJourney"
-                                            inboundJourney={inboundJourney}
-                                        />
-                                    </div>
+                                    <DirectionDropdown
+                                        selectNameID="inboundJourney"
+                                        dropdownLabel="Inbound Journey"
+                                        journeyPatterns={service.journeyPatterns}
+                                        inboundJourney={inboundJourney}
+                                    />
                                 </FormElementWrapper>
                             </div>
                         </fieldset>
@@ -118,11 +110,11 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     }
 
     // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
-    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
+    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'return') {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
             const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
-            const cookieValue = JSON.stringify({ journeyPattern: journeyPatternCookie, uuid });
+            const cookieValue = JSON.stringify({ directionJourneyPattern: journeyPatternCookie, uuid });
             setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
             redirectTo(ctx.res, '/inputMethod');
         }
@@ -155,4 +147,4 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     return { props: { service, errors: [] } };
 };
 
-export default SelectJourneyDirection;
+export default ReturnDirection;

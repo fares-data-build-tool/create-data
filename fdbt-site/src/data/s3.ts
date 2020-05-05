@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME } from '../constants';
+import { MatchingFareZones } from '../interfaces/matchingInterface';
 
 export interface FareStage {
     stageName: string;
@@ -70,6 +71,22 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
         return atcoCodes;
     } catch (err) {
         throw new Error(`Could not retrieve Atco codes from S3: ${err.name}, ${err.message}`);
+    }
+};
+
+export const getOutboundMatchingFareStages = async (uuid: string): Promise<MatchingFareZones> => {
+    const params = {
+        Bucket: USER_DATA_BUCKET_NAME,
+        Key: `return/outbound/${uuid}.json`,
+    };
+
+    try {
+        const response = await s3.getObject(params).promise();
+        const dataAsString = response.Body?.toString('utf-8') ?? '';
+
+        return JSON.parse(dataAsString);
+    } catch (err) {
+        throw new Error(`Could not retrieve outbound matching fare zones from S3: ${err.stack}`);
     }
 };
 

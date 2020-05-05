@@ -1,6 +1,6 @@
 import { isSessionValid } from '../../../src/pages/api/service/validator';
 import { setCookieOnResponseObject, getUuidFromCookie } from '../../../src/pages/api/apiUtils/index';
-import direction from '../../../src/pages/api/direction';
+import direction from '../../../src/pages/api/singleDirection';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('direction', () => {
@@ -10,13 +10,13 @@ describe('direction', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /direction (i.e. itself) when the session is valid, but there is no request body', () => {
+    it('should return 302 redirect to /singleDirection (i.e. itself) when the session is valid, but there is no request body', () => {
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "single"}' };
         const { req, res } = getMockRequestAndResponse(mockFareTypeCookie, null, {}, writeHeadMock);
         (setCookieOnResponseObject as {}) = jest.fn();
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/direction',
+            Location: '/singleDirection',
         });
     });
 

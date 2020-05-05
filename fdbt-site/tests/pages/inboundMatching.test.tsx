@@ -11,12 +11,12 @@ import {
     getMockContext,
     mockRawServiceWithDuplicates,
 } from '../testData/mockData';
-import Matching, { getServerSideProps } from '../../src/pages/matching';
+import InboundMatching, { getServerSideProps } from '../../src/pages/inboundMatching';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
 
-describe('Matching Page', () => {
+describe('Inbound Matching Page', () => {
     let wrapper: any;
     let getServiceByNocCodeAndLineNameSpy: any;
     let batchGetStopsByAtcoCodeSpy: any;
@@ -32,7 +32,7 @@ describe('Matching Page', () => {
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
         wrapper = shallow(
-            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+            <InboundMatching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
         );
     });
 
@@ -46,7 +46,7 @@ describe('Matching Page', () => {
 
     it('shows the correct amount of fare stages in the select boxes', () => {
         const mountedWrapper = mount(
-            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+            <InboundMatching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
         );
 
         expect(

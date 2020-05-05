@@ -12,7 +12,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const { directionJourneyPattern } = req.body;
 
         if (!directionJourneyPattern) {
-            redirectTo(res, '/direction');
+            redirectTo(res, '/singleDirection');
             return;
         }
 
