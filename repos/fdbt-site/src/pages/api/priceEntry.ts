@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { FARE_STAGES_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
+import { FARE_STAGES_COOKIE, JOURNEY_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
 import { getUuidFromCookie, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
@@ -105,6 +105,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const mappedData = faresTriangleDataMapper(req);
         const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));
+
+        const cookies = new Cookies(req, res);
+        const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
+        const journeyObject = JSON.parse(journeyCookie);
+
+        if (journeyObject?.outboundJourney) {
+            redirectTo(res, '/outboundMatching');
+        }
+
         redirectTo(res, '/matching');
     } catch (error) {
         const message = 'There was a problem generating the priceEntry JSON:';

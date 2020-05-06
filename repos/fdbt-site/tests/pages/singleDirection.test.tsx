@@ -1,34 +1,39 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import SingleDirection, { getServerSideProps } from '../../src/pages/singleDirection';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
-import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
-import SelectJourneyDirection, { getServerSideProps } from '../../src/pages/selectJourneyDirection';
+import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
 
 jest.mock('../../src/data/auroradb.ts');
 
 describe('pages', () => {
-    describe('selectJourneyDirection', () => {
+    describe('direction', () => {
         beforeEach(() => {
             (getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
             (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
         it('should render correctly', () => {
-            const tree = shallow(
-                <SelectJourneyDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" />,
-            );
+            const tree = shallow(<SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />);
             expect(tree).toMatchSnapshot();
         });
 
-        it('shows a list of journey patterns for the service in each of the select boxes', () => {
-            const wrapper = mount(
-                <SelectJourneyDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" />,
+        it('shows operator name above the select box', () => {
+            const wrapper = shallow(
+                <SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />,
             );
+            const journeyWelcome = wrapper.find('#direction-operator-linename-hint').first();
+
+            expect(journeyWelcome.text()).toBe('Connexions Buses - X6A');
+        });
+
+        it('shows a list of journey patterns for the service in the select box', () => {
+            const wrapper = mount(<SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />);
 
             const serviceJourney = wrapper.find('.journey-option');
 
-            expect(serviceJourney).toHaveLength(4);
+            expect(serviceJourney).toHaveLength(2);
             expect(serviceJourney.first().text()).toBe('Estate (Hail and Ride) N/B TO Interchange Stand B');
             expect(serviceJourney.at(1).text()).toBe('Interchange Stand B TO Estate (Hail and Ride) N/B');
         });
@@ -44,7 +49,8 @@ describe('pages', () => {
 
             expect(result).toEqual({
                 props: {
-                    errors: [],
+                    operator,
+                    lineName,
                     service: mockService,
                 },
             });
@@ -63,7 +69,8 @@ describe('pages', () => {
 
             expect(result).toEqual({
                 props: {
-                    errors: [],
+                    operator,
+                    lineName,
                     service: mockService,
                 },
             });

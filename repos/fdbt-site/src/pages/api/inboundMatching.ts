@@ -1,50 +1,29 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import {
-    redirectTo,
-    redirectToError,
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    getDomain,
-    unescapeAndDecodeCookie,
-} from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { BasicService } from '../../interfaces/index';
 import { Stop } from '../../data/auroradb';
-import { putStringInS3, UserFareStages } from '../../data/s3';
+import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARETYPE_COOKIE } from '../../constants';
+import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
 import getFareZones from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
-interface MatchingBaseData {
+interface FareZones {
+    name: string;
+    stops: Stop[];
+    prices: {
+        price: string;
+        fareZones: string[];
+    }[];
+}
+
+interface MatchingData {
     type: string;
     lineName: string;
     nocCode: string;
     operatorShortName: string;
-    serviceDescription: string;
-}
-
-interface MatchingData extends MatchingBaseData {
-    fareZones: {
-        name: string;
-        stops: Stop[];
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
-
-interface MatchingReturnData extends MatchingBaseData {
-    outboundMatchingFareZones: {
-        name: string;
-        stops: Stop[];
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-    inboundMatchingFareZones: [];
+    inboundFareZones: FareZones[];
+    outboundFareZones: FareZones[];
 }
 
 interface MatchingFareZones {
@@ -54,10 +33,11 @@ interface MatchingFareZones {
         prices: Price[];
     };
 }
-export const putMatchingDataInS3 = async (data: MatchingData | MatchingReturnData, uuid: string): Promise<void> => {
+
+export const putMatchingDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `${uuid}_${data.lineName}_${data.nocCode}.json`,
+        `${uuid}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
@@ -93,24 +73,14 @@ const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones =>
 const getMatchingJson = (
     service: BasicService,
     userFareStages: UserFareStages,
-    matchingFareZones: MatchingFareZones,
-    fareType: string,
-): MatchingData | MatchingReturnData => {
-    if (fareType === 'return') {
-        return {
-            ...service,
-            type: 'return',
-            outboundMatchingFareZones: getFareZones(userFareStages, matchingFareZones),
-            inboundMatchingFareZones: [],
-        };
-    }
-
-    return {
-        ...service,
-        type: 'pointToPoint',
-        fareZones: getFareZones(userFareStages, matchingFareZones),
-    };
-};
+    inboundMatchingFareZones: MatchingFareZones,
+    outboundMatchingFareZones: MatchingFareZones,
+): MatchingData => ({
+    ...service,
+    type: 'return',
+    inboundFareZones: getFareZones(userFareStages, inboundMatchingFareZones),
+    outboundFareZones: getFareZones(userFareStages, outboundMatchingFareZones),
+});
 
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
@@ -132,12 +102,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
 
-        const matchingFareZones = getMatchingFareZonesFromForm(req);
+        const inboundMatchingFareZones = getMatchingFareZonesFromForm(req);
 
-        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
-            const error = { error: true };
-            setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error }), req, res);
-            redirectTo(res, '/matching');
+        if (isFareStageUnassigned(userFareStages, inboundMatchingFareZones) && inboundMatchingFareZones !== {}) {
+            setCookieOnResponseObject(
+                getDomain(req),
+                MATCHING_COOKIE,
+                JSON.stringify({ inbound: { error: true } }),
+                req,
+                res,
+            );
+            redirectTo(res, '/inboundMatching');
             return;
         }
 
@@ -147,19 +122,32 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const uuid = getUuidFromCookie(req, res);
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
+        // get the outbound matching fare zones for outbound
+        const outboundMatchingFareZones = await getOutboundMatchingFareStages(uuid);
 
-        const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones, fareTypeObject.fareType);
+        if (!outboundMatchingFareZones) {
+            throw new Error('no outbound fare stages retrieved');
+        }
 
-        setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
+        const matchingJson = getMatchingJson(
+            service,
+            userFareStages,
+            inboundMatchingFareZones,
+            outboundMatchingFareZones,
+        );
 
         await putMatchingDataInS3(matchingJson, uuid);
 
+        setCookieOnResponseObject(
+            getDomain(req),
+            MATCHING_COOKIE,
+            JSON.stringify({ inbound: { error: false } }),
+            req,
+            res,
+        );
         redirectTo(res, '/thankyou');
     } catch (error) {
-        const message = 'There was a problem generating the matching JSON:';
+        const message = 'There was a problem generating the matching JSON.';
         redirectToError(res, message, error);
     }
 };
