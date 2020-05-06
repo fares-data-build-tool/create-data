@@ -2,15 +2,17 @@ import React, { ReactElement } from 'react';
 import { JourneyPattern } from '../data/auroradb';
 
 interface DirectionProps {
-    journeyPatterns: JourneyPattern[];
     selectNameID: string;
+    dropdownLabel?: string;
+    journeyPatterns: JourneyPattern[];
     outboundJourney?: string;
     inboundJourney?: string;
 }
 
 const DirectionDropdown = ({
-    journeyPatterns,
     selectNameID,
+    dropdownLabel = '',
+    journeyPatterns,
     outboundJourney,
     inboundJourney,
 }: DirectionProps): ReactElement => {
@@ -23,22 +25,27 @@ const DirectionDropdown = ({
     }
 
     return (
-        <select className="govuk-select" id={selectNameID} name={selectNameID} defaultValue={selectedValue}>
-            <option value="" disabled>
-                Select One
-            </option>
-            {journeyPatterns.map((journeyPattern, i) => {
-                return (
-                    <option
-                        key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}#${+i}`}
-                        value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
-                        className="journey-option"
-                    >
-                        {journeyPattern.startPoint.Display} TO {journeyPattern.endPoint.Display}
-                    </option>
-                );
-            })}
-        </select>
+        <>
+            <label className="govuk-label" htmlFor={selectNameID}>
+                {dropdownLabel}
+            </label>
+            <select className="govuk-select" id={selectNameID} name={selectNameID} defaultValue={selectedValue}>
+                <option value="" disabled>
+                    Select One
+                </option>
+                {journeyPatterns.map((journeyPattern, i) => {
+                    return (
+                        <option
+                            key={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}#${+i}`}
+                            value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
+                            className="journey-option"
+                        >
+                            {journeyPattern.startPoint.Display} TO {journeyPattern.endPoint.Display}
+                        </option>
+                    );
+                })}
+            </select>
+        </>
     );
 };
 

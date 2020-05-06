@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matching Page should render correctly 1`] = `
+exports[`Inbound OutboundMatching Page should render correctly 1`] = `
 <MatchingBase
-  apiEndpoint="/api/matching"
-  description="Matching page of the fares data build tool"
+  apiEndpoint="/api/inboundMatching"
+  description="Inbound Matching page of the fares data build tool"
   error={false}
-  heading="Match stops to fares stages"
-  hintText="Please select the correct fare stages for each stop."
+  heading="Inbound - Match stops to fare stages"
+  hintText="Select the correct fare stage for each stop on the inbound journey."
   service={
     Object {
       "lineName": "215",
@@ -170,7 +170,7 @@ exports[`Matching Page should render correctly 1`] = `
       },
     ]
   }
-  title="Matching - Fares data build tool"
+  title="Inbound Matching - Fares data build tool"
   userFareStages={
     Object {
       "fareStages": Array [

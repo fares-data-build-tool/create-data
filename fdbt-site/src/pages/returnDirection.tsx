@@ -2,13 +2,15 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
+import { getUuidFromCookies, setCookieOnServerSide } from '../utils';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Journey Selection - Fares data build tool';
 const description = 'Inbound and Outbound journey selection page of the Fares data build tool';
@@ -23,17 +25,17 @@ interface DirectionProps {
     inboundJourney: string;
 }
 
-const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
+const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/selectJourneyDirection" method="post">
+                <form action="/api/returnDirection" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    Select your journey direction
+                                    Select the inbound and outbound journeys for your service
                                 </h1>
                             </legend>
                             <div className="govuk-!-margin-top-5">
@@ -42,16 +44,12 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorId={outboundErrorId}
                                     errorClass="govuk-radios--error"
                                 >
-                                    <div>
-                                        <span className="govuk-hint" id="outbound-journey-selection-hint">
-                                            Outbound Journey
-                                        </span>
-                                        <DirectionDropdown
-                                            journeyPatterns={service.journeyPatterns}
-                                            selectNameID="outboundJourney"
-                                            outboundJourney={outboundJourney}
-                                        />
-                                    </div>
+                                    <DirectionDropdown
+                                        selectNameID="outboundJourney"
+                                        dropdownLabel="Outbound Journey"
+                                        journeyPatterns={service.journeyPatterns}
+                                        outboundJourney={outboundJourney}
+                                    />
                                 </FormElementWrapper>
                             </div>
                             <div className="govuk-!-margin-top-6">
@@ -60,16 +58,12 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorId={inboundErrorId}
                                     errorClass="govuk-radios--error"
                                 >
-                                    <div>
-                                        <span className="govuk-hint" id="inbound-journey-selection-hint">
-                                            Inbound Journey
-                                        </span>
-                                        <DirectionDropdown
-                                            journeyPatterns={service.journeyPatterns}
-                                            selectNameID="inboundJourney"
-                                            inboundJourney={inboundJourney}
-                                        />
-                                    </div>
+                                    <DirectionDropdown
+                                        selectNameID="inboundJourney"
+                                        dropdownLabel="Inbound Journey"
+                                        journeyPatterns={service.journeyPatterns}
+                                        inboundJourney={inboundJourney}
+                                    />
                                 </FormElementWrapper>
                             </div>
                         </fieldset>
@@ -91,13 +85,15 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
+    const fareTypeCookie = cookies[FARETYPE_COOKIE];
 
-    if (!operatorCookie || !serviceCookie) {
+    if (!operatorCookie || !serviceCookie || !fareTypeCookie) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
+    const fareTypeInfo = JSON.parse(fareTypeCookie);
 
     const lineName = serviceInfo.service.split('#')[0];
 
@@ -111,6 +107,17 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error(
             `No service info could be retrieved for nocCode: ${operatorInfo.nocCode} and lineName: ${lineName}`,
         );
+    }
+
+    // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
+    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'return') {
+        if (ctx.res) {
+            const uuid = getUuidFromCookies(ctx);
+            const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
+            const cookieValue = JSON.stringify({ directionJourneyPattern: journeyPatternCookie, uuid });
+            setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
+            redirectTo(ctx.res, '/inputMethod');
+        }
     }
 
     // Remove journeys with duplicate start and end points for display purposes
@@ -140,4 +147,4 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     return { props: { service, errors: [] } };
 };
 
-export default SelectJourneyDirection;
+export default ReturnDirection;

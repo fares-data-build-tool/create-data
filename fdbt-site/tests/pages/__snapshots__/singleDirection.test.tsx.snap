@@ -11,7 +11,7 @@ exports[`pages direction should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/direction"
+      action="/api/singleDirection"
       method="post"
     >
       <div
@@ -28,7 +28,7 @@ exports[`pages direction should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              Please select your journey direction
+              Select your journey direction
             </h1>
           </legend>
           <span

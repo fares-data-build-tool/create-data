@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages selectJourneyDirection should render correctly 1`] = `
+<Layout
+  description="Inbound and Outbound journey selection page of the Fares data build tool"
+  title="Journey Selection - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/returnDirection"
+      method="post"
+    >
+      <ErrorSummary
+        errors={Array []}
+      />
+      <div
+        className="govuk-form-group "
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              Select the inbound and outbound journeys for your service
+            </h1>
+          </legend>
+          <div
+            className="govuk-!-margin-top-5"
+          >
+            <FormElementWrapper
+              errorClass="govuk-radios--error"
+              errorId="outbound-error"
+              errors={Array []}
+            >
+              <DirectionDropdown
+                dropdownLabel="Outbound Journey"
+                journeyPatterns={
+                  Array [
+                    Object {
+                      "endPoint": Object {
+                        "Display": "Interchange Stand B",
+                        "Id": "13003655B",
+                      },
+                      "startPoint": Object {
+                        "Display": "Estate (Hail and Ride) N/B",
+                        "Id": "13003921A",
+                      },
+                      "stopList": Array [
+                        "13003921A",
+                        "13003305E",
+                        "13003306B",
+                        "13003618B",
+                        "13003622B",
+                        "13003923B",
+                        "13003939H",
+                        "13003625C",
+                        "13003612D",
+                        "13003611B",
+                        "13003609E",
+                        "13003661E",
+                        "13003949C",
+                        "13003635B",
+                        "13003655B",
+                      ],
+                    },
+                    Object {
+                      "endPoint": Object {
+                        "Display": "Estate (Hail and Ride) N/B",
+                        "Id": "13003921A",
+                      },
+                      "startPoint": Object {
+                        "Display": "Interchange Stand B",
+                        "Id": "13003655B",
+                      },
+                      "stopList": Array [
+                        "13003655B",
+                        "13003654G",
+                        "13003609A",
+                        "13003611F",
+                        "13003612H",
+                        "13003625G",
+                        "13003939D",
+                        "13003923F",
+                        "13003622F",
+                        "13003621F",
+                        "13003618F",
+                        "13003306A",
+                        "13003305A",
+                        "13003921A",
+                      ],
+                    },
+                  ]
+                }
+                outboundJourney=""
+                selectNameID="outboundJourney"
+              />
+            </FormElementWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-top-6"
+          >
+            <FormElementWrapper
+              errorClass="govuk-radios--error"
+              errorId="inbound-error"
+              errors={Array []}
+            >
+              <DirectionDropdown
+                dropdownLabel="Inbound Journey"
+                inboundJourney=""
+                journeyPatterns={
+                  Array [
+                    Object {
+                      "endPoint": Object {
+                        "Display": "Interchange Stand B",
+                        "Id": "13003655B",
+                      },
+                      "startPoint": Object {
+                        "Display": "Estate (Hail and Ride) N/B",
+                        "Id": "13003921A",
+                      },
+                      "stopList": Array [
+                        "13003921A",
+                        "13003305E",
+                        "13003306B",
+                        "13003618B",
+                        "13003622B",
+                        "13003923B",
+                        "13003939H",
+                        "13003625C",
+                        "13003612D",
+                        "13003611B",
+                        "13003609E",
+                        "13003661E",
+                        "13003949C",
+                        "13003635B",
+                        "13003655B",
+                      ],
+                    },
+                    Object {
+                      "endPoint": Object {
+                        "Display": "Estate (Hail and Ride) N/B",
+                        "Id": "13003921A",
+                      },
+                      "startPoint": Object {
+                        "Display": "Interchange Stand B",
+                        "Id": "13003655B",
+                      },
+                      "stopList": Array [
+                        "13003655B",
+                        "13003654G",
+                        "13003609A",
+                        "13003611F",
+                        "13003612H",
+                        "13003625G",
+                        "13003939D",
+                        "13003923F",
+                        "13003622F",
+                        "13003621F",
+                        "13003618F",
+                        "13003306A",
+                        "13003305A",
+                        "13003921A",
+                      ],
+                    },
+                  ]
+                }
+                selectNameID="inboundJourney"
+              />
+            </FormElementWrapper>
+          </div>
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;

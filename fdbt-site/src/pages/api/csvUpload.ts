@@ -1,7 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUuidFromCookie, redirectToError, redirectTo, setCookieOnResponseObject, getDomain } from './apiUtils';
+import Cookies from 'cookies';
+import {
+    getUuidFromCookie,
+    redirectToError,
+    redirectTo,
+    setCookieOnResponseObject,
+    getDomain,
+    unescapeAndDecodeCookie,
+} from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { CSV_UPLOAD_COOKIE } from '../../constants';
+import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 
@@ -132,6 +140,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }
 
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
+
+            const cookies = new Cookies(req, res);
+            const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
+            const journeyObject = JSON.parse(journeyCookie);
+
+            if (journeyObject?.outboundJourney) {
+                redirectTo(res, '/outboundMatching');
+            }
 
             redirectTo(res, '/matching');
         }

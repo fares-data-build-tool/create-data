@@ -17,3 +17,10 @@ export interface ServiceLists {
     selectedServices: ServicesInfo[];
     error: boolean;
 }
+
+export interface BasicService {
+    lineName: string;
+    nocCode: string;
+    operatorShortName: string;
+    serviceDescription: string;
+}

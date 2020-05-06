@@ -29,12 +29,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const fareTypeCookie = unescape(decodeURI(cookies.get(FARETYPE_COOKIE) || ''));
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
-        if (fareTypeObject && fareTypeObject.fareType === 'returnSingle') {
-            redirectTo(res, '/selectJourneyDirection');
+        if (fareTypeObject && fareTypeObject.fareType === 'return') {
+            redirectTo(res, '/returnDirection');
             return;
         }
 
-        redirectTo(res, '/direction');
+        redirectTo(res, '/singleDirection');
     } catch (error) {
         const message = 'There was a problem selecting the service:';
         redirectToError(res, message, error);
