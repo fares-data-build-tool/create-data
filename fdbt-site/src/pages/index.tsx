@@ -12,10 +12,15 @@ const Home: NextPage = (): ReactElement => (
             <p className="govuk-body-l">Use this service to:</p>
             <div className="govuk-body-l">
                 <ul className="index-page-list">
-                    <li>Publish fares for a newly registered service</li>
-                    <li>Update fares for an existing service</li>
                     <li>Generate fares data in NeTEx format</li>
+                    <li>Update fares for an existing service</li>
+                    <li>Publish fares for a newly registered service</li>
                 </ul>
+                <p>
+                    All service data is taken directly from the Traveline National Dataset and the NaPTAN database. To
+                    avoid data discrepancies, ensure that all service data is correct within these datasets before using
+                    this service.
+                </p>
             </div>
 
             <a

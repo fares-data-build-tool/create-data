@@ -27,7 +27,7 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                         <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 id="input-method-heading" className="govuk-fieldset__heading">
-                                    Select your preferred input method
+                                    Select an input method
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
@@ -73,7 +73,7 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                                             aria-disabled="true"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="interactive-map">
-                                            Interactive Map (Beta)
+                                            Interactive Map (not yet available)
                                         </label>
                                     </div>
                                 </div>

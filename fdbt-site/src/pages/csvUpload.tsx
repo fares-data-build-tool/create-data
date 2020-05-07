@@ -19,16 +19,16 @@ const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
                 {...uploadProps}
                 detailBody={
                     <>
-                        <p>
-                            Use the Help File document for more detailed help on constructing your Fares Triangle, the
-                            Fares Triangle CSV Example document provides an example of the required format.
-                        </p>
-                        <p>Some common issues with the format include:</p>
+                        <p>Some common issues with csv uploads include:</p>
                         <ul className="govuk-list govuk-list--bullet">
                             <li>Commas in fare stage names</li>
-                            <li>Not filling in every price</li>
-                            <li>Not filling in every fare stage on the diagonal</li>
+                            <li>Not providing a price in every cell</li>
+                            <li>Not filling in every fare stage on the diagonal row</li>
                         </ul>
+                        <p>
+                            Use the help file for a more detailed guide on constructing a fares triangle in the required
+                            format or download the csv template to create a new file.
+                        </p>
                     </>
                 }
             />
@@ -53,15 +53,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
         props: {
             csvUploadApiRoute: '/api/csvUpload',
             csvUploadHintText:
-                'Upload your fares triangle as a csv below. You can refer to the documents section to down a template and help file.',
+                'Upload a fares triangle as a csv file below. Refer to the documents section to download a help file and a fares triangle template.',
             guidanceDocDisplayName: 'Download Help File',
             guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fares-Triangle.pdf',
             guidanceDocSize: '600KB',
-            csvTemplateDisplayName: 'Download Fares Triangle CSV Example',
+            csvTemplateDisplayName: 'Download fares triangle csv template',
             csvTemplateAttachmentUrl: '/assets/files/Fares-Triangle-Example.csv',
             csvTemplateSize: '400B',
             errors: !csvUpload?.error ? [] : [{ errorMessage: csvUpload.error, id: errorId }],
-            detailSummary: 'Help with Fares Triangle CSV upload',
+            detailSummary: "My csv won't upload",
         },
     };
 

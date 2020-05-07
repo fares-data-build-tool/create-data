@@ -51,6 +51,9 @@ const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
                                 id="select-all-button"
                                 className="govuk-button govuk-button--secondary"
                             />
+                            <span className="govuk-hint" id="traveline-hint">
+                                This data is taken from the Traveline National Dataset.
+                            </span>
                             <div className="govuk-checkboxes">
                                 {selectedServices.map((service, index) => {
                                     const { lineName, startDate, serviceDescription, checked } = service;

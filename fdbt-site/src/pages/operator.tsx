@@ -45,7 +45,7 @@ const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    Which operator are you representing?
+                                    Which organisation are you representing?
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">

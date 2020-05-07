@@ -31,7 +31,7 @@ exports[`pages inputMethod should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="input-method-heading"
             >
-              Select your preferred input method
+              Select an input method
             </h1>
           </legend>
           <FormElementWrapper
@@ -93,7 +93,7 @@ exports[`pages inputMethod should render correctly 1`] = `
                   className="govuk-label govuk-radios__label"
                   htmlFor="interactive-map"
                 >
-                  Interactive Map (Beta)
+                  Interactive Map (not yet available)
                 </label>
               </div>
             </div>
