@@ -30,11 +30,11 @@ const HowManyProducts = ({ inputCheck, errors }: HowManyProductProps): ReactElem
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
-                                How many products do you have for this zone or selected services?
+                                How many period tickets do you have for the selected services?
                             </h1>
                         </legend>
-                        <label className="govuk-label" htmlFor="numberOfProducts">
-                            Number of fare products (up to a maximum of 10)
+                        <label className="govuk-hint" htmlFor="numberOfProducts">
+                            Enter the number of period tickets below. Up to a maximum of 10 at once.
                         </label>
                         <FormElementWrapper
                             errors={errors}

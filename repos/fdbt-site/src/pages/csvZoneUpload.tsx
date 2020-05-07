@@ -19,14 +19,14 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
                 {...uploadProps}
                 detailBody={
                     <>
-                        <p>
-                            Use the Help File document for more detailed help on constructing your Fare Zone CSV, the
-                            Fares Zone CSV Example document provides an example of the required format.
-                        </p>
-                        <p>Some common issues with the format include:</p>
+                        <p>Some common issues with csv uploads include:</p>
                         <ul className="govuk-list govuk-list--bullet">
-                            <li>Commas in Fare Zone name</li>
+                            <li>Commas in fare zone names</li>
                         </ul>
+                        <p>
+                            Use the help file document for a more detailed help on constructing a fare zone csv in the
+                            required format or download the csv template to create a new file.
+                        </p>
                     </>
                 }
             />
@@ -51,15 +51,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
         props: {
             csvUploadApiRoute: '/api/csvZoneUpload',
             csvUploadHintText:
-                'Upload your fare zone as a csv below. You can refer to the documents section to down a template and help file.',
+                'Upload a fare zone as a csv file below. Refer to the documents section to download a help file and a template.',
             guidanceDocDisplayName: 'Download Help File',
             guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fare-Zone.pdf',
             guidanceDocSize: '1.0MB',
-            csvTemplateDisplayName: 'Download Fare Zone CSV Example',
+            csvTemplateDisplayName: 'Download fare zone csv template',
             csvTemplateAttachmentUrl: '/assets/files/Fare-Zone-Example.csv',
             csvTemplateSize: '600B',
             errors: !csvZoneUpload?.error ? [] : [{ errorMessage: csvZoneUpload.error, id: errorId }],
-            detailSummary: 'Help with Fares Zone CSV upload',
+            detailSummary: "My csv won't upload",
         },
     };
 

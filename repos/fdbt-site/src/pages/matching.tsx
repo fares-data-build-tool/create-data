@@ -16,7 +16,8 @@ import MatchingBase from '../components/MatchingBase';
 const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the fares data build tool';
 const heading = 'Match stops to fares stages';
-const hintText = 'Please select the correct fare stages for each stop.';
+const hintText = 'Select a fare stage for each stop.';
+const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/matching';
 
 interface MatchingProps {
@@ -36,6 +37,7 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
         title={title}
         description={description}
         hintText={hintText}
+        travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
     />
 );

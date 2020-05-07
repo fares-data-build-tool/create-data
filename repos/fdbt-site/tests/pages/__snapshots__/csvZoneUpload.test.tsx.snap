@@ -19,18 +19,18 @@ exports[`pages csvzoneupload should render correctly 1`] = `
       detailBody={
         <React.Fragment>
           <p>
-            Use the Help File document for more detailed help on constructing your Fare Zone CSV, the Fares Zone CSV Example document provides an example of the required format.
-          </p>
-          <p>
-            Some common issues with the format include:
+            Some common issues with csv uploads include:
           </p>
           <ul
             className="govuk-list govuk-list--bullet"
           >
             <li>
-              Commas in Fare Zone name
+              Commas in fare zone names
             </li>
           </ul>
+          <p>
+            Use the help file document for a more detailed help on constructing a fare zone csv in the required format or download the csv template to create a new file.
+          </p>
         </React.Fragment>
       }
       errors={Array []}

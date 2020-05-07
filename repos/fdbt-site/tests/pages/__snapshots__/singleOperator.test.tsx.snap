@@ -59,6 +59,12 @@ exports[`pages singleOperator should render correctly 1`] = `
             type="submit"
             value="Select All"
           />
+          <span
+            className="govuk-hint"
+            id="traveline-hint"
+          >
+            This data is taken from the Traveline National Dataset.
+          </span>
           <div
             className="govuk-checkboxes"
           />

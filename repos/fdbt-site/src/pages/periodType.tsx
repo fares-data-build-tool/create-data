@@ -27,7 +27,7 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                         <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
-                                    What type of Period Ticket?
+                                    Select a type of period ticket
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--errors">
@@ -79,7 +79,7 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                                             aria-disabled="true"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
-                                            A ticket for services across multiple operators
+                                            A ticket for services across multiple operators (Not yet available)
                                         </label>
                                     </div>
                                 </div>

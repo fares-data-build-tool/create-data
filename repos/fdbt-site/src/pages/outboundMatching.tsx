@@ -11,7 +11,8 @@ import { BasicService } from '../interfaces/index';
 const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Fares data build tool';
 const description = 'Outbound Matching page of the fares data build tool';
-const hintText = 'Select the correct fare stage for each stop on the outbound journey.';
+const hintText = 'Select a fare stage for each stop on the outbound journey.';
+const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/outboundMatching';
 
 interface MatchingProps {
@@ -31,6 +32,7 @@ const OutboundMatching = ({ userFareStages, stops, service, error }: MatchingPro
         title={title}
         description={description}
         hintText={hintText}
+        travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
     />
 );
