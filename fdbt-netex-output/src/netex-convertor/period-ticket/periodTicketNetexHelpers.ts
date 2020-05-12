@@ -11,6 +11,12 @@ import {
 } from '../types';
 import { getCleanWebsite } from '../sharedHelpers';
 
+export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
+    (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
+
+export const isMultiServiceTicket = (ticket: PeriodTicket): ticket is PeriodMultipleServicesTicket =>
+    (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
+
 export const getScheduledStopPointsList = (stops: Stop[]): ScheduledStopPoint[] =>
     stops.map((stop: Stop) => ({
         versionRef: 'EXTERNAL',
@@ -343,14 +349,14 @@ export const getSalesOfferPackageList = (userPeriodTicket: PeriodTicket, placeHo
         }
     }));
 
-export const getPreassignedFareProduct = (userPeriodTicket: PeriodTicket, nocCodeNocFormat: string, opIdNocFormat: string, isGeoZoneTicket: boolean, isMultiServiceTicket: boolean): {}[] => {
+export const getPreassignedFareProduct = (userPeriodTicket: PeriodTicket, nocCodeNocFormat: string, opIdNocFormat: string): {}[] => {
     return userPeriodTicket.products.map(product => {
 
         let elementZeroRef: string;
 
-        if (isGeoZoneTicket) {
+        if (isGeoZoneTicket(userPeriodTicket)) {
             elementZeroRef = `op:Tariff@${product.productName}@access_zones`;
-        } else if (isMultiServiceTicket) {
+        } else if (isMultiServiceTicket(userPeriodTicket)) {
             elementZeroRef = `op:Tariff@${product.productName}@access_lines`
         } else {
             elementZeroRef = "";
@@ -440,16 +446,16 @@ export const getTimeIntervals = (userPeriodTicket: PeriodTicket): {}[] => {
     return timeIntervals.flatMap((item) => item);
 }
 
-export const getFareStructuresElements = (userPeriodTicket: any, isGeoZoneTicket: boolean, isMultiServiceTicket: boolean, placeHolderGroupOfProductsName: string): {}[] => {
+export const getFareStructuresElements = (userPeriodTicket: PeriodTicket, placeHolderGroupOfProductsName: string): {}[] => {
 
-    const arrayOfArraysOfFareStructureElements: [] = userPeriodTicket.products.map((product: any) => {
+    const arrayOfArraysOfFareStructureElements = userPeriodTicket.products.map((product) => {
 
         // FareStructureElement 1 - availability
-        let id: string = '';
-        let genericParameterAssignmentId: string = '';
-        let validityParametersObject: {} = {};
-        let validityParameterGroupingType: string = '';
-        if (isGeoZoneTicket) {
+        let id = '';
+        let genericParameterAssignmentId = '';
+        let validityParametersObject = {};
+        let validityParameterGroupingType = '';
+        if (isGeoZoneTicket(userPeriodTicket)) {
             id = `op:Tariff@${product.productName}@access_zones`;
             genericParameterAssignmentId = `op:Tariff@${product.productName}@access_zones`;
             validityParameterGroupingType = "XOR";
@@ -459,7 +465,7 @@ export const getFareStructuresElements = (userPeriodTicket: any, isGeoZoneTicket
                     ref: `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`
                 }
             };
-        } else if (isMultiServiceTicket) {
+        } else if (isMultiServiceTicket(userPeriodTicket)) {
             id = `op:Tariff@${product.productName}@access_lines`;
             genericParameterAssignmentId = `Tariff@${product.productName}@access_lines`;
             validityParameterGroupingType = "OR";
@@ -468,7 +474,7 @@ export const getFareStructuresElements = (userPeriodTicket: any, isGeoZoneTicket
 
         const availabilityElement = {
             version: "1.0",
-            id: id,
+            id,
             Name: { $t: "Available zones" },
             Description: { $t: "single zone." },
             TypeOfFareStructureElementRef: {
