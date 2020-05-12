@@ -46,10 +46,7 @@ export interface MatchingData {
 
 export interface BasePeriodTicket {
     operatorName: string;
-    productName: string;
-    productPrice: string;
-    daysValid: string;
-    expiryRules: string;
+    products: ProductDetails[];
     nocCode: string;
 }
 
@@ -62,13 +59,20 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
 }
 
-export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
-
 export interface SelectedService {
     lineName: string;
     startDate: string;
     serviceDescription: string;
 }
+
+export interface ProductDetails {
+    productName: string;
+    productPrice: string;
+    daysValid: string;
+    expiryRules: string;
+}
+
+export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
 
 export interface ScheduledStopPoint {
     versionRef: string;
@@ -97,4 +101,14 @@ export interface Line {
 export interface LineRef {
     version: string;
     ref: string;
+}
+
+export interface FareStructureElement {
+    version: string;
+    id: string;
+    Name: object;
+    Description?: object;
+    TypeOfFareStructureElementRef?: object;
+    GenericParameterAssignment: object;
+    timeIntervals?: object;
 }

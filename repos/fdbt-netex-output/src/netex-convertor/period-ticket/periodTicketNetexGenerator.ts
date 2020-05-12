@@ -3,20 +3,22 @@ import {
     getScheduledStopPointsList,
     getTopographicProjectionRefList,
     getLinesList,
-    getLineRefList,
     getGeoZoneFareTable,
     getMultiServiceFareTable,
+    getFareTableList,
+    getPreassignedFareProduct,
+    getSalesOfferPackageList,
+    getTimeIntervals,
+    getFareStructuresElements
 } from './periodTicketNetexHelpers';
 import { NetexObject, getCleanWebsite, getNetexTemplateAsJson, convertJsonToXml } from '../sharedHelpers';
 
-const periodTicketNetexGenerator = (
-    userPeriodTicket: PeriodTicket,
-    operatorData: OperatorData,
-): { generate: Function } => {
+const placeHolderGroupOfProductsName = "PLACEHOLDER";
+
+const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData: OperatorData): { generate: Function } => {
+
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${userPeriodTicket.nocCode}`;
-    const periodProductNameOpFormat = `op:Pass@${userPeriodTicket.productName}`;
-    const lineIdName = `Line_${userPeriodTicket.productName}`;
     const currentDate = new Date(Date.now());
     const website = getCleanWebsite(operatorData.website);
 
@@ -39,14 +41,15 @@ const periodTicketNetexGenerator = (
         publicationRequestToUpdate.Description.$t = `Request for ${userPeriodTicket.nocCode} bus pass fares`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef.ref = periodProductNameOpFormat;
+        // below ref is being set to the first product name, so the ID can be found.
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef.ref = `op:Pass@${userPeriodTicket.products[0].productName}`;
 
         return publicationRequestToUpdate;
     };
 
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
-        compositeFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@${userPeriodTicket.productName}:op`;
+        compositeFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@${placeHolderGroupOfProductsName}:op`;
         compositeFrameToUpdate.Name.$t = `Fares for ${userPeriodTicket.operatorName}`;
         compositeFrameToUpdate.Description.$t = `Period ticket for ${userPeriodTicket.operatorName}`;
 
@@ -101,7 +104,7 @@ const periodTicketNetexGenerator = (
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
         if (isMultiServiceTicket(userPeriodTicket)) {
             const serviceFrameToUpdate = { ...serviceFrame };
-            serviceFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:ServiceFrame_UK_PI_NETWORK:${lineIdName}:op`;
+            serviceFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:ServiceFrame_UK_PI_NETWORK:Line_${placeHolderGroupOfProductsName}:op`;
 
             serviceFrameToUpdate.lines.Line = getLinesList(userPeriodTicket, operatorData);
 
@@ -119,20 +122,20 @@ const periodTicketNetexGenerator = (
                     ? userPeriodTicket.stops[0].parentLocalityName
                     : userPeriodTicket.stops[0].localityName;
 
-            networkFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${userPeriodTicket.productName}@pass:op`;
-            networkFareFrameToUpdate.Name.$t = `${userPeriodTicket.productName} Network`;
+            networkFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
+            networkFareFrameToUpdate.Name.$t = `${placeHolderGroupOfProductsName} Network`;
             networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:ResourceFrame_UK_PI_COMMON:${userPeriodTicket.nocCode}:op`;
 
-            networkFareFrameToUpdate.fareZones.FareZone[0].id = `op:${userPeriodTicket.productName}@${parentFareZoneLocality}`;
+            networkFareFrameToUpdate.fareZones.FareZone[0].id = `op:${placeHolderGroupOfProductsName}@${parentFareZoneLocality}`;
             networkFareFrameToUpdate.fareZones.FareZone[0].Name.$t = parentFareZoneLocality;
-            networkFareFrameToUpdate.fareZones.FareZone[0].Description.$t = `${parentFareZoneLocality} ${userPeriodTicket.productName} Parent Fare Zone`;
+            networkFareFrameToUpdate.fareZones.FareZone[0].Description.$t = `${parentFareZoneLocality} ${placeHolderGroupOfProductsName} Parent Fare Zone`;
             networkFareFrameToUpdate.fareZones.FareZone[0].projections.TopographicProjectionRef = getTopographicProjectionRefList(
                 userPeriodTicket.stops,
             );
 
-            networkFareFrameToUpdate.fareZones.FareZone[1].id = `op:${userPeriodTicket.productName}@${userPeriodTicket.zoneName}`;
+            networkFareFrameToUpdate.fareZones.FareZone[1].id = `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`;
             networkFareFrameToUpdate.fareZones.FareZone[1].Name.$t = `${userPeriodTicket.zoneName}`;
-            networkFareFrameToUpdate.fareZones.FareZone[1].Description.$t = `${userPeriodTicket.zoneName} ${userPeriodTicket.productName} Zone`;
+            networkFareFrameToUpdate.fareZones.FareZone[1].Description.$t = `${userPeriodTicket.zoneName} ${placeHolderGroupOfProductsName} Zone`;
             networkFareFrameToUpdate.fareZones.FareZone[1].members.ScheduledStopPointRef = getScheduledStopPointsList(
                 userPeriodTicket.stops,
             );
@@ -150,120 +153,75 @@ const periodTicketNetexGenerator = (
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
 
-        priceFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${userPeriodTicket.productName}@pass:op`;
+        priceFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
 
         if (isGeoZoneTicket(userPeriodTicket)) {
-            priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${userPeriodTicket.productName}@pass:op`;
+            priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
         } else if (isMultiServiceTicket(userPeriodTicket)) {
             priceFareFrameToUpdate.prerequisites = null;
         }
-        priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${userPeriodTicket.productName}`;
+        priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${placeHolderGroupOfProductsName}`;
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
                 FromDate: { $t: currentDate.toISOString() },
                 ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
             },
         };
-        priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${userPeriodTicket.productName} - Tariff`;
-        priceFareFrameToUpdate.tariffs.Tariff.Description.$t = `${userPeriodTicket.productName} single zone tariff`;
+        priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${placeHolderGroupOfProductsName} - Tariff`;
+        priceFareFrameToUpdate.tariffs.Tariff.Description.$t = `${placeHolderGroupOfProductsName} single zone tariff`;
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;
-        priceFareFrameToUpdate.tariffs.Tariff.geographicalIntervals.GeographicalInterval.id = `op:Tariff@${userPeriodTicket.productName}@1zone`;
-        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[0].id = `op:Tariff@${userPeriodTicket.productName}@1day`;
-        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[1].id = `op:Tariff@${userPeriodTicket.productName}@1week`;
-        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[2].id = `op:Tariff@${userPeriodTicket.productName}@4week`;
-        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[3].id = `op:Tariff@${userPeriodTicket.productName}@1year`;
-        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[4].id = `op:Tariff@${userPeriodTicket.productName}@1term`;
-        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval[5].id = `op:Tariff@${userPeriodTicket.productName}@1academic_year`;
+        priceFareFrameToUpdate.tariffs.Tariff.geographicalIntervals.GeographicalInterval.id = `op:Tariff@${placeHolderGroupOfProductsName}@1zone`;
 
-        if (isGeoZoneTicket(userPeriodTicket)) {
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].id = `op:Tariff@${userPeriodTicket.productName}@access_zones`;
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.id = `op:Tariff@${userPeriodTicket.productName}@access_zones`;
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.FareZoneRef.ref = `op:${userPeriodTicket.productName}@${userPeriodTicket.zoneName}`;
-        } else if (isMultiServiceTicket(userPeriodTicket)) {
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0] = {
-                version: '1.0',
-                id: `op:Tariff@${userPeriodTicket.productName}@access_lines`,
-            };
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].TypeOfFareStructureElementRef = {
-                version: 'fxc:v1.0',
-                ref: 'fxc:access',
-            };
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment = {
-                id: `Tariff@${userPeriodTicket.productName}@access_lines`,
-                version: '1.0',
-                order: '1',
-            };
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.TypeOfAccessRightAssignmentRef = {
-                version: 'fxc:v1.0',
-                ref: 'fxc:can_access',
-            };
+        // Time intervals
+        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval = getTimeIntervals(userPeriodTicket);
 
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.ValidityParameterGroupingType = {
-                $t: 'OR',
-            };
+        // Fare structure elements
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement = getFareStructuresElements(userPeriodTicket, isGeoZoneTicket(userPeriodTicket), isMultiServiceTicket(userPeriodTicket), placeHolderGroupOfProductsName);
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement.push({
+            version: "1.0",
+            id: `op:Tariff@eligibility`,
+            Name: { $t: "Eligible user types" },
+            TypeOfFareStructureElementRef: {
+                version: "fxc:v1.0",
+                ref: "fxc:eligibility"
+            },
+            GenericParameterAssignment: {
+                id: `op:Tariff@eligibility`,
+                version: "1.0",
+                order: "1",
+                TypeOfAccessRightAssignmentRef: {
+                    version: "fxc:v1.0",
+                    ref: "fxc:eligible"
+                },
+                LimitationGroupingType: { $t: "XOR" },
+                limitations: {
+                    UserProfile: {
+                        version: "1.0",
+                        id: "op:adult",
+                        Name: {
+                            $t: "Adult"
+                        },
+                        prices: {
+                            UsageParameterPrice: {
+                                version: "1.0",
+                                id: "op:adult"
+                            }
+                        },
+                        TypeOfConcessionRef: {
+                            version: "fxc:v1.0",
+                            ref: "fxc:none"
+                        }
+                    }
+                }
+            }
+        });
 
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters = {
-                LineRef: getLineRefList(userPeriodTicket),
-            };
-        }
+        // Preassigned Fare Product
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(userPeriodTicket, nocCodeNocFormat, opIdNocFormat, isGeoZoneTicket(userPeriodTicket), isMultiServiceTicket(userPeriodTicket));
 
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].id = `op:Tariff@${userPeriodTicket.productName}@eligibility`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.id = `op:Tariff@${userPeriodTicket.productName}@eligibitity`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].id = `op:Tariff@${userPeriodTicket.productName}@durations@adult`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[0].ref = `op:Tariff@${userPeriodTicket.productName}@1day`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[1].ref = `op:Tariff@${userPeriodTicket.productName}@1week`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[2].ref = `op:Tariff@${userPeriodTicket.productName}@4week`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].timeIntervals.TimeIntervalRef[3].ref = `op:Tariff@${userPeriodTicket.productName}@1year`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.id = `op:Tariff@${userPeriodTicket.productName}@adult_or_child`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].id = `op:Tariff@${userPeriodTicket.productName}@durations@adult_cash`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].timeIntervals.TimeIntervalRef[0].ref = `op:Tariff@${userPeriodTicket.productName}@1day`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].timeIntervals.TimeIntervalRef[1].ref = `op:Tariff@${userPeriodTicket.productName}@1week`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[3].GenericParameterAssignment.id = `op:Pass@${userPeriodTicket.productName}@duration@1D_1W`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].id = `op:Tariff@${userPeriodTicket.productName}@conditions_of_travel`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.id = `op:Tariff@${userPeriodTicket.productName}@conditions_of_travel`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.limitations.Transferability.id = `op:Pass@${userPeriodTicket.productName}@transferability`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.limitations.FrequencyOfUse.id = `op:Pass@${userPeriodTicket.productName}@frequency`;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[4].GenericParameterAssignment.limitations.Interchanging.id = `op:Pass@${userPeriodTicket.productName}@interchanging`;
-
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.id = `op:Pass@${userPeriodTicket.productName}`;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.Name.$t = `${userPeriodTicket.productName} Pass`;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.OperatorRef.ref = nocCodeNocFormat;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.OperatorRef.$t = opIdNocFormat;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.validableElements.ValidableElement.id = `op:Pass@${userPeriodTicket.productName}@travel`;
-
-        if (isGeoZoneTicket(userPeriodTicket)) {
-            priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.validableElements.ValidableElement.fareStructureElements.FareStructureElementRef[0].ref = `op:Tariff@${userPeriodTicket.productName}@access_zones`;
-        } else if (isMultiServiceTicket(userPeriodTicket)) {
-            priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.validableElements.ValidableElement.fareStructureElements.FareStructureElementRef[0].ref = `op:Tariff@${userPeriodTicket.productName}@access_lines`;
-        }
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.validableElements.ValidableElement.fareStructureElements.FareStructureElementRef[1].ref = `op:Tariff@${userPeriodTicket.productName}@eligibility`;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.validableElements.ValidableElement.fareStructureElements.FareStructureElementRef[2].ref = `op:Tariff@${userPeriodTicket.productName}@durations@adult`;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.validableElements.ValidableElement.fareStructureElements.FareStructureElementRef[3].ref = `op:Tariff@${userPeriodTicket.productName}@durations@adult_cash`;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.validableElements.ValidableElement.fareStructureElements.FareStructureElementRef[4].ref = `op:Tariff@${userPeriodTicket.productName}@conditions_of_travel`;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.accessRightsInProduct.AccessRightInProduct.id = `op:Pass@${userPeriodTicket.productName}@travel`;
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct.accessRightsInProduct.AccessRightInProduct.ValidableElementRef.ref = `op:Pass@${userPeriodTicket.productName}@travel`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].id = `op:Pass@${userPeriodTicket.productName}-SOP@p-ticket`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].BrandingRef.ref = `op:${userPeriodTicket.operatorName}@brand`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].Name.$t = `${userPeriodTicket.productName} - paper ticket`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].distributionAssignments.DistributionAssignment[0].id = `op:Pass@${userPeriodTicket.productName}-GSOP@p-ticket@on_board`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].distributionAssignments.DistributionAssignment[1].id = `op:Pass@${userPeriodTicket.productName}-GSOP@p-ticket@travel_shop`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].salesOfferPackageElements.SalesOfferPackageElement.id = `op:Pass@${userPeriodTicket.productName}-SOP@p-ticket`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[0].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${userPeriodTicket.productName}`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].id = `op:Pass@${userPeriodTicket.productName}-SOP@m-ticket`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].BrandingRef.ref = `op:${userPeriodTicket.operatorName}@brand`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].Name.$t = `${userPeriodTicket.productName} - mobile app`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].distributionAssignments.DistributionAssignment.id = `op:Pass@${userPeriodTicket.productName}-GSOP@m-ticket@mobile_app`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.id = `op:Pass@${userPeriodTicket.productName}Pass-SOP@m-ticket`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[1].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${userPeriodTicket.productName}`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].id = `op:Pass@${userPeriodTicket.productName}-SOP@subscription`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].Name.$t = `${operatorData.operatorPublicName} Unlimited`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.id = `op:Pass@${userPeriodTicket.productName}-SOP@subscription@subscribing`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.limitations.Subscribing.id = `op:Pass@${userPeriodTicket.productName}-SOP@subscription@subscribing`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].validityParameterAssignments.GenericParameterAssignment.limitations.Subscribing.possibleInstallmenttIntervals.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@4week`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].distributionAssignments.DistributionAssignment.id = `op:Pass@${userPeriodTicket.productName}-GSOP@subscription@online`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].salesOfferPackageElements.SalesOfferPackageElement.id = `op:Pass@${userPeriodTicket.productName}-SOP@subscription`;
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage[2].salesOfferPackageElements.SalesOfferPackageElement.PreassignedFareProductRef.ref = `op:Pass@${userPeriodTicket.productName}`;
+        // Sales Offer Package
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = getSalesOfferPackageList(userPeriodTicket, placeHolderGroupOfProductsName);
 
         return priceFareFrameToUpdate;
     };
@@ -271,39 +229,19 @@ const periodTicketNetexGenerator = (
     const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
 
-        fareTableFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRICE:${userPeriodTicket.productName}@pass:op`;
-        fareTableFareFrameToUpdate.Name.$t = `${userPeriodTicket.productName} Prices`;
-        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${userPeriodTicket.productName}@pass:op`;
-        fareTableFareFrameToUpdate.PricingParameterSet.id = `op:Pass@${userPeriodTicket.productName}`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.id = `op:Pass@${userPeriodTicket.productName}`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.Name.$t = `${userPeriodTicket.productName} Fares`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.pricesFor.PreassignedFareProductRef.ref = `op:Pass@${userPeriodTicket.productName}`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.usedIn.TariffRef.ref = `op:Tariff@${userPeriodTicket.productName}`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[0].id = `op:${userPeriodTicket.productName}@1day`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[0].representing.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@1day`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[1].id = `op:${userPeriodTicket.productName}@1week`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[1].representing.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@1week`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[2].id = `op:${userPeriodTicket.productName}@4week`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[2].representing.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@4week`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[3].id = `op:${userPeriodTicket.productName}@4week-Unlimited`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[3].representing.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@4week`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].id = `op:${userPeriodTicket.productName}@1year`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[4].representing.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@1year`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[5].id = `op:${userPeriodTicket.productName}@1term`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[5].representing.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@1term`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[6].id = `op:${userPeriodTicket.productName}@1academic_year`;
-        fareTableFareFrameToUpdate.fareTables.FareTable.rows.FareTableRow[6].representing.TimeIntervalRef.ref = `op:Tariff@${userPeriodTicket.productName}@1academic_year`;
+        fareTableFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRICE:${placeHolderGroupOfProductsName}@pass:op`;
+        fareTableFareFrameToUpdate.Name.$t = `${placeHolderGroupOfProductsName} Prices`;
+        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
+        fareTableFareFrameToUpdate.PricingParameterSet.id = `op:Pass@${placeHolderGroupOfProductsName}`;
+
+        fareTableFareFrameToUpdate.fareTables.FareTable = getFareTableList(userPeriodTicket, placeHolderGroupOfProductsName);
 
         if (isGeoZoneTicket(userPeriodTicket)) {
             fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable = getGeoZoneFareTable(
-                userPeriodTicket,
-                fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable,
-            );
+                userPeriodTicket);
         } else if (isMultiServiceTicket(userPeriodTicket)) {
             fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable = getMultiServiceFareTable(
-                userPeriodTicket,
-                fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable,
-            );
+                userPeriodTicket);
         }
 
         return fareTableFareFrameToUpdate;
