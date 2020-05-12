@@ -14,9 +14,9 @@
         }
     },
     "lint-staged": {
-        "*.{js,jsx,.ts,.tsx}": [
-            "pretty-quick --staged",
-            "eslint --fix"
+        "src/**/*.{ts,tsx}": [
+            "eslint --fix . --ext .ts,.tsx",
+            "pretty-quick --staged"
         ]
     },
     "author": "",
