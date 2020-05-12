@@ -1,4 +1,4 @@
-import { OperatorData, PeriodTicket, PeriodGeoZoneTicket, PeriodMultipleServicesTicket } from '../types';
+import { OperatorData, PeriodTicket } from '../types';
 import {
     getScheduledStopPointsList,
     getTopographicProjectionRefList,
@@ -9,7 +9,9 @@ import {
     getPreassignedFareProduct,
     getSalesOfferPackageList,
     getTimeIntervals,
-    getFareStructuresElements
+    getFareStructuresElements,
+    isMultiServiceTicket,
+    isGeoZoneTicket
 } from './periodTicketNetexHelpers';
 import { NetexObject, getCleanWebsite, getNetexTemplateAsJson, convertJsonToXml } from '../sharedHelpers';
 
@@ -21,12 +23,6 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
     const nocCodeNocFormat = `noc:${userPeriodTicket.nocCode}`;
     const currentDate = new Date(Date.now());
     const website = getCleanWebsite(operatorData.website);
-
-    const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
-        (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
-
-    const isMultiServiceTicket = (ticket: PeriodTicket): ticket is PeriodMultipleServicesTicket =>
-        (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
         const publicationTimeStampToUpdate = { ...publicationTimeStamp };
@@ -177,7 +173,7 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval = getTimeIntervals(userPeriodTicket);
 
         // Fare structure elements
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement = getFareStructuresElements(userPeriodTicket, isGeoZoneTicket(userPeriodTicket), isMultiServiceTicket(userPeriodTicket), placeHolderGroupOfProductsName);
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement = getFareStructuresElements(userPeriodTicket, placeHolderGroupOfProductsName);
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement.push({
             version: "1.0",
             id: `op:Tariff@eligibility`,
@@ -218,7 +214,7 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         });
 
         // Preassigned Fare Product
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(userPeriodTicket, nocCodeNocFormat, opIdNocFormat, isGeoZoneTicket(userPeriodTicket), isMultiServiceTicket(userPeriodTicket));
+        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(userPeriodTicket, nocCodeNocFormat, opIdNocFormat);
 
         // Sales Offer Package
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = getSalesOfferPackageList(userPeriodTicket, placeHolderGroupOfProductsName);
