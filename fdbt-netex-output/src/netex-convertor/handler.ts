@@ -31,9 +31,15 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
             const netexGen = periodTicketNetexGenerator(userPeriodTicket, operatorData);
             const generatedNetex = await netexGen.generate();
-            const fileName = `${userPeriodTicket.operatorName.replace(/\/|\s/g, '_')}_${
-                userPeriodTicket.productName
-            }_${new Date().toISOString()}.xml`;
+
+            let productName;
+            
+            if (userPeriodTicket.products.length > 1) {
+                productName = `${userPeriodTicket.products.length}-products`;
+            } else {
+                productName = userPeriodTicket.products[0].productName;
+            }
+            const fileName = `${userPeriodTicket.operatorName.replace(/\/|\s/g, '_')}_${productName}_${new Date().toISOString()}.xml`;
 
             const fileNameWithoutSlashes = fileName.replace('/', '_');
             await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
