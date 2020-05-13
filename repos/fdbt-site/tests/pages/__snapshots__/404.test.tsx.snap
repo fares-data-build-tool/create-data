@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages error page should render error page correctly 1`] = `
+exports[`pages 404 should render 404 page correctly 1`] = `
 <Layout
-  description="Error page of the Fares data build tool"
-  title="Error - Fares data build tool"
+  description="Page not found page of the Fares data build tool"
+  title="Page not found - Fares data build tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -20,31 +20,32 @@ exports[`pages error page should render error page correctly 1`] = `
           <h1
             className="govuk-heading-xl"
           >
-            Sorry, there is a problem with the service.
+            Page not found
           </h1>
           <p
             className="govuk-body"
           >
-            Try again later.
+            If you typed the web address, check it is correct.
           </p>
           <p
             className="govuk-body"
           >
-            Your answers have not been saved, use the button below to start again.
+            If you pasted the web address, check you copied the entire address.
           </p>
           <p
             className="govuk-body"
           >
+            If the web address is correct or you selected a link or button,
              
             <a
               className="govuk-link"
               href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
               id="feedback_link"
             >
-              Contact
+              contact
             </a>
              
-            us for assistance.
+            us about your fares data.
           </p>
         </div>
         <br />
