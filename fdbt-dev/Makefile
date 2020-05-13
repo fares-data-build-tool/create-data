@@ -35,6 +35,12 @@ generate-flat-fare:
 generate-geo-zone:
 	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodGeoZone
 
+generate-return-service:
+	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev return
+
+generate-return-service-circular:
+	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev returnCircular
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh fdbt-unvalidated-netex-data-dev $(file)
 
