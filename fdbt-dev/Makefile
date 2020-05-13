@@ -29,6 +29,9 @@ generate-point-to-point:
 generate-multi-service:
 	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodMultiService
 
+generate-flat-fare:
+	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev flatFare
+
 generate-geo-zone:
 	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodGeoZone
 

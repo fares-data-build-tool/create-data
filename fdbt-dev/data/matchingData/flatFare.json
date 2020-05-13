@@ -1,0 +1,30 @@
+{
+    "operatorName": "Blackpool Transport",
+    "type": "flatFare",
+    "products": [
+      {
+        "productName": "gscafvd",
+        "productPrice": "1.23"
+      }
+    ],
+    "nocCode": "BLAC",
+    "selectedServices": [
+      {
+        "lineName": "4",
+        "startDate": "05/04/2020",
+        "serviceDescription": "Bromley - Chatham - Greenwich"
+      },
+      {
+        "lineName": "17",
+        "startDate": "05/04/2020",
+        "serviceDescription": "Bromley - Chatham - Greenwich"
+  
+      },
+      {
+        "lineName": "2C",
+        "startDate": "05/04/2020",
+        "serviceDescription": "Bromley - Chatham - Greenwich"
+      }
+    ]
+  }
+  
