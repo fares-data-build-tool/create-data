@@ -5,7 +5,7 @@ import {
     service,
     mockMatchingUserFareStagesWithUnassignedStages,
     mockMatchingUserFareStagesWithAllStagesAssigned,
-    expectedInboundOutboundMatchingJson,
+    expectedMatchingJsonReturnNonCircular,
 } from '../../testData/mockData';
 import * as s3 from '../../../src/data/s3';
 import { MatchingFareZones } from '../../../src/interfaces/matchingInterface';
@@ -87,7 +87,7 @@ describe('Inbound Matching API', () => {
             expect.any(String),
             'application/json; charset=utf-8',
         );
-        expect(expectedInboundOutboundMatchingJson).toEqual(actualMatchingData);
+        expect(expectedMatchingJsonReturnNonCircular).toEqual(actualMatchingData);
     });
 
     it('correctly redirects to inboundMatching page when there are fare stages that have not been assigned to stops', async () => {
