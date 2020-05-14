@@ -183,10 +183,20 @@ const geoZonePeriodData = {
             street: '-',
         },
     ],
-    productName: 'IW Product',
-    productPrice: '1000',
-    daysValid: '24',
-    expiryRules: 'twentyFourHoursAfterPurchase',
+    products: [
+        {
+            productName: 'IW Product',
+            productPrice: '1000',
+            daysValid: '24',
+            expiryRules: 'endOfCalendarDay',
+        },
+        {
+            productName: 'Super Product',
+            productPrice: '1230',
+            daysValid: '4',
+            expiryRules: '24hr',
+        },
+    ],
     nocCode: 'IW1234',
     operatorName: 'InfinityWorks',
 };

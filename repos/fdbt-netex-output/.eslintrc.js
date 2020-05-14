@@ -5,11 +5,12 @@ module.exports = {
         jest: true,
     },
     extends: [
-        'airbnb-base',
-        'prettier',
-        'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
+        'prettier/@typescript-eslint',
+        'airbnb-base',
+        'plugin:prettier/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
+        'eslint-config-prettier',
     ],
     globals: {
         Atomics: 'readonly',
@@ -23,7 +24,6 @@ module.exports = {
     },
     plugins: ['@typescript-eslint'],
     rules: {
-        indent: [2, 4],
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
             'error',

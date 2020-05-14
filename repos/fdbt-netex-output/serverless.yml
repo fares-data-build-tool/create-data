@@ -58,5 +58,5 @@ plugins:
 
 package:
     include:
-        - ./src/netex-convertor/single-ticket/singleTicketNetexTemplate.xml
-        - ./src/netex-convertor/period-ticket/periodTicketNetexTemplate.xml
+        - ./src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml
+        - ./src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml
