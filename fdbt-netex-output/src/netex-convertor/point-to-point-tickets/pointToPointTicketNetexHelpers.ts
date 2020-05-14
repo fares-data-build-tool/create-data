@@ -1,4 +1,4 @@
-import { FareZone, Stop } from '../types';
+import { FareZone, FareZoneList, ScheduledStopPoints, Stop } from '../types';
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
@@ -8,7 +8,7 @@ export const getUniquePriceGroups = (fareZones: FareZone[]): string[] => [
 
 export const getIdName = (name: string): string => name.replace(/(\s)+/g, '_');
 
-export const getScheduledStopPointsList = (fareZones: FareZone[]): {}[] =>
+export const getScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] =>
     getStops(fareZones).map(stop => ({
         version: 'any',
         id: `naptan:${stop.atcoCode}`,
@@ -35,7 +35,7 @@ export const getPriceGroups = (fareZones: FareZone[]): {}[] =>
         ],
     }));
 
-export const getFareZoneList = (fareZones: FareZone[]): {}[] =>
+export const getFareZoneList = (fareZones: FareZone[]): FareZoneList[] =>
     fareZones.map(zone => ({
         version: '1.0',
         id: `fs@${getIdName(zone.name)}`,
@@ -73,19 +73,24 @@ export const getDistanceMatrixElements = (fareZones: FareZone[]): {}[] =>
         ),
     );
 
-export const getFareTableElements = (fareZones: FareZone[], lineIdName: string, elementPrefix: string): {}[] =>
+export const getFareTableElements = (
+    fareZones: FareZone[],
+    lineIdName: string,
+    elementPrefix: string,
+    type: string,
+): {}[] =>
     fareZones.slice(0, -1).map((zone, index) => ({
         version: '1.0',
-        id: `Trip@single-SOP@p-ticket@${lineIdName}@adult@${elementPrefix}${index + 1}@${getIdName(zone.name)}`,
+        id: `Trip@${type}-SOP@p-ticket@${lineIdName}@adult@${elementPrefix}${index + 1}@${getIdName(zone.name)}`,
         order: index + 1,
         Name: { $t: zone.name },
     }));
 
-export const getFareTables = (columns: FareZone[], lineIdName: string): {}[] =>
+export const getFareTables = (columns: FareZone[], lineIdName: string, type: string): {}[] =>
     columns.flatMap((zone, columnNum) => {
         let rowCount = columns.length - columnNum;
         let order = 0;
-        const columnRef = `Trip@single-SOP@p-ticket@${lineIdName}@adult@c${columnNum + 1}@${getIdName(zone.name)}`;
+        const columnRef = `Trip@${type}-SOP@p-ticket@${lineIdName}@adult@c${columnNum + 1}@${getIdName(zone.name)}`;
 
         return {
             id: columnRef,
@@ -100,11 +105,11 @@ export const getFareTables = (columns: FareZone[], lineIdName: string): {}[] =>
 
                         return {
                             version: '1.0',
-                            id: `Trip@single-SOP@p-ticket@${lineIdName}@adult@${getIdName(zone.name)}`,
+                            id: `Trip@${type}-SOP@p-ticket@${lineIdName}@adult@${getIdName(zone.name)}`,
                             order,
                             DistanceMatrixElementPrice: {
                                 version: '1.0',
-                                id: `Trip@single-SOP@p-ticket@${lineIdName}@adult@${getIdName(zone.name)}+${getIdName(
+                                id: `Trip@${type}-SOP@p-ticket@${lineIdName}@adult@${getIdName(zone.name)}+${getIdName(
                                     secondZone,
                                 )}`,
                                 GeographicalIntervalPriceRef: {
@@ -122,7 +127,7 @@ export const getFareTables = (columns: FareZone[], lineIdName: string): {}[] =>
                             },
                             RowRef: {
                                 versionRef: '1',
-                                ref: `Trip@single-SOP@p-ticket@${lineIdName}@adult@r${rowCount + 1}@${getIdName(
+                                ref: `Trip@${type}-SOP@p-ticket@${lineIdName}@adult@r${rowCount + 1}@${getIdName(
                                     secondZone,
                                 )}`,
                             },

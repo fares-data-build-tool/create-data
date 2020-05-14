@@ -36,7 +36,7 @@ export interface FareZone {
     prices: FareZonePrices[];
 }
 
-export interface MatchingData {
+export interface MatchingSingleData {
     lineName: string;
     nocCode: string;
     operatorShortName: string;
@@ -44,12 +44,21 @@ export interface MatchingData {
     fareZones: FareZone[];
 }
 
+export interface MatchingReturnData {
+    type: string;
+    lineName: string;
+    nocCode: string;
+    operatorShortName: string;
+    serviceDescription: string;
+    inboundFareZones: FareZone[];
+    outboundFareZones: FareZone[];
+}
+
+export type MatchingData = MatchingSingleData | MatchingReturnData;
+
 export interface BasePeriodTicket {
     operatorName: string;
-    productName: string;
-    productPrice: string;
-    daysValid: string;
-    expiryRules: string;
+    products: ProductDetails[];
     nocCode: string;
 }
 
@@ -62,13 +71,20 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
 }
 
-export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
-
 export interface SelectedService {
     lineName: string;
     startDate: string;
     serviceDescription: string;
 }
+
+export interface ProductDetails {
+    productName: string;
+    productPrice: string;
+    daysValid: string;
+    expiryRules: string;
+}
+
+export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
 
 export interface ScheduledStopPoint {
     versionRef: string;
@@ -97,4 +113,28 @@ export interface Line {
 export interface LineRef {
     version: string;
     ref: string;
+}
+
+export interface ScheduledStopPoints {
+    version: string;
+    id: string;
+    Name: object;
+    TopographicPlaceView: object;
+}
+
+export interface FareZoneList {
+    version: string;
+    id: string;
+    Name: object;
+    members: object;
+}
+
+export interface FareStructureElement {
+    version: string;
+    id: string;
+    Name: object;
+    Description?: object;
+    TypeOfFareStructureElementRef?: object;
+    GenericParameterAssignment: object;
+    timeIntervals?: object;
 }

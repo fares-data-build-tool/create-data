@@ -1,6 +1,6 @@
 import { S3Event } from 'aws-lambda';
-import singleTicketNetexGenerator from './single-ticket/singleTicketNetexGenerator';
-import periodTicketNetexGenerator from './period-ticket/periodTicketNetexGenerator';
+import pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';
+import periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
 import * as db from './data/auroradb';
 import * as s3 from './data/s3';
 import { MatchingData, PeriodTicket } from './types';
@@ -13,11 +13,11 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
         console.info(`NeTEx generation starting for type: ${type}...`);
 
-        if (type === 'pointToPoint') {
+        if (type === 'pointToPoint' || type === 'return') {
             const matchingData: MatchingData = s3Data;
             const operatorData = await db.getOperatorDataByNocCode(matchingData.nocCode);
 
-            const netexGen = singleTicketNetexGenerator(matchingData, operatorData);
+            const netexGen = pointToPointTicketNetexGenerator(matchingData, operatorData);
             const generatedNetex = await netexGen.generate();
 
             const fileName = `${matchingData.operatorShortName.replace(/\/|\s/g, '_')}_${
@@ -31,9 +31,18 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
             const netexGen = periodTicketNetexGenerator(userPeriodTicket, operatorData);
             const generatedNetex = await netexGen.generate();
-            const fileName = `${userPeriodTicket.operatorName.replace(/\/|\s/g, '_')}_${
-                userPeriodTicket.productName
-            }_${new Date().toISOString()}.xml`;
+
+            let productName;
+
+            if (userPeriodTicket.products.length > 1) {
+                productName = `${userPeriodTicket.products.length}-products`;
+            } else {
+                productName = userPeriodTicket.products[0].productName;
+            }
+            const fileName = `${userPeriodTicket.operatorName.replace(
+                /\/|\s/g,
+                '_',
+            )}_${productName}_${new Date().toISOString()}.xml`;
 
             const fileNameWithoutSlashes = fileName.replace('/', '_');
             await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);

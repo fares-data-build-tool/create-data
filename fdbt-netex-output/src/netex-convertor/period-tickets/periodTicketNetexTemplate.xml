@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
-<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" 
+	xmlns="http://www.netex.org.uk/netex" 
+	xmlns:siri="http://www.siri.org.uk/siri" 
+	xmlns:gml="http://www.opengis.net/gml/3.2" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<PublicationTimestamp></PublicationTimestamp>
 	<ParticipantRef>SYS001</ParticipantRef>
 	<!-- ======WHAT WAS REQUESTED ========== -->
@@ -181,17 +185,6 @@
 						<FareZone version="1.0" id="">
 							<Name></Name>
 							<Description></Description>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-							<projections>
-								<TopographicProjectionRef></TopographicProjectionRef>
-							</projections>
-							<ZoneTopology>nested</ZoneTopology>
-						</FareZone>
-						<FareZone version="1.0" id="">
-							<Name></Name>
-							<Description></Description>
 							<members>
 								<ScheduledStopPointRef></ScheduledStopPointRef>
 							</members>
@@ -242,120 +235,9 @@
 								</GeographicalInterval>
 							</geographicalIntervals>
 							<timeIntervals>
-								<TimeInterval version="1.0" id="">
-									<Name>1 day</Name>
-									<StartTime>00:00:00</StartTime>
-									<EndTime>24:00:00</EndTime>
-									<Duration>P1D</Duration>
-								</TimeInterval>
-								<TimeInterval version="1.0" id="">
-									<Name>1 week</Name>
-									<Duration>P7D</Duration>
-								</TimeInterval>
-								<TimeInterval version="1.0" id="">
-									<Name>4 week</Name>
-									<Duration>P28D</Duration>
-								</TimeInterval>
-								<TimeInterval version="1.0" id="">
-									<Name>Annual</Name>
-									<Duration>P1Y</Duration>
-								</TimeInterval>
-								<TimeInterval version="1.0" id="">
-									<Name>1 term</Name>
-								</TimeInterval>
-								<TimeInterval version="1.0" id="">
-									<Name>1 term</Name>
-								</TimeInterval>
 							</timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
 							<fareStructureElements>
-								<FareStructureElement version="1.0" id="">
-									<Name>Availablel zones</Name>
-									<Description>single zone.</Description>
-									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access" />
-
-									<GenericParameterAssignment id="" version="1.0" order="1">
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access" />
-										<ValidityParameterGroupingType>XOR</ValidityParameterGroupingType>
-										<validityParameters>
-											<FareZoneRef version="1.0" ref="" />
-										</validityParameters>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement version="1.0" id="">
-									<Name>Eligible user types</Name>
-									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility" />
-									<GenericParameterAssignment order="1" id="" version="1.0">
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible" />
-										<LimitationGroupingType>XOR</LimitationGroupingType>
-										<limitations>
-											<!--- ===ELIGIBILITY USAGE PARAMETERS ========= -->
-											<UserProfile version="1.0" id="op:adult">
-												<Name>Adult</Name>
-												<prices>
-													<UsageParameterPrice version="1.0" id="op:adult"></UsageParameterPrice>
-												</prices>
-												<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none" />
-											</UserProfile>
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<!-- allowed combinations of durations -->
-								<FareStructureElement version="1.0" id="">
-									<Name>Available duration combination- </Name>
-									<Description>All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.</Description>
-									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations" />
-									<timeIntervals>
-										<TimeIntervalRef version="1.0" ref="" />
-										<TimeIntervalRef version="1.0" ref="" />
-										<TimeIntervalRef version="1.0" ref="" />
-										<TimeIntervalRef version="1.0" ref="" />
-									</timeIntervals>
-									<GenericParameterAssignment version="1.0" id="" order="1">
-										<Description>Adult/Child Cash ticket Only available for 1 Day or 1week</Description>
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access" />
-										<LimitationGroupingType>OR</LimitationGroupingType>
-										<limitations>
-											<UserProfileRef version="1.0" ref="op:adult" />
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement version="1.0" id="">
-									<Name>Available duration combination- </Name>
-									<Description>All periods allowed, 60 mins, but no evening - used in for some m-ticket and single zones</Description>
-									<TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations" />
-									<timeIntervals>
-										<TimeIntervalRef version="1.0" ref="" />
-										<TimeIntervalRef version="1.0" ref="" />
-									</timeIntervals>
-									<GenericParameterAssignment version="1.0" id="" order="1">
-										<Description>Adult/Child Cash ticket Only available for 1 Day or 1week</Description>
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access" />
-										<LimitationGroupingType>OR</LimitationGroupingType>
-										<limitations>
-											<UserProfileRef version="1.0" ref="op:adult" />
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement id="" version="1.0">
-									<Name>Conditions of travel</Name>
-									<GenericParameterAssignment version="1.0" order="1" id="">
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use" />
-										<LimitationGroupingType>AND</LimitationGroupingType>
-										<limitations>
-											<Transferability version="1.0" id="">
-												<Name>Ticket is not transferable</Name>
-												<CanTransfer>false</CanTransfer>
-											</Transferability>
-											<FrequencyOfUse version="1.0" id="">
-												<FrequencyOfUseType>unlimited</FrequencyOfUseType>
-											</FrequencyOfUse>
-											<Interchanging version="1.0" id="">
-												<CanInterchange>true</CanInterchange>
-											</Interchanging>
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
 							</fareStructureElements>
 						</Tariff>
 					</tariffs>
@@ -364,122 +246,10 @@
 					<fareProducts>
 						<!--==== Other Products ==== -->
 						<PreassignedFareProduct version="1.0" id="">
-							<Name></Name>
-							<!--==== VALIDABLE ELEMENTs ==== -->
-							<ChargingMomentType>beforeTravel</ChargingMomentType>
-							<typesOfFareProduct>
-								<TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period" />
-							</typesOfFareProduct>
-							<OperatorRef version="1.0" ref="noc:FYSO">noc:137122</OperatorRef>
-							<validableElements>
-								<ValidableElement version="1.0" id="">
-									<Name>Unlimited rides available for specified durations</Name>
-									<fareStructureElements>
-										<FareStructureElementRef version="1.0" ref="" />
-										<FareStructureElementRef version="1.0" ref="" />
-										<FareStructureElementRef version="1.0" ref="" />
-										<FareStructureElementRef version="1.0" ref="" />
-										<FareStructureElementRef version="1.0" ref="" />
-									</fareStructureElements>
-								</ValidableElement>
-							</validableElements>
-							<!--==== ACCESS RIGHTs ===== -->
-							<accessRightsInProduct>
-								<AccessRightInProduct version="1.0" id="" order="1">
-									<ValidableElementRef version="1.0" ref="" />
-								</AccessRightInProduct>
-							</accessRightsInProduct>
-							<ProductType>periodPass</ProductType>
 						</PreassignedFareProduct>
 					</fareProducts>
 					<!-- === SALES OFFER PACKAGES === -->
 					<salesOfferPackages>
-						<SalesOfferPackage version="1.0" id="">
-							<BrandingRef version="1.0" ref="" />
-							<Name></Name>
-							<Description>Unlimited Travel in a given zone</Description>
-							<distributionAssignments>
-								<DistributionAssignment version="1.0" id="" order="1">
-									<Name>Onboard</Name>
-									<Description>Pay for ticket onboard.</Description>
-									<DistributionChannelRef version="fxc:v1.0" ref="fxc:on_board" />
-									<DistributionChannelType>onBoard</DistributionChannelType>
-									<PaymentMethods>cash contactlessPaymentCard  </PaymentMethods>
-									<FulfilmentMethodRef ref="fxc:collect_on_board" version="fxc:v1.0" />
-								</DistributionAssignment>
-								<DistributionAssignment version="1.0" id="" order="1">
-									<Name>Travel shop</Name>
-									<Description>Buy in travel shop.</Description>
-									<DistributionChannelRef ref="fxc:operator_travel_shop" version="fxc:v1.0" />
-									<DistributionChannelType>other</DistributionChannelType>
-									<TicketingServiceFacilityList>purchase collection</TicketingServiceFacilityList>
-									<PaymentMethods>cashAndCard</PaymentMethods>
-									<FulfilmentMethodRef ref="fxc:collect_at_counter" version="fxc:v1.0" />
-								</DistributionAssignment>
-							</distributionAssignments>
-							<salesOfferPackageElements>
-								<SalesOfferPackageElement version="1.0" id="" order="3">
-									<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
-									<PreassignedFareProductRef version="1.0" ref="" />
-								</SalesOfferPackageElement>
-							</salesOfferPackageElements>
-						</SalesOfferPackage>
-						<SalesOfferPackage version="1.0" id="">
-							<BrandingRef version="1.0" ref="" />
-							<Name></Name>
-							<Description>Unlimited Travel in a given zone</Description>
-							<distributionAssignments>
-								<DistributionAssignment version="1.0" id="" order="1">
-									<Name>Mobile app</Name>
-									<Description>Pay for pass online with mobile app.</Description>
-									<DistributionChannelRef version="fxc:v1.0" ref="fxc:online" />
-									<DistributionChannelType>mobileDevice</DistributionChannelType>
-									<PaymentMethods>debitCard creditCard mobilePhone</PaymentMethods>
-									<FulfilmentMethodRef ref="fxc:mobile_app" version="fxc:v1.0" />
-								</DistributionAssignment>
-							</distributionAssignments>
-							<salesOfferPackageElements>
-								<SalesOfferPackageElement version="1.0" id="" order="1">
-									<TypeOfTravelDocumentRef version="1.0" ref="op:m-ticket" />
-									<PreassignedFareProductRef version="1.0" ref="" />
-								</SalesOfferPackageElement>
-							</salesOfferPackageElements>
-						</SalesOfferPackage>
-						<SalesOfferPackage version="1.0" id="">
-							<Name></Name>
-							<Description>Unlimited Travel. Subscription.</Description>
-							<validityParameterAssignments>
-								<GenericParameterAssignment version="1.0" order="1" id="">
-									<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_purchase_when" />
-									<LimitationGroupingType>AND</LimitationGroupingType>
-									<limitations>
-										<Subscribing version="1.0" id="">
-											<SubscriptionRenewalPolicy>automatic</SubscriptionRenewalPolicy>
-											<possibleInstallmenttIntervals>
-												<TimeIntervalRef version="1.0" ref="" />
-											</possibleInstallmenttIntervals>
-											<InstallmentPaymentMethods>directDebit</InstallmentPaymentMethods>
-										</Subscribing>
-									</limitations>
-								</GenericParameterAssignment>
-							</validityParameterAssignments>
-							<distributionAssignments>
-								<DistributionAssignment version="1.0" id="" order="1">
-									<Name>Online</Name>
-									<Description>Order pass online and update online.</Description>
-									<DistributionChannelRef version="fxc:v1.0" ref="fxc:online" />
-									<DistributionChannelType>online</DistributionChannelType>
-									<PaymentMethods>directDebit</PaymentMethods>
-									<FulfilmentMethodRef ref="fxc:online_propagation" version="fxc:v1.0" />
-								</DistributionAssignment>
-							</distributionAssignments>
-							<salesOfferPackageElements>
-								<SalesOfferPackageElement version="1.0" id="" order="1">
-									<TypeOfTravelDocumentRef version="1.0" ref="op:m-ticket" />
-									<PreassignedFareProductRef version="1.0" ref="" />
-								</SalesOfferPackageElement>
-							</salesOfferPackageElements>
-						</SalesOfferPackage>
 					</salesOfferPackages>
 					<!-- === GroupOf SALES OFFER PACKAGES === -->
 				</FareFrame>
@@ -506,129 +276,6 @@
 						</pricingRules>
 					</PricingParameterSet>
 					<fareTables>
-						<FareTable version="1.0" id="">
-							<Name></Name>
-							<pricesFor>
-								<PreassignedFareProductRef version="1.0" ref="" />
-							</pricesFor>
-							<usedIn>
-								<TariffRef version="1.0" ref="" />
-							</usedIn>
-							<rows>
-								<FareTableRow version="1.0" id="" order="2">
-									<Name>1 day</Name>
-									<representing>
-										<TimeIntervalRef version="1.0" ref="" />
-									</representing>
-								</FareTableRow>
-								<FareTableRow version="1.0" id="" order="5">
-									<Name>1 week</Name>
-									<representing>
-										<TimeIntervalRef version="1.0" ref="" />
-									</representing>
-								</FareTableRow>
-								<FareTableRow version="1.0" id="" order="6">
-									<Name>4 week</Name>
-									<representing>
-										<TimeIntervalRef version="1.0" ref="" />
-									</representing>
-								</FareTableRow>
-								<FareTableRow version="1.0" id="" order="6">
-									<Name>4 week</Name>
-									<representing>
-										<TimeIntervalRef version="1.0" ref="" />
-									</representing>
-								</FareTableRow>
-								<FareTableRow version="1.0" id="" order="8">
-									<Name>1 year</Name>
-									<representing>
-										<TimeIntervalRef version="1.0" ref="" />
-									</representing>
-								</FareTableRow>
-								<FareTableRow version="1.0" id="" order="7">
-									<Name>13 week</Name>
-									<representing>
-										<TimeIntervalRef version="1.0" ref="" />
-									</representing>
-								</FareTableRow>
-								<FareTableRow version="1.0" id="" order="9">
-									<Name>Evening</Name>
-									<representing>
-										<TimeIntervalRef version="1.0" ref="" />
-									</representing>
-								</FareTableRow>
-							</rows>
-							<includes>
-								<FareTable version="1.0" id="">
-									<Name>Sheffield</Name>
-									<specifics>
-										<TariffZoneRef version="1.0" ref="" />
-									</specifics>
-									<columns>
-										<FareTableColumn version="1.0" id="">
-											<Name>Sheffield</Name>
-											<representing>
-												<TariffZoneRef version="1.0" ref="" />
-											</representing>
-										</FareTableColumn>
-									</columns>
-									<includes>
-										<FareTable version="1.0" id="">
-											<Name></Name>
-											<pricesFor>
-												<SalesOfferPackageRef version="1.0" ref="" />
-											</pricesFor>
-											<specifics>
-												<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
-											</specifics>
-											<columns>
-												<FareTableColumn version="1.0" id="">
-													<Name>Cash</Name>
-													<representing>
-														<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
-													</representing>
-												</FareTableColumn>
-											</columns>
-											<includes>
-												<FareTable version="1.0" id="">
-													<Name></Name>
-													<limitations>
-														<UserProfileRef version="1.0" ref="op:adult" />
-													</limitations>
-													<columns>
-														<FareTableColumn version="1.0" id="">
-															<Name>Adult</Name>
-															<representing>
-																<TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket" />
-																<UserProfileRef version="1.0" ref="op:adult" />
-															</representing>
-														</FareTableColumn>
-													</columns>
-													<cells>
-														<Cell version="1.0" id="" order="1">
-															<TimeIntervalPrice version="1.0" id="">
-																<Amount>4.40</Amount>
-																<TimeIntervalRef version="1.0" ref="" />
-															</TimeIntervalPrice>
-															<ColumnRef version="1.0" ref="" />
-															<RowRef version="1.0" ref="" />
-														</Cell>
-														<Cell version="1.0" id="" order="2">
-															<TimeIntervalPrice version="1.0" id="">
-																<Amount>14.50</Amount>
-																<TimeIntervalRef version="1.0" ref="" />
-															</TimeIntervalPrice>
-															<ColumnRef version="1.0" ref="" />
-															<RowRef version="1.0" ref="" />
-														</Cell>
-													</cells>
-												</FareTable>
-											</includes>
-										</FareTable>
-									</includes>
-								</FareTable>
-							</includes>
-						</FareTable>
 					</fareTables>
 				</FareFrame>
 				<!-- ====== Travel shops Advanced stuff - This just to show that we can capture access sdetails about travel shops  -->
@@ -871,7 +518,7 @@
 						</ResponsibilitySet>
 					</responsibilitySets>
 					<typesOfValue>
-						<!-- ======== TYPE S OF   FRAME========= -->
+						<!-- ======== TYPE S OF FRAME========= -->
 						<ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_Basic" classOfValues="TypeOfFrame">
 							<Name>Types of FXC Specific  Frame Basic </Name>
 							<values>
@@ -926,7 +573,7 @@
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
-						<!-- ======== TYPE S OF   FRAME========= -->
+						<!-- ======== TYPE S OF FRAME========= -->
 						<ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_for_Fares" classOfValues="TypeOfFrame">
 							<Name>Types of FXC Specific  Frame</Name>
 							<values>
@@ -1832,9 +1479,9 @@
 									<classes>
 										<ClassInFrame nameOfClass="TopographicPlace">
 											<!-- 	 TopographicPlace maps to  a NPTG Locality 
-<NptgLocality Status="active" Modification="delete" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" ModificationDateTime="2001-12-17T09:30:47Z" id="E0000003"  RevisionNumber="1">
+<NptgLocality Status="active" Modification="delete" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" ModificationDateTime="2001-12-17T09:30:47Z" id="E0000003" RevisionNumber="1">
 			<NptgLocalityCode>E0000003</NptgLocalityCode>
-			<Descriptor Modification="delete" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" id="E0000001-1"  RevisionNumber="1">
+			<Descriptor Modification="delete" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" id="E0000001-1" RevisionNumber="1">
 				<LocalityName>Locality Three</LocalityName>
 				<ShortName>Locality 3</ShortName>
 				<Qualify>
@@ -2161,7 +1808,7 @@
 										</ClassInFrame>
 										<ClassInFrame nameOfClass="TransportAdministrativeZone">
 											<!-- Maps some aspects of  NPTG Admin Area								
-	<AdministrativeArea Modification="new" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1"   RevisionNumber="1" >
+	<AdministrativeArea Modification="new" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">
 					<AdministrativeAreaCode>101</AdministrativeAreaCode>
 					<AtcoAreaCode>001</AtcoAreaCode>
 					<Name>Nptg Admin area 101</Name>

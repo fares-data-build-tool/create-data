@@ -14,9 +14,9 @@
         }
     },
     "lint-staged": {
-        "*.{js,jsx,.ts,.tsx}": [
-            "pretty-quick --staged",
-            "eslint --fix"
+        "src/**/*.{ts,tsx}": [
+            "eslint --fix . --ext .ts,.tsx",
+            "pretty-quick --staged"
         ]
     },
     "author": "",
@@ -50,7 +50,7 @@
         "aws-lambda-mock-context": "^3.2.1",
         "eslint": "^6.8.0",
         "eslint-config-airbnb-base": "^14.1.0",
-        "eslint-config-prettier": "^6.10.0",
+        "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.20.0",
         "eslint-plugin-prettier": "^3.1.2",
         "husky": "^4.2.1",
