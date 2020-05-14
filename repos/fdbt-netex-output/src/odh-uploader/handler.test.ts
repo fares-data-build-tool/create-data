@@ -1,18 +1,16 @@
 import AWS from 'aws-sdk';
 import { S3Event } from 'aws-lambda';
 import nodemailer from 'nodemailer';
-import * as testData from './testData/testData'
+import * as testData from './testData/testData';
 import { createMailTransporter, odhUploaderHandler } from './handler';
 
 jest.mock('aws-sdk');
 
 describe('odhHandler SES emailer', () => {
-
     const mockS3GetObject = jest.fn();
     const mockMailTransporter = jest.fn();
 
     beforeEach(() => {
-
         (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
             return {
                 getObject: mockS3GetObject,
@@ -21,7 +19,7 @@ describe('odhHandler SES emailer', () => {
 
         mockS3GetObject.mockImplementation(() => ({
             promise(): Promise<{}> {
-                return Promise.resolve({ Body: testData.testNetexFromS3});
+                return Promise.resolve({ Body: testData.testNetexFromS3 });
             },
         }));
 
@@ -35,9 +33,9 @@ describe('odhHandler SES emailer', () => {
             return nodemailer.createTransport({
                 streamTransport: true,
                 newline: 'unix',
-                buffer: true
+                buffer: true,
             });
-        })
+        });
     });
 
     afterEach(() => {
@@ -52,6 +50,5 @@ describe('odhHandler SES emailer', () => {
         await odhUploaderHandler(event);
 
         expect(mockMailTransporter).toBeCalledTimes(1);
-
     });
 });

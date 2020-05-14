@@ -10,10 +10,7 @@ import {
 } from './singleTicketNetexHelpers';
 import { NetexObject, getCleanWebsite, getNetexTemplateAsJson, convertJsonToXml } from '../sharedHelpers';
 
-const singleTicketNetexGenerator = (
-    matchingData: MatchingData,
-    operatorData: OperatorData,
-): { generate: Function } => {
+const singleTicketNetexGenerator = (matchingData: MatchingData, operatorData: OperatorData): { generate: Function } => {
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${matchingData.nocCode}`;
     const opIdBrandFormat = `${operatorData.opId}@brand`;

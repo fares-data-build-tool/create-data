@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
-<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" 
+	xmlns="http://www.netex.org.uk/netex" 
+	xmlns:siri="http://www.siri.org.uk/siri" 
+	xmlns:gml="http://www.opengis.net/gml/3.2" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<PublicationTimestamp></PublicationTimestamp>
 	<ParticipantRef>SYS001</ParticipantRef>
 	<!-- ======WHAT WAS REQUESTED ========== -->
@@ -181,17 +185,6 @@
 						<FareZone version="1.0" id="">
 							<Name></Name>
 							<Description></Description>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-							<projections>
-								<TopographicProjectionRef></TopographicProjectionRef>
-							</projections>
-							<ZoneTopology>nested</ZoneTopology>
-						</FareZone>
-						<FareZone version="1.0" id="">
-							<Name></Name>
-							<Description></Description>
 							<members>
 								<ScheduledStopPointRef></ScheduledStopPointRef>
 							</members>
@@ -241,7 +234,7 @@
 									<IntervalType>tariffZone</IntervalType>
 								</GeographicalInterval>
 							</geographicalIntervals>
-							<timeIntervals>					
+							<timeIntervals>
 							</timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
 							<fareStructureElements>
@@ -525,7 +518,7 @@
 						</ResponsibilitySet>
 					</responsibilitySets>
 					<typesOfValue>
-						<!-- ======== TYPE S OF   FRAME========= -->
+						<!-- ======== TYPE S OF FRAME========= -->
 						<ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_Basic" classOfValues="TypeOfFrame">
 							<Name>Types of FXC Specific  Frame Basic </Name>
 							<values>
@@ -580,7 +573,7 @@
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
-						<!-- ======== TYPE S OF   FRAME========= -->
+						<!-- ======== TYPE S OF FRAME========= -->
 						<ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_for_Fares" classOfValues="TypeOfFrame">
 							<Name>Types of FXC Specific  Frame</Name>
 							<values>
@@ -1486,9 +1479,9 @@
 									<classes>
 										<ClassInFrame nameOfClass="TopographicPlace">
 											<!-- 	 TopographicPlace maps to  a NPTG Locality 
-<NptgLocality Status="active" Modification="delete" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" ModificationDateTime="2001-12-17T09:30:47Z" id="E0000003"  RevisionNumber="1">
+<NptgLocality Status="active" Modification="delete" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" ModificationDateTime="2001-12-17T09:30:47Z" id="E0000003" RevisionNumber="1">
 			<NptgLocalityCode>E0000003</NptgLocalityCode>
-			<Descriptor Modification="delete" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" id="E0000001-1"  RevisionNumber="1">
+			<Descriptor Modification="delete" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" id="E0000001-1" RevisionNumber="1">
 				<LocalityName>Locality Three</LocalityName>
 				<ShortName>Locality 3</ShortName>
 				<Qualify>
@@ -1815,7 +1808,7 @@
 										</ClassInFrame>
 										<ClassInFrame nameOfClass="TransportAdministrativeZone">
 											<!-- Maps some aspects of  NPTG Admin Area								
-	<AdministrativeArea Modification="new" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1"   RevisionNumber="1" >
+	<AdministrativeArea Modification="new" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">
 					<AdministrativeAreaCode>101</AdministrativeAreaCode>
 					<AtcoAreaCode>001</AtcoAreaCode>
 					<Name>Nptg Admin area 101</Name>

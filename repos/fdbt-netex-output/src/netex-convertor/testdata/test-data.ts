@@ -986,7 +986,7 @@ export const multiServicesPeriodData = {
             productPrice: '132',
             daysValid: '3',
             expiryRules: '24hr',
-        }
+        },
     ],
     nocCode: 'BLAC',
     selectedServices: [
@@ -1041,22 +1041,781 @@ export const operatorData = {
     mode: 'bus',
 };
 
-export const expectedGeoZoneFareTables = [{ "Name": { "$t": "IW Village" }, "columns": { "FareTableColumn": { "Name": { "$t": "IW Village" }, "id": "op:IW Product@IW Village@p-ticket", "representing": { "TariffZoneRef": { "ref": "op:IW Product@IW Village", "version": "1.0" } }, "version": "1.0" } }, "id": "op:IW Product@IW Village", "includes": { "FareTable": { "Name": { "t$": "IW Product - Cash" }, "cells": { "Cell": { "TimeIntervalPrice": { "Amount": { "t$": "1000" }, "ColumnRef": { "ref": "op:IW Product@IW Village@p-ticket@adult", "version": "1.0" }, "RowRef": { "ref": "op:IW Product@24days", "version": "1.0" }, "TimeIntervalRef": { "ref": "op:Tariff@IW Product@24days", "version": "1.0" }, "id": "op:IW Product@IW Village@p-ticket@adult@24days", "version": "1.0" }, "id": "op:IW Product@IW Village@p-ticket@adult@24days", "order": "1", "version": "1.0" } }, "columns": { "FareTableColumn": { "Name": { "$t": "Cash" }, "id": "op:IW Product@IW Village@p-ticket", "representing": { "TypeOfTravelDocumentRef": { "ref": "op:p-ticket", "version": "1.0" }, "UserProfileRef": { "ref": "op:adult", "version": "1.0" } }, "version": "1.0" } }, "id": "op:IW Product@IW Village@p-ticket", "includes": { "Faretable": { "Name": { "$t": "IW Product - Cash - Adult" }, "columns": { "FareTableColumn": { "Name": { "$t": "Adult" }, "id": "op:IW Product@IW Village@p-ticket@adult", "representing": { "TypeOfTravelDocumentRef": { "ref": "op:p-tciket", "version": "1.0" }, "UserProfileRef": { "ref": "op:adult", "version": "1.0" } }, "version": "1.0" } }, "id": "op:IW Product@IW Village@p-ticket@adult", "limitations": { "UserProfileRef": { "ref": "op:adult", "version": "1.0" } }, "version": "1.0" } }, "pricesFor": { "SalesOfferPacakgeRef": { "ref": "op:Pass@IW Product-SOP@p-ticket", "version": "1.0" } }, "specifics": { "TypeOfTravelDocumentRef": { "ref": "op:p-ticket", "version": "1.0" } }, "version": "1.0" } }, "specifics": { "TariffZoneRef": { "ref": "op:IW Product@IW Village", "version": "1.0" } }, "version": "1.0" }, { "Name": { "$t": "IW Village" }, "columns": { "FareTableColumn": { "Name": { "$t": "IW Village" }, "id": "op:Super Product@IW Village@p-ticket", "representing": { "TariffZoneRef": { "ref": "op:Super Product@IW Village", "version": "1.0" } }, "version": "1.0" } }, "id": "op:Super Product@IW Village", "includes": { "FareTable": { "Name": { "t$": "Super Product - Cash" }, "cells": { "Cell": { "TimeIntervalPrice": { "Amount": { "t$": "1230" }, "ColumnRef": { "ref": "op:Super Product@IW Village@p-ticket@adult", "version": "1.0" }, "RowRef": { "ref": "op:Super Product@4days", "version": "1.0" }, "TimeIntervalRef": { "ref": "op:Tariff@Super Product@4days", "version": "1.0" }, "id": "op:Super Product@IW Village@p-ticket@adult@4days", "version": "1.0" }, "id": "op:Super Product@IW Village@p-ticket@adult@4days", "order": "1", "version": "1.0" } }, "columns": { "FareTableColumn": { "Name": { "$t": "Cash" }, "id": "op:Super Product@IW Village@p-ticket", "representing": { "TypeOfTravelDocumentRef": { "ref": "op:p-ticket", "version": "1.0" }, "UserProfileRef": { "ref": "op:adult", "version": "1.0" } }, "version": "1.0" } }, "id": "op:Super Product@IW Village@p-ticket", "includes": { "Faretable": { "Name": { "$t": "Super Product - Cash - Adult" }, "columns": { "FareTableColumn": { "Name": { "$t": "Adult" }, "id": "op:Super Product@IW Village@p-ticket@adult", "representing": { "TypeOfTravelDocumentRef": { "ref": "op:p-tciket", "version": "1.0" }, "UserProfileRef": { "ref": "op:adult", "version": "1.0" } }, "version": "1.0" } }, "id": "op:Super Product@IW Village@p-ticket@adult", "limitations": { "UserProfileRef": { "ref": "op:adult", "version": "1.0" } }, "version": "1.0" } }, "pricesFor": { "SalesOfferPacakgeRef": { "ref": "op:Pass@Super Product-SOP@p-ticket", "version": "1.0" } }, "specifics": { "TypeOfTravelDocumentRef": { "ref": "op:p-ticket", "version": "1.0" } }, "version": "1.0" } }, "specifics": { "TariffZoneRef": { "ref": "op:Super Product@IW Village", "version": "1.0" } }, "version": "1.0" }];
+export const expectedGeoZoneFareTables = [
+    {
+        Name: { $t: 'IW Village' },
+        columns: {
+            FareTableColumn: {
+                Name: { $t: 'IW Village' },
+                id: 'op:IW Product@IW Village@p-ticket',
+                representing: { TariffZoneRef: { ref: 'op:IW Product@IW Village', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        id: 'op:IW Product@IW Village',
+        includes: {
+            FareTable: {
+                Name: { t$: 'IW Product - Cash' },
+                cells: {
+                    Cell: {
+                        TimeIntervalPrice: {
+                            Amount: { t$: '1000' },
+                            ColumnRef: { ref: 'op:IW Product@IW Village@p-ticket@adult', version: '1.0' },
+                            RowRef: { ref: 'op:IW Product@24days', version: '1.0' },
+                            TimeIntervalRef: { ref: 'op:Tariff@IW Product@24days', version: '1.0' },
+                            id: 'op:IW Product@IW Village@p-ticket@adult@24days',
+                            version: '1.0',
+                        },
+                        id: 'op:IW Product@IW Village@p-ticket@adult@24days',
+                        order: '1',
+                        version: '1.0',
+                    },
+                },
+                columns: {
+                    FareTableColumn: {
+                        Name: { $t: 'Cash' },
+                        id: 'op:IW Product@IW Village@p-ticket',
+                        representing: {
+                            TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
+                            UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                        },
+                        version: '1.0',
+                    },
+                },
+                id: 'op:IW Product@IW Village@p-ticket',
+                includes: {
+                    Faretable: {
+                        Name: { $t: 'IW Product - Cash - Adult' },
+                        columns: {
+                            FareTableColumn: {
+                                Name: { $t: 'Adult' },
+                                id: 'op:IW Product@IW Village@p-ticket@adult',
+                                representing: {
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                                },
+                                version: '1.0',
+                            },
+                        },
+                        id: 'op:IW Product@IW Village@p-ticket@adult',
+                        limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+                        version: '1.0',
+                    },
+                },
+                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@IW Product-SOP@p-ticket', version: '1.0' } },
+                specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        specifics: { TariffZoneRef: { ref: 'op:IW Product@IW Village', version: '1.0' } },
+        version: '1.0',
+    },
+    {
+        Name: { $t: 'IW Village' },
+        columns: {
+            FareTableColumn: {
+                Name: { $t: 'IW Village' },
+                id: 'op:Super Product@IW Village@p-ticket',
+                representing: { TariffZoneRef: { ref: 'op:Super Product@IW Village', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        id: 'op:Super Product@IW Village',
+        includes: {
+            FareTable: {
+                Name: { t$: 'Super Product - Cash' },
+                cells: {
+                    Cell: {
+                        TimeIntervalPrice: {
+                            Amount: { t$: '1230' },
+                            ColumnRef: { ref: 'op:Super Product@IW Village@p-ticket@adult', version: '1.0' },
+                            RowRef: { ref: 'op:Super Product@4days', version: '1.0' },
+                            TimeIntervalRef: { ref: 'op:Tariff@Super Product@4days', version: '1.0' },
+                            id: 'op:Super Product@IW Village@p-ticket@adult@4days',
+                            version: '1.0',
+                        },
+                        id: 'op:Super Product@IW Village@p-ticket@adult@4days',
+                        order: '1',
+                        version: '1.0',
+                    },
+                },
+                columns: {
+                    FareTableColumn: {
+                        Name: { $t: 'Cash' },
+                        id: 'op:Super Product@IW Village@p-ticket',
+                        representing: {
+                            TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
+                            UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                        },
+                        version: '1.0',
+                    },
+                },
+                id: 'op:Super Product@IW Village@p-ticket',
+                includes: {
+                    Faretable: {
+                        Name: { $t: 'Super Product - Cash - Adult' },
+                        columns: {
+                            FareTableColumn: {
+                                Name: { $t: 'Adult' },
+                                id: 'op:Super Product@IW Village@p-ticket@adult',
+                                representing: {
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                                },
+                                version: '1.0',
+                            },
+                        },
+                        id: 'op:Super Product@IW Village@p-ticket@adult',
+                        limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+                        version: '1.0',
+                    },
+                },
+                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@Super Product-SOP@p-ticket', version: '1.0' } },
+                specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        specifics: { TariffZoneRef: { ref: 'op:Super Product@IW Village', version: '1.0' } },
+        version: '1.0',
+    },
+];
 
-export const expectedMultiServiceFareTables = [{"Name": {"$t": "BLAC-multi-service"}, "columns": {"FareTableColumn": {"Name": {"$t": "BLAC-multi-service"}, "id": "op:a product@BLAC-multi-service@p-ticket", "representing": null, "version": "1.0"}}, "id": "op:a product@BLAC-multi-service", "includes": {"FareTable": {"Name": {"t$": "a product - Cash"}, "cells": {"Cell": {"TimeIntervalPrice": {"Amount": {"t$": "123"}, "ColumnRef": {"ref": "op:a product@BLAC-multi-service@p-ticket@adult", "version": "1.0"}, "RowRef": {"ref": "op:a product@4days", "version": "1.0"}, "TimeIntervalRef": {"ref": "op:Tariff@a product@4days", "version": "1.0"}, "id": "op:a product@BLAC-multi-service@p-ticket@adult@4days", "version": "1.0"}, "id": "op:a product@BLAC-multi-service@p-ticket@adult@4days", "order": "1", "version": "1.0"}}, "columns": {"FareTableColumn": {"Name": {"$t": "Cash"}, "id": "op:a product@BLAC-multi-service@p-ticket", "representing": {"TypeOfTravelDocumentRef": {"ref": "op:p-ticket", "version": "1.0"}, "UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "version": "1.0"}}, "id": "op:a product@BLAC-multi-service@p-ticket", "includes": {"Faretable": {"Name": {"$t": "a product - Cash - Adult"}, "columns": {"FareTableColumn": {"Name": {"$t": "Adult"}, "id": "op:a product@BLAC-multi-service@p-ticket@adult", "representing": {"TypeOfTravelDocumentRef": {"ref": "op:p-tciket", "version": "1.0"}, "UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "version": "1.0"}}, "id": "op:a product@BLAC-multi-service@p-ticket@adult", "limitations": {"UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "version": "1.0"}}, "pricesFor": {"SalesOfferPacakgeRef": {"ref": "op:Pass@a product-SOP@p-ticket", "version": "1.0"}}, "specifics": {"TypeOfTravelDocumentRef": {"ref": "op:p-ticket", "version": "1.0"}}, "version": "1.0"}}, "specifics": null, "version": "1.0"}, {"Name": {"$t": "BLAC-multi-service"}, "columns": {"FareTableColumn": {"Name": {"$t": "BLAC-multi-service"}, "id": "op:best product@BLAC-multi-service@p-ticket", "representing": null, "version": "1.0"}}, "id": "op:best product@BLAC-multi-service", "includes": {"FareTable": {"Name": {"t$": "best product - Cash"}, "cells": {"Cell": {"TimeIntervalPrice": {"Amount": {"t$": "132"}, "ColumnRef": {"ref": "op:best product@BLAC-multi-service@p-ticket@adult", "version": "1.0"}, "RowRef": {"ref": "op:best product@3days", "version": "1.0"}, "TimeIntervalRef": {"ref": "op:Tariff@best product@3days", "version": "1.0"}, "id": "op:best product@BLAC-multi-service@p-ticket@adult@3days", "version": "1.0"}, "id": "op:best product@BLAC-multi-service@p-ticket@adult@3days", "order": "1", "version": "1.0"}}, "columns": {"FareTableColumn": {"Name": {"$t": "Cash"}, "id": "op:best product@BLAC-multi-service@p-ticket", "representing": {"TypeOfTravelDocumentRef": {"ref": "op:p-ticket", "version": "1.0"}, "UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "version": "1.0"}}, "id": "op:best product@BLAC-multi-service@p-ticket", "includes": {"Faretable": {"Name": {"$t": "best product - Cash - Adult"}, "columns": {"FareTableColumn": {"Name": {"$t": "Adult"}, "id": "op:best product@BLAC-multi-service@p-ticket@adult", "representing": {"TypeOfTravelDocumentRef": {"ref": "op:p-tciket", "version": "1.0"}, "UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "version": "1.0"}}, "id": "op:best product@BLAC-multi-service@p-ticket@adult", "limitations": {"UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "version": "1.0"}}, "pricesFor": {"SalesOfferPacakgeRef": {"ref": "op:Pass@best product-SOP@p-ticket", "version": "1.0"}}, "specifics": {"TypeOfTravelDocumentRef": {"ref": "op:p-ticket", "version": "1.0"}}, "version": "1.0"}}, "specifics": null, "version": "1.0"}];
+export const expectedMultiServiceFareTables = [
+    {
+        Name: { $t: 'BLAC-multi-service' },
+        columns: {
+            FareTableColumn: {
+                Name: { $t: 'BLAC-multi-service' },
+                id: 'op:a product@BLAC-multi-service@p-ticket',
+                representing: null,
+                version: '1.0',
+            },
+        },
+        id: 'op:a product@BLAC-multi-service',
+        includes: {
+            FareTable: {
+                Name: { t$: 'a product - Cash' },
+                cells: {
+                    Cell: {
+                        TimeIntervalPrice: {
+                            Amount: { t$: '123' },
+                            ColumnRef: { ref: 'op:a product@BLAC-multi-service@p-ticket@adult', version: '1.0' },
+                            RowRef: { ref: 'op:a product@4days', version: '1.0' },
+                            TimeIntervalRef: { ref: 'op:Tariff@a product@4days', version: '1.0' },
+                            id: 'op:a product@BLAC-multi-service@p-ticket@adult@4days',
+                            version: '1.0',
+                        },
+                        id: 'op:a product@BLAC-multi-service@p-ticket@adult@4days',
+                        order: '1',
+                        version: '1.0',
+                    },
+                },
+                columns: {
+                    FareTableColumn: {
+                        Name: { $t: 'Cash' },
+                        id: 'op:a product@BLAC-multi-service@p-ticket',
+                        representing: {
+                            TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
+                            UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                        },
+                        version: '1.0',
+                    },
+                },
+                id: 'op:a product@BLAC-multi-service@p-ticket',
+                includes: {
+                    Faretable: {
+                        Name: { $t: 'a product - Cash - Adult' },
+                        columns: {
+                            FareTableColumn: {
+                                Name: { $t: 'Adult' },
+                                id: 'op:a product@BLAC-multi-service@p-ticket@adult',
+                                representing: {
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                                },
+                                version: '1.0',
+                            },
+                        },
+                        id: 'op:a product@BLAC-multi-service@p-ticket@adult',
+                        limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+                        version: '1.0',
+                    },
+                },
+                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@a product-SOP@p-ticket', version: '1.0' } },
+                specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        specifics: null,
+        version: '1.0',
+    },
+    {
+        Name: { $t: 'BLAC-multi-service' },
+        columns: {
+            FareTableColumn: {
+                Name: { $t: 'BLAC-multi-service' },
+                id: 'op:best product@BLAC-multi-service@p-ticket',
+                representing: null,
+                version: '1.0',
+            },
+        },
+        id: 'op:best product@BLAC-multi-service',
+        includes: {
+            FareTable: {
+                Name: { t$: 'best product - Cash' },
+                cells: {
+                    Cell: {
+                        TimeIntervalPrice: {
+                            Amount: { t$: '132' },
+                            ColumnRef: { ref: 'op:best product@BLAC-multi-service@p-ticket@adult', version: '1.0' },
+                            RowRef: { ref: 'op:best product@3days', version: '1.0' },
+                            TimeIntervalRef: { ref: 'op:Tariff@best product@3days', version: '1.0' },
+                            id: 'op:best product@BLAC-multi-service@p-ticket@adult@3days',
+                            version: '1.0',
+                        },
+                        id: 'op:best product@BLAC-multi-service@p-ticket@adult@3days',
+                        order: '1',
+                        version: '1.0',
+                    },
+                },
+                columns: {
+                    FareTableColumn: {
+                        Name: { $t: 'Cash' },
+                        id: 'op:best product@BLAC-multi-service@p-ticket',
+                        representing: {
+                            TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
+                            UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                        },
+                        version: '1.0',
+                    },
+                },
+                id: 'op:best product@BLAC-multi-service@p-ticket',
+                includes: {
+                    Faretable: {
+                        Name: { $t: 'best product - Cash - Adult' },
+                        columns: {
+                            FareTableColumn: {
+                                Name: { $t: 'Adult' },
+                                id: 'op:best product@BLAC-multi-service@p-ticket@adult',
+                                representing: {
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    UserProfileRef: { ref: 'op:adult', version: '1.0' },
+                                },
+                                version: '1.0',
+                            },
+                        },
+                        id: 'op:best product@BLAC-multi-service@p-ticket@adult',
+                        limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+                        version: '1.0',
+                    },
+                },
+                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@best product-SOP@p-ticket', version: '1.0' } },
+                specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        specifics: null,
+        version: '1.0',
+    },
+];
 
-export const expectedMultipleFareTables = [{"Name": {"$t": "a product Fares"}, "id": "epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:a product@pass:op", "pricesFor": {"PreassignedFareProductRef": {"ref": "op:Pass@a product", "version": "1.0"}}, "rows": {"FareTableRow": {"Name": {"$t": "4 days"}, "id": "op:a product@4days", "order": "2", "representing": {"TimeIntervalRef": {"ref": "op:Tariff@a product@4days", "version": "1.0"}}, "version": "1.0"}}, "usedIn": {"TariffRef": {"ref": "op:Tariff@PLACEHOLDER", "version": "1.0"}}, "version": "1.0"}, {"Name": {"$t": "best product Fares"}, "id": "epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:best product@pass:op", "pricesFor": {"PreassignedFareProductRef": {"ref": "op:Pass@best product", "version": "1.0"}}, "rows": {"FareTableRow": {"Name": {"$t": "3 days"}, "id": "op:best product@3days", "order": "2", "representing": {"TimeIntervalRef": {"ref": "op:Tariff@best product@3days", "version": "1.0"}}, "version": "1.0"}}, "usedIn": {"TariffRef": {"ref": "op:Tariff@PLACEHOLDER", "version": "1.0"}}, "version": "1.0"}];
+export const expectedMultipleFareTables = [
+    {
+        Name: { $t: 'a product Fares' },
+        id: 'epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:a product@pass:op',
+        pricesFor: { PreassignedFareProductRef: { ref: 'op:Pass@a product', version: '1.0' } },
+        rows: {
+            FareTableRow: {
+                Name: { $t: '4 days' },
+                id: 'op:a product@4days',
+                order: '2',
+                representing: { TimeIntervalRef: { ref: 'op:Tariff@a product@4days', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        usedIn: { TariffRef: { ref: 'op:Tariff@PLACEHOLDER', version: '1.0' } },
+        version: '1.0',
+    },
+    {
+        Name: { $t: 'best product Fares' },
+        id: 'epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:best product@pass:op',
+        pricesFor: { PreassignedFareProductRef: { ref: 'op:Pass@best product', version: '1.0' } },
+        rows: {
+            FareTableRow: {
+                Name: { $t: '3 days' },
+                id: 'op:best product@3days',
+                order: '2',
+                representing: { TimeIntervalRef: { ref: 'op:Tariff@best product@3days', version: '1.0' } },
+                version: '1.0',
+            },
+        },
+        usedIn: { TariffRef: { ref: 'op:Tariff@PLACEHOLDER', version: '1.0' } },
+        version: '1.0',
+    },
+];
 
-export const expectedSalesOfferPackages = [{"BrandingRef": {"ref": "op:InfinityWorks@brand", "version": "1.0"}, "Description": {"$t": "Unlimited Travel in a given zone"}, "Name": {"$t": "PLACEHOLDER - paper ticket"}, "distributionAssignments": {"DistributionAssignment": {"Description": {"$t": "Pay for ticket onboard."}, "DistributionChannelRef": {"ref": "fxc:on_board", "version": "fxc:v1.0"}, "DistributionChannelType": {"$t": "onBoard"}, "FulfilmentMethodRef": {"ref": "fxc:collect_on_board", "version": "fxc:v1.0"}, "Name": {"$t": "Onboard"}, "PaymentMethods": {"$t": "cash contactlessPaymentCard"}, "id": "op:Pass@IW Product-GSOP@p-ticket@on_board", "order": "1", "version": "1.0"}}, "id": "op:Pass@IW Product-SOP@p-ticket", "salesOfferPackageElements": {"SalesOfferPackageElement": {"PreassignedFareProductRef": {"ref": "op:Pass@IW Product", "version": "1.0"}, "TypeOfTravelDocumentRef": {"ref": "op:p-ticket", "version": "1.0"}, "id": "op:Pass@IW Product-SOP@p-ticket", "order": "3", "version": "1.0"}}, "version": "1.0"}, {"BrandingRef": {"ref": "op:InfinityWorks@brand", "version": "1.0"}, "Description": {"$t": "Unlimited Travel in a given zone"}, "Name": {"$t": "PLACEHOLDER - paper ticket"}, "distributionAssignments": {"DistributionAssignment": {"Description": {"$t": "Pay for ticket onboard."}, "DistributionChannelRef": {"ref": "fxc:on_board", "version": "fxc:v1.0"}, "DistributionChannelType": {"$t": "onBoard"}, "FulfilmentMethodRef": {"ref": "fxc:collect_on_board", "version": "fxc:v1.0"}, "Name": {"$t": "Onboard"}, "PaymentMethods": {"$t": "cash contactlessPaymentCard"}, "id": "op:Pass@Super Product-GSOP@p-ticket@on_board", "order": "1", "version": "1.0"}}, "id": "op:Pass@Super Product-SOP@p-ticket", "salesOfferPackageElements": {"SalesOfferPackageElement": {"PreassignedFareProductRef": {"ref": "op:Pass@Super Product", "version": "1.0"}, "TypeOfTravelDocumentRef": {"ref": "op:p-ticket", "version": "1.0"}, "id": "op:Pass@Super Product-SOP@p-ticket", "order": "3", "version": "1.0"}}, "version": "1.0"}];
+export const expectedSalesOfferPackages = [
+    {
+        BrandingRef: { ref: 'op:InfinityWorks@brand', version: '1.0' },
+        Description: { $t: 'Unlimited Travel in a given zone' },
+        Name: { $t: 'PLACEHOLDER - paper ticket' },
+        distributionAssignments: {
+            DistributionAssignment: {
+                Description: { $t: 'Pay for ticket onboard.' },
+                DistributionChannelRef: { ref: 'fxc:on_board', version: 'fxc:v1.0' },
+                DistributionChannelType: { $t: 'onBoard' },
+                FulfilmentMethodRef: { ref: 'fxc:collect_on_board', version: 'fxc:v1.0' },
+                Name: { $t: 'Onboard' },
+                PaymentMethods: { $t: 'cash contactlessPaymentCard' },
+                id: 'op:Pass@IW Product-GSOP@p-ticket@on_board',
+                order: '1',
+                version: '1.0',
+            },
+        },
+        id: 'op:Pass@IW Product-SOP@p-ticket',
+        salesOfferPackageElements: {
+            SalesOfferPackageElement: {
+                PreassignedFareProductRef: { ref: 'op:Pass@IW Product', version: '1.0' },
+                TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
+                id: 'op:Pass@IW Product-SOP@p-ticket',
+                order: '3',
+                version: '1.0',
+            },
+        },
+        version: '1.0',
+    },
+    {
+        BrandingRef: { ref: 'op:InfinityWorks@brand', version: '1.0' },
+        Description: { $t: 'Unlimited Travel in a given zone' },
+        Name: { $t: 'PLACEHOLDER - paper ticket' },
+        distributionAssignments: {
+            DistributionAssignment: {
+                Description: { $t: 'Pay for ticket onboard.' },
+                DistributionChannelRef: { ref: 'fxc:on_board', version: 'fxc:v1.0' },
+                DistributionChannelType: { $t: 'onBoard' },
+                FulfilmentMethodRef: { ref: 'fxc:collect_on_board', version: 'fxc:v1.0' },
+                Name: { $t: 'Onboard' },
+                PaymentMethods: { $t: 'cash contactlessPaymentCard' },
+                id: 'op:Pass@Super Product-GSOP@p-ticket@on_board',
+                order: '1',
+                version: '1.0',
+            },
+        },
+        id: 'op:Pass@Super Product-SOP@p-ticket',
+        salesOfferPackageElements: {
+            SalesOfferPackageElement: {
+                PreassignedFareProductRef: { ref: 'op:Pass@Super Product', version: '1.0' },
+                TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
+                id: 'op:Pass@Super Product-SOP@p-ticket',
+                order: '3',
+                version: '1.0',
+            },
+        },
+        version: '1.0',
+    },
+];
 
-export const expectedGeoZonePreassignedFareProducts = [{"ChargingMomentType": {"$t": "beforeTravel"}, "Name": {"$t": "IW Product Pass"}, "OperatorRef": {"$t": "noc:TestOperatorOpId", "ref": "noc:IW1234", "version": "1.0"}, "ProductType": {"$t": "periodPass"}, "accessRightsInProduct": {"AccessRightInProduct": {"ValidableElementRef": {"ref": "op:Pass@IW Product@travel", "version": "1.0"}, "id": "op:Pass@IW Product@travel", "order": "1", "version": "1.0"}}, "id": "op:Pass@IW Product", "typesOfFareProduct": {"TypeOfFareProductRef": {"ref": "fxc:standard_product@pass@period", "version": "fxc:v1.0"}}, "validableElements": {"ValidableElement": {"Name": {"$t": "Unlimited rides available for specified durations"}, "fareStructureElements": {"FareStructureElementRef": [{"ref": "op:Tariff@IW Product@access_zones", "version": "1.0"}, {"ref": "op:Tariff@eligibility", "version": "1.0"}, {"ref": "op:Tariff@IW Product@durations@adult", "version": "1.0"}, {"ref": "op:Tariff@IW Product@conditions_of_travel", "version": "1.0"}]}, "id": "op:Pass@IW Product@travel", "version": "1.0"}}, "version": "1.0"}, {"ChargingMomentType": {"$t": "beforeTravel"}, "Name": {"$t": "Super Product Pass"}, "OperatorRef": {"$t": "noc:TestOperatorOpId", "ref": "noc:IW1234", "version": "1.0"}, "ProductType": {"$t": "periodPass"}, "accessRightsInProduct": {"AccessRightInProduct": {"ValidableElementRef": {"ref": "op:Pass@Super Product@travel", "version": "1.0"}, "id": "op:Pass@Super Product@travel", "order": "1", "version": "1.0"}}, "id": "op:Pass@Super Product", "typesOfFareProduct": {"TypeOfFareProductRef": {"ref": "fxc:standard_product@pass@period", "version": "fxc:v1.0"}}, "validableElements": {"ValidableElement": {"Name": {"$t": "Unlimited rides available for specified durations"}, "fareStructureElements": {"FareStructureElementRef": [{"ref": "op:Tariff@Super Product@access_zones", "version": "1.0"}, {"ref": "op:Tariff@eligibility", "version": "1.0"}, {"ref": "op:Tariff@Super Product@durations@adult", "version": "1.0"}, {"ref": "op:Tariff@Super Product@conditions_of_travel", "version": "1.0"}]}, "id": "op:Pass@Super Product@travel", "version": "1.0"}}, "version": "1.0"}];
+export const expectedGeoZonePreassignedFareProducts = [
+    {
+        ChargingMomentType: { $t: 'beforeTravel' },
+        Name: { $t: 'IW Product Pass' },
+        OperatorRef: { $t: 'noc:TestOperatorOpId', ref: 'noc:IW1234', version: '1.0' },
+        ProductType: { $t: 'periodPass' },
+        accessRightsInProduct: {
+            AccessRightInProduct: {
+                ValidableElementRef: { ref: 'op:Pass@IW Product@travel', version: '1.0' },
+                id: 'op:Pass@IW Product@travel',
+                order: '1',
+                version: '1.0',
+            },
+        },
+        id: 'op:Pass@IW Product',
+        typesOfFareProduct: { TypeOfFareProductRef: { ref: 'fxc:standard_product@pass@period', version: 'fxc:v1.0' } },
+        validableElements: {
+            ValidableElement: {
+                Name: { $t: 'Unlimited rides available for specified durations' },
+                fareStructureElements: {
+                    FareStructureElementRef: [
+                        { ref: 'op:Tariff@IW Product@access_zones', version: '1.0' },
+                        { ref: 'op:Tariff@eligibility', version: '1.0' },
+                        { ref: 'op:Tariff@IW Product@durations@adult', version: '1.0' },
+                        { ref: 'op:Tariff@IW Product@conditions_of_travel', version: '1.0' },
+                    ],
+                },
+                id: 'op:Pass@IW Product@travel',
+                version: '1.0',
+            },
+        },
+        version: '1.0',
+    },
+    {
+        ChargingMomentType: { $t: 'beforeTravel' },
+        Name: { $t: 'Super Product Pass' },
+        OperatorRef: { $t: 'noc:TestOperatorOpId', ref: 'noc:IW1234', version: '1.0' },
+        ProductType: { $t: 'periodPass' },
+        accessRightsInProduct: {
+            AccessRightInProduct: {
+                ValidableElementRef: { ref: 'op:Pass@Super Product@travel', version: '1.0' },
+                id: 'op:Pass@Super Product@travel',
+                order: '1',
+                version: '1.0',
+            },
+        },
+        id: 'op:Pass@Super Product',
+        typesOfFareProduct: { TypeOfFareProductRef: { ref: 'fxc:standard_product@pass@period', version: 'fxc:v1.0' } },
+        validableElements: {
+            ValidableElement: {
+                Name: { $t: 'Unlimited rides available for specified durations' },
+                fareStructureElements: {
+                    FareStructureElementRef: [
+                        { ref: 'op:Tariff@Super Product@access_zones', version: '1.0' },
+                        { ref: 'op:Tariff@eligibility', version: '1.0' },
+                        { ref: 'op:Tariff@Super Product@durations@adult', version: '1.0' },
+                        { ref: 'op:Tariff@Super Product@conditions_of_travel', version: '1.0' },
+                    ],
+                },
+                id: 'op:Pass@Super Product@travel',
+                version: '1.0',
+            },
+        },
+        version: '1.0',
+    },
+];
 
-export const expectedMultiServicesPreassignedFareProducts = [{"ChargingMomentType": {"$t": "beforeTravel"}, "Name": {"$t": "a product Pass"}, "OperatorRef": {"$t": "noc:TestOperatorOpId", "ref": "noc:BLAC", "version": "1.0"}, "ProductType": {"$t": "periodPass"}, "accessRightsInProduct": {"AccessRightInProduct": {"ValidableElementRef": {"ref": "op:Pass@a product@travel", "version": "1.0"}, "id": "op:Pass@a product@travel", "order": "1", "version": "1.0"}}, "id": "op:Pass@a product", "typesOfFareProduct": {"TypeOfFareProductRef": {"ref": "fxc:standard_product@pass@period", "version": "fxc:v1.0"}}, "validableElements": {"ValidableElement": {"Name": {"$t": "Unlimited rides available for specified durations"}, "fareStructureElements": {"FareStructureElementRef": [{"ref": "op:Tariff@a product@access_lines", "version": "1.0"}, {"ref": "op:Tariff@eligibility", "version": "1.0"}, {"ref": "op:Tariff@a product@durations@adult", "version": "1.0"}, {"ref": "op:Tariff@a product@conditions_of_travel", "version": "1.0"}]}, "id": "op:Pass@a product@travel", "version": "1.0"}}, "version": "1.0"}, {"ChargingMomentType": {"$t": "beforeTravel"}, "Name": {"$t": "best product Pass"}, "OperatorRef": {"$t": "noc:TestOperatorOpId", "ref": "noc:BLAC", "version": "1.0"}, "ProductType": {"$t": "periodPass"}, "accessRightsInProduct": {"AccessRightInProduct": {"ValidableElementRef": {"ref": "op:Pass@best product@travel", "version": "1.0"}, "id": "op:Pass@best product@travel", "order": "1", "version": "1.0"}}, "id": "op:Pass@best product", "typesOfFareProduct": {"TypeOfFareProductRef": {"ref": "fxc:standard_product@pass@period", "version": "fxc:v1.0"}}, "validableElements": {"ValidableElement": {"Name": {"$t": "Unlimited rides available for specified durations"}, "fareStructureElements": {"FareStructureElementRef": [{"ref": "op:Tariff@best product@access_lines", "version": "1.0"}, {"ref": "op:Tariff@eligibility", "version": "1.0"}, {"ref": "op:Tariff@best product@durations@adult", "version": "1.0"}, {"ref": "op:Tariff@best product@conditions_of_travel", "version": "1.0"}]}, "id": "op:Pass@best product@travel", "version": "1.0"}}, "version": "1.0"}];
+export const expectedMultiServicesPreassignedFareProducts = [
+    {
+        ChargingMomentType: { $t: 'beforeTravel' },
+        Name: { $t: 'a product Pass' },
+        OperatorRef: { $t: 'noc:TestOperatorOpId', ref: 'noc:BLAC', version: '1.0' },
+        ProductType: { $t: 'periodPass' },
+        accessRightsInProduct: {
+            AccessRightInProduct: {
+                ValidableElementRef: { ref: 'op:Pass@a product@travel', version: '1.0' },
+                id: 'op:Pass@a product@travel',
+                order: '1',
+                version: '1.0',
+            },
+        },
+        id: 'op:Pass@a product',
+        typesOfFareProduct: { TypeOfFareProductRef: { ref: 'fxc:standard_product@pass@period', version: 'fxc:v1.0' } },
+        validableElements: {
+            ValidableElement: {
+                Name: { $t: 'Unlimited rides available for specified durations' },
+                fareStructureElements: {
+                    FareStructureElementRef: [
+                        { ref: 'op:Tariff@a product@access_lines', version: '1.0' },
+                        { ref: 'op:Tariff@eligibility', version: '1.0' },
+                        { ref: 'op:Tariff@a product@durations@adult', version: '1.0' },
+                        { ref: 'op:Tariff@a product@conditions_of_travel', version: '1.0' },
+                    ],
+                },
+                id: 'op:Pass@a product@travel',
+                version: '1.0',
+            },
+        },
+        version: '1.0',
+    },
+    {
+        ChargingMomentType: { $t: 'beforeTravel' },
+        Name: { $t: 'best product Pass' },
+        OperatorRef: { $t: 'noc:TestOperatorOpId', ref: 'noc:BLAC', version: '1.0' },
+        ProductType: { $t: 'periodPass' },
+        accessRightsInProduct: {
+            AccessRightInProduct: {
+                ValidableElementRef: { ref: 'op:Pass@best product@travel', version: '1.0' },
+                id: 'op:Pass@best product@travel',
+                order: '1',
+                version: '1.0',
+            },
+        },
+        id: 'op:Pass@best product',
+        typesOfFareProduct: { TypeOfFareProductRef: { ref: 'fxc:standard_product@pass@period', version: 'fxc:v1.0' } },
+        validableElements: {
+            ValidableElement: {
+                Name: { $t: 'Unlimited rides available for specified durations' },
+                fareStructureElements: {
+                    FareStructureElementRef: [
+                        { ref: 'op:Tariff@best product@access_lines', version: '1.0' },
+                        { ref: 'op:Tariff@eligibility', version: '1.0' },
+                        { ref: 'op:Tariff@best product@durations@adult', version: '1.0' },
+                        { ref: 'op:Tariff@best product@conditions_of_travel', version: '1.0' },
+                    ],
+                },
+                id: 'op:Pass@best product@travel',
+                version: '1.0',
+            },
+        },
+        version: '1.0',
+    },
+];
 
-export const expectedTimeIntervals = [{"Description": {"$t": "P4D"}, "Name": {"$t": "4 days"}, "id": "op:Tariff@a product@4days", "version": "1.0"}, {"Description": {"$t": "P3D"}, "Name": {"$t": "3 days"}, "id": "op:Tariff@best product@3days", "version": "1.0"}];
+export const expectedTimeIntervals = [
+    { Description: { $t: 'P4D' }, Name: { $t: '4 days' }, id: 'op:Tariff@a product@4days', version: '1.0' },
+    { Description: { $t: 'P3D' }, Name: { $t: '3 days' }, id: 'op:Tariff@best product@3days', version: '1.0' },
+];
 
-export const expectedMultiServiceFareStructureElements = [{"Description": {"$t": "single zone."}, "GenericParameterAssignment": {"TypeOfAccessRightAssignmentRef": {"ref": "fxc:can_access", "version": "fxc:v1.0"}, "ValidityParameterGroupingType": {"$t": "OR"}, "id": "Tariff@a product@access_lines", "order": "1", "validityParameters": {"LineRef": [{"ref": "op:4", "version": "1.0"}, {"ref": "op:17", "version": "1.0"}, {"ref": "op:2C", "version": "1.0"}]}, "version": "1.0"}, "Name": {"$t": "Available zones"}, "TypeOfFareStructureElementRef": {"ref": "fxc:access", "version": "fxc:v1.0"}, "id": "op:Tariff@a product@access_lines", "version": "1.0"}, {"Description": {"$t": "All periods allowed, 60 mins, but no evening - used in for some mticket, single zone."}, "GenericParameterAssignment": {"Description": {"$t": "Adult/Child Cash ticket Only available for 1 Day or 1week"}, "LimitationGroupingType": {"$t": "XOR"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:eligible", "version": "fxc:v1.0"}, "id": "op:Tariff@a product@adult_or_child", "limitations": {"UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Available duration combination"}, "TypeOfFareStructureElementRef": {"ref": "fxc:durations", "version": "fxc:v1.0"}, "id": "op:Tariff@a product@durations@adult", "timeIntervals": {"TimeIntervalRef": [{"ref": "op:Tariff@a product@4days"}]}, "version": "1.0"}, {"GenericParameterAssignment": {"LimitationGroupingType": {"$t": "AND"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:condition_of_use", "version": "fxc:v1.0"}, "id": "op:Tariff@a product@conditions_of_travel", "limitations": {"FrequencyOfUse": {"FrequencyOfUseType": {"$t": "unlimited"}, "id": "op:Pass@a product@frequency", "version": "1.0"}, "Interchanging": {"CanInterchange": {"$t": "true"}, "id": "op:Pass@a product@interchanging", "version": "1.0"}, "Transferability": {"CanTransfer": {"$t": "false"}, "Name": {"$t": "Ticket is not transferable"}, "id": "op:Pass@a product@transferability", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Conditions of travel"}, "id": "op:Tariff@a product@conditions_of_travel", "version": "1.0"}, {"Description": {"$t": "single zone."}, "GenericParameterAssignment": {"TypeOfAccessRightAssignmentRef": {"ref": "fxc:can_access", "version": "fxc:v1.0"}, "ValidityParameterGroupingType": {"$t": "OR"}, "id": "Tariff@best product@access_lines", "order": "1", "validityParameters": {"LineRef": [{"ref": "op:4", "version": "1.0"}, {"ref": "op:17", "version": "1.0"}, {"ref": "op:2C", "version": "1.0"}]}, "version": "1.0"}, "Name": {"$t": "Available zones"}, "TypeOfFareStructureElementRef": {"ref": "fxc:access", "version": "fxc:v1.0"}, "id": "op:Tariff@best product@access_lines", "version": "1.0"}, {"Description": {"$t": "All periods allowed, 60 mins, but no evening - used in for some mticket, single zone."}, "GenericParameterAssignment": {"Description": {"$t": "Adult/Child Cash ticket Only available for 1 Day or 1week"}, "LimitationGroupingType": {"$t": "XOR"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:eligible", "version": "fxc:v1.0"}, "id": "op:Tariff@best product@adult_or_child", "limitations": {"UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Available duration combination"}, "TypeOfFareStructureElementRef": {"ref": "fxc:durations", "version": "fxc:v1.0"}, "id": "op:Tariff@best product@durations@adult", "timeIntervals": {"TimeIntervalRef": [{"ref": "op:Tariff@best product@3days"}]}, "version": "1.0"}, {"GenericParameterAssignment": {"LimitationGroupingType": {"$t": "AND"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:condition_of_use", "version": "fxc:v1.0"}, "id": "op:Tariff@best product@conditions_of_travel", "limitations": {"FrequencyOfUse": {"FrequencyOfUseType": {"$t": "unlimited"}, "id": "op:Pass@best product@frequency", "version": "1.0"}, "Interchanging": {"CanInterchange": {"$t": "true"}, "id": "op:Pass@best product@interchanging", "version": "1.0"}, "Transferability": {"CanTransfer": {"$t": "false"}, "Name": {"$t": "Ticket is not transferable"}, "id": "op:Pass@best product@transferability", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Conditions of travel"}, "id": "op:Tariff@best product@conditions_of_travel", "version": "1.0"}];
+export const expectedMultiServiceFareStructureElements = [
+    {
+        Description: { $t: 'single zone.' },
+        GenericParameterAssignment: {
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:can_access', version: 'fxc:v1.0' },
+            ValidityParameterGroupingType: { $t: 'OR' },
+            id: 'Tariff@a product@access_lines',
+            order: '1',
+            validityParameters: {
+                LineRef: [
+                    { ref: 'op:4', version: '1.0' },
+                    { ref: 'op:17', version: '1.0' },
+                    { ref: 'op:2C', version: '1.0' },
+                ],
+            },
+            version: '1.0',
+        },
+        Name: { $t: 'Available zones' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:access', version: 'fxc:v1.0' },
+        id: 'op:Tariff@a product@access_lines',
+        version: '1.0',
+    },
+    {
+        Description: { $t: 'All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.' },
+        GenericParameterAssignment: {
+            Description: { $t: 'Adult/Child Cash ticket Only available for 1 Day or 1week' },
+            LimitationGroupingType: { $t: 'XOR' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:eligible', version: 'fxc:v1.0' },
+            id: 'op:Tariff@a product@adult_or_child',
+            limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Available duration combination' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:durations', version: 'fxc:v1.0' },
+        id: 'op:Tariff@a product@durations@adult',
+        timeIntervals: { TimeIntervalRef: [{ ref: 'op:Tariff@a product@4days' }] },
+        version: '1.0',
+    },
+    {
+        GenericParameterAssignment: {
+            LimitationGroupingType: { $t: 'AND' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:condition_of_use', version: 'fxc:v1.0' },
+            id: 'op:Tariff@a product@conditions_of_travel',
+            limitations: {
+                FrequencyOfUse: {
+                    FrequencyOfUseType: { $t: 'unlimited' },
+                    id: 'op:Pass@a product@frequency',
+                    version: '1.0',
+                },
+                Interchanging: {
+                    CanInterchange: { $t: 'true' },
+                    id: 'op:Pass@a product@interchanging',
+                    version: '1.0',
+                },
+                Transferability: {
+                    CanTransfer: { $t: 'false' },
+                    Name: { $t: 'Ticket is not transferable' },
+                    id: 'op:Pass@a product@transferability',
+                    version: '1.0',
+                },
+            },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Conditions of travel' },
+        id: 'op:Tariff@a product@conditions_of_travel',
+        version: '1.0',
+    },
+    {
+        Description: { $t: 'single zone.' },
+        GenericParameterAssignment: {
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:can_access', version: 'fxc:v1.0' },
+            ValidityParameterGroupingType: { $t: 'OR' },
+            id: 'Tariff@best product@access_lines',
+            order: '1',
+            validityParameters: {
+                LineRef: [
+                    { ref: 'op:4', version: '1.0' },
+                    { ref: 'op:17', version: '1.0' },
+                    { ref: 'op:2C', version: '1.0' },
+                ],
+            },
+            version: '1.0',
+        },
+        Name: { $t: 'Available zones' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:access', version: 'fxc:v1.0' },
+        id: 'op:Tariff@best product@access_lines',
+        version: '1.0',
+    },
+    {
+        Description: { $t: 'All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.' },
+        GenericParameterAssignment: {
+            Description: { $t: 'Adult/Child Cash ticket Only available for 1 Day or 1week' },
+            LimitationGroupingType: { $t: 'XOR' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:eligible', version: 'fxc:v1.0' },
+            id: 'op:Tariff@best product@adult_or_child',
+            limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Available duration combination' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:durations', version: 'fxc:v1.0' },
+        id: 'op:Tariff@best product@durations@adult',
+        timeIntervals: { TimeIntervalRef: [{ ref: 'op:Tariff@best product@3days' }] },
+        version: '1.0',
+    },
+    {
+        GenericParameterAssignment: {
+            LimitationGroupingType: { $t: 'AND' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:condition_of_use', version: 'fxc:v1.0' },
+            id: 'op:Tariff@best product@conditions_of_travel',
+            limitations: {
+                FrequencyOfUse: {
+                    FrequencyOfUseType: { $t: 'unlimited' },
+                    id: 'op:Pass@best product@frequency',
+                    version: '1.0',
+                },
+                Interchanging: {
+                    CanInterchange: { $t: 'true' },
+                    id: 'op:Pass@best product@interchanging',
+                    version: '1.0',
+                },
+                Transferability: {
+                    CanTransfer: { $t: 'false' },
+                    Name: { $t: 'Ticket is not transferable' },
+                    id: 'op:Pass@best product@transferability',
+                    version: '1.0',
+                },
+            },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Conditions of travel' },
+        id: 'op:Tariff@best product@conditions_of_travel',
+        version: '1.0',
+    },
+];
 
-export const expectedGeoZoneFareStructureElements = [{"Description": {"$t": "single zone."}, "GenericParameterAssignment": {"TypeOfAccessRightAssignmentRef": {"ref": "fxc:can_access", "version": "fxc:v1.0"}, "ValidityParameterGroupingType": {"$t": "XOR"}, "id": "op:Tariff@IW Product@access_zones", "order": "1", "validityParameters": {"FareZoneRef": {"ref": "op:PLACEHOLDER@IW Village", "version": "1.0"}}, "version": "1.0"}, "Name": {"$t": "Available zones"}, "TypeOfFareStructureElementRef": {"ref": "fxc:access", "version": "fxc:v1.0"}, "id": "op:Tariff@IW Product@access_zones", "version": "1.0"}, {"Description": {"$t": "All periods allowed, 60 mins, but no evening - used in for some mticket, single zone."}, "GenericParameterAssignment": {"Description": {"$t": "Adult/Child Cash ticket Only available for 1 Day or 1week"}, "LimitationGroupingType": {"$t": "XOR"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:eligible", "version": "fxc:v1.0"}, "id": "op:Tariff@IW Product@adult_or_child", "limitations": {"UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Available duration combination"}, "TypeOfFareStructureElementRef": {"ref": "fxc:durations", "version": "fxc:v1.0"}, "id": "op:Tariff@IW Product@durations@adult", "timeIntervals": {"TimeIntervalRef": [{"ref": "op:Tariff@IW Product@24days"}]}, "version": "1.0"}, {"GenericParameterAssignment": {"LimitationGroupingType": {"$t": "AND"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:condition_of_use", "version": "fxc:v1.0"}, "id": "op:Tariff@IW Product@conditions_of_travel", "limitations": {"FrequencyOfUse": {"FrequencyOfUseType": {"$t": "unlimited"}, "id": "op:Pass@IW Product@frequency", "version": "1.0"}, "Interchanging": {"CanInterchange": {"$t": "true"}, "id": "op:Pass@IW Product@interchanging", "version": "1.0"}, "Transferability": {"CanTransfer": {"$t": "false"}, "Name": {"$t": "Ticket is not transferable"}, "id": "op:Pass@IW Product@transferability", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Conditions of travel"}, "id": "op:Tariff@IW Product@conditions_of_travel", "version": "1.0"}, {"Description": {"$t": "single zone."}, "GenericParameterAssignment": {"TypeOfAccessRightAssignmentRef": {"ref": "fxc:can_access", "version": "fxc:v1.0"}, "ValidityParameterGroupingType": {"$t": "XOR"}, "id": "op:Tariff@Super Product@access_zones", "order": "1", "validityParameters": {"FareZoneRef": {"ref": "op:PLACEHOLDER@IW Village", "version": "1.0"}}, "version": "1.0"}, "Name": {"$t": "Available zones"}, "TypeOfFareStructureElementRef": {"ref": "fxc:access", "version": "fxc:v1.0"}, "id": "op:Tariff@Super Product@access_zones", "version": "1.0"}, {"Description": {"$t": "All periods allowed, 60 mins, but no evening - used in for some mticket, single zone."}, "GenericParameterAssignment": {"Description": {"$t": "Adult/Child Cash ticket Only available for 1 Day or 1week"}, "LimitationGroupingType": {"$t": "XOR"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:eligible", "version": "fxc:v1.0"}, "id": "op:Tariff@Super Product@adult_or_child", "limitations": {"UserProfileRef": {"ref": "op:adult", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Available duration combination"}, "TypeOfFareStructureElementRef": {"ref": "fxc:durations", "version": "fxc:v1.0"}, "id": "op:Tariff@Super Product@durations@adult", "timeIntervals": {"TimeIntervalRef": [{"ref": "op:Tariff@Super Product@4days"}]}, "version": "1.0"}, {"GenericParameterAssignment": {"LimitationGroupingType": {"$t": "AND"}, "TypeOfAccessRightAssignmentRef": {"ref": "fxc:condition_of_use", "version": "fxc:v1.0"}, "id": "op:Tariff@Super Product@conditions_of_travel", "limitations": {"FrequencyOfUse": {"FrequencyOfUseType": {"$t": "unlimited"}, "id": "op:Pass@Super Product@frequency", "version": "1.0"}, "Interchanging": {"CanInterchange": {"$t": "true"}, "id": "op:Pass@Super Product@interchanging", "version": "1.0"}, "Transferability": {"CanTransfer": {"$t": "false"}, "Name": {"$t": "Ticket is not transferable"}, "id": "op:Pass@Super Product@transferability", "version": "1.0"}}, "order": "1", "version": "1.0"}, "Name": {"$t": "Conditions of travel"}, "id": "op:Tariff@Super Product@conditions_of_travel", "version": "1.0"}];
-
-
+export const expectedGeoZoneFareStructureElements = [
+    {
+        Description: { $t: 'single zone.' },
+        GenericParameterAssignment: {
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:can_access', version: 'fxc:v1.0' },
+            ValidityParameterGroupingType: { $t: 'XOR' },
+            id: 'op:Tariff@IW Product@access_zones',
+            order: '1',
+            validityParameters: { FareZoneRef: { ref: 'op:PLACEHOLDER@IW Village', version: '1.0' } },
+            version: '1.0',
+        },
+        Name: { $t: 'Available zones' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:access', version: 'fxc:v1.0' },
+        id: 'op:Tariff@IW Product@access_zones',
+        version: '1.0',
+    },
+    {
+        Description: { $t: 'All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.' },
+        GenericParameterAssignment: {
+            Description: { $t: 'Adult/Child Cash ticket Only available for 1 Day or 1week' },
+            LimitationGroupingType: { $t: 'XOR' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:eligible', version: 'fxc:v1.0' },
+            id: 'op:Tariff@IW Product@adult_or_child',
+            limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Available duration combination' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:durations', version: 'fxc:v1.0' },
+        id: 'op:Tariff@IW Product@durations@adult',
+        timeIntervals: { TimeIntervalRef: [{ ref: 'op:Tariff@IW Product@24days' }] },
+        version: '1.0',
+    },
+    {
+        GenericParameterAssignment: {
+            LimitationGroupingType: { $t: 'AND' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:condition_of_use', version: 'fxc:v1.0' },
+            id: 'op:Tariff@IW Product@conditions_of_travel',
+            limitations: {
+                FrequencyOfUse: {
+                    FrequencyOfUseType: { $t: 'unlimited' },
+                    id: 'op:Pass@IW Product@frequency',
+                    version: '1.0',
+                },
+                Interchanging: {
+                    CanInterchange: { $t: 'true' },
+                    id: 'op:Pass@IW Product@interchanging',
+                    version: '1.0',
+                },
+                Transferability: {
+                    CanTransfer: { $t: 'false' },
+                    Name: { $t: 'Ticket is not transferable' },
+                    id: 'op:Pass@IW Product@transferability',
+                    version: '1.0',
+                },
+            },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Conditions of travel' },
+        id: 'op:Tariff@IW Product@conditions_of_travel',
+        version: '1.0',
+    },
+    {
+        Description: { $t: 'single zone.' },
+        GenericParameterAssignment: {
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:can_access', version: 'fxc:v1.0' },
+            ValidityParameterGroupingType: { $t: 'XOR' },
+            id: 'op:Tariff@Super Product@access_zones',
+            order: '1',
+            validityParameters: { FareZoneRef: { ref: 'op:PLACEHOLDER@IW Village', version: '1.0' } },
+            version: '1.0',
+        },
+        Name: { $t: 'Available zones' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:access', version: 'fxc:v1.0' },
+        id: 'op:Tariff@Super Product@access_zones',
+        version: '1.0',
+    },
+    {
+        Description: { $t: 'All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.' },
+        GenericParameterAssignment: {
+            Description: { $t: 'Adult/Child Cash ticket Only available for 1 Day or 1week' },
+            LimitationGroupingType: { $t: 'XOR' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:eligible', version: 'fxc:v1.0' },
+            id: 'op:Tariff@Super Product@adult_or_child',
+            limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Available duration combination' },
+        TypeOfFareStructureElementRef: { ref: 'fxc:durations', version: 'fxc:v1.0' },
+        id: 'op:Tariff@Super Product@durations@adult',
+        timeIntervals: { TimeIntervalRef: [{ ref: 'op:Tariff@Super Product@4days' }] },
+        version: '1.0',
+    },
+    {
+        GenericParameterAssignment: {
+            LimitationGroupingType: { $t: 'AND' },
+            TypeOfAccessRightAssignmentRef: { ref: 'fxc:condition_of_use', version: 'fxc:v1.0' },
+            id: 'op:Tariff@Super Product@conditions_of_travel',
+            limitations: {
+                FrequencyOfUse: {
+                    FrequencyOfUseType: { $t: 'unlimited' },
+                    id: 'op:Pass@Super Product@frequency',
+                    version: '1.0',
+                },
+                Interchanging: {
+                    CanInterchange: { $t: 'true' },
+                    id: 'op:Pass@Super Product@interchanging',
+                    version: '1.0',
+                },
+                Transferability: {
+                    CanTransfer: { $t: 'false' },
+                    Name: { $t: 'Ticket is not transferable' },
+                    id: 'op:Pass@Super Product@transferability',
+                    version: '1.0',
+                },
+            },
+            order: '1',
+            version: '1.0',
+        },
+        Name: { $t: 'Conditions of travel' },
+        id: 'op:Tariff@Super Product@conditions_of_travel',
+        version: '1.0',
+    },
+];
