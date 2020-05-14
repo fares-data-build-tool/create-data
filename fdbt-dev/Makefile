@@ -44,6 +44,9 @@ generate-return-service-circular:
 validate-netex:
 	./scripts/trigger_netex_validator.sh fdbt-unvalidated-netex-data-dev $(file)
 
+validate-latest-file:
+	./scripts/validate_latest_netex.sh fdbt-unvalidated-netex-data-dev
+
 
 # DATA
 
