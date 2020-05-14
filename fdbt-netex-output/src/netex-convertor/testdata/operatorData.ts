@@ -6,7 +6,7 @@ const operatorData = {
     vosaPsvLicenseName: 'ABC Ltd',
     fareEnq: 'info@abc.com',
     complEnq: 'info@abc.com',
-    mode: 'bus'
+    mode: 'bus',
 };
 
 export default operatorData;
