@@ -36,7 +36,7 @@ interface MatchingData extends MatchingBaseData {
 }
 
 interface MatchingReturnData extends MatchingBaseData {
-    outboundMatchingFareZones: {
+    outboundFareZones: {
         name: string;
         stops: Stop[];
         prices: {
@@ -44,7 +44,7 @@ interface MatchingReturnData extends MatchingBaseData {
             fareZones: string[];
         }[];
     }[];
-    inboundMatchingFareZones: [];
+    inboundFareZones: [];
 }
 
 interface MatchingFareZones {
@@ -100,8 +100,8 @@ const getMatchingJson = (
         return {
             ...service,
             type: 'return',
-            outboundMatchingFareZones: getFareZones(userFareStages, matchingFareZones),
-            inboundMatchingFareZones: [],
+            outboundFareZones: getFareZones(userFareStages, matchingFareZones),
+            inboundFareZones: [],
         };
     }
 
@@ -154,7 +154,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones, fareTypeObject.fareType);
 
         setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
-
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');
