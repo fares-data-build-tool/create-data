@@ -36,13 +36,25 @@ export interface FareZone {
     prices: FareZonePrices[];
 }
 
-export interface MatchingData {
+export interface MatchingSingleData {
     lineName: string;
     nocCode: string;
     operatorShortName: string;
     serviceDescription: string;
     fareZones: FareZone[];
 }
+
+export interface MatchingReturnData {
+    type: string;
+    lineName: string;
+    nocCode: string;
+    operatorShortName: string;
+    serviceDescription: string;
+    inboundFareZones: FareZone[];
+    outboundFareZones: FareZone[];
+}
+
+export type MatchingData = MatchingSingleData | MatchingReturnData;
 
 export interface BasePeriodTicket {
     operatorName: string;
@@ -101,6 +113,20 @@ export interface Line {
 export interface LineRef {
     version: string;
     ref: string;
+}
+
+export interface ScheduledStopPoints {
+    version: string;
+    id: string;
+    Name: object;
+    TopographicPlaceView: object;
+}
+
+export interface FareZoneList {
+    version: string;
+    id: string;
+    Name: object;
+    members: object;
 }
 
 export interface FareStructureElement {
