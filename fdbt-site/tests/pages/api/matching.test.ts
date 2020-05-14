@@ -5,7 +5,8 @@ import {
     service,
     mockMatchingUserFareStagesWithUnassignedStages,
     mockMatchingUserFareStagesWithAllStagesAssigned,
-    expectedMatchingJson,
+    expectedMatchingJsonSingle,
+    expectedMatchingJsonReturnCircular,
 } from '../../testData/mockData';
 import * as s3 from '../../../src/data/s3';
 
@@ -33,7 +34,7 @@ describe('Matching API', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates matching JSON and uploads to S3', async () => {
+    it('correctly generates matching JSON for a single ticket and uploads to S3', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
             {
@@ -46,13 +47,37 @@ describe('Matching API', () => {
         );
         await matching(req, res);
 
-        expect(putStringInS3Spy).toBeCalledTimes(1);
+        const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
             '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
-            JSON.stringify(expectedMatchingJson),
+            expect.any(String),
             'application/json; charset=utf-8',
         );
+        expect(expectedMatchingJsonSingle).toEqual(actualMatchingData);
+    });
+
+    it('correctly generates matching JSON for a return circular ticket and uploads to S3', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { fareType: 'return' },
+            {
+                ...selections,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            {},
+            writeHeadMock,
+        );
+        await matching(req, res);
+
+        const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+        expect(putStringInS3Spy).toBeCalledWith(
+            'fdbt-matching-data-dev',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
+            expect.any(String),
+            'application/json; charset=utf-8',
+        );
+        expect(expectedMatchingJsonReturnCircular).toEqual(actualMatchingData);
     });
 
     it('correctly redirects to matching page when there are fare stages that have not been assigned to stops', async () => {
