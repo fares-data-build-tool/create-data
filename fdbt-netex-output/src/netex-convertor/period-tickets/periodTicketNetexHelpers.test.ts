@@ -1,6 +1,6 @@
 import { PeriodGeoZoneTicket } from '../types';
 import * as netexHelpers from './periodTicketNetexHelpers';
-import geoZonePeriodData from '../testdata/geoZonePeriodData';
+import geoZonePeriodData from '../test-data/geoZonePeriodData';
 import {
     expectedScheduledStopPointsList,
     expectedTopographicProjectionsList,
@@ -17,7 +17,7 @@ import {
     expectedTimeIntervals,
     expectedMultiServiceFareStructureElements,
     expectedGeoZoneFareStructureElements,
-} from '../testdata/test-data';
+} from '../test-data/testData';
 
 describe('periodTicketNetexHelpers', () => {
     const { stops } = geoZonePeriodData;

@@ -1,9 +1,9 @@
 import { S3Event } from 'aws-lambda';
 import { netexConvertorHandler } from './handler';
-import * as mocks from './testdata/test-data';
+import * as mocks from './test-data/testData';
 import * as s3 from './data/s3';
-import * as singleTicketNetexGenerator from './single-ticket/singleTicketNetexGenerator';
-import * as periodTicketNetexGenerator from './period-ticket/periodTicketNetexGenerator';
+import * as pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';
+import * as periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
 
 jest.mock('./data/auroradb.ts');
 jest.spyOn(s3, 'uploadNetexToS3').mockImplementation(() => Promise.resolve());
@@ -21,13 +21,13 @@ describe('netexConvertorHandler', () => {
         jest.resetAllMocks();
     });
 
-    it('should call the singleTicketNetexGenerator when a user uploads info for a single ticket', async () => {
-        const singleTicketNetexGeneratorSpy = jest.spyOn(singleTicketNetexGenerator, 'default');
+    it('should call the pointToPointTicketNetexGenerator when a user uploads info for a single ticket', async () => {
+        const pointToPointTicketNetexGeneratorSpy = jest.spyOn(pointToPointTicketNetexGenerator, 'default');
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        singleTicketNetexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        pointToPointTicketNetexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(mocks.mockSingleTicketMatchingDataUpload));
         await netexConvertorHandler(event);
-        expect(singleTicketNetexGeneratorSpy).toHaveBeenCalled();
+        expect(pointToPointTicketNetexGeneratorSpy).toHaveBeenCalled();
     });
 
     it('should call the periodTicketNetexGenerator when a user uploads info for a geozone period ticket', async () => {

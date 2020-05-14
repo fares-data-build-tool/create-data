@@ -2,7 +2,7 @@
 node_modules
 jspm_packages
 
-# Serverless directories
+# Serverless/Typescript/IDE directories
 .serverless
 .build
 buckets

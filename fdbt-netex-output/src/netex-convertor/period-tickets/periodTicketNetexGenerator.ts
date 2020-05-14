@@ -247,7 +247,7 @@ const periodTicketNetexGenerator = (
     };
 
     const generate = async (): Promise<string> => {
-        const netexJson = await getNetexTemplateAsJson('period-ticket/periodTicketNetexTemplate.xml');
+        const netexJson = await getNetexTemplateAsJson('period-tickets/periodTicketNetexTemplate.xml');
 
         netexJson.PublicationDelivery = updatePublicationTimeStamp(netexJson.PublicationDelivery);
         netexJson.PublicationDelivery.PublicationRequest = updatePublicationRequest(

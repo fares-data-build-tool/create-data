@@ -1,6 +1,6 @@
-import * as netexHelpers from './singleTicketNetexHelpers';
+import * as netexHelpers from './pointToPointTicketNetexHelpers';
 import { FareZone } from '../types';
-import { fareZoneList, expectedFareTables } from '../testdata/test-data';
+import { fareZoneList, expectedFareTables } from '../test-data/testData';
 
 describe('Netex Helpers', () => {
     let fareZones: FareZone[];
@@ -290,13 +290,13 @@ describe('Netex Helpers', () => {
 
     describe('getFareTableElements', () => {
         it('removes the last item when generating the fare table elements', () => {
-            const fareTableElements = netexHelpers.getFareTableElements(fareZones, lineIdName, 'c');
+            const fareTableElements = netexHelpers.getFareTableElements(fareZones, lineIdName, 'c', 'single');
 
             expect(fareTableElements).toHaveLength(fareZones.length - 1);
         });
 
         it('correctly generates elements using the prefix', () => {
-            const fareTableElements = netexHelpers.getFareTableElements(fareZones, lineIdName, 'c');
+            const fareTableElements = netexHelpers.getFareTableElements(fareZones, lineIdName, 'c', 'single');
 
             expect(fareTableElements).toEqual([
                 {
@@ -323,7 +323,7 @@ describe('Netex Helpers', () => {
 
     describe('getFareTables', () => {
         it('gets the fare tables for all fare zones and price groups', () => {
-            const fareTables = netexHelpers.getFareTables(fareZones.slice(0, -1), lineIdName);
+            const fareTables = netexHelpers.getFareTables(fareZones.slice(0, -1), lineIdName, 'single');
 
             expect(fareTables).toEqual(expectedFareTables);
         });
