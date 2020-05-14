@@ -16,6 +16,7 @@ interface MatchingBaseProps {
     title: string;
     description: string;
     hintText: string;
+    travelineHintText: string;
     heading: string;
     apiEndpoint: string;
 }
@@ -28,6 +29,7 @@ const MatchingBase = ({
     title,
     description,
     hintText,
+    travelineHintText,
     heading,
     apiEndpoint,
 }: MatchingBaseProps): ReactElement => {
@@ -48,6 +50,9 @@ const MatchingBase = ({
                         </legend>
                         <span className="govuk-hint" id="match-fares-hint">
                             {hintText}
+                        </span>
+                        <span className="govuk-hint" id="traveline-hint">
+                            {travelineHintText}
                         </span>
                         <FormElementWrapper errors={errors} errorId="dropdown-error" errorClass="">
                             <MatchingList userFareStages={userFareStages} stops={stops} />

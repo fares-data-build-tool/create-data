@@ -11,7 +11,8 @@ import { BasicService } from '../interfaces/index';
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Fares data build tool';
 const description = 'Inbound Matching page of the fares data build tool';
-const hintText = 'Select the correct fare stage for each stop on the inbound journey.';
+const hintText = 'Select a fare stage for each stop on the inbound journey.';
+const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/inboundMatching';
 
 interface MatchingProps {
@@ -31,6 +32,7 @@ const InboundMatching = ({ userFareStages, stops, service, error }: MatchingProp
         title={title}
         description={description}
         hintText={hintText}
+        travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
     />
 );
@@ -51,7 +53,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
     const { nocCode } = operatorObject;
-    const [selectedStartPoint, selectedEndPoint] = journeyObject.outboundJourney.split('#');
+    const [selectedStartPoint, selectedEndPoint] = journeyObject.inboundJourney.split('#');
     const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);

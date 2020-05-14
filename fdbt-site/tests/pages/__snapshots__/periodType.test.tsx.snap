@@ -31,7 +31,7 @@ exports[`pages periodtype should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="periodtype-page-heading"
             >
-              What type of Period Ticket?
+              Select a type of period ticket
             </h1>
           </legend>
           <FormElementWrapper
@@ -92,7 +92,7 @@ exports[`pages periodtype should render correctly 1`] = `
                   className="govuk-label govuk-radios__label"
                   htmlFor="periodtype-network"
                 >
-                  A ticket for services across multiple operators
+                  A ticket for services across multiple operators (Not yet available)
                 </label>
               </div>
             </div>

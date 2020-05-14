@@ -12,13 +12,13 @@ const ChooseStages = (): ReactElement => (
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
-                                How many fare stages are there in your fares triangle?
+                                How many fare stages does the service have?
                             </h1>
                         </legend>
 
                         <div className="govuk-form-group">
                             <label className="govuk-hint" htmlFor="width-2">
-                                Number of fare stages (1-20) e.g. 3
+                                Enter the number of fare stages between 1 - 20 (for example 3)
                             </label>
                             <input
                                 className="govuk-input govuk-input--width-2"
