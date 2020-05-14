@@ -27,7 +27,7 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                         <fieldset className="govuk-fieldset" aria-describedby="fareType-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="fareType-page-heading">
-                                    What type of fare would you like to provide?
+                                    Select a fare type
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
@@ -53,7 +53,7 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                             value="period"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="fareType-period">
-                                            Period Tickets
+                                            Period Tickets (Day, Week, Month and Annual)
                                         </label>
                                     </div>
                                     <div className="govuk-radios__item">

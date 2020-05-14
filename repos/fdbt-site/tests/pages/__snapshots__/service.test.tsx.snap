@@ -28,7 +28,7 @@ exports[`pages service should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              Select your service
+              Select a service
             </h1>
           </legend>
           <span
@@ -77,6 +77,12 @@ exports[`pages service should render correctly 1`] = `
               07/02/2020
             </option>
           </select>
+          <span
+            className="govuk-hint hint-text"
+            id="traveline-hint"
+          >
+            This data is taken from the Traveline National Dataset
+          </span>
         </fieldset>
       </div>
       <input

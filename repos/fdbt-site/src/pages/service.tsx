@@ -22,7 +22,7 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
-                                Select your service
+                                Select a service
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-hint">
@@ -42,6 +42,9 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                                 </option>
                             ))}
                         </select>
+                        <span className="govuk-hint hint-text" id="traveline-hint">
+                            This data is taken from the Traveline National Dataset
+                        </span>
                     </fieldset>
                 </div>
                 <input
