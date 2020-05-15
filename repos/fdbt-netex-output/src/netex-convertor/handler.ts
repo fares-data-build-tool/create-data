@@ -26,7 +26,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
             const fileNameWithoutSlashes = fileName.replace('/', '_');
             await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
-        } else if (type === 'periodGeoZone' || type === 'periodMultipleServices') {
+        } else if (type === 'periodGeoZone' || type === 'periodMultipleServices' || type === 'flatFare') {
             const userPeriodTicket: PeriodTicket = s3Data;
             const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
             const netexGen = periodTicketNetexGenerator(userPeriodTicket, operatorData);

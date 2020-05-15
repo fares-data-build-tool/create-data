@@ -160,7 +160,14 @@ const periodTicketNetexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.geographicalIntervals.GeographicalInterval.id = `op:Tariff@${placeHolderGroupOfProductsName}@1zone`;
 
         // Time intervals
-        priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval = getTimeIntervals(userPeriodTicket);
+        if (
+            isGeoZoneTicket(userPeriodTicket) ||
+            (isMultiServiceTicket(userPeriodTicket) && userPeriodTicket.products[0].daysValid)
+        ) {
+            priceFareFrameToUpdate.tariffs.Tariff.timeIntervals.TimeInterval = getTimeIntervals(userPeriodTicket);
+        } else {
+            priceFareFrameToUpdate.tariffs.Tariff.timeIntervals = null;
+        }
 
         // Fare structure elements
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement = getFareStructuresElements(
@@ -236,13 +243,10 @@ const periodTicketNetexGenerator = (
         );
 
         if (isGeoZoneTicket(userPeriodTicket)) {
-            fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable = getGeoZoneFareTable(userPeriodTicket);
+            fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(userPeriodTicket);
         } else if (isMultiServiceTicket(userPeriodTicket)) {
-            fareTableFareFrameToUpdate.fareTables.FareTable.includes.FareTable = getMultiServiceFareTable(
-                userPeriodTicket,
-            );
+            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(userPeriodTicket);
         }
-
         return fareTableFareFrameToUpdate;
     };
 

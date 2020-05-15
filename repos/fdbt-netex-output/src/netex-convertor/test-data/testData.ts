@@ -972,6 +972,30 @@ export const mockPeriodMultiServicesTicketMatchingDataUpload = {
     ],
 };
 
+export const mockFlatFareTicketMatchingDataUpload = {
+    operatorName: 'Blackpool Transport',
+    type: 'flatFare',
+    products: [{ productName: 'dfvdfvd', productPrice: '123' }],
+    nocCode: 'BLAC',
+    selectedServices: [
+        {
+            lineName: '4',
+            startDate: '05/04/2020',
+            serviceDescription: 'BLACKPOOL - LYTHAM',
+        },
+        {
+            lineName: '17',
+            startDate: '05/04/2020',
+            serviceDescription: 'BLACKPOOL - LYTHAM',
+        },
+        {
+            line: '2C',
+            startDate: '05/04/2020',
+            serviceDescription: 'BLACKPOOL - LYTHAM',
+        },
+    ],
+};
+
 export const multiServicesPeriodData = {
     operatorName: 'Blackpool Transport',
     products: [
@@ -1048,29 +1072,14 @@ export const expectedGeoZoneFareTables = [
             FareTableColumn: {
                 Name: { $t: 'IW Village' },
                 id: 'op:IW Product@IW Village@p-ticket',
-                representing: { TariffZoneRef: { ref: 'op:IW Product@IW Village', version: '1.0' } },
+                representing: { TariffZoneRef: { ref: 'op:PLACEHOLDER@IW Village', version: '1.0' } },
                 version: '1.0',
             },
         },
         id: 'op:IW Product@IW Village',
         includes: {
             FareTable: {
-                Name: { t$: 'IW Product - Cash' },
-                cells: {
-                    Cell: {
-                        TimeIntervalPrice: {
-                            Amount: { t$: '1000' },
-                            ColumnRef: { ref: 'op:IW Product@IW Village@p-ticket@adult', version: '1.0' },
-                            RowRef: { ref: 'op:IW Product@24days', version: '1.0' },
-                            TimeIntervalRef: { ref: 'op:Tariff@IW Product@24days', version: '1.0' },
-                            id: 'op:IW Product@IW Village@p-ticket@adult@24days',
-                            version: '1.0',
-                        },
-                        id: 'op:IW Product@IW Village@p-ticket@adult@24days',
-                        order: '1',
-                        version: '1.0',
-                    },
-                },
+                Name: { $t: 'IW Product - Cash' },
                 columns: {
                     FareTableColumn: {
                         Name: { $t: 'Cash' },
@@ -1084,14 +1093,29 @@ export const expectedGeoZoneFareTables = [
                 },
                 id: 'op:IW Product@IW Village@p-ticket',
                 includes: {
-                    Faretable: {
+                    FareTable: {
                         Name: { $t: 'IW Product - Cash - Adult' },
+                        cells: {
+                            Cell: {
+                                TimeIntervalPrice: {
+                                    Amount: { $t: '1000' },
+                                    TimeIntervalRef: { ref: 'op:Tariff@IW Product@24days', version: '1.0' },
+                                    id: 'op:IW Product@IW Village@p-ticket@adult@24days',
+                                    version: '1.0',
+                                },
+                                id: 'op:IW Product@IW Village@p-ticket@adult@24days',
+                                order: '1',
+                                version: '1.0',
+                                ColumnRef: { ref: 'op:IW Product@IW Village@p-ticket@adult', version: '1.0' },
+                                RowRef: { ref: 'op:IW Product@24days', version: '1.0' },
+                            },
+                        },
                         columns: {
                             FareTableColumn: {
                                 Name: { $t: 'Adult' },
                                 id: 'op:IW Product@IW Village@p-ticket@adult',
                                 representing: {
-                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
                                     UserProfileRef: { ref: 'op:adult', version: '1.0' },
                                 },
                                 version: '1.0',
@@ -1102,12 +1126,12 @@ export const expectedGeoZoneFareTables = [
                         version: '1.0',
                     },
                 },
-                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@IW Product-SOP@p-ticket', version: '1.0' } },
+                pricesFor: { SalesOfferPackageRef: { ref: 'op:Pass@IW Product-SOP@p-ticket', version: '1.0' } },
                 specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
                 version: '1.0',
             },
         },
-        specifics: { TariffZoneRef: { ref: 'op:IW Product@IW Village', version: '1.0' } },
+        specifics: { TariffZoneRef: { ref: 'op:PLACEHOLDER@IW Village', version: '1.0' } },
         version: '1.0',
     },
     {
@@ -1116,29 +1140,14 @@ export const expectedGeoZoneFareTables = [
             FareTableColumn: {
                 Name: { $t: 'IW Village' },
                 id: 'op:Super Product@IW Village@p-ticket',
-                representing: { TariffZoneRef: { ref: 'op:Super Product@IW Village', version: '1.0' } },
+                representing: { TariffZoneRef: { ref: 'op:PLACEHOLDER@IW Village', version: '1.0' } },
                 version: '1.0',
             },
         },
         id: 'op:Super Product@IW Village',
         includes: {
             FareTable: {
-                Name: { t$: 'Super Product - Cash' },
-                cells: {
-                    Cell: {
-                        TimeIntervalPrice: {
-                            Amount: { t$: '1230' },
-                            ColumnRef: { ref: 'op:Super Product@IW Village@p-ticket@adult', version: '1.0' },
-                            RowRef: { ref: 'op:Super Product@4days', version: '1.0' },
-                            TimeIntervalRef: { ref: 'op:Tariff@Super Product@4days', version: '1.0' },
-                            id: 'op:Super Product@IW Village@p-ticket@adult@4days',
-                            version: '1.0',
-                        },
-                        id: 'op:Super Product@IW Village@p-ticket@adult@4days',
-                        order: '1',
-                        version: '1.0',
-                    },
-                },
+                Name: { $t: 'Super Product - Cash' },
                 columns: {
                     FareTableColumn: {
                         Name: { $t: 'Cash' },
@@ -1152,17 +1161,32 @@ export const expectedGeoZoneFareTables = [
                 },
                 id: 'op:Super Product@IW Village@p-ticket',
                 includes: {
-                    Faretable: {
+                    FareTable: {
                         Name: { $t: 'Super Product - Cash - Adult' },
                         columns: {
                             FareTableColumn: {
                                 Name: { $t: 'Adult' },
                                 id: 'op:Super Product@IW Village@p-ticket@adult',
                                 representing: {
-                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
                                     UserProfileRef: { ref: 'op:adult', version: '1.0' },
                                 },
                                 version: '1.0',
+                            },
+                        },
+                        cells: {
+                            Cell: {
+                                TimeIntervalPrice: {
+                                    Amount: { $t: '1230' },
+                                    TimeIntervalRef: { ref: 'op:Tariff@Super Product@4days', version: '1.0' },
+                                    id: 'op:Super Product@IW Village@p-ticket@adult@4days',
+                                    version: '1.0',
+                                },
+                                id: 'op:Super Product@IW Village@p-ticket@adult@4days',
+                                order: '1',
+                                version: '1.0',
+                                ColumnRef: { ref: 'op:Super Product@IW Village@p-ticket@adult', version: '1.0' },
+                                RowRef: { ref: 'op:Super Product@4days', version: '1.0' },
                             },
                         },
                         id: 'op:Super Product@IW Village@p-ticket@adult',
@@ -1170,12 +1194,12 @@ export const expectedGeoZoneFareTables = [
                         version: '1.0',
                     },
                 },
-                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@Super Product-SOP@p-ticket', version: '1.0' } },
+                pricesFor: { SalesOfferPackageRef: { ref: 'op:Pass@Super Product-SOP@p-ticket', version: '1.0' } },
                 specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
                 version: '1.0',
             },
         },
-        specifics: { TariffZoneRef: { ref: 'op:Super Product@IW Village', version: '1.0' } },
+        specifics: { TariffZoneRef: { ref: 'op:PLACEHOLDER@IW Village', version: '1.0' } },
         version: '1.0',
     },
 ];
@@ -1194,22 +1218,7 @@ export const expectedMultiServiceFareTables = [
         id: 'op:a product@BLAC-multi-service',
         includes: {
             FareTable: {
-                Name: { t$: 'a product - Cash' },
-                cells: {
-                    Cell: {
-                        TimeIntervalPrice: {
-                            Amount: { t$: '123' },
-                            ColumnRef: { ref: 'op:a product@BLAC-multi-service@p-ticket@adult', version: '1.0' },
-                            RowRef: { ref: 'op:a product@4days', version: '1.0' },
-                            TimeIntervalRef: { ref: 'op:Tariff@a product@4days', version: '1.0' },
-                            id: 'op:a product@BLAC-multi-service@p-ticket@adult@4days',
-                            version: '1.0',
-                        },
-                        id: 'op:a product@BLAC-multi-service@p-ticket@adult@4days',
-                        order: '1',
-                        version: '1.0',
-                    },
-                },
+                Name: { $t: 'a product - Cash' },
                 columns: {
                     FareTableColumn: {
                         Name: { $t: 'Cash' },
@@ -1223,14 +1232,14 @@ export const expectedMultiServiceFareTables = [
                 },
                 id: 'op:a product@BLAC-multi-service@p-ticket',
                 includes: {
-                    Faretable: {
+                    FareTable: {
                         Name: { $t: 'a product - Cash - Adult' },
                         columns: {
                             FareTableColumn: {
                                 Name: { $t: 'Adult' },
                                 id: 'op:a product@BLAC-multi-service@p-ticket@adult',
                                 representing: {
-                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
                                     UserProfileRef: { ref: 'op:adult', version: '1.0' },
                                 },
                                 version: '1.0',
@@ -1239,9 +1248,24 @@ export const expectedMultiServiceFareTables = [
                         id: 'op:a product@BLAC-multi-service@p-ticket@adult',
                         limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
                         version: '1.0',
+                        cells: {
+                            Cell: {
+                                TimeIntervalPrice: {
+                                    Amount: { $t: '123' },
+                                    TimeIntervalRef: { ref: 'op:Tariff@a product@4days', version: '1.0' },
+                                    id: 'op:a product@BLAC-multi-service@p-ticket@adult@4days',
+                                    version: '1.0',
+                                },
+                                id: 'op:a product@BLAC-multi-service@p-ticket@adult@4days',
+                                order: '1',
+                                version: '1.0',
+                                ColumnRef: { ref: 'op:a product@BLAC-multi-service@p-ticket@adult', version: '1.0' },
+                                RowRef: { ref: 'op:a product@4days', version: '1.0' },
+                            },
+                        },
                     },
                 },
-                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@a product-SOP@p-ticket', version: '1.0' } },
+                pricesFor: { SalesOfferPackageRef: { ref: 'op:Pass@a product-SOP@p-ticket', version: '1.0' } },
                 specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
                 version: '1.0',
             },
@@ -1262,22 +1286,7 @@ export const expectedMultiServiceFareTables = [
         id: 'op:best product@BLAC-multi-service',
         includes: {
             FareTable: {
-                Name: { t$: 'best product - Cash' },
-                cells: {
-                    Cell: {
-                        TimeIntervalPrice: {
-                            Amount: { t$: '132' },
-                            ColumnRef: { ref: 'op:best product@BLAC-multi-service@p-ticket@adult', version: '1.0' },
-                            RowRef: { ref: 'op:best product@3days', version: '1.0' },
-                            TimeIntervalRef: { ref: 'op:Tariff@best product@3days', version: '1.0' },
-                            id: 'op:best product@BLAC-multi-service@p-ticket@adult@3days',
-                            version: '1.0',
-                        },
-                        id: 'op:best product@BLAC-multi-service@p-ticket@adult@3days',
-                        order: '1',
-                        version: '1.0',
-                    },
-                },
+                Name: { $t: 'best product - Cash' },
                 columns: {
                     FareTableColumn: {
                         Name: { $t: 'Cash' },
@@ -1291,14 +1300,14 @@ export const expectedMultiServiceFareTables = [
                 },
                 id: 'op:best product@BLAC-multi-service@p-ticket',
                 includes: {
-                    Faretable: {
+                    FareTable: {
                         Name: { $t: 'best product - Cash - Adult' },
                         columns: {
                             FareTableColumn: {
                                 Name: { $t: 'Adult' },
                                 id: 'op:best product@BLAC-multi-service@p-ticket@adult',
                                 representing: {
-                                    TypeOfTravelDocumentRef: { ref: 'op:p-tciket', version: '1.0' },
+                                    TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' },
                                     UserProfileRef: { ref: 'op:adult', version: '1.0' },
                                 },
                                 version: '1.0',
@@ -1307,9 +1316,24 @@ export const expectedMultiServiceFareTables = [
                         id: 'op:best product@BLAC-multi-service@p-ticket@adult',
                         limitations: { UserProfileRef: { ref: 'op:adult', version: '1.0' } },
                         version: '1.0',
+                        cells: {
+                            Cell: {
+                                TimeIntervalPrice: {
+                                    Amount: { $t: '132' },
+                                    TimeIntervalRef: { ref: 'op:Tariff@best product@3days', version: '1.0' },
+                                    id: 'op:best product@BLAC-multi-service@p-ticket@adult@3days',
+                                    version: '1.0',
+                                },
+                                id: 'op:best product@BLAC-multi-service@p-ticket@adult@3days',
+                                order: '1',
+                                version: '1.0',
+                                ColumnRef: { ref: 'op:best product@BLAC-multi-service@p-ticket@adult', version: '1.0' },
+                                RowRef: { ref: 'op:best product@3days', version: '1.0' },
+                            },
+                        },
                     },
                 },
-                pricesFor: { SalesOfferPacakgeRef: { ref: 'op:Pass@best product-SOP@p-ticket', version: '1.0' } },
+                pricesFor: { SalesOfferPackageRef: { ref: 'op:Pass@best product-SOP@p-ticket', version: '1.0' } },
                 specifics: { TypeOfTravelDocumentRef: { ref: 'op:p-ticket', version: '1.0' } },
                 version: '1.0',
             },
