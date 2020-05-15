@@ -52,6 +52,15 @@ describe('netexConvertorHandler', () => {
         expect(periodTicketNetexGeneratorSpy).toHaveBeenCalled();
     });
 
+    it('should call the periodTicketNetexGenerator when a user uploads info for a flat fare ticket', async () => {
+        const periodTicketNetexGeneratorSpy = jest.spyOn(periodTicketNetexGenerator, 'default');
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        periodTicketNetexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(mocks.mockFlatFareTicketMatchingDataUpload));
+        await netexConvertorHandler(event);
+        expect(periodTicketNetexGeneratorSpy).toHaveBeenCalled();
+    });
+
     it('should throw an error if the user data uploaded to the fdbt-matching-data bucket does not contain a "type" attribute', async () => {
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(mocks.mockMatchingDataUploadWithNoType));
         await expect(netexConvertorHandler(event)).rejects.toThrow();

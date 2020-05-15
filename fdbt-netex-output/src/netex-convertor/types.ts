@@ -56,21 +56,6 @@ export interface MatchingReturnData {
 
 export type MatchingData = MatchingSingleData | MatchingReturnData;
 
-export interface BasePeriodTicket {
-    operatorName: string;
-    products: ProductDetails[];
-    nocCode: string;
-}
-
-export interface PeriodGeoZoneTicket extends BasePeriodTicket {
-    zoneName: string;
-    stops: Stop[];
-}
-
-export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
-    selectedServices: SelectedService[];
-}
-
 export interface SelectedService {
     lineName: string;
     startDate: string;
@@ -80,11 +65,26 @@ export interface SelectedService {
 export interface ProductDetails {
     productName: string;
     productPrice: string;
-    daysValid: string;
-    expiryRules: string;
+    daysValid?: string;
+    expiryRules?: string;
 }
 
-export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
+export interface BasePeriodTicket {
+    operatorName: string;
+    nocCode: string;
+    products: ProductDetails[];
+}
+
+export interface PeriodGeoZoneTicket extends BasePeriodTicket {
+    zoneName: string;
+    stops: Stop[];
+}
+
+export interface MultipleServicesTicket extends BasePeriodTicket {
+    selectedServices: SelectedService[];
+}
+
+export type PeriodTicket = PeriodGeoZoneTicket | MultipleServicesTicket;
 
 export interface ScheduledStopPoint {
     versionRef: string;
