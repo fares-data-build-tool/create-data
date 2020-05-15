@@ -29,10 +29,31 @@ provider:
 
 plugins:
   - serverless-python-requirements
+  - serverless-plugin-aws-alerts
 
 custom:
   pythonRequirements:
     dockerizePip: false
+  alerts:
+    dashboards: false
+    topics:
+      ok:
+        topic: reference-data-service-uploaders-ok-topic
+        notifications:
+          - protocol: lambda
+            endpoint:
+              Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
+      alarm:
+        topic: reference-data-service-uploaders-alarm-topic
+        notifications:
+          - protocol: lambda
+            endpoint:
+              Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
+    alarms:
+      - functionThrottles
+      - functionErrors
+      - functionInvocations
+      - functionDuration
 
 functions:
   CsvUploader:
@@ -43,6 +64,16 @@ functions:
     events:
       - s3: fdbt-csv-reference-data-${self:provider.stage}
         event: s3:ObjectCreated:*
+    alarms:
+      - name: functionDuration
+        threshold: 50000
+        treatMissingData: notBreaching
+      - name: functionThrottles
+        treatMissingData: notBreaching
+      - name: functionErrors
+        treatMissingData: notBreaching
+      - name: functionInvocations
+        treatMissingData: notBreaching
 
   XmlUploader:
     handler: xml_uploader/xml_uploader_handler.handler
@@ -53,6 +84,16 @@ functions:
       - s3: fdbt-xml-reference-data-${self:provider.stage}
         event: s3:ObjectCreated:*
     reservedConcurrency: 40
+    alarms:
+      - name: functionDuration
+        threshold: 50000
+        treatMissingData: notBreaching
+      - name: functionThrottles
+        treatMissingData: notBreaching
+      - name: functionErrors
+        treatMissingData: notBreaching
+      - name: functionInvocations
+        treatMissingData: notBreaching
 
 package:
   include:

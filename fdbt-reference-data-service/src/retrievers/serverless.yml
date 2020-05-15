@@ -22,6 +22,7 @@ provider:
 
 plugins:
   - serverless-python-requirements
+  - serverless-plugin-aws-alerts
 
 custom:
   pythonRequirements:
@@ -30,6 +31,26 @@ custom:
     test: false
     preprod: true
     prod: true
+  alerts:
+    dashboards: false
+    topics:
+      ok:
+        topic: reference-data-service-retrievers-ok-topic
+        notifications:
+          - protocol: lambda
+            endpoint:
+              Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
+      alarm:
+        topic: reference-data-service-retrievers-alarm-topic
+        notifications:
+          - protocol: lambda
+            endpoint:
+              Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
+    alarms:
+      - functionThrottles
+      - functionErrors
+      - functionInvocations
+      - functionDuration
 
 functions:
   NocRetriever:
@@ -44,6 +65,16 @@ functions:
       - schedule:
           rate: cron(0 2 * * ? *)
           enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
+    alarms:
+      - name: functionDuration
+        threshold: 15000
+        treatMissingData: notBreaching
+      - name: functionThrottles
+        treatMissingData: notBreaching
+      - name: functionErrors
+        treatMissingData: notBreaching
+      - name: functionInvocations
+        treatMissingData: notBreaching
 
   NaptanRetriever:
     handler: csv-retriever/main.lambda_handler
@@ -58,6 +89,16 @@ functions:
       - schedule:
           rate: cron(0 2 * * ? *)
           enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
+    alarms:
+      - name: functionDuration
+        threshold: 25000
+        treatMissingData: notBreaching
+      - name: functionThrottles
+        treatMissingData: notBreaching
+      - name: functionErrors
+        treatMissingData: notBreaching
+      - name: functionInvocations
+        treatMissingData: notBreaching
 
   TndsRetriever:
     handler: tnds-ftp-retriever/main.lambda_handler
@@ -79,6 +120,16 @@ functions:
       subnetIds:
         - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
         - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
+    alarms:
+      - name: functionDuration
+        threshold: 450000
+        treatMissingData: notBreaching
+      - name: functionThrottles
+        treatMissingData: notBreaching
+      - name: functionErrors
+        treatMissingData: notBreaching
+      - name: functionInvocations
+        treatMissingData: notBreaching
 
   TndsUnzipper:
     handler: tnds-ftp-retriever/unzipper.lambda_handler
@@ -89,6 +140,16 @@ functions:
     events:
       - s3: fdbt-tnds-data-zipped-${self:provider.stage}
         event: s3:ObjectCreated:*
+    alarms:
+      - name: functionDuration
+        threshold: 250000
+        treatMissingData: notBreaching
+      - name: functionThrottles
+        treatMissingData: notBreaching
+      - name: functionErrors
+        treatMissingData: notBreaching
+      - name: functionInvocations
+        treatMissingData: notBreaching
 
 package:
   exclude:
