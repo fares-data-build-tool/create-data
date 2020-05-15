@@ -41,7 +41,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt SlackAlertsFunction.Arn
       Principal: sns.amazonaws.com
-      SourceArn: !Ref SlackAlertsTopic
+      SourceArn: !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:*
 
   SnsLambdaSubscription:
     Type: AWS::SNS::Subscription
@@ -55,3 +55,8 @@ Outputs:
     Value: !Ref SlackAlertsTopic
     Export:
       Name: !Sub ${Stage}:SlackAlertsTopicArn
+
+  SlackAlertsFunctionArn:
+    Value: !GetAtt SlackAlertsFunction.Arn
+    Export:
+      Name: !Sub ${Stage}:SlackAlertsFunctionArn
