@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "CloudFormation template for Cognito resources"
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+  CertificateARN:
+    Type: String
+  AuthDomain:
+    Type: String
+
+Resources:
+  UserPool:
+    Type: "AWS::Cognito::UserPool"
+    Properties:
+      UserPoolName: !Sub fdbt-user-pool-${Stage}
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Required: true
+        - Name: noc
+          AttributeDataType: String
+          StringAttributeConstraints:
+            MaxLength: "256"
+            MinLength: "1"
+      UsernameAttributes:
+        - "email"
+      UsernameConfiguration:
+        CaseSensitive: false
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          TemporaryPasswordValidityDays: 3
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+
+  UserPoolClient:
+    Type: "AWS::Cognito::UserPoolClient"
+    Properties:
+      ClientName: !Sub fdbt-site-client-${Stage}
+      UserPoolId: !Ref UserPool
+      ExplicitAuthFlows:
+        - "ALLOW_USER_SRP_AUTH"
+        - "ALLOW_REFRESH_TOKEN_AUTH"
+      ReadAttributes:
+        - "email"
+        - "email_verified"
+        - "custom:noc"
+      WriteAttributes:
+        - "email"
+        - "custom:noc"
+
+  UserPoolDomain:
+    Type: "AWS::Cognito::UserPoolDomain"
+    Properties:
+      CustomDomainConfig:
+        CertificateArn: !Ref CertificateARN
+      Domain: !Ref AuthDomain
+      UserPoolId: !Ref UserPool
+
+Outputs:
+  UserPoolClientID:
+    Value: !Ref UserPoolClient
+    Export:
+      Name: !Sub ${Stage}:UserPoolClientID
