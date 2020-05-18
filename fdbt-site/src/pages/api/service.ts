@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { getUuidFromCookie, getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils/index';
+import {
+    getUuidFromCookie,
+    getDomain,
+    setCookieOnResponseObject,
+    redirectToError,
+    redirectTo,
+    unescapeAndDecodeCookie,
+} from './apiUtils/index';
 import { FARETYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
@@ -26,7 +33,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), SERVICE_COOKIE, cookieValue, req, res);
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescape(decodeURI(cookies.get(FARETYPE_COOKIE) || ''));
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
         if (fareTypeObject && fareTypeObject.fareType === 'return') {

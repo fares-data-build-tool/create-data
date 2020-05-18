@@ -1,101 +1,105 @@
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../../src/constants';
-import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
+import { NUMBER_OF_PRODUCTS_COOKIE } from '../../../src/constants';
+import howManyProducts, { isNumberOfProductsInvalid } from '../../../src/pages/api/howManyProducts';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-describe('stageNames', () => {
+describe('howManyProducts', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    describe('isStageNameValid', () => {
-        it('should return an array of invalid input checks when the user enters no data', () => {
-            const mockBody = { stageNameInput: ['', '', '', ''] };
+    describe('isNumberOfProductsInvalid', () => {
+        it('should return an invalid input check when the user enters no data', () => {
+            const mockBody = { numberOfProductsInput: '' };
             const { req } = getMockRequestAndResponse({}, mockBody);
-            const expectedArray = [
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-            ];
-
-            const inputCheck = isStageNameValid(req);
-            expect(inputCheck).toEqual(expectedArray);
+            const mockInputCheck = { error: 'Enter a number', numberOfProductsInput: '' };
+            const inputCheck = isNumberOfProductsInvalid(req);
+            expect(inputCheck).toEqual(mockInputCheck);
         });
 
-        it('should return an array of valid input checks when the user enters correct data', () => {
-            const mockBody = { stageNameInput: ['abcd', 'efg', 'hijkl', 'mn'] };
+        it('should return an invalid input check when the user enters incorrect data', () => {
+            const mockBody = { numberOfProductsInput: '25' };
             const { req } = getMockRequestAndResponse({}, mockBody);
-            const expectedArray = [
-                { Error: '', Input: 'abcd' },
-                { Error: '', Input: 'efg' },
-                { Error: '', Input: 'hijkl' },
-                { Error: '', Input: 'mn' },
-            ];
-            const inputCheck = isStageNameValid(req);
-            expect(inputCheck).toEqual(expectedArray);
+            const mockInputCheck = { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '25' };
+            const inputCheck = isNumberOfProductsInvalid(req);
+            expect(inputCheck).toEqual(mockInputCheck);
         });
 
-        it('should return an array of invalid and valid input checks when the user enters incorrect data', () => {
-            const mockBody = { stageNameInput: ['abcde', '   ', 'xyz', ''] };
+        it('should return a valid input check when the user enters correct data', () => {
+            const mockBody = { numberOfProductsInput: '6' };
             const { req } = getMockRequestAndResponse({}, mockBody);
-            const expectedArray = [
-                { Error: '', Input: 'abcde' },
-                { Error: 'Enter a name for this fare stage', Input: '   ' },
-                { Error: '', Input: 'xyz' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-            ];
-            const inputCheck = isStageNameValid(req);
-            expect(inputCheck).toEqual(expectedArray);
+            const mockInputCheck = { error: '', numberOfProductsInput: '6' };
+            const inputCheck = isNumberOfProductsInvalid(req);
+            expect(inputCheck).toEqual(mockInputCheck);
         });
     });
 
-    it('should return 302 redirect to /stageNames (i.e. itself) when the session is valid, but there is no request body', () => {
-        const mockBody = { stageNameInput: ['', '', '', ''] };
+    it('should return 302 redirect to /howManyProducts (i.e. itself) when the session is valid, but there is no request body', () => {
+        const mockBody = { numberOfProductsInput: '' };
         const mockWriteHeadFn = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
-        stageNames(req, res);
+        howManyProducts(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
-            Location: '/stageNames',
+            Location: '/howManyProducts',
         });
     });
 
-    it('should return 302 redirect to /priceEntry when session is valid and request body is present', () => {
-        const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
+    it('should return 302 redirect to /productDetails when the user only defines one product', () => {
+        const mockBody = { numberOfProductsInput: '1' };
         const mockWriteHeadFn = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
-        stageNames(req, res);
+        howManyProducts(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
-            Location: '/priceEntry',
+            Location: '/productDetails',
+        });
+    });
+
+    it('should return 302 redirect to /multipleProducts when the user defines more than one product', () => {
+        const mockBody = { numberOfProductsInput: '5' };
+        const mockWriteHeadFn = jest.fn();
+        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
+        howManyProducts(req, res);
+        expect(mockWriteHeadFn).toBeCalledWith(302, {
+            Location: '/multipleProducts',
         });
     });
 
     it('should return 302 redirect to /error when session is not valid', () => {
-        const mockBody = {};
         const mockWriteHeadFn = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
-        stageNames(req, res);
+        const { req, res } = getMockRequestAndResponse({ operator: null }, {}, {}, mockWriteHeadFn);
+        howManyProducts(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
             Location: '/error',
         });
     });
 
-    it('should set the STAGE_NAMES_COOKIE and STAGE_NAME_VALIDATION_COOKIE with values matching the valid data entered by the user ', () => {
+    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-        const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
+        const mockBody = { numberOfProductsInput: '' };
         const { req, res } = getMockRequestAndResponse({}, mockBody);
-        const mockStageNamesCookieValue = '["a","b","c","d"]';
-        stageNames(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith('localhost', STAGE_NAMES_COOKIE, mockStageNamesCookieValue, req, res);
+        const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '', error: 'Enter a number' });
+        howManyProducts(req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(
+            'localhost',
+            NUMBER_OF_PRODUCTS_COOKIE,
+            mockStringifiedInputCheck,
+            req,
+            res,
+        );
     });
 
-    it('should set the STAGE_NAME_VALIDATION_COOKIE with a value matching the invalid data entered by the user', () => {
+    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /multipleProducts', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-        const mockBody = { stageNameInput: [' ', 'abcdefghijklmnopqrstuvwxyzabcdefgh', '   ', 'b'] };
+        const mockBody = { numberOfProductsInput: '8' };
         const { req, res } = getMockRequestAndResponse({}, mockBody);
-        const mockInputCheck =
-            '[{"Input":" ","Error":"Enter a name for this fare stage"},{"Input":"abcdefghijklmnopqrstuvwxyzabcdefgh","Error":"The name for Fare Stage 2 needs to be less than 30 characters"},{"Input":"   ","Error":"Enter a name for this fare stage"},{"Input":"b","Error":""}]';
-        stageNames(req, res);
-        expect(setCookieSpy).toBeCalledWith('localhost', STAGE_NAME_VALIDATION_COOKIE, mockInputCheck, req, res);
+        const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '8' });
+        howManyProducts(req, res);
+        expect(setCookieSpy).toBeCalledWith(
+            'localhost',
+            NUMBER_OF_PRODUCTS_COOKIE,
+            mockStringifiedInputCheck,
+            req,
+            res,
+        );
     });
 });

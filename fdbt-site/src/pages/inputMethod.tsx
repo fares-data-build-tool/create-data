@@ -8,8 +8,8 @@ import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Input Method - Fares data build tool';
-const description = 'Input method selection page of the Fares data build tool';
+const title = 'Input Method - Fares Data Build Tool';
+const description = 'Input Method selection page of the Fares Data Build Tool';
 
 const errorId = 'input-method-error';
 

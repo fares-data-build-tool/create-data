@@ -7,8 +7,8 @@ import UserDataUploadComponent, { UserDataUploadsProps } from '../components/Use
 import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 
-const title = 'CSV Zone Upload Method - Fares data build tool';
-const description = 'CSV Zone Upload page of the Fares data build tool';
+const title = 'CSV Zone Upload - Fares Data Build Tool';
+const description = 'CSV Zone Upload page of the Fares Data Build Tool';
 
 const errorId = 'csv-upload-error';
 

@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 import { STAGE_NAMES_COOKIE } from '../constants';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
-const description = 'Enter prices into fares triangle page of the Fares Data Build Tool';
+const description = 'Price Entry page of the Fares Data Build Tool';
 
 type PriceEntryProps = {
     stageNamesArray: string[];
@@ -16,11 +16,13 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/priceEntry" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
+                    <fieldset className="govuk-fieldset" aria-describedby="price-entry-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading">Enter the prices for all fare stages in pence</h1>
+                            <h1 className="govuk-fieldset__heading" id="price-entry-page-heading">
+                                Enter the prices for all fare stages in pence
+                            </h1>
                         </legend>
-                        <span className="govuk-hint" id="selection-hint">
+                        <span className="govuk-hint" id="price-entry-hint">
                             Example: £2.40 would be 240
                         </span>
                     </fieldset>

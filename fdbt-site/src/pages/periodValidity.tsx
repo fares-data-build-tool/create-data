@@ -8,8 +8,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Period Validity - Fares data build tool';
-const description = 'Period Validity selection page of the Fares data build tool';
+const title = 'Period Validity - Fares Data Build Tool';
+const description = 'Period Validity selection page of the Fares Data Build Tool';
 
 const errorId = 'period-validity-error';
 
@@ -24,13 +24,13 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
                 <form action="/api/periodValidity" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="periodValidity-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="period-validity-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="periodValidity-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="period-validity-page-heading">
                                     When does the product expire?
                                 </h1>
                             </legend>
-                            <span className="govuk-hint" id="heading-period-validity-hint">
+                            <span className="govuk-hint" id="period-validity-hint">
                                 We need to know the time that this product would be valid until
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">

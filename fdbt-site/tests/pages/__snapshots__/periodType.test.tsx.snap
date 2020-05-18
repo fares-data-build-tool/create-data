@@ -2,8 +2,8 @@
 
 exports[`pages periodtype should render correctly 1`] = `
 <Layout
-  description="Period Type selection page of the Fares data build tool"
-  title="Period Type - Fares data build tool"
+  description="Period Type selection page of the Fares Data Build Tool"
+  title="Period Type - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -21,7 +21,7 @@ exports[`pages periodtype should render correctly 1`] = `
         className="govuk-form-group "
       >
         <fieldset
-          aria-describedby="periodtype-page-heading"
+          aria-describedby="period-type-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -29,7 +29,7 @@ exports[`pages periodtype should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="periodtype-page-heading"
+              id="period-type-page-heading"
             >
               Select a type of period ticket
             </h1>
@@ -47,14 +47,14 @@ exports[`pages periodtype should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input  "
-                  id="periodtype-geo-zone"
+                  id="period-type-geo-zone"
                   name="periodType"
                   type="radio"
                   value="periodGeoZone"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="periodtype-geo-zone"
+                  htmlFor="period-type-geo-zone"
                 >
                   A ticket within a geographical zone
                 </label>
@@ -64,14 +64,14 @@ exports[`pages periodtype should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input  "
-                  id="periodtype-single-set-service"
+                  id="period-type-single-set-service"
                   name="periodType"
                   type="radio"
                   value="periodMultipleServices"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="periodtype-single-set-service"
+                  htmlFor="period-type-single-set-service"
                 >
                   A ticket for some or all of your network of services
                 </label>
@@ -83,14 +83,138 @@ exports[`pages periodtype should render correctly 1`] = `
                   aria-disabled="true"
                   className="govuk-radios__input  "
                   disabled={true}
-                  id="periodtype-network"
+                  id="period-type-network"
                   name="periodType"
                   type="radio"
                   value="periodMultipleOperators"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="periodtype-network"
+                  htmlFor="period-type-network"
+                >
+                  A ticket for services across multiple operators (Not yet available)
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
+exports[`pages periodtype should render error messaging when errors are passed 1`] = `
+<Layout
+  description="Period Type selection page of the Fares Data Build Tool"
+  title="Error: Period Type - Fares Data Build Tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/periodType"
+      method="post"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Choose an option regarding your period ticket type",
+              "id": "period-type-error",
+            },
+          ]
+        }
+      />
+      <div
+        className="govuk-form-group govuk-form-group--error"
+      >
+        <fieldset
+          aria-describedby="period-type-page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="period-type-page-heading"
+            >
+              Select a type of period ticket
+            </h1>
+          </legend>
+          <FormElementWrapper
+            errorClass="govuk-radios--errors"
+            errorId="period-type-error"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Choose an option regarding your period ticket type",
+                  "id": "period-type-error",
+                },
+              ]
+            }
+          >
+            <div
+              className="govuk-radios"
+            >
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input govuk-input--error "
+                  id="period-type-geo-zone"
+                  name="periodType"
+                  type="radio"
+                  value="periodGeoZone"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="period-type-geo-zone"
+                >
+                  A ticket within a geographical zone
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input govuk-input--error "
+                  id="period-type-single-set-service"
+                  name="periodType"
+                  type="radio"
+                  value="periodMultipleServices"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="period-type-single-set-service"
+                >
+                  A ticket for some or all of your network of services
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  aria-disabled="true"
+                  className="govuk-radios__input govuk-input--error "
+                  disabled={true}
+                  id="period-type-network"
+                  name="periodType"
+                  type="radio"
+                  value="periodMultipleOperators"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="period-type-network"
                 >
                   A ticket for services across multiple operators (Not yet available)
                 </label>

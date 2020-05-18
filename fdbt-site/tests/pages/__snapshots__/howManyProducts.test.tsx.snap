@@ -1,9 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages howManyProducts should render correctly 1`] = `
+<Layout
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="How Many Products - Fares Data Build Tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={Array []}
+      />
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many period tickets do you have for the selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-hint"
+            htmlFor="numberOfProducts"
+          >
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={Array []}
+          >
+            <input
+              aria-describedby=""
+              className="govuk-input govuk-input--width-2"
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 1`] = `
 <Layout
-  description="How many products page of the Fares data build tool"
-  title="Error: How Many Products - Fares data build tool"
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="Error: How Many Products - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -83,8 +149,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 2`] = `
 <Layout
-  description="How many products page of the Fares data build tool"
-  title="Error: How Many Products - Fares data build tool"
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="Error: How Many Products - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -164,8 +230,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 3`] = `
 <Layout
-  description="How many products page of the Fares data build tool"
-  title="Error: How Many Products - Fares data build tool"
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="Error: How Many Products - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -245,8 +311,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 4`] = `
 <Layout
-  description="How many products page of the Fares data build tool"
-  title="Error: How Many Products - Fares data build tool"
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="Error: How Many Products - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -326,8 +392,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 5`] = `
 <Layout
-  description="How many products page of the Fares data build tool"
-  title="Error: How Many Products - Fares data build tool"
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="Error: How Many Products - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -407,8 +473,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 6`] = `
 <Layout
-  description="How many products page of the Fares data build tool"
-  title="Error: How Many Products - Fares data build tool"
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="Error: How Many Products - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -488,8 +554,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 7`] = `
 <Layout
-  description="How many products page of the Fares data build tool"
-  title="Error: How Many Products - Fares data build tool"
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="Error: How Many Products - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"

@@ -8,8 +8,8 @@ import { ErrorInfo } from '../types';
 import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Operator - Fares data build tool';
-const description = 'Operator selection page of the Fares data build tool';
+const title = 'Operator - Fares Data Build Tool';
+const description = 'Operator selection page of the Fares Data Build Tool';
 
 const errorId = 'operator-error';
 
@@ -42,9 +42,9 @@ const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
                 <form action="/api/operator" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="operator-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="page-heading">
+                                <h1 className="govuk-fieldset__heading" id="operator-page-heading">
                                     Which organisation are you representing?
                                 </h1>
                             </legend>

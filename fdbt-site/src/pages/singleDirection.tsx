@@ -8,8 +8,8 @@ import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/aur
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 
-const title = 'Select a Direction - Fares data build tool';
-const description = 'Direction selection page of the Fares data build tool';
+const title = 'Single Direction - Fares Data Build Tool';
+const description = 'Single Direction selection page of the Fares Data Build Tool';
 
 interface DirectionProps {
     operator: string;
@@ -23,9 +23,9 @@ const SingleDirection = ({ operator, lineName, service }: DirectionProps): React
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/singleDirection" method="post">
                     <div className="govuk-form-group">
-                        <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="single-direction-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="page-heading">
+                                <h1 className="govuk-fieldset__heading" id="single-direction-page-heading">
                                     Select a journey direction
                                 </h1>
                             </legend>

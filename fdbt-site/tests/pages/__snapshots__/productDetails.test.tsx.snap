@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages periodProduct should render correctly 1`] = `
+exports[`pages productDetails should render correctly 1`] = `
 <Layout
-  description="Period Product page of the Fares data build tool"
-  title="Period Product - Fares data build tool"
+  description="Product Details entry page of the Fares Data Build Tool"
+  title="Product Details - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -11,14 +11,14 @@ exports[`pages periodProduct should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/periodProduct"
+      action="/api/productDetails"
       method="post"
     >
       <div
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="period-product-page-heading"
+          aria-describedby="product-details-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -26,7 +26,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="period-product-page-heading"
+              id="product-details-page-heading"
             >
               Enter your product details
             </h1>
@@ -45,7 +45,7 @@ exports[`pages periodProduct should render correctly 1`] = `
         >
           <label
             className="govuk-label"
-            htmlFor="periodProductName"
+            htmlFor="productDetailsName"
           >
             Product Name
           </label>
@@ -57,7 +57,7 @@ exports[`pages periodProduct should render correctly 1`] = `
           </span>
           <span
             className="govuk-error-message"
-            id="product-price-error"
+            id="product-name-error"
           >
             <span
               className="govuk-visually-hidden"
@@ -66,9 +66,9 @@ exports[`pages periodProduct should render correctly 1`] = `
           <input
             className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input  "
             defaultValue=""
-            id="periodProductName"
+            id="productDetailsName"
             maxLength={50}
-            name="periodProductNameInput"
+            name="productDetailsNameInput"
             type="text"
           />
         </div>
@@ -77,7 +77,7 @@ exports[`pages periodProduct should render correctly 1`] = `
         >
           <label
             className="govuk-label"
-            htmlFor="periodProductPrice"
+            htmlFor="productDetailsPrice"
           >
             Product Price
           </label>
@@ -111,8 +111,8 @@ exports[`pages periodProduct should render correctly 1`] = `
                 className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input "
                 data-non-numeric={true}
                 defaultValue=""
-                id="periodProductPrice"
-                name="periodProductPriceInput"
+                id="productDetailsPrice"
+                name="productDetailsPriceInput"
                 type="text"
               />
             </div>
