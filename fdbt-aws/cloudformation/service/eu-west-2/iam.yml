@@ -226,6 +226,7 @@ Resources:
               - "events:*"
               - "ecs:*"
               - "ec2:*"
+              - "sns:*"
             Resource: "*"
 
   NextJsLambdaPolicy:
