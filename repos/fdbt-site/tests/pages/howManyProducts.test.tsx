@@ -16,6 +16,11 @@ describe('pages', () => {
             { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '       ' },
         ];
 
+        it('should render correctly', () => {
+            const wrapper = shallow(<HowManyProducts inputCheck={{}} errors={[]} />);
+            expect(wrapper).toMatchSnapshot();
+        });
+
         test.each(errorCases)(
             'should render correctly when a user is redirected to the page from itself when incorrect data is entered',
             mockInputCheck => {

@@ -7,8 +7,8 @@ import UserDataUploadComponent, { UserDataUploadsProps } from '../components/Use
 import { CSV_UPLOAD_COOKIE } from '../constants';
 import { buildTitle, deleteCookieOnServerSide } from '../utils';
 
-const title = 'CSV Upload Method - Fares data build tool';
-const description = 'CSV Upload page of the Fares data build tool';
+const title = 'CSV Upload - Fares Data Build Tool';
+const description = 'CSV Upload page of the Fares Data Build Tool';
 
 const errorId = 'csv-upload-error';
 

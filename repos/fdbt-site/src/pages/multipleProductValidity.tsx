@@ -9,8 +9,8 @@ import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Multiple Product Validity - Fares data build tool';
-const description = 'Multiple Product Validity page of the Fares data build tool';
+const title = 'Multiple Product Validity - Fares Data Build Tool';
+const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
 
 const errorId = 'multiple-product-validity-error';
 
@@ -32,7 +32,7 @@ interface MultipleProductValidityProps {
     errors: ErrorInfo[];
 }
 
-const MultiProductValidity = ({
+const MultipleProductValidity = ({
     operator,
     numberOfProducts,
     multipleProducts,
@@ -48,14 +48,14 @@ const MultiProductValidity = ({
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                        <h1 className="govuk-fieldset__heading" id="multiProductValidity-page-heading">
+                        <h1 className="govuk-fieldset__heading" id="multiple-product-validity-page-heading">
                             When does the product expire?
                         </h1>
                     </legend>
                     <span className="govuk-hint" id="operator-products-hint">
                         {operator} - {numberOfProducts} products
                     </span>
-                    <span className="govuk-hint" id="multiProductValidity-page-hint">
+                    <span className="govuk-hint" id="multiple-product-validity-page-hint">
                         We need to know the time that this product would be valid until
                     </span>
                     <span id="multiple-product-validity-radios-error" className="govuk-error-message">
@@ -183,4 +183,4 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     return { props: { operator, numberOfProducts, multipleProducts, errors } };
 };
 
-export default MultiProductValidity;
+export default MultipleProductValidity;

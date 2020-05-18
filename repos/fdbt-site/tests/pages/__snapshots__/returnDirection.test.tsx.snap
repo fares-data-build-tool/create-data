@@ -2,8 +2,8 @@
 
 exports[`pages selectJourneyDirection should render correctly 1`] = `
 <Layout
-  description="Inbound and Outbound journey selection page of the Fares data build tool"
-  title="Journey Selection - Fares data build tool"
+  description="Return Direction selection page of the Fares Data Build Tool"
+  title="Return Direction - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -21,7 +21,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
         className="govuk-form-group "
       >
         <fieldset
-          aria-describedby="page-heading"
+          aria-describedby="return-direction-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -29,7 +29,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="page-heading"
+              id="return-direction-page-heading"
             >
               Select the inbound and outbound journeys for your service
             </h1>

@@ -2,8 +2,8 @@
 
 exports[`Choose Validity Page should render correctly 1`] = `
 <Layout
-  description="Period ticket validity length page of the Fares data build tool"
-  title="Select how long the period ticket is valid for - Fares data build tool"
+  description="Choose Validity page of the Fares Data Build Tool"
+  title="Choose Validity - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"

@@ -1,0 +1,114 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import Cookies from 'cookies';
+import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
+import { isSessionValid } from './service/validator';
+import { ProductInfo, ServicesInfo } from '../../interfaces';
+import {
+    PRODUCT_DETAILS_COOKIE,
+    FARETYPE_COOKIE,
+    OPERATOR_COOKIE,
+    SERVICE_LIST_COOKIE,
+    MATCHING_DATA_BUCKET_NAME,
+} from '../../constants';
+import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
+import { putStringInS3 } from '../../data/s3';
+
+interface DecisionData {
+    operatorName: string;
+    nocCode: string;
+    type: string;
+    products: { productName: string; productPrice: string }[];
+    selectedServices: ServicesInfo[];
+}
+
+export const checkIfInputInvalid = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
+    let productNameError = '';
+    let productPriceError = '';
+
+    const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
+    const cleanedPriceInput = removeExcessWhiteSpace(productDetailsPriceInput);
+
+    productNameError = checkProductNameIsValid(cleanedNameInput);
+
+    productPriceError = checkPriceIsValid(cleanedPriceInput);
+
+    return {
+        productName: cleanedNameInput,
+        productPrice: cleanedPriceInput,
+        productNameError,
+        productPriceError,
+    };
+};
+
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+    try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
+        const cookies = new Cookies(req, res);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const { fareType } = JSON.parse(fareTypeCookie);
+
+        if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {
+            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for productDetails API');
+        }
+
+        const { productDetailsNameInput, productDetailsPriceInput } = req.body;
+
+        const productDetails = checkIfInputInvalid(productDetailsNameInput, productDetailsPriceInput);
+
+        if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
+            const invalidInputs = JSON.stringify(productDetails);
+
+            setCookieOnResponseObject(getDomain(req), PRODUCT_DETAILS_COOKIE, invalidInputs, req, res);
+            redirectTo(res, '/productDetails');
+            return;
+        }
+
+        if (fareType === 'period') {
+            const validInputs = JSON.stringify(productDetails);
+            setCookieOnResponseObject(getDomain(req), PRODUCT_DETAILS_COOKIE, validInputs, req, res);
+            redirectTo(res, '/chooseValidity');
+        } else if (fareType === 'flatFare') {
+            const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
+
+            if (!serviceListCookie) {
+                throw new Error('Failed to retrieve SERVICE_LIST_COOKIE info for productDetails API');
+            }
+
+            const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
+            const { selectedServices } = JSON.parse(serviceListCookie);
+            const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
+                const service = selectedService.split('#');
+                return {
+                    lineName: service[0],
+                    startDate: service[1],
+                    serviceDescription: service[2],
+                };
+            });
+
+            const flatFareProduct: DecisionData = {
+                operatorName: operator,
+                nocCode,
+                type: fareType,
+                products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
+                selectedServices: formattedServiceInfo,
+            };
+
+            await putStringInS3(
+                MATCHING_DATA_BUCKET_NAME,
+                `${uuid}.json`,
+                JSON.stringify(flatFareProduct),
+                'application/json; charset=utf-8',
+            );
+
+            redirectTo(res, '/thankyou');
+            return;
+        }
+    } catch (error) {
+        const message = 'There was a problem processing the product details.';
+        redirectToError(res, message, error);
+    }
+};

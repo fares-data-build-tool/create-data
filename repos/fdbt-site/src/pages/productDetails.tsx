@@ -2,24 +2,19 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import {
-    OPERATOR_COOKIE,
-    PERIOD_PRODUCT_COOKIE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
-} from '../constants';
-import { PeriodProductType } from '../interfaces';
+import { OPERATOR_COOKIE, PRODUCT_DETAILS_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST_COOKIE } from '../constants';
+import { ProductInfo } from '../interfaces';
 
-const title = 'Period Product - Fares data build tool';
-const description = 'Period Product page of the Fares data build tool';
+const title = 'Product Details - Fares Data Build Tool';
+const description = 'Product Details entry page of the Fares Data Build Tool';
 
-type PeriodProduct = {
-    product: PeriodProductType;
+type ProductDetailsProps = {
+    product: ProductInfo;
     operator: string;
-    zoneName?: string;
+    hintText?: string;
 };
 
-const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactElement => {
+const ProductDetails = ({ product, operator, hintText }: ProductDetailsProps): ReactElement => {
     const productName = product && product.productName;
     const productPrice = product && product.productPrice;
     const productNameError = product && product.productNameError;
@@ -28,26 +23,26 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/periodProduct" method="post">
+                <form action="/api/productDetails" method="post">
                     <div className="govuk-form-group">
-                        <fieldset className="govuk-fieldset" aria-describedby="period-product-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="product-details-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="period-product-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="product-details-page-heading">
                                     Enter your product details
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {operator} - {zoneName}
+                                {operator} - {hintText}
                             </span>
                         </fieldset>
                         <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductName">
+                            <label className="govuk-label" htmlFor="productDetailsName">
                                 Product Name
                             </label>
                             <span className="govuk-hint" id="product-name-hint">
                                 Enter the name of your product
                             </span>
-                            <span id="product-price-error" className="govuk-error-message">
+                            <span id="product-name-error" className="govuk-error-message">
                                 <span className={productNameError ? '' : 'govuk-visually-hidden'}>
                                     {productNameError}
                                 </span>
@@ -56,15 +51,15 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                 className={`govuk-input govuk-input--width-30 govuk-product-name-input__inner__input ${
                                     productNameError ? 'govuk-input--error' : ''
                                 } `}
-                                id="periodProductName"
-                                name="periodProductNameInput"
+                                id="productDetailsName"
+                                name="productDetailsNameInput"
                                 type="text"
                                 maxLength={50}
                                 defaultValue={productName}
                             />
                         </div>
                         <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductPrice">
+                            <label className="govuk-label" htmlFor="productDetailsPrice">
                                 Product Price
                             </label>
                             <span className="govuk-hint" id="product-price-hint">
@@ -83,10 +78,10 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                             productPriceError ? 'govuk-input--error' : ''
                                         }`}
                                         aria-label="Enter amount in pounds"
-                                        name="periodProductPriceInput"
+                                        name="productDetailsPriceInput"
                                         data-non-numeric
                                         type="text"
-                                        id="periodProductPrice"
+                                        id="productDetailsPrice"
                                         defaultValue={productPrice}
                                     />
                                 </div>
@@ -105,21 +100,21 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
-    const periodProductCookie = cookies[PERIOD_PRODUCT_COOKIE];
+    const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
-    const singleOperatorCookie = cookies[PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE];
+    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
 
     let props = {};
 
     if (!operatorCookie) {
-        throw new Error('Failed to retrieve operator cookie info for period product page.');
+        throw new Error('Failed to retrieve operator cookie info for product details page.');
     }
 
-    if (!zoneCookie && !singleOperatorCookie) {
-        throw new Error('Failed to retrieve zone cookie info for period product page.');
+    if (!zoneCookie && !serviceListCookie) {
+        throw new Error('Failed to retrieve zone or service list cookie info for product details page.');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
@@ -127,24 +122,22 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     if (zoneCookie) {
         const { fareZoneName } = JSON.parse(zoneCookie);
         props = {
-            zoneName: fareZoneName,
+            hintText: fareZoneName,
         };
-    }
-
-    if (singleOperatorCookie) {
-        const { selectedServices } = JSON.parse(singleOperatorCookie);
+    } else if (serviceListCookie) {
+        const { selectedServices } = JSON.parse(serviceListCookie);
         props = {
-            zoneName: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
+            hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
         };
     }
 
     return {
         props: {
-            product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
+            product: !productDetailsCookie ? {} : JSON.parse(productDetailsCookie),
             operator: operatorInfo.operator,
             ...props,
         },
     };
 };
 
-export default PeriodProduct;
+export default ProductDetails;

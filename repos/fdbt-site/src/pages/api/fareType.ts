@@ -29,6 +29,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 case 'return':
                     redirectTo(res, '/service');
                     return;
+                case 'flatFare':
+                    redirectTo(res, '/serviceList');
+                    return;
                 default:
                     throw new Error('Fare Type we expect was not received.');
             }

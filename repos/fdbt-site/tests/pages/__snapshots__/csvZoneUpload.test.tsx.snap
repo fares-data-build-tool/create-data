@@ -2,8 +2,8 @@
 
 exports[`pages csvzoneupload should render correctly 1`] = `
 <Layout
-  description="CSV Zone Upload page of the Fares data build tool"
-  title="CSV Zone Upload Method - Fares data build tool"
+  description="CSV Zone Upload page of the Fares Data Build Tool"
+  title="CSV Zone Upload - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"

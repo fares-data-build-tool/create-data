@@ -18,29 +18,31 @@ describe('pages', () => {
             );
             expect(wrapper).toMatchSnapshot();
         });
-    });
 
-    describe('multipleProductGetServerSideProps', () => {
-        beforeEach(() => {
-            jest.clearAllMocks();
-        });
-        it('should return number of products to display and name of operator if there is no cookie set', () => {
-            const ctx = getMockContext({
-                operator: 'BLP',
-                numberOfProductsInput: '2',
+        describe('getServerSideProps', () => {
+            beforeEach(() => {
+                jest.clearAllMocks();
             });
-            const result = getServerSideProps(ctx);
+            it('should return number of products to display and name of operator if there is no cookie set', () => {
+                const ctx = getMockContext({
+                    operator: 'BLP',
+                    numberOfProductsInput: '2',
+                });
+                const result = getServerSideProps(ctx);
 
-            expect(result.props.numberOfProductsToDisplay).toBe('2');
-            expect(result.props.nameOfOperator).toBe('BLP');
-        });
-
-        it('should throw an error if the necessary cookies to render the page are not present', () => {
-            const ctx = getMockContext({
-                operator: null,
-                numberOfProductsInput: null,
+                expect(result.props.numberOfProductsToDisplay).toBe('2');
+                expect(result.props.nameOfOperator).toBe('BLP');
             });
-            expect(() => getServerSideProps(ctx)).toThrow('Necessary cookies not found to show multiple products page');
+
+            it('should throw an error if the necessary cookies to render the page are not present', () => {
+                const ctx = getMockContext({
+                    operator: null,
+                    numberOfProductsInput: null,
+                });
+                expect(() => getServerSideProps(ctx)).toThrow(
+                    'Necessary cookies not found to show multiple products page',
+                );
+            });
         });
     });
 });

@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react';
 import Layout from '../layout/Layout';
 import { FEEDBACK_LINK } from '../constants';
 
-const title = 'Error - Fares data build tool';
-const description = 'Error page of the Fares data build tool';
+const title = 'Error - Fares Data Build Tool';
+const description = 'Error page of the Fares Data Build Tool';
 
 const Error = (): ReactElement => (
     <Layout title={title} description={description}>

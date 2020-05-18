@@ -20,10 +20,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                     redirectTo(res, '/csvZoneUpload');
                     return;
                 case 'periodMultipleServices':
-                    redirectTo(res, '/singleOperator?selectAll=false');
+                    redirectTo(res, '/serviceList?selectAll=false');
                     return;
                 case 'periodMultipleOperators':
-                    // redirect to page not made yet
                     return;
                 default:
                     throw new Error('Type of period we expect was not received.');

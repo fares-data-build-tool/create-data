@@ -10,5 +10,19 @@ describe('pages', () => {
             const tree = shallow(<PeriodValidity errors={[]} />);
             expect(tree).toMatchSnapshot();
         });
+
+        it('should render error messaging when errors are passed', () => {
+            const tree = shallow(
+                <PeriodValidity
+                    errors={[
+                        {
+                            errorMessage: 'Choose an option regarding your period ticket validity',
+                            id: 'period-validity-error',
+                        },
+                    ]}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
     });
 });

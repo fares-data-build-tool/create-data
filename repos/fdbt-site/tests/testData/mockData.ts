@@ -14,9 +14,10 @@ import {
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_PRODUCT_COOKIE,
+    PRODUCT_DETAILS_COOKIE,
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
+    SERVICE_LIST_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -72,6 +73,11 @@ export const getMockRequestAndResponse = (
                 productDurationId: 'multipleProductDuration3',
             },
         ],
+        selectedServices = [
+            '12A#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
+            '6#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
+            '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+        ],
     } = cookieValues;
 
     const {
@@ -80,7 +86,6 @@ export const getMockRequestAndResponse = (
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
-        periodProductUuid = defaultUuid,
         daysValidUuid = defaultUuid,
     } = uuid;
 
@@ -104,7 +109,7 @@ export const getMockRequestAndResponse = (
             : '';
 
     cookieString += productName
-        ? `${PERIOD_PRODUCT_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
+        ? `${PRODUCT_DETAILS_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
         : '';
 
     cookieString += fareZoneName
@@ -127,6 +132,12 @@ export const getMockRequestAndResponse = (
 
     cookieString += multipleProducts
         ? `${MULTIPLE_PRODUCT_COOKIE}=${encodeURI(JSON.stringify(multipleProducts))};`
+        : '';
+
+    cookieString += selectedServices
+        ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
+            selectedServices,
+        )}%7D`
         : '';
 
     const req = mockRequest({
@@ -1419,7 +1430,7 @@ export const matchingOutBound = {
     },
 };
 
-export const expectedPeriodValidity = {
+export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1435,7 +1446,38 @@ export const expectedPeriodValidity = {
     stops: naptanStopInfo,
 };
 
-export const expectedCsvUploadMultiProduct = {
+export const expectedSingleProductUploadJsonWithSelectedServices = {
+    operatorName: 'test',
+    type: 'period',
+    nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Product A',
+            productPrice: '1234',
+            productDuration: '2',
+            productValidity: '24hr',
+        },
+    ],
+    selectedServices: [
+        {
+            lineName: '12A',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
+};
+
+export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1461,6 +1503,78 @@ export const expectedCsvUploadMultiProduct = {
     ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
+};
+
+export const expectedMultiProductUploadJsonWithSelectedServices = {
+    operatorName: 'test',
+    type: 'period',
+    nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28',
+            productValidity: 'endOfCalendarDay',
+        },
+    ],
+    selectedServices: [
+        {
+            lineName: '12A',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
+};
+
+export const expectedFlatFareProductUploadJson = {
+    operatorName: 'test',
+    type: 'flatFare',
+    nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Weekly Rider',
+            productPrice: '7',
+        },
+    ],
+    selectedServices: [
+        {
+            lineName: '12A',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
 };
 
 export const multipleProducts: MultiProduct[] = [
