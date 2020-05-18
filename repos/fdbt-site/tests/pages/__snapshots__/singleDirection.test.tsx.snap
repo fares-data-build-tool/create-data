@@ -2,8 +2,8 @@
 
 exports[`pages direction should render correctly 1`] = `
 <Layout
-  description="Direction selection page of the Fares data build tool"
-  title="Select a Direction - Fares data build tool"
+  description="Single Direction selection page of the Fares Data Build Tool"
+  title="Single Direction - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -18,7 +18,7 @@ exports[`pages direction should render correctly 1`] = `
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="page-heading"
+          aria-describedby="single-direction-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -26,7 +26,7 @@ exports[`pages direction should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="page-heading"
+              id="single-direction-page-heading"
             >
               Select a journey direction
             </h1>

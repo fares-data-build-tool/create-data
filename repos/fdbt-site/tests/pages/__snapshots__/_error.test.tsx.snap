@@ -2,8 +2,8 @@
 
 exports[`pages error page should render error page correctly 1`] = `
 <Layout
-  description="Error page of the Fares data build tool"
-  title="Error - Fares data build tool"
+  description="Error page of the Fares Data Build Tool"
+  title="Error - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"

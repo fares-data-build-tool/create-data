@@ -8,8 +8,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'How Many Products - Fares data build tool';
-const description = 'How many products page of the Fares data build tool';
+const title = 'How Many Products - Fares Data Build Tool';
+const description = 'How Many Products entry page of the Fares Data Build Tool';
 
 export interface InputCheck {
     error?: string;

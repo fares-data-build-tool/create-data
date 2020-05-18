@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
-import { PERIOD_PRODUCT_COOKIE, DAYS_VALID_COOKIE } from '../constants';
+import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE } from '../constants';
 
-const title = 'Select how long the period ticket is valid for - Fares data build tool';
-const description = 'Period ticket validity length page of the Fares data build tool';
+const title = 'Choose Validity - Fares Data Build Tool';
+const description = 'Choose Validity page of the Fares Data Build Tool';
 
 type ValidityProps = {
     productName: string;
@@ -71,7 +71,7 @@ const ChooseValidity = ({ productName, productPrice, daysValid, error }: Validit
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const productCookie = cookies[PERIOD_PRODUCT_COOKIE];
+    const productCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const validityCookie = cookies[DAYS_VALID_COOKIE];
 
     if (!productCookie) {

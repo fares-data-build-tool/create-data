@@ -2,8 +2,8 @@
 
 exports[`pages inputMethod should render correctly 1`] = `
 <Layout
-  description="Input method selection page of the Fares data build tool"
-  title="Input Method - Fares data build tool"
+  description="Input Method selection page of the Fares Data Build Tool"
+  title="Input Method - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"

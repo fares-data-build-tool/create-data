@@ -8,8 +8,8 @@ import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Period Type - Fares data build tool';
-const description = 'Period Type selection page of the Fares data build tool';
+const title = 'Period Type - Fares Data Build Tool';
+const description = 'Period Type selection page of the Fares Data Build Tool';
 
 const errorId = 'period-type-error';
 
@@ -24,9 +24,9 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                 <form action="/api/periodType" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="period-type-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="period-type-page-heading">
                                     Select a type of period ticket
                                 </h1>
                             </legend>
@@ -37,14 +37,14 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                                             className={`govuk-radios__input ${
                                                 errors.length > 0 ? 'govuk-input--error' : ''
                                             } `}
-                                            id="periodtype-geo-zone"
+                                            id="period-type-geo-zone"
                                             name="periodType"
                                             type="radio"
                                             value="periodGeoZone"
                                         />
                                         <label
                                             className="govuk-label govuk-radios__label"
-                                            htmlFor="periodtype-geo-zone"
+                                            htmlFor="period-type-geo-zone"
                                         >
                                             A ticket within a geographical zone
                                         </label>
@@ -54,14 +54,14 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                                             className={`govuk-radios__input ${
                                                 errors.length > 0 ? 'govuk-input--error' : ''
                                             } `}
-                                            id="periodtype-single-set-service"
+                                            id="period-type-single-set-service"
                                             name="periodType"
                                             type="radio"
                                             value="periodMultipleServices"
                                         />
                                         <label
                                             className="govuk-label govuk-radios__label"
-                                            htmlFor="periodtype-single-set-service"
+                                            htmlFor="period-type-single-set-service"
                                         >
                                             A ticket for some or all of your network of services
                                         </label>
@@ -71,14 +71,17 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                                             className={`govuk-radios__input ${
                                                 errors.length > 0 ? 'govuk-input--error' : ''
                                             } `}
-                                            id="periodtype-network"
+                                            id="period-type-network"
                                             name="periodType"
                                             type="radio"
                                             value="periodMultipleOperators"
                                             disabled
                                             aria-disabled="true"
                                         />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor="period-type-network"
+                                        >
                                             A ticket for services across multiple operators (Not yet available)
                                         </label>
                                     </div>

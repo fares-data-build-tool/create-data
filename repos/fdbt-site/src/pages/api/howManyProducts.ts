@@ -37,7 +37,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         });
 
         if (userInputValidity.numberOfProductsInput === '1') {
-            redirectTo(res, '/periodProduct');
+            redirectTo(res, '/productDetails');
             return;
         }
 

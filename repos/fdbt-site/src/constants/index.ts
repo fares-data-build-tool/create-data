@@ -18,7 +18,7 @@ export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
 export const DAYS_VALID_COOKIE = 'fdbt-days-valid';
 
-export const PERIOD_PRODUCT_COOKIE = 'fdbt-period-product';
+export const PRODUCT_DETAILS_COOKIE = 'fdbt-product-details';
 
 export const PERIOD_TYPE_COOKIE = 'fdbt-period-type';
 
@@ -28,7 +28,7 @@ export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
 
 export const PERIOD_EXPIRY_COOKIE = 'fdbt-period-expiry';
 
-export const PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE = 'fdbt-period-single-services';
+export const SERVICE_LIST_COOKIE = 'fdbt-services';
 
 export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 
@@ -52,13 +52,13 @@ export const ALL_COOKIES: string[] = [
     'fdbt-stage-names',
     'fdbt-price-entry',
     'fdbt-days-valid',
-    'fdbt-period-product',
+    'fdbt-product-details',
     'fdbt-period-type',
     'fdbt-csv-upload',
     'fdbt-csv-zone-upload',
     'fdbt-number-of-products',
     'fdbt-period-expiry',
-    'fdbt-period-single-services',
+    'fdbt-services',
     'fdbt-input-method',
     'fdbt-matching',
     'fdbt-number-stages',

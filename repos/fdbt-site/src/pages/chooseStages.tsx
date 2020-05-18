@@ -1,17 +1,17 @@
 import React, { ReactElement } from 'react';
 import Layout from '../layout/Layout';
 
-const title = 'Select number of fare stages - Fares data build tool';
-const description = 'Number of fare stages selection page of the Fares data build tool';
+const title = 'Choose Stages - Fares Data Build Tool';
+const description = 'Choose Stages page of the Fares Data Build Tool';
 
 const ChooseStages = (): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/chooseStages" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                    <fieldset className="govuk-fieldset" aria-describedby="choose-stages-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading" id="page-heading">
+                            <h1 className="govuk-fieldset__heading" id="choose-stages-page-heading">
                                 How many fare stages does the service have?
                             </h1>
                         </legend>
