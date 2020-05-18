@@ -9,8 +9,8 @@ import MatchingBase from '../components/MatchingBase';
 import { BasicService } from '../interfaces/index';
 
 const heading = 'Outbound - Match stops to fare stages';
-const title = 'Outbound Matching - Fares data build tool';
-const description = 'Outbound Matching page of the fares data build tool';
+const title = 'Outbound Matching - Fares Data Build Tool';
+const description = 'Outbound Matching page of the Fares Data Build Tool';
 const hintText = 'Select a fare stage for each stop on the outbound journey.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/outboundMatching';

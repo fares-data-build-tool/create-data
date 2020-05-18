@@ -1,10 +1,15 @@
 import * as s3 from '../../../src/data/s3';
 import * as dynamodb from '../../../src/data/auroradb';
-import { getMockRequestAndResponse, naptanStopInfo, expectedCsvUploadMultiProduct } from '../../testData/mockData';
+import {
+    getMockRequestAndResponse,
+    naptanStopInfo,
+    expectedMultiProductUploadJsonWithZoneUpload,
+    expectedMultiProductUploadJsonWithSelectedServices,
+} from '../../testData/mockData';
 import multipleProductValidity, { addErrorsIfInvalid } from '../../../src/pages/api/multipleProductValidity';
 import { Product } from '../../../src/pages/multipleProductValidity';
 
-describe('multipleProductValidity API', () => {
+describe('multipleProductValidity', () => {
     const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
     const writeHeadMock = jest.fn();
 
@@ -23,79 +28,6 @@ describe('multipleProductValidity API', () => {
         batchGetStopsByAtcoCodeSpy = jest
             .spyOn(dynamodb, 'batchGetStopsByAtcoCode')
             .mockImplementation(() => Promise.resolve(naptanStopInfo));
-    });
-
-    it('generates JSON for period data and uploads to S3 when the user uploads a zone via csv', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period', numberOfProducts: '3' },
-            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            '',
-            writeHeadMock,
-        );
-        await multipleProductValidity(req, res);
-        const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
-        expect(putStringInS3Spy).toBeCalledWith(
-            'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
-            expect.any(String),
-            'application/json; charset=utf-8',
-        );
-        expect(actualMultipleProductData).toEqual(expectedCsvUploadMultiProduct);
-    });
-
-    it('redirects back to the multipleProductValidity page if there is no body', async () => {
-        const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock);
-
-        await multipleProductValidity(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/multipleProductValidity',
-        });
-    });
-
-    it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            '',
-            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            '',
-            writeHeadMock,
-        );
-        await multipleProductValidity(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/thankyou',
-        });
-    });
-
-    it('should redirect to the error page if a required cookie is missing', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { operator: null },
-            { 'validity-row0': 'endOfCalendarDay' },
-            {},
-            writeHeadMock,
-        );
-
-        await multipleProductValidity(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
-    it('throws an error if no stops are returned from query', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period', numberOfProducts: '3' },
-            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            '',
-            writeHeadMock,
-        );
-        batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
-
-        await multipleProductValidity(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
     });
 
     describe('addErrorsIfInvalid', () => {
@@ -139,6 +71,97 @@ describe('multipleProductValidity API', () => {
 
             expect(result.productValidity).toBe('endOfCalendarDay');
             expect(result.productValidityError).toBe(undefined);
+        });
+    });
+
+    it('generates and dumps multiple period product JSON in S3 when the user uploads a fare zone via csv', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { fareType: 'period', numberOfProducts: '3', selectedServices: null },
+            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            '',
+            writeHeadMock,
+        );
+        await multipleProductValidity(req, res);
+        const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+        expect(putStringInS3Spy).toBeCalledWith(
+            'fdbt-matching-data-dev',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            expect.any(String),
+            'application/json; charset=utf-8',
+        );
+        expect(actualMultipleProductData).toEqual(expectedMultiProductUploadJsonWithZoneUpload);
+    });
+
+    it('generates and dumps multiple period product JSON in S3 when the user selects a list of services', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { fareType: 'period', numberOfProducts: '3', fareZoneName: null },
+            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            '',
+            writeHeadMock,
+        );
+        await multipleProductValidity(req, res);
+        const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+        expect(putStringInS3Spy).toBeCalledWith(
+            'fdbt-matching-data-dev',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            expect.any(String),
+            'application/json; charset=utf-8',
+        );
+        expect(actualMultipleProductData).toEqual(expectedMultiProductUploadJsonWithSelectedServices);
+    });
+
+    it('redirects back to the multipleProductValidity page if there is no body', async () => {
+        const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock);
+
+        await multipleProductValidity(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/multipleProductValidity',
+        });
+    });
+
+    it('redirects to thankyou page if all valid', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { fareZoneName: null },
+            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            '',
+            writeHeadMock,
+        );
+        await multipleProductValidity(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/thankyou',
+        });
+    });
+
+    it('should redirect to the error page if a required cookie is missing', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { operator: null },
+            { 'validity-row0': 'endOfCalendarDay' },
+            {},
+            writeHeadMock,
+        );
+
+        await multipleProductValidity(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
+        });
+    });
+
+    it('throws an error if no stops are returned from query', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { fareType: 'period', numberOfProducts: '3' },
+            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            '',
+            writeHeadMock,
+        );
+        batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
+
+        await multipleProductValidity(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
         });
     });
 });

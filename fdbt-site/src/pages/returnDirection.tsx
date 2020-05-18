@@ -12,8 +12,8 @@ import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getUuidFromCookies, setCookieOnServerSide } from '../utils';
 import { redirectTo } from './api/apiUtils';
 
-const title = 'Journey Selection - Fares data build tool';
-const description = 'Inbound and Outbound journey selection page of the Fares data build tool';
+const title = 'Return Direction - Fares Data Build Tool';
+const description = 'Return Direction selection page of the Fares Data Build Tool';
 
 export const inboundErrorId = 'inbound-error';
 export const outboundErrorId = 'outbound-error';
@@ -32,9 +32,9 @@ const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: D
                 <form action="/api/returnDirection" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="return-direction-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="page-heading">
+                                <h1 className="govuk-fieldset__heading" id="return-direction-page-heading">
                                     Select the inbound and outbound journeys for your service
                                 </h1>
                             </legend>

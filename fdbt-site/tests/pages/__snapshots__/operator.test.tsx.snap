@@ -2,8 +2,8 @@
 
 exports[`pages operator should render correctly 1`] = `
 <Layout
-  description="Operator selection page of the Fares data build tool"
-  title="Operator - Fares data build tool"
+  description="Operator selection page of the Fares Data Build Tool"
+  title="Operator - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -21,7 +21,7 @@ exports[`pages operator should render correctly 1`] = `
         className="govuk-form-group "
       >
         <fieldset
-          aria-describedby="page-heading"
+          aria-describedby="operator-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -29,7 +29,7 @@ exports[`pages operator should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="page-heading"
+              id="operator-page-heading"
             >
               Which organisation are you representing?
             </h1>

@@ -2,8 +2,8 @@
 
 exports[`pages operator should render correctly 1`] = `
 <Layout
-  description="Fares data build tool is a service that allows you to generate data in NeTEx format"
-  title="Fares data build tool"
+  description="Fares Data Build Tool is a service that allows you to generate data in NeTEx format"
+  title="Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -13,7 +13,7 @@ exports[`pages operator should render correctly 1`] = `
     <h1
       className="govuk-heading-xl"
     >
-      Fares data build tool
+      Fares Data Build Tool
     </h1>
     <p
       className="govuk-body-l"

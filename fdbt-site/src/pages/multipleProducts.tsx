@@ -9,8 +9,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
 import { unescapeAndDecodeCookieServerSide } from '../utils';
 
-const title = 'Multiple Product - Fares data build tool';
-const description = 'Multiple Product page of the Fares data build tool';
+const title = 'Multiple Product - Fares Data Build Tool';
+const description = 'Multiple Product entry page of the Fares Data Build Tool';
 
 export interface MultipleProductProps {
     numberOfProductsToDisplay: string;
@@ -31,9 +31,9 @@ const MultipleProducts = ({
                 <form action="/api/multipleProducts" method="post">
                     <ErrorSummary errors={errors} />
                     <div className="govuk-form-group">
-                        <fieldset className="govuk-fieldset" aria-describedby="period-product-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="multiple-product-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="period-product-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="multiple-product-page-heading">
                                     Enter your product details
                                 </h1>
                             </legend>

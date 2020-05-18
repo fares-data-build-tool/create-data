@@ -6,8 +6,8 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 
-const title = 'Service - Fares data build tool';
-const description = 'Service selection page of the Fares data build tool';
+const title = 'Service - Fares Data Build Tool';
+const description = 'Service selection page of the Fares Data Build Tool';
 
 type ServiceProps = {
     operator: string;
@@ -19,9 +19,9 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/service" method="post">
                 <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="page-heading">
+                    <fieldset className="govuk-fieldset" aria-describedby="service-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading" id="page-heading">
+                            <h1 className="govuk-fieldset__heading" id="service-page-heading">
                                 Select a service
                             </h1>
                         </legend>

@@ -2,7 +2,7 @@
 
 exports[`Price Entry Page should render correctly 1`] = `
 <Layout
-  description="Enter prices into fares triangle page of the Fares Data Build Tool"
+  description="Price Entry page of the Fares Data Build Tool"
   title="Price Entry Fares Triangle - Fares Data Build Tool"
 >
   <main
@@ -18,7 +18,7 @@ exports[`Price Entry Page should render correctly 1`] = `
         className="govuk-form-group"
       >
         <fieldset
-          aria-describedby="selection-hint"
+          aria-describedby="price-entry-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -26,13 +26,14 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
+              id="price-entry-page-heading"
             >
               Enter the prices for all fare stages in pence
             </h1>
           </legend>
           <span
             className="govuk-hint"
-            id="selection-hint"
+            id="price-entry-hint"
           >
             Example: £2.40 would be 240
           </span>

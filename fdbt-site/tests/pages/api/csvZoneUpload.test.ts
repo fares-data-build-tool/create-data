@@ -74,7 +74,7 @@ describe('csvZoneUpload', () => {
         },
     );
 
-    it('should return 302 redirect to /periodProduct when valid a valid file is processed and put in S3', async () => {
+    it('should return 302 redirect to /howManyProducts when valid a valid file is processed and put in S3', async () => {
         const file = {
             'csv-upload': {
                 size: 999,

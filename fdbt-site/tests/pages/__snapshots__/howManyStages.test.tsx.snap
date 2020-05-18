@@ -2,8 +2,8 @@
 
 exports[`pages howManyStages should render correctly 1`] = `
 <Layout
-  description="How many fares stages page of the Fares data build tool"
-  title="How Many Fare Stages - Fares data build tool"
+  description="How Many Stages selection page of the Fares Data Build Tool"
+  title="How Many Stages - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -21,7 +21,7 @@ exports[`pages howManyStages should render correctly 1`] = `
         className="govuk-form-group "
       >
         <fieldset
-          aria-describedby="selection-hint"
+          aria-describedby="number-of-stages-hint"
           className="govuk-fieldset"
         >
           <legend
@@ -35,7 +35,7 @@ exports[`pages howManyStages should render correctly 1`] = `
           </legend>
           <span
             className="govuk-hint"
-            id="selection-hint"
+            id="number-of-stages-hint"
           >
             If the service has more than 20 fare stages you will be required to upload a csv file. A template file is available if required.
           </span>

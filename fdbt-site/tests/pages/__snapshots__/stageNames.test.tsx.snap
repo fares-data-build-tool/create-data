@@ -2,8 +2,8 @@
 
 exports[`pages stageNames should render correctly when a user first visits the page 1`] = `
 <Layout
-  description="Stage Names page of the Fares data build tool"
-  title="Stage Names - Fares data build tool"
+  description="Stage Names entry page of the Fares Data Build Tool"
+  title="Stage Names - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -166,8 +166,8 @@ exports[`pages stageNames should render correctly when a user first visits the p
 
 exports[`pages stageNames should render correctly when a user is redirected to the page from itself when incorrect data is entered 1`] = `
 <Layout
-  description="Stage Names page of the Fares data build tool"
-  title="Stage Names - Fares data build tool"
+  description="Stage Names entry page of the Fares Data Build Tool"
+  title="Stage Names - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -328,8 +328,8 @@ exports[`pages stageNames should render correctly when a user is redirected to t
 
 exports[`pages stageNames should render correctly when a user is redirected to the page from itself when no data is entered 1`] = `
 <Layout
-  description="Stage Names page of the Fares data build tool"
-  title="Stage Names - Fares data build tool"
+  description="Stage Names entry page of the Fares Data Build Tool"
+  title="Stage Names - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"

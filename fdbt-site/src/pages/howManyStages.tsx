@@ -8,8 +8,8 @@ import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'How Many Fare Stages - Fares data build tool';
-const description = 'How many fares stages page of the Fares data build tool';
+const title = 'How Many Stages - Fares Data Build Tool';
+const description = 'How Many Stages selection page of the Fares Data Build Tool';
 
 const errorId = 'how-many-stages-error';
 
@@ -24,11 +24,11 @@ const HowManyStages = ({ errors = [] }: HowManyStagesProps): ReactElement => {
                 <form action="/api/howManyStages" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
+                        <fieldset className="govuk-fieldset" aria-describedby="number-of-stages-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading">How many fare stages does the service have?</h1>
                             </legend>
-                            <span className="govuk-hint" id="selection-hint">
+                            <span className="govuk-hint" id="number-of-stages-hint">
                                 If the service has more than 20 fare stages you will be required to upload a csv file. A
                                 template file is available if required.
                             </span>

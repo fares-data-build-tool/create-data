@@ -6,8 +6,8 @@ import Layout from '../layout/Layout';
 import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 
-const title = 'Stage Names - Fares data build tool';
-const description = 'Stage Names page of the Fares data build tool';
+const title = 'Stage Names - Fares Data Build Tool';
+const description = 'Stage Names entry page of the Fares Data Build Tool';
 
 export interface InputCheck {
     Error: string;
