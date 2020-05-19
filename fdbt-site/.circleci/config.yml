@@ -140,8 +140,7 @@ workflows:
                   context: tfn-fdbt-test
                   filters:
                       branches:
-                          only:
-                              - develop
+                          only: develop
 
             - sync-static-files:
                   requires:
@@ -150,8 +149,7 @@ workflows:
                   context: tfn-fdbt-preprod
                   filters:
                       branches:
-                          only:
-                              - master
+                          only: master
 
             - aws-ecr/build-and-push-image:
                   requires:
@@ -184,8 +182,23 @@ workflows:
                   context: tfn-fdbt-automation-test
                   filters:
                       branches:
-                          only:
-                              - develop
+                          only: develop
+
+            - run-ui-tests-firefox:
+                  requires:
+                      - deploy-site-to-test
+                  context: tfn-fdbt-automation-test
+                  filters:
+                      branches:
+                          only: develop
+
+            - run-ui-tests-ie:
+                  requires:
+                      - deploy-site-to-test
+                  context: tfn-fdbt-automation-test
+                  filters:
+                      branches:
+                          only: develop
 
             - hold-preprod-deployment:
                   type: approval
