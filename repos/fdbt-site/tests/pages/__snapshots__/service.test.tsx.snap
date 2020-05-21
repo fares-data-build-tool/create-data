@@ -33,9 +33,11 @@ exports[`pages service should render correctly 1`] = `
           </legend>
           <span
             className="govuk-hint"
-            id="service-operator-hint"
+            id="service-operator-passengertype-hint"
           >
             Connexions Buses
+             - 
+            Adult
           </span>
           <select
             className="govuk-select"

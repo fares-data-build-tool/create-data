@@ -41,7 +41,8 @@ exports[`pages multipleProduct should render correctly 1`] = `
             Infinity Line
              - 
             2
-             Products
+             Products - 
+            Adult
           </span>
         </fieldset>
         <div

@@ -21,19 +21,23 @@ describe('pages', () => {
         });
 
         it('should render correctly', () => {
-            const tree = shallow(<Service operator="Connexions Buses" services={mockServices} />);
+            const tree = shallow(<Service operator="Connexions Buses" passengerType="Adult" services={mockServices} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('shows operator name above the select box', () => {
-            const wrapper = shallow(<Service operator="Connexions Buses" services={mockServices} />);
-            const operatorWelcome = wrapper.find('#service-operator-hint').first();
+            const wrapper = shallow(
+                <Service operator="Connexions Buses" passengerType="Adult" services={mockServices} />,
+            );
+            const operatorWelcome = wrapper.find('#service-operator-passengertype-hint').first();
 
-            expect(operatorWelcome.text()).toBe('Connexions Buses');
+            expect(operatorWelcome.text()).toBe('Connexions Buses - Adult');
         });
 
         it('shows a list of services for the operator in the select box', () => {
-            const wrapper = shallow(<Service operator="Connexions Buses" services={mockServices} />);
+            const wrapper = shallow(
+                <Service operator="Connexions Buses" passengerType="Adult" services={mockServices} />,
+            );
             const operatorServices = wrapper.find('.service-option');
 
             expect(operatorServices).toHaveLength(3);
@@ -48,6 +52,7 @@ describe('pages', () => {
             expect(result).toEqual({
                 props: {
                     operator: 'test',
+                    passengerType: 'Adult',
                     services: [
                         {
                             lineName: '123',
@@ -75,7 +80,7 @@ describe('pages', () => {
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
 
-            const ctx = getMockContext({}, null, {}, mockWriteHeadFn, mockEndFn);
+            const ctx = getMockContext({ passengerType: 'Adult' }, null, {}, mockWriteHeadFn, mockEndFn);
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('No services found for NOC Code: HCTY');
         });
@@ -86,9 +91,16 @@ describe('pages', () => {
 
             const ctx = getMockContext({ operator: null }, null, {}, mockWriteHeadFn, mockEndFn);
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow(
-                'Necessary operator cookie not found to show matching page',
-            );
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
+        });
+
+        it('throws error if passengerType cookie does not exist', async () => {
+            const mockWriteHeadFn = jest.fn();
+            const mockEndFn = jest.fn();
+
+            const ctx = getMockContext({ passengerType: null }, null, {}, mockWriteHeadFn, mockEndFn);
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
         });
     });
 });

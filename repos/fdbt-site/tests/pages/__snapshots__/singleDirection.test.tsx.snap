@@ -33,11 +33,13 @@ exports[`pages direction should render correctly 1`] = `
           </legend>
           <span
             className="govuk-hint"
-            id="direction-operator-linename-hint"
+            id="direction-operator-linename-passengertype-hint"
           >
             Connexions Buses
              - 
             X6A
+             - 
+            Adult
           </span>
           <span
             className="govuk-hint"
