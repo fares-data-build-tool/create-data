@@ -62,3 +62,26 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
     console.error(message, error.stack);
     redirectTo(res, '/error');
 };
+
+export const redirectOnFareType = (fareType: string, res: NextApiResponse): void => {
+    if (fareType) {
+        switch (fareType) {
+            case 'period':
+                redirectTo(res, '/periodType');
+                return;
+            case 'single':
+                redirectTo(res, '/service');
+                return;
+            case 'return':
+                redirectTo(res, '/service');
+                return;
+            case 'flatFare':
+                redirectTo(res, '/serviceList');
+                return;
+            default:
+                throw new Error('Fare Type we expect was not received.');
+        }
+    } else {
+        throw new Error('No fare type received');
+    }
+};

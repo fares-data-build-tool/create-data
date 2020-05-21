@@ -28,6 +28,7 @@ describe('pages', () => {
             const wrapper = shallow(
                 <MultiProductValidity
                     operator="Infinity Line"
+                    passengerType="Adult"
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
                     errors={[]}
@@ -40,6 +41,7 @@ describe('pages', () => {
             const wrapper = shallow(
                 <MultiProductValidity
                     operator="Infinity Line"
+                    passengerType="Adult"
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
                     errors={[
@@ -57,6 +59,7 @@ describe('pages', () => {
             const wrapper = shallow(
                 <MultiProductValidity
                     operator="Infinity Line"
+                    passengerType="Adult"
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
                     errors={[]}

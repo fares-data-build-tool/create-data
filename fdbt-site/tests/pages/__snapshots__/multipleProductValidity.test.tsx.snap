@@ -37,7 +37,8 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
           Infinity Line
            - 
           2
-           products
+           products - 
+          Adult
         </span>
         <span
           className="govuk-hint"
@@ -292,7 +293,8 @@ exports[`pages multipleProductValidity should render error messaging when errors
           Infinity Line
            - 
           2
-           products
+           products - 
+          Adult
         </span>
         <span
           className="govuk-hint"

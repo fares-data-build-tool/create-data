@@ -15,7 +15,12 @@ describe('pages', () => {
     describe('productDetails', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <ProductDetails product={mockproductDetails} operator="bus company" hintText="Test Zone" />,
+                <ProductDetails
+                    product={mockproductDetails}
+                    operator="bus company"
+                    passengerType="Adult"
+                    hintText="Test Zone"
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -26,11 +31,12 @@ describe('pages', () => {
                 const result = getServerSideProps(ctx);
                 expect(result.props.product).toEqual({});
                 expect(result.props.operator).toBe('test');
+                expect(result.props.passengerType).toBe('Adult');
                 expect(result.props.hintText).toBe('Multiple Services');
             });
 
             it('should throw an error when the CSV_ZONE_UPLOAD_COOKIE and SERVICE_LIST_COOKIE are missing', () => {
-                const ctx = getMockContext({ fareZoneName: null, selectedServices: null });
+                const ctx = getMockContext({ fareZoneName: null, selectedServices: null, passengerType: 'Adult' });
                 expect(() => getServerSideProps(ctx)).toThrow(
                     'Failed to retrieve zone or service list cookie info for product details page.',
                 );

@@ -3,7 +3,12 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 
 import Layout from '../layout/Layout';
-import { MULTIPLE_PRODUCT_COOKIE, OPERATOR_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../constants';
+import {
+    MULTIPLE_PRODUCT_COOKIE,
+    OPERATOR_COOKIE,
+    PASSENGER_TYPE_COOKIE,
+    NUMBER_OF_PRODUCTS_COOKIE,
+} from '../constants';
 import { buildTitle } from '../utils';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
@@ -27,6 +32,7 @@ export interface Product {
 
 interface MultipleProductValidityProps {
     operator: string;
+    passengerType: string;
     numberOfProducts: string;
     multipleProducts: Product[];
     errors: ErrorInfo[];
@@ -34,6 +40,7 @@ interface MultipleProductValidityProps {
 
 const MultipleProductValidity = ({
     operator,
+    passengerType,
     numberOfProducts,
     multipleProducts,
     errors,
@@ -53,7 +60,7 @@ const MultipleProductValidity = ({
                         </h1>
                     </legend>
                     <span className="govuk-hint" id="operator-products-hint">
-                        {operator} - {numberOfProducts} products
+                        {operator} - {numberOfProducts} products - {passengerType}
                     </span>
                     <span className="govuk-hint" id="multiple-product-validity-page-hint">
                         We need to know the time that this product would be valid until
@@ -158,14 +165,16 @@ const MultipleProductValidity = ({
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
     const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
 
-    if (!operatorCookie || !numberOfProductsCookie || !multipleProductCookie) {
+    if (!operatorCookie || !numberOfProductsCookie || !multipleProductCookie || !passengerTypeCookie) {
         throw new Error('Necessary cookies not found to display the multiple product validity page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
+    const { passengerType } = JSON.parse(passengerTypeCookie);
     const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const multipleProducts: Product[] = JSON.parse(multipleProductCookie);
 
@@ -180,7 +189,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
         errors.push(error);
     }
 
-    return { props: { operator, numberOfProducts, multipleProducts, errors } };
+    return { props: { operator, passengerType, numberOfProducts, multipleProducts, errors } };
 };
 
 export default MultipleProductValidity;
