@@ -5,12 +5,16 @@ exports[`_document should render correctly 1`] = `
   className="govuk-template app-html-class flexbox no-flexboxtweener"
   lang="en"
 >
-  <Head />
+  <Head
+    nonce=""
+  />
   <body
     className="govuk-template__body app-body-class"
   >
     <Main />
-    <NextScript />
+    <NextScript
+      nonce=""
+    />
   </body>
 </Html>
 `;

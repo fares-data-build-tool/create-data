@@ -4,6 +4,7 @@ const withFonts = require('next-fonts');
 
 const nextConfig = {
     target: 'server',
+    poweredByHeader: false,
 };
 
 module.exports = withPlugins([[withFonts], [withImages], nextConfig]);
