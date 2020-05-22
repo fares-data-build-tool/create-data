@@ -44,6 +44,8 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
     };
 
     try {
+        console.info('retrieving user fare stages from S3', { uuid });
+
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
@@ -60,6 +62,8 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
     };
 
     try {
+        console.info('retrieving user csv zone data from S3', { uuid });
+
         const response = await s3.getObject(params).promise();
 
         const dataAsString = response.Body?.toString('utf-8') ?? '';
@@ -81,6 +85,8 @@ export const getOutboundMatchingFareStages = async (uuid: string): Promise<Match
     };
 
     try {
+        console.info('retrieving outbound matching fare stages from S3', { uuid });
+
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
@@ -96,6 +102,8 @@ export const putStringInS3 = async (
     text: string,
     contentType: string,
 ): Promise<void> => {
+    console.info('uploading string to S3', { bucket: bucketName, key });
+
     const request: AWS.S3.Types.PutObjectRequest = {
         Bucket: bucketName,
         Key: key,
@@ -121,6 +129,8 @@ export const putDataInS3 = async (
         bucketName = RAW_USER_DATA_BUCKET_NAME;
         contentType = 'text/csv; charset=utf-8';
     }
+
+    console.info('uploading data to S3', { bucket: bucketName, key });
 
     await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };

@@ -18,6 +18,7 @@ COPY package*.json ./
 RUN npm install --ignore-scripts
 
 COPY --from=build /tmp/.next ./.next
+COPY --from=build /tmp/dist ./dist
 
 EXPOSE 80
 CMD ["npm", "start"]

@@ -126,6 +126,8 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
+    console.info('retrieving services for given noc', { noc: nocCode });
+
     try {
         const queryInput = `
             SELECT lineName, startDate, description
@@ -148,6 +150,8 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
+    console.info('retrieving naptan info for given atco codes');
+
     try {
         const substitution = atcoCodes.map(() => '?').join(',');
         const batchQuery = `
@@ -176,6 +180,8 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 };
 
 export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
+    console.info('retrieving atco codes for given naptan codes');
+
     const substitution = naptanCodes.map(() => '?').join(',');
     const atcoCodesByNaptanCodeQuery = `
         SELECT atcoCode, naptanCode FROM naptanStop
@@ -196,6 +202,8 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 };
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
+    console.info('retrieving service info for given noc and line name', { noc: nocCode, lineName });
+
     const serviceQuery = `
         SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
         FROM tndsOperatorService AS os

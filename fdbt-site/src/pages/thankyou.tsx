@@ -54,6 +54,8 @@ const ThankYou = ({ uuid }: ThankYouProps): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const uuid = getUuidFromCookies(ctx);
+    console.info('transaction complete', { uuid });
+
     deleteAllCookiesOnServerSide(ctx);
     return { props: { uuid } };
 };
