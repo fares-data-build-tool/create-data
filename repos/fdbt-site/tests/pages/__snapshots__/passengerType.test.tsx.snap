@@ -150,40 +150,20 @@ exports[`pages operator should render correctly 1`] = `
               </div>
               <div
                 className="govuk-radios__item"
-                key="School Pupil"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type5"
-                  name="passengerType"
-                  type="radio"
-                  value="School Pupil"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type5"
-                >
-                  School Pupil
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
                 key="Student"
               >
                 <input
                   aria-disabled={false}
                   className="govuk-radios__input"
                   disabled={false}
-                  id="passenger-type6"
+                  id="passenger-type5"
                   name="passengerType"
                   type="radio"
                   value="Student"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type6"
+                  htmlFor="passenger-type5"
                 >
                   Student
                 </label>
@@ -196,16 +176,36 @@ exports[`pages operator should render correctly 1`] = `
                   aria-disabled={false}
                   className="govuk-radios__input"
                   disabled={false}
-                  id="passenger-type7"
+                  id="passenger-type6"
                   name="passengerType"
                   type="radio"
                   value="Young Person"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type7"
+                  htmlFor="passenger-type6"
                 >
                   Young Person
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
+                key="School Pupil"
+              >
+                <input
+                  aria-disabled={true}
+                  className="govuk-radios__input"
+                  disabled={true}
+                  id="passenger-type7"
+                  name="passengerType"
+                  type="radio"
+                  value="School Pupil"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="passenger-type7"
+                >
+                  School Pupil
                 </label>
               </div>
               <div

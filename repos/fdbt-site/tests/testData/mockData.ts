@@ -959,6 +959,8 @@ export const expectedMatchingJsonSingle = {
     type: 'pointToPoint',
     lineName: '215',
     nocCode: 'DCCL',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
     fareZones: [
@@ -1072,6 +1074,8 @@ export const expectedMatchingJsonSingle = {
 
 export const expectedMatchingJsonReturnNonCircular = {
     type: 'return',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
@@ -1218,6 +1222,8 @@ export const expectedMatchingJsonReturnNonCircular = {
 export const expectedMatchingJsonReturnCircular = {
     type: 'return',
     lineName: '215',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
@@ -1439,6 +1445,7 @@ export const matchingOutBound = {
 
 export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     type: 'period',
     nocCode: 'HCTY',
     products: [
@@ -1451,12 +1458,14 @@ export const expectedSingleProductUploadJsonWithZoneUpload = {
     ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
+    passengerType: 'Adult',
 };
 
 export const expectedSingleProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
             productName: 'Product A',
@@ -1482,12 +1491,14 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
+    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1510,12 +1521,14 @@ export const expectedMultiProductUploadJsonWithZoneUpload = {
     ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
+    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1553,10 +1566,13 @@ export const expectedMultiProductUploadJsonWithSelectedServices = {
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
+    passengerType: 'Adult',
 };
 
 export const expectedFlatFareProductUploadJson = {
     operatorName: 'test',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     type: 'flatFare',
     nocCode: 'HCTY',
     products: [

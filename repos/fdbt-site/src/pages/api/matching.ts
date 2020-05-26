@@ -8,11 +8,11 @@ import {
     getDomain,
     unescapeAndDecodeCookie,
 } from './apiUtils';
-import { BasicService } from '../../interfaces/index';
+import { BasicService, PassengerDetails } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARETYPE_COOKIE } from '../../constants';
+import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARETYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../../constants';
 import getFareZones from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
@@ -95,6 +95,7 @@ const getMatchingJson = (
     userFareStages: UserFareStages,
     matchingFareZones: MatchingFareZones,
     fareType: string,
+    passengerTypeObject: PassengerDetails,
 ): MatchingData | MatchingReturnData => {
     if (fareType === 'return') {
         return {
@@ -102,6 +103,7 @@ const getMatchingJson = (
             type: 'return',
             outboundFareZones: getFareZones(userFareStages, matchingFareZones),
             inboundFareZones: [],
+            ...passengerTypeObject,
         };
     }
 
@@ -109,6 +111,7 @@ const getMatchingJson = (
         ...service,
         type: 'pointToPoint',
         fareZones: getFareZones(userFareStages, matchingFareZones),
+        ...passengerTypeObject,
     };
 };
 
@@ -149,9 +152,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const cookies = new Cookies(req, res);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
+        const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
-        const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones, fareTypeObject.fareType);
+        const matchingJson = getMatchingJson(
+            service,
+            userFareStages,
+            matchingFareZones,
+            fareTypeObject.fareType,
+            passengerTypeObject,
+        );
 
         setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
         await putMatchingDataInS3(matchingJson, uuid);
