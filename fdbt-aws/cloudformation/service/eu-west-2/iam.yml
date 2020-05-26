@@ -12,6 +12,9 @@ Parameters:
   CoreAccountId:
     Type: String
 
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+
 Resources:
   AdminRole:
     Type: AWS::IAM::Role
@@ -205,19 +208,12 @@ Resources:
               - "logs:*"
               - "cloudformation:*"
               - "iam:*"
-              - "cloudfront:*"
               - "cloudwatch:*"
-              - "waf:*"
-              - "wafv2:*"
-              - "route53:*"
               - "lambda:*"
-              - "waf-regional:*"
               - "acm:DescribeCertificate"
               - "acm:GetCertificate"
               - "acm:ListTagsForCertificate"
               - "acm:ListCertificates"
-              - "apigateway:*"
-              - "dynamodb:*"
               - "events:*"
               - "ecs:*"
               - "ec2:*"
@@ -237,6 +233,29 @@ Resources:
       UserName: fdbt-circleci-user
       Groups:
         - !Ref Group
+
+  UiTestsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Condition: IsTest
+    Properties:
+      Description: Policy for ui tests user
+      Path: /
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "wafv2:UpdateIPSet"
+              - "wafv2:GetIPSet"
+            Resource: "*"
+
+  UiTestsUser:
+    Type: AWS::IAM::User
+    Condition: IsTest
+    Properties:
+      ManagedPolicyArns:
+        - !Ref UiTestsPolicy
+      UserName: fdbt-ui-tests-user
 
 Outputs:
   EcsTaskRoleArn:
