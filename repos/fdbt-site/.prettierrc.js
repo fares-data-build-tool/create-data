@@ -4,4 +4,12 @@ module.exports = {
     semi: true,
     trailingComma: 'all',
     printWidth: 120,
+    overrides: [
+        {
+            files: '*.yml',
+            options: {
+                tabWidth: 2,
+            },
+        },
+    ],
 };
