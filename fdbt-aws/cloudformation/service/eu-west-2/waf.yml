@@ -51,6 +51,24 @@ Resources:
       IPAddressVersion: IPV4
       Addresses: !Ref TesterIpSetList
 
+  CiIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for CI
+      Name: CiIpSet
+      Scope: REGIONAL
+      IPAddressVersion: IPV4
+      Addresses: []
+
+  PersonalUserIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: Personal IPs for IW, TFN and DFT users of the tool
+      Name: PersonalUserIpSet
+      Scope: REGIONAL
+      IPAddressVersion: IPV4
+      Addresses: []
+
   RestrictAccessAcl:
     Type: AWS::WAFv2::WebACL
     Properties:
@@ -97,6 +115,28 @@ Resources:
           Statement:
             IPSetReferenceStatement:
               Arn: !GetAtt TesterIpSet.Arn
+        - Name: AllowCi
+          Action:
+            Allow: {}
+          Priority: 3
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowCiRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt CiIpSet.Arn
+        - Name: AllowPersonalUserIP
+          Action:
+            Allow: {}
+          Priority: 4
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowPersonalUserIPRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt PersonalUserIpSet.Arn
 
   WafAssociation:
     Type: "AWS::WAFv2::WebACLAssociation"

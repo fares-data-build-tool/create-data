@@ -98,15 +98,9 @@ Resources:
                   - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}/*
               - Effect: Allow
                 Action:
-                  - "dynamodb:BatchGetItem"
-                  - "dynamodb:GetItem"
-                  - "dynamodb:Query"
-                Resource: "*"
-              - Effect: Allow
-                Action:
                   - "ssm:GetParameter"
                 Resource: "*"
-          PolicyName: allow-s3-dynamo-access
+          PolicyName: ecs-site-task-permissions
 
   EcsTaskExecutionRole:
     Type: AWS::IAM::Role
@@ -214,6 +208,7 @@ Resources:
               - "cloudfront:*"
               - "cloudwatch:*"
               - "waf:*"
+              - "wafv2:*"
               - "route53:*"
               - "lambda:*"
               - "waf-regional:*"
@@ -227,33 +222,6 @@ Resources:
               - "ecs:*"
               - "ec2:*"
               - "sns:*"
-            Resource: "*"
-
-  NextJsLambdaPolicy:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      Description: Policy for lambda@edge execution role
-      Path: /
-      ManagedPolicyName: fdbt-nextjs-lambda-policy
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Action:
-              - "logs:CreateLogGroup"
-              - "logs:CreateLogStream"
-              - "logs:PutLogEvents"
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - "dynamodb:GetItem"
-              - "dynamodb:BatchGetItem"
-              - "dynamodb:PutItem"
-              - "dynamodb:Scan"
-              - "dynamodb:Query"
-              - "dynamodb:UpdateItem"
-              - "s3:PutObject"
-              - "s3:GetObject"
             Resource: "*"
 
   Group:
