@@ -18,3 +18,10 @@ export interface BasicService {
     operatorShortName: string;
     serviceDescription: string;
 }
+
+export interface PassengerDetails {
+    passengerType: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string[];
+}

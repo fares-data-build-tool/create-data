@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import { DecisionData } from './periodValidity';
 import {
     MULTIPLE_PRODUCT_COOKIE,
     OPERATOR_COOKIE,
@@ -7,6 +8,7 @@ import {
     SERVICE_LIST_COOKIE,
     PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
+    PASSENGER_TYPE_COOKIE,
 } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
@@ -14,16 +16,6 @@ import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { ServicesInfo } from '../../interfaces';
-
-interface DecisionData {
-    operatorName: string;
-    type: string;
-    nocCode: string;
-    products: Product[];
-    selectedServices?: ServicesInfo[];
-    zoneName?: string;
-    stops?: Stop[];
-}
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
@@ -61,10 +53,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
 
         if (
             multipleProductCookie === '' ||
             periodTypeCookie === '' ||
+            passengerTypeCookie === '' ||
             (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie === ''))
         ) {
             throw new Error('Necessary cookies not found for multiple product validity page');
@@ -83,6 +77,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         let props = {};
         const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
         const { periodTypeName } = JSON.parse(periodTypeCookie);
+        const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
         if (fareZoneCookie) {
             const { fareZoneName } = JSON.parse(fareZoneCookie);
@@ -119,6 +114,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             type: periodTypeName,
             nocCode,
             products,
+            ...passengerTypeObject,
             ...props,
         };
         await putStringInS3(
