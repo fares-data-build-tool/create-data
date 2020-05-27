@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { ErrorInfo } from '../types';
 import { NUMBER_OF_STAGES_COOKIE } from '../constants';
-import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
+import { buildTitle, deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
@@ -88,7 +88,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[NUMBER_OF_STAGES_COOKIE]) {
-        const numberOfFareStagesCookie = unescapeAndDecodeCookieServerSide(cookies, NUMBER_OF_STAGES_COOKIE);
+        const numberOfFareStagesCookie = cookies[NUMBER_OF_STAGES_COOKIE];
         const parsedNumberOfFareStagesCookie = JSON.parse(numberOfFareStagesCookie);
 
         if (parsedNumberOfFareStagesCookie.errorMessage) {

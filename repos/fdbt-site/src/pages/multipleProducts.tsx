@@ -12,7 +12,6 @@ import ProductRow from '../components/ProductRow';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
-import { unescapeAndDecodeCookieServerSide } from '../utils';
 
 const title = 'Multiple Product - Fares Data Build Tool';
 const description = 'Multiple Product entry page of the Fares Data Build Tool';
@@ -70,15 +69,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
         throw new Error('Necessary cookies not found to show multiple products page');
     }
 
-    const operatorCookie = unescapeAndDecodeCookieServerSide(cookies, OPERATOR_COOKIE);
-    const numberOfProductsCookie = unescapeAndDecodeCookieServerSide(cookies, NUMBER_OF_PRODUCTS_COOKIE);
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
     const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const nameOfOperator: string = JSON.parse(operatorCookie).operator;
 
     if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
-        const multipleProductCookie = unescapeAndDecodeCookieServerSide(cookies, MULTIPLE_PRODUCT_COOKIE);
+        const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
         const parsedMultipleProductCookie = JSON.parse(multipleProductCookie);
         const { errors } = parsedMultipleProductCookie;
 

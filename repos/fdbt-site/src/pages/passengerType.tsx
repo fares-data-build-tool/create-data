@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 import { PASSENGER_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
+import { buildTitle, deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Passenger Type - Fares Data Build Tool';
@@ -99,7 +99,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[PASSENGER_TYPE_COOKIE]) {
-        const passengerTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGER_TYPE_COOKIE);
+        const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
         const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
 
         if (parsedPassengerTypeCookie.errorMessage) {

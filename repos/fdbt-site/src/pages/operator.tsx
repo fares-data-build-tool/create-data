@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
-import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
+import { buildTitle } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Operator - Fares Data Build Tool';
@@ -89,7 +89,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[OPERATOR_COOKIE]) {
-        const operatorCookie = unescapeAndDecodeCookieServerSide(cookies, OPERATOR_COOKIE);
+        const operatorCookie = cookies[OPERATOR_COOKIE];
         const parsedOperatorCookie = JSON.parse(operatorCookie);
 
         if (parsedOperatorCookie.errorMessage) {
