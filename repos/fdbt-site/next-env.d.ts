@@ -35,3 +35,8 @@ declare module '*.pdf' {
     const value: string;
     export = value;
 }
+
+declare module '*.csv' {
+    const value: string;
+    export = value;
+}

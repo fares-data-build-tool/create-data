@@ -45,4 +45,8 @@ const ChooseStages = (): ReactElement => (
     </Layout>
 );
 
+export const getServerSideProps = (): {} => {
+    return { props: {} };
+};
+
 export default ChooseStages;

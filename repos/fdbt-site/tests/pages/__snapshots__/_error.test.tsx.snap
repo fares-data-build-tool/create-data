@@ -1,5 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages error page should render 404 page correctly 1`] = `
+<Layout
+  description="Error page of the Fares Data Build Tool"
+  title="Error - Fares Data Build Tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <div>
+          <h1
+            className="govuk-heading-xl"
+          >
+            Page not found
+          </h1>
+          <p
+            className="govuk-body"
+          >
+            If you typed the web address, check it is correct.
+          </p>
+          <p
+            className="govuk-body"
+          >
+            If you pasted the web address, check you copied the entire address.
+          </p>
+          <p
+            className="govuk-body"
+          >
+            If the web address is correct or you selected a link or button,
+             
+            <a
+              className="govuk-link"
+              href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
+              id="feedback_link"
+            >
+              contact
+            </a>
+             
+            us about your fares data.
+          </p>
+        </div>
+        <br />
+        <a
+          className="govuk-button"
+          data-module="govuk-button"
+          draggable="false"
+          href="/operator"
+          role="button"
+        >
+          Start again
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+`;
+
 exports[`pages error page should render error page correctly 1`] = `
 <Layout
   description="Error page of the Fares Data Build Tool"
