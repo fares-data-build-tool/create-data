@@ -15,7 +15,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "*"
+            - '*'
 
   run-ui-tests:
     docker:
@@ -46,7 +46,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "node_modules"
+            - 'node_modules'
 
   audit-site:
     docker:
@@ -83,20 +83,6 @@ jobs:
             echo "Linting site"
             npm run lint
 
-  sync-static-files:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    executor: aws-cli/default
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - aws-cli/setup:
-          profile-name: default
-      - run:
-          command: |
-            aws s3 sync --delete public/ s3://${STATIC_FILES_BUCKET_NAME}
-
 workflows:
   version: 2
   build-test-and-deploy-site:
@@ -119,30 +105,12 @@ workflows:
           requires:
             - build-site
 
-      - sync-static-files:
-          requires:
-            - test-site
-            - lint-site
-          context: tfn-fdbt-test
-          filters:
-            branches:
-              only: develop
-
-      - sync-static-files:
-          requires:
-            - test-site
-            - lint-site
-          context: tfn-fdbt-preprod
-          filters:
-            branches:
-              only: master
-
       - aws-ecr/build-and-push-image:
           requires:
             - test-site
             - lint-site
-          repo: "${SITE_ECR_REPO}"
-          tag: "${CIRCLE_SHA1},latest"
+          repo: '${SITE_ECR_REPO}'
+          tag: '${CIRCLE_SHA1},latest'
           context: tfn-fdbt-core
           filters:
             branches:
@@ -154,9 +122,9 @@ workflows:
           requires:
             - aws-ecr/build-and-push-image
           name: deploy-site-to-test
-          family: "${SITE_ECS_FAMILY}"
-          cluster-name: "${SITE_ECS_CLUSTER}"
-          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
+          family: '${SITE_ECS_FAMILY}'
+          cluster-name: '${SITE_ECS_CLUSTER}'
+          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
           context: tfn-fdbt-test
           filters:
             branches:
@@ -181,10 +149,10 @@ workflows:
       - aws-ecs/deploy-service-update:
           requires:
             - hold-preprod-deployment
-          family: "${SITE_ECS_FAMILY}"
+          family: '${SITE_ECS_FAMILY}'
           name: deploy-site-to-preprod
-          cluster-name: "${SITE_ECS_CLUSTER}"
-          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
+          cluster-name: '${SITE_ECS_CLUSTER}'
+          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
           context: tfn-fdbt-preprod
           filters:
             branches:

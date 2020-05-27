@@ -6,6 +6,8 @@ import Layout from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_UPLOAD_COOKIE } from '../constants';
 import { buildTitle, deleteCookieOnServerSide } from '../utils';
+import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
+import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
 
 const title = 'CSV Upload - Fares Data Build Tool';
 const description = 'CSV Upload page of the Fares Data Build Tool';
@@ -55,10 +57,10 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             csvUploadHintText:
                 'Upload a fares triangle as a csv file below. Refer to the documents section to download a help file and a fares triangle template.',
             guidanceDocDisplayName: 'Download Help File',
-            guidanceDocAttachmentUrl: '/assets/files/How-to-Upload-a-Fares-Triangle.pdf',
+            guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
             guidanceDocSize: '600KB',
             csvTemplateDisplayName: 'Download fares triangle csv template',
-            csvTemplateAttachmentUrl: '/assets/files/Fares-Triangle-Example.csv',
+            csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '400B',
             errors: !csvUpload?.error ? [] : [{ errorMessage: csvUpload.error, id: errorId }],
             detailSummary: "My csv won't upload",

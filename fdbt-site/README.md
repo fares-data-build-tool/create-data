@@ -11,4 +11,4 @@ To run the site locally, checkout the [fdbt-dev](https://github.com/fares-data-b
 
 ## Assets
 
-All images should be placed in the `src/assets/images` folder and imported into the component they need to be rendered in. All other assets (pdf, csv etc.) will need to placed in the `public` folder and will need to be referenced in the code using the `STATIC_FILES_PATH` env var, eg. `${STATIC_FILES_PATH}/assets/files/Fare-Zone-Example.csv`.
+All assets should be placed into an appropriate folder in `src/assets` and imported into the component they need to be used in.
