@@ -12,6 +12,7 @@ import {
     FARETYPE_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
+    PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_COOKIE,
@@ -38,6 +39,7 @@ export const getMockRequestAndResponse = (
     const {
         operator = 'test',
         fareType = 'single',
+        passengerType = 'Adult',
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -83,6 +85,7 @@ export const getMockRequestAndResponse = (
     const {
         operatorUuid = defaultUuid,
         fareTypeUuid = defaultUuid,
+        passengerTypeUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
@@ -97,6 +100,10 @@ export const getMockRequestAndResponse = (
 
     cookieString += fareType
         ? `${FARETYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
+        : '';
+
+    cookieString += passengerType
+        ? `${PASSENGER_TYPE_COOKIE}=%7B%22passengerType%22%3A%22${passengerType}%22%2C%22uuid%22%3A%22${passengerTypeUuid}%22%7D;`
         : '';
 
     cookieString += serviceLineName
@@ -136,8 +143,8 @@ export const getMockRequestAndResponse = (
 
     cookieString += selectedServices
         ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
-            selectedServices,
-        )}%7D`
+              selectedServices,
+          )}%7D`
         : '';
 
     const req = mockRequest({
@@ -952,6 +959,8 @@ export const expectedMatchingJsonSingle = {
     type: 'pointToPoint',
     lineName: '215',
     nocCode: 'DCCL',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
     fareZones: [
@@ -1065,6 +1074,8 @@ export const expectedMatchingJsonSingle = {
 
 export const expectedMatchingJsonReturnNonCircular = {
     type: 'return',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
@@ -1211,6 +1222,8 @@ export const expectedMatchingJsonReturnNonCircular = {
 export const expectedMatchingJsonReturnCircular = {
     type: 'return',
     lineName: '215',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
@@ -1432,6 +1445,7 @@ export const matchingOutBound = {
 
 export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     type: 'period',
     nocCode: 'HCTY',
     products: [
@@ -1444,12 +1458,14 @@ export const expectedSingleProductUploadJsonWithZoneUpload = {
     ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
+    passengerType: 'Adult',
 };
 
 export const expectedSingleProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
             productName: 'Product A',
@@ -1475,12 +1491,14 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
+    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1503,12 +1521,14 @@ export const expectedMultiProductUploadJsonWithZoneUpload = {
     ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
+    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1546,10 +1566,13 @@ export const expectedMultiProductUploadJsonWithSelectedServices = {
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
+    passengerType: 'Adult',
 };
 
 export const expectedFlatFareProductUploadJson = {
     operatorName: 'test',
+    passengerType: 'Adult',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     type: 'flatFare',
     nocCode: 'HCTY',
     products: [

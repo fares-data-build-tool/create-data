@@ -2,12 +2,16 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, NUMBER_OF_PRODUCTS_COOKIE, MULTIPLE_PRODUCT_COOKIE } from '../constants';
+import {
+    OPERATOR_COOKIE,
+    NUMBER_OF_PRODUCTS_COOKIE,
+    MULTIPLE_PRODUCT_COOKIE,
+    PASSENGER_TYPE_COOKIE,
+} from '../constants';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
-import { unescapeAndDecodeCookieServerSide } from '../utils';
 
 const title = 'Multiple Product - Fares Data Build Tool';
 const description = 'Multiple Product entry page of the Fares Data Build Tool';
@@ -15,6 +19,7 @@ const description = 'Multiple Product entry page of the Fares Data Build Tool';
 export interface MultipleProductProps {
     numberOfProductsToDisplay: string;
     nameOfOperator: string;
+    passengerType: string;
     errors?: ErrorInfo[];
     userInput: MultiProduct[];
 }
@@ -22,6 +27,7 @@ export interface MultipleProductProps {
 const MultipleProducts = ({
     numberOfProductsToDisplay,
     nameOfOperator,
+    passengerType,
     errors = [],
     userInput = [],
 }: MultipleProductProps): ReactElement => {
@@ -38,7 +44,7 @@ const MultipleProducts = ({
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {nameOfOperator} - {numberOfProductsToDisplay} Products
+                                {nameOfOperator} - {numberOfProductsToDisplay} Products - {passengerType}
                             </span>
                         </fieldset>
                         <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
@@ -59,18 +65,19 @@ const MultipleProducts = ({
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
 
-    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
+    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !cookies[PASSENGER_TYPE_COOKIE]) {
         throw new Error('Necessary cookies not found to show multiple products page');
     }
 
-    const operatorCookie = unescapeAndDecodeCookieServerSide(cookies, OPERATOR_COOKIE);
-    const numberOfProductsCookie = unescapeAndDecodeCookieServerSide(cookies, NUMBER_OF_PRODUCTS_COOKIE);
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
+    const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const nameOfOperator: string = JSON.parse(operatorCookie).operator;
 
     if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
-        const multipleProductCookie = unescapeAndDecodeCookieServerSide(cookies, MULTIPLE_PRODUCT_COOKIE);
+        const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
         const parsedMultipleProductCookie = JSON.parse(multipleProductCookie);
         const { errors } = parsedMultipleProductCookie;
 
@@ -79,6 +86,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
                 props: {
                     numberOfProductsToDisplay,
                     nameOfOperator,
+                    passengerType: passengerTypeInfo.passengerType,
                     errors: parsedMultipleProductCookie.errors,
                     userInput: parsedMultipleProductCookie.userInput,
                 },
@@ -90,6 +98,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
         props: {
             numberOfProductsToDisplay,
             nameOfOperator,
+            passengerType: passengerTypeInfo.passengerType,
             userInput: [],
         },
     };

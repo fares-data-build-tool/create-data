@@ -38,6 +38,8 @@ exports[`pages productDetails should render correctly 1`] = `
             bus company
              - 
             Test Zone
+             - 
+            Adult
           </span>
         </fieldset>
         <div

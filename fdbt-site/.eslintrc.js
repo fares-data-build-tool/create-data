@@ -5,14 +5,14 @@ module.exports = {
         jest: true,
     },
     extends: [
+        'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
         'airbnb',
-        'prettier',
+        'plugin:prettier/recommended',
         'prettier/react',
         'plugin:jsx-a11y/recommended',
-        'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
+        'eslint-config-prettier',
     ],
     globals: {
         Atomics: 'readonly',
@@ -30,7 +30,7 @@ module.exports = {
     plugins: ['react', '@typescript-eslint', 'jsx-a11y'],
     rules: {
         indent: [
-            2,
+            0,
             4,
             {
                 ignoredNodes: [

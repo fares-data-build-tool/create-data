@@ -41,7 +41,7 @@ describe('_document', () => {
     };
 
     it('should render correctly', () => {
-        const tree = shallow(<MyDocument {...props} />);
+        const tree = shallow(<MyDocument {...props} nonce="" />);
         expect(tree).toMatchSnapshot();
     });
 });

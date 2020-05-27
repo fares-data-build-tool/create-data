@@ -1,208 +1,159 @@
 version: 2.1
+
 orbs:
-    aws-cli: circleci/aws-cli@0.1.20
-    aws-ecr: circleci/aws-ecr@6.7.1
-    aws-ecs: circleci/aws-ecs@1.1.0
+  aws-cli: circleci/aws-cli@0.1.20
+  aws-ecr: circleci/aws-ecr@6.7.1
+  aws-ecs: circleci/aws-ecs@1.1.0
 
 jobs:
-    checkout-repo:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - checkout
-            - persist_to_workspace:
-                  root: ~/project
-                  paths:
-                      - '*'
-    run-ui-tests-chrome:
-        docker:
-            - image: circleci/openjdk:13-jdk-buster
-        steps:
-            - run:
-                  command: |
-                      git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
-                      cd fdbt-ui-automation
-                      mvn test -P remote-chrome
+  checkout-repo:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - '*'
 
-    run-ui-tests-firefox:
-        docker:
-            - image: circleci/openjdk:13-jdk-buster
-        steps:
-            - run:
-                  command: |
-                      git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
-                      cd fdbt-ui-automation
-                      mvn test -P remote-firefox
+  run-ui-tests:
+    docker:
+      - image: circleci/openjdk:13-jdk-buster
+    executor: aws-cli/default
+    steps:
+      - aws-cli/setup:
+          profile-name: default
+      - run:
+          command: |
+            git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+            cd fdbt-ui-automation
 
-    run-ui-tests-ie:
-        docker:
-            - image: circleci/openjdk:13-jdk-buster
-        steps:
-            - run:
-                  command: |
-                      git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
-                      cd fdbt-ui-automation
-                      mvn test -P remote-ie
+            ./ci_scripts/run_tests_in_browserstack.sh
 
-    build-site:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Starting build"
-                      npm install
-                      npm run build
-            - persist_to_workspace:
-                  root: ~/project
-                  paths:
-                      - 'node_modules'
+  build-site:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Starting build"
+            npm install
+            npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - 'node_modules'
 
-    audit-site:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      npx audit-ci --moderate
+  audit-site:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            npx audit-ci --moderate
 
-    test-site:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Running tests"
-                      npm run test:ci
+  test-site:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Running tests"
+            npm run test:ci
 
-    lint-site:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Linting site"
-                      npm run lint
-
-    sync-static-files:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        executor: aws-cli/default
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - aws-cli/setup:
-                  profile-name: default
-            - run:
-                  command: |
-                      aws s3 sync --delete public/ s3://${STATIC_FILES_BUCKET_NAME}
+  lint-site:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Linting site"
+            npm run lint
 
 workflows:
-    version: 2
-    build-test-and-deploy-site:
-        jobs:
+  version: 2
+  build-test-and-deploy-site:
+    jobs:
+      - checkout-repo
+
+      - audit-site:
+          requires:
             - checkout-repo
 
-            - audit-site:
-                  requires:
-                      - checkout-repo
+      - build-site:
+          requires:
+            - audit-site
 
-            - build-site:
-                  requires:
-                      - audit-site
+      - test-site:
+          requires:
+            - build-site
 
-            - test-site:
-                  requires:
-                      - build-site
+      - lint-site:
+          requires:
+            - build-site
 
-            - lint-site:
-                  requires:
-                      - build-site
+      - aws-ecr/build-and-push-image:
+          requires:
+            - test-site
+            - lint-site
+          repo: '${SITE_ECR_REPO}'
+          tag: '${CIRCLE_SHA1},latest'
+          context: tfn-fdbt-core
+          filters:
+            branches:
+              only:
+                - develop
+                - master
 
-            - sync-static-files:
-                  requires:
-                      - test-site
-                      - lint-site
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only:
-                              - develop
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          name: deploy-site-to-test
+          family: '${SITE_ECS_FAMILY}'
+          cluster-name: '${SITE_ECS_CLUSTER}'
+          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only: develop
 
-            - sync-static-files:
-                  requires:
-                      - test-site
-                      - lint-site
-                  context: tfn-fdbt-preprod
-                  filters:
-                      branches:
-                          only:
-                              - master
+      - run-ui-tests:
+          requires:
+            - deploy-site-to-test
+          context: tfn-fdbt-automation-test
+          filters:
+            branches:
+              only: develop
 
-            - aws-ecr/build-and-push-image:
-                  requires:
-                      - test-site
-                      - lint-site
-                  repo: '${SITE_ECR_REPO}'
-                  tag: '${CIRCLE_SHA1},latest'
-                  context: tfn-fdbt-core
-                  filters:
-                      branches:
-                          only:
-                              - develop
-                              - master
+      - hold-preprod-deployment:
+          type: approval
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            branches:
+              only: master
 
-            - aws-ecs/deploy-service-update:
-                  requires:
-                      - aws-ecr/build-and-push-image
-                  name: deploy-site-to-test
-                  family: '${SITE_ECS_FAMILY}'
-                  cluster-name: '${SITE_ECS_CLUSTER}'
-                  container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only: develop
-
-            - run-ui-tests-chrome:
-                  requires:
-                      - deploy-site-to-test
-                  context: tfn-fdbt-automation-test
-                  filters:
-                      branches:
-                          only:
-                              - develop
-
-            - hold-preprod-deployment:
-                  type: approval
-                  requires:
-                      - aws-ecr/build-and-push-image
-                  filters:
-                      branches:
-                          only: master
-
-            - aws-ecs/deploy-service-update:
-                  requires:
-                      - hold-preprod-deployment
-                  family: '${SITE_ECS_FAMILY}'
-                  name: deploy-site-to-preprod
-                  cluster-name: '${SITE_ECS_CLUSTER}'
-                  container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
-                  context: tfn-fdbt-preprod
-                  filters:
-                      branches:
-                          only: master
+      - aws-ecs/deploy-service-update:
+          requires:
+            - hold-preprod-deployment
+          family: '${SITE_ECS_FAMILY}'
+          name: deploy-site-to-preprod
+          cluster-name: '${SITE_ECS_CLUSTER}'
+          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only: master

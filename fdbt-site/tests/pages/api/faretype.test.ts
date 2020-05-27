@@ -9,39 +9,39 @@ describe('fareType', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /service when the single ticket option is selected', () => {
+    it('should return 302 redirect to /passengerType when the single ticket option is selected', () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, { fareType: 'single' }, {}, writeHeadMock);
         fareType(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/service',
+            Location: '/passengerType',
         });
     });
 
-    it('should return 302 redirect to /service when the return ticket option is selected', () => {
+    it('should return 302 redirect to /passengerType when the return ticket option is selected', () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, { fareType: 'return' }, {}, writeHeadMock);
         fareType(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/service',
+            Location: '/passengerType',
         });
     });
 
-    it('should return 302 redirect to /periodType when the period ticket option is selected', () => {
+    it('should return 302 redirect to /passengerType when the period ticket option is selected', () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, { fareType: 'period' }, {}, writeHeadMock);
         fareType(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodType',
+            Location: '/passengerType',
         });
     });
 
-    it('should return 302 redirect to /serviceList when the flat fare ticket option is selected', () => {
+    it('should return 302 redirect to /passengerType when the flat fare ticket option is selected', () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({}, { fareType: 'flatFare' }, {}, writeHeadMock);
         fareType(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/serviceList',
+            Location: '/passengerType',
         });
     });
 
