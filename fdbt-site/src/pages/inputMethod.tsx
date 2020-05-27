@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { ErrorInfo } from '../types';
 import { INPUT_METHOD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
+import { buildTitle, deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
@@ -96,7 +96,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[INPUT_METHOD_COOKIE]) {
-        const inputMethodCookie = unescapeAndDecodeCookieServerSide(cookies, INPUT_METHOD_COOKIE);
+        const inputMethodCookie = cookies[INPUT_METHOD_COOKIE];
         const parsedInputMethodCookie = JSON.parse(inputMethodCookie);
 
         if (parsedInputMethodCookie.errorMessage) {
