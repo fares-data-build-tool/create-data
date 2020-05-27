@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 import { PERIOD_EXPIRY_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
+import { buildTitle } from '../utils';
 import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Period Validity - Fares Data Build Tool';
@@ -100,7 +100,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[PERIOD_EXPIRY_COOKIE]) {
-        const periodValidityCookie = unescapeAndDecodeCookieServerSide(cookies, PERIOD_EXPIRY_COOKIE);
+        const periodValidityCookie = cookies[PERIOD_EXPIRY_COOKIE];
         const parsedPeriodValidityCookie = JSON.parse(periodValidityCookie);
 
         if (parsedPeriodValidityCookie.errorMessage) {

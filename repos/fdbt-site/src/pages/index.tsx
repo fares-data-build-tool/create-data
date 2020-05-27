@@ -48,4 +48,8 @@ const Home: NextPage = (): ReactElement => (
     </Layout>
 );
 
+export const getServerSideProps = (): {} => {
+    return { props: {} };
+};
+
 export default Home;

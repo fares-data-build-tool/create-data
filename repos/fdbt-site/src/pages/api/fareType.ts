@@ -16,25 +16,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 uuid: getUuidFromCookie(req, res),
                 fareType: req.body.fareType,
             });
-
             setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
-
-            switch (req.body.fareType) {
-                case 'period':
-                    redirectTo(res, '/periodType');
-                    return;
-                case 'single':
-                    redirectTo(res, '/service');
-                    return;
-                case 'return':
-                    redirectTo(res, '/service');
-                    return;
-                case 'flatFare':
-                    redirectTo(res, '/serviceList');
-                    return;
-                default:
-                    throw new Error('Fare Type we expect was not received.');
-            }
+            redirectTo(res, '/passengerType');
         } else {
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose a fare type from the options',

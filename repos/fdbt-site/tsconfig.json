@@ -6,7 +6,7 @@
         "skipLibCheck": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
-        "noEmit": false,
+        "noEmit": true,
         "esModuleInterop": true,
         "module": "esnext",
         "moduleResolution": "node",
@@ -19,8 +19,12 @@
         "outDir": ".build",
         "rootDir": "./",
         "jsx": "preserve",
-        "sourceMap": true
+        "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "src/*": ["./src/*"]
+        }
     },
-    "exclude": ["node_modules"],
+    "exclude": ["node_modules", "next.config.js"],
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

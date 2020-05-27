@@ -9,21 +9,22 @@ import {
     DAYS_VALID_COOKIE,
     SERVICE_LIST_COOKIE,
     PERIOD_TYPE_COOKIE,
+    PASSENGER_TYPE_COOKIE,
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
-import { ServicesInfo } from '../../interfaces';
+import { ServicesInfo, PassengerDetails } from '../../interfaces';
 
 interface Product {
     productName: string;
     productPrice: string;
-    productDuration: string;
-    productValidity: string;
+    productDuration?: string;
+    productValidity?: string;
 }
 
-interface DecisionData {
+export interface DecisionData extends PassengerDetails {
     operatorName: string;
     type: string;
     nocCode: string;
@@ -50,10 +51,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
+            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
 
             if (
                 productDetailsCookie === '' ||
                 daysValidCookie === '' ||
+                passengerTypeCookie === '' ||
                 (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie))
             ) {
                 throw new Error('Necessary cookies not found for period validity page');
@@ -64,6 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const { daysValid } = JSON.parse(daysValidCookie);
             const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
             const { periodTypeName } = JSON.parse(periodTypeCookie);
+            const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
             if (fareZoneCookie) {
                 const { fareZoneName } = JSON.parse(fareZoneCookie);
@@ -115,6 +119,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                         productValidity: periodValid,
                     },
                 ],
+                ...passengerTypeObject,
                 ...props,
             };
 

@@ -1,10 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
-import { BasicService } from '../../interfaces/index';
+import Cookies from 'cookies';
+import {
+    redirectTo,
+    redirectToError,
+    getUuidFromCookie,
+    setCookieOnResponseObject,
+    getDomain,
+    unescapeAndDecodeCookie,
+} from './apiUtils';
+import { BasicService, PassengerDetails } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
+import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, PASSENGER_TYPE_COOKIE } from '../../constants';
 import getFareZones from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
@@ -75,11 +83,13 @@ const getMatchingJson = (
     userFareStages: UserFareStages,
     inboundFareZones: MatchingFareZones,
     outboundFareZones: MatchingFareZones,
+    passengerTypeObject: PassengerDetails,
 ): MatchingData => ({
     ...service,
     type: 'return',
     inboundFareZones: getFareZones(userFareStages, inboundFareZones),
     outboundFareZones: getFareZones(userFareStages, outboundFareZones),
+    ...passengerTypeObject,
 });
 
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
@@ -129,7 +139,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('no outbound fare stages retrieved');
         }
 
-        const matchingJson = getMatchingJson(service, userFareStages, inboundFareZones, outboundFareZones);
+        const cookies = new Cookies(req, res);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+        const passengerTypeObject = JSON.parse(passengerTypeCookie);
+
+        const matchingJson = getMatchingJson(
+            service,
+            userFareStages,
+            inboundFareZones,
+            outboundFareZones,
+            passengerTypeObject,
+        );
 
         await putMatchingDataInS3(matchingJson, uuid);
 

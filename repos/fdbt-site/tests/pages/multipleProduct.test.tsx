@@ -12,6 +12,7 @@ describe('pages', () => {
                 <MultipleProducts
                     numberOfProductsToDisplay="2"
                     nameOfOperator="Infinity Line"
+                    passengerType="Adult"
                     errors={[]}
                     userInput={[]}
                 />,
@@ -23,15 +24,17 @@ describe('pages', () => {
             beforeEach(() => {
                 jest.clearAllMocks();
             });
-            it('should return number of products to display and name of operator if there is no cookie set', () => {
+            it('should return number of products to display, name of operator and passenger type if there is no cookie set', () => {
                 const ctx = getMockContext({
                     operator: 'BLP',
+                    passengerType: 'Adult',
                     numberOfProductsInput: '2',
                 });
                 const result = getServerSideProps(ctx);
 
                 expect(result.props.numberOfProductsToDisplay).toBe('2');
                 expect(result.props.nameOfOperator).toBe('BLP');
+                expect(result.props.passengerType).toBe('Adult');
             });
 
             it('should throw an error if the necessary cookies to render the page are not present', () => {

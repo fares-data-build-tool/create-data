@@ -2,24 +2,18 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { ProductInfo, ServicesInfo } from '../../interfaces';
+import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
 import {
     PRODUCT_DETAILS_COOKIE,
     FARETYPE_COOKIE,
     OPERATOR_COOKIE,
     SERVICE_LIST_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
+    PASSENGER_TYPE_COOKIE,
 } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 import { putStringInS3 } from '../../data/s3';
-
-interface DecisionData {
-    operatorName: string;
-    nocCode: string;
-    type: string;
-    products: { productName: string; productPrice: string }[];
-    selectedServices: ServicesInfo[];
-}
+import { DecisionData } from './periodValidity';
 
 export const checkIfInputInvalid = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     let productNameError = '';
@@ -73,13 +67,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         } else if (fareType === 'flatFare') {
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
+            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
 
-            if (!serviceListCookie) {
-                throw new Error('Failed to retrieve SERVICE_LIST_COOKIE info for productDetails API');
+            if (!serviceListCookie || !passengerTypeCookie) {
+                throw new Error('Failed to retrieve required cookies info for productDetails API');
             }
 
             const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
             const { selectedServices } = JSON.parse(serviceListCookie);
+            const passengerTypeObject: PassengerDetails = JSON.parse(passengerTypeCookie);
             const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
                 const service = selectedService.split('#');
                 return {
@@ -95,6 +91,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 type: fareType,
                 products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
                 selectedServices: formattedServiceInfo,
+                ...passengerTypeObject,
             };
 
             await putStringInS3(

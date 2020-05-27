@@ -2,7 +2,6 @@ import React, { FC, ReactElement } from 'react';
 import FileAttachment from './FileAttachment';
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
-import { STATIC_FILES_PATH } from '../constants';
 import { ErrorInfo } from '../types';
 import FormElementWrapper from './FormElementWrapper';
 import ErrorSummary from './ErrorSummary';
@@ -84,13 +83,13 @@ const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
             </legend>
             <FileAttachment
                 displayName={guidanceDocDisplayName}
-                attachmentUrl={`${STATIC_FILES_PATH}${guidanceDocAttachmentUrl}`}
+                attachmentUrl={`${guidanceDocAttachmentUrl}`}
                 imageUrl={guidanceDocImage}
                 size={guidanceDocSize}
             />
             <FileAttachment
                 displayName={csvTemplateDisplayName}
-                attachmentUrl={`${STATIC_FILES_PATH}${csvTemplateAttachmentUrl}`}
+                attachmentUrl={`${csvTemplateAttachmentUrl}`}
                 imageUrl={csvImage}
                 size={csvTemplateSize}
             />

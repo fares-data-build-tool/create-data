@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { PERIOD_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
-import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils';
+import { buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
@@ -105,7 +105,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[PERIOD_TYPE_COOKIE]) {
-        const periodTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PERIOD_TYPE_COOKIE);
+        const periodTypeCookie = cookies[PERIOD_TYPE_COOKIE];
         const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
 
         if (parsedPeriodTypeCookie.errorMessage) {

@@ -19,4 +19,7 @@ module.exports = {
         '\\.(css|sass|scss|png|ico)$': 'identity-obj-proxy',
     },
     snapshotSerializers: ['enzyme-to-json/serializer'],
+    moduleNameMapper: {
+        '\\.(csv|ico|png|pdf)$': '<rootDir>/__mocks__/fileMock.js',
+    },
 };

@@ -15,21 +15,43 @@ describe('pages', () => {
         });
 
         it('should render correctly', () => {
-            const tree = shallow(<SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />);
+            const tree = shallow(
+                <SingleDirection
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    lineName="X6A"
+                    service={mockService}
+                    error={[]}
+                />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('shows operator name above the select box', () => {
             const wrapper = shallow(
-                <SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />,
+                <SingleDirection
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    lineName="X6A"
+                    service={mockService}
+                    error={[]}
+                />,
             );
-            const journeyWelcome = wrapper.find('#direction-operator-linename-hint').first();
+            const journeyWelcome = wrapper.find('#direction-operator-linename-passengertype-hint').first();
 
-            expect(journeyWelcome.text()).toBe('Connexions Buses - X6A');
+            expect(journeyWelcome.text()).toBe('Connexions Buses - X6A - Adult');
         });
 
         it('shows a list of journey patterns for the service in the select box', () => {
-            const wrapper = mount(<SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />);
+            const wrapper = mount(
+                <SingleDirection
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    lineName="X6A"
+                    service={mockService}
+                    error={[]}
+                />,
+            );
 
             const serviceJourney = wrapper.find('.journey-option');
 
@@ -42,14 +64,17 @@ describe('pages', () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
             const operator = 'HCTY';
             const lineName = 'X6A';
+            const passengerType = 'Adult';
 
-            const ctx = getMockContext({ operator, serviceLineName: lineName });
+            const ctx = getMockContext({ operator, serviceLineName: lineName, passengerType });
 
             const result = await getServerSideProps(ctx);
 
             expect(result).toEqual({
                 props: {
+                    error: [],
                     operator,
+                    passengerType,
                     lineName,
                     service: mockService,
                 },
@@ -61,15 +86,18 @@ describe('pages', () => {
                 () => mockRawServiceWithDuplicates,
             ));
             const operator = 'HCTY';
+            const passengerType = 'Adult';
             const lineName = 'X6A';
 
-            const ctx = getMockContext({ operator, serviceLineName: lineName });
+            const ctx = getMockContext({ operator, passengerType, serviceLineName: lineName });
 
             const result = await getServerSideProps(ctx);
 
             expect(result).toEqual({
                 props: {
+                    error: [],
                     operator,
+                    passengerType,
                     lineName,
                     service: mockService,
                 },
