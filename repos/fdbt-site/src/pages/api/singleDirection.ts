@@ -12,6 +12,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const { directionJourneyPattern } = req.body;
 
         if (!directionJourneyPattern) {
+            const cookieValue = JSON.stringify({ errorMessage: 'Choose a direction from the options' });
+            setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
             redirectTo(res, '/singleDirection');
             return;
         }

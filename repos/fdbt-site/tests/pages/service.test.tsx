@@ -21,13 +21,15 @@ describe('pages', () => {
         });
 
         it('should render correctly', () => {
-            const tree = shallow(<Service operator="Connexions Buses" passengerType="Adult" services={mockServices} />);
+            const tree = shallow(
+                <Service operator="Connexions Buses" passengerType="Adult" services={mockServices} error={[]} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('shows operator name above the select box', () => {
             const wrapper = shallow(
-                <Service operator="Connexions Buses" passengerType="Adult" services={mockServices} />,
+                <Service operator="Connexions Buses" passengerType="Adult" services={mockServices} error={[]} />,
             );
             const operatorWelcome = wrapper.find('#service-operator-passengertype-hint').first();
 
@@ -36,7 +38,7 @@ describe('pages', () => {
 
         it('shows a list of services for the operator in the select box', () => {
             const wrapper = shallow(
-                <Service operator="Connexions Buses" passengerType="Adult" services={mockServices} />,
+                <Service operator="Connexions Buses" passengerType="Adult" services={mockServices} error={[]} />,
             );
             const operatorServices = wrapper.find('.service-option');
 
@@ -51,6 +53,7 @@ describe('pages', () => {
             const result = await getServerSideProps(ctx);
             expect(result).toEqual({
                 props: {
+                    error: [],
                     operator: 'test',
                     passengerType: 'Adult',
                     services: [

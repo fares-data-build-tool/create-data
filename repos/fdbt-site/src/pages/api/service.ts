@@ -19,6 +19,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const { service } = req.body;
 
         if (!service) {
+            const cookieValue = JSON.stringify({ errorMessage: 'Choose a service from the options' });
+            setCookieOnResponseObject(getDomain(req), SERVICE_COOKIE, cookieValue, req, res);
             redirectTo(res, '/service');
             return;
         }

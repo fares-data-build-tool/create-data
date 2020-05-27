@@ -1,25 +1,30 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { ErrorInfo } from '../types';
+import FormElementWrapper from '../components/FormElementWrapper';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
+import ErrorSummary from '../components/ErrorSummary';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
+const errorId = 'service-error';
 
 type ServiceProps = {
     operator: string;
     passengerType: string;
     services: ServiceType[];
+    error: ErrorInfo[];
 };
 
-const Service = ({ operator, passengerType, services }: ServiceProps): ReactElement => (
+const Service = ({ operator, passengerType, services, error }: ServiceProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/service" method="post">
-                <div className="govuk-form-group">
+                <ErrorSummary errors={error} />
+                <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="service-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="service-page-heading">
@@ -29,20 +34,22 @@ const Service = ({ operator, passengerType, services }: ServiceProps): ReactElem
                         <span className="govuk-hint" id="service-operator-passengertype-hint">
                             {operator} - {passengerType}
                         </span>
-                        <select className="govuk-select" id="service" name="service" defaultValue="">
-                            <option value="" disabled>
-                                Select One
-                            </option>
-                            {services.map(service => (
-                                <option
-                                    key={`${service.lineName}#${service.startDate}`}
-                                    value={`${service.lineName}#${service.startDate}`}
-                                    className="service-option"
-                                >
-                                    {service.lineName} - Start date {service.startDate}
+                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
+                            <select className="govuk-select" id="service" name="service" defaultValue="">
+                                <option value="" disabled>
+                                    Select One
                                 </option>
-                            ))}
-                        </select>
+                                {services.map(service => (
+                                    <option
+                                        key={`${service.lineName}#${service.startDate}`}
+                                        value={`${service.lineName}#${service.startDate}`}
+                                        className="service-option"
+                                    >
+                                        {service.lineName} - Start date {service.startDate}
+                                    </option>
+                                ))}
+                            </select>
+                        </FormElementWrapper>
                         <span className="govuk-hint hint-text" id="traveline-hint">
                             This data is taken from the Traveline National Dataset
                         </span>
@@ -59,10 +66,18 @@ const Service = ({ operator, passengerType, services }: ServiceProps): ReactElem
     </Layout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
-    deleteCookieOnServerSide(ctx, SERVICE_COOKIE);
-
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
+    const serviceCookie = cookies[SERVICE_COOKIE];
+    const error: ErrorInfo[] = [];
+    if (serviceCookie) {
+        const serviceInfo = JSON.parse(serviceCookie);
+        if (serviceInfo.errorMessage) {
+            const errorInfo: ErrorInfo = { errorMessage: serviceInfo.errorMessage, id: errorId };
+            error.push(errorInfo);
+        }
+    }
+
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
@@ -71,6 +86,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
+    const { operator } = operatorInfo;
     const passengerTypeInfo = JSON.parse(passengerTypeCookie);
     const { passengerType } = passengerTypeInfo;
 
@@ -80,7 +96,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error(`No services found for NOC Code: ${operatorInfo.nocCode}`);
     }
 
-    return { props: { operator: operatorInfo.operator, passengerType, services } };
+    return { props: { operator, passengerType, services, error } };
 };
 
 export default Service;
