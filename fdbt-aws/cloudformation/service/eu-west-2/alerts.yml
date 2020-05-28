@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-
-Description: "CloudFormation template for alert resources"
+Description: CloudFormation template for alert resources
 
 Parameters:
   Stage:

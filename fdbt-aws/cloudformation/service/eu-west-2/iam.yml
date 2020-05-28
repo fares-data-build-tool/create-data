@@ -1,6 +1,5 @@
-AWSTemplateFormatVersion: "2010-09-09"
-
-Description: "CloudFormation template for IAM resources"
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for IAM resources
 
 Parameters:
   Stage:
@@ -73,7 +72,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/Billing
 
-  EcsTaskRole:
+  EcsSiteTaskRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -103,7 +102,20 @@ Resources:
                 Action:
                   - "ssm:GetParameter"
                 Resource: "*"
-          PolicyName: ecs-site-task-permissions
+          PolicyName: ecs-site-task-policy
+
+  EcsMonitoringTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess
 
   EcsTaskExecutionRole:
     Type: AWS::IAM::Role
@@ -258,10 +270,14 @@ Resources:
       UserName: fdbt-ui-tests-user
 
 Outputs:
-  EcsTaskRoleArn:
-    Value: !GetAtt EcsTaskRole.Arn
+  EcsSiteTaskRoleArn:
+    Value: !GetAtt EcsSiteTaskRole.Arn
     Export:
-      Name: !Sub ${Stage}:EcsTaskRoleArn
+      Name: !Sub ${Stage}:EcsSiteTaskRoleArn
+  EcsMonitoringTaskRoleArn:
+    Value: !GetAtt EcsMonitoringTaskRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsMonitoringTaskRoleArn
   EcsTaskExecutionRoleArn:
     Value: !GetAtt EcsTaskExecutionRole.Arn
     Export:

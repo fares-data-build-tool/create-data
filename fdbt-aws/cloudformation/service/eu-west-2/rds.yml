@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-
-Description: "CloudFormation template for an RDS resources"
+Description: CloudFormation template for an RDS resources
 
 Parameters:
   DatabaseUsername:
@@ -134,7 +133,7 @@ Resources:
         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
 
   BastionInstanceProfile:
-    Type: "AWS::IAM::InstanceProfile"
+    Type: AWS::IAM::InstanceProfile
     Properties:
       InstanceProfileName: !Sub ${ProductName}-bastion-instance-profile-${Stage}
       Path: /

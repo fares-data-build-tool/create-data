@@ -1,6 +1,5 @@
-AWSTemplateFormatVersion: "2010-09-09"
-
-Description: "CloudFormation template for Cognito resources"
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for Cognito resources
 
 Parameters:
   Stage:
@@ -18,7 +17,7 @@ Parameters:
 
 Resources:
   UserPool:
-    Type: "AWS::Cognito::UserPool"
+    Type: AWS::Cognito::UserPool
     Properties:
       UserPoolName: !Sub fdbt-user-pool-${Stage}
       Schema:
@@ -32,7 +31,7 @@ Resources:
             MinLength: "1"
           Mutable: true
       UsernameAttributes:
-        - "email"
+        - email
       UsernameConfiguration:
         CaseSensitive: false
       Policies:
@@ -98,24 +97,24 @@ Resources:
           EmailSubject: "Register for the Fares Data Build Tool"
 
   UserPoolClient:
-    Type: "AWS::Cognito::UserPoolClient"
+    Type: AWS::Cognito::UserPoolClient
     Properties:
       ClientName: !Sub fdbt-site-client-${Stage}
       UserPoolId: !Ref UserPool
       ExplicitAuthFlows:
-        - "ALLOW_USER_SRP_AUTH"
-        - "ALLOW_REFRESH_TOKEN_AUTH"
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
       ReadAttributes:
-        - "email"
-        - "email_verified"
-        - "custom:noc"
+        - email
+        - email_verified
+        - custom:noc
       WriteAttributes:
-        - "email"
-        - "custom:noc"
-      PreventUserExistenceErrors: "ENABLED"
+        - email
+        - custom:noc
+      PreventUserExistenceErrors: ENABLED
 
   UserPoolDomain:
-    Type: "AWS::Cognito::UserPoolDomain"
+    Type: AWS::Cognito::UserPoolDomain
     Properties:
       CustomDomainConfig:
         CertificateArn: !Ref CertificateARN
@@ -127,7 +126,7 @@ Outputs:
     Value: !Ref UserPoolClient
     Export:
       Name: !Sub ${Stage}:UserPoolClientID
-  UserPoolId:
+  UserPoolID:
     Value: !Ref UserPool
     Export:
-      Name: !Sub ${Stage}:UserPoolId
+      Name: !Sub ${Stage}:UserPoolID

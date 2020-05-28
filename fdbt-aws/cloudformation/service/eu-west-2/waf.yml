@@ -1,6 +1,5 @@
-AWSTemplateFormatVersion: "2010-09-09"
-
-Description: "CloudFormation template for WAF resources"
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for WAF resources
 
 Parameters:
   Stage:

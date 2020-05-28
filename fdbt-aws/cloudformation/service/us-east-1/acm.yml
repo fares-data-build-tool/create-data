@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description: "CloudFormation template for ACM resources"
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for ACM resources
 
 Parameters:
   DomainName:
