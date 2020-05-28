@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RadioConditionalInput should render a set of radio buttons with conditional inputs when given a fieldset referencing inputs 1`] = `
+<div
+  className="govuk-form-group "
+>
+  <fieldset
+    aria-describedby="define-passenger-age-range"
+    className="govuk-fieldset"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--m"
+    >
+      <h2
+        className="govuk-fieldset__heading"
+        id="define-passenger-age-range"
+      >
+        Does the passenger type have an age range?
+      </h2>
+    </legend>
+    <FormElementWrapper
+      errorClass="govuk-radios--error"
+      errorId=""
+      errors={Array []}
+    >
+      <div
+        className="govuk-radios govuk-radios--conditional"
+        data-module="govuk-radios"
+      >
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            data-aria-controls="age-range-required-conditional"
+            id="age-range-required"
+            name="ageRange"
+            type="radio"
+            value="Yes"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="age-range-required"
+          >
+            Yes
+          </label>
+        </div>
+        <div
+          className="govuk-radios__conditional govuk-radios__conditional--hidden"
+          id="age-range-required-conditional"
+        >
+          <span
+            className="govuk-hint"
+            id="define-passenger-hint"
+          >
+            Enter a minimum age for this passenger type.
+          </span>
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              className="govuk-label"
+              htmlFor="age-range-min"
+            >
+              Minimum age (if applicable)
+            </label>
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId=""
+              errors={Array []}
+            >
+              <input
+                className="govuk-input govuk-!-width-one-third"
+                id="age-range-min"
+                name="ageRangeMin"
+                type="text"
+              />
+            </FormElementWrapper>
+          </div>
+        </div>
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            id="age-range-not-required"
+            name="ageRange"
+            type="radio"
+            value="No"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="age-range-not-required"
+          >
+            No
+          </label>
+        </div>
+      </div>
+    </FormElementWrapper>
+  </fieldset>
+  <br />
+  <br />
+</div>
+`;
+
+exports[`RadioConditionalInput should render an ordinary set of radio buttons when given a base fieldset 1`] = `
+<div
+  className="govuk-form-group "
+>
+  <fieldset
+    aria-describedby="define-passenger-age-range"
+    className="govuk-fieldset"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--m"
+    >
+      <h2
+        className="govuk-fieldset__heading"
+        id="define-passenger-age-range"
+      >
+        Does the passenger type have an age range?
+      </h2>
+    </legend>
+    <FormElementWrapper
+      errorClass="govuk-radios--error"
+      errorId=""
+      errors={Array []}
+    >
+      <div
+        className="govuk-radios govuk-radios--conditional"
+        data-module="govuk-radios"
+      >
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            id="age-range-required"
+            name="ageRange"
+            type="radio"
+            value="Yes"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="age-range-required"
+          >
+            Yes
+          </label>
+        </div>
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            id="age-range-not-required"
+            name="ageRange"
+            type="radio"
+            value="No"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="age-range-not-required"
+          >
+            No
+          </label>
+        </div>
+      </div>
+    </FormElementWrapper>
+  </fieldset>
+  <br />
+  <br />
+</div>
+`;

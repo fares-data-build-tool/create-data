@@ -9,12 +9,21 @@ exports[`_document should render correctly 1`] = `
     nonce=""
   />
   <body
-    className="govuk-template__body app-body-class"
+    className="govuk-template__body app-body-class js-enabled"
   >
     <Main />
     <NextScript
       nonce=""
     />
+    <script
+      nonce=""
+      src="/scripts/all.js"
+    />
+    <script
+      nonce=""
+    >
+      window.GOVUKFrontend.initAll()
+    </script>
   </body>
 </Html>
 `;

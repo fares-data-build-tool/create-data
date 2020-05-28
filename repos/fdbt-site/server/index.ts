@@ -26,6 +26,14 @@ const setStaticRoutes = (server: Express): void => {
             immutable: true,
         }),
     );
+
+    server.use(
+        '/scripts',
+        express.static(`${__dirname}/../node_modules/govuk-frontend/govuk`, {
+            maxAge: '365d',
+            immutable: true,
+        }),
+    );
 };
 
 const setHeaders = (server: Express): void => {
