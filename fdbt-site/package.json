@@ -60,7 +60,8 @@
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
         "uuid": "^7.0.2",
-        "xml2js": "^0.4.23"
+        "xml2js": "^0.4.23",
+        "yup": "^0.29.0"
     },
     "devDependencies": {
         "@babel/core": "^7.10.0",
@@ -88,6 +89,7 @@
         "@types/react": "^16.9.35",
         "@types/sinon": "^7.5.2",
         "@types/uuid": "^7.0.3",
+        "@types/yup": "^0.29.0",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "aws-lambda-mock-context": "^3.2.1",

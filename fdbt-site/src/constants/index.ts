@@ -1,8 +1,8 @@
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
-export const FARETYPE_COOKIE = 'fdbt-fareType';
+export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
 
-export const PASSENGER_TYPE_COOKIE = 'fdbt-passengerType';
+export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
 
 export const SERVICE_COOKIE = 'fdbt-service';
 
@@ -46,8 +46,8 @@ export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
-    'fdbt-fareType',
-    'fdbt-passengerType',
+    'fdbt-fare-type',
+    'fdbt-passenger-type',
     'fdbt-service',
     'fdbt-journey',
     'fdbt-fare-stages',

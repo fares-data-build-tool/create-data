@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { FARETYPE_COOKIE } from '../constants';
+import { FARE_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, buildTitle } from '../utils/index';
@@ -99,13 +99,13 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[FARETYPE_COOKIE]) {
-        const fareTypeCookie = cookies[FARETYPE_COOKIE];
+    if (cookies[FARE_TYPE_COOKIE]) {
+        const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
         const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
 
         if (parsedFareTypeCookie.errorMessage) {
             const { errorMessage } = parsedFareTypeCookie;
-            deleteCookieOnServerSide(ctx, FARETYPE_COOKIE);
+            deleteCookieOnServerSide(ctx, FARE_TYPE_COOKIE);
             return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }
