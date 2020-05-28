@@ -29,6 +29,8 @@ Set the env var `FDBT_ROOT` in your .zshrc or .bashrc to be the absolute path to
 
 ```bash
 export FDBT_ROOT={PATH_TO_ROOT}
+export FDBT_USER_POOL_ID={COGNITO USER POOL ID}
+export FDBT_USER_POOL_CLIENT_ID={COGNITO USER POOL CLIENT ID}
 ```
 
 The site and infrastructure can then be brought up by simply running:
