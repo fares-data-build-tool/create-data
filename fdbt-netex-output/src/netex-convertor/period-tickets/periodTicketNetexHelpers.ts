@@ -634,39 +634,56 @@ const getDurationElement = (product: ProductDetails): NetexObject => ({
     },
 });
 
-const getConditionsElement = (product: ProductDetails): NetexObject => ({
-    id: `op:Tariff@${product.productName}@conditions_of_travel`,
-    version: '1.0',
-    Name: { $t: 'Conditions of travel' },
-    GenericParameterAssignment: {
-        version: '1.0',
-        order: '1',
+const getConditionsElement = (product: ProductDetails): NetexObject => {
+    let usagePeriodValidity = {};
+
+    if (product.expiryRules) {
+        usagePeriodValidity = {
+            UsageValidityPeriod: {
+                version: '1.0',
+                id: `op:Trip@${product.productName}@back@frequency`,
+                UsageTrigger: { $t: 'purchase' },
+                UsageEnd: { $t: product.expiryRules === 'endOfCalendarDay' ? 'endOfFareDay' : 'standardDuration' },
+                ActivationMeans: { $t: 'noneRequired' },
+            },
+        };
+    }
+
+    return {
         id: `op:Tariff@${product.productName}@conditions_of_travel`,
-        TypeOfAccessRightAssignmentRef: {
-            version: 'fxc:v1.0',
-            ref: 'fxc:condition_of_use',
+        version: '1.0',
+        Name: { $t: 'Conditions of travel' },
+        GenericParameterAssignment: {
+            version: '1.0',
+            order: '1',
+            id: `op:Tariff@${product.productName}@conditions_of_travel`,
+            TypeOfAccessRightAssignmentRef: {
+                version: 'fxc:v1.0',
+                ref: 'fxc:condition_of_use',
+            },
+            LimitationGroupingType: { $t: 'AND' },
+            limitations: {
+                Transferability: {
+                    version: '1.0',
+                    id: `op:Pass@${product.productName}@transferability`,
+                    Name: { $t: 'Ticket is not transferable' },
+                    CanTransfer: { $t: 'false' },
+                },
+                FrequencyOfUse: {
+                    version: '1.0',
+                    id: `op:Pass@${product.productName}@frequency`,
+                    FrequencyOfUseType: { $t: 'unlimited' },
+                },
+                Interchanging: {
+                    version: '1.0',
+                    id: `op:Pass@${product.productName}@interchanging`,
+                    CanInterchange: { $t: 'true' },
+                },
+                ...usagePeriodValidity,
+            },
         },
-        LimitationGroupingType: { $t: 'AND' },
-        limitations: {
-            Transferability: {
-                version: '1.0',
-                id: `op:Pass@${product.productName}@transferability`,
-                Name: { $t: 'Ticket is not transferable' },
-                CanTransfer: { $t: 'false' },
-            },
-            FrequencyOfUse: {
-                version: '1.0',
-                id: `op:Pass@${product.productName}@frequency`,
-                FrequencyOfUseType: { $t: 'unlimited' },
-            },
-            Interchanging: {
-                version: '1.0',
-                id: `op:Pass@${product.productName}@interchanging`,
-                CanInterchange: { $t: 'true' },
-            },
-        },
-    },
-});
+    };
+};
 
 export const getFareStructuresElements = (
     userPeriodTicket: PeriodTicket,
