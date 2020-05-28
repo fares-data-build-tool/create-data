@@ -30,6 +30,7 @@ Resources:
           StringAttributeConstraints:
             MaxLength: "256"
             MinLength: "1"
+          Mutable: true
       UsernameAttributes:
         - "email"
       UsernameConfiguration:
@@ -111,6 +112,7 @@ Resources:
       WriteAttributes:
         - "email"
         - "custom:noc"
+      PreventUserExistenceErrors: "ENABLED"
 
   UserPoolDomain:
     Type: "AWS::Cognito::UserPoolDomain"
@@ -125,3 +127,7 @@ Outputs:
     Value: !Ref UserPoolClient
     Export:
       Name: !Sub ${Stage}:UserPoolClientID
+  UserPoolId:
+    Value: !Ref UserPool
+    Export:
+      Name: !Sub ${Stage}:UserPoolId
