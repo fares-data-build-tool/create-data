@@ -141,6 +141,9 @@ Resources:
                 awslogs-group: !Ref MonitoringLogGroup
                 awslogs-region: !Ref AWS::Region
                 awslogs-stream-prefix: !Ref ProductName
+            environment:
+              - name: GF_SERVER_ROOT_URL
+                value: !Sub https://${MonitoringDomain}
 
   SiteService:
     Type: AWS::ECS::Service
