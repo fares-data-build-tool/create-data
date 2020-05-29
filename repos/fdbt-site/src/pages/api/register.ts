@@ -61,7 +61,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 inputChecks.push({
                     inputValue: '',
                     id: 'email',
-                    error: 'There was a problem registering your account',
+                    error: 'There was a problem creating your account',
                 });
             }
         }
