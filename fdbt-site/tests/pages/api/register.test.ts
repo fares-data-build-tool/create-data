@@ -171,7 +171,7 @@ describe('register', () => {
                 {
                     inputValue: '',
                     id: 'email',
-                    error: 'There was a problem registering your account',
+                    error: 'There was a problem creating your account',
                 },
             ],
         };
