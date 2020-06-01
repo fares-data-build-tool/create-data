@@ -35,6 +35,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@aws-amplify/auth": "^3.2.9",
         "aws-event-mocks": "0.0.0",
         "aws-param-store": "^3.2.0",
         "aws-sdk": "^2.675.0",
@@ -60,7 +61,8 @@
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
         "uuid": "^7.0.2",
-        "xml2js": "^0.4.23"
+        "xml2js": "^0.4.23",
+        "yup": "^0.29.0"
     },
     "devDependencies": {
         "@babel/core": "^7.10.0",
@@ -81,13 +83,14 @@
         "@types/morgan": "^1.9.0",
         "@types/moxios": "^0.4.9",
         "@types/multer": "^1.4.2",
-        "@types/mysql2": "github:types/mysql2",
+        "@types/mysql2": "github:ljones92/mysql2",
         "@types/next": "^9.0.0",
         "@types/node": "^13.13.6",
         "@types/nookies": "^2.0.3",
         "@types/react": "^16.9.35",
         "@types/sinon": "^7.5.2",
         "@types/uuid": "^7.0.3",
+        "@types/yup": "^0.29.0",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "aws-lambda-mock-context": "^3.2.1",

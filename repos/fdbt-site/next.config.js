@@ -1,5 +1,6 @@
 const withPlugins = require('next-compose-plugins');
 const withImages = require('next-images');
+const { Amplify } = require('@aws-amplify/core');
 
 const nextConfig = {
     target: 'server',

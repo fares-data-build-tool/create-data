@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
-import { OPERATOR_COOKIE } from '../../../constants';
+import { OPERATOR_COOKIE, FARE_TYPE_COOKIE } from '../../../constants';
 
 export const getDomain = (req: NextApiRequest): string => {
     const host = req?.headers?.host;
@@ -65,7 +65,11 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
     redirectTo(res, '/error');
 };
 
-export const redirectOnFareType = (fareType: string, res: NextApiResponse): void => {
+export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
+    const cookies = new Cookies(req, res);
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const { fareType } = JSON.parse(fareTypeCookie);
+
     if (fareType) {
         switch (fareType) {
             case 'period':
@@ -84,6 +88,6 @@ export const redirectOnFareType = (fareType: string, res: NextApiResponse): void
                 throw new Error('Fare Type we expect was not received.');
         }
     } else {
-        throw new Error('No fare type received');
+        throw new Error('Could not extract fareType from the FARE_TYPE_COOKIE.');
     }
 };

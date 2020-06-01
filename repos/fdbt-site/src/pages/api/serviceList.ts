@@ -3,7 +3,7 @@ import Cookies from 'cookies';
 import { isArray } from 'util';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { SERVICE_LIST_COOKIE, FARETYPE_COOKIE } from '../../constants';
+import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
 
 interface ServiceList {
     selectedServices: string[];
@@ -37,7 +37,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
         if (!fareTypeObject || !fareTypeObject.fareType) {

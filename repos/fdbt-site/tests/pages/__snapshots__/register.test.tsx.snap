@@ -1,0 +1,717 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages register should render correctly 1`] = `
+<Layout
+  description="Create Account page of the Fares data build tool"
+  title="Create Account - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <form
+          action="/api/register"
+          method="post"
+        >
+          <ErrorSummary
+            errors={Array []}
+          />
+          <div
+            className="govuk-form-group "
+          >
+            <div
+              aria-describedby="register-page-heading"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+              >
+                <h1
+                  className="govuk-fieldset__heading"
+                  id="register-type-page-heading"
+                >
+                  Create an account
+                </h1>
+              </legend>
+              <p
+                className="govuk-hint hint-text"
+              >
+                Enter your details to create an account
+              </p>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="email"
+                >
+                  Create an Email address
+                </label>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="email"
+                  errors={Array []}
+                >
+                  <input
+                    aria-describedby="email-hint"
+                    autoComplete="email"
+                    className="govuk-input"
+                    defaultValue=""
+                    id="email"
+                    name="email"
+                    spellCheck="false"
+                    type="text"
+                  />
+                </FormElementWrapper>
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="password"
+                >
+                  Create a Password
+                </label>
+                <span
+                  className="govuk-hint"
+                  id="password-hint"
+                >
+                  Your password should be at least 8 characters long.
+                </span>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="password"
+                  errors={Array []}
+                >
+                  <input
+                    aria-describedby="password-hint"
+                    className="govuk-input"
+                    id="password"
+                    name="password"
+                    spellCheck="false"
+                    type="password"
+                  />
+                </FormElementWrapper>
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="confirmPassword"
+                >
+                  Confirm your password
+                </label>
+                <input
+                  aria-describedby="confirmPassword-hint"
+                  className="govuk-input"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  spellCheck="false"
+                  type="password"
+                />
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="nocCode"
+                >
+                  Enter your National Operator Code
+                </label>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="nocCode"
+                  errors={Array []}
+                >
+                  <input
+                    aria-describedby="nocCode-hint"
+                    className="govuk-input"
+                    defaultValue=""
+                    id="nocCode"
+                    name="nocCode"
+                    spellCheck="false"
+                    type="text"
+                  />
+                </FormElementWrapper>
+              </div>
+              <p
+                className="govuk-body govuk-!-margin-top-5"
+              >
+                By using this website, you agree to the 
+                <a
+                  className="govuk-link"
+                  href="https://www.gov.uk/help/privacy-notice"
+                >
+                  Privacy
+                </a>
+                 and 
+                <a
+                  className="govuk-link"
+                  href="https://www.gov.uk/help/cookies"
+                >
+                  Cookies
+                </a>
+                 policies
+              </p>
+              <div
+                className="govuk-checkboxes"
+              >
+                <div
+                  className="govuk-checkboxes__item"
+                >
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="checkbox-user-research"
+                    name="checkbox-user-research"
+                    type="checkbox"
+                    value="checkUserResearch"
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="checkbox-user-research"
+                  >
+                    If you are willing to be contacted as part of user research, please tick this box.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input
+            className="govuk-button"
+            id="create-account-button"
+            name="createAccount"
+            type="submit"
+            value="Create account"
+          />
+          <input
+            name="regKey"
+            type="hidden"
+            value="abcdefg"
+          />
+        </form>
+      </div>
+      <div
+        className="govuk-grid-column-one-thirds"
+      >
+        <h3
+          className="govuk-heading-m"
+        >
+          Already have an account?
+        </h3>
+        <a
+          className="govuk-link"
+          href="/signin"
+        >
+          Sign in
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+`;
+
+exports[`pages register should render error messaging when errors are passed 1`] = `
+<Layout
+  description="Create Account page of the Fares data build tool"
+  title="Create Account - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <form
+          action="/api/register"
+          method="post"
+        >
+          <ErrorSummary
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter an email address in the correct format, like name@example.com",
+                  "id": "email",
+                },
+              ]
+            }
+          />
+          <div
+            className="govuk-form-group govuk-form-group--error"
+          >
+            <div
+              aria-describedby="register-page-heading"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+              >
+                <h1
+                  className="govuk-fieldset__heading"
+                  id="register-type-page-heading"
+                >
+                  Create an account
+                </h1>
+              </legend>
+              <p
+                className="govuk-hint hint-text"
+              >
+                Enter your details to create an account
+              </p>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="email"
+                >
+                  Create an Email address
+                </label>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="email"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "Enter an email address in the correct format, like name@example.com",
+                        "id": "email",
+                      },
+                    ]
+                  }
+                >
+                  <input
+                    aria-describedby="email-hint"
+                    autoComplete="email"
+                    className="govuk-input"
+                    defaultValue=""
+                    id="email"
+                    name="email"
+                    spellCheck="false"
+                    type="text"
+                  />
+                </FormElementWrapper>
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="password"
+                >
+                  Create a Password
+                </label>
+                <span
+                  className="govuk-hint"
+                  id="password-hint"
+                >
+                  Your password should be at least 8 characters long.
+                </span>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="password"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "Enter an email address in the correct format, like name@example.com",
+                        "id": "email",
+                      },
+                    ]
+                  }
+                >
+                  <input
+                    aria-describedby="password-hint"
+                    className="govuk-input"
+                    id="password"
+                    name="password"
+                    spellCheck="false"
+                    type="password"
+                  />
+                </FormElementWrapper>
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="confirmPassword"
+                >
+                  Confirm your password
+                </label>
+                <input
+                  aria-describedby="confirmPassword-hint"
+                  className="govuk-input"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  spellCheck="false"
+                  type="password"
+                />
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="nocCode"
+                >
+                  Enter your National Operator Code
+                </label>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="nocCode"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "Enter an email address in the correct format, like name@example.com",
+                        "id": "email",
+                      },
+                    ]
+                  }
+                >
+                  <input
+                    aria-describedby="nocCode-hint"
+                    className="govuk-input"
+                    defaultValue=""
+                    id="nocCode"
+                    name="nocCode"
+                    spellCheck="false"
+                    type="text"
+                  />
+                </FormElementWrapper>
+              </div>
+              <p
+                className="govuk-body govuk-!-margin-top-5"
+              >
+                By using this website, you agree to the 
+                <a
+                  className="govuk-link"
+                  href="https://www.gov.uk/help/privacy-notice"
+                >
+                  Privacy
+                </a>
+                 and 
+                <a
+                  className="govuk-link"
+                  href="https://www.gov.uk/help/cookies"
+                >
+                  Cookies
+                </a>
+                 policies
+              </p>
+              <div
+                className="govuk-checkboxes"
+              >
+                <div
+                  className="govuk-checkboxes__item"
+                >
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="checkbox-user-research"
+                    name="checkbox-user-research"
+                    type="checkbox"
+                    value="checkUserResearch"
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="checkbox-user-research"
+                  >
+                    If you are willing to be contacted as part of user research, please tick this box.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input
+            className="govuk-button"
+            id="create-account-button"
+            name="createAccount"
+            type="submit"
+            value="Create account"
+          />
+          <input
+            name="regKey"
+            type="hidden"
+            value="abcdefg"
+          />
+        </form>
+      </div>
+      <div
+        className="govuk-grid-column-one-thirds"
+      >
+        <h3
+          className="govuk-heading-m"
+        >
+          Already have an account?
+        </h3>
+        <a
+          className="govuk-link"
+          href="/signin"
+        >
+          Sign in
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+`;
+
+exports[`pages register should store email if entered correctly but other fields fail validation 1`] = `
+<Layout
+  description="Create Account page of the Fares data build tool"
+  title="Create Account - Fares data build tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <form
+          action="/api/register"
+          method="post"
+        >
+          <ErrorSummary
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Enter valid nocCode",
+                  "id": "nocCode",
+                },
+              ]
+            }
+          />
+          <div
+            className="govuk-form-group govuk-form-group--error"
+          >
+            <div
+              aria-describedby="register-page-heading"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+              >
+                <h1
+                  className="govuk-fieldset__heading"
+                  id="register-type-page-heading"
+                >
+                  Create an account
+                </h1>
+              </legend>
+              <p
+                className="govuk-hint hint-text"
+              >
+                Enter your details to create an account
+              </p>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="email"
+                >
+                  Create an Email address
+                </label>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="email"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "Enter valid nocCode",
+                        "id": "nocCode",
+                      },
+                    ]
+                  }
+                >
+                  <input
+                    aria-describedby="email-hint"
+                    autoComplete="email"
+                    className="govuk-input"
+                    defaultValue="test@tfn.com"
+                    id="email"
+                    name="email"
+                    spellCheck="false"
+                    type="text"
+                  />
+                </FormElementWrapper>
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="password"
+                >
+                  Create a Password
+                </label>
+                <span
+                  className="govuk-hint"
+                  id="password-hint"
+                >
+                  Your password should be at least 8 characters long.
+                </span>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="password"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "Enter valid nocCode",
+                        "id": "nocCode",
+                      },
+                    ]
+                  }
+                >
+                  <input
+                    aria-describedby="password-hint"
+                    className="govuk-input"
+                    id="password"
+                    name="password"
+                    spellCheck="false"
+                    type="password"
+                  />
+                </FormElementWrapper>
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="confirmPassword"
+                >
+                  Confirm your password
+                </label>
+                <input
+                  aria-describedby="confirmPassword-hint"
+                  className="govuk-input"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  spellCheck="false"
+                  type="password"
+                />
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="nocCode"
+                >
+                  Enter your National Operator Code
+                </label>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="nocCode"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "Enter valid nocCode",
+                        "id": "nocCode",
+                      },
+                    ]
+                  }
+                >
+                  <input
+                    aria-describedby="nocCode-hint"
+                    className="govuk-input"
+                    defaultValue=""
+                    id="nocCode"
+                    name="nocCode"
+                    spellCheck="false"
+                    type="text"
+                  />
+                </FormElementWrapper>
+              </div>
+              <p
+                className="govuk-body govuk-!-margin-top-5"
+              >
+                By using this website, you agree to the 
+                <a
+                  className="govuk-link"
+                  href="https://www.gov.uk/help/privacy-notice"
+                >
+                  Privacy
+                </a>
+                 and 
+                <a
+                  className="govuk-link"
+                  href="https://www.gov.uk/help/cookies"
+                >
+                  Cookies
+                </a>
+                 policies
+              </p>
+              <div
+                className="govuk-checkboxes"
+              >
+                <div
+                  className="govuk-checkboxes__item"
+                >
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="checkbox-user-research"
+                    name="checkbox-user-research"
+                    type="checkbox"
+                    value="checkUserResearch"
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="checkbox-user-research"
+                  >
+                    If you are willing to be contacted as part of user research, please tick this box.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input
+            className="govuk-button"
+            id="create-account-button"
+            name="createAccount"
+            type="submit"
+            value="Create account"
+          />
+          <input
+            name="regKey"
+            type="hidden"
+            value="abcdefg"
+          />
+        </form>
+      </div>
+      <div
+        className="govuk-grid-column-one-thirds"
+      >
+        <h3
+          className="govuk-heading-m"
+        >
+          Already have an account?
+        </h3>
+        <a
+          className="govuk-link"
+          href="/signin"
+        >
+          Sign in
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+`;

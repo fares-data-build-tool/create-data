@@ -5,11 +5,10 @@ import {
     setCookieOnResponseObject,
     redirectToError,
     redirectTo,
-    getUuidFromCookie,
     redirectOnFareType,
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
-import { PASSENGER_TYPE_COOKIE, FARETYPE_COOKIE } from '../../constants/index';
+import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -19,27 +18,23 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
 
         if (fareTypeCookie === '') {
             throw new Error('Necessary fare type cookie not found for passenger type page');
         }
 
-        const { fareType } = JSON.parse(fareTypeCookie);
-
         if (req.body.passengerType) {
             const { passengerType } = req.body;
 
             const cookieValue = JSON.stringify({
-                errorMessage: '',
-                uuid: getUuidFromCookie(req, res),
                 passengerType,
             });
 
             setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, cookieValue, req, res);
 
             if (passengerType === 'Any') {
-                redirectOnFareType(fareType, res);
+                redirectOnFareType(req, res);
                 return;
             }
             redirectTo(res, '/definePassengerType');
@@ -48,7 +43,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const passengerTypeCookieValue = JSON.stringify({
             errorMessage: 'Choose a passenger type from the options',
-            uuid: getUuidFromCookie(req, res),
         });
         setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/passengerType');

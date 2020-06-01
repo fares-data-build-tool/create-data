@@ -62,46 +62,23 @@ describe('pages', () => {
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
-            const operator = 'HCTY';
-            const lineName = 'X6A';
-            const passengerType = 'Adult';
 
-            const ctx = getMockContext({ operator, serviceLineName: lineName, passengerType });
+            const ctx = getMockContext();
 
             const result = await getServerSideProps(ctx);
 
-            expect(result).toEqual({
-                props: {
-                    error: [],
-                    operator,
-                    passengerType,
-                    lineName,
-                    service: mockService,
-                },
-            });
+            expect(result.props.service).toEqual(mockService);
         });
 
         it('removes journeys that have the same start and end points before rendering', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
                 () => mockRawServiceWithDuplicates,
             ));
-            const operator = 'HCTY';
-            const passengerType = 'Adult';
-            const lineName = 'X6A';
 
-            const ctx = getMockContext({ operator, passengerType, serviceLineName: lineName });
+            const ctx = getMockContext();
 
             const result = await getServerSideProps(ctx);
-
-            expect(result).toEqual({
-                props: {
-                    error: [],
-                    operator,
-                    passengerType,
-                    lineName,
-                    service: mockService,
-                },
-            });
+            expect(result.props.service).toEqual(mockService);
         });
 
         it('throws an error if no journey patterns can be found', async () => {
