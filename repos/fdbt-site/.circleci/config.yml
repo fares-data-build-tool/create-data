@@ -96,30 +96,14 @@ workflows:
       - build-site:
           requires:
             - audit-site
-          context: tfn-fdbt-build-test
-          name: build-site-test
-          filters:
-            branches:
-              ignore: master
-
-      - build-site:
-          requires:
-            - audit-site
-          context: tfn-fdbt-build-preprod
-          name: build-site-preprod
-          filters:
-            branches:
-              only: master
 
       - test-site:
           requires:
-            - build-site-test
-            - build-site-preprod
+            - build-site
 
       - lint-site:
           requires:
-            - build-site-test
-            - build-site-preprod
+            - build-site
 
       - aws-ecr/build-and-push-image:
           requires:

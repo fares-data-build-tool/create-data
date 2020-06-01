@@ -19,19 +19,6 @@ const nextConfig = {
             },
         });
 
-        const originalEntry = config.entry;
-        config.entry = async () => {
-            const entries = await originalEntry();
-            Amplify.configure({
-                Auth: {
-                    region: 'eu-west-2',
-                    userPoolId: process.env.FDBT_USER_POOL_ID,
-                    userPoolWebClientId: process.env.FDBT_USER_POOL_CLIENT_ID,
-                },
-            });
-            return entries;
-        };
-
         return config;
     },
 };

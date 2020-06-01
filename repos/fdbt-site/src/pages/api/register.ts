@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Auth from '@aws-amplify/auth';
+import Auth from '../../data/amplify';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../register';
