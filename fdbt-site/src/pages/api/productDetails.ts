@@ -5,7 +5,7 @@ import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
 import {
     PRODUCT_DETAILS_COOKIE,
-    FARETYPE_COOKIE,
+    FARE_TYPE_COOKIE,
     OPERATOR_COOKIE,
     SERVICE_LIST_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
@@ -41,7 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
         const { fareType } = JSON.parse(fareTypeCookie);
 
         if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {

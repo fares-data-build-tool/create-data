@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -77,7 +77,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     }
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
-    const fareTypeCookie = cookies[FARETYPE_COOKIE];
+    const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
     if (!operatorCookie || !serviceCookie || !fareTypeCookie || !passengerTypeCookie) {

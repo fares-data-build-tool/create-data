@@ -27,7 +27,7 @@ describe('pages', () => {
             it('should return number of products to display, name of operator and passenger type if there is no cookie set', () => {
                 const ctx = getMockContext({
                     operator: 'BLP',
-                    passengerType: 'Adult',
+                    passengerType: { passengerType: 'Adult' },
                     numberOfProductsInput: '2',
                 });
                 const result = getServerSideProps(ctx);
