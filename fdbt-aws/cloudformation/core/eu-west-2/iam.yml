@@ -1,6 +1,6 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: 2010-09-09
 
-Description: "CloudFormation template for IAM resources"
+Description: CloudFormation template for IAM resources
 
 Parameters:
   TestAccountId:
@@ -10,9 +10,9 @@ Parameters:
 
 Resources:
   ManageOwnUserPolicy:
-    Type: "AWS::IAM::ManagedPolicy"
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      Description: "Policy to allow users to manage their own account"
+      Description: Policy to allow users to manage their own account
       Path: /
       ManagedPolicyName: allow-manage-user
       PolicyDocument:
@@ -65,9 +65,9 @@ Resources:
               - "arn:aws:iam::*:user/${aws:username}"
 
   CircleCiPolicy:
-    Type: "AWS::IAM::ManagedPolicy"
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      Description: "Policy for cicd accounts"
+      Description: Policy for cicd accounts
       Path: /
       PolicyDocument:
         Version: "2012-10-17"
@@ -78,11 +78,11 @@ Resources:
             Resource: "*"
 
   DeveloperGroup:
-    Type: "AWS::IAM::Group"
+    Type: AWS::IAM::Group
     Properties:
-      GroupName: "tfn-developers"
+      GroupName: tfn-developers
       Policies:
-        - PolicyName: "allow-developer-access"
+        - PolicyName: allow-developer-access
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -90,18 +90,37 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - !Sub "arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2"
-                  - !Sub "arn:aws:iam::${PreProdAccountId}:role/tfn-readonly-preprod-eu-west-2"
+                  - !Sub arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2
+                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-readonly-preprod-eu-west-2
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - !Ref ManageOwnUserPolicy
+
+  ServiceAdminGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: tfn-service-admins
+      Policies:
+        - PolicyName: allow-service-admin-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sts:AssumeRole"
+                Resource:
+                  - !Sub arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2
+                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-admin-preprod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref ManageOwnUserPolicy
 
   BillingGroup:
-    Type: "AWS::IAM::Group"
+    Type: AWS::IAM::Group
     Properties:
-      GroupName: "tfn-billing"
+      GroupName: tfn-billing
       Policies:
-        - PolicyName: "allow-billing-access"
+        - PolicyName: allow-billing-access
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -109,29 +128,29 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - !Sub "arn:aws:iam::${TestAccountId}:role/tfn-billing-test-eu-west-2"
-                  - !Sub "arn:aws:iam::${PreProdAccountId}:role/tfn-billing-preprod-eu-west-2"
+                  - !Sub arn:aws:iam::${TestAccountId}:role/tfn-billing-test-eu-west-2
+                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-billing-preprod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/Billing
         - !Ref ManageOwnUserPolicy
 
   AdminGroup:
-    Type: "AWS::IAM::Group"
+    Type: AWS::IAM::Group
     Properties:
-      GroupName: "tfn-admins"
+      GroupName: tfn-admins
       ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/AdministratorAccess"
+        - arn:aws:iam::aws:policy/AdministratorAccess
 
   CircleCiGroup:
-    Type: "AWS::IAM::Group"
+    Type: AWS::IAM::Group
     Properties:
-      GroupName: "fdbt-core-circleci-group"
+      GroupName: fdbt-core-circleci-group
       ManagedPolicyArns:
         - !Ref CircleCiPolicy
 
   CircleCiUser:
-    Type: "AWS::IAM::User"
+    Type: AWS::IAM::User
     Properties:
-      UserName: "fdbt-core-circleci-user"
+      UserName: fdbt-core-circleci-user
       Groups:
         - !Ref CircleCiGroup
