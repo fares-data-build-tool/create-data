@@ -21,7 +21,6 @@ describe('_document', () => {
         hybridAmp: false,
         staticMarkup: false,
         isDevelopment: false,
-        hasCssMode: false,
         devFiles: [''],
         files: [''],
         polyfillFiles: [''],
