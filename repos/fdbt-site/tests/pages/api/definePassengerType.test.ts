@@ -23,13 +23,15 @@ describe('definePassengerType', () => {
             [{ proof: 'Yes' }, false],
             [{ ageRange: 'Yes', proof: 'No' }, false],
             [{ ageRange: 'No', proof: 'Yes' }, false],
-            [{ ageRange: 'Yes', ageRangeMin: '', ageRangeMax: '', proof: 'No' }, false],
+            [{ ageRange: 'No', proof: 'No' }, true],
+            [{ ageRange: 'Yes', proof: 'No' }, false],
+            [{ ageRange: 'Yes', ageRangeMin: '10', proof: 'No' }, true],
+            [{ ageRange: 'Yes', ageRangeMax: '67', proof: 'No' }, true],
             [{ ageRange: 'Yes', ageRangeMin: '11', ageRangeMax: 'daddy', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: 'asda', ageRangeMax: 'tesco', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: '-12', ageRangeMax: '12', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: '1.23453', ageRangeMax: '12', proof: 'No' }, false],
-            [{ ageRange: 'No', proof: 'No' }, true],
-            [{ ageRange: 'Yes', ageRangeMin: '10', ageRangeMax: '', proof: 'No' }, true],
+            [{ ageRange: 'Yes', ageRangeMin: '50', ageRangeMax: '25', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: '12', ageRangeMax: '140', proof: 'No' }, true],
             [{ ageRange: 'No', proof: 'Yes', proofDocuments: ['Membership Card', 'Student Card'] }, true],
             [
@@ -76,8 +78,8 @@ describe('definePassengerType', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockPassengerTypeDetails = {
             ageRange: 'Yes',
-            ageRangeMin: '1',
-            ageRangeMax: '100',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
             proof: 'Yes',
             proofDocuments: ['Membership Card', 'Student Card'],
         };
@@ -101,10 +103,16 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set the PASSENGER_TYPE_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-        const mockPassengerTypeCookieValue = {
-            errors: [
+    it.each([
+        [
+            {
+                ageRange: 'Yes',
+                ageRangeMin: '',
+                ageRangeMax: '',
+                proof: 'Yes',
+                proofDocuments: [],
+            },
+            [
                 {
                     input: 'ageRangeMax',
                     message: 'Enter a minimum or maximum age',
@@ -118,30 +126,45 @@ describe('definePassengerType', () => {
                     message: 'Select at least one proof document',
                 },
             ],
-            passengerType: 'Adult',
-        };
-        const { req, res } = getMockRequestAndResponse(
-            {},
+        ],
+        [
             {
                 ageRange: 'Yes',
-                ageRangeMin: '',
-                ageRangeMax: '',
-                proof: 'Yes',
-                proofDocuments: [],
+                ageRangeMin: '25',
+                ageRangeMax: '12',
+                proof: 'No',
             },
-            {},
-            writeHeadMock,
-        );
-        await definePassengerType(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            PASSENGER_TYPE_COOKIE,
-            JSON.stringify(mockPassengerTypeCookieValue),
-            req,
-            res,
-        );
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/definePassengerType',
-        });
-    });
+            [
+                {
+                    input: 'ageRangeMax',
+                    message: 'Maximum age cannot be less than minimum age',
+                },
+                {
+                    input: 'ageRangeMin',
+                    message: 'Minimum age cannot be greater than maximum age',
+                },
+            ],
+        ],
+    ])(
+        'should set the PASSENGER_TYPE_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
+        async (mockUserInput, errors) => {
+            const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+            const mockPassengerTypeCookieValue = {
+                errors,
+                passengerType: 'Adult',
+            };
+            const { req, res } = getMockRequestAndResponse({}, mockUserInput, {}, writeHeadMock);
+            await definePassengerType(req, res);
+            expect(setCookieSpy).toHaveBeenCalledWith(
+                'localhost',
+                PASSENGER_TYPE_COOKIE,
+                JSON.stringify(mockPassengerTypeCookieValue),
+                req,
+                res,
+            );
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/definePassengerType',
+            });
+        },
+    );
 });
