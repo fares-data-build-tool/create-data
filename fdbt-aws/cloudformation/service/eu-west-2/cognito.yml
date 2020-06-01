@@ -14,6 +14,8 @@ Parameters:
     Type: String
   RegistrationLink:
     Type: String
+  SESSourceArn:
+    Type: String
 
 Resources:
   UserPool:
@@ -38,6 +40,8 @@ Resources:
         PasswordPolicy:
           MinimumLength: 8
           TemporaryPasswordValidityDays: 3
+      EmailConfiguration:
+        SourceArn: !Ref SESSourceArn
       AdminCreateUserConfig:
         AllowAdminCreateUserOnly: true
         InviteMessageTemplate:
