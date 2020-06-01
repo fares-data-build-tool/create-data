@@ -36,7 +36,6 @@
     "license": "ISC",
     "dependencies": {
         "@aws-amplify/auth": "^3.2.9",
-        "@aws-amplify/core": "^3.2.9",
         "aws-event-mocks": "0.0.0",
         "aws-param-store": "^3.2.0",
         "aws-sdk": "^2.675.0",
