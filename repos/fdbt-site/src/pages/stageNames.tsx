@@ -68,12 +68,7 @@ const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactE
                         <div>{renderInputFields(numberOfFareStages, inputChecks)}</div>
                     </fieldset>
                 </div>
-                <input
-                    type="submit"
-                    value="Continue"
-                    id="continue-button"
-                    className="govuk-button govuk-button--start"
-                />
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </form>
         </main>
     </Layout>

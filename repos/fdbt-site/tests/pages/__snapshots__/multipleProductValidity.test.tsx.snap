@@ -239,7 +239,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
         </FormElementWrapper>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -504,7 +504,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
         </FormElementWrapper>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"

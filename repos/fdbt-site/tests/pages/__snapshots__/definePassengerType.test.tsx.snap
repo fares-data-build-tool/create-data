@@ -131,7 +131,7 @@ exports[`pages definePassengerType should render correctly 1`] = `
         />
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -301,7 +301,7 @@ exports[`pages definePassengerType should render errors correctly when input err
         />
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -463,7 +463,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
         />
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"

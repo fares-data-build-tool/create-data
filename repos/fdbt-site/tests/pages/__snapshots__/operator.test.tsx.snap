@@ -227,7 +227,7 @@ exports[`pages operator should render correctly 1`] = `
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"

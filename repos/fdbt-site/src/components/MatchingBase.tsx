@@ -61,12 +61,7 @@ const MatchingBase = ({
 
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
-                    <input
-                        type="submit"
-                        value="Continue"
-                        id="submit-button"
-                        className="govuk-button govuk-button--start"
-                    />
+                    <input type="submit" value="Continue" id="submit-button" className="govuk-button" />
                 </form>
             </main>
         </Layout>

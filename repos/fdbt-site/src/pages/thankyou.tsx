@@ -38,13 +38,7 @@ const ThankYou = ({ uuid }: ThankYouProps): ReactElement => (
                     </a>
                 </p>
                 <br />
-                <a
-                    href="/"
-                    role="button"
-                    draggable="false"
-                    className="govuk-button govuk-button--start"
-                    data-module="govuk-button"
-                >
+                <a href="/" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
                     Add another fare
                 </a>
             </div>

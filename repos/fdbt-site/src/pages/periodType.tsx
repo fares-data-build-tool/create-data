@@ -89,12 +89,7 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                             </FormElementWrapper>
                         </fieldset>
                     </div>
-                    <input
-                        type="submit"
-                        value="Continue"
-                        id="continue-button"
-                        className="govuk-button govuk-button--start"
-                    />
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </form>
             </main>
         </Layout>

@@ -30,7 +30,6 @@ exports[`Layout should render correctly 1`] = `
     <div
       className="dftlogo"
     />
-    <LogoBanner />
   </div>
   <Footer />
 </div>

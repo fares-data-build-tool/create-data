@@ -154,7 +154,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -316,7 +316,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -494,7 +494,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
