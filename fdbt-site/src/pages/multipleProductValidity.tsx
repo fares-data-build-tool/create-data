@@ -2,14 +2,13 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 
-import Layout from '../layout/Layout';
+import { FullColumnLayout } from '../layout/Layout';
 import {
     MULTIPLE_PRODUCT_COOKIE,
     OPERATOR_COOKIE,
     PASSENGER_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
 } from '../constants';
-import { buildTitle } from '../utils';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -45,121 +44,110 @@ const MultipleProductValidity = ({
     multipleProducts,
     errors,
 }: MultipleProductValidityProps): ReactElement => (
-    <Layout title={buildTitle(errors, title)} description={description}>
-        <main
-            className="govuk-main-wrapper app-main-class multiple-product-validity-page"
-            id="main-content"
-            role="main"
-        >
-            <form action="/api/multipleProductValidity" method="post">
-                <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                        <h1 className="govuk-fieldset__heading" id="multiple-product-validity-page-heading">
-                            When does the product expire?
-                        </h1>
-                    </legend>
-                    <span className="govuk-hint" id="operator-products-hint">
-                        {operator} - {numberOfProducts} products - {passengerType}
+    <FullColumnLayout title={title} description={description} errors={errors}>
+        <form action="/api/multipleProductValidity" method="post" className="multiple-product-validity-page">
+            <ErrorSummary errors={errors} />
+            <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 className="govuk-fieldset__heading" id="multiple-product-validity-page-heading">
+                        When does the product expire?
+                    </h1>
+                </legend>
+                <span className="govuk-hint" id="operator-products-hint">
+                    {operator} - {numberOfProducts} products - {passengerType}
+                </span>
+                <span className="govuk-hint" id="multiple-product-validity-page-hint">
+                    We need to know the time that this product would be valid until
+                </span>
+                <span id="multiple-product-validity-radios-error" className="govuk-error-message">
+                    <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
+                        {errors.length > 0 ? errors[0].errorMessage : ''}
                     </span>
-                    <span className="govuk-hint" id="multiple-product-validity-page-hint">
-                        We need to know the time that this product would be valid until
-                    </span>
-                    <span id="multiple-product-validity-radios-error" className="govuk-error-message">
-                        <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
-                            {errors.length > 0 ? errors[0].errorMessage : ''}
-                        </span>
-                    </span>
-                    <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                        <>
-                            <div className="grid-headers-wrapper">
-                                <div className="govuk-heading-s grid-column-header-one-fifth">Product Name</div>
-                                <div className="govuk-heading-s grid-column-header-one-fifth">Product Price</div>
-                                <div className="govuk-heading-s grid-column-header-one-fifth">Product Duration</div>
-                                <div className="govuk-heading-s grid-column-header-one-fifth" id="24hr-header">
-                                    24hr
-                                </div>
-                                <div
-                                    className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
-                                    id="calendar-header"
-                                >
-                                    Calendar
-                                </div>
+                </span>
+                <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                    <>
+                        <div className="grid-headers-wrapper">
+                            <div className="govuk-heading-s grid-column-header-one-fifth">Product Name</div>
+                            <div className="govuk-heading-s grid-column-header-one-fifth">Product Price</div>
+                            <div className="govuk-heading-s grid-column-header-one-fifth">Product Duration</div>
+                            <div className="govuk-heading-s grid-column-header-one-fifth" id="24hr-header">
+                                24hr
                             </div>
-                            {multipleProducts.map((product, index) => (
-                                <fieldset className="govuk-fieldset">
-                                    <div className="grid-content-wrapper">
-                                        <label
-                                            className="govuk-label grid-column-content-one-fifth"
-                                            htmlFor={`product${index}`}
-                                        >
-                                            {product.productName}
-                                        </label>
-                                        <label
-                                            className="govuk-label grid-column-content-one-fifth"
-                                            htmlFor={`product${index}`}
-                                        >
-                                            £{product.productPrice}
-                                        </label>
-                                        <label
-                                            className="govuk-label grid-column-content-one-fifth"
-                                            htmlFor={`product${index}`}
-                                        >
-                                            {`${product.productDuration} day${
-                                                Number(product.productDuration) > 1 ? 's' : ''
-                                            }`}
-                                        </label>
-                                        <div className="govuk-radios govuk-radios--inline validity-select-wrapper">
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id={`twenty-four-hours-row${index}`}
-                                                    name={`validity-row${index}`}
-                                                    type="radio"
-                                                    value="24hr"
-                                                />
-                                                <label
-                                                    className={`govuk-label govuk-radios__label validity-radio-button-margin ${
-                                                        errors.length > 0 ? 'validity-radio-button-error-margin' : ''
-                                                    }`}
-                                                    htmlFor={`twenty-four-hours-row${index}`}
-                                                >
-                                                    <span className="visually-hidden-label">24 hour</span>
-                                                </label>
-                                            </div>
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id={`calendar-day-row${index}`}
-                                                    name={`validity-row${index}`}
-                                                    type="radio"
-                                                    value="endOfCalendarDay"
-                                                />
-                                                <label
-                                                    className={`govuk-label govuk-radios__label validity-radio-button-margin ${
-                                                        errors.length > 0 ? 'validity-radio-button-error-margin' : ''
-                                                    }`}
-                                                    htmlFor={`calendar-day-row${index}`}
-                                                >
-                                                    <span className="visually-hidden-label">Calendar</span>
-                                                </label>
-                                            </div>
+                            <div
+                                className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
+                                id="calendar-header"
+                            >
+                                Calendar
+                            </div>
+                        </div>
+                        {multipleProducts.map((product, index) => (
+                            <fieldset className="govuk-fieldset">
+                                <div className="grid-content-wrapper">
+                                    <label
+                                        className="govuk-label grid-column-content-one-fifth"
+                                        htmlFor={`product${index}`}
+                                    >
+                                        {product.productName}
+                                    </label>
+                                    <label
+                                        className="govuk-label grid-column-content-one-fifth"
+                                        htmlFor={`product${index}`}
+                                    >
+                                        £{product.productPrice}
+                                    </label>
+                                    <label
+                                        className="govuk-label grid-column-content-one-fifth"
+                                        htmlFor={`product${index}`}
+                                    >
+                                        {`${product.productDuration} day${
+                                            Number(product.productDuration) > 1 ? 's' : ''
+                                        }`}
+                                    </label>
+                                    <div className="govuk-radios govuk-radios--inline validity-select-wrapper">
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id={`twenty-four-hours-row${index}`}
+                                                name={`validity-row${index}`}
+                                                type="radio"
+                                                value="24hr"
+                                            />
+                                            <label
+                                                className={`govuk-label govuk-radios__label validity-radio-button-margin ${
+                                                    errors.length > 0 ? 'validity-radio-button-error-margin' : ''
+                                                }`}
+                                                htmlFor={`twenty-four-hours-row${index}`}
+                                            >
+                                                <span className="visually-hidden-label">24 hour</span>
+                                            </label>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id={`calendar-day-row${index}`}
+                                                name={`validity-row${index}`}
+                                                type="radio"
+                                                value="endOfCalendarDay"
+                                            />
+                                            <label
+                                                className={`govuk-label govuk-radios__label validity-radio-button-margin ${
+                                                    errors.length > 0 ? 'validity-radio-button-error-margin' : ''
+                                                }`}
+                                                htmlFor={`calendar-day-row${index}`}
+                                            >
+                                                <span className="visually-hidden-label">Calendar</span>
+                                            </label>
                                         </div>
                                     </div>
-                                </fieldset>
-                            ))}
-                        </>
-                    </FormElementWrapper>
-                </div>
-                <input
-                    type="submit"
-                    value="Continue"
-                    id="continue-button"
-                    className="govuk-button govuk-button--start"
-                />
-            </form>
-        </main>
-    </Layout>
+                                </div>
+                            </fieldset>
+                        ))}
+                    </>
+                </FormElementWrapper>
+            </div>
+            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+        </form>
+    </FullColumnLayout>
 );
 
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductValidityProps } => {

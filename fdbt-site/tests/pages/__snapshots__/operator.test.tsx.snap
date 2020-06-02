@@ -1,238 +1,233 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages operator should render correctly 1`] = `
-<Layout
+<Component
   description="Operator selection page of the Fares Data Build Tool"
+  errors={Array []}
   title="Operator - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/operator"
+    method="post"
   >
-    <form
-      action="/api/operator"
-      method="post"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
     >
-      <ErrorSummary
-        errors={Array []}
-      />
-      <div
-        className="govuk-form-group "
+      <fieldset
+        aria-describedby="operator-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="operator-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="operator-page-heading"
-            >
-              Which organisation are you representing?
-            </h1>
-          </legend>
-          <FormElementWrapper
-            errorClass="govuk-radios--error"
-            errorId="operator-error"
-            errors={Array []}
+            Which organisation are you representing?
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="operator-error"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
           >
             <div
-              className="govuk-radios"
+              className="govuk-radios__item"
+              key="Blackpool Transport"
             >
-              <div
-                className="govuk-radios__item"
-                key="Blackpool Transport"
+              <input
+                className="govuk-radios__input"
+                id="operator-name0"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Blackpool Transport\\",\\"nocCode\\":\\"BLAC\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name0"
               >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name0"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Blackpool Transport\\",\\"nocCode\\":\\"BLAC\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name0"
-                >
-                  Blackpool Transport
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Connexions Buses"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name1"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Connexions Buses\\",\\"nocCode\\":\\"HCTY\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name1"
-                >
-                  Connexions Buses
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Durham County Council"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name2"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Durham County Council\\",\\"nocCode\\":\\"DCCL\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name2"
-                >
-                  Durham County Council
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="East Yorkshire Council"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name3"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"East Yorkshire Council\\",\\"nocCode\\":\\"ERDG\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name3"
-                >
-                  East Yorkshire Council
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Lancashire County Council"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name4"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Lancashire County Council\\",\\"nocCode\\":\\"PBLT\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name4"
-                >
-                  Lancashire County Council
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Manchester Community Transport"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name5"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Manchester Community Transport\\",\\"nocCode\\":\\"MCTR\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name5"
-                >
-                  Manchester Community Transport
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Pilkington Bus"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name6"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Pilkington Bus\\",\\"nocCode\\":\\"NWBT\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name6"
-                >
-                  Pilkington Bus
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="TLC Travel"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name7"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"TLC Travel\\",\\"nocCode\\":\\"TLCT\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name7"
-                >
-                  TLC Travel
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Transport for Greater Manchester"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name8"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Transport for Greater Manchester\\",\\"nocCode\\":\\"VISB\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name8"
-                >
-                  Transport for Greater Manchester
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Warrington's Own Buses"
-              >
-                <input
-                  className="govuk-radios__input"
-                  id="operator-name9"
-                  name="operator"
-                  type="radio"
-                  value="{\\"operatorName\\":\\"Warrington's Own Buses\\",\\"nocCode\\":\\"WBTR\\"}"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="operator-name9"
-                >
-                  Warrington's Own Buses
-                </label>
-              </div>
+                Blackpool Transport
+              </label>
             </div>
-          </FormElementWrapper>
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+            <div
+              className="govuk-radios__item"
+              key="Connexions Buses"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name1"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Connexions Buses\\",\\"nocCode\\":\\"HCTY\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name1"
+              >
+                Connexions Buses
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Durham County Council"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name2"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Durham County Council\\",\\"nocCode\\":\\"DCCL\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name2"
+              >
+                Durham County Council
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="East Yorkshire Council"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name3"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"East Yorkshire Council\\",\\"nocCode\\":\\"ERDG\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name3"
+              >
+                East Yorkshire Council
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Lancashire County Council"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name4"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Lancashire County Council\\",\\"nocCode\\":\\"PBLT\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name4"
+              >
+                Lancashire County Council
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Manchester Community Transport"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name5"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Manchester Community Transport\\",\\"nocCode\\":\\"MCTR\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name5"
+              >
+                Manchester Community Transport
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Pilkington Bus"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name6"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Pilkington Bus\\",\\"nocCode\\":\\"NWBT\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name6"
+              >
+                Pilkington Bus
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="TLC Travel"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name7"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"TLC Travel\\",\\"nocCode\\":\\"TLCT\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name7"
+              >
+                TLC Travel
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Transport for Greater Manchester"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name8"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Transport for Greater Manchester\\",\\"nocCode\\":\\"VISB\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name8"
+              >
+                Transport for Greater Manchester
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Warrington's Own Buses"
+            >
+              <input
+                className="govuk-radios__input"
+                id="operator-name9"
+                name="operator"
+                type="radio"
+                value="{\\"operatorName\\":\\"Warrington's Own Buses\\",\\"nocCode\\":\\"WBTR\\"}"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="operator-name9"
+              >
+                Warrington's Own Buses
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

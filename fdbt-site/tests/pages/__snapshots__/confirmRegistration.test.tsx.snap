@@ -1,35 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages confirmRegistration should render correctly 1`] = `
-<Layout
+<Component
   description="Confirm Registration page for the Fares Data Build Tool"
   title="Registration Successful - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <h1
+    className="govuk-heading-l"
   >
-    <h1
-      className="govuk-heading-xl"
-    >
-      Your account has been successfully created
-    </h1>
-    <p
-      className="govuk-body-l"
-    >
-      Click continue to go to the homepage.
-    </p>
-    <a
-      className="govuk-button"
-      data-module="govuk-button"
-      draggable="false"
-      href="/"
-      id="start-now-button"
-      role="button"
-    >
-      Continue
-    </a>
-  </main>
-</Layout>
+    Your account has been successfully created
+  </h1>
+  <p
+    className="govuk-body-l"
+  >
+    Click continue to go to the homepage.
+  </p>
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/"
+    id="start-now-button"
+    role="button"
+  >
+    Continue
+  </a>
+</Component>
 `;

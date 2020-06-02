@@ -83,7 +83,7 @@
         "@types/morgan": "^1.9.0",
         "@types/moxios": "^0.4.9",
         "@types/multer": "^1.4.2",
-        "@types/mysql2": "github:ljones92/mysql2",
+        "@types/mysql2": "github:types/mysql2",
         "@types/next": "^9.0.0",
         "@types/node": "^13.13.6",
         "@types/nookies": "^2.0.3",

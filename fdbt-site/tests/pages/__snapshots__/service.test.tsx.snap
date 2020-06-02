@@ -1,108 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages service should render correctly 1`] = `
-<Layout
+<Component
   description="Service selection page of the Fares Data Build Tool"
+  errors={Array []}
   title="Service - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/service"
+    method="post"
   >
-    <form
-      action="/api/service"
-      method="post"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
     >
-      <ErrorSummary
-        errors={Array []}
-      />
-      <div
-        className="govuk-form-group "
+      <fieldset
+        aria-describedby="service-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="service-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="service-page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="service-page-heading"
+            Select a service
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="service-operator-passengertype-hint"
+        >
+          Connexions Buses
+           - 
+          Adult
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="service-error"
+          errors={Array []}
+        >
+          <select
+            className="govuk-select"
+            defaultValue=""
+            id="service"
+            name="service"
+          >
+            <option
+              disabled={true}
+              value=""
             >
-              Select a service
-            </h1>
-          </legend>
-          <span
-            className="govuk-hint"
-            id="service-operator-passengertype-hint"
-          >
-            Connexions Buses
-             - 
-            Adult
-          </span>
-          <FormElementWrapper
-            errorClass="govuk-radios--error"
-            errorId="service-error"
-            errors={Array []}
-          >
-            <select
-              className="govuk-select"
-              defaultValue=""
-              id="service"
-              name="service"
+              Select One
+            </option>
+            <option
+              className="service-option"
+              key="123#05/02/2020"
+              value="123#05/02/2020"
             >
-              <option
-                disabled={true}
-                value=""
-              >
-                Select One
-              </option>
-              <option
-                className="service-option"
-                key="123#05/02/2020"
-                value="123#05/02/2020"
-              >
-                123
-                 - Start date 
-                05/02/2020
-              </option>
-              <option
-                className="service-option"
-                key="X1#06/02/2020"
-                value="X1#06/02/2020"
-              >
-                X1
-                 - Start date 
-                06/02/2020
-              </option>
-              <option
-                className="service-option"
-                key="Infinity Line#07/02/2020"
-                value="Infinity Line#07/02/2020"
-              >
-                Infinity Line
-                 - Start date 
-                07/02/2020
-              </option>
-            </select>
-          </FormElementWrapper>
-          <span
-            className="govuk-hint hint-text"
-            id="traveline-hint"
-          >
-            This data is taken from the Traveline National Dataset
-          </span>
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+              123
+               - Start date 
+              05/02/2020
+            </option>
+            <option
+              className="service-option"
+              key="X1#06/02/2020"
+              value="X1#06/02/2020"
+            >
+              X1
+               - Start date 
+              06/02/2020
+            </option>
+            <option
+              className="service-option"
+              key="Infinity Line#07/02/2020"
+              value="Infinity Line#07/02/2020"
+            >
+              Infinity Line
+               - Start date 
+              07/02/2020
+            </option>
+          </select>
+        </FormElementWrapper>
+        <span
+          className="govuk-hint hint-text"
+          id="traveline-hint"
+        >
+          This data is taken from the Traveline National Dataset
+        </span>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;
