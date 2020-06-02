@@ -1,36 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Layout should render correctly 1`] = `
-<div>
-  <Head>
-    <link
-      href={Object {}}
-      rel="shortcut icon"
-    />
-    <title>
-      title
-    </title>
-    <meta
-      content="description"
-      name="description"
-    />
-    <meta
-      content="width=device-width, initial-scale=1"
-      name="viewport"
-    />
-    <meta
-      charSet="utf-8"
-    />
-  </Head>
-  <Header />
+<Component
+  description="description"
+  errors={Array []}
+  title="title"
+>
   <div
-    className="govuk-width-container app-width-container--wide"
+    className="govuk-grid-row"
   >
-    <AlphaBanner />
     <div
-      className="dftlogo"
+      className="govuk-grid-column-two-thirds"
     />
   </div>
-  <Footer />
-</div>
+</Component>
 `;

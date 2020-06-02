@@ -5,17 +5,25 @@ import AlphaBanner from './AlphaBanner';
 import Footer from './Footer';
 
 import favicon from '../assets/images/favicon.ico';
+import { buildTitle } from '../utils';
+import { ErrorInfo } from '../types';
 
 type LayoutProps = {
     title: string;
     description: string;
+    errors?: ErrorInfo[];
 };
 
-const Layout: FC<LayoutProps> = ({ title, description, children }: PropsWithChildren<LayoutProps>) => (
+export const BaseLayout: FC<LayoutProps> = ({
+    title,
+    description,
+    errors = [],
+    children,
+}: PropsWithChildren<LayoutProps>) => (
     <div>
         <Head>
             <link rel="shortcut icon" href={favicon} />
-            <title>{title || 'Fares Data Build Tool'}</title>
+            <title>{buildTitle(errors, title || 'Fares Data Build Tool')}</title>
             <meta name="description" content={description || 'Fares Data Build Tool'} />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta charSet="utf-8" />
@@ -24,11 +32,39 @@ const Layout: FC<LayoutProps> = ({ title, description, children }: PropsWithChil
         <Header />
         <div className="govuk-width-container app-width-container--wide">
             <AlphaBanner />
-            <div className="dftlogo" />
-            {children}
+
+            <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
+                {children}
+            </main>
         </div>
         <Footer />
     </div>
 );
 
-export default Layout;
+export const FullColumnLayout: FC<LayoutProps> = ({
+    title,
+    description,
+    errors = [],
+    children,
+}: PropsWithChildren<LayoutProps>) => (
+    <BaseLayout title={title} description={description} errors={errors}>
+        <div className="govuk-grid-row">
+            <div className="govuk-grid-column-full">{children}</div>
+        </div>
+    </BaseLayout>
+);
+
+export const TwoThirdsLayout: FC<LayoutProps> = ({
+    title,
+    description,
+    errors = [],
+    children,
+}: PropsWithChildren<LayoutProps>) => (
+    <BaseLayout title={title} description={description} errors={errors}>
+        <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">{children}</div>
+        </div>
+    </BaseLayout>
+);
+
+export default TwoThirdsLayout;

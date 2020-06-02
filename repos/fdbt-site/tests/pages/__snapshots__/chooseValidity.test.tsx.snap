@@ -1,85 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Choose Validity Page should render correctly 1`] = `
-<Layout
+<Component
   description="Choose Validity page of the Fares Data Build Tool"
   title="Choose Validity - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/chooseValidity"
+    method="post"
   >
-    <form
-      action="/api/chooseValidity"
-      method="post"
+    <div
+      className="govuk-form-group"
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="choose-validity-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="choose-validity-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="page-heading"
-            >
-              What duration is your product valid for?
-            </h1>
-            <p
-              className="govuk-hint hint-text"
-            >
-              Product: 
-              bus company
-               - £
-              £3.00
-               - 
-              Adult
-            </p>
-          </legend>
-          <div
-            className="govuk-form-group "
+            What duration is your product valid for?
+          </h1>
+          <p
+            className="govuk-hint"
           >
-            <label
-              className="govuk-label"
-              htmlFor="validity"
-            >
-              How many days is your product valid for?
-            </label>
-            <p
-              className="govuk-hint hint-text"
-            >
-              Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
-            </p>
+            Product: 
+            bus company
+             - £
+            £3.00
+             - 
+            Adult
+          </p>
+        </legend>
+        <div
+          className="govuk-form-group "
+        >
+          <label
+            className="govuk-label"
+            htmlFor="validity"
+          >
+            How many days is your product valid for?
+          </label>
+          <p
+            className="govuk-hint"
+          >
+            Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
+          </p>
+          <span
+            className="govuk-error-message"
+            id="product-validity-error"
+          >
             <span
-              className="govuk-error-message"
-              id="product-validity-error"
-            >
-              <span
-                className="govuk-visually-hidden"
-              />
-            </span>
-            <input
-              className="govuk-input govuk-input--width-2 "
-              defaultValue=""
-              id="validity"
-              name="validityInput"
-              type="text"
+              className="govuk-visually-hidden"
             />
-          </div>
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+          </span>
+          <input
+            className="govuk-input govuk-input--width-2 "
+            defaultValue=""
+            id="validity"
+            name="validityInput"
+            type="text"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

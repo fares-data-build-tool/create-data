@@ -1,133 +1,127 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages productDetails should render correctly 1`] = `
-<Layout
+<Component
   description="Product Details entry page of the Fares Data Build Tool"
   title="Product Details - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/productDetails"
+    method="post"
   >
-    <form
-      action="/api/productDetails"
-      method="post"
+    <div
+      className="govuk-form-group"
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="product-details-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="product-details-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="product-details-page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="product-details-page-heading"
-            >
-              Enter your product details
-            </h1>
-          </legend>
-          <span
-            className="govuk-hint"
-            id="service-operator-hint"
-          >
-            bus company
-             - 
-            Test Zone
-             - 
-            Adult
-          </span>
-        </fieldset>
-        <div
-          className="govuk-form-group "
+            Enter your product details
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="service-operator-hint"
         >
-          <label
-            className="govuk-label"
-            htmlFor="productDetailsName"
-          >
-            Product Name
-          </label>
+          bus company
+           - 
+          Test Zone
+           - 
+          Adult
+        </span>
+      </fieldset>
+      <div
+        className="govuk-form-group "
+      >
+        <label
+          className="govuk-label"
+          htmlFor="productDetailsName"
+        >
+          Product Name
+        </label>
+        <span
+          className="govuk-hint"
+          id="product-name-hint"
+        >
+          Enter the name of your product
+        </span>
+        <span
+          className="govuk-error-message"
+          id="product-name-error"
+        >
           <span
-            className="govuk-hint"
-            id="product-name-hint"
-          >
-            Enter the name of your product
-          </span>
-          <span
-            className="govuk-error-message"
-            id="product-name-error"
-          >
-            <span
-              className="govuk-visually-hidden"
-            />
-          </span>
-          <input
-            className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input  "
-            defaultValue=""
-            id="productDetailsName"
-            maxLength={50}
-            name="productDetailsNameInput"
-            type="text"
+            className="govuk-visually-hidden"
           />
-        </div>
-        <div
-          className="govuk-form-group "
+        </span>
+        <input
+          className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input  "
+          defaultValue=""
+          id="productDetailsName"
+          maxLength={50}
+          name="productDetailsNameInput"
+          type="text"
+        />
+      </div>
+      <div
+        className="govuk-form-group "
+      >
+        <label
+          className="govuk-label"
+          htmlFor="productDetailsPrice"
         >
-          <label
-            className="govuk-label"
-            htmlFor="productDetailsPrice"
-          >
-            Product Price
-          </label>
+          Product Price
+        </label>
+        <span
+          className="govuk-hint"
+          id="product-price-hint"
+        >
+          For example, £2.99
+        </span>
+        <span
+          className="govuk-error-message"
+          id="product-price-error"
+        >
           <span
-            className="govuk-hint"
-            id="product-price-hint"
-          >
-            For example, £2.99
-          </span>
-          <span
-            className="govuk-error-message"
-            id="product-price-error"
+            className="govuk-visually-hidden"
+          />
+        </span>
+        <div
+          className="govuk-currency-input"
+        >
+          <div
+            className="govuk-currency-input__inner"
           >
             <span
-              className="govuk-visually-hidden"
-            />
-          </span>
-          <div
-            className="govuk-currency-input"
-          >
-            <div
-              className="govuk-currency-input__inner"
+              className="govuk-currency-input__inner__unit"
             >
-              <span
-                className="govuk-currency-input__inner__unit"
-              >
-                £
-              </span>
-              <input
-                aria-label="Enter amount in pounds"
-                className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input "
-                data-non-numeric={true}
-                defaultValue=""
-                id="productDetailsPrice"
-                name="productDetailsPriceInput"
-                type="text"
-              />
-            </div>
+              £
+            </span>
+            <input
+              aria-label="Enter amount in pounds"
+              className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input "
+              data-non-numeric={true}
+              defaultValue=""
+              id="productDetailsPrice"
+              name="productDetailsPriceInput"
+              type="text"
+            />
           </div>
         </div>
       </div>
-      <input
-        className="govuk-button"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

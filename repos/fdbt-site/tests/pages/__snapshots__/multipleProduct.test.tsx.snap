@@ -1,66 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages multipleProduct should render correctly 1`] = `
-<Layout
+<Component
   description="Multiple Product entry page of the Fares Data Build Tool"
+  errors={Array []}
   title="Multiple Product - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/multipleProducts"
+    method="post"
   >
-    <form
-      action="/api/multipleProducts"
-      method="post"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
     >
-      <ErrorSummary
+      <fieldset
+        aria-describedby="multiple-product-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="multiple-product-page-heading"
+          >
+            Enter your product details
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="service-operator-hint"
+        >
+          Infinity Line
+           - 
+          2
+           Products - 
+          Adult
+        </span>
+      </fieldset>
+      <div
+        className="govuk-inset-text"
+      >
+        For example, Super Saver ticket - £4.95 - 2
+      </div>
+    </div>
+    <div
+      className="govuk-grid-row"
+    >
+      <ProductRow
         errors={Array []}
+        numberOfProductsToDisplay="2"
+        userInput={Array []}
       />
-      <div
-        className="govuk-form-group"
-      >
-        <fieldset
-          aria-describedby="multiple-product-page-heading"
-          className="govuk-fieldset"
-        >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
-          >
-            <h1
-              className="govuk-fieldset__heading"
-              id="multiple-product-page-heading"
-            >
-              Enter your product details
-            </h1>
-          </legend>
-          <span
-            className="govuk-hint"
-            id="service-operator-hint"
-          >
-            Infinity Line
-             - 
-            2
-             Products - 
-            Adult
-          </span>
-        </fieldset>
-        <div
-          className="govuk-inset-text"
-        >
-          For example, Super Saver ticket - £4.95 - 2
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <ProductRow
-          errors={Array []}
-          numberOfProductsToDisplay="2"
-          userInput={Array []}
-        />
-      </div>
-    </form>
-  </main>
-</Layout>
+    </div>
+  </form>
+</Component>
 `;

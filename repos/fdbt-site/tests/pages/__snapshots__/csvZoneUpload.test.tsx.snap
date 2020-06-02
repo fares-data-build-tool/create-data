@@ -1,43 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages csvzoneupload should render correctly 1`] = `
-<Layout
+<Component
   description="CSV Zone Upload page of the Fares Data Build Tool"
+  errors={Array []}
   title="CSV Zone Upload - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
-  >
-    <UserDataUploadComponent
-      csvTemplateAttachmentUrl=""
-      csvTemplateDisplayName=""
-      csvTemplateSize=""
-      csvUploadApiRoute=""
-      csvUploadHintText=""
-      detailBody={
-        <React.Fragment>
-          <p>
-            Some common issues with csv uploads include:
-          </p>
-          <ul
-            className="govuk-list govuk-list--bullet"
-          >
-            <li>
-              Commas in fare zone names
-            </li>
-          </ul>
-          <p>
-            Use the help file document for a more detailed help on constructing a fare zone csv in the required format or download the csv template to create a new file.
-          </p>
-        </React.Fragment>
-      }
-      errors={Array []}
-      guidanceDocAttachmentUrl=""
-      guidanceDocDisplayName=""
-      guidanceDocSize=""
-    />
-  </main>
-</Layout>
+  <UserDataUploadComponent
+    csvTemplateAttachmentUrl=""
+    csvTemplateDisplayName=""
+    csvTemplateSize=""
+    csvUploadApiRoute=""
+    csvUploadHintText=""
+    detailBody={
+      <React.Fragment>
+        <p>
+          Some common issues with csv uploads include:
+        </p>
+        <ul
+          className="govuk-list govuk-list--bullet"
+        >
+          <li>
+            Commas in fare zone names
+          </li>
+        </ul>
+        <p>
+          Use the help file document for a more detailed help on constructing a fare zone csv in the required format or download the csv template to create a new file.
+        </p>
+      </React.Fragment>
+    }
+    errors={Array []}
+    guidanceDocAttachmentUrl=""
+    guidanceDocDisplayName=""
+    guidanceDocSize=""
+  />
+</Component>
 `;

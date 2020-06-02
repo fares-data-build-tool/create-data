@@ -2,7 +2,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import Layout from '../layout/Layout';
+import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
@@ -15,25 +15,23 @@ const description = 'CSV Zone Upload page of the Fares Data Build Tool';
 const errorId = 'csv-upload-error';
 
 const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
-    <Layout title={title} description={description}>
-        <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <UserDataUploadComponent
-                {...uploadProps}
-                detailBody={
-                    <>
-                        <p>Some common issues with csv uploads include:</p>
-                        <ul className="govuk-list govuk-list--bullet">
-                            <li>Commas in fare zone names</li>
-                        </ul>
-                        <p>
-                            Use the help file document for a more detailed help on constructing a fare zone csv in the
-                            required format or download the csv template to create a new file.
-                        </p>
-                    </>
-                }
-            />
-        </main>
-    </Layout>
+    <BaseLayout title={title} description={description} errors={uploadProps.errors}>
+        <UserDataUploadComponent
+            {...uploadProps}
+            detailBody={
+                <>
+                    <p>Some common issues with csv uploads include:</p>
+                    <ul className="govuk-list govuk-list--bullet">
+                        <li>Commas in fare zone names</li>
+                    </ul>
+                    <p>
+                        Use the help file document for a more detailed help on constructing a fare zone csv in the
+                        required format or download the csv template to create a new file.
+                    </p>
+                </>
+            }
+        />
+    </BaseLayout>
 );
 
 export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
