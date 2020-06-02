@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import Layout from '../layout/Layout';
+import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
@@ -25,58 +25,46 @@ interface DirectionProps {
     inboundJourney: string;
 }
 
-const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
-    return (
-        <Layout title={title} description={description}>
-            <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/returnDirection" method="post">
-                    <ErrorSummary errors={errors} />
-                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="return-direction-page-heading">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="return-direction-page-heading">
-                                    Select the inbound and outbound journeys for your service
-                                </h1>
-                            </legend>
-                            <div className="govuk-!-margin-top-5">
-                                <FormElementWrapper
-                                    errors={errors}
-                                    errorId={outboundErrorId}
-                                    errorClass="govuk-radios--error"
-                                >
-                                    <DirectionDropdown
-                                        selectNameID="outboundJourney"
-                                        dropdownLabel="Outbound Journey"
-                                        journeyPatterns={service.journeyPatterns}
-                                        outboundJourney={outboundJourney}
-                                    />
-                                </FormElementWrapper>
-                            </div>
-                            <div className="govuk-!-margin-top-6">
-                                <FormElementWrapper
-                                    errors={errors}
-                                    errorId={inboundErrorId}
-                                    errorClass="govuk-radios--error"
-                                >
-                                    <DirectionDropdown
-                                        selectNameID="inboundJourney"
-                                        dropdownLabel="Inbound Journey"
-                                        journeyPatterns={service.journeyPatterns}
-                                        inboundJourney={inboundJourney}
-                                    />
-                                </FormElementWrapper>
-                            </div>
-                            <span className="govuk-hint hint-text" id="traveline-hint">
-                                This data is taken from the Traveline National Dataset
-                            </span>
-                        </fieldset>
+const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => (
+    <TwoThirdsLayout title={title} description={description} errors={errors}>
+        <form action="/api/returnDirection" method="post">
+            <ErrorSummary errors={errors} />
+            <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                <fieldset className="govuk-fieldset" aria-describedby="return-direction-page-heading">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 className="govuk-fieldset__heading" id="return-direction-page-heading">
+                            Select the inbound and outbound journeys for your service
+                        </h1>
+                    </legend>
+                    <div className="govuk-!-margin-top-5">
+                        <FormElementWrapper errors={errors} errorId={outboundErrorId} errorClass="govuk-radios--error">
+                            <DirectionDropdown
+                                selectNameID="outboundJourney"
+                                dropdownLabel="Outbound Journey"
+                                journeyPatterns={service.journeyPatterns}
+                                outboundJourney={outboundJourney}
+                            />
+                        </FormElementWrapper>
                     </div>
-                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-                </form>
-            </main>
-        </Layout>
-    );
-};
+                    <div className="govuk-!-margin-top-6">
+                        <FormElementWrapper errors={errors} errorId={inboundErrorId} errorClass="govuk-radios--error">
+                            <DirectionDropdown
+                                selectNameID="inboundJourney"
+                                dropdownLabel="Inbound Journey"
+                                journeyPatterns={service.journeyPatterns}
+                                inboundJourney={inboundJourney}
+                            />
+                        </FormElementWrapper>
+                    </div>
+                    <span className="govuk-hint hint-text" id="traveline-hint">
+                        This data is taken from the Traveline National Dataset
+                    </span>
+                </fieldset>
+            </div>
+            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+        </form>
+    </TwoThirdsLayout>
+);
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const cookies = parseCookies(ctx);

@@ -39,7 +39,7 @@ const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
             <form action={csvUploadApiRoute} method="post" encType="multipart/form-data">
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="csv-upload-hint csv-upload-error">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading">Select a file to upload</h1>
                         </legend>
                         <span className="govuk-hint" id="csv-upload-hint">

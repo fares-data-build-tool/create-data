@@ -48,6 +48,7 @@ const createErrorId = (input: BaseElement, inputErrors: ErrorInfo[]): string => 
 
 export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): ReactElement => {
     const error = radio.inputErrors.length > 0;
+
     return (
         <div
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
@@ -84,6 +85,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
 
 const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElement => {
     const error = radio.inputErrors.length > 0;
+
     return (
         <div
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
@@ -146,6 +148,7 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
             checked
         />
     );
+
     return (
         <>
             <div className="govuk-radios__item">
@@ -169,9 +172,11 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
             {radio.label}
         </label>
     );
+
     if (isRadioWithConditionalInputs(radio)) {
         return renderConditionalRadioButton(radio, radioButtonLabel);
     }
+
     return (
         <div className="govuk-radios__item">
             <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
@@ -182,6 +187,7 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
 
 const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactElement => {
     const radioError = fieldset.radioError.length > 0;
+
     return (
         <div className={`govuk-form-group ${radioError ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>

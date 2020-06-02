@@ -2,10 +2,10 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import Layout from '../layout/Layout';
+import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_UPLOAD_COOKIE } from '../constants';
-import { buildTitle, deleteCookieOnServerSide } from '../utils';
+import { deleteCookieOnServerSide } from '../utils';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
 
@@ -15,27 +15,25 @@ const description = 'CSV Upload page of the Fares Data Build Tool';
 const errorId = 'csv-upload-error';
 
 const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
-    <Layout title={buildTitle(uploadProps.errors, title)} description={description}>
-        <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-            <UserDataUploadComponent
-                {...uploadProps}
-                detailBody={
-                    <>
-                        <p>Some common issues with csv uploads include:</p>
-                        <ul className="govuk-list govuk-list--bullet">
-                            <li>Commas in fare stage names</li>
-                            <li>Not providing a price in every cell</li>
-                            <li>Not filling in every fare stage on the diagonal row</li>
-                        </ul>
-                        <p>
-                            Use the help file for a more detailed guide on constructing a fares triangle in the required
-                            format or download the csv template to create a new file.
-                        </p>
-                    </>
-                }
-            />
-        </main>
-    </Layout>
+    <BaseLayout title={title} description={description} errors={uploadProps.errors}>
+        <UserDataUploadComponent
+            {...uploadProps}
+            detailBody={
+                <>
+                    <p>Some common issues with csv uploads include:</p>
+                    <ul className="govuk-list govuk-list--bullet">
+                        <li>Commas in fare stage names</li>
+                        <li>Not providing a price in every cell</li>
+                        <li>Not filling in every fare stage on the diagonal row</li>
+                    </ul>
+                    <p>
+                        Use the help file for a more detailed guide on constructing a fares triangle in the required
+                        format or download the csv template to create a new file.
+                    </p>
+                </>
+            }
+        />
+    </BaseLayout>
 );
 
 export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
