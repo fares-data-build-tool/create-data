@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Header from './Header';
 import AlphaBanner from './AlphaBanner';
 import Footer from './Footer';
-import LogoBanner from './LogoBanner';
 
 import favicon from '../assets/images/favicon.ico';
 
@@ -26,8 +25,6 @@ const Layout: FC<LayoutProps> = ({ title, description, children }: PropsWithChil
         <div className="govuk-width-container app-width-container--wide">
             <AlphaBanner />
             <div className="dftlogo" />
-            <LogoBanner />
-            {/* <h1>{this.props.name}</h1> */}
             {children}
         </div>
         <Footer />

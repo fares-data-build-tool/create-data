@@ -56,7 +56,7 @@ exports[`pages howManyProducts should render correctly 1`] = `
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -137,7 +137,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -218,7 +218,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -299,7 +299,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -380,7 +380,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -461,7 +461,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -542,7 +542,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -623,7 +623,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"

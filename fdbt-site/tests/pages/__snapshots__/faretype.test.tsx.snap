@@ -115,7 +115,7 @@ exports[`pages fareType should render correctly 1`] = `
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"
@@ -254,7 +254,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
         </fieldset>
       </div>
       <input
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         id="continue-button"
         type="submit"
         value="Continue"

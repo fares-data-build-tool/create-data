@@ -176,12 +176,7 @@ const DefinePassengerType = ({ combinedErrors = [], fieldsets }: DefinePassenger
                             return <RadioConditionalInput fieldset={fieldset} />;
                         })}
                     </div>
-                    <input
-                        type="submit"
-                        value="Continue"
-                        id="continue-button"
-                        className="govuk-button govuk-button--start"
-                    />
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </form>
             </main>
         </Layout>

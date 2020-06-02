@@ -62,7 +62,7 @@ exports[`pages thankyou should render correctly 1`] = `
       </p>
       <br />
       <a
-        className="govuk-button govuk-button--start"
+        className="govuk-button"
         data-module="govuk-button"
         draggable="false"
         href="/"

@@ -55,12 +55,7 @@ const Service = ({ operator, passengerType, services, error }: ServiceProps): Re
                         </span>
                     </fieldset>
                 </div>
-                <input
-                    type="submit"
-                    value="Continue"
-                    id="continue-button"
-                    className="govuk-button govuk-button--start"
-                />
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </form>
         </main>
     </Layout>
