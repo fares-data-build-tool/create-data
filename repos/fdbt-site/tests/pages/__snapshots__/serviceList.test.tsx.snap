@@ -1,163 +1,151 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages serviceList should render an error when the error flag is set to true 1`] = `
-<Layout
+<Component
   description="Service List selection page of the Fares Data Build Tool"
   title="Service List - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/serviceList"
+    method="post"
   >
-    <form
-      action="/api/serviceList"
-      method="post"
+    <div
+      className="govuk-form-group  govuk-form-group--error"
     >
-      <div
-        className="govuk-form-group  govuk-form-group--error"
+      <fieldset
+        aria-describedby="service-list-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="service-list-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="service-list-page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="service-list-page-heading"
-            >
-              Which service(s) is the ticket valid for?
-            </h1>
-          </legend>
-          <span
-            className="govuk-error-message"
-            id="radio-error"
-          >
-            <span
-              className=""
-            >
-              Select one or more service(s)
-            </span>
-          </span>
-        </fieldset>
-        <fieldset
-          aria-describedby="service-list-hint"
-          className="govuk-fieldset"
+            Which service(s) is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-error-message"
+          id="radio-error"
         >
           <span
-            className="govuk-hint"
-            id="service-list-hint"
+            className=""
           >
-            Select all services that apply
+            Select one or more service(s)
           </span>
-          <input
-            className="govuk-button govuk-button--secondary"
-            id="select-all-button"
-            name="selectAll"
-            type="submit"
-            value="Select All"
-          />
-          <span
-            className="govuk-hint"
-            id="traveline-hint"
-          >
-            This data is taken from the Traveline National Dataset.
-          </span>
-          <div
-            className="govuk-checkboxes"
-          />
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+        </span>
+      </fieldset>
+      <fieldset
+        aria-describedby="service-list-hint"
+        className="govuk-fieldset"
+      >
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select all services that apply
+        </span>
+        <input
+          className="govuk-button govuk-button--secondary"
+          id="select-all-button"
+          name="selectAll"
+          type="submit"
+          value="Select All"
+        />
+        <span
+          className="govuk-hint"
+          id="traveline-hint"
+        >
+          This data is taken from the Traveline National Dataset.
+        </span>
+        <div
+          className="govuk-checkboxes"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;
 
 exports[`pages serviceList should render correctly 1`] = `
-<Layout
+<Component
   description="Service List selection page of the Fares Data Build Tool"
   title="Service List - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/serviceList"
+    method="post"
   >
-    <form
-      action="/api/serviceList"
-      method="post"
+    <div
+      className="govuk-form-group "
     >
-      <div
-        className="govuk-form-group "
+      <fieldset
+        aria-describedby="service-list-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="service-list-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="service-list-page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="service-list-page-heading"
-            >
-              Which service(s) is the ticket valid for?
-            </h1>
-          </legend>
-          <span
-            className="govuk-error-message"
-            id="radio-error"
-          >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Select one or more service(s)
-            </span>
-          </span>
-        </fieldset>
-        <fieldset
-          aria-describedby="service-list-hint"
-          className="govuk-fieldset"
+            Which service(s) is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-error-message"
+          id="radio-error"
         >
           <span
-            className="govuk-hint"
-            id="service-list-hint"
+            className="govuk-visually-hidden"
           >
-            Select all services that apply
+            Select one or more service(s)
           </span>
-          <input
-            className="govuk-button govuk-button--secondary"
-            id="select-all-button"
-            name="selectAll"
-            type="submit"
-            value="Select All"
-          />
-          <span
-            className="govuk-hint"
-            id="traveline-hint"
-          >
-            This data is taken from the Traveline National Dataset.
-          </span>
-          <div
-            className="govuk-checkboxes"
-          />
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+        </span>
+      </fieldset>
+      <fieldset
+        aria-describedby="service-list-hint"
+        className="govuk-fieldset"
+      >
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select all services that apply
+        </span>
+        <input
+          className="govuk-button govuk-button--secondary"
+          id="select-all-button"
+          name="selectAll"
+          type="submit"
+          value="Select All"
+        />
+        <span
+          className="govuk-hint"
+          id="traveline-hint"
+        >
+          This data is taken from the Traveline National Dataset.
+        </span>
+        <div
+          className="govuk-checkboxes"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

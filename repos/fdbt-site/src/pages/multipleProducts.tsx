@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import Layout from '../layout/Layout';
+import { FullColumnLayout } from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
@@ -30,37 +30,33 @@ const MultipleProducts = ({
     passengerType,
     errors = [],
     userInput = [],
-}: MultipleProductProps): ReactElement => {
-    return (
-        <Layout title={title} description={description}>
-            <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/multipleProducts" method="post">
-                    <ErrorSummary errors={errors} />
-                    <div className="govuk-form-group">
-                        <fieldset className="govuk-fieldset" aria-describedby="multiple-product-page-heading">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="multiple-product-page-heading">
-                                    Enter your product details
-                                </h1>
-                            </legend>
-                            <span className="govuk-hint" id="service-operator-hint">
-                                {nameOfOperator} - {numberOfProductsToDisplay} Products - {passengerType}
-                            </span>
-                        </fieldset>
-                        <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
-                    </div>
-                    <div className="govuk-grid-row">
-                        <ProductRow
-                            numberOfProductsToDisplay={numberOfProductsToDisplay}
-                            errors={errors}
-                            userInput={userInput}
-                        />
-                    </div>
-                </form>
-            </main>
-        </Layout>
-    );
-};
+}: MultipleProductProps): ReactElement => (
+    <FullColumnLayout title={title} description={description} errors={errors}>
+        <form action="/api/multipleProducts" method="post">
+            <ErrorSummary errors={errors} />
+            <div className="govuk-form-group">
+                <fieldset className="govuk-fieldset" aria-describedby="multiple-product-page-heading">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 className="govuk-fieldset__heading" id="multiple-product-page-heading">
+                            Enter your product details
+                        </h1>
+                    </legend>
+                    <span className="govuk-hint" id="service-operator-hint">
+                        {nameOfOperator} - {numberOfProductsToDisplay} Products - {passengerType}
+                    </span>
+                </fieldset>
+                <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
+            </div>
+            <div className="govuk-grid-row">
+                <ProductRow
+                    numberOfProductsToDisplay={numberOfProductsToDisplay}
+                    errors={errors}
+                    userInput={userInput}
+                />
+            </div>
+        </form>
+    </FullColumnLayout>
+);
 
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);

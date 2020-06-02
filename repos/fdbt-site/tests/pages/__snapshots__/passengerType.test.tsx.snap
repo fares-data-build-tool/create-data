@@ -1,364 +1,359 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages operator should render correctly 1`] = `
-<Layout
+<Component
   description="Passenger Type selection page of the Fares Data Build Tool"
+  errors={Array []}
   title="Passenger Type - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/passengerType"
+    method="post"
   >
-    <form
-      action="/api/passengerType"
-      method="post"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
     >
-      <ErrorSummary
-        errors={Array []}
-      />
-      <div
-        className="govuk-form-group "
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="passenger-type-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="passenger-type-page-heading"
-            >
-              Select a passenger type
-            </h1>
-          </legend>
-          <span
-            className="govuk-hint"
-            id="passenger-type-hint"
-          >
-            Relate the ticket(s) to a passenger type
-          </span>
-          <FormElementWrapper
-            errorClass="govuk-radios--error"
-            errorId="passenger-type-error"
-            errors={Array []}
+            Select a passenger type
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="passenger-type-hint"
+        >
+          Relate the ticket(s) to a passenger type
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="passenger-type-error"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
           >
             <div
-              className="govuk-radios"
+              className="govuk-radios__item"
+              key="Any"
             >
-              <div
-                className="govuk-radios__item"
-                key="Any"
+              <input
+                aria-disabled={false}
+                className="govuk-radios__input"
+                disabled={false}
+                id="passenger-type0"
+                name="passengerType"
+                type="radio"
+                value="Any"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type0"
               >
-                <input
-                  aria-disabled={false}
-                  className="govuk-radios__input"
-                  disabled={false}
-                  id="passenger-type0"
-                  name="passengerType"
-                  type="radio"
-                  value="Any"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type0"
-                >
-                  Any
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Adult"
-              >
-                <input
-                  aria-disabled={false}
-                  className="govuk-radios__input"
-                  disabled={false}
-                  id="passenger-type1"
-                  name="passengerType"
-                  type="radio"
-                  value="Adult"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type1"
-                >
-                  Adult
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Child"
-              >
-                <input
-                  aria-disabled={false}
-                  className="govuk-radios__input"
-                  disabled={false}
-                  id="passenger-type2"
-                  name="passengerType"
-                  type="radio"
-                  value="Child"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type2"
-                >
-                  Child
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Infant"
-              >
-                <input
-                  aria-disabled={false}
-                  className="govuk-radios__input"
-                  disabled={false}
-                  id="passenger-type3"
-                  name="passengerType"
-                  type="radio"
-                  value="Infant"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type3"
-                >
-                  Infant
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Senior"
-              >
-                <input
-                  aria-disabled={false}
-                  className="govuk-radios__input"
-                  disabled={false}
-                  id="passenger-type4"
-                  name="passengerType"
-                  type="radio"
-                  value="Senior"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type4"
-                >
-                  Senior
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Student"
-              >
-                <input
-                  aria-disabled={false}
-                  className="govuk-radios__input"
-                  disabled={false}
-                  id="passenger-type5"
-                  name="passengerType"
-                  type="radio"
-                  value="Student"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type5"
-                >
-                  Student
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Young Person"
-              >
-                <input
-                  aria-disabled={false}
-                  className="govuk-radios__input"
-                  disabled={false}
-                  id="passenger-type6"
-                  name="passengerType"
-                  type="radio"
-                  value="Young Person"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type6"
-                >
-                  Young Person
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="School Pupil"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type7"
-                  name="passengerType"
-                  type="radio"
-                  value="School Pupil"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type7"
-                >
-                  School Pupil
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Disabled"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type8"
-                  name="passengerType"
-                  type="radio"
-                  value="Disabled"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type8"
-                >
-                  Disabled
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Disabled Companion"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type9"
-                  name="passengerType"
-                  type="radio"
-                  value="Disabled Companion"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type9"
-                >
-                  Disabled Companion
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Employee"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type10"
-                  name="passengerType"
-                  type="radio"
-                  value="Employee"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type10"
-                >
-                  Employee
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Military"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type11"
-                  name="passengerType"
-                  type="radio"
-                  value="Military"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type11"
-                >
-                  Military
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Job Seeker"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type12"
-                  name="passengerType"
-                  type="radio"
-                  value="Job Seeker"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type12"
-                >
-                  Job Seeker
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Guide Dog"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type13"
-                  name="passengerType"
-                  type="radio"
-                  value="Guide Dog"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type13"
-                >
-                  Guide Dog
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-                key="Animal"
-              >
-                <input
-                  aria-disabled={true}
-                  className="govuk-radios__input"
-                  disabled={true}
-                  id="passenger-type14"
-                  name="passengerType"
-                  type="radio"
-                  value="Animal"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="passenger-type14"
-                >
-                  Animal
-                </label>
-              </div>
+                Any
+              </label>
             </div>
-          </FormElementWrapper>
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+            <div
+              className="govuk-radios__item"
+              key="Adult"
+            >
+              <input
+                aria-disabled={false}
+                className="govuk-radios__input"
+                disabled={false}
+                id="passenger-type1"
+                name="passengerType"
+                type="radio"
+                value="Adult"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type1"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Child"
+            >
+              <input
+                aria-disabled={false}
+                className="govuk-radios__input"
+                disabled={false}
+                id="passenger-type2"
+                name="passengerType"
+                type="radio"
+                value="Child"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type2"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Infant"
+            >
+              <input
+                aria-disabled={false}
+                className="govuk-radios__input"
+                disabled={false}
+                id="passenger-type3"
+                name="passengerType"
+                type="radio"
+                value="Infant"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type3"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Senior"
+            >
+              <input
+                aria-disabled={false}
+                className="govuk-radios__input"
+                disabled={false}
+                id="passenger-type4"
+                name="passengerType"
+                type="radio"
+                value="Senior"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type4"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Student"
+            >
+              <input
+                aria-disabled={false}
+                className="govuk-radios__input"
+                disabled={false}
+                id="passenger-type5"
+                name="passengerType"
+                type="radio"
+                value="Student"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type5"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Young Person"
+            >
+              <input
+                aria-disabled={false}
+                className="govuk-radios__input"
+                disabled={false}
+                id="passenger-type6"
+                name="passengerType"
+                type="radio"
+                value="Young Person"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type6"
+              >
+                Young Person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="School Pupil"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type7"
+                name="passengerType"
+                type="radio"
+                value="School Pupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type7"
+              >
+                School Pupil
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Disabled"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type8"
+                name="passengerType"
+                type="radio"
+                value="Disabled"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type8"
+              >
+                Disabled
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Disabled Companion"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type9"
+                name="passengerType"
+                type="radio"
+                value="Disabled Companion"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type9"
+              >
+                Disabled Companion
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Employee"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type10"
+                name="passengerType"
+                type="radio"
+                value="Employee"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type10"
+              >
+                Employee
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Military"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type11"
+                name="passengerType"
+                type="radio"
+                value="Military"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type11"
+              >
+                Military
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Job Seeker"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type12"
+                name="passengerType"
+                type="radio"
+                value="Job Seeker"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type12"
+              >
+                Job Seeker
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Guide Dog"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type13"
+                name="passengerType"
+                type="radio"
+                value="Guide Dog"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type13"
+              >
+                Guide Dog
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="Animal"
+            >
+              <input
+                aria-disabled={true}
+                className="govuk-radios__input"
+                disabled={true}
+                id="passenger-type14"
+                name="passengerType"
+                type="radio"
+                value="Animal"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type14"
+              >
+                Animal
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

@@ -1,66 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages chooseStages should render correctly 1`] = `
-<Layout
+<Component
   description="Choose Stages page of the Fares Data Build Tool"
   title="Choose Stages - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/chooseStages"
+    method="post"
   >
-    <form
-      action="/api/chooseStages"
-      method="post"
+    <div
+      className="govuk-form-group"
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="choose-stages-page-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="choose-stages-page-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="choose-stages-page-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="choose-stages-page-heading"
-            >
-              How many fare stages does the service have?
-            </h1>
-          </legend>
-          <div
-            className="govuk-form-group"
+            How many fare stages does the service have?
+          </h1>
+        </legend>
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-hint"
+            htmlFor="width-2"
           >
-            <label
-              className="govuk-hint"
-              htmlFor="width-2"
-            >
-              Enter the number of fare stages between 1 - 20 (for example 3)
-            </label>
-            <input
-              className="govuk-input govuk-input--width-2"
-              id="fareStages"
-              max="20"
-              maxLength={2}
-              min="1"
-              name="fareStageInput"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
-            />
-          </div>
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+            Enter the number of fare stages between 1 - 20 (for example 3)
+          </label>
+          <input
+            className="govuk-input govuk-input--width-2"
+            id="fareStages"
+            max="20"
+            maxLength={2}
+            min="1"
+            name="fareStageInput"
+            pattern="^[0-9]*$"
+            required={true}
+            type="number"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

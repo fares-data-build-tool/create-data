@@ -1,269 +1,320 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages multipleProductValidity should render correctly 1`] = `
-<Layout
+<Component
   description="Multiple Product Validity selection page of the Fares Data Build Tool"
+  errors={Array []}
   title="Multiple Product Validity - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class multiple-product-validity-page"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/multipleProductValidity"
+    className="multiple-product-validity-page"
+    method="post"
   >
-    <form
-      action="/api/multipleProductValidity"
-      method="post"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
     >
-      <ErrorSummary
-        errors={Array []}
-      />
-      <div
-        className="govuk-form-group "
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+        <h1
+          className="govuk-fieldset__heading"
+          id="multiple-product-validity-page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="multiple-product-validity-page-heading"
-          >
-            When does the product expire?
-          </h1>
-        </legend>
+          When does the product expire?
+        </h1>
+      </legend>
+      <span
+        className="govuk-hint"
+        id="operator-products-hint"
+      >
+        Infinity Line
+         - 
+        2
+         products - 
+        Adult
+      </span>
+      <span
+        className="govuk-hint"
+        id="multiple-product-validity-page-hint"
+      >
+        We need to know the time that this product would be valid until
+      </span>
+      <span
+        className="govuk-error-message"
+        id="multiple-product-validity-radios-error"
+      >
         <span
-          className="govuk-hint"
-          id="operator-products-hint"
-        >
-          Infinity Line
-           - 
-          2
-           products - 
-          Adult
-        </span>
-        <span
-          className="govuk-hint"
-          id="multiple-product-validity-page-hint"
-        >
-          We need to know the time that this product would be valid until
-        </span>
-        <span
-          className="govuk-error-message"
-          id="multiple-product-validity-radios-error"
-        >
-          <span
-            className="govuk-visually-hidden"
-          />
-        </span>
-        <FormElementWrapper
-          errorClass="govuk-radios--error"
-          errorId="multiple-product-validity-error"
-          errors={Array []}
+          className="govuk-visually-hidden"
+        />
+      </span>
+      <FormElementWrapper
+        errorClass="govuk-radios--error"
+        errorId="multiple-product-validity-error"
+        errors={Array []}
+      >
+        <div
+          className="grid-headers-wrapper"
         >
           <div
-            className="grid-headers-wrapper"
+            className="govuk-heading-s grid-column-header-one-fifth"
           >
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth"
+            Product Name
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth"
+          >
+            Product Price
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth"
+          >
+            Product Duration
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth"
+            id="24hr-header"
+          >
+            24hr
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
+            id="calendar-header"
+          >
+            Calendar
+          </div>
+        </div>
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <div
+            className="grid-content-wrapper"
+          >
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product0"
             >
-              Product Name
-            </div>
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth"
+              Weekly Ticket
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product0"
             >
-              Product Price
-            </div>
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth"
+              £
+              50
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product0"
             >
-              Product Duration
-            </div>
+              5 days
+            </label>
             <div
-              className="govuk-heading-s grid-column-header-one-fifth"
-              id="24hr-header"
+              className="govuk-radios govuk-radios--inline validity-select-wrapper"
             >
-              24hr
-            </div>
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
-              id="calendar-header"
-            >
-              Calendar
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  id="twenty-four-hours-row0"
+                  name="validity-row0"
+                  type="radio"
+                  value="24hr"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin "
+                  htmlFor="twenty-four-hours-row0"
+                >
+                  <span
+                    className="visually-hidden-label"
+                  >
+                    24 hour
+                  </span>
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  id="calendar-day-row0"
+                  name="validity-row0"
+                  type="radio"
+                  value="endOfCalendarDay"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin "
+                  htmlFor="calendar-day-row0"
+                >
+                  <span
+                    className="visually-hidden-label"
+                  >
+                    Calendar
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
-          <fieldset
-            className="govuk-fieldset"
+        </fieldset>
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <div
+            className="grid-content-wrapper"
           >
-            <div
-              className="grid-content-wrapper"
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product1"
             >
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product0"
-              >
-                Weekly Ticket
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product0"
-              >
-                £
-                50
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product0"
-              >
-                5 days
-              </label>
+              Day Ticket
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product1"
+            >
+              £
+              2.50
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product1"
+            >
+              1 day
+            </label>
+            <div
+              className="govuk-radios govuk-radios--inline validity-select-wrapper"
+            >
               <div
-                className="govuk-radios govuk-radios--inline validity-select-wrapper"
+                className="govuk-radios__item"
               >
-                <div
-                  className="govuk-radios__item"
+                <input
+                  className="govuk-radios__input"
+                  id="twenty-four-hours-row1"
+                  name="validity-row1"
+                  type="radio"
+                  value="24hr"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin "
+                  htmlFor="twenty-four-hours-row1"
                 >
-                  <input
-                    className="govuk-radios__input"
-                    id="twenty-four-hours-row0"
-                    name="validity-row0"
-                    type="radio"
-                    value="24hr"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin "
-                    htmlFor="twenty-four-hours-row0"
+                  <span
+                    className="visually-hidden-label"
                   >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      24 hour
-                    </span>
-                  </label>
-                </div>
-                <div
-                  className="govuk-radios__item"
+                    24 hour
+                  </span>
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  id="calendar-day-row1"
+                  name="validity-row1"
+                  type="radio"
+                  value="endOfCalendarDay"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin "
+                  htmlFor="calendar-day-row1"
                 >
-                  <input
-                    className="govuk-radios__input"
-                    id="calendar-day-row0"
-                    name="validity-row0"
-                    type="radio"
-                    value="endOfCalendarDay"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin "
-                    htmlFor="calendar-day-row0"
+                  <span
+                    className="visually-hidden-label"
                   >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      Calendar
-                    </span>
-                  </label>
-                </div>
+                    Calendar
+                  </span>
+                </label>
               </div>
             </div>
-          </fieldset>
-          <fieldset
-            className="govuk-fieldset"
-          >
-            <div
-              className="grid-content-wrapper"
-            >
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product1"
-              >
-                Day Ticket
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product1"
-              >
-                £
-                2.50
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product1"
-              >
-                1 day
-              </label>
-              <div
-                className="govuk-radios govuk-radios--inline validity-select-wrapper"
-              >
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    className="govuk-radios__input"
-                    id="twenty-four-hours-row1"
-                    name="validity-row1"
-                    type="radio"
-                    value="24hr"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin "
-                    htmlFor="twenty-four-hours-row1"
-                  >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      24 hour
-                    </span>
-                  </label>
-                </div>
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    className="govuk-radios__input"
-                    id="calendar-day-row1"
-                    name="validity-row1"
-                    type="radio"
-                    value="endOfCalendarDay"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin "
-                    htmlFor="calendar-day-row1"
-                  >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      Calendar
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-        </FormElementWrapper>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+          </div>
+        </fieldset>
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;
 
 exports[`pages multipleProductValidity should render error messaging when errors are passed 1`] = `
-<Layout
+<Component
   description="Multiple Product Validity selection page of the Fares Data Build Tool"
-  title="Error: Multiple Product Validity - Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Select one of the two validity options",
+        "id": "multiple-product-validity-error",
+      },
+    ]
+  }
+  title="Multiple Product Validity - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class multiple-product-validity-page"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/multipleProductValidity"
+    className="multiple-product-validity-page"
+    method="post"
   >
-    <form
-      action="/api/multipleProductValidity"
-      method="post"
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Select one of the two validity options",
+            "id": "multiple-product-validity-error",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
     >
-      <ErrorSummary
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+          id="multiple-product-validity-page-heading"
+        >
+          When does the product expire?
+        </h1>
+      </legend>
+      <span
+        className="govuk-hint"
+        id="operator-products-hint"
+      >
+        Infinity Line
+         - 
+        2
+         products - 
+        Adult
+      </span>
+      <span
+        className="govuk-hint"
+        id="multiple-product-validity-page-hint"
+      >
+        We need to know the time that this product would be valid until
+      </span>
+      <span
+        className="govuk-error-message"
+        id="multiple-product-validity-radios-error"
+      >
+        <span
+          className=""
+        >
+          Select one of the two validity options
+        </span>
+      </span>
+      <FormElementWrapper
+        errorClass="govuk-radios--error"
+        errorId="multiple-product-validity-error"
         errors={
           Array [
             Object {
@@ -272,244 +323,192 @@ exports[`pages multipleProductValidity should render error messaging when errors
             },
           ]
         }
-      />
-      <div
-        className="govuk-form-group govuk-form-group--error"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--xl"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="multiple-product-validity-page-heading"
-          >
-            When does the product expire?
-          </h1>
-        </legend>
-        <span
-          className="govuk-hint"
-          id="operator-products-hint"
-        >
-          Infinity Line
-           - 
-          2
-           products - 
-          Adult
-        </span>
-        <span
-          className="govuk-hint"
-          id="multiple-product-validity-page-hint"
-        >
-          We need to know the time that this product would be valid until
-        </span>
-        <span
-          className="govuk-error-message"
-          id="multiple-product-validity-radios-error"
-        >
-          <span
-            className=""
-          >
-            Select one of the two validity options
-          </span>
-        </span>
-        <FormElementWrapper
-          errorClass="govuk-radios--error"
-          errorId="multiple-product-validity-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Select one of the two validity options",
-                "id": "multiple-product-validity-error",
-              },
-            ]
-          }
+        <div
+          className="grid-headers-wrapper"
         >
           <div
-            className="grid-headers-wrapper"
+            className="govuk-heading-s grid-column-header-one-fifth"
           >
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth"
+            Product Name
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth"
+          >
+            Product Price
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth"
+          >
+            Product Duration
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth"
+            id="24hr-header"
+          >
+            24hr
+          </div>
+          <div
+            className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
+            id="calendar-header"
+          >
+            Calendar
+          </div>
+        </div>
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <div
+            className="grid-content-wrapper"
+          >
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product0"
             >
-              Product Name
-            </div>
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth"
+              Weekly Ticket
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product0"
             >
-              Product Price
-            </div>
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth"
+              £
+              50
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product0"
             >
-              Product Duration
-            </div>
+              5 days
+            </label>
             <div
-              className="govuk-heading-s grid-column-header-one-fifth"
-              id="24hr-header"
+              className="govuk-radios govuk-radios--inline validity-select-wrapper"
             >
-              24hr
-            </div>
-            <div
-              className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
-              id="calendar-header"
-            >
-              Calendar
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  id="twenty-four-hours-row0"
+                  name="validity-row0"
+                  type="radio"
+                  value="24hr"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
+                  htmlFor="twenty-four-hours-row0"
+                >
+                  <span
+                    className="visually-hidden-label"
+                  >
+                    24 hour
+                  </span>
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  id="calendar-day-row0"
+                  name="validity-row0"
+                  type="radio"
+                  value="endOfCalendarDay"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
+                  htmlFor="calendar-day-row0"
+                >
+                  <span
+                    className="visually-hidden-label"
+                  >
+                    Calendar
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
-          <fieldset
-            className="govuk-fieldset"
+        </fieldset>
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <div
+            className="grid-content-wrapper"
           >
-            <div
-              className="grid-content-wrapper"
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product1"
             >
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product0"
-              >
-                Weekly Ticket
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product0"
-              >
-                £
-                50
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product0"
-              >
-                5 days
-              </label>
+              Day Ticket
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product1"
+            >
+              £
+              2.50
+            </label>
+            <label
+              className="govuk-label grid-column-content-one-fifth"
+              htmlFor="product1"
+            >
+              1 day
+            </label>
+            <div
+              className="govuk-radios govuk-radios--inline validity-select-wrapper"
+            >
               <div
-                className="govuk-radios govuk-radios--inline validity-select-wrapper"
+                className="govuk-radios__item"
               >
-                <div
-                  className="govuk-radios__item"
+                <input
+                  className="govuk-radios__input"
+                  id="twenty-four-hours-row1"
+                  name="validity-row1"
+                  type="radio"
+                  value="24hr"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
+                  htmlFor="twenty-four-hours-row1"
                 >
-                  <input
-                    className="govuk-radios__input"
-                    id="twenty-four-hours-row0"
-                    name="validity-row0"
-                    type="radio"
-                    value="24hr"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                    htmlFor="twenty-four-hours-row0"
+                  <span
+                    className="visually-hidden-label"
                   >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      24 hour
-                    </span>
-                  </label>
-                </div>
-                <div
-                  className="govuk-radios__item"
+                    24 hour
+                  </span>
+                </label>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  id="calendar-day-row1"
+                  name="validity-row1"
+                  type="radio"
+                  value="endOfCalendarDay"
+                />
+                <label
+                  className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
+                  htmlFor="calendar-day-row1"
                 >
-                  <input
-                    className="govuk-radios__input"
-                    id="calendar-day-row0"
-                    name="validity-row0"
-                    type="radio"
-                    value="endOfCalendarDay"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                    htmlFor="calendar-day-row0"
+                  <span
+                    className="visually-hidden-label"
                   >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      Calendar
-                    </span>
-                  </label>
-                </div>
+                    Calendar
+                  </span>
+                </label>
               </div>
             </div>
-          </fieldset>
-          <fieldset
-            className="govuk-fieldset"
-          >
-            <div
-              className="grid-content-wrapper"
-            >
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product1"
-              >
-                Day Ticket
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product1"
-              >
-                £
-                2.50
-              </label>
-              <label
-                className="govuk-label grid-column-content-one-fifth"
-                htmlFor="product1"
-              >
-                1 day
-              </label>
-              <div
-                className="govuk-radios govuk-radios--inline validity-select-wrapper"
-              >
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    className="govuk-radios__input"
-                    id="twenty-four-hours-row1"
-                    name="validity-row1"
-                    type="radio"
-                    value="24hr"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                    htmlFor="twenty-four-hours-row1"
-                  >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      24 hour
-                    </span>
-                  </label>
-                </div>
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    className="govuk-radios__input"
-                    id="calendar-day-row1"
-                    name="validity-row1"
-                    type="radio"
-                    value="endOfCalendarDay"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                    htmlFor="calendar-day-row1"
-                  >
-                    <span
-                      className="visually-hidden-label"
-                    >
-                      Calendar
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-        </FormElementWrapper>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+          </div>
+        </fieldset>
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

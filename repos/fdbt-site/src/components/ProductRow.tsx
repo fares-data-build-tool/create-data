@@ -10,7 +10,7 @@ export interface ProductRowProps {
 }
 
 export const continueButton = (): ReactElement => {
-    return <input type="submit" value="Continue" id="continue-button" className="govuk-button govuk-button--start" />;
+    return <input type="submit" value="Continue" id="continue-button" className="govuk-button" />;
 };
 
 export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (

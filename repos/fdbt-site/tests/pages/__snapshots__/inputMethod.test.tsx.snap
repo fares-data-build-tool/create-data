@@ -1,112 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages inputMethod should render correctly 1`] = `
-<Layout
+<Component
   description="Input Method selection page of the Fares Data Build Tool"
+  errors={Array []}
   title="Input Method - Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <form
+    action="/api/inputMethod"
+    method="post"
   >
-    <form
-      action="/api/inputMethod"
-      method="post"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
     >
-      <ErrorSummary
-        errors={Array []}
-      />
-      <div
-        className="govuk-form-group "
+      <fieldset
+        aria-describedby="input-method-heading"
+        className="govuk-fieldset"
       >
-        <fieldset
-          aria-describedby="input-method-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          <h1
+            className="govuk-fieldset__heading"
+            id="input-method-heading"
           >
-            <h1
-              className="govuk-fieldset__heading"
-              id="input-method-heading"
-            >
-              Select an input method
-            </h1>
-          </legend>
-          <FormElementWrapper
-            errorClass="govuk-radios--error"
-            errorId="input-method-error"
-            errors={Array []}
+            Select an input method
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="input-method-error"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
+            id="radio-buttons"
           >
             <div
-              className="govuk-radios"
-              id="radio-buttons"
+              className="govuk-radios__item"
             >
-              <div
-                className="govuk-radios__item"
+              <input
+                className="govuk-radios__input  "
+                id="csv-upload"
+                name="inputMethod"
+                type="radio"
+                value="csv"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="csv-upload"
               >
-                <input
-                  className="govuk-radios__input  "
-                  id="csv-upload"
-                  name="inputMethod"
-                  type="radio"
-                  value="csv"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="csv-upload"
-                >
-                  Upload (.csv)
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-              >
-                <input
-                  className="govuk-radios__input  "
-                  id="manual-entry"
-                  name="inputMethod"
-                  type="radio"
-                  value="manual"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="manual-entry"
-                >
-                  Manual Fares Triangle input
-                </label>
-              </div>
-              <div
-                className="govuk-radios__item"
-              >
-                <input
-                  aria-disabled="true"
-                  className="govuk-radios__input  "
-                  disabled={true}
-                  id="interactive-map"
-                  name="inputMethod"
-                  type="radio"
-                  value="interactiveMap"
-                />
-                <label
-                  className="govuk-label govuk-radios__label"
-                  htmlFor="interactive-map"
-                >
-                  Interactive Map (not yet available)
-                </label>
-              </div>
+                Upload (.csv)
+              </label>
             </div>
-          </FormElementWrapper>
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="manual-entry"
+                name="inputMethod"
+                type="radio"
+                value="manual"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="manual-entry"
+              >
+                Manual Fares Triangle input
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                aria-disabled="true"
+                className="govuk-radios__input  "
+                disabled={true}
+                id="interactive-map"
+                name="inputMethod"
+                type="radio"
+                value="interactiveMap"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="interactive-map"
+              >
+                Interactive Map (not yet available)
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </form>
+</Component>
 `;

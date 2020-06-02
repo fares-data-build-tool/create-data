@@ -1,69 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages operator should render correctly 1`] = `
-<Layout
+<Component
   description="Fares Data Build Tool is a service that allows you to generate data in NeTEx format"
   title="Fares Data Build Tool"
 >
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
+  <h1
+    className="govuk-heading-xl"
   >
-    <h1
-      className="govuk-heading-xl"
+    Fares Data Build Tool
+  </h1>
+  <p
+    className="govuk-body"
+  >
+    Use this service to:
+  </p>
+  <ul
+    className="govuk-list govuk-list--bullet"
+  >
+    <li>
+      Generate fares data in NeTEx format
+    </li>
+    <li>
+      Update fares for an existing service
+    </li>
+    <li>
+      Publish fares for a newly registered service
+    </li>
+  </ul>
+  <p
+    className="govuk-body"
+  >
+    All service data is taken directly from the Traveline National Dataset and the NaPTAN database. To avoid data discrepancies, ensure that all service data is correct within these datasets before using this service.
+  </p>
+  <a
+    className="govuk-button govuk-button--start"
+    data-module="govuk-button"
+    draggable="false"
+    href="/operator"
+    id="start-now-button"
+    role="button"
+  >
+    Start now
+    <svg
+      className="govuk-button__start-icon"
+      focusable="false"
+      height="19"
+      role="presentation"
+      viewBox="0 0 33 40"
+      width="17.5"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      Fares Data Build Tool
-    </h1>
-    <p
-      className="govuk-body-l"
-    >
-      Use this service to:
-    </p>
-    <div
-      className="govuk-body-l"
-    >
-      <ul
-        className="index-page-list"
-      >
-        <li>
-          Generate fares data in NeTEx format
-        </li>
-        <li>
-          Update fares for an existing service
-        </li>
-        <li>
-          Publish fares for a newly registered service
-        </li>
-      </ul>
-      <p>
-        All service data is taken directly from the Traveline National Dataset and the NaPTAN database. To avoid data discrepancies, ensure that all service data is correct within these datasets before using this service.
-      </p>
-    </div>
-    <a
-      className="govuk-button govuk-button--start"
-      data-module="govuk-button"
-      draggable="false"
-      href="/operator"
-      id="start-now-button"
-      role="button"
-    >
-      Start now
-      <svg
-        className="govuk-button__start-icon"
-        focusable="false"
-        height="19"
-        role="presentation"
-        viewBox="0 0 33 40"
-        width="17.5"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M0 0h13l20 20-20 20H0l20-20z"
-          fill="currentColor"
-        />
-      </svg>
-    </a>
-  </main>
-</Layout>
+      <path
+        d="M0 0h13l20 20-20 20H0l20-20z"
+        fill="currentColor"
+      />
+    </svg>
+  </a>
+</Component>
 `;

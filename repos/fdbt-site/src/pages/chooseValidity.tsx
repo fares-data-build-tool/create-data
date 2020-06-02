@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
-import Layout from '../layout/Layout';
+import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 
 const title = 'Choose Validity - Fares Data Build Tool';
@@ -29,50 +29,41 @@ const ChooseValidity = ({
     }
 
     return (
-        <Layout title={title} description={description}>
-            <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/chooseValidity" method="post">
-                    <div className="govuk-form-group">
-                        <fieldset className="govuk-fieldset" aria-describedby="choose-validity-page-heading">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    What duration is your product valid for?
-                                </h1>
-                                <p className="govuk-hint hint-text">
-                                    Product: {productName} - £{productPrice} - {passengerType}
-                                </p>
-                            </legend>
-                            <div className={`govuk-form-group ${isError ? 'govuk-form-group--error' : ''}`}>
-                                <label className="govuk-label" htmlFor="validity">
-                                    How many days is your product valid for?
-                                </label>
-                                <p className="govuk-hint hint-text">
-                                    Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
-                                </p>
-                                <span id="product-validity-error" className="govuk-error-message">
-                                    <span className={isError ? '' : 'govuk-visually-hidden'}>{error}</span>
-                                </span>
-                                <input
-                                    className={`govuk-input govuk-input--width-2 ${
-                                        isError ? 'govuk-input--error' : ''
-                                    }`}
-                                    id="validity"
-                                    name="validityInput"
-                                    type="text"
-                                    defaultValue={daysValid}
-                                />
-                            </div>
-                        </fieldset>
-                    </div>
-                    <input
-                        type="submit"
-                        value="Continue"
-                        id="continue-button"
-                        className="govuk-button govuk-button--start"
-                    />
-                </form>
-            </main>
-        </Layout>
+        <TwoThirdsLayout title={title} description={description}>
+            <form action="/api/chooseValidity" method="post">
+                <div className="govuk-form-group">
+                    <fieldset className="govuk-fieldset" aria-describedby="choose-validity-page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading" id="page-heading">
+                                What duration is your product valid for?
+                            </h1>
+                            <p className="govuk-hint">
+                                Product: {productName} - £{productPrice} - {passengerType}
+                            </p>
+                        </legend>
+                        <div className={`govuk-form-group ${isError ? 'govuk-form-group--error' : ''}`}>
+                            <label className="govuk-label" htmlFor="validity">
+                                How many days is your product valid for?
+                            </label>
+                            <p className="govuk-hint">
+                                Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
+                            </p>
+                            <span id="product-validity-error" className="govuk-error-message">
+                                <span className={isError ? '' : 'govuk-visually-hidden'}>{error}</span>
+                            </span>
+                            <input
+                                className={`govuk-input govuk-input--width-2 ${isError ? 'govuk-input--error' : ''}`}
+                                id="validity"
+                                name="validityInput"
+                                type="text"
+                                defaultValue={daysValid}
+                            />
+                        </div>
+                    </fieldset>
+                </div>
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+            </form>
+        </TwoThirdsLayout>
     );
 };
 
