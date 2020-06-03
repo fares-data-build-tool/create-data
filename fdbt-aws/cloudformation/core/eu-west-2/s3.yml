@@ -28,12 +28,32 @@ Resources:
           - Action:
               - "s3:GetObject"
             Effect: "Allow"
-            Resource:
-              Fn::Join:
-                - ""
-                - - "arn:aws:s3:::"
-                  - !Ref SlackAlertsCodeBucket
-                  - "/*"
+            Resource: !Sub arn:aws:s3:::${SlackAlertsCodeBucket}/*
+            Principal:
+              AWS:
+                - !Sub arn:aws:iam::${TestAccountId}:root
+                - !Sub arn:aws:iam::${PreProdAccountId}:root
+
+  CognitoCustomTriggersBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tfn-cognito-custom-triggers
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: false
+
+  CognitoCustomTriggersBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref CognitoCustomTriggersBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource: !Sub arn:aws:s3:::${CognitoCustomTriggersBucket}/*
             Principal:
               AWS:
                 - !Sub arn:aws:iam::${TestAccountId}:root

@@ -224,6 +224,29 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
+  CognitoCustomTriggersLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [lambda.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                Resource:
+                  - arn:aws:s3:::tfn-cognito-custom-triggers/*
+          PolicyName: allow-cognito-custom-triggers
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
   BastionSsmRole:
     Type: AWS::IAM::Role
     Properties:
@@ -321,6 +344,10 @@ Outputs:
     Value: !GetAtt SlackLambdaRole.Arn
     Export:
       Name: !Sub ${Stage}:SlackLambdaRoleArn
+  CognitoCustomTriggersLambdaRoleArn:
+    Value: !GetAtt CognitoCustomTriggersLambdaRole.Arn
+    Export:
+      Name: !Sub ${Stage}:CognitoCustomTriggersLambdaRoleArn
   RdsAuroraS3RoleArn:
     Value: !GetAtt RdsAuroraS3Role.Arn
     Export:
