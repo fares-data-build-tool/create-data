@@ -23,7 +23,7 @@ exports[`pages register should render correctly 1`] = `
           className="govuk-form-group "
         >
           <div
-            aria-describedby="register-page-heading"
+            aria-describedby="register-type-page-heading"
             className="govuk-fieldset"
           >
             <legend
@@ -252,7 +252,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
           className="govuk-form-group govuk-form-group--error"
         >
           <div
-            aria-describedby="register-page-heading"
+            aria-describedby="register-type-page-heading"
             className="govuk-fieldset"
           >
             <legend
@@ -502,7 +502,7 @@ exports[`pages register should store email if entered correctly but other fields
           className="govuk-form-group govuk-form-group--error"
         >
           <div
-            aria-describedby="register-page-heading"
+            aria-describedby="register-type-page-heading"
             className="govuk-fieldset"
           >
             <legend

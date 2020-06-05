@@ -46,35 +46,10 @@ export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 
 export const USER_COOKIE = 'fdbt-user';
 
+export const FORGOT_PASSWORD_COOKIE = 'fdbt-reset-password';
 export const ID_TOKEN_COOKIE = 'fdbt-id-token';
 
 export const REFRESH_TOKEN_COOKIE = 'fdbt-refresh-token';
-
-export const ALL_COOKIES: string[] = [
-    'fdbt-operator',
-    'fdbt-fare-type',
-    'fdbt-passenger-type',
-    'fdbt-service',
-    'fdbt-journey',
-    'fdbt-fare-stages',
-    'fdbt-stage-names-validation',
-    'fdbt-stage-names',
-    'fdbt-price-entry',
-    'fdbt-days-valid',
-    'fdbt-product-details',
-    'fdbt-period-type',
-    'fdbt-csv-upload',
-    'fdbt-csv-zone-upload',
-    'fdbt-number-of-products',
-    'fdbt-period-expiry',
-    'fdbt-services',
-    'fdbt-input-method',
-    'fdbt-matching',
-    'fdbt-number-stages',
-    'fdbt-multiple-service',
-    'fdbt-number-of-products',
-    'fdbt-multiple-product',
-];
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',

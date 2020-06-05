@@ -2,9 +2,8 @@ import Cookies from 'cookies';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import axios from 'axios';
-import { parseCookies } from 'nookies';
-import { ALL_COOKIES, OPERATOR_COOKIE } from '../constants/index';
-
+import { parseCookies, destroyCookie } from 'nookies';
+import { OPERATOR_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { ErrorInfo } from '../types';
 
@@ -29,13 +28,13 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
 };
 
 export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
-    if (ctx.req && ctx.res) {
-        const cookies = new Cookies(ctx.req, ctx.res);
-        const host = ctx?.req?.headers?.host;
-        const domain = host ? host.split(':')[0] : '';
+    const cookies = parseCookies(ctx);
 
-        ALL_COOKIES.map(cookieName => cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' }));
-    }
+    Object.keys(cookies).forEach(cookie => {
+        if (cookie !== OPERATOR_COOKIE) {
+            destroyCookie(ctx, cookie);
+        }
+    });
 };
 
 export const getHost = (req: IncomingMessage | undefined): string => {
