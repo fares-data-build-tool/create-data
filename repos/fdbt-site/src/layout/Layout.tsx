@@ -1,6 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
 import Head from 'next/head';
-import Header from './Header';
 import AlphaBanner from './AlphaBanner';
 import Footer from './Footer';
 
@@ -29,7 +28,6 @@ export const BaseLayout: FC<LayoutProps> = ({
             <meta charSet="utf-8" />
         </Head>
 
-        <Header />
         <div className="govuk-width-container app-width-container--wide">
             <AlphaBanner />
 

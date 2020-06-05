@@ -53,6 +53,25 @@ exports[`Header should render correctly 1`] = `
         Fares Data Build Tool
       </a>
     </div>
+    <div
+      className="govuk-header__signin"
+    >
+      <a
+        className="govuk-header__link"
+        href="/account"
+      >
+        <img
+          alt="Person icon"
+          className="govuk-header__person-icon"
+          src={Object {}}
+        />
+        <span>
+           
+          My Account
+           
+        </span>
+      </a>
+    </div>
   </div>
 </header>
 `;

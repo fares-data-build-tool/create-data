@@ -46,6 +46,10 @@ export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 
 export const USER_COOKIE = 'fdbt-user';
 
+export const ID_TOKEN_COOKIE = 'fdbt-id-token';
+
+export const REFRESH_TOKEN_COOKIE = 'fdbt-refresh-token';
+
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
     'fdbt-fare-type',

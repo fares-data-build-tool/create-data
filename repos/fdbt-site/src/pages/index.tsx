@@ -20,7 +20,7 @@ const Home: NextPage = (): ReactElement => (
         </p>
 
         <a
-            href="/operator"
+            href="/login"
             role="button"
             draggable="false"
             className="govuk-button govuk-button--start"
