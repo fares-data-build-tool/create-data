@@ -1,14 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Auth from '../../data/amplify';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../register';
 import { getServicesByNocCode } from '../../data/auroradb';
-
-const checkEmailValid = (email: string): boolean => {
-    const emailRegex = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
-    return emailRegex.test(email) && email !== '';
-};
 
 const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';

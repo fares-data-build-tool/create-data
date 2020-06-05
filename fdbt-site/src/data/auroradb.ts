@@ -8,6 +8,10 @@ export interface ServiceType {
     description: string;
 }
 
+export interface OperatorNameType {
+    operatorPublicName: string;
+}
+
 export interface JourneyPattern {
     startPoint: {
         Id: string;
@@ -147,6 +151,26 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     } catch (error) {
         throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
     }
+};
+
+export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
+    console.info('retrieving operator name for given noc', { noc: nocCode });
+
+    const queryInput = `
+    SELECT operatorPublicName
+    FROM nocTable
+    WHERE nocCode = ?
+    `;
+
+    let queryResult: OperatorNameType[];
+
+    try {
+        queryResult = await executeQuery<OperatorNameType[]>(queryInput, [nocCode]);
+    } catch (error) {
+        throw new Error(`Could not retrieve operator name from AuroraDB: ${error.stack}`);
+    }
+
+    return queryResult[0];
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {

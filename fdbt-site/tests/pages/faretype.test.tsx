@@ -7,12 +7,12 @@ describe('pages', () => {
 
     describe('fareType', () => {
         it('should render correctly', () => {
-            const tree = shallow(<FareType errors={[]} />);
+            const tree = shallow(<FareType operator={' '} errors={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed to the page', () => {
-            const tree = shallow(<FareType errors={mockErrors} />);
+            const tree = shallow(<FareType operator={' '} errors={mockErrors} />);
             expect(tree).toMatchSnapshot();
         });
     });

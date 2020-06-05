@@ -30,6 +30,12 @@ exports[`pages fareType should render correctly 1`] = `
             Select a fare type
           </h1>
         </legend>
+        <span
+          className="govuk-hint"
+          id="faretype-operator-hint"
+        >
+           
+        </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
           errorId="fare-type-error"
@@ -164,6 +170,12 @@ exports[`pages fareType should render error messaging when errors are passed to 
             Select a fare type
           </h1>
         </legend>
+        <span
+          className="govuk-hint"
+          id="faretype-operator-hint"
+        >
+           
+        </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
           errorId="fare-type-error"

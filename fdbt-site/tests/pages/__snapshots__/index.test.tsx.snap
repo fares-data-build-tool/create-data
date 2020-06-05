@@ -37,7 +37,7 @@ exports[`pages operator should render correctly 1`] = `
     className="govuk-button govuk-button--start"
     data-module="govuk-button"
     draggable="false"
-    href="/operator"
+    href="/login"
     id="start-now-button"
     role="button"
   >

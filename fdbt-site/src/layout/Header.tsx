@@ -1,6 +1,11 @@
 import React, { FC } from 'react';
+import personIcon from '../assets/images/np-person-781585-ffffff.a9472bb89c43.png';
 
-const Header: FC = () => (
+type HeaderProps = {
+    isAuthed: boolean;
+};
+
+const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
     <header className="govuk-header " role="banner" data-module="govuk-header">
         <div className="govuk-header__container govuk-width-container">
             <div className="govuk-header__logo">
@@ -29,6 +34,13 @@ const Header: FC = () => (
             <div className="govuk-header__content">
                 <a href="/" id="title_link" className="govuk-header__link govuk-header__link--service-name">
                     Fares Data Build Tool
+                </a>
+            </div>
+
+            <div className="govuk-header__signin">
+                <a href={isAuthed ? '/account' : '/login'} className="govuk-header__link">
+                    <img src={personIcon} className="govuk-header__person-icon" alt="Person icon" />
+                    <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
                 </a>
             </div>
         </div>
