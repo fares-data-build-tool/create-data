@@ -93,6 +93,6 @@ export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): v
 };
 
 export const checkEmailValid = (email: string): boolean => {
-    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+.[^\s@]+$/);
+    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     return emailRegex.test(email) && email !== '';
 };

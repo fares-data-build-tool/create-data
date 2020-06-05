@@ -42,7 +42,7 @@ const Register = ({ inputChecks, errors, regKey }: RegisterProps): ReactElement 
                     <form action="/api/register" method="post">
                         <ErrorSummary errors={errors} />
                         <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                            <div className="govuk-fieldset" aria-describedby="register-page-heading">
+                            <div className="govuk-fieldset" aria-describedby="register-type-page-heading">
                                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                     <h1 className="govuk-fieldset__heading" id="register-type-page-heading">
                                         Create an account
