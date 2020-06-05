@@ -57,7 +57,13 @@ const MultipleProductValidity = ({
                     {operator} - {numberOfProducts} products - {passengerType}
                 </span>
                 <span className="govuk-hint" id="multiple-product-validity-page-hint">
-                    We need to know the time that this product would be valid until
+                    We need to know the time that this product would be valid until.
+                </span>
+                <span className="govuk-hint" id="calendar-validity-type-hint">
+                    Calendar day means a ticket purchased at 3pm would be valid until midnight on its day of expiry
+                </span>
+                <span className="govuk-hint" id="24hr-validity-type-hint">
+                    24hr means a ticket purchased at 3pm will be valid until 3pm on its day of expiry
                 </span>
                 <span id="multiple-product-validity-radios-error" className="govuk-error-message">
                     <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
@@ -73,11 +79,8 @@ const MultipleProductValidity = ({
                             <div className="govuk-heading-s grid-column-header-one-fifth" id="24hr-header">
                                 24hr
                             </div>
-                            <div
-                                className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
-                                id="calendar-header"
-                            >
-                                Calendar
+                            <div className="govuk-heading-s grid-column-header-one-fifth" id="calendar-header">
+                                Calendar day
                             </div>
                         </div>
                         {multipleProducts.map((product, index) => (
