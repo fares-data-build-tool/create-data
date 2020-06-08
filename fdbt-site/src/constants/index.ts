@@ -47,6 +47,7 @@ export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 export const USER_COOKIE = 'fdbt-user';
 
 export const FORGOT_PASSWORD_COOKIE = 'fdbt-reset-password';
+
 export const ID_TOKEN_COOKIE = 'fdbt-id-token';
 
 export const REFRESH_TOKEN_COOKIE = 'fdbt-refresh-token';

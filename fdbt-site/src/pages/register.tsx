@@ -5,7 +5,7 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 
 const title = 'Create Account - Fares data build tool';
@@ -86,6 +86,7 @@ const Register = ({ inputChecks, errors, regKey }: RegisterProps): ReactElement 
                                             type="password"
                                             aria-describedby="password-hint"
                                             spellCheck="false"
+                                            autoComplete="new-password"
                                         />
                                     </FormElementWrapper>
                                 </div>
@@ -101,6 +102,7 @@ const Register = ({ inputChecks, errors, regKey }: RegisterProps): ReactElement 
                                         type="password"
                                         aria-describedby="confirmPassword-hint"
                                         spellCheck="false"
+                                        autoComplete="new-password"
                                     />
                                 </div>
                                 <div className="govuk-form-group">

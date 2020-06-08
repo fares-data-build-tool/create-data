@@ -85,7 +85,7 @@ describe('pages', () => {
 
             const ctx = getMockContext({ passengerType: 'Adult' }, null, {}, mockWriteHeadFn, mockEndFn);
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('No services found for NOC Code: HCTY');
+            await expect(getServerSideProps(ctx)).rejects.toThrow('No services found for NOC Code: TEST');
         });
 
         it('throws error if operator cookie does not exist', async () => {

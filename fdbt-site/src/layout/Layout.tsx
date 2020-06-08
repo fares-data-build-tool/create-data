@@ -5,7 +5,7 @@ import Footer from './Footer';
 
 import favicon from '../assets/images/favicon.ico';
 import { buildTitle } from '../utils';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 
 type LayoutProps = {
     title: string;

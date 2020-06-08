@@ -6,7 +6,7 @@ import { PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { ExtractedValidationError } from './api/definePassengerType';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';

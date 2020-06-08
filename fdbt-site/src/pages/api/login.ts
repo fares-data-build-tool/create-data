@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Auth from '../../data/amplify';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
-import { ErrorInfo } from '../../types';
+import { ErrorInfo } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -24,6 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         try {
             const user = await Auth.signIn(email, password);
+
             if (user) {
                 const nocCode = user.attributes['custom:noc'];
                 const operatorName = await getOperatorNameByNocCode(nocCode);

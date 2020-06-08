@@ -63,10 +63,10 @@ describe('pages', () => {
                 expect(result.props.buttonText).toEqual('Select All');
             });
 
-            it('should throw an error when the OPERATOR_COOKIE is missing', async () => {
-                const ctx = getMockContext({ operator: null });
+            it('should throw an error when necessary cookies missing', async () => {
+                const ctx = getMockContext({ operator: null }, null, {}, jest.fn(), jest.fn(), false);
                 await expect(getServerSideProps(ctx)).rejects.toThrow(
-                    'Failed to retrieve OPERATOR_COOKIE for serviceList page',
+                    'Necessary cookies not found to show serviceList page',
                 );
             });
         });

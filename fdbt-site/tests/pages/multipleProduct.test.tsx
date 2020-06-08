@@ -11,7 +11,7 @@ describe('pages', () => {
             const wrapper = shallow(
                 <MultipleProducts
                     numberOfProductsToDisplay="2"
-                    nameOfOperator="Infinity Line"
+                    operator="Infinity Line"
                     passengerType="Adult"
                     errors={[]}
                     userInput={[]}
@@ -26,14 +26,16 @@ describe('pages', () => {
             });
             it('should return number of products to display, name of operator and passenger type if there is no cookie set', () => {
                 const ctx = getMockContext({
-                    operator: 'BLP',
+                    operator: {
+                        operatorPublicName: 'BLP',
+                    },
                     passengerType: { passengerType: 'Adult' },
                     numberOfProductsInput: '2',
                 });
                 const result = getServerSideProps(ctx);
 
                 expect(result.props.numberOfProductsToDisplay).toBe('2');
-                expect(result.props.nameOfOperator).toBe('BLP');
+                expect(result.props.operator).toBe('BLP');
                 expect(result.props.passengerType).toBe('Adult');
             });
 

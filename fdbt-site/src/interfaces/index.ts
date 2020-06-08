@@ -25,3 +25,24 @@ export interface PassengerDetails {
     ageRangeMax?: string;
     proof?: string[];
 }
+
+export interface ErrorInfo {
+    errorMessage: string;
+    id: string;
+}
+
+/* eslint-disable camelcase */
+export interface CognitoIdToken {
+    sub: string;
+    aud: string;
+    email_verified: boolean;
+    event_id: string;
+    'custom:noc': string;
+    token_use: string;
+    auth_time: number;
+    iss: string;
+    'cognito:username': string;
+    exp: number;
+    iat: number;
+    email: string;
+}

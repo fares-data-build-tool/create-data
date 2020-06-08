@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Operator - Fares Data Build Tool';

@@ -2,14 +2,14 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE } from '../constants';
+import { SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { getUuidFromCookies, setCookieOnServerSide } from '../utils';
+import { getUuidFromCookies, setCookieOnServerSide, getNocFromIdToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
 
 const title = 'Return Direction - Fares Data Build Tool';
@@ -68,31 +68,28 @@ const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: D
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
     const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
+    const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !serviceCookie || !fareTypeCookie) {
+    if (!serviceCookie || !fareTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
-    const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
     const fareTypeInfo = JSON.parse(fareTypeCookie);
 
     const lineName = serviceInfo.service.split('#')[0];
 
-    const rawService: RawService = await getServiceByNocCodeAndLineName(operatorInfo.nocCode, lineName);
+    const rawService: RawService = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const service: Service = {
         ...rawService,
         journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),
     };
 
     if (!service) {
-        throw new Error(
-            `No service info could be retrieved for nocCode: ${operatorInfo.nocCode} and lineName: ${lineName}`,
-        );
+        throw new Error(`No service info could be retrieved for nocCode: ${nocCode} and lineName: ${lineName}`);
     }
 
     // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)

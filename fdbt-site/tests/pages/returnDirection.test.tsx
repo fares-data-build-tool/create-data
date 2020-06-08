@@ -35,7 +35,7 @@ describe('pages', () => {
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
-            const operator = 'HCTY';
+            const operator = 'TEST';
             const lineName = 'X6A';
 
             const ctx = getMockContext({ operator, serviceLineName: lineName });
@@ -54,7 +54,7 @@ describe('pages', () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
                 () => mockRawServiceWithDuplicates,
             ));
-            const operator = 'HCTY';
+            const operator = 'TEST';
             const lineName = 'X6A';
 
             const ctx = getMockContext({ operator, serviceLineName: lineName });

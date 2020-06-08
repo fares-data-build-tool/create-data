@@ -5,7 +5,7 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import { deleteCookieOnServerSide } from '../utils/index';
 
 const title = 'Login - Fares data build tool';
@@ -64,6 +64,7 @@ const Login = ({ errors = [] }: LoginProps): ReactElement => {
                                             type="password"
                                             aria-describedby="password-hint"
                                             spellCheck="false"
+                                            autoComplete="current-password"
                                         />
                                     </FormElementWrapper>
                                 </div>
@@ -79,19 +80,19 @@ const Login = ({ errors = [] }: LoginProps): ReactElement => {
                     </form>
                 </div>
                 <div className="govuk-grid-column-one-third">
-                    <p>
+                    <div>
                         <h1 className="govuk-heading-s">Forgot your Password?</h1>
                         <a href="/forgotPassword" className="govuk-link">
                             Reset your password
                         </a>
-                    </p>
+                    </div>
                     <br />
-                    <p>
+                    <div>
                         <h1 className="govuk-heading-s">Don&apos;t have an account?</h1>
                         <a href="/register" className="govuk-link">
                             Request access
                         </a>
-                    </p>
+                    </div>
                 </div>
             </div>
         </BaseLayout>

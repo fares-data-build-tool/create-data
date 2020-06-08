@@ -140,7 +140,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
     return {
         props: {
             product: !productDetailsCookie ? {} : JSON.parse(productDetailsCookie),
-            operator,
+            operator: operator.operatorPublicName,
             passengerType,
             ...props,
         },

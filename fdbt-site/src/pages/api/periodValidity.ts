@@ -11,7 +11,14 @@ import {
     PERIOD_TYPE_COOKIE,
     PASSENGER_TYPE_COOKIE,
 } from '../../constants';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import {
+    getDomain,
+    setCookieOnResponseObject,
+    redirectToError,
+    redirectTo,
+    unescapeAndDecodeCookie,
+    getNocFromIdToken,
+} from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
@@ -52,20 +59,22 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
             const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+            const nocCode = getNocFromIdToken(req, res);
 
             if (
+                !nocCode ||
                 productDetailsCookie === '' ||
                 daysValidCookie === '' ||
                 passengerTypeCookie === '' ||
                 (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie))
             ) {
-                throw new Error('Necessary cookies not found for period validity page');
+                throw new Error('Necessary cookies not found for period validity API');
             }
 
             let props = {};
             const { productName, productPrice } = JSON.parse(productDetailsCookie);
             const { daysValid } = JSON.parse(daysValidCookie);
-            const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
+            const { operator, uuid } = JSON.parse(operatorCookie);
             const { periodTypeName } = JSON.parse(periodTypeCookie);
             const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
@@ -108,7 +117,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             );
 
             const period: DecisionData = {
-                operatorName: operator,
+                operatorName: operator.operatorPublicName,
                 type: periodTypeName,
                 nocCode,
                 products: [

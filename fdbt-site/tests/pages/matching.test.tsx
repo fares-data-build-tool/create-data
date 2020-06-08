@@ -142,7 +142,7 @@ describe('Matching Page', () => {
             });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow(
-                'No stops found for journey: nocCode HCTY, lineName: X01, startPoint: 123ZZZ, endPoint: 13003921A',
+                'No stops found for journey: nocCode TEST, lineName: X01, startPoint: 123ZZZ, endPoint: 13003921A',
             );
         });
 

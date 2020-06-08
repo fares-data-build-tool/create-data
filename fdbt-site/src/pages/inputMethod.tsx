@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import { INPUT_METHOD_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';

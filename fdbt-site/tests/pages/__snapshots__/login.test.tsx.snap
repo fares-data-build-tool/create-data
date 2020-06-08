@@ -82,6 +82,7 @@ exports[`pages login should render correctly 1`] = `
               >
                 <input
                   aria-describedby="password-hint"
+                  autoComplete="current-password"
                   className="govuk-input"
                   id="password"
                   name="password"
@@ -104,7 +105,7 @@ exports[`pages login should render correctly 1`] = `
     <div
       className="govuk-grid-column-one-third"
     >
-      <p>
+      <div>
         <h1
           className="govuk-heading-s"
         >
@@ -116,9 +117,9 @@ exports[`pages login should render correctly 1`] = `
         >
           Reset your password
         </a>
-      </p>
+      </div>
       <br />
-      <p>
+      <div>
         <h1
           className="govuk-heading-s"
         >
@@ -130,7 +131,7 @@ exports[`pages login should render correctly 1`] = `
         >
           Request access
         </a>
-      </p>
+      </div>
     </div>
   </div>
 </Component>
@@ -246,6 +247,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
               >
                 <input
                   aria-describedby="password-hint"
+                  autoComplete="current-password"
                   className="govuk-input"
                   id="password"
                   name="password"
@@ -268,7 +270,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
     <div
       className="govuk-grid-column-one-third"
     >
-      <p>
+      <div>
         <h1
           className="govuk-heading-s"
         >
@@ -280,9 +282,9 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
         >
           Reset your password
         </a>
-      </p>
+      </div>
       <br />
-      <p>
+      <div>
         <h1
           className="govuk-heading-s"
         >
@@ -294,7 +296,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
         >
           Request access
         </a>
-      </p>
+      </div>
     </div>
   </div>
 </Component>

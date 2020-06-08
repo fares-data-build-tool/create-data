@@ -12,6 +12,7 @@ import { BasicService } from '../interfaces/index';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
+import { getNocFromIdToken } from '../utils';
 
 const title = 'Matching - Fares Data Build Tool';
 const description = 'Matching page of the Fares Data Build Tool';
@@ -65,8 +66,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
     const matchingCookie = cookies[MATCHING_COOKIE];
+    const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !serviceCookie || !journeyCookie) {
+    if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 
@@ -74,9 +76,8 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const serviceObject = JSON.parse(serviceCookie);
     const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
-    const { nocCode } = operatorObject;
     const [selectedStartPoint, selectedEndPoint] = journeyObject.directionJourneyPattern.split('#');
-    const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
+    const service = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
     const masterStopList = getMasterStopList(relevantJourneys);

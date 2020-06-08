@@ -9,7 +9,7 @@ import {
     PASSENGER_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
 } from '../constants';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
@@ -180,7 +180,9 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
         errors.push(error);
     }
 
-    return { props: { operator, passengerType, numberOfProducts, multipleProducts, errors } };
+    return {
+        props: { operator: operator.operatorPublicName, passengerType, numberOfProducts, multipleProducts, errors },
+    };
 };
 
 export default MultipleProductValidity;
