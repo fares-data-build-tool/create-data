@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React, { ReactElement } from 'react';
-import { ErrorInfo } from '../../src/types';
+import { ErrorInfo } from '../../src/interfaces';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
     renderConditionalTextInput,

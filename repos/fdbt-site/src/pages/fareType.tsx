@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';

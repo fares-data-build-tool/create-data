@@ -2,9 +2,10 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { FullColumnLayout } from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_LIST_COOKIE } from '../constants';
+import { SERVICE_LIST_COOKIE } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServicesInfo } from '../interfaces';
+import { getNocFromIdToken } from '../utils';
 
 const title = 'Service List - Fares Data Build Tool';
 const description = 'Service List selection page of the Fares Data Build Tool';
@@ -94,16 +95,13 @@ const ServiceList = (serviceProps: ServiceListProps): ReactElement => {
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
     const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
+    const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie) {
-        throw new Error('Failed to retrieve OPERATOR_COOKIE for serviceList page');
+    if (!nocCode) {
+        throw new Error('Necessary cookies not found to show serviceList page');
     }
 
-    const operatorInfo = JSON.parse(operatorCookie);
-
-    const { nocCode } = operatorInfo;
     const servicesList = await getServicesByNocCode(nocCode);
 
     const { selectAll } = ctx.query;

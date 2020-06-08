@@ -2,7 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
-import { OPERATOR_COOKIE, FARE_TYPE_COOKIE } from '../../../constants';
+import { decode } from 'jsonwebtoken';
+import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE } from '../../../constants';
+import { CognitoIdToken } from '../../../interfaces';
 
 export const getDomain = (req: NextApiRequest): string => {
     const host = req?.headers?.host;
@@ -96,3 +98,23 @@ export const checkEmailValid = (email: string): boolean => {
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     return emailRegex.test(email) && email !== '';
 };
+
+export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
+    req: NextApiRequest,
+    res: NextApiResponse,
+    attribute: T,
+): CognitoIdToken[T] | null => {
+    const cookies = new Cookies(req, res);
+    const idToken = cookies.get(ID_TOKEN_COOKIE);
+
+    if (!idToken) {
+        return null;
+    }
+
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+
+    return decodedIdToken[attribute] ?? null;
+};
+
+export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
+    getAttributeFromIdToken(req, res, 'custom:noc');

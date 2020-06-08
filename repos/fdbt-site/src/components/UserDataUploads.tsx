@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import FileAttachment from './FileAttachment';
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 import ErrorSummary from './ErrorSummary';
 

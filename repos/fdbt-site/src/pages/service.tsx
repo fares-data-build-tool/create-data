@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
+import { getNocFromIdToken } from '../utils';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
@@ -73,8 +74,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
+    const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !passengerTypeCookie) {
+    if (!operatorCookie || !passengerTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 
@@ -83,13 +85,13 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const passengerTypeInfo = JSON.parse(passengerTypeCookie);
     const { passengerType } = passengerTypeInfo;
 
-    const services = await getServicesByNocCode(operatorInfo.nocCode);
+    const services = await getServicesByNocCode(nocCode);
 
     if (services.length === 0) {
-        throw new Error(`No services found for NOC Code: ${operatorInfo.nocCode}`);
+        throw new Error(`No services found for NOC Code: ${nocCode}`);
     }
 
-    return { props: { operator, passengerType, services, error } };
+    return { props: { operator: operator.operatorPublicName, passengerType, services, error } };
 };
 
 export default Service;

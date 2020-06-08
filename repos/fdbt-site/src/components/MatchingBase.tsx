@@ -5,8 +5,7 @@ import { FullColumnLayout } from '../layout/Layout';
 import MatchingList from './MatchingList';
 import { UserFareStages } from '../data/s3';
 import { Stop } from '../data/auroradb';
-import { BasicService } from '../interfaces';
-import { ErrorInfo } from '../types';
+import { BasicService, ErrorInfo } from '../interfaces';
 
 interface MatchingBaseProps {
     userFareStages: UserFareStages;

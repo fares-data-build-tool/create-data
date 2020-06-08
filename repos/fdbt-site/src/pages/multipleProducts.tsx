@@ -9,7 +9,7 @@ import {
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
 
@@ -18,7 +18,7 @@ const description = 'Multiple Product entry page of the Fares Data Build Tool';
 
 export interface MultipleProductProps {
     numberOfProductsToDisplay: string;
-    nameOfOperator: string;
+    operator: string;
     passengerType: string;
     errors?: ErrorInfo[];
     userInput: MultiProduct[];
@@ -26,7 +26,7 @@ export interface MultipleProductProps {
 
 const MultipleProducts = ({
     numberOfProductsToDisplay,
-    nameOfOperator,
+    operator,
     passengerType,
     errors = [],
     userInput = [],
@@ -42,7 +42,7 @@ const MultipleProducts = ({
                         </h1>
                     </legend>
                     <span className="govuk-hint" id="service-operator-hint">
-                        {nameOfOperator} - {numberOfProductsToDisplay} Products - {passengerType}
+                        {operator} - {numberOfProductsToDisplay} Products - {passengerType}
                     </span>
                 </fieldset>
                 <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
@@ -70,7 +70,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
-    const nameOfOperator: string = JSON.parse(operatorCookie).operator;
+    const { operator } = JSON.parse(operatorCookie);
 
     if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
         const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
@@ -81,7 +81,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
             return {
                 props: {
                     numberOfProductsToDisplay,
-                    nameOfOperator,
+                    operator: operator.operatorPublicName,
                     passengerType: passengerTypeInfo.passengerType,
                     errors: parsedMultipleProductCookie.errors,
                     userInput: parsedMultipleProductCookie.userInput,
@@ -93,7 +93,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     return {
         props: {
             numberOfProductsToDisplay,
-            nameOfOperator,
+            operator: operator.operatorPublicName,
             passengerType: passengerTypeInfo.passengerType,
             userInput: [],
         },

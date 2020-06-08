@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import HowManyProducts, { InputCheck } from '../../src/pages/howManyProducts';
-import { ErrorInfo } from '../../src/types';
+import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('howManyProducts', () => {
