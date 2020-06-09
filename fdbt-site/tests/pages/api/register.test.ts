@@ -1,4 +1,5 @@
-import Auth from '@aws-amplify/auth';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import * as auth from '../../../src/data/cognito';
 import register from '../../../src/pages/api/register';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -7,19 +8,20 @@ import { USER_COOKIE } from '../../../src/constants';
 
 jest.mock('../../../src/data/auroradb.ts');
 
-const mockUserCognito = {
-    username: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-    challengeName: 'NEW_PASSWORD_REQUIRED',
-    challengeParam: {
-        requiredAttributes: [],
+const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
+    ChallengeName: 'NEW_PASSWORD_REQUIRED',
+    ChallengeParameters: {
+        USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
     },
+    Session: 'session',
 };
 
 describe('register', () => {
     const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
-    const authSignInSpy = jest.spyOn(Auth, 'signIn');
-    const authCompletePasswordSpy = jest.spyOn(Auth, 'completeNewPassword');
-    const authSignOutSpy = jest.spyOn(Auth, 'signOut');
+    const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
+    const authCompletePasswordSpy = jest.spyOn(auth, 'respondToNewPasswordChallenge');
+    const authUpdateAttributesSpy = jest.spyOn(auth, 'updateUserAttributes');
+    const authSignOutSpy = jest.spyOn(auth, 'globalSignOut');
     const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
     beforeEach(() => {
@@ -188,9 +190,10 @@ describe('register', () => {
     });
 
     it('should redirect when successfully signed in', async () => {
-        authSignInSpy.mockImplementation(() => Promise.resolve(mockUserCognito));
-        authCompletePasswordSpy.mockImplementation(() => Promise.resolve(mockUserCognito));
+        authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
+        authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
         authSignOutSpy.mockImplementation(() => Promise.resolve());
+        authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
 
         const { req, res } = getMockRequestAndResponse(
             {},
@@ -208,7 +211,11 @@ describe('register', () => {
         await register(req, res);
 
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
-        expect(authCompletePasswordSpy).toHaveBeenCalledWith(mockUserCognito, 'abcdefghi', { 'custom:noc': 'DCCL' });
+        expect(authCompletePasswordSpy).toHaveBeenCalledWith(
+            'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+            'abcdefghi',
+            'session',
+        );
         expect(authSignOutSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
@@ -216,7 +223,9 @@ describe('register', () => {
     });
 
     it('should error when the sign in fails', async () => {
-        authSignInSpy.mockImplementation(() => Promise.resolve());
+        authSignInSpy.mockImplementation(() => {
+            throw new Error('Auth failed');
+        });
 
         const mockUserCookieValue = {
             inputChecks: [

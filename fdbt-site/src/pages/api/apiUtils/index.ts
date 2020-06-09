@@ -3,8 +3,9 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
-import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE } from '../../../constants';
+import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
 import { CognitoIdToken } from '../../../interfaces';
+import { globalSignOut } from '../../../data/cognito';
 
 export const getDomain = (req: NextApiRequest): string => {
     const host = req?.headers?.host;
@@ -33,13 +34,10 @@ export const setCookieOnResponseObject = (
     });
 };
 
-export const deleteCookieOnResponseObject = (
-    domain: string,
-    cookieName: string,
-    req: NextApiRequest,
-    res: NextApiResponse,
-): void => {
+export const deleteCookieOnResponseObject = (cookieName: string, req: NextApiRequest, res: NextApiResponse): void => {
     const cookies = new Cookies(req, res);
+    const host = req?.headers?.host;
+    const domain = host ? host.split(':')[0] : '';
 
     cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
 };
@@ -118,3 +116,11 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 
 export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
     getAttributeFromIdToken(req, res, 'custom:noc');
+
+export const signOutUser = async (username: string, req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+    await globalSignOut(username);
+
+    deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
+};
