@@ -1,11 +1,11 @@
-import Auth from '@aws-amplify/auth';
+import * as auth from '../../../src/data/cognito';
 import { FORGOT_PASSWORD_COOKIE } from '../../../src/constants/index';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import forgotPassword from '../../../src/pages/api/forgotPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 const writeHeadMock = jest.fn();
-const authSignInSpy = jest.spyOn(Auth, 'forgotPassword');
+const authSignInSpy = jest.spyOn(auth, 'forgotPassword');
 authSignInSpy.mockImplementation(() => Promise.resolve());
 
 describe('forgotPassword', () => {

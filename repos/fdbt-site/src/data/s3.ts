@@ -50,8 +50,8 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
         return JSON.parse(dataAsString);
-    } catch (err) {
-        throw new Error(`Could not retrieve fare stages from S3: ${err.name}, ${err.message}`);
+    } catch (error) {
+        throw new Error(`Could not retrieve fare stages from S3: ${error.stack}`);
     }
 };
 
@@ -73,8 +73,8 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
         const atcoCodes: string[] = parsedData.map(data => data.AtcoCodes);
 
         return atcoCodes;
-    } catch (err) {
-        throw new Error(`Could not retrieve Atco codes from S3: ${err.name}, ${err.message}`);
+    } catch (error) {
+        throw new Error(`Could not retrieve Atco codes from S3: ${error.stack}`);
     }
 };
 
@@ -91,8 +91,8 @@ export const getOutboundMatchingFareStages = async (uuid: string): Promise<Match
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
         return JSON.parse(dataAsString);
-    } catch (err) {
-        throw new Error(`Could not retrieve outbound matching fare zones from S3: ${err.stack}`);
+    } catch (error) {
+        throw new Error(`Could not retrieve outbound matching fare zones from S3: ${error.stack}`);
     }
 };
 

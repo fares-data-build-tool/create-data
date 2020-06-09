@@ -65,7 +65,7 @@ export const isSessionValid = async (url: string, req: IncomingMessage | undefin
         });
 
         return response.data.Valid;
-    } catch (err) {
+    } catch (error) {
         return false;
     }
 };

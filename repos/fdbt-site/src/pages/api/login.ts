@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
-import Auth from '../../data/amplify';
+import { decode } from 'jsonwebtoken';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
-import { ErrorInfo } from '../../interfaces';
+import { ErrorInfo, CognitoIdToken } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
+import { initiateAuth } from '../../data/cognito';
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
@@ -20,28 +21,44 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const cookieContent = JSON.stringify({ errors });
             setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
             redirectTo(res, '/login');
+
+            return;
+        }
+
+        if (!password) {
+            errors.push({
+                id: 'password',
+                errorMessage: 'Enter a password',
+            });
+            const cookieContent = JSON.stringify({ errors });
+            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
+            redirectTo(res, '/login');
+
+            return;
         }
 
         try {
-            const user = await Auth.signIn(email, password);
+            const authResponse = await initiateAuth(email, password);
 
-            if (user) {
-                const nocCode = user.attributes['custom:noc'];
+            if (authResponse?.AuthenticationResult) {
+                const idToken = authResponse.AuthenticationResult.IdToken as string;
+                const refreshToken = authResponse.AuthenticationResult.RefreshToken as string;
+
+                const decodedIdToken = decode(idToken) as CognitoIdToken;
+                const nocCode = decodedIdToken['custom:noc'];
                 const operatorName = await getOperatorNameByNocCode(nocCode);
                 const uuid = uuidv4();
                 const domain = getDomain(req);
                 const operatorCookieValue = JSON.stringify({ operator: operatorName, uuid });
                 setCookieOnResponseObject(domain, OPERATOR_COOKIE, operatorCookieValue, req, res);
 
-                const idToken = user.signInUserSession.idToken.jwtToken;
-                const refreshToken = user.signInUserSession.refreshToken.token;
                 setCookieOnResponseObject(domain, ID_TOKEN_COOKIE, idToken, req, res);
                 setCookieOnResponseObject(domain, REFRESH_TOKEN_COOKIE, refreshToken, req, res);
 
                 console.info('login successful', { noc: nocCode });
                 redirectTo(res, '/fareType');
             } else {
-                throw new Error('User object not returned by Cognito');
+                throw new Error('Auth response invalid');
             }
         } catch (error) {
             console.warn('login failed', { error: error.message });

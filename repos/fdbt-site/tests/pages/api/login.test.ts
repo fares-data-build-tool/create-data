@@ -1,31 +1,29 @@
-import Auth from '@aws-amplify/auth';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import * as auth from '../../../src/data/cognito';
 import login from '../../../src/pages/api/login';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { OPERATOR_COOKIE } from '../../../src/constants';
 
-jest.mock('../../../src/data/auroradb.ts');
-
-const mockUserCognito = {
-    signInUserSession: {
-        idToken: {
-            jwtToken: 'eyJra',
-        },
-        refreshToken: {
-            token: 'eyJj',
-        },
+const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
+    AuthenticationResult: {
+        IdToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.yblgxuiLnAHzUUf9d8rH975xO8N62aqR8gUszkw6cHc',
+        RefreshToken: 'eyJj',
     },
-    attributes: { 'custom:noc': 'DCCL' },
 };
 
+jest.mock('../../../src/data/auroradb.ts');
+
 describe('login', () => {
-    const getOperatorNameByNocCodeSpy = jest.spyOn(auroradb, 'getOperatorNameByNocCode');
-    const authSignInSpy = jest.spyOn(Auth, 'signIn');
     const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    const getOperatorNameByNocCodeSpy = jest.spyOn(auroradb, 'getOperatorNameByNocCode');
+    const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
 
     beforeEach(() => {
         getOperatorNameByNocCodeSpy.mockImplementation(() => Promise.resolve({ operatorPublicName: 'DCCL' }));
+        authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
     });
 
     afterEach(() => {
@@ -53,8 +51,8 @@ describe('login', () => {
             {
                 errors: [
                     {
-                        id: 'login',
-                        errorMessage: 'The email address and/or password are not correct.',
+                        id: 'password',
+                        errorMessage: 'Enter a password',
                     },
                 ],
             },
@@ -75,8 +73,6 @@ describe('login', () => {
     });
 
     it('should redirect when successfully signed in', async () => {
-        authSignInSpy.mockImplementation(() => Promise.resolve(mockUserCognito));
-
         const { req, res } = getMockRequestAndResponse(
             {},
             {
@@ -96,7 +92,9 @@ describe('login', () => {
     });
 
     it('should error when the sign in fails', async () => {
-        authSignInSpy.mockImplementation(() => Promise.resolve());
+        authSignInSpy.mockImplementation(() => {
+            throw new Error();
+        });
 
         const mockUserCookieValue = {
             errors: [

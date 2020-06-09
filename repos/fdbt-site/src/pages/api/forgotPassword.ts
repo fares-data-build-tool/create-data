@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { FORGOT_PASSWORD_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject, redirectTo, getDomain, redirectToError, checkEmailValid } from './apiUtils';
-import Auth from '../../data/amplify';
+import { forgotPassword } from '../../data/cognito';
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (checkEmailValid(email)) {
-            await Auth.forgotPassword(email);
+            await forgotPassword(email);
 
             const cookieContent = JSON.stringify({ email });
             setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
