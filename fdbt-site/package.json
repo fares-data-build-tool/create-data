@@ -12,7 +12,7 @@
         "build:next": "next build",
         "build:server": "tsc --project tsconfig.server.json",
         "build": "npm run build:next && npm run build:server",
-        "start": "NODE_ENV=production PORT=80 node dist/index.js",
+        "start": "NODE_ENV=production PORT=80 node dist/server/index.js",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx"
     },

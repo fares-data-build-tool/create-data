@@ -18,7 +18,7 @@ const jwks = jwksClient({
 
 const getKey = (header: JwtHeader, callback: SigningKeyCallback): void => {
     jwks.getSigningKey(header.kid ?? '', (err, key) => {
-        const signingKey = key.getPublicKey();
+        const signingKey = key?.getPublicKey();
         callback(err ?? null, signingKey);
     });
 };
