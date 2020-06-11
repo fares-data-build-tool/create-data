@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
-import { InputCheck } from '../register';
+import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, respondToNewPasswordChallenge, globalSignOut, updateUserAttributes } from '../../data/cognito';
 

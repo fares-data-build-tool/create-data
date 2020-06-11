@@ -19,13 +19,15 @@ const unauthenticatedGetRoutes = [
     '/forgotPassword',
     '/resetConfirmation',
     '/resetPassword',
+    '/resetPasswordSuccess',
+    '/resetLinkExpired',
     '/_next/*',
     '/assets/*',
     '/scripts/*',
     '/error',
 ];
 
-const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword'];
+const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword', '/api/resetPassword'];
 
 const setStaticRoutes = (server: Express): void => {
     server.use(
