@@ -14,6 +14,7 @@ const calculateSecretHash = (username: string): string => {
     if (!clientSecret) {
         clientSecret = awsParamStore.getParameterSync('fdbt-cognito-client-secret', { region: 'eu-west-2' }).Value;
     }
+
     return crypto
         .createHmac('SHA256', clientSecret as string)
         .update(username + clientId)
@@ -159,11 +160,15 @@ export const confirmForgotPassword = async (
         Username: username,
         ConfirmationCode: confirmationCode,
         Password: password,
+        SecretHash: calculateSecretHash(username),
     };
 
     try {
         await cognito.confirmForgotPassword(params).promise();
     } catch (error) {
+        if (error?.code === 'ExpiredCodeException') {
+            throw new Error('ExpiredCodeException');
+        }
         throw new Error(`Failed to confirm forgotten password: ${error.stack}`);
     }
 };

@@ -33,6 +33,12 @@ export interface ErrorInfo {
     id: string;
 }
 
+export interface InputCheck {
+    id: string;
+    inputValue: string;
+    error: string;
+}
+
 /* eslint-disable camelcase */
 export interface CognitoIdToken {
     sub: string;
