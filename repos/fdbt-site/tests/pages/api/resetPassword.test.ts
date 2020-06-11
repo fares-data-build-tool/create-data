@@ -135,7 +135,7 @@ describe('reset password', () => {
                 {
                     inputValue: '',
                     id: 'password',
-                    error: 'There was a problem creating your account',
+                    error: 'There was a problem resetting your password.',
                 },
             ],
         };

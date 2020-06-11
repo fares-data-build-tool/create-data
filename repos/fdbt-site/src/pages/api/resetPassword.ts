@@ -64,13 +64,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             inputChecks.push({
                 inputValue: '',
                 id: 'password',
-                error: 'There was a problem creating your account',
+                error: 'There was a problem resetting your password.',
             });
 
             setErrorsCookie(inputChecks, regKey, username, expiry);
         }
     } catch (error) {
-        const message = 'There was a problem with the creation of the account';
+        const message = 'There was an error resetting password.';
         redirectToError(res, message, error);
     }
 };

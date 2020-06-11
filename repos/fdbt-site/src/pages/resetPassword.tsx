@@ -118,7 +118,8 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     if (expiry) {
         if (typeof expiry === 'string') {
             const parsedExpiry = parseInt(expiry, 10);
-            const currentTimeStamp = Math.floor(new Date().getUTCSeconds());
+
+            const currentTimeStamp = Math.floor(Date.now() / 1000);
 
             if (currentTimeStamp > parsedExpiry) {
                 if (ctx.res) {
