@@ -6,7 +6,11 @@ def handler(event, context):
     if event['triggerSource'] == "CustomMessage_AdminCreateUser":
         register_link = os.getenv('REGISTRATION_LINK')
         event['response']['emailSubject'] = "Register for the Fares Data Build Tool"
-        event['response']['emailMessage'] = template_register(event['request']['usernameParameter'], event['request']['codeParameter'],register_link)
+        event['response']['emailMessage'] = template_register(
+            event['request']['usernameParameter'],
+            event['request']['codeParameter'],
+            register_link
+        )
     elif event['triggerSource'] == "CustomMessage_ForgotPassword":
         forgotten_password_link = os.getenv('FORGOTTEN_PASSWORD_LINK')
         current_time = datetime.datetime.utcnow()
@@ -15,7 +19,11 @@ def handler(event, context):
         ts = current_time_plus_one_hour.timestamp()
 
         event['response']['emailSubject'] = "Reset your password"
-        event['response']['emailMessage'] = template_forgotten_password(event['request']['userAttributes']['email'], event['request']['codeParameter'], forgotten_password_link, math.floor(ts))
+        event['response']['emailMessage'] = template_forgotten_password(
+            event['request']['userAttributes']['email'],
+            event['request']['codeParameter'],
+            forgotten_password_link, math.floor(ts)
+        )
 
     return event
 
