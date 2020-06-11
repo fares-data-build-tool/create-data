@@ -1,5 +1,6 @@
 import os
-
+import math
+import datetime
 
 def handler(event, context):
     if event['triggerSource'] == "CustomMessage_AdminCreateUser":
@@ -8,8 +9,13 @@ def handler(event, context):
         event['response']['emailMessage'] = template_register(event['request']['usernameParameter'], event['request']['codeParameter'],register_link)
     elif event['triggerSource'] == "CustomMessage_ForgotPassword":
         forgotten_password_link = os.getenv('FORGOTTEN_PASSWORD_LINK')
+        current_time = datetime.datetime.utcnow()
+
+        current_time_plus_one_hour = current_time + datetime.timedelta(hours=1)
+        ts = current_time_plus_one_hour.timestamp()
+
         event['response']['emailSubject'] = "Reset your password"
-        event['response']['emailMessage'] = template_forgotten_password(event['request']['userAttributes']['email'], event['request']['codeParameter'], forgotten_password_link)
+        event['response']['emailMessage'] = template_forgotten_password(event['request']['userAttributes']['email'], event['request']['codeParameter'], forgotten_password_link, math.floor(ts))
 
     return event
 
@@ -25,11 +31,11 @@ def template_register(username, key, register_link):
     return get_base_template(template)
 
 
-def template_forgotten_password(email, code, password_link):
+def template_forgotten_password(email, code, password_link, ts):
     email_body = f"""<div style="font-family: Arial, sans-serif; padding-left: 30px">
                        <h1>Recover Password - Fares Data Build Tool</h1>
                        <p>To recover your password for the Fares Data Build Tool click on the link below:</p>
-                       <a href="{password_link}?key={code}&user_name={email}">Link to reset password</a>
+                       <a href="{password_link}?key={code}&user_name={email}&expiry={ts}">Link to reset password</a>
                        <p>The link is valid for 24 hours from the time it was requested.</p>
                        <p>If this wasn't you, please contact tfn@infinityworks.com.</p>
                     </div>"""
