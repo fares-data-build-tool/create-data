@@ -6,8 +6,9 @@ exports[`pages howManyStages should render correctly 1`] = `
   errors={Array []}
   title="How Many Stages - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyStages"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -88,6 +89,6 @@ exports[`pages howManyStages should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

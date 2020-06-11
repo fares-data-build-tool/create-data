@@ -15,6 +15,8 @@ describe('pages', () => {
                     passengerType="Adult"
                     errors={[]}
                     userInput={[]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();

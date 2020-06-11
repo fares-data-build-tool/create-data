@@ -6,8 +6,9 @@ exports[`pages inputMethod should render correctly 1`] = `
   errors={Array []}
   title="Input Method - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/inputMethod"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -102,6 +103,6 @@ exports[`pages inputMethod should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

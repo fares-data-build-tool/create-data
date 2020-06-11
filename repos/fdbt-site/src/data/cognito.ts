@@ -24,6 +24,8 @@ export const initiateAuth = async (
     username: string,
     password: string,
 ): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
+    console.info('initiating auth...');
+
     const params: CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
         AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
         ClientId: clientId,
@@ -44,11 +46,38 @@ export const initiateAuth = async (
     }
 };
 
+export const initiateRefreshAuth = async (
+    username: string,
+    refreshToken: string,
+): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
+    console.info('initiating refresh auth...');
+
+    const params: CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
+        AuthFlow: 'REFRESH_TOKEN_AUTH',
+        ClientId: clientId,
+        UserPoolId: userPoolId,
+        AuthParameters: {
+            REFRESH_TOKEN: refreshToken,
+            SECRET_HASH: calculateSecretHash(username),
+        },
+    };
+
+    try {
+        const response = await cognito.adminInitiateAuth(params).promise();
+
+        return response;
+    } catch (error) {
+        throw new Error(`Failed to refresh user session: ${error.stack}`);
+    }
+};
+
 export const respondToNewPasswordChallenge = async (
     username: string,
     password: string,
     session: string,
 ): Promise<void> => {
+    console.info('new password challenge initiated...');
+
     const params: CognitoIdentityServiceProvider.AdminRespondToAuthChallengeRequest = {
         ChallengeName: 'NEW_PASSWORD_REQUIRED',
         ClientId: clientId,
@@ -69,6 +98,8 @@ export const respondToNewPasswordChallenge = async (
 };
 
 export const globalSignOut = async (username: string): Promise<void> => {
+    console.info('performing global sign out...');
+
     const params: CognitoIdentityServiceProvider.AdminUserGlobalSignOutRequest = {
         Username: username,
         UserPoolId: userPoolId,
@@ -85,6 +116,8 @@ export const updateUserAttributes = async (
     username: string,
     attributes: { Name: string; Value: string }[],
 ): Promise<void> => {
+    console.info('updating user attributes...');
+
     const params: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest = {
         UserAttributes: attributes,
         UserPoolId: userPoolId,
@@ -99,6 +132,8 @@ export const updateUserAttributes = async (
 };
 
 export const forgotPassword = async (username: string): Promise<void> => {
+    console.info('start forgot password...');
+
     const params: CognitoIdentityServiceProvider.ForgotPasswordRequest = {
         ClientId: clientId,
         Username: username,
@@ -117,6 +152,8 @@ export const confirmForgotPassword = async (
     confirmationCode: string,
     password: string,
 ): Promise<void> => {
+    console.info('confirm forgot password...');
+
     const params: CognitoIdentityServiceProvider.ConfirmForgotPasswordRequest = {
         ClientId: clientId,
         Username: username,

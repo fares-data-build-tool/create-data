@@ -5,7 +5,7 @@ import Login from '../../src/pages/login';
 describe('pages', () => {
     describe('login', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Login errors={[]} />);
+            const tree = shallow(<Login errors={[]} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -18,6 +18,8 @@ describe('pages', () => {
                             id: 'email',
                         },
                     ]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

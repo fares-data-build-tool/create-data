@@ -27,7 +27,7 @@ describe('Price Entry Page', () => {
     const stageNames = ['Bewbush', 'Chorlton', 'Green Lane', 'Ashbury'];
 
     it('should render correctly', () => {
-        const tree = shallow(<PriceEntry stageNamesArray={mockFareStages} />);
+        const tree = shallow(<PriceEntry stageNamesArray={mockFareStages} csrfToken="" pageProps={[]} />);
         expect(tree).toMatchSnapshot();
     });
 

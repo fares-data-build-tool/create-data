@@ -12,8 +12,9 @@ exports[`pages register should render correctly 1`] = `
     <div
       className="govuk-grid-column-two-thirds"
     >
-      <form
+      <CsrfForm
         action="/api/register"
+        csrfToken=""
         method="post"
       >
         <ErrorSummary
@@ -196,7 +197,7 @@ exports[`pages register should render correctly 1`] = `
           type="hidden"
           value="abcdefg"
         />
-      </form>
+      </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-thirds"
@@ -236,8 +237,9 @@ exports[`pages register should render error messaging when errors are passed 1`]
     <div
       className="govuk-grid-column-two-thirds"
     >
-      <form
+      <CsrfForm
         action="/api/register"
+        csrfToken=""
         method="post"
       >
         <ErrorSummary
@@ -448,7 +450,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
           type="hidden"
           value="abcdefg"
         />
-      </form>
+      </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-thirds"
@@ -488,8 +490,9 @@ exports[`pages register should store email if entered correctly but other fields
     <div
       className="govuk-grid-column-two-thirds"
     >
-      <form
+      <CsrfForm
         action="/api/register"
+        csrfToken=""
         method="post"
       >
         <ErrorSummary
@@ -700,7 +703,7 @@ exports[`pages register should store email if entered correctly but other fields
           type="hidden"
           value="abcdefg"
         />
-      </form>
+      </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-thirds"

@@ -6,8 +6,9 @@ exports[`pages operator should render correctly 1`] = `
   errors={Array []}
   title="Passenger Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/passengerType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -354,6 +355,6 @@ exports[`pages operator should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

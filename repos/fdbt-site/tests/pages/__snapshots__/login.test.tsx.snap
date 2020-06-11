@@ -12,8 +12,9 @@ exports[`pages login should render correctly 1`] = `
     <div
       className="govuk-grid-column-two-thirds"
     >
-      <form
+      <CsrfForm
         action="/api/login"
+        csrfToken=""
         method="post"
       >
         <ErrorSummary
@@ -100,7 +101,7 @@ exports[`pages login should render correctly 1`] = `
           type="submit"
           value="Sign in"
         />
-      </form>
+      </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-third"
@@ -156,8 +157,9 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
     <div
       className="govuk-grid-column-two-thirds"
     >
-      <form
+      <CsrfForm
         action="/api/login"
+        csrfToken=""
         method="post"
       >
         <ErrorSummary
@@ -265,7 +267,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
           type="submit"
           value="Sign in"
         />
-      </form>
+      </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-third"

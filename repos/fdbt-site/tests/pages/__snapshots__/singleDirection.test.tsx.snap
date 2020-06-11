@@ -6,8 +6,9 @@ exports[`pages direction should render correctly 1`] = `
   errors={Array []}
   title="Single Direction - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/singleDirection"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -128,6 +129,6 @@ exports[`pages direction should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

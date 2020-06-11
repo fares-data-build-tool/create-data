@@ -6,8 +6,9 @@ exports[`pages service should render correctly 1`] = `
   errors={Array []}
   title="Service - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/service"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -98,6 +99,6 @@ exports[`pages service should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

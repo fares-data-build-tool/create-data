@@ -5,7 +5,7 @@ import PeriodType from '../../src/pages/periodType';
 describe('pages', () => {
     describe('periodtype', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodType errors={[]} />);
+            const tree = shallow(<PeriodType errors={[]} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -18,6 +18,8 @@ describe('pages', () => {
                             id: 'period-type-error',
                         },
                     ]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

@@ -1,10 +1,11 @@
-import React, { FC, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import FileAttachment from './FileAttachment';
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 import ErrorSummary from './ErrorSummary';
+import CsrfForm from './CsrfForm';
 
 export interface UserDataUploadsProps {
     csvUploadApiRoute: string;
@@ -20,7 +21,7 @@ export interface UserDataUploadsProps {
     detailBody?: ReactElement;
 }
 
-const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
+const UserDataUploadComponent = ({
     csvUploadApiRoute,
     csvUploadHintText,
     guidanceDocDisplayName,
@@ -32,50 +33,53 @@ const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
     errors,
     detailSummary,
     detailBody,
-}: UserDataUploadsProps) => (
+    csrfToken,
+}: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
             <ErrorSummary errors={errors} />
-            <form action={csvUploadApiRoute} method="post" encType="multipart/form-data">
-                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="csv-upload-hint csv-upload-error">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading">Select a file to upload</h1>
-                        </legend>
-                        <span className="govuk-hint" id="csv-upload-hint">
-                            {csvUploadHintText}
-                        </span>
-                        <div className="govuk-form-group input-form">
-                            <label className="govuk-label" htmlFor="csv-upload">
-                                Upload a CSV file
-                            </label>
-                            <FormElementWrapper
-                                errorId={errors?.[0]?.id}
-                                errorClass="govuk-file-upload--error"
-                                errors={errors}
-                            >
-                                <input
-                                    className="govuk-file-upload"
-                                    id="csv-upload"
-                                    name="csv-upload"
-                                    type="file"
-                                    accept=".csv"
-                                />
-                            </FormElementWrapper>
-                        </div>
-                    </fieldset>
-                </div>
-                {detailSummary && detailBody && (
-                    <details className="govuk-details" data-module="govuk-details">
-                        <summary className="govuk-details__summary">
-                            <span className="govuk-details__summary-text">{detailSummary}</span>
-                        </summary>
-                        <div className="govuk-details__text">{detailBody}</div>
-                    </details>
-                )}
+            <CsrfForm action={csvUploadApiRoute} method="post" encType="multipart/form-data" csrfToken={csrfToken}>
+                <>
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                        <fieldset className="govuk-fieldset" aria-describedby="csv-upload-hint csv-upload-error">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 className="govuk-fieldset__heading">Select a file to upload</h1>
+                            </legend>
+                            <span className="govuk-hint" id="csv-upload-hint">
+                                {csvUploadHintText}
+                            </span>
+                            <div className="govuk-form-group input-form">
+                                <label className="govuk-label" htmlFor="csv-upload">
+                                    Upload a CSV file
+                                </label>
+                                <FormElementWrapper
+                                    errorId={errors?.[0]?.id}
+                                    errorClass="govuk-file-upload--error"
+                                    errors={errors}
+                                >
+                                    <input
+                                        className="govuk-file-upload"
+                                        id="csv-upload"
+                                        name="csv-upload"
+                                        type="file"
+                                        accept=".csv"
+                                    />
+                                </FormElementWrapper>
+                            </div>
+                        </fieldset>
+                    </div>
+                    {detailSummary && detailBody && (
+                        <details className="govuk-details" data-module="govuk-details">
+                            <summary className="govuk-details__summary">
+                                <span className="govuk-details__summary-text">{detailSummary}</span>
+                            </summary>
+                            <div className="govuk-details__text">{detailBody}</div>
+                        </details>
+                    )}
 
-                <input type="submit" value="Upload and continue" id="submit-button" className="govuk-button" />
-            </form>
+                    <input type="submit" value="Upload and continue" id="submit-button" className="govuk-button" />
+                </>
+            </CsrfForm>
         </div>
         <div className="govuk-grid-column-one-third">
             <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">

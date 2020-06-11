@@ -37,13 +37,13 @@ describe('pages', () => {
     describe('serviceList', () => {
         it('should render correctly', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<ServiceList {...serviceInfoNoError} />);
+            const tree = shallow(<ServiceList {...serviceInfoNoError} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render an error when the error flag is set to true', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<ServiceList {...serviceInfoWithError} />);
+            const tree = shallow(<ServiceList {...serviceInfoWithError} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 

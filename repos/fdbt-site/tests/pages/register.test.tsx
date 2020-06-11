@@ -5,7 +5,9 @@ import Register from '../../src/pages/register';
 describe('pages', () => {
     describe('register', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Register inputChecks={[]} regKey="abcdefg" errors={[]} />);
+            const tree = shallow(
+                <Register inputChecks={[]} regKey="abcdefg" errors={[]} csrfToken="" pageProps={[]} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
@@ -20,6 +22,8 @@ describe('pages', () => {
                             id: 'email',
                         },
                     ]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -36,6 +40,8 @@ describe('pages', () => {
                             id: 'nocCode',
                         },
                     ]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

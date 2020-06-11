@@ -6,9 +6,10 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
   errors={Array []}
   title="Multiple Product Validity - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/multipleProductValidity"
     className="multiple-product-validity-page"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -253,7 +254,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -270,9 +271,10 @@ exports[`pages multipleProductValidity should render error messaging when errors
   }
   title="Multiple Product Validity - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/multipleProductValidity"
     className="multiple-product-validity-page"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -533,6 +535,6 @@ exports[`pages multipleProductValidity should render error messaging when errors
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

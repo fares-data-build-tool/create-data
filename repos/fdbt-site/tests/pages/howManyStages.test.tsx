@@ -5,7 +5,7 @@ import HowManyStages from '../../src/pages/howManyStages';
 describe('pages', () => {
     describe('howManyStages', () => {
         it('should render correctly', () => {
-            const tree = shallow(<HowManyStages errors={[]} />);
+            const tree = shallow(<HowManyStages errors={[]} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
     });

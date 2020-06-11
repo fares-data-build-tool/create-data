@@ -8,7 +8,7 @@ import {
     RawService,
     RawJourneyPattern,
 } from '../data/auroradb';
-import { BasicService } from '../interfaces/index';
+import { BasicService, CustomAppProps } from '../interfaces/index';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
@@ -28,7 +28,13 @@ interface MatchingProps {
     error: boolean;
 }
 
-const Matching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
+const Matching = ({
+    userFareStages,
+    stops,
+    service,
+    error,
+    csrfToken,
+}: MatchingProps & CustomAppProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -40,6 +46,7 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
         hintText={hintText}
         travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
+        csrfToken={csrfToken}
     />
 );
 
