@@ -6,8 +6,9 @@ exports[`pages definePassengerType should render correctly 1`] = `
   errors={Array []}
   title="Define Passenger Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/definePassengerType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -75,6 +76,7 @@ exports[`pages definePassengerType should render correctly 1`] = `
             ],
           }
         }
+        key="define-passenger-age-range"
       />
       <RadioConditionalInput
         fieldset={
@@ -124,6 +126,7 @@ exports[`pages definePassengerType should render correctly 1`] = `
             ],
           }
         }
+        key="define-passenger-proof"
       />
     </div>
     <input
@@ -132,7 +135,7 @@ exports[`pages definePassengerType should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -157,8 +160,9 @@ exports[`pages definePassengerType should render errors correctly when input err
   }
   title="Define Passenger Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/definePassengerType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -250,6 +254,7 @@ exports[`pages definePassengerType should render errors correctly when input err
             ],
           }
         }
+        key="define-passenger-age-range"
       />
       <RadioConditionalInput
         fieldset={
@@ -304,6 +309,7 @@ exports[`pages definePassengerType should render errors correctly when input err
             ],
           }
         }
+        key="define-passenger-proof"
       />
     </div>
     <input
@@ -312,7 +318,7 @@ exports[`pages definePassengerType should render errors correctly when input err
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -333,8 +339,9 @@ exports[`pages definePassengerType should render errors correctly when radio err
   }
   title="Define Passenger Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/definePassengerType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -418,6 +425,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
             ],
           }
         }
+        key="define-passenger-age-range"
       />
       <RadioConditionalInput
         fieldset={
@@ -472,6 +480,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
             ],
           }
         }
+        key="define-passenger-proof"
       />
     </div>
     <input
@@ -480,6 +489,6 @@ exports[`pages definePassengerType should render errors correctly when radio err
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

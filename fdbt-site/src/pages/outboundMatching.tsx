@@ -6,7 +6,7 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService } from '../interfaces/index';
+import { BasicService, CustomAppProps } from '../interfaces/index';
 import { getNocFromIdToken } from '../utils';
 
 const heading = 'Outbound - Match stops to fare stages';
@@ -23,7 +23,13 @@ interface MatchingProps {
     error: boolean;
 }
 
-const OutboundMatching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
+const OutboundMatching = ({
+    userFareStages,
+    stops,
+    service,
+    error,
+    csrfToken,
+}: MatchingProps & CustomAppProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -35,6 +41,7 @@ const OutboundMatching = ({ userFareStages, stops, service, error }: MatchingPro
         hintText={hintText}
         travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
+        csrfToken={csrfToken}
     />
 );
 

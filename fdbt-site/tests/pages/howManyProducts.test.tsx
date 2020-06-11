@@ -17,7 +17,7 @@ describe('pages', () => {
         ];
 
         it('should render correctly', () => {
-            const wrapper = shallow(<HowManyProducts inputCheck={{}} errors={[]} />);
+            const wrapper = shallow(<HowManyProducts inputCheck={{}} errors={[]} csrfToken="" pageProps={[]} />);
             expect(wrapper).toMatchSnapshot();
         });
 
@@ -25,7 +25,9 @@ describe('pages', () => {
             'should render correctly when a user is redirected to the page from itself when incorrect data is entered',
             mockInputCheck => {
                 const mockErrors: ErrorInfo[] = [{ errorMessage: mockInputCheck.error || '', id: 'page-heading' }];
-                const tree = shallow(<HowManyProducts inputCheck={mockInputCheck} errors={mockErrors} />);
+                const tree = shallow(
+                    <HowManyProducts inputCheck={mockInputCheck} errors={mockErrors} csrfToken="" pageProps={[]} />,
+                );
                 expect(tree).toMatchSnapshot();
             },
         );

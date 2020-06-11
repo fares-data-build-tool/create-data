@@ -5,8 +5,9 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { deleteCookieOnServerSide } from '../utils/index';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Login - Fares data build tool';
 const description = 'Login page of the Fares data build tool';
@@ -15,12 +16,12 @@ interface LoginProps {
     errors: ErrorInfo[];
 }
 
-const Login = ({ errors = [] }: LoginProps): ReactElement => {
-    return (
-        <BaseLayout title={title} description={description} errors={errors}>
-            <div className="govuk-grid-row">
-                <div className="govuk-grid-column-two-thirds">
-                    <form action="/api/login" method="post">
+const Login = ({ errors = [], csrfToken }: LoginProps & CustomAppProps): ReactElement => (
+    <BaseLayout title={title} description={description} errors={errors}>
+        <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+                <CsrfForm action="/api/login" method="post" csrfToken={csrfToken}>
+                    <>
                         <ErrorSummary errors={errors} />
                         <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                             <div className="govuk-fieldset" aria-describedby="register-page-heading">
@@ -77,27 +78,27 @@ const Login = ({ errors = [] }: LoginProps): ReactElement => {
                             id="sign-in-button"
                             className="govuk-button"
                         />
-                    </form>
+                    </>
+                </CsrfForm>
+            </div>
+            <div className="govuk-grid-column-one-third">
+                <div>
+                    <h1 className="govuk-heading-s">Forgot your Password?</h1>
+                    <a href="/forgotPassword" className="govuk-link">
+                        Reset your password
+                    </a>
                 </div>
-                <div className="govuk-grid-column-one-third">
-                    <div>
-                        <h1 className="govuk-heading-s">Forgot your Password?</h1>
-                        <a href="/forgotPassword" className="govuk-link">
-                            Reset your password
-                        </a>
-                    </div>
-                    <br />
-                    <div>
-                        <h1 className="govuk-heading-s">Don&apos;t have an account?</h1>
-                        <a href="/register" className="govuk-link">
-                            Request access
-                        </a>
-                    </div>
+                <br />
+                <div>
+                    <h1 className="govuk-heading-s">Don&apos;t have an account?</h1>
+                    <a href="/register" className="govuk-link">
+                        Request access
+                    </a>
                 </div>
             </div>
-        </BaseLayout>
-    );
-};
+        </div>
+    </BaseLayout>
+);
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);

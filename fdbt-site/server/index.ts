@@ -1,14 +1,31 @@
 import express, { Request, Response, Express } from 'express';
 import morgan from 'morgan';
 import nextjs from 'next';
-import helmet from 'helmet';
 import nocache from 'nocache';
-import { v4 as uuidv4 } from 'uuid';
+import requireAuth from './middleware/authentication';
+import setupCsrf from './middleware/csrf';
+import setSecurityHeaders from './middleware/security';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 5555;
+
+const unauthenticatedGetRoutes = [
+    '/',
+    '/login',
+    '/register',
+    '/confirmRegistration',
+    '/forgotPassword',
+    '/resetConfirmation',
+    '/resetPassword',
+    '/_next/*',
+    '/assets/*',
+    '/scripts/*',
+    '/error',
+];
+
+const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword'];
 
 const setStaticRoutes = (server: Express): void => {
     server.use(
@@ -36,56 +53,6 @@ const setStaticRoutes = (server: Express): void => {
     );
 };
 
-const setHeaders = (server: Express): void => {
-    server.use((_req, res, next) => {
-        res.locals.nonce = Buffer.from(uuidv4()).toString('base64');
-        next();
-    });
-
-    server.disable('x-powered-by');
-
-    const nonce = (_req: Request, res: Response): string => `'nonce-${res.locals.nonce}'`;
-    const scriptSrc = [nonce, "'strict-dynamic'"];
-    const styleSrc = ["'self'"];
-
-    if (process.env.NODE_ENV !== 'production') {
-        scriptSrc.push("'unsafe-eval'");
-        scriptSrc.push("'unsafe-inline'");
-        styleSrc.push("'unsafe-inline'");
-    }
-
-    server.use(
-        helmet({
-            frameguard: {
-                action: 'deny',
-            },
-            noSniff: true,
-            contentSecurityPolicy: {
-                directives: {
-                    objectSrc: ["'none'"],
-                    frameAncestors: ["'none'"],
-                    scriptSrc,
-                    baseUri: ["'none'"],
-                    styleSrc,
-                    imgSrc: ["'self'", 'data:', 'https:'],
-                    defaultSrc: ["'self'"],
-                },
-            },
-            hsts: {
-                includeSubDomains: true,
-                maxAge: 31536000,
-            },
-            expectCt: {
-                maxAge: 86400,
-                enforce: true,
-            },
-            referrerPolicy: {
-                policy: 'same-origin',
-            },
-        }),
-    );
-};
-
 (async (): Promise<void> => {
     try {
         await app.prepare();
@@ -98,13 +65,32 @@ const setHeaders = (server: Express): void => {
             }),
         );
 
-        setHeaders(server);
-
         setStaticRoutes(server);
+        setSecurityHeaders(server);
 
         server.use(nocache());
 
-        server.all('*', (req: Request, res: Response) => {
+        setupCsrf(server);
+
+        unauthenticatedGetRoutes.forEach(route => {
+            server.get(route, (req: Request, res: Response) => {
+                res.locals.csrfToken = req.csrfToken();
+                return handle(req, res);
+            });
+        });
+
+        unauthenticatedPostRoutes.forEach(route => {
+            server.post(route, (req: Request, res: Response) => {
+                return handle(req, res);
+            });
+        });
+
+        server.get('*', requireAuth, (req: Request, res: Response) => {
+            res.locals.csrfToken = req.csrfToken();
+            return handle(req, res);
+        });
+
+        server.all('*', requireAuth, (req: Request, res: Response) => {
             return handle(req, res);
         });
 

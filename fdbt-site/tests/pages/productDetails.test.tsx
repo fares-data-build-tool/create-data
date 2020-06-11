@@ -20,6 +20,8 @@ describe('pages', () => {
                     operator="bus company"
                     passengerType="Adult"
                     hintText="Test Zone"
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

@@ -6,8 +6,9 @@ exports[`pages periodValidity should render correctly 1`] = `
   errors={Array []}
   title="Period Validity - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/periodValidity"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -100,7 +101,7 @@ exports[`pages periodValidity should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -117,8 +118,9 @@ exports[`pages periodValidity should render error messaging when errors are pass
   }
   title="Period Validity - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/periodValidity"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -225,6 +227,6 @@ exports[`pages periodValidity should render error messaging when errors are pass
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

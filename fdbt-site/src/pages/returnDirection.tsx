@@ -7,10 +7,11 @@ import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/aur
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getUuidFromCookies, setCookieOnServerSide, getNocFromIdToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Return Direction - Fares Data Build Tool';
 const description = 'Return Direction selection page of the Fares Data Build Tool';
@@ -25,44 +26,60 @@ interface DirectionProps {
     inboundJourney: string;
 }
 
-const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => (
+const ReturnDirection = ({
+    service,
+    errors,
+    outboundJourney,
+    inboundJourney,
+    csrfToken,
+}: DirectionProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
-        <form action="/api/returnDirection" method="post">
-            <ErrorSummary errors={errors} />
-            <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                <fieldset className="govuk-fieldset" aria-describedby="return-direction-page-heading">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="return-direction-page-heading">
-                            Select the inbound and outbound journeys for your service
-                        </h1>
-                    </legend>
-                    <div className="govuk-!-margin-top-5">
-                        <FormElementWrapper errors={errors} errorId={outboundErrorId} errorClass="govuk-radios--error">
-                            <DirectionDropdown
-                                selectNameID="outboundJourney"
-                                dropdownLabel="Outbound Journey"
-                                journeyPatterns={service.journeyPatterns}
-                                outboundJourney={outboundJourney}
-                            />
-                        </FormElementWrapper>
-                    </div>
-                    <div className="govuk-!-margin-top-6">
-                        <FormElementWrapper errors={errors} errorId={inboundErrorId} errorClass="govuk-radios--error">
-                            <DirectionDropdown
-                                selectNameID="inboundJourney"
-                                dropdownLabel="Inbound Journey"
-                                journeyPatterns={service.journeyPatterns}
-                                inboundJourney={inboundJourney}
-                            />
-                        </FormElementWrapper>
-                    </div>
-                    <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the Traveline National Dataset
-                    </span>
-                </fieldset>
-            </div>
-            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-        </form>
+        <CsrfForm action="/api/returnDirection" method="post" csrfToken={csrfToken}>
+            <>
+                <ErrorSummary errors={errors} />
+                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <fieldset className="govuk-fieldset" aria-describedby="return-direction-page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading" id="return-direction-page-heading">
+                                Select the inbound and outbound journeys for your service
+                            </h1>
+                        </legend>
+                        <div className="govuk-!-margin-top-5">
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId={outboundErrorId}
+                                errorClass="govuk-radios--error"
+                            >
+                                <DirectionDropdown
+                                    selectNameID="outboundJourney"
+                                    dropdownLabel="Outbound Journey"
+                                    journeyPatterns={service.journeyPatterns}
+                                    outboundJourney={outboundJourney}
+                                />
+                            </FormElementWrapper>
+                        </div>
+                        <div className="govuk-!-margin-top-6">
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId={inboundErrorId}
+                                errorClass="govuk-radios--error"
+                            >
+                                <DirectionDropdown
+                                    selectNameID="inboundJourney"
+                                    dropdownLabel="Inbound Journey"
+                                    journeyPatterns={service.journeyPatterns}
+                                    inboundJourney={inboundJourney}
+                                />
+                            </FormElementWrapper>
+                        </div>
+                        <span className="govuk-hint hint-text" id="traveline-hint">
+                            This data is taken from the Traveline National Dataset
+                        </span>
+                    </fieldset>
+                </div>
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+            </>
+        </CsrfForm>
     </TwoThirdsLayout>
 );
 

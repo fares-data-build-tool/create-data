@@ -1,7 +1,6 @@
 import Cookies from 'cookies';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
-import axios from 'axios';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../constants/index';
@@ -53,21 +52,6 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     }
 
     return '';
-};
-
-export const isSessionValid = async (url: string, req: IncomingMessage | undefined): Promise<boolean> => {
-    try {
-        const response = await axios.get(url, {
-            withCredentials: true,
-            headers: {
-                Cookie: req?.headers.cookie,
-            },
-        });
-
-        return response.data.Valid;
-    } catch (error) {
-        return false;
-    }
 };
 
 export const getUuidFromCookies = (ctx: NextPageContext): string | null => {

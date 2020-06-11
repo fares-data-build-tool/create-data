@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getNocFromIdToken } from '../utils';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
@@ -20,43 +21,51 @@ type ServiceProps = {
     error: ErrorInfo[];
 };
 
-const Service = ({ operator, passengerType, services, error }: ServiceProps): ReactElement => (
+const Service = ({
+    operator,
+    passengerType,
+    services,
+    error,
+    csrfToken,
+}: ServiceProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
-        <form action="/api/service" method="post">
-            <ErrorSummary errors={error} />
-            <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                <fieldset className="govuk-fieldset" aria-describedby="service-page-heading">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="service-page-heading">
-                            Select a service
-                        </h1>
-                    </legend>
-                    <span className="govuk-hint" id="service-operator-passengertype-hint">
-                        {operator} - {passengerType}
-                    </span>
-                    <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
-                        <select className="govuk-select" id="service" name="service" defaultValue="">
-                            <option value="" disabled>
-                                Select One
-                            </option>
-                            {services.map(service => (
-                                <option
-                                    key={`${service.lineName}#${service.startDate}`}
-                                    value={`${service.lineName}#${service.startDate}`}
-                                    className="service-option"
-                                >
-                                    {service.lineName} - Start date {service.startDate}
+        <CsrfForm action="/api/service" method="post" csrfToken={csrfToken}>
+            <>
+                <ErrorSummary errors={error} />
+                <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <fieldset className="govuk-fieldset" aria-describedby="service-page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading" id="service-page-heading">
+                                Select a service
+                            </h1>
+                        </legend>
+                        <span className="govuk-hint" id="service-operator-passengertype-hint">
+                            {operator} - {passengerType}
+                        </span>
+                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
+                            <select className="govuk-select" id="service" name="service" defaultValue="">
+                                <option value="" disabled>
+                                    Select One
                                 </option>
-                            ))}
-                        </select>
-                    </FormElementWrapper>
-                    <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the Traveline National Dataset
-                    </span>
-                </fieldset>
-            </div>
-            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-        </form>
+                                {services.map(service => (
+                                    <option
+                                        key={`${service.lineName}#${service.startDate}`}
+                                        value={`${service.lineName}#${service.startDate}`}
+                                        className="service-option"
+                                    >
+                                        {service.lineName} - Start date {service.startDate}
+                                    </option>
+                                ))}
+                            </select>
+                        </FormElementWrapper>
+                        <span className="govuk-hint hint-text" id="traveline-hint">
+                            This data is taken from the Traveline National Dataset
+                        </span>
+                    </fieldset>
+                </div>
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+            </>
+        </CsrfForm>
     </TwoThirdsLayout>
 );
 

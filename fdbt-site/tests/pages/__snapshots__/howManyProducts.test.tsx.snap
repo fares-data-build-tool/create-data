@@ -6,8 +6,9 @@ exports[`pages howManyProducts should render correctly 1`] = `
   errors={Array []}
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -57,7 +58,7 @@ exports[`pages howManyProducts should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -74,8 +75,9 @@ exports[`pages howManyProducts should render correctly when a user is redirected
   }
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -140,7 +142,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -157,8 +159,9 @@ exports[`pages howManyProducts should render correctly when a user is redirected
   }
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -223,7 +226,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -240,8 +243,9 @@ exports[`pages howManyProducts should render correctly when a user is redirected
   }
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -306,7 +310,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -323,8 +327,9 @@ exports[`pages howManyProducts should render correctly when a user is redirected
   }
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -389,7 +394,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -406,8 +411,9 @@ exports[`pages howManyProducts should render correctly when a user is redirected
   }
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -472,7 +478,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -489,8 +495,9 @@ exports[`pages howManyProducts should render correctly when a user is redirected
   }
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -555,7 +562,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -572,8 +579,9 @@ exports[`pages howManyProducts should render correctly when a user is redirected
   }
   title="How Many Products - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/howManyProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -638,6 +646,6 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

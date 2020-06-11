@@ -6,8 +6,9 @@ exports[`pages fareType should render correctly 1`] = `
   errors={Array []}
   title="Reset Email Confirmation - Fares data build tool"
 >
-  <form
+  <CsrfForm
     action="/api/forgotPassword"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -60,6 +61,6 @@ exports[`pages fareType should render correctly 1`] = `
     >
       Home
     </a>
-  </form>
+  </CsrfForm>
 </Component>
 `;

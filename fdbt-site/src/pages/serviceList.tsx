@@ -4,8 +4,9 @@ import { parseCookies } from 'nookies';
 import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_COOKIE } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
-import { ServicesInfo } from '../interfaces';
+import { ServicesInfo, CustomAppProps } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Service List - Fares Data Build Tool';
 const description = 'Service List selection page of the Fares Data Build Tool';
@@ -20,15 +21,14 @@ export interface ServiceListProps {
     buttonText: string;
 }
 
-const ServiceList = (serviceProps: ServiceListProps): ReactElement => {
-    const {
-        service: { error, selectedServices },
-        buttonText,
-    } = serviceProps;
-
-    return (
-        <FullColumnLayout title={title} description={description}>
-            <form action="/api/serviceList" method="post">
+const ServiceList = ({
+    service: { error, selectedServices },
+    buttonText,
+    csrfToken,
+}: ServiceListProps & CustomAppProps): ReactElement => (
+    <FullColumnLayout title={title} description={description}>
+        <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
+            <>
                 <div className={`govuk-form-group ${error ? ' govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -88,10 +88,10 @@ const ServiceList = (serviceProps: ServiceListProps): ReactElement => {
                     </fieldset>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-            </form>
-        </FullColumnLayout>
-    );
-};
+            </>
+        </CsrfForm>
+    </FullColumnLayout>
+);
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
     const cookies = parseCookies(ctx);

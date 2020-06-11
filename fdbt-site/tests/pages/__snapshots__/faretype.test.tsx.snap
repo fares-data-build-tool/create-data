@@ -6,8 +6,9 @@ exports[`pages fareType should render correctly 1`] = `
   errors={Array []}
   title="Fare Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/fareType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -122,7 +123,7 @@ exports[`pages fareType should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -139,8 +140,9 @@ exports[`pages fareType should render error messaging when errors are passed to 
   }
   title="Fare Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/fareType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -269,6 +271,6 @@ exports[`pages fareType should render error messaging when errors are passed to 
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

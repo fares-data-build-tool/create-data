@@ -22,6 +22,8 @@ describe('pages', () => {
                     lineName="X6A"
                     service={mockService}
                     error={[]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -35,6 +37,8 @@ describe('pages', () => {
                     lineName="X6A"
                     service={mockService}
                     error={[]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             const journeyWelcome = wrapper.find('#direction-operator-linename-passengertype-hint').first();
@@ -50,6 +54,8 @@ describe('pages', () => {
                     lineName="X6A"
                     service={mockService}
                     error={[]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
 

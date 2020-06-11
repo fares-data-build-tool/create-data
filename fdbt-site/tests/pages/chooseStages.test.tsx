@@ -5,7 +5,7 @@ import ChooseStages from '../../src/pages/chooseStages';
 describe('pages', () => {
     describe('chooseStages', () => {
         it('should render correctly', () => {
-            const tree = shallow(<ChooseStages />);
+            const tree = shallow(<ChooseStages csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
     });

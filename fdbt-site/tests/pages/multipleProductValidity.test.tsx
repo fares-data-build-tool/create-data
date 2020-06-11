@@ -32,6 +32,8 @@ describe('pages', () => {
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
                     errors={[]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -50,6 +52,8 @@ describe('pages', () => {
                             id: 'multiple-product-validity-error',
                         },
                     ]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -63,6 +67,8 @@ describe('pages', () => {
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
                     errors={[]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(wrapper.find('.govuk-radios__item')).toHaveLength(4);
