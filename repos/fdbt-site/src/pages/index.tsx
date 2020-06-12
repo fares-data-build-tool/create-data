@@ -8,15 +8,25 @@ const description = 'Fares Data Build Tool is a service that allows you to gener
 const Home: NextPage = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Fares Data Build Tool</h1>
+
+        <p className="govuk-body">
+            This service is for creating or accessing NeTEx data for public transport services, excluding rail, in
+            England. The service can be used by:
+        </p>
+        <ul className="govuk-list govuk-list--bullet">
+            <li>Bus operators running commercial services in England</li>
+            <li>Local transport authorities acting on behalf of bus operators</li>
+            <li>Local transport authorities that operate their own services</li>
+        </ul>
+
         <p className="govuk-body">Use this service to:</p>
         <ul className="govuk-list govuk-list--bullet">
-            <li>Generate fares data in NeTEx format</li>
-            <li>Update fares for an existing service</li>
-            <li>Publish fares for a newly registered service</li>
+            <li>Generate fares data in NeTEx format for a new or existing service</li>
+            <li>Download your own fares data</li>
         </ul>
         <p className="govuk-body">
-            All service data is taken directly from the Traveline National Dataset and the NaPTAN database. To avoid
-            data discrepancies, ensure that all service data is correct within these datasets before using this service.
+            All service data is taken directly from the Traveline National Data Set and the NaPTAN database. To avoid
+            data discrepancies, ensure that all service data is correct within these datasets before using the service.
         </p>
 
         <a
