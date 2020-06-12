@@ -1,6 +1,6 @@
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
-import { OperatorData, ServiceData } from '../types';
+import { Operator, Service } from '../types';
 
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
@@ -40,7 +40,7 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
     return JSON.parse(JSON.stringify(rows));
 };
 
-export const getOperatorDataByNocCode = async (nocCode: string): Promise<OperatorData> => {
+export const getOperatorDataByNocCode = async (nocCode: string): Promise<Operator> => {
     try {
         const queryInput =
             'SELECT nocTable.opId, nocTable.vosaPsvLicenseName, nocTable.operatorPublicName,' +
@@ -48,7 +48,7 @@ export const getOperatorDataByNocCode = async (nocCode: string): Promise<Operato
             ' FROM nocTable JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId' +
             ' JOIN nocLine ON nocTable.nocCode = nocLine.nocCode WHERE nocTable.nocCode = ?';
 
-        const queryResult = await executeQuery<OperatorData[]>(queryInput, [nocCode]);
+        const queryResult = await executeQuery<Operator[]>(queryInput, [nocCode]);
 
         const operatorData = queryResult[0];
 
@@ -62,14 +62,11 @@ export const getOperatorDataByNocCode = async (nocCode: string): Promise<Operato
     }
 };
 
-export const getTndsServiceDataByNocCodeAndLineName = async (
-    nocCode: string,
-    lineName: string,
-): Promise<ServiceData> => {
+export const getTndsServiceDataByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<Service> => {
     try {
         const queryInput = 'SELECT tndsService.description FROM tndsService WHERE (`nocCode` = ? and `lineName` = ?)';
 
-        const queryResult = await executeQuery<ServiceData[]>(queryInput, [nocCode, lineName]);
+        const queryResult = await executeQuery<Service[]>(queryInput, [nocCode, lineName]);
 
         const tndsServiceData = queryResult[0];
 

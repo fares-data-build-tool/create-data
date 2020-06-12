@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
-<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex ../xsd/NeTEx_publication.xsd" 
+<PublicationDelivery version="1.1" xsi:schemaLocation="http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd" 
 	xmlns="http://www.netex.org.uk/netex" 
 	xmlns:siri="http://www.siri.org.uk/siri" 
 	xmlns:gml="http://www.opengis.net/gml/3.2" 
@@ -1156,14 +1156,14 @@
 								<TypeOfConcession version="fxc:v1.0" id="fxc:none">
 									<Name>Adult</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:infant">
-									<Name>Infant</Name>
-								</TypeOfConcession>
 								<TypeOfConcession version="fxc:v1.0" id="fxc:child">
 									<Name>Child</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:youth">
-									<Name>Youth</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:infant">
+									<Name>Infant</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:senior">
+									<Name>Senior</Name>
 								</TypeOfConcession>
 								<TypeOfConcession version="fxc:v1.0" id="fxc:school_pupil">
 									<Name>School pupil</Name>
@@ -1171,23 +1171,29 @@
 								<TypeOfConcession version="fxc:v1.0" id="fxc:student">
 									<Name>Student</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:young_adult">
-									<Name>Youth</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:young_person">
+									<Name>Young Person</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:senior">
-									<Name>Senior</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:disabled">
+									<Name>Disabled</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:registered_disabled">
-									<Name>Registered disabled</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:disabled_companion">
+									<Name>Disabled Companion</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:employee">
+									<Name>Employee</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:military">
+									<Name>Military</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:job_seeker">
+									<Name>Job Seeker</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:guide_dog">
+									<Name>Guide Dog</Name>
 								</TypeOfConcession>
 								<TypeOfConcession version="fxc:v1.0" id="fxc:animal">
 									<Name>Animal</Name>
-								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:social">
-									<Name>Social</Name>
-								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:statutory">
-									<Name>Statutory</Name>
 								</TypeOfConcession>
 							</values>
 						</ValueSet>
