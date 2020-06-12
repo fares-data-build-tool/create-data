@@ -29,9 +29,11 @@ const unauthenticatedGetRoutes = [
 const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword', '/api/resetPassword'];
 
 const setStaticRoutes = (server: Express): void => {
+    const rootPath = process.env.NODE_ENV === 'development' ? `${__dirname}/..` : `${__dirname}/../..`;
+
     server.use(
         '/assets',
-        express.static(`${__dirname}/../node_modules/govuk-frontend/govuk/assets`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/govuk/assets`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -39,7 +41,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/_next/static',
-        express.static(`${__dirname}/../.next/static`, {
+        express.static(`${rootPath}/.next/static`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -47,7 +49,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/scripts',
-        express.static(`${__dirname}/../node_modules/govuk-frontend/govuk`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/govuk`, {
             maxAge: '365d',
             immutable: true,
         }),
