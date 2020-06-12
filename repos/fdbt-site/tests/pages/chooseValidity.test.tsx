@@ -12,6 +12,8 @@ describe('Choose Validity Page', () => {
                 passengerType="Adult"
                 daysValid=""
                 error=""
+                csrfToken=""
+                pageProps={[]}
             />,
         );
         expect(tree).toMatchSnapshot();

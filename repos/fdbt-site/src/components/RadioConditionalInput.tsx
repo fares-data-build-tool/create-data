@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
 interface BaseElement {
@@ -109,7 +109,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                                             className="govuk-checkboxes__input"
                                             id={input.id}
                                             name={input.name}
-                                            value={input.label}
+                                            value={input.id}
                                             type="checkbox"
                                         />
                                         <label className="govuk-label govuk-checkboxes__label" htmlFor={input.id}>

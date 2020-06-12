@@ -179,3 +179,26 @@ svg:not(:root) {
 .govuk-footer__copyright-logo {
     background-image: url('https://assets.publishing.service.gov.uk/static/images/govuk-crest-2x-c6548884b516041752fc4156a50f084ca387b1e37e4f4668cd109058d924b197.png') !important;
 }
+
+.govuk-header__container {
+    display: flex;
+}
+
+.govuk-header__signin {
+    flex-shrink: 0;
+    width: 120px;
+    text-align: right;
+    margin-left: -120px;
+    margin-top: 4px;
+
+    .govuk-header__link {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        text-align: right;
+    }
+}
+
+.govuk-header__person-icon {
+    margin-right: 5px;
+}

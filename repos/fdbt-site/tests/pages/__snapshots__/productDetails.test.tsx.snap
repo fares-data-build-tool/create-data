@@ -5,8 +5,9 @@ exports[`pages productDetails should render correctly 1`] = `
   description="Product Details entry page of the Fares Data Build Tool"
   title="Product Details - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/productDetails"
+    csrfToken=""
     method="post"
   >
     <div
@@ -122,6 +123,6 @@ exports[`pages productDetails should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

@@ -6,8 +6,9 @@ exports[`pages multipleProduct should render correctly 1`] = `
   errors={Array []}
   title="Multiple Product - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/multipleProducts"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -56,6 +57,6 @@ exports[`pages multipleProduct should render correctly 1`] = `
         userInput={Array []}
       />
     </div>
-  </form>
+  </CsrfForm>
 </Component>
 `;

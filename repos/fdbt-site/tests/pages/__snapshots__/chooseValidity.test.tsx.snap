@@ -5,8 +5,9 @@ exports[`Choose Validity Page should render correctly 1`] = `
   description="Choose Validity page of the Fares Data Build Tool"
   title="Choose Validity - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/chooseValidity"
+    csrfToken=""
     method="post"
   >
     <div
@@ -74,6 +75,6 @@ exports[`Choose Validity Page should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

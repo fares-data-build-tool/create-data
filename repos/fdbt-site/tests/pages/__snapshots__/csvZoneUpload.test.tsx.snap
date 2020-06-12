@@ -7,6 +7,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
   title="CSV Zone Upload - Fares Data Build Tool"
 >
   <UserDataUploadComponent
+    csrfToken=""
     csvTemplateAttachmentUrl=""
     csvTemplateDisplayName=""
     csvTemplateSize=""
@@ -33,6 +34,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     guidanceDocAttachmentUrl=""
     guidanceDocDisplayName=""
     guidanceDocSize=""
+    pageProps={Array []}
   />
 </Component>
 `;

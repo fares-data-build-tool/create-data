@@ -8,13 +8,14 @@ import { CSV_UPLOAD_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
+import { CustomAppProps } from '../interfaces';
 
 const title = 'CSV Upload - Fares Data Build Tool';
 const description = 'CSV Upload page of the Fares Data Build Tool';
 
 const errorId = 'csv-upload-error';
 
-const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
+const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
         <UserDataUploadComponent
             {...uploadProps}

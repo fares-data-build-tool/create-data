@@ -6,8 +6,9 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
   errors={Array []}
   title="Return Direction - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/returnDirection"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -188,6 +189,6 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

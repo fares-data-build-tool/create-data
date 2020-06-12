@@ -6,9 +6,10 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
   errors={Array []}
   title="Multiple Product Validity - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/multipleProductValidity"
     className="multiple-product-validity-page"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -41,7 +42,19 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
         className="govuk-hint"
         id="multiple-product-validity-page-hint"
       >
-        We need to know the time that this product would be valid until
+        We need to know the time that this product would be valid until.
+      </span>
+      <span
+        className="govuk-hint"
+        id="calendar-validity-type-hint"
+      >
+        Calendar day means a ticket purchased at 3pm would be valid until midnight on its day of expiry
+      </span>
+      <span
+        className="govuk-hint"
+        id="24hr-validity-type-hint"
+      >
+        24hr means a ticket purchased at 3pm will be valid until 3pm on its day of expiry
       </span>
       <span
         className="govuk-error-message"
@@ -81,10 +94,10 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
             24hr
           </div>
           <div
-            className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
+            className="govuk-heading-s grid-column-header-one-fifth"
             id="calendar-header"
           >
-            Calendar
+            Calendar day
           </div>
         </div>
         <fieldset
@@ -241,7 +254,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -258,9 +271,10 @@ exports[`pages multipleProductValidity should render error messaging when errors
   }
   title="Multiple Product Validity - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/multipleProductValidity"
     className="multiple-product-validity-page"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -300,7 +314,19 @@ exports[`pages multipleProductValidity should render error messaging when errors
         className="govuk-hint"
         id="multiple-product-validity-page-hint"
       >
-        We need to know the time that this product would be valid until
+        We need to know the time that this product would be valid until.
+      </span>
+      <span
+        className="govuk-hint"
+        id="calendar-validity-type-hint"
+      >
+        Calendar day means a ticket purchased at 3pm would be valid until midnight on its day of expiry
+      </span>
+      <span
+        className="govuk-hint"
+        id="24hr-validity-type-hint"
+      >
+        24hr means a ticket purchased at 3pm will be valid until 3pm on its day of expiry
       </span>
       <span
         className="govuk-error-message"
@@ -349,10 +375,10 @@ exports[`pages multipleProductValidity should render error messaging when errors
             24hr
           </div>
           <div
-            className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
+            className="govuk-heading-s grid-column-header-one-fifth"
             id="calendar-header"
           >
-            Calendar
+            Calendar day
           </div>
         </div>
         <fieldset
@@ -509,6 +535,6 @@ exports[`pages multipleProductValidity should render error messaging when errors
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

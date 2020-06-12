@@ -5,8 +5,9 @@ exports[`pages stageNames should render correctly when a user first visits the p
   description="Stage Names entry page of the Fares Data Build Tool"
   title="Stage Names - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/stageNames"
+    csrfToken=""
     method="post"
   >
     <div
@@ -154,7 +155,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -163,8 +164,9 @@ exports[`pages stageNames should render correctly when a user is redirected to t
   description="Stage Names entry page of the Fares Data Build Tool"
   title="Stage Names - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/stageNames"
+    csrfToken=""
     method="post"
   >
     <div
@@ -310,7 +312,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -319,8 +321,9 @@ exports[`pages stageNames should render correctly when a user is redirected to t
   description="Stage Names entry page of the Fares Data Build Tool"
   title="Stage Names - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/stageNames"
+    csrfToken=""
     method="post"
   >
     <div
@@ -482,6 +485,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

@@ -1,12 +1,11 @@
 import React, { FC, PropsWithChildren } from 'react';
 import Head from 'next/head';
-import Header from './Header';
 import AlphaBanner from './AlphaBanner';
 import Footer from './Footer';
 
 import favicon from '../assets/images/favicon.ico';
 import { buildTitle } from '../utils';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 
 type LayoutProps = {
     title: string;
@@ -29,7 +28,6 @@ export const BaseLayout: FC<LayoutProps> = ({
             <meta charSet="utf-8" />
         </Head>
 
-        <Header />
         <div className="govuk-width-container app-width-container--wide">
             <AlphaBanner />
 

@@ -5,8 +5,9 @@ exports[`pages chooseStages should render correctly 1`] = `
   description="Choose Stages page of the Fares Data Build Tool"
   title="Choose Stages - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/chooseStages"
+    csrfToken=""
     method="post"
   >
     <div
@@ -55,6 +56,6 @@ exports[`pages chooseStages should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

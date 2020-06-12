@@ -5,8 +5,9 @@ exports[`pages serviceList should render an error when the error flag is set to 
   description="Service List selection page of the Fares Data Build Tool"
   title="Service List - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/serviceList"
+    csrfToken=""
     method="post"
   >
     <div
@@ -71,7 +72,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -80,8 +81,9 @@ exports[`pages serviceList should render correctly 1`] = `
   description="Service List selection page of the Fares Data Build Tool"
   title="Service List - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/serviceList"
+    csrfToken=""
     method="post"
   >
     <div
@@ -146,6 +148,6 @@ exports[`pages serviceList should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

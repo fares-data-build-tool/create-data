@@ -6,7 +6,8 @@ import { PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { ExtractedValidationError } from './api/definePassengerType';
-import { ErrorInfo } from '../types';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
@@ -87,17 +88,17 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -154,27 +155,33 @@ export const collectErrors = (error: ExtractedValidationError, collectedErrors: 
     }
 };
 
-const DefinePassengerType = ({ combinedErrors = [], fieldsets }: DefinePassengerTypeProps): ReactElement => (
+const DefinePassengerType = ({
+    combinedErrors = [],
+    fieldsets,
+    csrfToken,
+}: DefinePassengerTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={combinedErrors}>
-        <form action="/api/definePassengerType" method="post">
-            <ErrorSummary errors={combinedErrors} />
-            <div>
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
-                        Provide passenger type details
-                    </h1>
-                </legend>
-                <span className="govuk-hint" id="define-passenger-type-hint">
-                    Select if the passenger type requires an age range or proof document
-                </span>
-                <br />
-                <br />
-                {fieldsets.map(fieldset => {
-                    return <RadioConditionalInput fieldset={fieldset} />;
-                })}
-            </div>
-            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-        </form>
+        <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
+            <>
+                <ErrorSummary errors={combinedErrors} />
+                <div>
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
+                            Provide passenger type details
+                        </h1>
+                    </legend>
+                    <span className="govuk-hint" id="define-passenger-type-hint">
+                        Select if the passenger type requires an age range or proof document
+                    </span>
+                    <br />
+                    <br />
+                    {fieldsets.map(fieldset => {
+                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
+                    })}
+                </div>
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+            </>
+        </CsrfForm>
     </TwoThirdsLayout>
 );
 

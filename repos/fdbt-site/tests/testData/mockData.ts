@@ -19,11 +19,12 @@ import {
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
     SERVICE_LIST_COOKIE,
+    ID_TOKEN_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo } from '../../src/types';
+import { ErrorInfo } from '../../src/interfaces';
 
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
@@ -32,6 +33,7 @@ export const getMockRequestAndResponse = (
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     requestHeaders: any = {},
+    isLoggedin = true,
 ): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -39,7 +41,9 @@ export const getMockRequestAndResponse = (
     const defaultUuid = '1e0459b3-082e-4e70-89db-96e8ae173e10';
 
     const {
-        operator = 'test',
+        operator = {
+            operatorPublicName: 'test',
+        },
         fareType = 'single',
         passengerType = { passengerType: 'Adult' },
         serviceLineName = 'X01',
@@ -82,6 +86,7 @@ export const getMockRequestAndResponse = (
             '6#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
             '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
         ],
+        idToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.Hgdqdw7HX8cNT9NG7jcPP7ihZWHT1TYgPJyQNpKS8YQ',
     } = cookieValues;
 
     const {
@@ -96,7 +101,9 @@ export const getMockRequestAndResponse = (
     let cookieString = '';
 
     cookieString += operator
-        ? `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${OPERATOR_COOKIE}=%7B%22operator%22%3A${encodeURI(
+              JSON.stringify(operator),
+          )}%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += fareType
@@ -143,8 +150,10 @@ export const getMockRequestAndResponse = (
     cookieString += selectedServices
         ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
               selectedServices,
-          )}%7D`
+          )}%7D;`
         : '';
+
+    cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
 
     const req = mockRequest({
         connection: {
@@ -172,8 +181,9 @@ export const getMockContext = (
     uuid: any = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
+    isLoggedin = true,
 ): NextPageContext => {
-    const { req, res } = getMockRequestAndResponse(cookies, body, uuid, mockWriteHeadFn, mockEndFn);
+    const { req, res } = getMockRequestAndResponse(cookies, body, uuid, mockWriteHeadFn, mockEndFn, {}, isLoggedin);
 
     const ctx: NextPageContext = {
         res,
@@ -955,7 +965,7 @@ export const mockMatchingUserFareStagesWithAllStagesAssigned = {
 };
 
 export const expectedMatchingJsonSingle = {
-    type: 'pointToPoint',
+    type: 'single',
     lineName: '215',
     nocCode: 'DCCL',
     passengerType: 'Adult',
@@ -1442,7 +1452,7 @@ export const matchingOutBound = {
 export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
-    nocCode: 'HCTY',
+    nocCode: 'TEST',
     products: [
         {
             productName: 'Product A',
@@ -1459,7 +1469,7 @@ export const expectedSingleProductUploadJsonWithZoneUpload = {
 export const expectedSingleProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
-    nocCode: 'HCTY',
+    nocCode: 'TEST',
     products: [
         {
             productName: 'Product A',
@@ -1491,7 +1501,7 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
 export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
-    nocCode: 'HCTY',
+    nocCode: 'TEST',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1520,7 +1530,7 @@ export const expectedMultiProductUploadJsonWithZoneUpload = {
 export const expectedMultiProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
-    nocCode: 'HCTY',
+    nocCode: 'TEST',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1565,7 +1575,7 @@ export const expectedFlatFareProductUploadJson = {
     operatorName: 'test',
     passengerType: 'Adult',
     type: 'flatFare',
-    nocCode: 'HCTY',
+    nocCode: 'TEST',
     products: [
         {
             productName: 'Weekly Rider',
@@ -1806,17 +1816,17 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -1894,17 +1904,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -2002,17 +2012,17 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -2114,17 +2124,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },

@@ -5,6 +5,8 @@ import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
+import CsrfForm from '../components/CsrfForm';
+import { CustomAppProps } from '../interfaces';
 
 const title = 'Stage Names - Fares Data Build Tool';
 const description = 'Stage Names entry page of the Fares Data Build Tool';
@@ -53,22 +55,24 @@ export const renderInputFields = (numberOfFareStages: number, inputChecks: Input
     return elements;
 };
 
-const StageNames = ({ numberOfFareStages, inputChecks }: StageNameProps): ReactElement => (
+const StageNames = ({ numberOfFareStages, inputChecks, csrfToken }: StageNameProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
-        <form action="/api/stageNames" method="post">
-            <div className="govuk-form-group">
-                <fieldset className="govuk-fieldset" aria-describedby="stage-names-input">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading">
-                            Enter the names of the fare stages in order from first to last
-                        </h1>
-                        <p className="govuk-hint">Fare stage names are limited to 30 characters</p>
-                    </legend>
-                    <div>{renderInputFields(numberOfFareStages, inputChecks)}</div>
-                </fieldset>
-            </div>
-            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-        </form>
+        <CsrfForm action="/api/stageNames" method="post" csrfToken={csrfToken}>
+            <>
+                <div className="govuk-form-group">
+                    <fieldset className="govuk-fieldset" aria-describedby="stage-names-input">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading">
+                                Enter the names of the fare stages in order from first to last
+                            </h1>
+                            <p className="govuk-hint">Fare stage names are limited to 30 characters</p>
+                        </legend>
+                        <div>{renderInputFields(numberOfFareStages, inputChecks)}</div>
+                    </fieldset>
+                </div>
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+            </>
+        </CsrfForm>
     </TwoThirdsLayout>
 );
 

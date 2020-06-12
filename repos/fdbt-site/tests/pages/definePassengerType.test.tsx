@@ -185,7 +185,12 @@ describe('pages', () => {
     describe('definePassengerType', () => {
         it('should render correctly', () => {
             const wrapper = shallow(
-                <DefinePassengerType combinedErrors={[]} fieldsets={mockDefinePassengerTypeFieldsets} />,
+                <DefinePassengerType
+                    combinedErrors={[]}
+                    fieldsets={mockDefinePassengerTypeFieldsets}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(wrapper).toMatchSnapshot();
         });
@@ -195,6 +200,8 @@ describe('pages', () => {
                 <DefinePassengerType
                     combinedErrors={mockCombinedErrorInfoForRadioErrors}
                     fieldsets={mockDefinePassengerTypeFieldsetsWithRadioErrors}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -205,6 +212,8 @@ describe('pages', () => {
                 <DefinePassengerType
                     combinedErrors={mockCombinedErrorInfoForInputErrors}
                     fieldsets={mockDefinePassengerTypeFieldsetsWithInputErrors}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();

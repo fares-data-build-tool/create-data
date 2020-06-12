@@ -6,9 +6,11 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE, PASS
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo } from '../types';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { getNocFromIdToken } from '../utils';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Single Direction - Fares Data Build Tool';
 const description = 'Single Direction selection page of the Fares Data Build Tool';
@@ -22,36 +24,45 @@ interface DirectionProps {
     error: ErrorInfo[];
 }
 
-const SingleDirection = ({ operator, passengerType, lineName, service, error }: DirectionProps): ReactElement => (
+const SingleDirection = ({
+    operator,
+    passengerType,
+    lineName,
+    service,
+    error,
+    csrfToken,
+}: DirectionProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
-        <form action="/api/singleDirection" method="post">
-            <ErrorSummary errors={error} />
-            <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                <fieldset className="govuk-fieldset" aria-describedby="single-direction-page-heading">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="single-direction-page-heading">
-                            Select a journey direction
-                        </h1>
-                    </legend>
-                    <span className="govuk-hint" id="direction-operator-linename-passengertype-hint">
-                        {operator} - {lineName} - {passengerType}
-                    </span>
-                    <span className="govuk-hint" id="direction-journey-description-hint">
-                        {`Journey: ${service.serviceDescription}`}
-                    </span>
-                    <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
-                        <DirectionDropdown
-                            selectNameID="directionJourneyPattern"
-                            journeyPatterns={service.journeyPatterns}
-                        />
-                    </FormElementWrapper>
-                    <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the Traveline National Dataset
-                    </span>
-                </fieldset>
-            </div>
-            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-        </form>
+        <CsrfForm action="/api/singleDirection" method="post" csrfToken={csrfToken}>
+            <>
+                <ErrorSummary errors={error} />
+                <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <fieldset className="govuk-fieldset" aria-describedby="single-direction-page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading" id="single-direction-page-heading">
+                                Select a journey direction
+                            </h1>
+                        </legend>
+                        <span className="govuk-hint" id="direction-operator-linename-passengertype-hint">
+                            {operator} - {lineName} - {passengerType}
+                        </span>
+                        <span className="govuk-hint" id="direction-journey-description-hint">
+                            {`Journey: ${service.serviceDescription}`}
+                        </span>
+                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
+                            <DirectionDropdown
+                                selectNameID="directionJourneyPattern"
+                                journeyPatterns={service.journeyPatterns}
+                            />
+                        </FormElementWrapper>
+                        <span className="govuk-hint hint-text" id="traveline-hint">
+                            This data is taken from the Traveline National Dataset
+                        </span>
+                    </fieldset>
+                </div>
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+            </>
+        </CsrfForm>
     </TwoThirdsLayout>
 );
 
@@ -70,28 +81,27 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const serviceCookie = cookies[SERVICE_COOKIE];
     const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
+    const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !serviceCookie || !fareTypeCookie || !passengerTypeCookie) {
+    if (!operatorCookie || !serviceCookie || !fareTypeCookie || !passengerTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
-    const operatorInfo = JSON.parse(operatorCookie);
+    const { operator } = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
     const passengerTypeInfo = JSON.parse(passengerTypeCookie);
     const { passengerType } = passengerTypeInfo;
 
     const lineName = serviceInfo.service.split('#')[0];
 
-    const rawService: RawService = await getServiceByNocCodeAndLineName(operatorInfo.nocCode, lineName);
+    const rawService: RawService = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const service: Service = {
         ...rawService,
         journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),
     };
 
     if (!service) {
-        throw new Error(
-            `No service info could be retrieved for nocCode: ${operatorInfo.nocCode} and lineName: ${lineName}`,
-        );
+        throw new Error(`No service info could be retrieved for nocCode: ${nocCode} and lineName: ${lineName}`);
     }
 
     // Remove journeys with duplicate start and end points for display purposes
@@ -103,7 +113,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     );
 
     return {
-        props: { operator: operatorInfo.operator, passengerType, lineName, service, error },
+        props: { operator: operator.operatorPublicName, passengerType, lineName, service, error },
     };
 };
 
