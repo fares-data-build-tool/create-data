@@ -109,7 +109,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                                             className="govuk-checkboxes__input"
                                             id={input.id}
                                             name={input.name}
-                                            value={input.label}
+                                            value={input.id}
                                             type="checkbox"
                                         />
                                         <label className="govuk-label govuk-checkboxes__label" htmlFor={input.id}>

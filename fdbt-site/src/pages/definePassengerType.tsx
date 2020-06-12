@@ -88,17 +88,17 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },

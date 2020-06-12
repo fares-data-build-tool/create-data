@@ -109,7 +109,7 @@ const getMatchingJson = (
 
     return {
         ...service,
-        type: 'pointToPoint',
+        type: 'single',
         fareZones: getFareZones(userFareStages, matchingFareZones),
         ...passengerTypeObject,
     };
