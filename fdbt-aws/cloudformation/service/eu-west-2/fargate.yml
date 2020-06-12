@@ -381,7 +381,7 @@ Resources:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: "[log='*transaction complete*']"
+      FilterPattern: '[log="*transaction complete*"]'
       MetricTransformations:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
