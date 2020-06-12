@@ -327,6 +327,65 @@ Resources:
     Properties:
       LogGroupName: !Sub ${ProductName}-monitoring-${Stage}
 
+  2xxResponsesLogGroupMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref SiteLogGroup
+      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=2*, res, b, response_time]"
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "FDBT/Site"
+          MetricName: "2xxResponses"
+
+  3xxResponsesLogGroupMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref SiteLogGroup
+      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=3*, res, b, response_time]"
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "FDBT/Site"
+          MetricName: "3xxResponses"
+
+  4xxResponsesLogGroupMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref SiteLogGroup
+      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=4*, res, b, response_time]"
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "FDBT/Site"
+          MetricName: "4xxResponses"
+
+  5xxResponsesLogGroupMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref SiteLogGroup
+      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=5*, res, b, response_time]"
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "FDBT/Site"
+          MetricName: "5xxResponses"
+
+  ResponsesTimeLogMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref SiteLogGroup
+      FilterPattern: "[remote_addr, a, method, path, http_version, status_code, res, b, response_time, ms]"
+      MetricTransformations:
+        - MetricValue: "$response_time"
+          MetricNamespace: "FDBT/Site"
+          MetricName: "responseTime"
+
+  TransactionSuccessLogMetrics:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref SiteLogGroup
+      FilterPattern: "[log='*transaction complete*']"
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "FDBT/Site"
+          MetricName: "completeTransactions"
   # Custom Resources
 
   # This custom task definition is to temporarily address the fact that CloudFormation does not yet support adding EFS as a volume in ECS
