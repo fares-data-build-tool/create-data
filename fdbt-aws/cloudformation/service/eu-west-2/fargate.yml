@@ -54,6 +54,9 @@ Parameters:
     Type: String
     Description: Domain for monitoring
 
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+
 Resources:
   # ECS Resources
   ECSCluster:
@@ -104,6 +107,8 @@ Resources:
             - Name: FDBT_USER_POOL_ID
               Value:
                 Fn::ImportValue: !Sub ${Stage}:UserPoolID
+            - Name: ALLOW_DISABLE_AUTH
+              Value: !If [IsTest, "1", "0"]
 
   MonitoringTaskDefinitionTemp:
     Type: Custom::TaskDefinition
