@@ -1,4 +1,6 @@
-export interface OperatorData {
+// Reference Data (from NOC, TNDS, NaPTAN datasets)
+
+export interface Operator {
     website: string;
     ttrteEnq: string;
     operatorPublicName: string;
@@ -9,7 +11,7 @@ export interface OperatorData {
     mode: string;
 }
 
-export interface ServiceData {
+export interface Service {
     description: string;
 }
 
@@ -25,9 +27,34 @@ export interface Stop {
     street?: string;
 }
 
-export interface FareZonePrices {
-    price: string;
-    fareZones: string[];
+// Matching Data (created by the user on the site)
+
+export interface BaseTicket {
+    nocCode: string;
+    type: string;
+    passengerType: string;
+    ageRange?: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string;
+    proofDocuments?: string[];
+}
+
+export type PointToPointTicket = SingleTicket | ReturnTicket;
+
+export interface BasePointToPointTicket extends BaseTicket {
+    operatorShortName: string;
+    lineName: string;
+    serviceDescription: string;
+}
+
+export interface SingleTicket extends BasePointToPointTicket {
+    fareZones: FareZone[];
+}
+
+export interface ReturnTicket extends BasePointToPointTicket {
+    inboundFareZones: FareZone[];
+    outboundFareZones: FareZone[];
 }
 
 export interface FareZone {
@@ -36,25 +63,35 @@ export interface FareZone {
     prices: FareZonePrices[];
 }
 
-export interface MatchingSingleData {
-    lineName: string;
-    nocCode: string;
-    operatorShortName: string;
-    serviceDescription: string;
-    fareZones: FareZone[];
+export interface FareZonePrices {
+    price: string;
+    fareZones: string[];
 }
 
-export interface MatchingReturnData {
-    type: string;
-    lineName: string;
-    nocCode: string;
-    operatorShortName: string;
-    serviceDescription: string;
-    inboundFareZones: FareZone[];
-    outboundFareZones: FareZone[];
+export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
+
+export interface BasePeriodTicket extends BaseTicket {
+    operatorName: string;
+    products: ProductDetails[];
 }
 
-export type MatchingData = MatchingSingleData | MatchingReturnData;
+export interface PeriodGeoZoneTicket extends BasePeriodTicket {
+    zoneName: string;
+    stops: Stop[];
+}
+
+export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
+    selectedServices: SelectedService[];
+}
+
+export interface FlatFareTicket extends BaseTicket {
+    operatorName: string;
+    products: {
+        productName: string;
+        productPrice: string;
+    }[];
+    selectedServices: SelectedService[];
+}
 
 export interface SelectedService {
     lineName: string;
@@ -65,26 +102,11 @@ export interface SelectedService {
 export interface ProductDetails {
     productName: string;
     productPrice: string;
-    daysValid?: string;
-    expiryRules?: string;
+    productDuration?: string;
+    productValidity?: string;
 }
 
-export interface BasePeriodTicket {
-    operatorName: string;
-    nocCode: string;
-    products: ProductDetails[];
-}
-
-export interface PeriodGeoZoneTicket extends BasePeriodTicket {
-    zoneName: string;
-    stops: Stop[];
-}
-
-export interface MultipleServicesTicket extends BasePeriodTicket {
-    selectedServices: SelectedService[];
-}
-
-export type PeriodTicket = PeriodGeoZoneTicket | MultipleServicesTicket;
+// NeTEx
 
 export interface ScheduledStopPoint {
     versionRef: string;

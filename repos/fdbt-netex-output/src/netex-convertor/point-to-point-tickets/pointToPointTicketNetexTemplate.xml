@@ -130,8 +130,8 @@
 						</Operator>
 					</organisations>
 				</ResourceFrame>
-				<SiteFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_NETWORK:Line_16:op" responsibilitySetRef="nptg:data" dataSourceRef="nptg:dft">
-					<Description>This frame contains the NPTG locality definitions used by the stops  the service. It Could also be exchanged separately.</Description>
+				<SiteFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_STOP:sale_pois:op" responsibilitySetRef="nptg:data" dataSourceRef="nptg:dft">
+					<Description>This frame contains the NPTG locality definitions used by the stops in the service. It could also be exchanged separately.</Description>
 					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP" />
 					<prerequisites>
 						<ResourceFrameRef version="1.0" ref="epd:UK:HCTY:ResourceFrame_UK_PI_COMMON:op" />
@@ -180,7 +180,7 @@
 					</topographicPlaces>
 				</SiteFrame>
 				<!--==== STEP 3:: Define EACH BUS STOP IN THE ENTIRE SERVICE, IN ALL ZONES ====-->
-				<ServiceFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+				<ServiceFrame version="1.0" id="epd:UK:HCTY:ServiceFrame_UK_PI_NETWORK:HCTY:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
 					<Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== LINEs ==== -->
@@ -198,7 +198,7 @@
 					<scheduledStopPoints></scheduledStopPoints>
 				</ServiceFrame>
 				<!--==== STEP 4:: THIS IS OUR FARE STAGES DEFINED IN HERE AND LINKED TO THE SERVICE FRAME ====-->
-				<FareFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="network_data">
+				<FareFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_NETWORK:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="network_data">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== Fare zones ===     NB These are just a guess from the map  and may be bogus.in places -->
 					<fareZones>
@@ -323,7 +323,7 @@
 					</fareZones>
 				</FareFrame>
 				<!--==== STEP 5:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
-				<FareFrame version="1.0" id="operator@Products@Trip@Line_1" dataSourceRef="operator" responsibilitySetRef="tariffs">
+				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRODUCT:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" versionRef="fxc:v1.0" />
 					<!--==== Fare Structure ==== -->
 					<tariffs>
@@ -353,50 +353,10 @@
 										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible" />
 										<LimitationGroupingType>XOR</LimitationGroupingType>
 										<limitations>
-											<!---  ===ELIGIBILITY USAGE PARAMETERS =========    -->
-											<UserProfile version="1.0" id="adult">
-												<Name>Adult</Name>
-												<companionProfiles>
-													<CompanionProfile version="1.0" id="adult@infant">
-														<UserProfileRef ref="infant" version="1.0" />
-														<MinimumNumberOfPersons>0</MinimumNumberOfPersons>
-														<MaximumNumberOfPersons>3</MaximumNumberOfPersons>
-													</CompanionProfile>
-												</companionProfiles>
-											</UserProfile>
-											<UserProfile version="1.0" id="infant">
-												<Name>Infant</Name>
-												<Description>Infant up to 5 years. Must be with adult</Description>
-												<Url>http://www.connexionsbuses.com/concessions/</Url>
-												<MaximumAge>5</MaximumAge>
-												<DiscountBasis>free</DiscountBasis>
-												<companionProfiles>
-													<CompanionProfile version="1.0" id="adult">
-														<UserProfileRef ref="adult" version="1.0" />
-														<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-													</CompanionProfile>
-												</companionProfiles>
-											</UserProfile>
-											<UserProfile version="1.0" id="youth">
-												<!-- NK NB1 NeTExSchema: CORRECTION add missing element -->
-												<Name>Youth</Name>
-												<Description>Youth 5 to 19 </Description>
-												<Url>http://www.connexionsbuses.com/concessions/</Url>
-												<MinimumAge>6</MinimumAge>
-												<!--  NK NB4 DataCorrectness -->
-												<MaximumAge>18</MaximumAge>
-												<DiscountBasis>discount</DiscountBasis>
-											</UserProfile>
-											<UserProfile version="1.0" id="senior">
-												<!-- NK NB1 NeTExSchema: CORRECTION add missing element -->
-												<Name>Senior</Name>
-												<Description> Senior over 60 with pass</Description>
-												<Url>http://www.connexionsbuses.com/concessions/</Url>
-												<MinimumAge>6</MinimumAge>
-												<!--   NK NB4 DataCorrectness -->
-												<MaximumAge>18</MaximumAge>
-												<ProofRequired>membershipCard</ProofRequired>
-												<DiscountBasis>discount</DiscountBasis>
+											<UserProfile version="1.0" id="anyone">
+												<Name>Anyone</Name>
+												<Description>Valid for any person</Description>
+												<UserType>anyone</UserType>
 											</UserProfile>
 										</limitations>
 									</GenericParameterAssignment>
@@ -487,7 +447,7 @@
 						</SalesOfferPackage>
 					</salesOfferPackages>
 				</FareFrame>
-				<FareFrame version="1.0" id="operator@Products@Trip@prices@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRICE:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0" />
 					<FrameDefaults>
 						<!-- Fares are shown in pence. -->
