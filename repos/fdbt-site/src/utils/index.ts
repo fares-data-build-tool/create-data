@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
-import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../constants/index';
+import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { ErrorInfo, CognitoIdToken } from '../interfaces';
 
@@ -29,7 +29,7 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
 
 export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
     const cookies = parseCookies(ctx);
-    const cookieWhitelist = [OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE];
+    const cookieWhitelist = [OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE];
 
     Object.keys(cookies).forEach(cookie => {
         if (!cookieWhitelist.includes(cookie)) {

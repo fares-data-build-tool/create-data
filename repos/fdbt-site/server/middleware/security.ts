@@ -1,6 +1,7 @@
 import { Express, Response, Request } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import helmet from 'helmet';
+import nocache from 'nocache';
 
 export default (server: Express): void => {
     server.use((_req, res, next) => {
@@ -50,4 +51,6 @@ export default (server: Express): void => {
             },
         }),
     );
+
+    server.use(nocache());
 };
