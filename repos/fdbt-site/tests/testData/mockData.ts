@@ -965,7 +965,7 @@ export const mockMatchingUserFareStagesWithAllStagesAssigned = {
 };
 
 export const expectedMatchingJsonSingle = {
-    type: 'pointToPoint',
+    type: 'single',
     lineName: '215',
     nocCode: 'DCCL',
     passengerType: 'Adult',
@@ -1816,17 +1816,17 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -1904,17 +1904,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -2012,17 +2012,17 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -2124,17 +2124,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membership-card',
+                        id: 'membershipCard',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'student-card',
+                        id: 'studentCard',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identity-document',
+                        id: 'identityDocument',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },

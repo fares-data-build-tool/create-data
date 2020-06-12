@@ -47,7 +47,7 @@ exports[`pages operator should render correctly 1`] = `
           >
             <div
               className="govuk-radios__item"
-              key="Any"
+              key="anyone"
             >
               <input
                 aria-disabled={false}
@@ -56,18 +56,18 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type0"
                 name="passengerType"
                 type="radio"
-                value="Any"
+                value="anyone"
               />
               <label
                 className="govuk-label govuk-radios__label"
                 htmlFor="passenger-type0"
               >
-                Any
+                Anyone
               </label>
             </div>
             <div
               className="govuk-radios__item"
-              key="Adult"
+              key="adult"
             >
               <input
                 aria-disabled={false}
@@ -76,7 +76,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type1"
                 name="passengerType"
                 type="radio"
-                value="Adult"
+                value="adult"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -87,7 +87,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Child"
+              key="child"
             >
               <input
                 aria-disabled={false}
@@ -96,7 +96,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type2"
                 name="passengerType"
                 type="radio"
-                value="Child"
+                value="child"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -107,7 +107,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Infant"
+              key="infant"
             >
               <input
                 aria-disabled={false}
@@ -116,7 +116,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type3"
                 name="passengerType"
                 type="radio"
-                value="Infant"
+                value="infant"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -127,7 +127,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Senior"
+              key="senior"
             >
               <input
                 aria-disabled={false}
@@ -136,7 +136,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type4"
                 name="passengerType"
                 type="radio"
-                value="Senior"
+                value="senior"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -147,7 +147,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Student"
+              key="student"
             >
               <input
                 aria-disabled={false}
@@ -156,7 +156,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type5"
                 name="passengerType"
                 type="radio"
-                value="Student"
+                value="student"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -167,7 +167,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Young Person"
+              key="youngPerson"
             >
               <input
                 aria-disabled={false}
@@ -176,7 +176,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type6"
                 name="passengerType"
                 type="radio"
-                value="Young Person"
+                value="youngPerson"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -187,7 +187,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="School Pupil"
+              key="schoolPupil"
             >
               <input
                 aria-disabled={true}
@@ -196,7 +196,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type7"
                 name="passengerType"
                 type="radio"
-                value="School Pupil"
+                value="schoolPupil"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -207,7 +207,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Disabled"
+              key="disabled"
             >
               <input
                 aria-disabled={true}
@@ -216,7 +216,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type8"
                 name="passengerType"
                 type="radio"
-                value="Disabled"
+                value="disabled"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -227,7 +227,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Disabled Companion"
+              key="disabledCompanion"
             >
               <input
                 aria-disabled={true}
@@ -236,7 +236,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type9"
                 name="passengerType"
                 type="radio"
-                value="Disabled Companion"
+                value="disabledCompanion"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -247,7 +247,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Employee"
+              key="employee"
             >
               <input
                 aria-disabled={true}
@@ -256,7 +256,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type10"
                 name="passengerType"
                 type="radio"
-                value="Employee"
+                value="employee"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -267,7 +267,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Military"
+              key="military"
             >
               <input
                 aria-disabled={true}
@@ -276,7 +276,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type11"
                 name="passengerType"
                 type="radio"
-                value="Military"
+                value="military"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -287,7 +287,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Job Seeker"
+              key="jobSeeker"
             >
               <input
                 aria-disabled={true}
@@ -296,7 +296,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type12"
                 name="passengerType"
                 type="radio"
-                value="Job Seeker"
+                value="jobSeeker"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -307,7 +307,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Guide Dog"
+              key="guideDog"
             >
               <input
                 aria-disabled={true}
@@ -316,7 +316,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type13"
                 name="passengerType"
                 type="radio"
-                value="Guide Dog"
+                value="guideDog"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -327,7 +327,7 @@ exports[`pages operator should render correctly 1`] = `
             </div>
             <div
               className="govuk-radios__item"
-              key="Animal"
+              key="animal"
             >
               <input
                 aria-disabled={true}
@@ -336,7 +336,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="passenger-type14"
                 name="passengerType"
                 type="radio"
-                value="Animal"
+                value="animal"
               />
               <label
                 className="govuk-label govuk-radios__label"
