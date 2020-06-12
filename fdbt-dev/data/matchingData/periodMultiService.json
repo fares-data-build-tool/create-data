@@ -1,43 +1,103 @@
 {
   "operatorName": "Blackpool Transport",
   "type": "periodMultipleServices",
+  "nocCode": "BLAC",
   "products": [
     {
-      "productName": "gscafvd",
-      "productPrice": "1.23",
-      "daysValid": "4",
-      "expiryRules": "24hr"
+      "productName": "Test Product 1",
+      "productPrice": "3",
+      "productDuration": "1",
+      "productValidity": "24hr"
     },
     {
-      "productName": "dfvdfvd",
-      "productPrice": "3.24",
-      "daysValid": "7",
-      "expiryRules": "endOfCalendarDay"
+      "productName": "Test Product 2",
+      "productPrice": "5",
+      "productDuration": "2",
+      "productValidity": "24hr"
     },
     {
-      "productName": "dfvfgsh",
-      "productPrice": "5.66",
-      "daysValid": "8",
-      "expiryRules": "endOfCalendarDay"
+      "productName": "Test Product 3",
+      "productPrice": "100",
+      "productDuration": "365",
+      "productValidity": "24hr"
     }
   ],
-  "nocCode": "BLAC",
+  "passengerType": "youngPerson",
+  "ageRange": "Yes",
+  "ageRangeMin": "16",
+  "ageRangeMax": "25",
+  "proof": "Yes",
+  "proofDocuments": ["identityDocument"],
   "selectedServices": [
     {
-      "lineName": "4",
+      "lineName": "2C",
       "startDate": "05/04/2020",
-      "serviceDescription": "Bromley - Chatham - Greenwich"
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
     },
     {
       "lineName": "17",
       "startDate": "05/04/2020",
-      "serviceDescription": "Bromley - Chatham - Greenwich"
-
+      "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM"
     },
     {
-      "lineName": "2C",
+      "lineName": "4",
       "startDate": "05/04/2020",
-      "serviceDescription": "Bromley - Chatham - Greenwich"
+      "serviceDescription": "CLEVELEYS - MERESIDE via Blackpool"
+    },
+    {
+      "lineName": "19",
+      "startDate": "05/04/2020",
+      "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
+    },
+    {
+      "lineName": "1",
+      "startDate": "05/04/2020",
+      "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
+    },
+    {
+      "lineName": "2",
+      "startDate": "05/04/2020",
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
+    },
+    {
+      "lineName": "5",
+      "startDate": "05/04/2020",
+      "serviceDescription": "VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE"
+    },
+    {
+      "lineName": "9",
+      "startDate": "05/04/2020",
+      "serviceDescription": "CLEVELEYS - BLACKPOOL via Bispham"
+    },
+    {
+      "lineName": "14",
+      "startDate": "05/04/2020",
+      "serviceDescription": "FLEETWOOD - BLACKPOOL via Layton"
+    },
+    {
+      "lineName": "18",
+      "startDate": "05/04/2020",
+      "serviceDescription": "BLACKPOOL - MERESIDE via South Shore"
+    },
+    {
+      "lineName": "11",
+      "startDate": "05/04/2020",
+      "serviceDescription": "LYTHAM - BLACKPOOL via St Annes"
+    },
+    {
+      "lineName": "3",
+      "startDate": "05/04/2020",
+      "serviceDescription": "MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK"
+    },
+    {
+      "lineName": "7",
+      "startDate": "05/04/2020",
+      "serviceDescription": "CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL"
+    },
+    {
+      "lineName": "6",
+      "startDate": "05/04/2020",
+      "serviceDescription": "MERESIDE - BLACKPOOL - GRANGE PARK"
     }
   ]
 }

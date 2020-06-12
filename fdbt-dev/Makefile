@@ -23,8 +23,8 @@ start-site:
 
 # NETEX CONVERTOR
 
-generate-point-to-point:
-	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev pointToPoint
+generate-single:
+	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev single
 
 generate-multi-service:
 	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodMultiService
