@@ -1,8 +1,8 @@
 import Cookies from 'cookies';
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../src/constants';
+import { Request, Response, NextFunction, Express } from 'express';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
 import { signOutUser, setCookieOnResponseObject, getDomain } from '../../src/pages/api/apiUtils';
 import { CognitoIdToken } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
@@ -29,6 +29,37 @@ const verifyOptions: VerifyOptions = {
     algorithms: ['RS256'],
 };
 
+export const setDisableAuthCookies = (server: Express): void => {
+    server.use((req, res, next) => {
+        if (
+            (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
+            req.query.disableAuth === 'true'
+        ) {
+            const cookies = new Cookies(req, res);
+            const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
+
+            if (!disableAuthCookie || disableAuthCookie === 'false') {
+                cookies.set(DISABLE_AUTH_COOKIE, 'true');
+                cookies.set(
+                    ID_TOKEN_COOKIE,
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyJ9.-1CZzSU-mmUoLn_RpWvrBKOib2tu_SXE2FQ1HmNYnZk',
+                );
+                cookies.set(
+                    OPERATOR_COOKIE,
+                    JSON.stringify({
+                        operator: {
+                            operatorPublicName: 'Blackpool Transport',
+                        },
+                        uuid: '0d1953f5-f57a-4ae3-8522-fef7da34c567',
+                    }),
+                );
+            }
+        }
+
+        next();
+    });
+};
+
 export default (req: Request, res: Response, next: NextFunction): void => {
     const logoutAndRedirect = (username: string | null = null): void => {
         signOutUser(username, req, res)
@@ -40,6 +71,16 @@ export default (req: Request, res: Response, next: NextFunction): void => {
     };
 
     const cookies = new Cookies(req, res);
+    const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
+
+    if (
+        (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
+        (disableAuthCookie === 'true' || req.query.disableAuth === 'true')
+    ) {
+        next();
+        return;
+    }
+
     const idToken = cookies.get(ID_TOKEN_COOKIE) ?? null;
 
     if (!idToken) {
