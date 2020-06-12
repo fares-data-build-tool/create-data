@@ -11,7 +11,14 @@ import {
     PASSENGER_TYPE_COOKIE,
 } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import {
+    redirectToError,
+    setCookieOnResponseObject,
+    getDomain,
+    redirectTo,
+    unescapeAndDecodeCookie,
+    getNocFromIdToken,
+} from './apiUtils';
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
@@ -54,14 +61,16 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+        const nocCode = getNocFromIdToken(req, res);
 
         if (
+            !nocCode ||
             multipleProductCookie === '' ||
             periodTypeCookie === '' ||
             passengerTypeCookie === '' ||
             (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie === ''))
         ) {
-            throw new Error('Necessary cookies not found for multiple product validity page');
+            throw new Error('Necessary cookies not found for multiple product validity API');
         }
 
         const rawProducts: Product[] = JSON.parse(multipleProductCookie);
@@ -75,7 +84,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         let props = {};
-        const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
+        const { operator, uuid } = JSON.parse(operatorCookie);
         const { periodTypeName } = JSON.parse(periodTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
@@ -110,7 +119,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         const multipleProductPeriod: DecisionData = {
-            operatorName: operator,
+            operatorName: operator.operatorPublicName,
             type: periodTypeName,
             nocCode,
             products,

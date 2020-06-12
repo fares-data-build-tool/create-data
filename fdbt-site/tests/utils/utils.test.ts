@@ -1,6 +1,8 @@
 import MockReq from 'mock-req';
-import { getHost, formatStopName } from '../../src/utils';
+import { NextPageContext } from 'next';
+import { getHost, formatStopName, getAttributeFromIdToken } from '../../src/utils';
 import { Stop } from '../../src/data/auroradb';
+import { getMockContext } from '../testData/mockData';
 
 describe('utils', () => {
     describe('getHost', () => {
@@ -74,6 +76,32 @@ describe('utils', () => {
             const formattedName = formatStopName(naptanData);
 
             expect(formattedName).toBe(expected);
+        });
+    });
+
+    describe('getAttributeFromIdToken', () => {
+        let emailJwt: string;
+        let ctx: NextPageContext;
+
+        beforeEach(() => {
+            // This JWT encodes an email of test@example.com
+            emailJwt =
+                'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20ifQ.pwd0gdkeSRBqRpoNKxC8lK3SuydPKqKPRRdEE-eNEc0';
+            ctx = getMockContext({
+                idToken: emailJwt,
+            });
+        });
+
+        it('should retrieve given attribute if present', () => {
+            const email = getAttributeFromIdToken(ctx, 'email');
+
+            expect(email).toBe('test@example.com');
+        });
+
+        it('should return null if not present', () => {
+            const email = getAttributeFromIdToken(ctx, 'custom:noc');
+
+            expect(email).toBeNull();
         });
     });
 });

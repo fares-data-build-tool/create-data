@@ -13,31 +13,46 @@ exports[`pages operator should render correctly 1`] = `
   <p
     className="govuk-body"
   >
+    This service is for creating or accessing NeTEx data for public transport services, excluding rail, in England. The service can be used by:
+  </p>
+  <ul
+    className="govuk-list govuk-list--bullet"
+  >
+    <li>
+      Bus operators running commercial services in England
+    </li>
+    <li>
+      Local transport authorities acting on behalf of bus operators
+    </li>
+    <li>
+      Local transport authorities that operate their own services
+    </li>
+  </ul>
+  <p
+    className="govuk-body"
+  >
     Use this service to:
   </p>
   <ul
     className="govuk-list govuk-list--bullet"
   >
     <li>
-      Generate fares data in NeTEx format
+      Generate fares data in NeTEx format for a new or existing service
     </li>
     <li>
-      Update fares for an existing service
-    </li>
-    <li>
-      Publish fares for a newly registered service
+      Download your own fares data
     </li>
   </ul>
   <p
     className="govuk-body"
   >
-    All service data is taken directly from the Traveline National Dataset and the NaPTAN database. To avoid data discrepancies, ensure that all service data is correct within these datasets before using this service.
+    All service data is taken directly from the Traveline National Data Set and the NaPTAN database. To avoid data discrepancies, ensure that all service data is correct within these datasets before using the service.
   </p>
   <a
     className="govuk-button govuk-button--start"
     data-module="govuk-button"
     draggable="false"
-    href="/operator"
+    href="/fareType"
     id="start-now-button"
     role="button"
   >

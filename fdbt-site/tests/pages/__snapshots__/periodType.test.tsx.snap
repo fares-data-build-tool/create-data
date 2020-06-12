@@ -6,8 +6,9 @@ exports[`pages periodtype should render correctly 1`] = `
   errors={Array []}
   title="Period Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/periodType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -101,7 +102,7 @@ exports[`pages periodtype should render correctly 1`] = `
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;
 
@@ -118,8 +119,9 @@ exports[`pages periodtype should render error messaging when errors are passed 1
   }
   title="Period Type - Fares Data Build Tool"
 >
-  <form
+  <CsrfForm
     action="/api/periodType"
+    csrfToken=""
     method="post"
   >
     <ErrorSummary
@@ -227,6 +229,6 @@ exports[`pages periodtype should render error messaging when errors are passed 1
       type="submit"
       value="Continue"
     />
-  </form>
+  </CsrfForm>
 </Component>
 `;

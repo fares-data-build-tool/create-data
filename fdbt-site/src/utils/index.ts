@@ -1,12 +1,11 @@
 import Cookies from 'cookies';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
-import axios from 'axios';
-import { parseCookies } from 'nookies';
-import { ALL_COOKIES, OPERATOR_COOKIE } from '../constants/index';
-
+import { parseCookies, destroyCookie } from 'nookies';
+import { decode } from 'jsonwebtoken';
+import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
-import { ErrorInfo } from '../types';
+import { ErrorInfo, CognitoIdToken } from '../interfaces';
 
 export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
     if (ctx.req && ctx.res) {
@@ -29,13 +28,14 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
 };
 
 export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
-    if (ctx.req && ctx.res) {
-        const cookies = new Cookies(ctx.req, ctx.res);
-        const host = ctx?.req?.headers?.host;
-        const domain = host ? host.split(':')[0] : '';
+    const cookies = parseCookies(ctx);
+    const cookieWhitelist = [OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE];
 
-        ALL_COOKIES.map(cookieName => cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' }));
-    }
+    Object.keys(cookies).forEach(cookie => {
+        if (!cookieWhitelist.includes(cookie)) {
+            destroyCookie(ctx, cookie);
+        }
+    });
 };
 
 export const getHost = (req: IncomingMessage | undefined): string => {
@@ -52,21 +52,6 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     }
 
     return '';
-};
-
-export const isSessionValid = async (url: string, req: IncomingMessage | undefined): Promise<boolean> => {
-    try {
-        const response = await axios.get(url, {
-            withCredentials: true,
-            headers: {
-                Cookie: req?.headers.cookie,
-            },
-        });
-
-        return response.data.Valid;
-    } catch (err) {
-        return false;
-    }
 };
 
 export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
@@ -101,3 +86,21 @@ export const buildTitle = (errors: ErrorInfo[], title: string): string => {
 
     return title;
 };
+
+export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
+    ctx: NextPageContext,
+    attribute: T,
+): CognitoIdToken[T] | null => {
+    const cookies = parseCookies(ctx);
+    const idToken = cookies[ID_TOKEN_COOKIE];
+
+    if (!idToken) {
+        return null;
+    }
+
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+
+    return decodedIdToken[attribute] ?? null;
+};
+
+export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');

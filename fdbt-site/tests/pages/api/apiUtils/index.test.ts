@@ -4,6 +4,8 @@ import {
     setCookieOnResponseObject,
     getUuidFromCookie,
     redirectOnFareType,
+    checkEmailValid,
+    getAttributeFromIdToken,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
@@ -19,6 +21,26 @@ describe('apiUtils', () => {
 
     afterEach(() => {
         jest.resetAllMocks();
+    });
+
+    describe('checkEmailValid', () => {
+        it.each([
+            ['@email.com'],
+            ['test@email'],
+            ['  test@email.com'],
+            ['t est@email.com'],
+            ['t est@email.com'],
+            ['test@email.com   '],
+            ['test@email .com'],
+        ])('should validate that %s returns false', input => {
+            expect(checkEmailValid(input)).toBeFalsy();
+        });
+    });
+
+    describe('checkEmailValid', () => {
+        it.each([['test@email.com'], ['TEST@EMAIL.COM']])('should validate that %s returns true', input => {
+            expect(checkEmailValid(input)).toBeTruthy();
+        });
     });
 
     describe('getDomain', () => {
@@ -95,6 +117,34 @@ describe('apiUtils', () => {
             expect(() => {
                 redirectOnFareType(req, res);
             }).toThrowError(new Error('Fare Type we expect was not received.'));
+        });
+    });
+
+    describe('getAttributeFromIdToken', () => {
+        let emailJwt: string;
+
+        beforeEach(() => {
+            // This JWT encodes an email of test@example.com
+            emailJwt =
+                'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20ifQ.pwd0gdkeSRBqRpoNKxC8lK3SuydPKqKPRRdEE-eNEc0';
+        });
+
+        it('should retrieve given attribute if present', () => {
+            const { req, res } = getMockRequestAndResponse({
+                idToken: emailJwt,
+            });
+            const email = getAttributeFromIdToken(req, res, 'email');
+
+            expect(email).toBe('test@example.com');
+        });
+
+        it('should return null if not present', () => {
+            const { req, res } = getMockRequestAndResponse({
+                idToken: emailJwt,
+            });
+            const email = getAttributeFromIdToken(req, res, 'custom:noc');
+
+            expect(email).toBeNull();
         });
     });
 });

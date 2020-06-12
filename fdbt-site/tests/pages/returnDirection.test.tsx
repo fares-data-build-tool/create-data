@@ -16,14 +16,28 @@ describe('pages', () => {
 
         it('should render correctly', () => {
             const tree = shallow(
-                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" />,
+                <ReturnDirection
+                    service={mockService}
+                    errors={[]}
+                    inboundJourney=""
+                    outboundJourney=""
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('shows a list of journey patterns for the service in each of the select boxes', () => {
             const wrapper = mount(
-                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" />,
+                <ReturnDirection
+                    service={mockService}
+                    errors={[]}
+                    inboundJourney=""
+                    outboundJourney=""
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
 
             const serviceJourney = wrapper.find('.journey-option');
@@ -35,7 +49,7 @@ describe('pages', () => {
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
-            const operator = 'HCTY';
+            const operator = 'TEST';
             const lineName = 'X6A';
 
             const ctx = getMockContext({ operator, serviceLineName: lineName });
@@ -54,7 +68,7 @@ describe('pages', () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
                 () => mockRawServiceWithDuplicates,
             ));
-            const operator = 'HCTY';
+            const operator = 'TEST';
             const lineName = 'X6A';
 
             const ctx = getMockContext({ operator, serviceLineName: lineName });

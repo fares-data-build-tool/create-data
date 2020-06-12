@@ -12,3 +12,11 @@ To run the site locally, checkout the [fdbt-dev](https://github.com/fares-data-b
 ## Assets
 
 All assets should be placed into an appropriate folder in `src/assets` and imported into the component they need to be used in.
+
+## Disable Authentication
+
+The site runs middleware to require an auth session against AWS Cognito, if you want to disable this for testing purposes you will need to do the following:
+
+- If NODE_ENV is not 'development', you will need to set the environment variable `ALLOW_DISABLE_AUTH` to be `'1'`. If on the development env, you do not need to set this.
+- Hit the homepage with the query string `?disableAuth=true` appended to the URL
+- You should now be able to navbigate the site without authenticating

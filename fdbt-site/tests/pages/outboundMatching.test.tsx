@@ -32,7 +32,14 @@ describe('Inbound OutboundMatching Page', () => {
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
         wrapper = shallow(
-            <OutboundMatching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+            <OutboundMatching
+                userFareStages={userFareStages}
+                stops={naptanStopInfo}
+                service={service}
+                error={false}
+                csrfToken=""
+                pageProps={[]}
+            />,
         );
     });
 
@@ -46,7 +53,14 @@ describe('Inbound OutboundMatching Page', () => {
 
     it('shows the correct amount of fare stages in the select boxes', () => {
         const mountedWrapper = mount(
-            <OutboundMatching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+            <OutboundMatching
+                userFareStages={userFareStages}
+                stops={naptanStopInfo}
+                service={service}
+                error={false}
+                csrfToken=""
+                pageProps={[]}
+            />,
         );
 
         expect(
@@ -142,7 +156,7 @@ describe('Inbound OutboundMatching Page', () => {
             });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow(
-                'No stops found for journey: nocCode HCTY, lineName: X01, startPoint: 123ZZZ, endPoint: 13003921A',
+                'No stops found for journey: nocCode TEST, lineName: X01, startPoint: 123ZZZ, endPoint: 13003921A',
             );
         });
 

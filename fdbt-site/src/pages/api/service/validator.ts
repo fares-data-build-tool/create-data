@@ -28,8 +28,8 @@ export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): b
         if (serviceInfo.uuid === uuid && journeyInfo.uuid === uuid) {
             return true;
         }
-    } catch (err) {
-        console.error(err.stack);
+    } catch (error) {
+        console.error(error.stack);
         return false;
     }
 

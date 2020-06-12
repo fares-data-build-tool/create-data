@@ -9,16 +9,17 @@ import {
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo } from '../types';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Multiple Product - Fares Data Build Tool';
 const description = 'Multiple Product entry page of the Fares Data Build Tool';
 
 export interface MultipleProductProps {
     numberOfProductsToDisplay: string;
-    nameOfOperator: string;
+    operator: string;
     passengerType: string;
     errors?: ErrorInfo[];
     userInput: MultiProduct[];
@@ -26,35 +27,38 @@ export interface MultipleProductProps {
 
 const MultipleProducts = ({
     numberOfProductsToDisplay,
-    nameOfOperator,
+    operator,
     passengerType,
     errors = [],
     userInput = [],
-}: MultipleProductProps): ReactElement => (
+    csrfToken,
+}: MultipleProductProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={title} description={description} errors={errors}>
-        <form action="/api/multipleProducts" method="post">
-            <ErrorSummary errors={errors} />
-            <div className="govuk-form-group">
-                <fieldset className="govuk-fieldset" aria-describedby="multiple-product-page-heading">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="multiple-product-page-heading">
-                            Enter your product details
-                        </h1>
-                    </legend>
-                    <span className="govuk-hint" id="service-operator-hint">
-                        {nameOfOperator} - {numberOfProductsToDisplay} Products - {passengerType}
-                    </span>
-                </fieldset>
-                <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
-            </div>
-            <div className="govuk-grid-row">
-                <ProductRow
-                    numberOfProductsToDisplay={numberOfProductsToDisplay}
-                    errors={errors}
-                    userInput={userInput}
-                />
-            </div>
-        </form>
+        <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
+            <>
+                <ErrorSummary errors={errors} />
+                <div className="govuk-form-group">
+                    <fieldset className="govuk-fieldset" aria-describedby="multiple-product-page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading" id="multiple-product-page-heading">
+                                Enter your product details
+                            </h1>
+                        </legend>
+                        <span className="govuk-hint" id="service-operator-hint">
+                            {operator} - {numberOfProductsToDisplay} Products - {passengerType}
+                        </span>
+                    </fieldset>
+                    <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
+                </div>
+                <div className="govuk-grid-row">
+                    <ProductRow
+                        numberOfProductsToDisplay={numberOfProductsToDisplay}
+                        errors={errors}
+                        userInput={userInput}
+                    />
+                </div>
+            </>
+        </CsrfForm>
     </FullColumnLayout>
 );
 
@@ -70,7 +74,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
-    const nameOfOperator: string = JSON.parse(operatorCookie).operator;
+    const { operator } = JSON.parse(operatorCookie);
 
     if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
         const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
@@ -81,7 +85,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
             return {
                 props: {
                     numberOfProductsToDisplay,
-                    nameOfOperator,
+                    operator: operator.operatorPublicName,
                     passengerType: passengerTypeInfo.passengerType,
                     errors: parsedMultipleProductCookie.errors,
                     userInput: parsedMultipleProductCookie.userInput,
@@ -93,7 +97,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     return {
         props: {
             numberOfProductsToDisplay,
-            nameOfOperator,
+            operator: operator.operatorPublicName,
             passengerType: passengerTypeInfo.passengerType,
             userInput: [],
         },

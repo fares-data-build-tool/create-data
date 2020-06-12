@@ -1,14 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Auth from '../../data/amplify';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
-import { InputCheck } from '../register';
+import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
-
-const checkEmailValid = (email: string): boolean => {
-    const emailRegex = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
-    return emailRegex.test(email) && email !== '';
-};
+import { initiateAuth, respondToNewPasswordChallenge, globalSignOut, updateUserAttributes } from '../../data/cognito';
 
 const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';
@@ -72,15 +67,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         try {
-            const user = await Auth.signIn(email, regKey);
+            const { ChallengeName, ChallengeParameters, Session } = await initiateAuth(email, regKey);
 
-            if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-                await Auth.completeNewPassword(user, password, { 'custom:noc': nocCode });
-                await Auth.signOut({ global: true });
+            if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters && Session) {
+                await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);
+                await updateUserAttributes(email, [{ Name: 'custom:noc', Value: nocCode }]);
+                await globalSignOut(email);
+
                 console.info('registration successful', { noc: nocCode });
                 redirectTo(res, '/confirmRegistration');
             } else {
-                throw new Error(`unexpected challenge: ${user.challengeName}`);
+                throw new Error(`unexpected challenge: ${ChallengeName}`);
             }
         } catch (error) {
             console.warn('registration failed', { error: error.message });

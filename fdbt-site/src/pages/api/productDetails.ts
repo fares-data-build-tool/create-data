@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
+import {
+    getDomain,
+    redirectTo,
+    redirectToError,
+    setCookieOnResponseObject,
+    unescapeAndDecodeCookie,
+    getNocFromIdToken,
+} from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
 import {
@@ -68,12 +75,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
             const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+            const nocCode = getNocFromIdToken(req, res);
 
-            if (!serviceListCookie || !passengerTypeCookie) {
-                throw new Error('Failed to retrieve required cookies info for productDetails API');
+            if (!serviceListCookie || !passengerTypeCookie || !nocCode) {
+                throw new Error('Necessary cookies not found for productDetails API');
             }
 
-            const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
+            const { operator, uuid } = JSON.parse(operatorCookie);
             const { selectedServices } = JSON.parse(serviceListCookie);
             const passengerTypeObject: PassengerDetails = JSON.parse(passengerTypeCookie);
             const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
@@ -86,7 +94,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             });
 
             const flatFareProduct: DecisionData = {
-                operatorName: operator,
+                operatorName: operator.operatorPublicName,
                 nocCode,
                 type: fareType,
                 products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],

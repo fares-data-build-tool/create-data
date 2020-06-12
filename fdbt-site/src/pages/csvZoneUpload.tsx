@@ -8,13 +8,14 @@ import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
+import { CustomAppProps } from '../interfaces';
 
 const title = 'CSV Zone Upload - Fares Data Build Tool';
 const description = 'CSV Zone Upload page of the Fares Data Build Tool';
 
 const errorId = 'csv-upload-error';
 
-const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
+const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
         <UserDataUploadComponent
             {...uploadProps}

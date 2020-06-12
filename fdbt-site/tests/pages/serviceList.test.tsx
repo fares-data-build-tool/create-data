@@ -37,13 +37,13 @@ describe('pages', () => {
     describe('serviceList', () => {
         it('should render correctly', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<ServiceList {...serviceInfoNoError} />);
+            const tree = shallow(<ServiceList {...serviceInfoNoError} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render an error when the error flag is set to true', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<ServiceList {...serviceInfoWithError} />);
+            const tree = shallow(<ServiceList {...serviceInfoWithError} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -63,10 +63,10 @@ describe('pages', () => {
                 expect(result.props.buttonText).toEqual('Select All');
             });
 
-            it('should throw an error when the OPERATOR_COOKIE is missing', async () => {
-                const ctx = getMockContext({ operator: null });
+            it('should throw an error when necessary cookies missing', async () => {
+                const ctx = getMockContext({ operator: null }, null, {}, jest.fn(), jest.fn(), false);
                 await expect(getServerSideProps(ctx)).rejects.toThrow(
-                    'Failed to retrieve OPERATOR_COOKIE for serviceList page',
+                    'Necessary cookies not found to show serviceList page',
                 );
             });
         });

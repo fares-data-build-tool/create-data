@@ -2,9 +2,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
-import { OPERATOR_COOKIE, FARE_TYPE_COOKIE } from '../../../constants';
+import { decode } from 'jsonwebtoken';
+import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
+import { CognitoIdToken } from '../../../interfaces';
+import { globalSignOut } from '../../../data/cognito';
 
-export const getDomain = (req: NextApiRequest): string => {
+type Req = NextApiRequest | Request;
+type Res = NextApiResponse | Response;
+
+export const getDomain = (req: Req): string => {
     const host = req?.headers?.host;
     return host ? host.split(':')[0] : '';
 };
@@ -13,8 +19,8 @@ export const setCookieOnResponseObject = (
     domain: string,
     cookieName: string,
     cookieValue: string,
-    req: NextApiRequest,
-    res: NextApiResponse,
+    req: Req,
+    res: Res,
 ): void => {
     const cookieOptions = {
         ...(process.env.NODE_ENV === 'production' ? { secure: true } : null),
@@ -31,13 +37,10 @@ export const setCookieOnResponseObject = (
     });
 };
 
-export const deleteCookieOnResponseObject = (
-    domain: string,
-    cookieName: string,
-    req: NextApiRequest,
-    res: NextApiResponse,
-): void => {
+export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
     const cookies = new Cookies(req, res);
+    const host = req?.headers?.host;
+    const domain = host ? host.split(':')[0] : '';
 
     cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
 };
@@ -90,4 +93,39 @@ export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): v
     } else {
         throw new Error('Could not extract fareType from the FARE_TYPE_COOKIE.');
     }
+};
+
+export const checkEmailValid = (email: string): boolean => {
+    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    return emailRegex.test(email) && email !== '';
+};
+
+export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
+    req: NextApiRequest,
+    res: NextApiResponse,
+    attribute: T,
+): CognitoIdToken[T] | null => {
+    const cookies = new Cookies(req, res);
+    const idToken = cookies.get(ID_TOKEN_COOKIE);
+
+    if (!idToken) {
+        return null;
+    }
+
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+
+    return decodedIdToken[attribute] ?? null;
+};
+
+export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
+    getAttributeFromIdToken(req, res, 'custom:noc');
+
+export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
+    if (username) {
+        await globalSignOut(username);
+    }
+
+    deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
 };

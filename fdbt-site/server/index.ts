@@ -1,19 +1,39 @@
 import express, { Request, Response, Express } from 'express';
-import morgan from 'morgan';
 import nextjs from 'next';
-import helmet from 'helmet';
-import nocache from 'nocache';
-import { v4 as uuidv4 } from 'uuid';
+import requireAuth, { setDisableAuthCookies } from './middleware/authentication';
+import setupCsrfProtection from './middleware/csrf';
+import setSecurityHeaders from './middleware/security';
+import setupLogging from './middleware/logging';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 5555;
 
+const unauthenticatedGetRoutes = [
+    '/',
+    '/login',
+    '/register',
+    '/confirmRegistration',
+    '/forgotPassword',
+    '/resetConfirmation',
+    '/resetPassword',
+    '/resetPasswordSuccess',
+    '/resetLinkExpired',
+    '/_next/*',
+    '/assets/*',
+    '/scripts/*',
+    '/error',
+];
+
+const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword', '/api/resetPassword'];
+
 const setStaticRoutes = (server: Express): void => {
+    const rootPath = process.env.NODE_ENV === 'development' ? `${__dirname}/..` : `${__dirname}/../..`;
+
     server.use(
         '/assets',
-        express.static(`${__dirname}/../node_modules/govuk-frontend/govuk/assets`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/govuk/assets`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -21,7 +41,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/_next/static',
-        express.static(`${__dirname}/../.next/static`, {
+        express.static(`${rootPath}/.next/static`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -29,59 +49,9 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/scripts',
-        express.static(`${__dirname}/../node_modules/govuk-frontend/govuk`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/govuk`, {
             maxAge: '365d',
             immutable: true,
-        }),
-    );
-};
-
-const setHeaders = (server: Express): void => {
-    server.use((_req, res, next) => {
-        res.locals.nonce = Buffer.from(uuidv4()).toString('base64');
-        next();
-    });
-
-    server.disable('x-powered-by');
-
-    const nonce = (_req: Request, res: Response): string => `'nonce-${res.locals.nonce}'`;
-    const scriptSrc = [nonce, "'strict-dynamic'"];
-    const styleSrc = ["'self'"];
-
-    if (process.env.NODE_ENV !== 'production') {
-        scriptSrc.push("'unsafe-eval'");
-        scriptSrc.push("'unsafe-inline'");
-        styleSrc.push("'unsafe-inline'");
-    }
-
-    server.use(
-        helmet({
-            frameguard: {
-                action: 'deny',
-            },
-            noSniff: true,
-            contentSecurityPolicy: {
-                directives: {
-                    objectSrc: ["'none'"],
-                    frameAncestors: ["'none'"],
-                    scriptSrc,
-                    baseUri: ["'none'"],
-                    styleSrc,
-                    imgSrc: ["'self'", 'data:', 'https:'],
-                    defaultSrc: ["'self'"],
-                },
-            },
-            hsts: {
-                includeSubDomains: true,
-                maxAge: 31536000,
-            },
-            expectCt: {
-                maxAge: 86400,
-                enforce: true,
-            },
-            referrerPolicy: {
-                policy: 'same-origin',
-            },
         }),
     );
 };
@@ -89,22 +59,33 @@ const setHeaders = (server: Express): void => {
 (async (): Promise<void> => {
     try {
         await app.prepare();
-
         const server = express();
 
-        server.use(
-            morgan('short', {
-                skip: req => req.originalUrl.startsWith('/_next') || req.originalUrl.startsWith('/assets'),
-            }),
-        );
-
-        setHeaders(server);
-
+        setupLogging(server);
         setStaticRoutes(server);
+        setSecurityHeaders(server);
+        setDisableAuthCookies(server);
+        setupCsrfProtection(server);
 
-        server.use(nocache());
+        unauthenticatedGetRoutes.forEach(route => {
+            server.get(route, (req: Request, res: Response) => {
+                res.locals.csrfToken = req.csrfToken();
+                return handle(req, res);
+            });
+        });
 
-        server.all('*', (req: Request, res: Response) => {
+        unauthenticatedPostRoutes.forEach(route => {
+            server.post(route, (req: Request, res: Response) => {
+                return handle(req, res);
+            });
+        });
+
+        server.get('*', requireAuth, (req: Request, res: Response) => {
+            res.locals.csrfToken = req.csrfToken();
+            return handle(req, res);
+        });
+
+        server.all('*', requireAuth, (req: Request, res: Response) => {
             return handle(req, res);
         });
 

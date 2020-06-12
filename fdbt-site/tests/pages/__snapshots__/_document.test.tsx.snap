@@ -11,6 +11,9 @@ exports[`_document should render correctly 1`] = `
   <body
     className="govuk-template__body app-body-class js-enabled"
   >
+    <Header
+      isAuthed={true}
+    />
     <Main />
     <NextScript
       nonce=""

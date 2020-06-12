@@ -7,7 +7,7 @@ import PeriodValidity from '../../src/pages/periodValidity';
 describe('pages', () => {
     describe('periodValidity', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodValidity errors={[]} />);
+            const tree = shallow(<PeriodValidity errors={[]} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -20,6 +20,8 @@ describe('pages', () => {
                             id: 'period-validity-error',
                         },
                     ]}
+                    csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

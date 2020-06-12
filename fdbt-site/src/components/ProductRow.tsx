@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo } from '../types';
+import { ErrorInfo } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 import { MultiProduct } from '../pages/api/multipleProducts';
 

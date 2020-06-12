@@ -31,7 +31,12 @@ describe('pages', () => {
             const mockNumberOfFareStages = 6;
             const mockInputChecks: InputCheck[] = [];
             const tree = shallow(
-                <StageNames numberOfFareStages={mockNumberOfFareStages} inputChecks={mockInputChecks} />,
+                <StageNames
+                    numberOfFareStages={mockNumberOfFareStages}
+                    inputChecks={mockInputChecks}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -46,7 +51,12 @@ describe('pages', () => {
                 { Error: '', Input: '' },
             ];
             const tree = shallow(
-                <StageNames numberOfFareStages={mockNumberOfFareStages} inputChecks={mockInputChecks} />,
+                <StageNames
+                    numberOfFareStages={mockNumberOfFareStages}
+                    inputChecks={mockInputChecks}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -59,7 +69,12 @@ describe('pages', () => {
                 { Error: 'Enter a name for this fare stage', Input: '' },
             ];
             const tree = shallow(
-                <StageNames numberOfFareStages={mockNumberOfFareStages} inputChecks={mockinputChecks} />,
+                <StageNames
+                    numberOfFareStages={mockNumberOfFareStages}
+                    inputChecks={mockinputChecks}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
