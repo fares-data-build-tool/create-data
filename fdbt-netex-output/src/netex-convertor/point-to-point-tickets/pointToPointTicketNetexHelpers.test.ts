@@ -393,7 +393,7 @@ describe('Netex Helpers', () => {
                     UserType: { $t: expect.any(String) },
                     MinimumAge: { $t: expect.any(String) },
                     MaximumAge: { $t: expect.any(String) },
-                    ProofRequired: { $t: [expect.any(String)] },
+                    ProofRequired: { $t: expect.any(String) },
                 };
                 const ticketWithAgeRangeAndProof: PointToPointTicket = {
                     ...ticket,
@@ -545,6 +545,7 @@ describe('Netex Helpers', () => {
             const tripString = 'Trip@';
             const expectedFareTable = {
                 id: expect.stringContaining(tripString),
+                version: '1.0',
                 Name: { $t: expect.any(String) },
                 Description: {
                     $t: expect.any(String),

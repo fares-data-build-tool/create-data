@@ -624,7 +624,7 @@ const getUserProfile = (userPeriodTicket: PeriodTicket, product: ProductDetails)
     if (userPeriodTicket.proof && userPeriodTicket.proof === 'Yes') {
         userProfile = {
             ...userProfile,
-            ProofRequired: { $t: userPeriodTicket.proofDocuments },
+            ProofRequired: { $t: userPeriodTicket.proofDocuments?.join(' ') },
         };
     }
     return userProfile;
