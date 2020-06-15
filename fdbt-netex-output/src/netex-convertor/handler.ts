@@ -3,18 +3,22 @@ import pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPo
 import periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
 import * as db from './data/auroradb';
 import * as s3 from './data/s3';
-import { MatchingData, PeriodTicket } from './types';
+import { PointToPointTicket, PeriodTicket } from './types';
+
+const uploadToS3 = async (netex: string, fileName: string): Promise<void> => {
+    const cleanFileName = fileName.replace(/(\s|\/)/g, '_');
+    await s3.uploadNetexToS3(netex, cleanFileName);
+};
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
         const s3Data = await s3.fetchDataFromS3(event);
-
         const { type } = s3Data;
 
         console.info(`NeTEx generation starting for type: ${type}...`);
 
-        if (type === 'pointToPoint' || type === 'return') {
-            const matchingData: MatchingData = s3Data;
+        if (type === 'single' || type === 'return') {
+            const matchingData: PointToPointTicket = s3Data;
             const operatorData = await db.getOperatorDataByNocCode(matchingData.nocCode);
 
             const netexGen = pointToPointTicketNetexGenerator(matchingData, operatorData);
@@ -24,8 +28,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
                 matchingData.lineName
             }_${new Date().toISOString()}.xml`;
 
-            const fileNameWithoutSlashes = fileName.replace('/', '_');
-            await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
+            await uploadToS3(generatedNetex, fileName);
         } else if (type === 'periodGeoZone' || type === 'periodMultipleServices' || type === 'flatFare') {
             const userPeriodTicket: PeriodTicket = s3Data;
             const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
@@ -44,8 +47,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
                 '_',
             )}_${productName}_${new Date().toISOString()}.xml`;
 
-            const fileNameWithoutSlashes = fileName.replace('/', '_');
-            await s3.uploadNetexToS3(generatedNetex, fileNameWithoutSlashes);
+            await uploadToS3(generatedNetex, fileName);
         } else {
             throw new Error(
                 `The JSON object '${decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '))}' in the '${

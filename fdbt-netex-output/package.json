@@ -4,7 +4,7 @@
     "scripts": {
         "build": "tsc --noEmit",
         "test": "jest --runInBand",
-        "test:ci": "CI=true jest --testRegex src/**/*.test.ts -w 1",
+        "test:ci": "CI=true jest --maxWorkers=1",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts"
     },
@@ -24,6 +24,7 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.46",
         "@types/aws-param-store": "^2.1.1",
+        "@types/lodash": "^4.14.155",
         "@types/node": "^12.12.30",
         "@types/nodemailer": "^6.4.0",
         "@types/xml-formatter": "^1.1.0",
@@ -34,6 +35,7 @@
         "aws-sdk": "^2.639.0",
         "libxmljs": "^0.19.7",
         "libxmljs2": "^0.25.0",
+        "lodash": "^4.17.15",
         "mysql2": "^2.1.0",
         "nodemailer": "^6.4.5",
         "typescript": "^3.8.3",

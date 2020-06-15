@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import {
     Stop,
-    OperatorData,
+    Operator,
     PeriodTicket,
-    MultipleServicesTicket,
+    PeriodMultipleServicesTicket,
     PeriodGeoZoneTicket,
     ScheduledStopPoint,
     TopographicProjectionRef,
@@ -15,8 +16,8 @@ import { getCleanWebsite, NetexObject } from '../sharedHelpers';
 export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
     (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
 
-export const isMultiServiceTicket = (ticket: PeriodTicket): ticket is MultipleServicesTicket =>
-    (ticket as MultipleServicesTicket).selectedServices !== undefined;
+export const isMultiServiceTicket = (ticket: PeriodTicket): ticket is PeriodMultipleServicesTicket =>
+    (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
 
 export const getScheduledStopPointsList = (stops: Stop[]): ScheduledStopPoint[] =>
     stops.map((stop: Stop) => ({
@@ -32,7 +33,7 @@ export const getTopographicProjectionRefList = (stops: Stop[]): TopographicProje
         $t: `${stop.street}, ${stop.localityName}, ${stop.parentLocalityName}`,
     }));
 
-export const getLinesList = (userPeriodTicket: MultipleServicesTicket, operatorData: OperatorData): Line[] =>
+export const getLinesList = (userPeriodTicket: PeriodMultipleServicesTicket, operatorData: Operator): Line[] =>
     userPeriodTicket.selectedServices
         ? userPeriodTicket.selectedServices.map(service => ({
               version: '1.0',
@@ -47,7 +48,7 @@ export const getLinesList = (userPeriodTicket: MultipleServicesTicket, operatorD
           }))
         : [];
 
-export const getLineRefList = (userPeriodTicket: MultipleServicesTicket): LineRef[] =>
+export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): LineRef[] =>
     userPeriodTicket.selectedServices
         ? userPeriodTicket.selectedServices.map(service => ({
               version: '1.0',
@@ -55,7 +56,10 @@ export const getLineRefList = (userPeriodTicket: MultipleServicesTicket): LineRe
           }))
         : [];
 
-export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): NetexObject[] =>
+export const getGeoZoneFareTable = (
+    userPeriodTicket: PeriodGeoZoneTicket,
+    placeHolderGroupOfProductsName: string,
+): NetexObject[] =>
     userPeriodTicket.products.map(product => ({
         version: '1.0',
         id: `op:${product.productName}@${userPeriodTicket.zoneName}`,
@@ -63,18 +67,18 @@ export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): Nete
         specifics: {
             TariffZoneRef: {
                 version: '1.0',
-                ref: `op:PLACEHOLDER@${userPeriodTicket.zoneName}`,
+                ref: `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`,
             },
         },
         columns: {
             FareTableColumn: {
                 version: '1.0',
-                id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket`,
+                id: `op:${product.productName}@${userPeriodTicket.zoneName}`,
                 Name: { $t: `${userPeriodTicket.zoneName}` },
                 representing: {
                     TariffZoneRef: {
                         version: '1.0',
-                        ref: `op:PLACEHOLDER@${userPeriodTicket.zoneName}`,
+                        ref: `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`,
                     },
                 },
             },
@@ -87,7 +91,7 @@ export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): Nete
                 pricesFor: {
                     SalesOfferPackageRef: {
                         version: '1.0',
-                        ref: `op:Pass@${product.productName}-SOP@p-ticket`,
+                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
                     },
                 },
                 specifics: {
@@ -108,7 +112,7 @@ export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): Nete
                             },
                             UserProfileRef: {
                                 version: '1.0',
-                                ref: 'op:adult',
+                                ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
                             },
                         },
                     },
@@ -116,19 +120,19 @@ export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): Nete
                 includes: {
                     FareTable: {
                         version: '1.0',
-                        id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@adult`,
-                        Name: { $t: `${product.productName} - Cash - Adult` },
+                        id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
+                        Name: { $t: `${product.productName} - Cash - ${userPeriodTicket.passengerType}` },
                         limitations: {
                             UserProfileRef: {
                                 version: '1.0',
-                                ref: 'op:adult',
+                                ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
                             },
                         },
                         columns: {
                             FareTableColumn: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@adult`,
-                                Name: { $t: 'Adult' },
+                                id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
+                                Name: { $t: userPeriodTicket.passengerType },
                                 representing: {
                                     TypeOfTravelDocumentRef: {
                                         version: '1.0',
@@ -136,7 +140,7 @@ export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): Nete
                                     },
                                     UserProfileRef: {
                                         version: '1.0',
-                                        ref: 'op:adult',
+                                        ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
                                     },
                                 },
                             },
@@ -144,31 +148,31 @@ export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): Nete
                         cells: {
                             Cell: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@adult@${
-                                    product.daysValid
-                                }${product.daysValid === '1' ? 'day' : 'days'}`,
+                                id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${
+                                    userPeriodTicket.passengerType
+                                }@${product.productDuration}${product.productDuration === '1' ? 'day' : 'days'}`,
                                 order: '1',
                                 TimeIntervalPrice: {
                                     version: '1.0',
-                                    id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@adult@${
-                                        product.daysValid
-                                    }${product.daysValid === '1' ? 'day' : 'days'}`,
+                                    id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${
+                                        userPeriodTicket.passengerType
+                                    }@${product.productDuration}${product.productDuration === '1' ? 'day' : 'days'}`,
                                     Amount: { $t: `${product.productPrice}` },
                                     TimeIntervalRef: {
                                         version: '1.0',
-                                        ref: `op:Tariff@${product.productName}@${product.daysValid}${
-                                            product.daysValid === '1' ? 'day' : 'days'
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
+                                            product.productDuration === '1' ? 'day' : 'days'
                                         }`,
                                     },
                                 },
                                 ColumnRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@adult`,
+                                    ref: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
                                 },
                                 RowRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${product.daysValid}${
-                                        product.daysValid === '1' ? 'day' : 'days'
+                                    ref: `op:${product.productName}@${product.productDuration}${
+                                        product.productDuration === '1' ? 'day' : 'days'
                                     }`,
                                 },
                             },
@@ -179,7 +183,7 @@ export const getGeoZoneFareTable = (userPeriodTicket: PeriodGeoZoneTicket): Nete
         },
     }));
 
-const getMultiServiceList = (userPeriodTicket: MultipleServicesTicket): NetexObject[] => {
+const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): NetexObject[] => {
     const name = `${userPeriodTicket.nocCode}-multi-service`;
 
     return userPeriodTicket.products.map(product => ({
@@ -203,7 +207,7 @@ const getMultiServiceList = (userPeriodTicket: MultipleServicesTicket): NetexObj
                 pricesFor: {
                     SalesOfferPackageRef: {
                         version: '1.0',
-                        ref: `op:Pass@${product.productName}-SOP@p-ticket`,
+                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
                     },
                 },
                 specifics: {
@@ -224,7 +228,7 @@ const getMultiServiceList = (userPeriodTicket: MultipleServicesTicket): NetexObj
                             },
                             UserProfileRef: {
                                 version: '1.0',
-                                ref: 'op:adult',
+                                ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
                             },
                         },
                     },
@@ -232,19 +236,19 @@ const getMultiServiceList = (userPeriodTicket: MultipleServicesTicket): NetexObj
                 includes: {
                     FareTable: {
                         version: '1.0',
-                        id: `op:${product.productName}@${name}@p-ticket@adult`,
-                        Name: { $t: `${product.productName} - Cash - Adult` },
+                        id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}`,
+                        Name: { $t: `${product.productName} - Cash - ${userPeriodTicket.passengerType}` },
                         limitations: {
                             UserProfileRef: {
                                 version: '1.0',
-                                ref: 'op:adult',
+                                ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
                             },
                         },
                         columns: {
                             FareTableColumn: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${name}@p-ticket@adult`,
-                                Name: { $t: 'Adult' },
+                                id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}`,
+                                Name: { $t: userPeriodTicket.passengerType },
                                 representing: {
                                     TypeOfTravelDocumentRef: {
                                         version: '1.0',
@@ -252,7 +256,7 @@ const getMultiServiceList = (userPeriodTicket: MultipleServicesTicket): NetexObj
                                     },
                                     UserProfileRef: {
                                         version: '1.0',
-                                        ref: 'op:adult',
+                                        ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
                                     },
                                 },
                             },
@@ -260,31 +264,31 @@ const getMultiServiceList = (userPeriodTicket: MultipleServicesTicket): NetexObj
                         cells: {
                             Cell: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${name}@p-ticket@adult@${product.daysValid}${
-                                    product.daysValid === '1' ? 'day' : 'days'
-                                }`,
+                                id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}@${
+                                    product.productDuration
+                                }${product.productDuration === '1' ? 'day' : 'days'}`,
                                 order: '1',
                                 TimeIntervalPrice: {
                                     version: '1.0',
-                                    id: `op:${product.productName}@${name}@p-ticket@adult@${product.daysValid}${
-                                        product.daysValid === '1' ? 'day' : 'days'
-                                    }`,
+                                    id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}@${
+                                        product.productDuration
+                                    }${product.productDuration === '1' ? 'day' : 'days'}`,
                                     Amount: { $t: `${product.productPrice}` },
                                     TimeIntervalRef: {
                                         version: '1.0',
-                                        ref: `op:Tariff@${product.productName}@${product.daysValid}${
-                                            product.daysValid === '1' ? 'day' : 'days'
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
+                                            product.productDuration === '1' ? 'day' : 'days'
                                         }`,
                                     },
                                 },
                                 ColumnRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${name}@p-ticket@adult`,
+                                    ref: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}`,
                                 },
                                 RowRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${product.daysValid}${
-                                        product.daysValid === '1' ? 'day' : 'days'
+                                    ref: `op:${product.productName}@${product.productDuration}${
+                                        product.productDuration === '1' ? 'day' : 'days'
                                     }`,
                                 },
                             },
@@ -296,7 +300,7 @@ const getMultiServiceList = (userPeriodTicket: MultipleServicesTicket): NetexObj
     }));
 };
 
-const getFlatFareList = (userPeriodTicket: MultipleServicesTicket): NetexObject[] =>
+const getFlatFareList = (userPeriodTicket: PeriodMultipleServicesTicket): NetexObject[] =>
     userPeriodTicket.products.map(product => ({
         version: '1.0',
         id: `op:${product.productName}`,
@@ -304,24 +308,24 @@ const getFlatFareList = (userPeriodTicket: MultipleServicesTicket): NetexObject[
         includes: {
             FareTable: {
                 version: '1.0',
-                id: `op:${product.productName}@p-ticket@adult`,
+                id: `op:${product.productName}@p-ticket@${userPeriodTicket.passengerType}`,
                 Name: { $t: `${product.productName} - Cash` },
                 pricesFor: {
                     SalesOfferPackageRef: {
                         version: '1.0',
-                        ref: `op:Pass@${product.productName}-SOP@p-ticket`,
+                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
                     },
                 },
                 limitations: {
                     UserProfileRef: {
                         version: '1.0',
-                        ref: 'op:adult',
+                        ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
                     },
                 },
                 prices: {
                     DistanceMatrixElementPrice: {
                         version: '1.0',
-                        id: `op:${product.productName}@p-ticket@adult`,
+                        id: `op:${product.productName}@p-ticket@${userPeriodTicket.passengerType}`,
                         Amount: { $t: `${product.productPrice}` },
                     },
                 },
@@ -329,87 +333,24 @@ const getFlatFareList = (userPeriodTicket: MultipleServicesTicket): NetexObject[
         },
     }));
 
-export const getMultiServiceFareTable = (userPeriodTicket: MultipleServicesTicket): NetexObject[] => {
-    if (userPeriodTicket.products[0].daysValid) {
+export const getMultiServiceFareTable = (userPeriodTicket: PeriodMultipleServicesTicket): NetexObject[] => {
+    if (userPeriodTicket.products[0].productDuration) {
         return getMultiServiceList(userPeriodTicket);
     }
 
     return getFlatFareList(userPeriodTicket);
 };
 
-const getMultiServiceFareTableList = (
-    userPeriodTicket: PeriodTicket,
-    placeHolderGroupOfProductsName: string,
-): NetexObject[] =>
+export const getSalesOfferPackageList = (userPeriodTicket: PeriodTicket): NetexObject[] =>
     userPeriodTicket.products.map(product => ({
         version: '1.0',
-        id: `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRICE:${product.productName}@pass:op`,
-        Name: { $t: `${product.productName} Fares` },
-        pricesFor: {
-            PreassignedFareProductRef: { version: '1.0', ref: `op:Pass@${product.productName}` },
-        },
-        usedIn: {
-            TariffRef: { version: '1.0', ref: `op:Tariff@${placeHolderGroupOfProductsName}` },
-        },
-        rows: {
-            FareTableRow: {
-                version: '1.0',
-                id: `op:${product.productName}@${product.daysValid}${product.daysValid === '1' ? 'day' : 'days'}`,
-                order: '2',
-                Name: { $t: `${product.daysValid} ${product.daysValid === '1' ? 'day' : 'days'}` },
-                representing: {
-                    TimeIntervalRef: {
-                        version: '1.0',
-                        ref: `op:Tariff@${product.productName}@${product.daysValid}${
-                            product.daysValid === '1' ? 'day' : 'days'
-                        }`,
-                    },
-                },
-            },
-        },
-    }));
-
-const getFlatFareFareTableList = (
-    userPeriodTicket: PeriodTicket,
-    placeHolderGroupOfProductsName: string,
-): NetexObject[] =>
-    userPeriodTicket.products.map(product => ({
-        version: '1.0',
-        id: `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRICE:${product.productName}@pass:op`,
-        Name: { $t: `${product.productName} Fares` },
-        pricesFor: {
-            PreassignedFareProductRef: { version: '1.0', ref: `op:Pass@${product.productName}` },
-        },
-        usedIn: {
-            TariffRef: { version: '1.0', ref: `op:Tariff@${placeHolderGroupOfProductsName}` },
-        },
-    }));
-
-export const getFareTableList = (
-    userPeriodTicket: PeriodTicket,
-    placeHolderGroupOfProductsName: string,
-): NetexObject[] => {
-    if (userPeriodTicket.products[0].daysValid) {
-        return getMultiServiceFareTableList(userPeriodTicket, placeHolderGroupOfProductsName);
-    }
-
-    return getFlatFareFareTableList(userPeriodTicket, placeHolderGroupOfProductsName);
-};
-
-export const getSalesOfferPackageList = (
-    userPeriodTicket: PeriodTicket,
-    placeHolderGroupOfProductsName: string,
-): NetexObject[] =>
-    userPeriodTicket.products.map(product => ({
-        version: '1.0',
-        id: `op:Pass@${product.productName}-SOP@p-ticket`,
-        BrandingRef: { version: '1.0', ref: `op:${userPeriodTicket.operatorName}@brand` },
-        Name: { $t: `${placeHolderGroupOfProductsName} - paper ticket` },
+        id: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
+        Name: { $t: `${product.productName} - ${userPeriodTicket.passengerType} - paper ticket` },
         Description: { $t: 'Unlimited Travel in a given zone' },
         distributionAssignments: {
             DistributionAssignment: {
                 version: '1.0',
-                id: `op:Pass@${product.productName}-GSOP@p-ticket@on_board`,
+                id: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket@on_board`,
                 order: '1',
                 Name: { $t: 'Onboard' },
                 Description: { $t: 'Pay for ticket onboard.' },
@@ -428,7 +369,7 @@ export const getSalesOfferPackageList = (
         salesOfferPackageElements: {
             SalesOfferPackageElement: {
                 version: '1.0',
-                id: `op:Pass@${product.productName}-SOP@p-ticket`,
+                id: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
                 order: '3',
                 TypeOfTravelDocumentRef: {
                     version: '1.0',
@@ -436,13 +377,17 @@ export const getSalesOfferPackageList = (
                 },
                 PreassignedFareProductRef: {
                     version: '1.0',
-                    ref: `op:Pass@${product.productName}`,
+                    ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
                 },
             },
         },
     }));
 
-const getMultiServiceFareStructureElementRefs = (elementZeroRef: string, product: ProductDetails): NetexObject => ({
+const getPeriodTicketFareStructureElementRefs = (
+    elementZeroRef: string,
+    product: ProductDetails,
+    passengerType: string,
+): NetexObject => ({
     FareStructureElementRef: [
         {
             version: '1.0',
@@ -450,11 +395,11 @@ const getMultiServiceFareStructureElementRefs = (elementZeroRef: string, product
         },
         {
             version: '1.0',
-            ref: `op:Tariff@eligibility`,
+            ref: `op:Tariff@${product.productName}@eligibility@${passengerType}`,
         },
         {
             version: '1.0',
-            ref: `op:Tariff@${product.productName}@durations@adult`,
+            ref: `op:Tariff@${product.productName}@durations@${passengerType}`,
         },
         {
             version: '1.0',
@@ -463,7 +408,11 @@ const getMultiServiceFareStructureElementRefs = (elementZeroRef: string, product
     ],
 });
 
-const getFlatFareFareStructureElementRefs = (elementZeroRef: string, product: ProductDetails): NetexObject => ({
+const getFlatFareFareStructureElementRefs = (
+    elementZeroRef: string,
+    product: ProductDetails,
+    passengerType: string,
+): NetexObject => ({
     FareStructureElementRef: [
         {
             version: '1.0',
@@ -471,7 +420,7 @@ const getFlatFareFareStructureElementRefs = (elementZeroRef: string, product: Pr
         },
         {
             version: '1.0',
-            ref: `op:Tariff@eligibility`,
+            ref: `op:Tariff@${product.productName}@eligibility@${passengerType}`,
         },
         {
             version: '1.0',
@@ -480,11 +429,12 @@ const getFlatFareFareStructureElementRefs = (elementZeroRef: string, product: Pr
     ],
 });
 
-export const getPreassignedFareProduct = (
+export const getPreassignedFareProducts = (
     userPeriodTicket: PeriodTicket,
     nocCodeNocFormat: string,
     opIdNocFormat: string,
 ): NetexObject[] => {
+    const { passengerType } = userPeriodTicket;
     return userPeriodTicket.products.map(product => {
         let elementZeroRef: string;
         let fareStructureElementRefs: NetexObject;
@@ -497,17 +447,20 @@ export const getPreassignedFareProduct = (
             elementZeroRef = '';
         }
 
-        if (userPeriodTicket.products[0].daysValid) {
-            fareStructureElementRefs = getMultiServiceFareStructureElementRefs(elementZeroRef, product);
+        if (
+            isGeoZoneTicket(userPeriodTicket) ||
+            (isMultiServiceTicket(userPeriodTicket) && userPeriodTicket.products[0].productDuration)
+        ) {
+            fareStructureElementRefs = getPeriodTicketFareStructureElementRefs(elementZeroRef, product, passengerType);
         } else {
-            fareStructureElementRefs = getFlatFareFareStructureElementRefs(elementZeroRef, product);
+            fareStructureElementRefs = getFlatFareFareStructureElementRefs(elementZeroRef, product, passengerType);
         }
 
         return {
             version: '1.0',
-            id: `op:Pass@${product.productName}`,
+            id: `op:Pass@${product.productName}_${passengerType}`,
             Name: {
-                $t: `${product.productName} Pass`,
+                $t: `${product.productName} Pass - ${passengerType}`,
             },
             ChargingMomentType: {
                 $t: 'beforeTravel',
@@ -526,7 +479,7 @@ export const getPreassignedFareProduct = (
             validableElements: {
                 ValidableElement: {
                     version: '1.0',
-                    id: `op:Pass@${product.productName}@travel`,
+                    id: `op:Pass@${product.productName}_${passengerType}@travel`,
                     Name: {
                         $t: 'Unlimited rides available for specified durations',
                     },
@@ -536,11 +489,11 @@ export const getPreassignedFareProduct = (
             accessRightsInProduct: {
                 AccessRightInProduct: {
                     version: '1.0',
-                    id: `op:Pass@${product.productName}@travel`,
+                    id: `op:Pass@${product.productName}_${passengerType}@travel`,
                     order: '1',
                     ValidableElementRef: {
                         version: '1.0',
-                        ref: `op:Pass@${product.productName}@travel`,
+                        ref: `op:Pass@${product.productName}_${passengerType}@travel`,
                     },
                 },
             },
@@ -553,12 +506,12 @@ export const getPreassignedFareProduct = (
 
 export const getTimeIntervals = (userPeriodTicket: PeriodTicket): NetexObject[] => {
     const timeIntervals = userPeriodTicket.products.map(product => {
-        const dayOrDays = product.daysValid === '1' ? 'day' : 'days';
+        const dayOrDays = product.productDuration === '1' ? 'day' : 'days';
         return {
             version: '1.0',
-            id: `op:Tariff@${product.productName}@${product.daysValid}${dayOrDays}`,
-            Name: { $t: `${product.daysValid} ${dayOrDays}` },
-            Description: { $t: `P${product.daysValid}D` },
+            id: `op:Tariff@${product.productName}@${product.productDuration}${dayOrDays}`,
+            Name: { $t: `${product.productDuration} ${dayOrDays}` },
+            Description: { $t: `P${product.productDuration}D` },
         };
     });
 
@@ -567,12 +520,11 @@ export const getTimeIntervals = (userPeriodTicket: PeriodTicket): NetexObject[] 
 
 const getAvailabilityElement = (
     id: string,
-    genericParameterAssignmentId: string,
     validityParameterGroupingType: string,
     validityParametersObject: object,
 ): NetexObject => ({
     version: '1.0',
-    id,
+    id: `op:${id}`,
     Name: { $t: 'Available zones' },
     Description: { $t: 'single zone.' },
     TypeOfFareStructureElementRef: {
@@ -580,7 +532,7 @@ const getAvailabilityElement = (
         ref: 'fxc:access',
     },
     GenericParameterAssignment: {
-        id: genericParameterAssignmentId,
+        id,
         version: '1.0',
         order: '1',
         TypeOfAccessRightAssignmentRef: {
@@ -592,10 +544,10 @@ const getAvailabilityElement = (
     },
 });
 
-const getDurationElement = (product: ProductDetails): NetexObject => ({
+const getDurationElement = (userPeriodTicket: PeriodTicket, product: ProductDetails, index: number): NetexObject => ({
     version: '1.0',
-    id: `op:Tariff@${product.productName}@durations@adult`,
-    Name: { $t: 'Available duration combination' },
+    id: `op:Tariff@${product.productName}@durations@${userPeriodTicket.passengerType}`,
+    Name: { $t: `Available duration combination - ${userPeriodTicket.passengerType} ticket` },
     Description: {
         $t: 'All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.',
     },
@@ -606,19 +558,20 @@ const getDurationElement = (product: ProductDetails): NetexObject => ({
     timeIntervals: {
         TimeIntervalRef: [
             {
-                ref: `op:Tariff@${product.productName}@${product.daysValid}${
-                    product.daysValid === '1' ? 'day' : 'days'
+                ref: `op:Tariff@${product.productName}@${product.productDuration}${
+                    product.productDuration === '1' ? 'day' : 'days'
                 }`,
             },
         ],
     },
     GenericParameterAssignment: {
-        id: `op:Tariff@${product.productName}@adult_or_child`,
+        id: `op:Tariff@${product.productName}@${userPeriodTicket.passengerType}`,
         version: '1.0',
-        order: '1',
+        order: `${index + 1}`,
         Description: {
-            // should the below line use the actual daysValid?
-            $t: 'Adult/Child Cash ticket Only available for 1 Day or 1week',
+            $t: `${userPeriodTicket.passengerType} cash ticket ${
+                product.productDuration ? `available for ${product.productDuration} day${product.productDuration}` : ''
+            }`,
         },
         TypeOfAccessRightAssignmentRef: {
             version: 'fxc:v1.0',
@@ -628,22 +581,90 @@ const getDurationElement = (product: ProductDetails): NetexObject => ({
         limitations: {
             UserProfileRef: {
                 version: '1.0',
-                ref: 'op:adult',
+                ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
             },
         },
     },
 });
 
+const getUserProfile = (userPeriodTicket: PeriodTicket, product: ProductDetails): NetexObject => {
+    let userProfile: NetexObject = {
+        version: '1.0',
+        id: `op:${product.productName}@${userPeriodTicket.passengerType}`,
+        Name: { $t: userPeriodTicket.passengerType },
+        prices: {
+            UsageParameterPrice: {
+                version: '1.0',
+                id: `op:${product.productName}@${userPeriodTicket.passengerType}`,
+            },
+        },
+        TypeOfConcessionRef: {
+            version: 'fxc:v1.0',
+            ref: `fxc:${
+                userPeriodTicket.passengerType === 'anyone' || userPeriodTicket.passengerType === 'adult'
+                    ? 'none'
+                    : _.snakeCase(userPeriodTicket.passengerType)
+            }`,
+        },
+    };
+    if (userPeriodTicket.ageRange && userPeriodTicket.ageRange === 'Yes') {
+        if (userPeriodTicket.ageRangeMin) {
+            userProfile = {
+                ...userProfile,
+                MinimumAge: { $t: userPeriodTicket.ageRangeMin },
+            };
+        }
+        if (userPeriodTicket.ageRangeMax) {
+            userProfile = {
+                ...userProfile,
+                MaximumAge: { $t: userPeriodTicket.ageRangeMax },
+            };
+        }
+    }
+    if (userPeriodTicket.proof && userPeriodTicket.proof === 'Yes') {
+        userProfile = {
+            ...userProfile,
+            ProofRequired: { $t: userPeriodTicket.proofDocuments?.join(' ') },
+        };
+    }
+    return userProfile;
+};
+
+const getEligibilityElement = (userPeriodTicket: PeriodTicket, product: ProductDetails, index: number): NetexObject => {
+    return {
+        version: '1.0',
+        id: `op:Tariff@${product.productName}@eligibility@${userPeriodTicket.passengerType}`,
+        Name: { $t: 'Eligible user types' },
+        TypeOfFareStructureElementRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:eligibility',
+        },
+        GenericParameterAssignment: {
+            id: `op:Tariff@${product.productName}@${userPeriodTicket.passengerType}`,
+            version: '1.0',
+            order: `${index + 2}`,
+            TypeOfAccessRightAssignmentRef: {
+                version: 'fxc:v1.0',
+                ref: 'fxc:eligible',
+            },
+            LimitationGroupingType: { $t: 'XOR' },
+            limitations: {
+                UserProfile: getUserProfile(userPeriodTicket, product),
+            },
+        },
+    };
+};
+
 const getConditionsElement = (product: ProductDetails): NetexObject => {
     let usagePeriodValidity = {};
 
-    if (product.expiryRules) {
+    if (product.productValidity) {
         usagePeriodValidity = {
             UsageValidityPeriod: {
                 version: '1.0',
                 id: `op:Trip@${product.productName}@back@frequency`,
                 UsageTrigger: { $t: 'purchase' },
-                UsageEnd: { $t: product.expiryRules === 'endOfCalendarDay' ? 'endOfFareDay' : 'standardDuration' },
+                UsageEnd: { $t: product.productValidity === 'endOfCalendarDay' ? 'endOfFareDay' : 'standardDuration' },
                 ActivationMeans: { $t: 'noneRequired' },
             },
         };
@@ -689,15 +710,12 @@ export const getFareStructuresElements = (
     userPeriodTicket: PeriodTicket,
     placeHolderGroupOfProductsName: string,
 ): NetexObject[] => {
-    const arrayOfArraysOfFareStructureElements = userPeriodTicket.products.map((product: ProductDetails) => {
-        // FareStructureElement 1 - availability
-        let id = '';
-        let genericParameterAssignmentId = '';
+    const arrayOfArraysOfFareStructureElements = userPeriodTicket.products.map((product: ProductDetails, index) => {
+        let availabilityElementId = '';
         let validityParametersObject: {} = {};
         let validityParameterGroupingType = '';
         if (isGeoZoneTicket(userPeriodTicket)) {
-            id = `op:Tariff@${product.productName}@access_zones`;
-            genericParameterAssignmentId = `op:Tariff@${product.productName}@access_zones`;
+            availabilityElementId = `Tariff@${product.productName}@access_zones`;
             validityParameterGroupingType = 'XOR';
             validityParametersObject = {
                 FareZoneRef: {
@@ -706,30 +724,24 @@ export const getFareStructuresElements = (
                 },
             };
         } else if (isMultiServiceTicket(userPeriodTicket)) {
-            id = `op:Tariff@${product.productName}@access_lines`;
-            genericParameterAssignmentId = `Tariff@${product.productName}@access_lines`;
+            availabilityElementId = `Tariff@${product.productName}@access_lines`;
             validityParameterGroupingType = 'OR';
             validityParametersObject = { LineRef: getLineRefList(userPeriodTicket) };
         }
-        if (isGeoZoneTicket || (isMultiServiceTicket && userPeriodTicket.products[0].daysValid)) {
+        if (
+            isGeoZoneTicket(userPeriodTicket) ||
+            (isMultiServiceTicket(userPeriodTicket) && userPeriodTicket.products[0].productDuration)
+        ) {
             return [
-                getAvailabilityElement(
-                    id,
-                    genericParameterAssignmentId,
-                    validityParameterGroupingType,
-                    validityParametersObject,
-                ),
-                getDurationElement(product),
+                getAvailabilityElement(availabilityElementId, validityParameterGroupingType, validityParametersObject),
+                getDurationElement(userPeriodTicket, product, index),
+                getEligibilityElement(userPeriodTicket, product, index),
                 getConditionsElement(product),
             ];
         }
         return [
-            getAvailabilityElement(
-                id,
-                genericParameterAssignmentId,
-                validityParameterGroupingType,
-                validityParametersObject,
-            ),
+            getAvailabilityElement(availabilityElementId, validityParameterGroupingType, validityParametersObject),
+            getEligibilityElement(userPeriodTicket, product, index),
             getConditionsElement(product),
         ];
     });
