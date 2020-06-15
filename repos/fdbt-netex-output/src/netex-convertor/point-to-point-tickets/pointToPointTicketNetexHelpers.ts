@@ -195,7 +195,7 @@ export const getUserProfile = (matchingData: PointToPointTicket): NetexObject =>
     if (matchingData.proof && matchingData.proof === 'Yes') {
         userProfile = {
             ...userProfile,
-            ProofRequired: { $t: matchingData.proofDocuments },
+            ProofRequired: { $t: matchingData.proofDocuments?.join(' ') },
         };
     }
     return userProfile;
@@ -312,6 +312,7 @@ export const getFareTable = (matchingData: PointToPointTicket): NetexObject => {
     const lineIdName = `Line_${matchingData.lineName}`;
     return {
         id: `Trip@${matchingData.type}-SOP@p-ticket@Line_${lineIdName}@${matchingData.passengerType}`,
+        version: '1.0',
         Name: { $t: matchingData.serviceDescription },
         Description: { $t: `${matchingData.passengerType} ${matchingData.type} fares - Organised as a fare triangle` },
         pricesFor: {
