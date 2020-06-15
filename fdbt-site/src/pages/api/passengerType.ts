@@ -33,7 +33,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
             setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, cookieValue, req, res);
 
-            if (passengerType === 'Any') {
+            if (passengerType === 'anyone') {
                 redirectOnFareType(req, res);
                 return;
             }
