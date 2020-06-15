@@ -189,5 +189,5 @@
   "ageRangeMin": "12",
   "ageRangeMax": "25",
   "proof": "Yes",
-  "proofDocuments": ["studentCard"]
+  "proofDocuments": ["studentCard", "identityDocument", "membershipCard"]
 }
