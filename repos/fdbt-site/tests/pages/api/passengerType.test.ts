@@ -87,8 +87,8 @@ describe('passengerType', () => {
         });
     });
 
-    it('should call redirectOnFareType when the user selects Any', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'Any' }, {}, writeHeadMock);
+    it('should call redirectOnFareType when the user selects Anyone', () => {
+        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'anyone' }, {}, writeHeadMock);
         const redirectOnFareType = jest.spyOn(utils, 'redirectOnFareType');
 
         passengerType(req, res);
