@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide } from '../utils/index';
+import { deleteCookieOnServerSide, setCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 
@@ -107,6 +108,13 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const operatorInfo = JSON.parse(operatorCookie);
     const { operator } = operatorInfo;
+
+    const uuid = uuidv4();
+    const cookieValue = JSON.stringify({ operator, uuid });
+
+    setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
+
+    console.info('transaction start', { uuid });
 
     if (cookies[FARE_TYPE_COOKIE]) {
         const fareTypeCookie = cookies[FARE_TYPE_COOKIE];

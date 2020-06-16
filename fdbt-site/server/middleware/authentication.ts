@@ -1,5 +1,6 @@
 import Cookies from 'cookies';
 import jwksClient from 'jwks-rsa';
+import { v4 as uuidv4 } from 'uuid';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
@@ -50,7 +51,7 @@ export const setDisableAuthCookies = (server: Express): void => {
                         operator: {
                             operatorPublicName: 'Blackpool Transport',
                         },
-                        uuid: '0d1953f5-f57a-4ae3-8522-fef7da34c567',
+                        uuid: uuidv4(),
                     }),
                 );
             }
