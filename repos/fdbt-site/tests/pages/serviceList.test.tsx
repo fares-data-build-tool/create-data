@@ -49,7 +49,7 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('should return expected props to the page when the page is first visited by the user', async () => {
-                const ctx = getMockContext({ selectedServices: null });
+                const ctx = getMockContext({ cookies: { selectedServices: null } });
                 const result = await getServerSideProps(ctx);
                 const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => {
                     return {
@@ -64,7 +64,14 @@ describe('pages', () => {
             });
 
             it('should throw an error when necessary cookies missing', async () => {
-                const ctx = getMockContext({ operator: null }, null, {}, jest.fn(), jest.fn(), false);
+                const ctx = getMockContext({
+                    cookies: { operator: null },
+                    body: null,
+                    uuid: {},
+                    mockWriteHeadFn: jest.fn(),
+                    mockEndFn: jest.fn(),
+                    isLoggedin: false,
+                });
                 await expect(getServerSideProps(ctx)).rejects.toThrow(
                     'Necessary cookies not found to show serviceList page',
                 );
