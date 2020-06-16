@@ -11,17 +11,22 @@ describe('pages', () => {
     const serviceInfoNoError: ServiceListProps = {
         service: {
             selectedServices: [],
-            error: false,
         },
         buttonText: 'Select All',
+        error: [],
     };
 
     const serviceInfoWithError: ServiceListProps = {
         service: {
             selectedServices: [],
-            error: true,
         },
         buttonText: 'Select All',
+        error: [
+            {
+                errorMessage: 'Choose at least one service from the list',
+                id: 'id',
+            },
+        ],
     };
 
     const mockServices: ServiceType[] = [
@@ -58,7 +63,7 @@ describe('pages', () => {
                         checked: false,
                     };
                 });
-                expect(result.props.service.error).toBe(false);
+                expect(result.props.error.length).toBe(0);
                 expect(result.props.service.selectedServices).toEqual(expectedCheckedServiceList);
                 expect(result.props.buttonText).toEqual('Select All');
             });
