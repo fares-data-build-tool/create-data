@@ -95,7 +95,7 @@ describe('pages', () => {
         });
 
         it('throws an error if the operator or service cookies do not exist', async () => {
-            const ctx = getMockContext({ operator: null, serviceLineName: null });
+            const ctx = getMockContext({ cookies: { operator: null, serviceLineName: null } });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');
         });

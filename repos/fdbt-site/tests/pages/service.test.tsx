@@ -104,7 +104,13 @@ describe('pages', () => {
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
 
-            const ctx = getMockContext({ passengerType: 'Adult' }, null, {}, mockWriteHeadFn, mockEndFn);
+            const ctx = getMockContext({
+                cookies: { passengerType: 'Adult' },
+                body: null,
+                uuid: {},
+                mockWriteHeadFn,
+                mockEndFn,
+            });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('No services found for NOC Code: TEST');
         });
@@ -113,7 +119,13 @@ describe('pages', () => {
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
 
-            const ctx = getMockContext({ operator: null }, null, {}, mockWriteHeadFn, mockEndFn);
+            const ctx = getMockContext({
+                cookies: { operator: null },
+                body: null,
+                uuid: {},
+                mockWriteHeadFn,
+                mockEndFn,
+            });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
         });
@@ -122,7 +134,13 @@ describe('pages', () => {
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
 
-            const ctx = getMockContext({ passengerType: null }, null, {}, mockWriteHeadFn, mockEndFn);
+            const ctx = getMockContext({
+                cookies: { passengerType: null },
+                body: null,
+                uuid: {},
+                mockWriteHeadFn,
+                mockEndFn,
+            });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
         });
