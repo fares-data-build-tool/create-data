@@ -26,6 +26,15 @@ import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
 import { ErrorInfo } from '../../src/interfaces';
 
+interface GetMockContextInput {
+    cookies?: any;
+    body?: any;
+    uuid?: any;
+    mockWriteHeadFn?: jest.Mock<any, any>;
+    mockEndFn?: jest.Mock<any, any>;
+    isLoggedin?: boolean;
+}
+
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
     body: any = null,
@@ -175,14 +184,14 @@ export const getMockRequestAndResponse = (
     return { req, res };
 };
 
-export const getMockContext = (
-    cookies: any = {},
-    body: any = null,
-    uuid: any = {},
+export const getMockContext = ({
+    cookies = {},
+    body = null,
+    uuid = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     isLoggedin = true,
-): NextPageContext => {
+}: GetMockContextInput = {}): NextPageContext => {
     const { req, res } = getMockRequestAndResponse(cookies, body, uuid, mockWriteHeadFn, mockEndFn, {}, isLoggedin);
 
     const ctx: NextPageContext = {

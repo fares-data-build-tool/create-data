@@ -88,7 +88,9 @@ describe('utils', () => {
             emailJwt =
                 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20ifQ.pwd0gdkeSRBqRpoNKxC8lK3SuydPKqKPRRdEE-eNEc0';
             ctx = getMockContext({
-                idToken: emailJwt,
+                cookies: {
+                    idToken: emailJwt,
+                },
             });
         });
 
