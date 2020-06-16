@@ -10,8 +10,18 @@ exports[`pages serviceList should render an error when the error flag is set to 
     csrfToken=""
     method="post"
   >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose at least one service from the list",
+            "id": "id",
+          },
+        ]
+      }
+    />
     <div
-      className="govuk-form-group  govuk-form-group--error"
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="service-list-page-heading"
@@ -34,7 +44,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
           <span
             className=""
           >
-            Select one or more service(s)
+            Choose at least one service from the list
           </span>
         </span>
       </fieldset>
@@ -61,9 +71,22 @@ exports[`pages serviceList should render an error when the error flag is set to 
         >
           This data is taken from the Traveline National Dataset.
         </span>
-        <div
-          className="govuk-checkboxes"
-        />
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="service-list-error"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Choose at least one service from the list",
+                "id": "id",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-checkboxes"
+          />
+        </FormElementWrapper>
       </fieldset>
     </div>
     <input
@@ -86,8 +109,11 @@ exports[`pages serviceList should render correctly 1`] = `
     csrfToken=""
     method="post"
   >
+    <ErrorSummary
+      errors={Array []}
+    />
     <div
-      className="govuk-form-group "
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="service-list-page-heading"
@@ -109,9 +135,7 @@ exports[`pages serviceList should render correctly 1`] = `
         >
           <span
             className="govuk-visually-hidden"
-          >
-            Select one or more service(s)
-          </span>
+          />
         </span>
       </fieldset>
       <fieldset
@@ -137,9 +161,15 @@ exports[`pages serviceList should render correctly 1`] = `
         >
           This data is taken from the Traveline National Dataset.
         </span>
-        <div
-          className="govuk-checkboxes"
-        />
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="service-list-error"
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+          />
+        </FormElementWrapper>
       </fieldset>
     </div>
     <input

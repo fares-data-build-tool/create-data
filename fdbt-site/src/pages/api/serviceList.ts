@@ -57,7 +57,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
-            setServiceListCookie(req, res, true);
+            const cookieValue = JSON.stringify({ errorMessage: 'Choose at least one service from the options' });
+            setCookieOnResponseObject(getDomain(req), SERVICE_LIST_COOKIE, cookieValue, req, res);
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }
