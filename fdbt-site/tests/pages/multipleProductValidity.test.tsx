@@ -89,9 +89,11 @@ describe('pages', () => {
 
             it('should throw an error if the necessary cookies to render the page are not present', () => {
                 const ctx = getMockContext({
-                    operator: null,
-                    numberOfProductsInput: null,
-                    multipleProduct: null,
+                    cookies: {
+                        operator: null,
+                        numberOfProductsInput: null,
+                        multipleProduct: null,
+                    },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
                     'Necessary cookies not found to display the multiple product validity page',
@@ -100,24 +102,26 @@ describe('pages', () => {
 
             it('returns errors in the props if there are validity errors on the product object', () => {
                 const ctx = getMockContext({
-                    multipleProducts: [
-                        {
-                            productName: 'Best Product',
-                            productNameId: 'multipleProductNameInput0',
-                            productPrice: '2',
-                            productPriceId: 'multipleProductPriceInput0',
-                            productDuration: '3',
-                            productDurationId: 'multipleProductDurationInput0',
-                            productValidity: '',
-                            productValidityError: 'Select one of the two validity options',
-                        },
-                        {
-                            productName: 'Super Product',
-                            productPrice: '3',
-                            productDuration: '4',
-                            productValidity: '24hr',
-                        },
-                    ],
+                    cookies: {
+                        multipleProducts: [
+                            {
+                                productName: 'Best Product',
+                                productNameId: 'multipleProductNameInput0',
+                                productPrice: '2',
+                                productPriceId: 'multipleProductPriceInput0',
+                                productDuration: '3',
+                                productDurationId: 'multipleProductDurationInput0',
+                                productValidity: '',
+                                productValidityError: 'Select one of the two validity options',
+                            },
+                            {
+                                productName: 'Super Product',
+                                productPrice: '3',
+                                productDuration: '4',
+                                productValidity: '24hr',
+                            },
+                        ],
+                    },
                 });
 
                 const result = getServerSideProps(ctx);

@@ -102,9 +102,11 @@ describe('Matching Page', () => {
             batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(naptanStopInfo));
 
             const ctx = getMockContext({
-                journey: {
-                    startPoint: '13003921A',
-                    endPoint: '13003655B',
+                cookies: {
+                    journey: {
+                        startPoint: '13003921A',
+                        endPoint: '13003655B',
+                    },
                 },
             });
 
@@ -118,9 +120,11 @@ describe('Matching Page', () => {
             getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawServiceWithDuplicates));
 
             const ctx = getMockContext({
-                journey: {
-                    startPoint: '13003655B',
-                    endPoint: '13003921A',
+                cookies: {
+                    journey: {
+                        startPoint: '13003655B',
+                        endPoint: '13003921A',
+                    },
                 },
             });
 
@@ -149,9 +153,11 @@ describe('Matching Page', () => {
 
         it('throws an error if no stops can be found', async () => {
             const ctx = getMockContext({
-                journey: {
-                    startPoint: '123ZZZ',
-                    endPoint: '13003921A',
+                cookies: {
+                    journey: {
+                        startPoint: '123ZZZ',
+                        endPoint: '13003921A',
+                    },
                 },
             });
 
@@ -162,7 +168,9 @@ describe('Matching Page', () => {
 
         it('throws an error if the operator, service or journey cookies are not set', async () => {
             const ctx = getMockContext({
-                operator: null,
+                cookies: {
+                    operator: null,
+                },
             });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');

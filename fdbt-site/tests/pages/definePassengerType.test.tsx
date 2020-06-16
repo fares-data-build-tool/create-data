@@ -153,7 +153,7 @@ describe('pages', () => {
 
     describe('getServerSideProps', () => {
         it('should throw an error if there is no PASSENGER_TYPE_COOKIE', () => {
-            const ctx = getMockContext({ passengerType: null });
+            const ctx = getMockContext({ cookies: { passengerType: null } });
             expect(() => getServerSideProps(ctx)).toThrow(
                 'Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page',
             );
@@ -175,7 +175,7 @@ describe('pages', () => {
                     { input: 'proof', message: 'Choose one of the options below' },
                 ],
             };
-            const ctx = getMockContext({ passengerType: mockPassengerTypeCookieValue });
+            const ctx = getMockContext({ cookies: { passengerType: mockPassengerTypeCookieValue } });
             const result = getServerSideProps(ctx);
             expect(result.props.combinedErrors).toEqual(mockCombinedErrorInfoForRadioAndInputErrors);
             expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors);

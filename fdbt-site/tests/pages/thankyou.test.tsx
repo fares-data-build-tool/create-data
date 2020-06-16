@@ -13,7 +13,11 @@ describe('pages', () => {
 
     describe('getServerSideProps', () => {
         it('retrieves the uuid correctly', () => {
-            const ctx = getMockContext({}, null, { operatorUuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39' });
+            const ctx = getMockContext({
+                cookies: {},
+                body: null,
+                uuid: { operatorUuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39' },
+            });
 
             const expectedResults = {
                 props: {

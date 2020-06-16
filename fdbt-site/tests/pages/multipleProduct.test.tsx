@@ -28,11 +28,13 @@ describe('pages', () => {
             });
             it('should return number of products to display, name of operator and passenger type if there is no cookie set', () => {
                 const ctx = getMockContext({
-                    operator: {
-                        operatorPublicName: 'BLP',
+                    cookies: {
+                        operator: {
+                            operatorPublicName: 'BLP',
+                        },
+                        passengerType: { passengerType: 'Adult' },
+                        numberOfProductsInput: '2',
                     },
-                    passengerType: { passengerType: 'Adult' },
-                    numberOfProductsInput: '2',
                 });
                 const result = getServerSideProps(ctx);
 
@@ -43,8 +45,10 @@ describe('pages', () => {
 
             it('should throw an error if the necessary cookies to render the page are not present', () => {
                 const ctx = getMockContext({
-                    operator: null,
-                    numberOfProductsInput: null,
+                    cookies: {
+                        operator: null,
+                        numberOfProductsInput: null,
+                    },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
                     'Necessary cookies not found to show multiple products page',

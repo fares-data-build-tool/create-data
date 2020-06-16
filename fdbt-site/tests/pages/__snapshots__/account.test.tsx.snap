@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages account should render correctly 1`] = `
+<Component
+  description="Account Details page of the Fares Data Build Tool"
+  title="Account Details - Fares Data Build Tool"
+>
+  <div
+    className="account-details-page"
+  >
+    <h1
+      className="govuk-heading-xl"
+    >
+      Account Details
+    </h1>
+    <div
+      className="content-wrapper"
+    >
+      <p
+        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+      >
+        Email Address
+      </p>
+      <p
+        className="govuk-body email-content content-three-quarters"
+      >
+        joseppo.bloggo@somefakebuscompany.com
+      </p>
+    </div>
+    <div
+      className="content-wrapper"
+    >
+      <p
+        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+      >
+        Password
+      </p>
+      <span
+        className="password-dots"
+      >
+        <span
+          className="dot"
+        />
+        <span
+          className="dot"
+        />
+        <span
+          className="dot"
+        />
+        <span
+          className="dot"
+        />
+        <span
+          className="dot"
+        />
+        <span
+          className="dot"
+        />
+        <span
+          className="dot"
+        />
+        <span
+          className="dot"
+        />
+      </span>
+      <span
+        className="change-password"
+      >
+        <a
+          className="govuk-button"
+          data-module="govuk-button"
+          draggable="false"
+          href="/changePassword"
+          id="change-password-button"
+          role="button"
+        >
+          Change
+        </a>
+      </span>
+    </div>
+    <div
+      className="content-wrapper"
+    >
+      <p
+        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+      >
+        Operator
+      </p>
+      <p
+        className="govuk-body content-three-quarters"
+      >
+        FaBusCo
+      </p>
+    </div>
+  </div>
+</Component>
+`;
