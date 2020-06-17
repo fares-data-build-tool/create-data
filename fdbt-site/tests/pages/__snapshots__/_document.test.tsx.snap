@@ -12,6 +12,7 @@ exports[`_document should render correctly 1`] = `
     className="govuk-template__body app-body-class js-enabled"
   >
     <Header
+      csrfToken=""
       isAuthed={true}
     />
     <Main />

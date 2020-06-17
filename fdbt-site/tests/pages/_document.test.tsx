@@ -40,7 +40,7 @@ describe('_document', () => {
     };
 
     it('should render correctly', () => {
-        const tree = shallow(<MyDocument {...props} nonce="" isAuthed />);
+        const tree = shallow(<MyDocument {...props} nonce="" isAuthed csrfToken="" />);
         expect(tree).toMatchSnapshot();
     });
 });
