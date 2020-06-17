@@ -24,6 +24,7 @@ const unauthenticatedGetRoutes = [
     '/assets/*',
     '/scripts/*',
     '/error',
+    '/contactUs',
     '/requestAccess',
 ];
 
