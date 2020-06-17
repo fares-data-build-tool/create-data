@@ -54,7 +54,7 @@ exports[`Header should render correctly 1`] = `
       </a>
     </div>
     <div
-      className="govuk-header__signin"
+      className="govuk-header__account-link"
     >
       <a
         className="govuk-header__link"
@@ -71,6 +71,22 @@ exports[`Header should render correctly 1`] = `
            
         </span>
       </a>
+      <span>
+         | 
+      </span>
+      <CsrfForm
+        action="/api/signOut"
+        className="govuk-header__form"
+        csrfToken=""
+        method="post"
+      >
+        <input
+          className=" govuk-header__link govuk-header__signout"
+          type="submit"
+          value="Sign out"
+        />
+      </CsrfForm>
+       
     </div>
   </div>
 </header>

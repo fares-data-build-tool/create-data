@@ -184,19 +184,32 @@ svg:not(:root) {
     display: flex;
 }
 
-.govuk-header__signin {
+.govuk-header__account-link {
     flex-shrink: 0;
-    width: 120px;
+    width: 220px;
     text-align: right;
     margin-left: -120px;
     margin-top: 4px;
+}
 
-    .govuk-header__link {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        text-align: right;
-    }
+.govuk-header__link {
+    padding-right: 5px;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.govuk-header__signout {
+    font-size: 16px;
+    font-family: 'GDS Transport', Arial, sans-serif;
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.govuk-header__form {
+    display: inline;
 }
 
 .govuk-header__person-icon {

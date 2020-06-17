@@ -1,11 +1,13 @@
-import React, { FC } from 'react';
+import React, { ReactElement } from 'react';
 import personIcon from '../assets/images/np-person-781585-ffffff.a9472bb89c43.png';
+import CsrfForm from '../components/CsrfForm';
 
 type HeaderProps = {
     isAuthed: boolean;
+    csrfToken: string;
 };
 
-const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
+const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
     <header className="govuk-header " role="banner" data-module="govuk-header">
         <div className="govuk-header__container govuk-width-container">
             <div className="govuk-header__logo">
@@ -37,11 +39,28 @@ const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
                 </a>
             </div>
 
-            <div className="govuk-header__signin">
+            <div className="govuk-header__account-link">
                 <a href={isAuthed ? '/account' : '/login'} className="govuk-header__link">
                     <img src={personIcon} className="govuk-header__person-icon" alt="Person icon" />
                     <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
                 </a>
+                {isAuthed && (
+                    <>
+                        <span> | </span>
+                        <CsrfForm
+                            action="/api/signOut"
+                            method="post"
+                            csrfToken={csrfToken}
+                            className="govuk-header__form"
+                        >
+                            <input
+                                type="submit"
+                                value="Sign out"
+                                className=" govuk-header__link govuk-header__signout"
+                            />
+                        </CsrfForm>{' '}
+                    </>
+                )}
             </div>
         </div>
     </header>
