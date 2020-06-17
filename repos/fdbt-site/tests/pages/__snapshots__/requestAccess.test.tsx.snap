@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages requestAccess should render correctly 1`] = `
+<Component
+  description="Request Access page of the Fares data build tool"
+  errors={Array []}
+  title="Request Access - Fares data build tool"
+>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <h1
+        className="govuk-heading-l"
+        id="request-access-page-heading"
+      >
+        Request Access
+      </h1>
+      <p
+        className="govuk-body"
+      >
+        The Fares Data Build Tool is not open to public registration.
+      </p>
+      <p
+        className="govuk-body"
+      >
+        Please contact
+         
+        <a
+          className="govuk-link"
+          href="/contact"
+          id="access_link"
+        >
+          Fares Data Build Support
+        </a>
+         
+        to register.
+      </p>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <div>
+        <h1
+          className="govuk-heading-s"
+        >
+          Already have an account?
+        </h1>
+        <a
+          className="govuk-link"
+          href="/login"
+        >
+          Sign in
+        </a>
+      </div>
+    </div>
+  </div>
+</Component>
+`;

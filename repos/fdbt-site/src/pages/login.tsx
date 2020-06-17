@@ -91,7 +91,7 @@ const Login = ({ errors = [], csrfToken }: LoginProps & CustomAppProps): ReactEl
                 <br />
                 <div>
                     <h1 className="govuk-heading-s">Don&apos;t have an account?</h1>
-                    <a href="/register" className="govuk-link">
+                    <a href="/requestAccess" className="govuk-link">
                         Request access
                     </a>
                 </div>
