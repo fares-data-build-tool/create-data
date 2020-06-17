@@ -128,7 +128,7 @@ exports[`pages login should render correctly 1`] = `
         </h1>
         <a
           className="govuk-link"
-          href="/register"
+          href="/requestAccess"
         >
           Request access
         </a>
@@ -294,7 +294,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
         </h1>
         <a
           className="govuk-link"
-          href="/register"
+          href="/requestAccess"
         >
           Request access
         </a>
