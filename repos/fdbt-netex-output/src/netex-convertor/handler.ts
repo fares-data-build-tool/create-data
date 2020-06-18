@@ -1,4 +1,5 @@
 import { S3Event } from 'aws-lambda';
+import format from 'xml-formatter';
 import pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';
 import periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
 import * as db from './data/auroradb';
@@ -7,7 +8,14 @@ import { PointToPointTicket, PeriodTicket } from './types';
 
 const uploadToS3 = async (netex: string, fileName: string): Promise<void> => {
     const cleanFileName = fileName.replace(/(\s|\/)/g, '_');
-    await s3.uploadNetexToS3(netex, cleanFileName);
+    await s3.uploadNetexToS3(
+        netex
+            ? format(netex, {
+                  collapseContent: true,
+              })
+            : '',
+        cleanFileName,
+    );
 };
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
