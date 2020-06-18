@@ -92,12 +92,12 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                     </div>
 
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="confirmPassword">
+                                        <label className="govuk-label" htmlFor="confirm-password">
                                             Confirm your password
                                         </label>
                                         <input
                                             className="govuk-input"
-                                            id="confirmPassword"
+                                            id="confirm-password"
                                             name="confirmPassword"
                                             type="password"
                                             aria-describedby="confirmPassword-hint"
@@ -106,18 +106,18 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                         />
                                     </div>
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="nocCode">
+                                        <label className="govuk-label" htmlFor="noc-code">
                                             Enter National Operator Code
                                         </label>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId="nocCode"
+                                            errorId="noc-code"
                                             errorClass="govuk-input--error"
                                         >
                                             <input
                                                 className="govuk-input"
                                                 id="nocCode"
-                                                name="nocCode"
+                                                name="noc-code"
                                                 type="text"
                                                 aria-describedby="nocCode-hint"
                                                 spellCheck="false"

@@ -39,7 +39,7 @@ const Service = ({
                                 Select a service
                             </h1>
                         </legend>
-                        <span className="govuk-hint" id="service-operator-passengertype-hint">
+                        <span className="govuk-hint" id="service-operator-passenger-type-hint">
                             {operator} - {passengerType}
                         </span>
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">

@@ -45,7 +45,7 @@ describe('pages', () => {
                     pageProps={[]}
                 />,
             );
-            const operatorWelcome = wrapper.find('#service-operator-passengertype-hint').first();
+            const operatorWelcome = wrapper.find('#service-operator-passenger-type-hint').first();
 
             expect(operatorWelcome.text()).toBe('Connexions Buses - Adult');
         });

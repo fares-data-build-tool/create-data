@@ -45,14 +45,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name0"
+                id="operator-name-0"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Blackpool Transport\\",\\"nocCode\\":\\"BLAC\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name0"
+                htmlFor="operator-name-0"
               >
                 Blackpool Transport
               </label>
@@ -63,14 +63,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name1"
+                id="operator-name-1"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Connexions Buses\\",\\"nocCode\\":\\"HCTY\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name1"
+                htmlFor="operator-name-1"
               >
                 Connexions Buses
               </label>
@@ -81,14 +81,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name2"
+                id="operator-name-2"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Durham County Council\\",\\"nocCode\\":\\"DCCL\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name2"
+                htmlFor="operator-name-2"
               >
                 Durham County Council
               </label>
@@ -99,14 +99,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name3"
+                id="operator-name-3"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"East Yorkshire Council\\",\\"nocCode\\":\\"ERDG\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name3"
+                htmlFor="operator-name-3"
               >
                 East Yorkshire Council
               </label>
@@ -117,14 +117,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name4"
+                id="operator-name-4"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Lancashire County Council\\",\\"nocCode\\":\\"PBLT\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name4"
+                htmlFor="operator-name-4"
               >
                 Lancashire County Council
               </label>
@@ -135,14 +135,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name5"
+                id="operator-name-5"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Manchester Community Transport\\",\\"nocCode\\":\\"MCTR\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name5"
+                htmlFor="operator-name-5"
               >
                 Manchester Community Transport
               </label>
@@ -153,14 +153,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name6"
+                id="operator-name-6"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Pilkington Bus\\",\\"nocCode\\":\\"NWBT\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name6"
+                htmlFor="operator-name-6"
               >
                 Pilkington Bus
               </label>
@@ -171,14 +171,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name7"
+                id="operator-name-7"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"TLC Travel\\",\\"nocCode\\":\\"TLCT\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name7"
+                htmlFor="operator-name-7"
               >
                 TLC Travel
               </label>
@@ -189,14 +189,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name8"
+                id="operator-name-8"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Transport for Greater Manchester\\",\\"nocCode\\":\\"VISB\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name8"
+                htmlFor="operator-name-8"
               >
                 Transport for Greater Manchester
               </label>
@@ -207,14 +207,14 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="operator-name9"
+                id="operator-name-9"
                 name="operator"
                 type="radio"
                 value="{\\"operatorName\\":\\"Warrington's Own Buses\\",\\"nocCode\\":\\"WBTR\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="operator-name9"
+                htmlFor="operator-name-9"
               >
                 Warrington's Own Buses
               </label>

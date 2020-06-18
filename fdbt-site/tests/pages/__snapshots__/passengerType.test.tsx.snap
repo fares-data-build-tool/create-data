@@ -53,14 +53,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={false}
                 className="govuk-radios__input"
                 disabled={false}
-                id="passenger-type0"
+                id="passenger-type-0"
                 name="passengerType"
                 type="radio"
                 value="anyone"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type0"
+                htmlFor="passenger-type-0"
               >
                 Anyone
               </label>
@@ -73,14 +73,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={false}
                 className="govuk-radios__input"
                 disabled={false}
-                id="passenger-type1"
+                id="passenger-type-1"
                 name="passengerType"
                 type="radio"
                 value="adult"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type1"
+                htmlFor="passenger-type-1"
               >
                 Adult
               </label>
@@ -93,14 +93,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={false}
                 className="govuk-radios__input"
                 disabled={false}
-                id="passenger-type2"
+                id="passenger-type-2"
                 name="passengerType"
                 type="radio"
                 value="child"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type2"
+                htmlFor="passenger-type-2"
               >
                 Child
               </label>
@@ -113,14 +113,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={false}
                 className="govuk-radios__input"
                 disabled={false}
-                id="passenger-type3"
+                id="passenger-type-3"
                 name="passengerType"
                 type="radio"
                 value="infant"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type3"
+                htmlFor="passenger-type-3"
               >
                 Infant
               </label>
@@ -133,14 +133,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={false}
                 className="govuk-radios__input"
                 disabled={false}
-                id="passenger-type4"
+                id="passenger-type-4"
                 name="passengerType"
                 type="radio"
                 value="senior"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type4"
+                htmlFor="passenger-type-4"
               >
                 Senior
               </label>
@@ -153,14 +153,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={false}
                 className="govuk-radios__input"
                 disabled={false}
-                id="passenger-type5"
+                id="passenger-type-5"
                 name="passengerType"
                 type="radio"
                 value="student"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type5"
+                htmlFor="passenger-type-5"
               >
                 Student
               </label>
@@ -173,14 +173,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={false}
                 className="govuk-radios__input"
                 disabled={false}
-                id="passenger-type6"
+                id="passenger-type-6"
                 name="passengerType"
                 type="radio"
                 value="youngPerson"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type6"
+                htmlFor="passenger-type-6"
               >
                 Young Person
               </label>
@@ -193,14 +193,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type7"
+                id="passenger-type-7"
                 name="passengerType"
                 type="radio"
                 value="schoolPupil"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type7"
+                htmlFor="passenger-type-7"
               >
                 School Pupil
               </label>
@@ -213,14 +213,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type8"
+                id="passenger-type-8"
                 name="passengerType"
                 type="radio"
                 value="disabled"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type8"
+                htmlFor="passenger-type-8"
               >
                 Disabled
               </label>
@@ -233,14 +233,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type9"
+                id="passenger-type-9"
                 name="passengerType"
                 type="radio"
                 value="disabledCompanion"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type9"
+                htmlFor="passenger-type-9"
               >
                 Disabled Companion
               </label>
@@ -253,14 +253,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type10"
+                id="passenger-type-10"
                 name="passengerType"
                 type="radio"
                 value="employee"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type10"
+                htmlFor="passenger-type-10"
               >
                 Employee
               </label>
@@ -273,14 +273,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type11"
+                id="passenger-type-11"
                 name="passengerType"
                 type="radio"
                 value="military"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type11"
+                htmlFor="passenger-type-11"
               >
                 Military
               </label>
@@ -293,14 +293,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type12"
+                id="passenger-type-12"
                 name="passengerType"
                 type="radio"
                 value="jobSeeker"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type12"
+                htmlFor="passenger-type-12"
               >
                 Job Seeker
               </label>
@@ -313,14 +313,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type13"
+                id="passenger-type-13"
                 name="passengerType"
                 type="radio"
                 value="guideDog"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type13"
+                htmlFor="passenger-type-13"
               >
                 Guide Dog
               </label>
@@ -333,14 +333,14 @@ exports[`pages operator should render correctly 1`] = `
                 aria-disabled={true}
                 className="govuk-radios__input"
                 disabled={true}
-                id="passenger-type14"
+                id="passenger-type-14"
                 name="passengerType"
                 type="radio"
                 value="animal"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type14"
+                htmlFor="passenger-type-14"
               >
                 Animal
               </label>

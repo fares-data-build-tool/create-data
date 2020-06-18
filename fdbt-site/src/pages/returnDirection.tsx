@@ -51,7 +51,8 @@ const ReturnDirection = ({
                                 errorClass="govuk-radios--error"
                             >
                                 <DirectionDropdown
-                                    selectNameID="outboundJourney"
+                                    selectName="outboundJourney"
+                                    selectNameID="outbound-journey"
                                     dropdownLabel="Outbound Journey"
                                     journeyPatterns={service.journeyPatterns}
                                     outboundJourney={outboundJourney}
@@ -65,7 +66,8 @@ const ReturnDirection = ({
                                 errorClass="govuk-radios--error"
                             >
                                 <DirectionDropdown
-                                    selectNameID="inboundJourney"
+                                    selectName="inboundJourney"
+                                    selectNameID="inbound-journey"
                                     dropdownLabel="Inbound Journey"
                                     journeyPatterns={service.journeyPatterns}
                                     inboundJourney={inboundJourney}

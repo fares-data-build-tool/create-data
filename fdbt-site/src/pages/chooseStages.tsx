@@ -24,7 +24,7 @@ const ChooseStages = ({ csrfToken }: CustomAppProps): ReactElement => (
                             </label>
                             <input
                                 className="govuk-input govuk-input--width-2"
-                                id="fareStages"
+                                id="fare-stages"
                                 name="fareStageInput"
                                 type="number"
                                 min="1"

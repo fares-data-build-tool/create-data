@@ -50,7 +50,7 @@ exports[`pages howManyStages should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input  "
-                id="lessThan20FareStages"
+                id="less-than-20-fare-stages"
                 name="howManyStages"
                 type="radio"
                 value="lessThan20"
@@ -67,7 +67,7 @@ exports[`pages howManyStages should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input  "
-                id="moreThan20FareStages"
+                id="more-than-20-fare-stages"
                 name="howManyStages"
                 type="radio"
                 value="moreThan20"

@@ -4,12 +4,12 @@ exports[`DirectionDropdown should render the dropdown with options 1`] = `
 <Fragment>
   <label
     className="govuk-label"
-    htmlFor="testDropDown"
+    htmlFor="test-drop-down"
   />
   <select
     className="govuk-select"
     defaultValue=""
-    id="testDropDown"
+    id="test-drop-down"
     name="testDropDown"
   >
     <option
