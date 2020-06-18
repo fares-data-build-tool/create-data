@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
-<PublicationDelivery version="1.1" xsi:schemaLocation="http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd" 
-	xmlns="http://www.netex.org.uk/netex" 
-	xmlns:siri="http://www.siri.org.uk/siri" 
-	xmlns:gml="http://www.opengis.net/gml/3.2" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PublicationDelivery version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex http://netex.uk/netex/schema/1.09c/xsd/NeTEx_publication.xsd" xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<PublicationTimestamp></PublicationTimestamp>
 	<ParticipantRef>SYS001</ParticipantRef>
 	<!-- ======WHAT WAS REQUESTED ========== -->
@@ -194,7 +190,7 @@
 							<projections>
 								<TopographicProjectionRef></TopographicProjectionRef>
 							</projections>
-							<ParentFareZoneRef version="1.0" ref=""/>
+							<ParentFareZoneRef version="1.0" ref="" />
 							<ZoneTopology>nested</ZoneTopology>
 							<ScopingMethod>explicitStops</ScopingMethod>
 						</FareZone>
@@ -231,23 +227,19 @@
 									<IntervalType>tariffZone</IntervalType>
 								</GeographicalInterval>
 							</geographicalIntervals>
-							<timeIntervals>
-							</timeIntervals>
+							<timeIntervals></timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
-							<fareStructureElements>
-							</fareStructureElements>
+							<fareStructureElements></fareStructureElements>
 						</Tariff>
 					</tariffs>
 					<!--==== Fare Usage Parameters ==== -->
 					<!--==== Fare Product ==== -->
 					<fareProducts>
 						<!--==== Other Products ==== -->
-						<PreassignedFareProduct version="1.0" id="">
-						</PreassignedFareProduct>
+						<PreassignedFareProduct version="1.0" id=""></PreassignedFareProduct>
 					</fareProducts>
 					<!-- === SALES OFFER PACKAGES === -->
-					<salesOfferPackages>
-					</salesOfferPackages>
+					<salesOfferPackages></salesOfferPackages>
 					<!-- === GroupOf SALES OFFER PACKAGES === -->
 				</FareFrame>
 				<FareFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
@@ -272,8 +264,7 @@
 							</DiscountingRule>
 						</pricingRules>
 					</PricingParameterSet>
-					<fareTables>
-					</fareTables>
+					<fareTables></fareTables>
 				</FareFrame>
 				<!-- ====== Travel shops Advanced stuff - This just to show that we can capture access sdetails about travel shops  -->
 				<SiteFrame version="1.0" id="" responsibilitySetRef="op:tariffs">

@@ -41,6 +41,8 @@ export const fetchDataFromS3 = async (event: S3Event): Promise<any> => {
 
 export const uploadNetexToS3 = async (netex: string, fileName: string): Promise<void> => {
     try {
+        console.info(`Uploading file: ${fileName}`);
+
         await s3
             .putObject({
                 Bucket: process.env.UNVALIDATED_NETEX_BUCKET as string,
