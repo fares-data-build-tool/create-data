@@ -39,7 +39,7 @@
         "mysql2": "^2.1.0",
         "nodemailer": "^6.4.5",
         "typescript": "^3.8.3",
-        "xml-formatter": "^1.2.0",
+        "xml-formatter": "^1.2.1",
         "xml2json": "^0.12.0",
         "xsd-schema-validator": "^0.6.0"
     },
