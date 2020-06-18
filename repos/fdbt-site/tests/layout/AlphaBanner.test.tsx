@@ -11,6 +11,6 @@ describe('AlphaBanner', () => {
 
     it('expect govuk_link to be correct gov.uk', () => {
         const tree = shallow(<AlphaBanner />);
-        expect(tree.find('#feedback_link').prop('href')).toEqual(FEEDBACK_LINK);
+        expect(tree.find('#feedback-link').prop('href')).toEqual(FEEDBACK_LINK);
     });
 });

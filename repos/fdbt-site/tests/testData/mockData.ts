@@ -67,27 +67,27 @@ export const getMockRequestAndResponse = (
         multipleProducts = [
             {
                 productName: 'Weekly Ticket',
-                productNameId: 'multipleProductName1',
+                productNameId: 'multiple-product-name-1',
                 productPrice: '50',
-                productPriceId: 'multipleProductPrice1',
+                productPriceId: 'multiple-product-price-1',
                 productDuration: '5',
-                productDurationId: 'multipleProductDuration1',
+                productDurationId: 'multiple-product-duration-1',
             },
             {
                 productName: 'Day Ticket',
-                productNameId: 'multipleProductName2',
+                productNameId: 'multiple-product-name-2',
                 productPrice: '2.50',
-                productPriceId: 'multipleProductPrice2',
+                productPriceId: 'multiple-product-price-2',
                 productDuration: '1',
-                productDurationId: 'multipleProductDuration2',
+                productDurationId: 'multiple-product-duration-2',
             },
             {
                 productName: 'Monthly Ticket',
-                productNameId: 'multipleProductName3',
+                productNameId: 'multiple-product-name-3',
                 productPrice: '200',
-                productPriceId: 'multipleProductPrice3',
+                productPriceId: 'multiple-product-price-3',
                 productDuration: '28',
-                productDurationId: 'multipleProductDuration3',
+                productDurationId: 'multiple-product-duration-3',
             },
         ],
         selectedServices = [
@@ -1613,48 +1613,48 @@ export const expectedFlatFareProductUploadJson = {
 export const multipleProducts: MultiProduct[] = [
     {
         productName: 'p',
-        productNameId: 'productOneId',
+        productNameId: 'product-name-1',
         productNameError: 'Name too short',
         productPrice: '3.50',
-        productPriceId: 'productOnePriceId',
+        productPriceId: 'product-price-1',
         productDuration: '66.5',
-        productDurationId: 'productOneDurationId',
+        productDurationId: 'product-duration-1',
         productDurationError: 'Product duration must be a whole number',
     },
     {
         productName: 'Super ticket',
-        productNameId: 'productOneId',
+        productNameId: 'product-name-1',
         productPrice: '3.50gg',
-        productPriceId: 'productOnePriceId',
+        productPriceId: 'product-price-2',
         productPriceError: 'Product price must be a valid price',
         productDuration: '7',
-        productDurationId: 'productOneDurationId',
+        productDurationId: 'product-duration-2',
     },
 ];
 
 export const multipleProductsWithoutErrors: MultiProduct[] = [
     {
         productName: 'Best ticket',
-        productNameId: 'productOneId',
+        productNameId: 'product-name-1',
         productPrice: '3.50',
-        productPriceId: 'productOnePriceId',
+        productPriceId: 'product-price-1',
         productDuration: '66',
-        productDurationId: 'productOneDurationId',
+        productDurationId: 'product-duration-1',
     },
     {
         productName: 'Super ticket',
-        productNameId: 'productOneId',
+        productNameId: 'product-name-2',
         productPrice: '3.50',
-        productPriceId: 'productOnePriceId',
+        productPriceId: 'product-price-2',
         productDuration: '7',
-        productDurationId: 'productOneDurationId',
+        productDurationId: 'product-duration-2',
     },
 ];
 
 export const invalidDurationProducts: MultiProduct[] = [
     {
         productName: 'valid duration',
-        productNameId: 'multipleProductNameInput0',
+        productNameId: 'multiple-product-name-input-0',
         productPrice: '.',
         productPriceId: '.',
         productDuration: '66',
@@ -1825,17 +1825,17 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membershipCard',
+                        id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'studentCard',
+                        id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identityDocument',
+                        id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -1913,17 +1913,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membershipCard',
+                        id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'studentCard',
+                        id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identityDocument',
+                        id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -2021,17 +2021,17 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membershipCard',
+                        id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'studentCard',
+                        id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identityDocument',
+                        id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },
@@ -2133,17 +2133,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'membershipCard',
+                        id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
-                        id: 'studentCard',
+                        id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
-                        id: 'identityDocument',
+                        id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
                     },

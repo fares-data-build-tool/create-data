@@ -48,7 +48,7 @@ exports[`Header should render correctly 1`] = `
       <a
         className="govuk-header__link govuk-header__link--service-name"
         href="/"
-        id="title_link"
+        id="title-link"
       >
         Fares Data Build Tool
       </a>

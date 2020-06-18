@@ -98,17 +98,17 @@ exports[`pages definePassengerType should render correctly 1`] = `
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
-                    "id": "membershipCard",
+                    "id": "membership-card",
                     "label": "Membership Card",
                     "name": "proofDocuments",
                   },
                   Object {
-                    "id": "studentCard",
+                    "id": "student-card",
                     "label": "Student Card",
                     "name": "proofDocuments",
                   },
                   Object {
-                    "id": "identityDocument",
+                    "id": "identity-document",
                     "label": "Identity Document",
                     "name": "proofDocuments",
                   },
@@ -281,17 +281,17 @@ exports[`pages definePassengerType should render errors correctly when input err
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
-                    "id": "membershipCard",
+                    "id": "membership-card",
                     "label": "Membership Card",
                     "name": "proofDocuments",
                   },
                   Object {
-                    "id": "studentCard",
+                    "id": "student-card",
                     "label": "Student Card",
                     "name": "proofDocuments",
                   },
                   Object {
-                    "id": "identityDocument",
+                    "id": "identity-document",
                     "label": "Identity Document",
                     "name": "proofDocuments",
                   },
@@ -452,17 +452,17 @@ exports[`pages definePassengerType should render errors correctly when radio err
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
-                    "id": "membershipCard",
+                    "id": "membership-card",
                     "label": "Membership Card",
                     "name": "proofDocuments",
                   },
                   Object {
-                    "id": "studentCard",
+                    "id": "student-card",
                     "label": "Student Card",
                     "name": "proofDocuments",
                   },
                   Object {
-                    "id": "identityDocument",
+                    "id": "identity-document",
                     "label": "Identity Document",
                     "name": "proofDocuments",
                   },

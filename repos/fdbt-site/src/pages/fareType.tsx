@@ -33,7 +33,7 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
                                     Select a fare type
                                 </h1>
                             </legend>
-                            <span className="govuk-hint" id="faretype-operator-hint">
+                            <span className="govuk-hint" id="fare-type-operator-hint">
                                 {operator}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
@@ -77,12 +77,15 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
                                     <div className="govuk-radios__item">
                                         <input
                                             className="govuk-radios__input"
-                                            id="fare-type-flatFare"
+                                            id="fare-type-flat-fare"
                                             name="fareType"
                                             type="radio"
                                             value="flatFare"
                                         />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-flatFare">
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor="fare-type-flat-fare"
+                                        >
                                             Flat Fare Ticket - Single Journey
                                         </label>
                                     </div>

@@ -8,19 +8,19 @@ describe('pages', () => {
         const multipleProducts = [
             {
                 productName: 'Weekly Ticket',
-                productNameId: 'multipleProductName1',
+                productNameId: 'multiple-product-name-1',
                 productPrice: '50',
-                productPriceId: 'multipleProductPrice1',
+                productPriceId: 'multiple-product-price-1',
                 productDuration: '5',
-                productDurationId: 'multipleProductDuration1',
+                productDurationId: 'multiple-product-duration-1',
             },
             {
                 productName: 'Day Ticket',
-                productNameId: 'multipleProductName2',
+                productNameId: 'multiple-product-name-2',
                 productPrice: '2.50',
-                productPriceId: 'multipleProductPrice2',
+                productPriceId: 'multiple-product-price-2',
                 productDuration: '1',
-                productDurationId: 'multipleProductDuration2',
+                productDurationId: 'multiple-product-duration-2',
             },
         ];
 

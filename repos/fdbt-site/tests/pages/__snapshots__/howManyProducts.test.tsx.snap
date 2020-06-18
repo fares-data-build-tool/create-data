@@ -33,7 +33,7 @@ exports[`pages howManyProducts should render correctly 1`] = `
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -45,7 +45,7 @@ exports[`pages howManyProducts should render correctly 1`] = `
           <input
             aria-describedby=""
             className="govuk-input govuk-input--width-2"
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />
@@ -109,7 +109,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -129,7 +129,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             aria-describedby="numberOfProducts-error"
             className="govuk-input govuk-input--width-2"
             defaultValue=""
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />
@@ -193,7 +193,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -213,7 +213,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             aria-describedby="numberOfProducts-error"
             className="govuk-input govuk-input--width-2"
             defaultValue=""
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />
@@ -277,7 +277,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -297,7 +297,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             aria-describedby="numberOfProducts-error"
             className="govuk-input govuk-input--width-2"
             defaultValue=""
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />
@@ -361,7 +361,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -381,7 +381,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             aria-describedby="numberOfProducts-error"
             className="govuk-input govuk-input--width-2"
             defaultValue=""
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />
@@ -445,7 +445,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -465,7 +465,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             aria-describedby="numberOfProducts-error"
             className="govuk-input govuk-input--width-2"
             defaultValue=""
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />
@@ -529,7 +529,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -549,7 +549,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             aria-describedby="numberOfProducts-error"
             className="govuk-input govuk-input--width-2"
             defaultValue=""
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />
@@ -613,7 +613,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         </legend>
         <label
           className="govuk-hint"
-          htmlFor="numberOfProducts"
+          htmlFor="number-of-products"
         >
           Enter the number of period tickets below. Up to a maximum of 10 at once.
         </label>
@@ -633,7 +633,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             aria-describedby="numberOfProducts-error"
             className="govuk-input govuk-input--width-2"
             defaultValue=""
-            id="numberOfProducts"
+            id="number-of-products"
             name="numberOfProductsInput"
             type="text"
           />

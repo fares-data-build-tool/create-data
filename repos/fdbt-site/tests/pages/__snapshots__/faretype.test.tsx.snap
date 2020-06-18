@@ -33,7 +33,7 @@ exports[`pages fareType should render correctly 1`] = `
         </legend>
         <span
           className="govuk-hint"
-          id="faretype-operator-hint"
+          id="fare-type-operator-hint"
         >
            
         </span>
@@ -101,14 +101,14 @@ exports[`pages fareType should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="fare-type-flatFare"
+                id="fare-type-flat-fare"
                 name="fareType"
                 type="radio"
                 value="flatFare"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="fare-type-flatFare"
+                htmlFor="fare-type-flat-fare"
               >
                 Flat Fare Ticket - Single Journey
               </label>
@@ -174,7 +174,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
         </legend>
         <span
           className="govuk-hint"
-          id="faretype-operator-hint"
+          id="fare-type-operator-hint"
         >
            
         </span>
@@ -249,14 +249,14 @@ exports[`pages fareType should render error messaging when errors are passed to 
             >
               <input
                 className="govuk-radios__input"
-                id="fare-type-flatFare"
+                id="fare-type-flat-fare"
                 name="fareType"
                 type="radio"
                 value="flatFare"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="fare-type-flatFare"
+                htmlFor="fare-type-flat-fare"
               >
                 Flat Fare Ticket - Single Journey
               </label>

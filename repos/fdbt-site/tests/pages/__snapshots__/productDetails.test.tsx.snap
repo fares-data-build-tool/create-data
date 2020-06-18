@@ -43,7 +43,7 @@ exports[`pages productDetails should render correctly 1`] = `
       >
         <label
           className="govuk-label"
-          htmlFor="productDetailsName"
+          htmlFor="product-details-name"
         >
           Product Name
         </label>
@@ -64,7 +64,7 @@ exports[`pages productDetails should render correctly 1`] = `
         <input
           className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input  "
           defaultValue=""
-          id="productDetailsName"
+          id="product-details-name"
           maxLength={50}
           name="productDetailsNameInput"
           type="text"
@@ -75,7 +75,7 @@ exports[`pages productDetails should render correctly 1`] = `
       >
         <label
           className="govuk-label"
-          htmlFor="productDetailsPrice"
+          htmlFor="product-details-price"
         >
           Product Price
         </label>
@@ -109,7 +109,7 @@ exports[`pages productDetails should render correctly 1`] = `
               className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input "
               data-non-numeric={true}
               defaultValue=""
-              id="productDetailsPrice"
+              id="product-details-price"
               name="productDetailsPriceInput"
               type="text"
             />
