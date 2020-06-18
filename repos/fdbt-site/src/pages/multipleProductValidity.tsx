@@ -96,19 +96,19 @@ const MultipleProductValidity = ({
                                     <div className="grid-content-wrapper">
                                         <label
                                             className="govuk-label grid-column-content-one-fifth"
-                                            htmlFor={`product${index}`}
+                                            htmlFor={`product-${index}`}
                                         >
                                             {product.productName}
                                         </label>
                                         <label
                                             className="govuk-label grid-column-content-one-fifth"
-                                            htmlFor={`product${index}`}
+                                            htmlFor={`product-${index}`}
                                         >
                                             £{product.productPrice}
                                         </label>
                                         <label
                                             className="govuk-label grid-column-content-one-fifth"
-                                            htmlFor={`product${index}`}
+                                            htmlFor={`product-${index}`}
                                         >
                                             {`${product.productDuration} day${
                                                 Number(product.productDuration) > 1 ? 's' : ''
@@ -118,7 +118,7 @@ const MultipleProductValidity = ({
                                             <div className="govuk-radios__item">
                                                 <input
                                                     className="govuk-radios__input"
-                                                    id={`twenty-four-hours-row${index}`}
+                                                    id={`twenty-four-hours-row-${index}`}
                                                     name={`validity-row${index}`}
                                                     type="radio"
                                                     value="24hr"
@@ -127,7 +127,7 @@ const MultipleProductValidity = ({
                                                     className={`govuk-label govuk-radios__label validity-radio-button-margin ${
                                                         errors.length > 0 ? 'validity-radio-button-error-margin' : ''
                                                     }`}
-                                                    htmlFor={`twenty-four-hours-row${index}`}
+                                                    htmlFor={`twenty-four-hours-row-${index}`}
                                                 >
                                                     <span className="visually-hidden-label">24 hour</span>
                                                 </label>
@@ -135,7 +135,7 @@ const MultipleProductValidity = ({
                                             <div className="govuk-radios__item">
                                                 <input
                                                     className="govuk-radios__input"
-                                                    id={`calendar-day-row${index}`}
+                                                    id={`calendar-day-row-${index}`}
                                                     name={`validity-row${index}`}
                                                     type="radio"
                                                     value="endOfCalendarDay"
@@ -144,7 +144,7 @@ const MultipleProductValidity = ({
                                                     className={`govuk-label govuk-radios__label validity-radio-button-margin ${
                                                         errors.length > 0 ? 'validity-radio-button-error-margin' : ''
                                                     }`}
-                                                    htmlFor={`calendar-day-row${index}`}
+                                                    htmlFor={`calendar-day-row-${index}`}
                                                 >
                                                     <span className="visually-hidden-label">Calendar</span>
                                                 </label>

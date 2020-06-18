@@ -45,7 +45,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         inputChecks.push({
             inputValue: nocCode,
-            id: 'nocCode',
+            id: 'noc-code',
             error: nocCode === '' ? 'National Operator Code cannot be empty' : '',
         });
 

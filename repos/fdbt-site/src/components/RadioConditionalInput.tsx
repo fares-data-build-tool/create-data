@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import camelCase from 'lodash/camelCase';
 import { ErrorInfo } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
@@ -60,7 +61,10 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
             {radio.inputs.map(input => {
                 const errorId = createErrorId(input, radio.inputErrors);
                 return (
-                    <div className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}>
+                    <div
+                        key={input.id}
+                        className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}
+                    >
                         <label className="govuk-label" htmlFor={input.id}>
                             {input.label}
                         </label>
@@ -104,12 +108,12 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                         <div className="govuk-checkboxes">
                             {radio.inputs.map(input => {
                                 return (
-                                    <div className="govuk-checkboxes__item">
+                                    <div key={input.id} className="govuk-checkboxes__item">
                                         <input
                                             className="govuk-checkboxes__input"
                                             id={input.id}
                                             name={input.name}
-                                            value={input.id}
+                                            value={camelCase(input.id)}
                                             type="checkbox"
                                         />
                                         <label className="govuk-label govuk-checkboxes__label" htmlFor={input.id}>
@@ -150,13 +154,13 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
     );
 
     return (
-        <>
+        <div key={radio.id}>
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
             </div>
             {radio.inputType === 'checkbox' ? renderConditionalCheckbox(radio) : renderConditionalTextInput(radio)}
-        </>
+        </div>
     );
 };
 
@@ -178,7 +182,7 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     }
 
     return (
-        <div className="govuk-radios__item">
+        <div key={radio.id} className="govuk-radios__item">
             <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
             {radioButtonLabel}
         </div>

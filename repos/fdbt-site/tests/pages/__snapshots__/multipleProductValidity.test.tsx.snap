@@ -108,20 +108,20 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
           >
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product0"
+              htmlFor="product-0"
             >
               Weekly Ticket
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product0"
+              htmlFor="product-0"
             >
               £
               50
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product0"
+              htmlFor="product-0"
             >
               5 days
             </label>
@@ -133,14 +133,14 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  id="twenty-four-hours-row0"
+                  id="twenty-four-hours-row-0"
                   name="validity-row0"
                   type="radio"
                   value="24hr"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin "
-                  htmlFor="twenty-four-hours-row0"
+                  htmlFor="twenty-four-hours-row-0"
                 >
                   <span
                     className="visually-hidden-label"
@@ -154,14 +154,14 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  id="calendar-day-row0"
+                  id="calendar-day-row-0"
                   name="validity-row0"
                   type="radio"
                   value="endOfCalendarDay"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin "
-                  htmlFor="calendar-day-row0"
+                  htmlFor="calendar-day-row-0"
                 >
                   <span
                     className="visually-hidden-label"
@@ -181,20 +181,20 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
           >
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product1"
+              htmlFor="product-1"
             >
               Day Ticket
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product1"
+              htmlFor="product-1"
             >
               £
               2.50
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product1"
+              htmlFor="product-1"
             >
               1 day
             </label>
@@ -206,14 +206,14 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  id="twenty-four-hours-row1"
+                  id="twenty-four-hours-row-1"
                   name="validity-row1"
                   type="radio"
                   value="24hr"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin "
-                  htmlFor="twenty-four-hours-row1"
+                  htmlFor="twenty-four-hours-row-1"
                 >
                   <span
                     className="visually-hidden-label"
@@ -227,14 +227,14 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  id="calendar-day-row1"
+                  id="calendar-day-row-1"
                   name="validity-row1"
                   type="radio"
                   value="endOfCalendarDay"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin "
-                  htmlFor="calendar-day-row1"
+                  htmlFor="calendar-day-row-1"
                 >
                   <span
                     className="visually-hidden-label"
@@ -389,20 +389,20 @@ exports[`pages multipleProductValidity should render error messaging when errors
           >
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product0"
+              htmlFor="product-0"
             >
               Weekly Ticket
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product0"
+              htmlFor="product-0"
             >
               £
               50
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product0"
+              htmlFor="product-0"
             >
               5 days
             </label>
@@ -414,14 +414,14 @@ exports[`pages multipleProductValidity should render error messaging when errors
               >
                 <input
                   className="govuk-radios__input"
-                  id="twenty-four-hours-row0"
+                  id="twenty-four-hours-row-0"
                   name="validity-row0"
                   type="radio"
                   value="24hr"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                  htmlFor="twenty-four-hours-row0"
+                  htmlFor="twenty-four-hours-row-0"
                 >
                   <span
                     className="visually-hidden-label"
@@ -435,14 +435,14 @@ exports[`pages multipleProductValidity should render error messaging when errors
               >
                 <input
                   className="govuk-radios__input"
-                  id="calendar-day-row0"
+                  id="calendar-day-row-0"
                   name="validity-row0"
                   type="radio"
                   value="endOfCalendarDay"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                  htmlFor="calendar-day-row0"
+                  htmlFor="calendar-day-row-0"
                 >
                   <span
                     className="visually-hidden-label"
@@ -462,20 +462,20 @@ exports[`pages multipleProductValidity should render error messaging when errors
           >
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product1"
+              htmlFor="product-1"
             >
               Day Ticket
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product1"
+              htmlFor="product-1"
             >
               £
               2.50
             </label>
             <label
               className="govuk-label grid-column-content-one-fifth"
-              htmlFor="product1"
+              htmlFor="product-1"
             >
               1 day
             </label>
@@ -487,14 +487,14 @@ exports[`pages multipleProductValidity should render error messaging when errors
               >
                 <input
                   className="govuk-radios__input"
-                  id="twenty-four-hours-row1"
+                  id="twenty-four-hours-row-1"
                   name="validity-row1"
                   type="radio"
                   value="24hr"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                  htmlFor="twenty-four-hours-row1"
+                  htmlFor="twenty-four-hours-row-1"
                 >
                   <span
                     className="visually-hidden-label"
@@ -508,14 +508,14 @@ exports[`pages multipleProductValidity should render error messaging when errors
               >
                 <input
                   className="govuk-radios__input"
-                  id="calendar-day-row1"
+                  id="calendar-day-row-1"
                   name="validity-row1"
                   type="radio"
                   value="endOfCalendarDay"
                 />
                 <label
                   className="govuk-label govuk-radios__label validity-radio-button-margin validity-radio-button-error-margin"
-                  htmlFor="calendar-day-row1"
+                  htmlFor="calendar-day-row-1"
                 >
                   <span
                     className="visually-hidden-label"

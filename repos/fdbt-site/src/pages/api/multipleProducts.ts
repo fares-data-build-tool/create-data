@@ -131,13 +131,15 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const arrayedRequest = Object.entries(req.body);
         const multipleProducts: MultiProduct[] = [];
 
+        let count = 0;
+
         while (arrayedRequest.length > 0) {
             const productName = String(arrayedRequest[0][1]);
             const productPrice = String(arrayedRequest[1][1]);
             const productDuration = String(arrayedRequest[2][1]);
-            const productNameId = String(arrayedRequest[0][0]);
-            const productPriceId = String(arrayedRequest[1][0]);
-            const productDurationId = String(arrayedRequest[2][0]);
+            const productNameId = `multiple-product-name-input-${count}`;
+            const productPriceId = `multiple-product-price-input-${count}`;
+            const productDurationId = `multiple-product-duration-input-${count}`;
             const product: MultiProduct = {
                 productName,
                 productNameId,
@@ -148,6 +150,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             };
             multipleProducts.push(product);
             arrayedRequest.splice(0, 3);
+
+            count += 1;
         }
 
         const nameValidationResult: MultiProduct[] = checkProductNamesAreValid(multipleProducts);

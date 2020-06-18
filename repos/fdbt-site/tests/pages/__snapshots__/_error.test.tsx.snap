@@ -29,7 +29,7 @@ exports[`pages error page should render 404 page correctly 1`] = `
       <a
         className="govuk-link"
         href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
-        id="feedback_link"
+        id="feedback-link"
       >
         contact
       </a>
@@ -78,7 +78,7 @@ exports[`pages error page should render error page correctly 1`] = `
       <a
         className="govuk-link"
         href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
-        id="feedback_link"
+        id="feedback-link"
       >
         Contact
       </a>

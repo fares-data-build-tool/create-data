@@ -50,7 +50,7 @@ const ProductDetails = ({
                             </span>
                         </fieldset>
                         <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="productDetailsName">
+                            <label className="govuk-label" htmlFor="product-details-name">
                                 Product Name
                             </label>
                             <span className="govuk-hint" id="product-name-hint">
@@ -65,7 +65,7 @@ const ProductDetails = ({
                                 className={`govuk-input govuk-input--width-30 govuk-product-name-input__inner__input ${
                                     productNameError ? 'govuk-input--error' : ''
                                 } `}
-                                id="productDetailsName"
+                                id="product-details-name"
                                 name="productDetailsNameInput"
                                 type="text"
                                 maxLength={50}
@@ -73,7 +73,7 @@ const ProductDetails = ({
                             />
                         </div>
                         <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="productDetailsPrice">
+                            <label className="govuk-label" htmlFor="product-details-price">
                                 Product Price
                             </label>
                             <span className="govuk-hint" id="product-price-hint">
@@ -95,7 +95,7 @@ const ProductDetails = ({
                                         name="productDetailsPriceInput"
                                         data-non-numeric
                                         type="text"
-                                        id="productDetailsPrice"
+                                        id="product-details-price"
                                         defaultValue={productPrice}
                                     />
                                 </div>

@@ -104,7 +104,7 @@ exports[`pages register should render correctly 1`] = `
             >
               <label
                 className="govuk-label"
-                htmlFor="confirmPassword"
+                htmlFor="confirm-password"
               >
                 Confirm your password
               </label>
@@ -112,7 +112,7 @@ exports[`pages register should render correctly 1`] = `
                 aria-describedby="confirmPassword-hint"
                 autoComplete="new-password"
                 className="govuk-input"
-                id="confirmPassword"
+                id="confirm-password"
                 name="confirmPassword"
                 spellCheck="false"
                 type="password"
@@ -123,13 +123,13 @@ exports[`pages register should render correctly 1`] = `
             >
               <label
                 className="govuk-label"
-                htmlFor="nocCode"
+                htmlFor="noc-code"
               >
                 Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
-                errorId="nocCode"
+                errorId="noc-code"
                 errors={Array []}
               >
                 <input
@@ -137,7 +137,7 @@ exports[`pages register should render correctly 1`] = `
                   className="govuk-input"
                   defaultValue=""
                   id="nocCode"
-                  name="nocCode"
+                  name="noc-code"
                   spellCheck="false"
                   type="text"
                 />
@@ -350,7 +350,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
             >
               <label
                 className="govuk-label"
-                htmlFor="confirmPassword"
+                htmlFor="confirm-password"
               >
                 Confirm your password
               </label>
@@ -358,7 +358,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 aria-describedby="confirmPassword-hint"
                 autoComplete="new-password"
                 className="govuk-input"
-                id="confirmPassword"
+                id="confirm-password"
                 name="confirmPassword"
                 spellCheck="false"
                 type="password"
@@ -369,13 +369,13 @@ exports[`pages register should render error messaging when errors are passed 1`]
             >
               <label
                 className="govuk-label"
-                htmlFor="nocCode"
+                htmlFor="noc-code"
               >
                 Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
-                errorId="nocCode"
+                errorId="noc-code"
                 errors={
                   Array [
                     Object {
@@ -390,7 +390,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                   className="govuk-input"
                   defaultValue=""
                   id="nocCode"
-                  name="nocCode"
+                  name="noc-code"
                   spellCheck="false"
                   type="text"
                 />
@@ -603,7 +603,7 @@ exports[`pages register should store email if entered correctly but other fields
             >
               <label
                 className="govuk-label"
-                htmlFor="confirmPassword"
+                htmlFor="confirm-password"
               >
                 Confirm your password
               </label>
@@ -611,7 +611,7 @@ exports[`pages register should store email if entered correctly but other fields
                 aria-describedby="confirmPassword-hint"
                 autoComplete="new-password"
                 className="govuk-input"
-                id="confirmPassword"
+                id="confirm-password"
                 name="confirmPassword"
                 spellCheck="false"
                 type="password"
@@ -622,13 +622,13 @@ exports[`pages register should store email if entered correctly but other fields
             >
               <label
                 className="govuk-label"
-                htmlFor="nocCode"
+                htmlFor="noc-code"
               >
                 Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
-                errorId="nocCode"
+                errorId="noc-code"
                 errors={
                   Array [
                     Object {
@@ -643,7 +643,7 @@ exports[`pages register should store email if entered correctly but other fields
                   className="govuk-input"
                   defaultValue=""
                   id="nocCode"
-                  name="nocCode"
+                  name="noc-code"
                   spellCheck="false"
                   type="text"
                 />

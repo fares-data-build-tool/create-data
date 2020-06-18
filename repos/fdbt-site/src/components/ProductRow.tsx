@@ -18,16 +18,16 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
         <div className="govuk-grid-column-one-half">
             <FormElementWrapper
                 errors={errors}
-                errorId={`multipleProductNameInput${index}`}
+                errorId={`multiple-product-name-input-${index}`}
                 errorClass="govuk-form-group--error"
                 addFormGroupError
             >
                 <div className="govuk-form-group">
-                    <label className="govuk-label" htmlFor={`multipleProductName${index}`}>
+                    <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
                         Product Name
                     </label>
                     {index === 0 ? (
-                        <span className="govuk-hint" id={`product-name-hint${index}`}>
+                        <span className="govuk-hint" id={`product-name-hint-${index}`}>
                             Enter the name of your product
                         </span>
                     ) : (
@@ -35,7 +35,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                     )}
                     <input
                         className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                        id={`multipleProductName${index}`}
+                        id={`multiple-product-name-${index}`}
                         name={`multipleProductNameInput${index}`}
                         type="text"
                         maxLength={50}
@@ -47,12 +47,12 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
         <div className="govuk-grid-column-one-quarter">
             <FormElementWrapper
                 errors={errors}
-                errorId={`multipleProductPriceInput${index}`}
+                errorId={`multiple-product-price-input-${index}`}
                 errorClass="govuk-form-group--error"
                 addFormGroupError
             >
                 <div className="govuk-form-group">
-                    <label className="govuk-label" htmlFor={`multipleProductPrice${index}`}>
+                    <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
                         Product Price
                     </label>
                     {index === 0 ? (
@@ -71,7 +71,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 name={`multipleProductPriceInput${index}`}
                                 data-non-numeric
                                 type="text"
-                                id={`multipleProductPrice${index}`}
+                                id={`multiple-product-price-${index}`}
                                 defaultValue={userInput.length > 0 ? userInput[index].productPrice : ''}
                             />
                         </div>
@@ -82,16 +82,16 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
         <div className="govuk-grid-column-one-quarter">
             <FormElementWrapper
                 errors={errors}
-                errorId={`multipleProductDurationInput${index}`}
+                errorId={`multiple-product-duration-input-${index}`}
                 errorClass="govuk-form-group--error"
                 addFormGroupError
             >
                 <div className="govuk-form-group">
-                    <label className="govuk-label" htmlFor={`multipleProductDuration${index}`}>
+                    <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
                         Product Duration
                     </label>
                     {index === 0 ? (
-                        <span className="govuk-hint" id={`product-duration-hint${index}`}>
+                        <span className="govuk-hint" id={`product-duration-hint-${index}`}>
                             Enter a number of days
                         </span>
                     ) : (
@@ -99,7 +99,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                     )}
                     <input
                         className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
-                        id={`multipleProductDuration${index}`}
+                        id={`multiple-product-duration-${index}`}
                         name={`multipleProductDurationInput${index}`}
                         type="text"
                         maxLength={366}

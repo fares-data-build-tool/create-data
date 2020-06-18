@@ -37,7 +37,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName1"
+              htmlFor="fare-stage-name-1"
             >
               Fare Stage 
               1
@@ -45,7 +45,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fareStageName1"
+              id="fare-stage-name-1"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -56,7 +56,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName2"
+              htmlFor="fare-stage-name-2"
             >
               Fare Stage 
               2
@@ -64,7 +64,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fareStageName2"
+              id="fare-stage-name-2"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -75,7 +75,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName3"
+              htmlFor="fare-stage-name-3"
             >
               Fare Stage 
               3
@@ -83,7 +83,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fareStageName3"
+              id="fare-stage-name-3"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -94,7 +94,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName4"
+              htmlFor="fare-stage-name-4"
             >
               Fare Stage 
               4
@@ -102,7 +102,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fareStageName4"
+              id="fare-stage-name-4"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -113,7 +113,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName5"
+              htmlFor="fare-stage-name-5"
             >
               Fare Stage 
               5
@@ -121,7 +121,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fareStageName5"
+              id="fare-stage-name-5"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -132,7 +132,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName6"
+              htmlFor="fare-stage-name-6"
             >
               Fare Stage 
               6
@@ -140,7 +140,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fareStageName6"
+              id="fare-stage-name-6"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -196,7 +196,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName1"
+              htmlFor="fare-stage-name-1"
             >
               Fare Stage 
               1
@@ -205,7 +205,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
               defaultValue=""
-              id="fareStageName1"
+              id="fare-stage-name-1"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -216,7 +216,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName2"
+              htmlFor="fare-stage-name-2"
             >
               Fare Stage 
               2
@@ -225,7 +225,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
               defaultValue=""
-              id="fareStageName2"
+              id="fare-stage-name-2"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -236,14 +236,14 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName3"
+              htmlFor="fare-stage-name-3"
             >
               Fare Stage 
               3
             </label>
             <span
               className="govuk-error-message"
-              id="fareStageName3-error"
+              id="fare-stage-name-3-error"
             >
               <span
                 className="govuk-visually-hidden"
@@ -257,7 +257,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby="fareStageName3-error"
               className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
               defaultValue=""
-              id="fareStageName3"
+              id="fare-stage-name-3"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -268,7 +268,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName4"
+              htmlFor="fare-stage-name-4"
             >
               Fare Stage 
               4
@@ -277,7 +277,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
               defaultValue=""
-              id="fareStageName4"
+              id="fare-stage-name-4"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -288,7 +288,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName5"
+              htmlFor="fare-stage-name-5"
             >
               Fare Stage 
               5
@@ -297,7 +297,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby=""
               className="govuk-input govuk-input--width-30  stage-name-input-field"
               defaultValue=""
-              id="fareStageName5"
+              id="fare-stage-name-5"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -353,14 +353,14 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName1"
+              htmlFor="fare-stage-name-1"
             >
               Fare Stage 
               1
             </label>
             <span
               className="govuk-error-message"
-              id="fareStageName1-error"
+              id="fare-stage-name-1-error"
             >
               <span
                 className="govuk-visually-hidden"
@@ -374,7 +374,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby="fareStageName1-error"
               className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
               defaultValue=""
-              id="fareStageName1"
+              id="fare-stage-name-1"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -385,14 +385,14 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName2"
+              htmlFor="fare-stage-name-2"
             >
               Fare Stage 
               2
             </label>
             <span
               className="govuk-error-message"
-              id="fareStageName2-error"
+              id="fare-stage-name-2-error"
             >
               <span
                 className="govuk-visually-hidden"
@@ -406,7 +406,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby="fareStageName2-error"
               className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
               defaultValue=""
-              id="fareStageName2"
+              id="fare-stage-name-2"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -417,14 +417,14 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName3"
+              htmlFor="fare-stage-name-3"
             >
               Fare Stage 
               3
             </label>
             <span
               className="govuk-error-message"
-              id="fareStageName3-error"
+              id="fare-stage-name-3-error"
             >
               <span
                 className="govuk-visually-hidden"
@@ -438,7 +438,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby="fareStageName3-error"
               className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
               defaultValue=""
-              id="fareStageName3"
+              id="fare-stage-name-3"
               maxLength={30}
               name="stageNameInput"
               type="text"
@@ -449,14 +449,14 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           >
             <label
               className="govuk-label"
-              htmlFor="fareStageName4"
+              htmlFor="fare-stage-name-4"
             >
               Fare Stage 
               4
             </label>
             <span
               className="govuk-error-message"
-              id="fareStageName4-error"
+              id="fare-stage-name-4-error"
             >
               <span
                 className="govuk-visually-hidden"
@@ -470,7 +470,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
               aria-describedby="fareStageName4-error"
               className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
               defaultValue=""
-              id="fareStageName4"
+              id="fare-stage-name-4"
               maxLength={30}
               name="stageNameInput"
               type="text"

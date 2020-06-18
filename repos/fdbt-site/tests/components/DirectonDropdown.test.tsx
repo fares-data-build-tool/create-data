@@ -6,7 +6,11 @@ import { mockService } from '../testData/mockData';
 describe('DirectionDropdown', () => {
     it('should render the dropdown with options', () => {
         const wrapper = shallow(
-            <DirectionDropdown journeyPatterns={mockService.journeyPatterns} selectNameID="testDropDown" />,
+            <DirectionDropdown
+                journeyPatterns={mockService.journeyPatterns}
+                selectNameID="test-drop-down"
+                selectName="testDropDown"
+            />,
         );
         expect(wrapper).toMatchSnapshot();
     });
@@ -15,7 +19,8 @@ describe('DirectionDropdown', () => {
         const wrapper = shallow(
             <DirectionDropdown
                 journeyPatterns={mockService.journeyPatterns}
-                selectNameID="testDropDown"
+                selectNameID="test-drop-down"
+                selectName="testDropDown"
                 inboundJourney="13003921A#13003655B"
             />,
         );

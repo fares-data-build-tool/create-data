@@ -19,7 +19,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
                 <p className="govuk-body">If you pasted the web address, check you copied the entire address.</p>
                 <p className="govuk-body">
                     If the web address is correct or you selected a link or button,{' '}
-                    <a className="govuk-link" id="feedback_link" href={FEEDBACK_LINK}>
+                    <a className="govuk-link" id="feedback-link" href={FEEDBACK_LINK}>
                         contact
                     </a>{' '}
                     us about your fares data.
@@ -32,7 +32,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
                 <p className="govuk-body">Your answers have not been saved, use the button below to start again.</p>
                 <p className="govuk-body">
                     {' '}
-                    <a className="govuk-link" id="feedback_link" href={FEEDBACK_LINK}>
+                    <a className="govuk-link" id="feedback-link" href={FEEDBACK_LINK}>
                         Contact
                     </a>{' '}
                     us for assistance.

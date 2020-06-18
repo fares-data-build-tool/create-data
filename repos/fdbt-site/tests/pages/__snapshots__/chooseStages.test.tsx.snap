@@ -38,7 +38,7 @@ exports[`pages chooseStages should render correctly 1`] = `
           </label>
           <input
             className="govuk-input govuk-input--width-2"
-            id="fareStages"
+            id="fare-stages"
             max="20"
             maxLength={2}
             min="1"

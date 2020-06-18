@@ -34,7 +34,7 @@ const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
             </div>
 
             <div className="govuk-header__content">
-                <a href="/" id="title_link" className="govuk-header__link govuk-header__link--service-name">
+                <a href="/" id="title-link" className="govuk-header__link govuk-header__link--service-name">
                     Fares Data Build Tool
                 </a>
             </div>

@@ -39,7 +39,7 @@ const HowManyStages = ({ errors = [], csrfToken }: HowManyStagesProps & CustomAp
                                         className={`govuk-radios__input ${
                                             errors.length > 0 ? 'govuk-input--error' : ''
                                         } `}
-                                        id="lessThan20FareStages"
+                                        id="less-than-20-fare-stages"
                                         name="howManyStages"
                                         type="radio"
                                         value="lessThan20"
@@ -56,7 +56,7 @@ const HowManyStages = ({ errors = [], csrfToken }: HowManyStagesProps & CustomAp
                                         className={`govuk-radios__input ${
                                             errors.length > 0 ? 'govuk-input--error' : ''
                                         } `}
-                                        id="moreThan20FareStages"
+                                        id="more-than-20-fare-stages"
                                         name="howManyStages"
                                         type="radio"
                                         value="moreThan20"

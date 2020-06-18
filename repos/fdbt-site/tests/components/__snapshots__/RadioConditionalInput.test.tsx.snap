@@ -28,58 +28,64 @@ exports[`RadioConditionalInput should render a set of radio buttons with conditi
         data-module="govuk-radios"
       >
         <div
-          className="govuk-radios__item"
+          key="age-range-required"
         >
-          <input
-            className="govuk-radios__input"
-            data-aria-controls="age-range-required-conditional"
-            id="age-range-required"
-            name="ageRange"
-            type="radio"
-            value="Yes"
-          />
-          <label
-            className="govuk-label govuk-radios__label"
-            htmlFor="age-range-required"
-          >
-            Yes
-          </label>
-        </div>
-        <div
-          className="govuk-radios__conditional govuk-radios__conditional--hidden"
-          id="age-range-required-conditional"
-        >
-          <span
-            className="govuk-hint"
-            id="define-passenger-hint"
-          >
-            Enter a minimum age for this passenger type.
-          </span>
           <div
-            className="govuk-form-group"
+            className="govuk-radios__item"
           >
+            <input
+              className="govuk-radios__input"
+              data-aria-controls="age-range-required-conditional"
+              id="age-range-required"
+              name="ageRange"
+              type="radio"
+              value="Yes"
+            />
             <label
-              className="govuk-label"
-              htmlFor="age-range-min"
+              className="govuk-label govuk-radios__label"
+              htmlFor="age-range-required"
             >
-              Minimum age (if applicable)
+              Yes
             </label>
-            <FormElementWrapper
-              errorClass="govuk-input--error"
-              errorId=""
-              errors={Array []}
+          </div>
+          <div
+            className="govuk-radios__conditional govuk-radios__conditional--hidden"
+            id="age-range-required-conditional"
+          >
+            <span
+              className="govuk-hint"
+              id="define-passenger-hint"
             >
-              <input
-                className="govuk-input govuk-!-width-one-third"
-                id="age-range-min"
-                name="ageRangeMin"
-                type="text"
-              />
-            </FormElementWrapper>
+              Enter a minimum age for this passenger type.
+            </span>
+            <div
+              className="govuk-form-group"
+              key="age-range-min"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="age-range-min"
+              >
+                Minimum age (if applicable)
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId=""
+                errors={Array []}
+              >
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="age-range-min"
+                  name="ageRangeMin"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </div>
           </div>
         </div>
         <div
           className="govuk-radios__item"
+          key="age-range-not-required"
         >
           <input
             className="govuk-radios__input"
@@ -132,6 +138,7 @@ exports[`RadioConditionalInput should render an ordinary set of radio buttons wh
       >
         <div
           className="govuk-radios__item"
+          key="age-range-required"
         >
           <input
             className="govuk-radios__input"
@@ -149,6 +156,7 @@ exports[`RadioConditionalInput should render an ordinary set of radio buttons wh
         </div>
         <div
           className="govuk-radios__item"
+          key="age-range-not-required"
         >
           <input
             className="govuk-radios__input"
