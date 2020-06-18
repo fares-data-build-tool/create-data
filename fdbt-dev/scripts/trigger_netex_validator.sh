@@ -2,8 +2,8 @@
 
 set -e
 
-BUCKET_NAME=$1
-FILE_NAME=$2
+FILE_NAME=$1
+BUCKET_NAME=fdbt-unvalidated-netex-data-dev
 
 echo "Starting validation of $FILE_NAME..."
 

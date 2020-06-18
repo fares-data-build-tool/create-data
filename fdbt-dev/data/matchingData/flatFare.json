@@ -2,7 +2,12 @@
   "operatorName": "Blackpool Transport",
   "nocCode": "BLAC",
   "type": "flatFare",
-  "products": [{ "productName": "Weekly Rider", "productPrice": "14" }],
+  "products": [
+    {
+      "productName": "Weekly Rider",
+      "productPrice": "14"
+    }
+  ],
   "selectedServices": [
     {
       "lineName": "2C",
@@ -79,5 +84,7 @@
   "ageRange": "Yes",
   "ageRangeMin": "65",
   "proof": "Yes",
-  "proofDocuments": ["identityDocument"]
+  "proofDocuments": [
+    "identityDocument"
+  ]
 }

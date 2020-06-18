@@ -1,4 +1,5 @@
 PROJECT_NAME=fdbt
+UNVALIDATED_NETEX_BUCKET=fdbt-unvalidated-netex-data-dev
 
 dev: docker-up wait-for-mysql data-reset wait-for-s3-and-sns create-local-buckets create-sns-topics add-data-to-buckets print-help start-site
 
@@ -24,28 +25,43 @@ start-site:
 # NETEX CONVERTOR
 
 generate-single:
-	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev single
+	./scripts/trigger_netex_convertor.sh single
+
+generate-validate-single: generate-single validate-latest-file
 
 generate-multi-service:
-	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodMultiService
+	./scripts/trigger_netex_convertor.sh periodMultiService
+
+generate-validate-multi-service: generate-multi-service validate-latest-file
 
 generate-flat-fare:
-	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev flatFare
+	./scripts/trigger_netex_convertor.sh flatFare
+
+generate-validate-flat-fare: generate-flat-fare validate-latest-file
 
 generate-geo-zone:
-	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev periodGeoZone
+	./scripts/trigger_netex_convertor.sh periodGeoZone
+
+generate-validate-geo-zone: generate-geo-zone validate-latest-file
 
 generate-return-service:
-	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev return
+	./scripts/trigger_netex_convertor.sh return
+
+generate-validate-return-service: generate-return-service validate-latest-file
 
 generate-return-service-circular:
-	./scripts/trigger_netex_convertor.sh fdbt-matching-data-dev returnCircular
+	./scripts/trigger_netex_convertor.sh returnCircular
+
+generate-validate-return-service-circular: generate-return-service-circular validate-latest-file
 
 validate-netex:
-	./scripts/trigger_netex_validator.sh fdbt-unvalidated-netex-data-dev $(file)
+	./scripts/trigger_netex_validator.sh $(file)
 
 validate-latest-file:
-	./scripts/validate_latest_netex.sh fdbt-unvalidated-netex-data-dev
+	./scripts/validate_latest_netex.sh
+
+generate-validate-all: add-data-to-buckets
+	./scripts/generate_validate_all_netex.sh
 
 
 # DATA
