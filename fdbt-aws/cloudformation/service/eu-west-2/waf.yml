@@ -15,16 +15,24 @@ Parameters:
 
   IwIpSetList:
     Type: CommaDelimitedList
+    Default: ""
 
   TfnIpSetList:
     Type: CommaDelimitedList
+    Default: ""
 
   TesterIpSetList:
     Type: CommaDelimitedList
+    Default: ""
+
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+  IsNotTest: !Not [!Equals [!Ref Stage, "test"]]
 
 Resources:
   IwIpSet:
     Type: AWS::WAFv2::IPSet
+    Condition: IsTest
     Properties:
       Description: IP Set for Infinity Works office
       Name: IwIpSet
@@ -34,6 +42,7 @@ Resources:
 
   TfnIpSet:
     Type: AWS::WAFv2::IPSet
+    Condition: IsTest
     Properties:
       Description: IP Set for TFN offices
       Name: TfnIpSet
@@ -43,6 +52,7 @@ Resources:
 
   TesterIpSet:
     Type: AWS::WAFv2::IPSet
+    Condition: IsTest
     Properties:
       Description: IP Set for testers of the tool
       Name: TesterIpSet
@@ -52,6 +62,7 @@ Resources:
 
   CiIpSet:
     Type: AWS::WAFv2::IPSet
+    Condition: IsTest
     Properties:
       Description: IP Set for CI
       Name: CiIpSet
@@ -61,6 +72,7 @@ Resources:
 
   PersonalUserIpSet:
     Type: AWS::WAFv2::IPSet
+    Condition: IsTest
     Properties:
       Description: Personal IPs for IW, TFN and DFT users of the tool
       Name: PersonalUserIpSet
@@ -70,6 +82,7 @@ Resources:
 
   RestrictAccessAcl:
     Type: AWS::WAFv2::WebACL
+    Condition: IsTest
     Properties:
       Name: !Sub ${ProductName}-waf-restrictaccess-${Stage}
       Scope: REGIONAL
@@ -137,9 +150,24 @@ Resources:
             IPSetReferenceStatement:
               Arn: !GetAtt PersonalUserIpSet.Arn
 
+  DefaultAcl:
+    Type: AWS::WAFv2::WebACL
+    Condition: IsNotTest
+    Properties:
+      Name: !Sub ${ProductName}-waf-default-${Stage}
+      Scope: REGIONAL
+      Description: Default ACL with no restrictions
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: DefaultAccessMetric
+
   WafAssociation:
     Type: "AWS::WAFv2::WebACLAssociation"
     Properties:
       ResourceArn:
         Fn::ImportValue: !Sub ${Stage}:LoadbalancerArn
-      WebACLArn: !GetAtt RestrictAccessAcl.Arn
+      WebACLArn:
+        !If [IsTest, !GetAtt RestrictAccessAcl.Arn, !GetAtt DefaultAcl.Arn]
