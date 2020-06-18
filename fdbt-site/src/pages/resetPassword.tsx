@@ -70,12 +70,12 @@ const ResetPassword = ({
                                     </div>
 
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="confirmPassword">
+                                        <label className="govuk-label" htmlFor="confirm-password">
                                             Confirm your new password
                                         </label>
                                         <input
                                             className="govuk-input"
-                                            id="confirmPassword"
+                                            id="confirm-password"
                                             name="confirmPassword"
                                             type="password"
                                             aria-describedby="confirmPassword-hint"

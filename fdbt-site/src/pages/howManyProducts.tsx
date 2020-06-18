@@ -34,7 +34,7 @@ const HowManyProducts = ({ inputCheck, errors, csrfToken }: HowManyProductProps 
                                 How many period tickets do you have for the selected services?
                             </h1>
                         </legend>
-                        <label className="govuk-hint" htmlFor="numberOfProducts">
+                        <label className="govuk-hint" htmlFor="number-of-products">
                             Enter the number of period tickets below. Up to a maximum of 10 at once.
                         </label>
                         <FormElementWrapper
@@ -44,7 +44,7 @@ const HowManyProducts = ({ inputCheck, errors, csrfToken }: HowManyProductProps 
                         >
                             <input
                                 className="govuk-input govuk-input--width-2"
-                                id="numberOfProducts"
+                                id="number-of-products"
                                 name="numberOfProductsInput"
                                 type="text"
                                 defaultValue={!inputCheck?.error ? inputCheck?.numberOfProductsInput : ''}

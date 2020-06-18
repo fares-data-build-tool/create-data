@@ -43,7 +43,7 @@ const SingleDirection = ({
                                 Select a journey direction
                             </h1>
                         </legend>
-                        <span className="govuk-hint" id="direction-operator-linename-passengertype-hint">
+                        <span className="govuk-hint" id="direction-operator-linename-passenger-type-hint">
                             {operator} - {lineName} - {passengerType}
                         </span>
                         <span className="govuk-hint" id="direction-journey-description-hint">
@@ -51,7 +51,8 @@ const SingleDirection = ({
                         </span>
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
                             <DirectionDropdown
-                                selectNameID="directionJourneyPattern"
+                                selectName="directionJourneyPattern"
+                                selectNameID="direction-journey-pattern"
                                 journeyPatterns={service.journeyPatterns}
                             />
                         </FormElementWrapper>

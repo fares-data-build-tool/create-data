@@ -33,7 +33,7 @@ exports[`pages direction should render correctly 1`] = `
         </legend>
         <span
           className="govuk-hint"
-          id="direction-operator-linename-passengertype-hint"
+          id="direction-operator-linename-passenger-type-hint"
         >
           Connexions Buses
            - 
@@ -112,7 +112,8 @@ exports[`pages direction should render correctly 1`] = `
                 },
               ]
             }
-            selectNameID="directionJourneyPattern"
+            selectName="directionJourneyPattern"
+            selectNameID="direction-journey-pattern"
           />
         </FormElementWrapper>
         <span

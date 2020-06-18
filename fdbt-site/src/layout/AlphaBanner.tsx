@@ -7,7 +7,7 @@ const AlphaBanner: FC = () => (
             <strong className="govuk-tag govuk-phase-banner__content__tag">alpha</strong>
             <span className="govuk-phase-banner__text">
                 This is a new service – your{' '}
-                <a className="govuk-link" id="feedback_link" href={FEEDBACK_LINK}>
+                <a className="govuk-link" id="feedback-link" href={FEEDBACK_LINK}>
                     feedback
                 </a>{' '}
                 will help us to improve it.

@@ -64,7 +64,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                                         <div className="govuk-radios__item" key={passenger.passengerTypeValue}>
                                             <input
                                                 className="govuk-radios__input"
-                                                id={`passenger-type${index}`}
+                                                id={`passenger-type-${index}`}
                                                 name="passengerType"
                                                 type="radio"
                                                 value={passenger.passengerTypeValue}
@@ -73,7 +73,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                                             />
                                             <label
                                                 className="govuk-label govuk-radios__label"
-                                                htmlFor={`passenger-type${index}`}
+                                                htmlFor={`passenger-type-${index}`}
                                             >
                                                 {`${passenger.passengerTypeDisplay}`}
                                             </label>

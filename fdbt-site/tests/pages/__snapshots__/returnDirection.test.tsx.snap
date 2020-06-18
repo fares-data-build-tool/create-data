@@ -99,7 +99,8 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
                 ]
               }
               outboundJourney=""
-              selectNameID="outboundJourney"
+              selectName="outboundJourney"
+              selectNameID="outbound-journey"
             />
           </FormElementWrapper>
         </div>
@@ -171,7 +172,8 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
                   },
                 ]
               }
-              selectNameID="inboundJourney"
+              selectName="inboundJourney"
+              selectNameID="inbound-journey"
             />
           </FormElementWrapper>
         </div>

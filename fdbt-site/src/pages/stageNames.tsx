@@ -23,11 +23,11 @@ type StageNameProps = {
 
 export const renderInputField = (index: number, inputCheck: InputCheck): ReactElement => (
     <div className={`govuk-form-group${inputCheck?.Error ? ' govuk-form-group--error input-error' : ''}`}>
-        <label className="govuk-label" htmlFor={`fareStageName${index + 1}`}>
+        <label className="govuk-label" htmlFor={`fare-stage-name-${index + 1}`}>
             Fare Stage {index + 1}
         </label>
         {inputCheck?.Error ? (
-            <span id={`fareStageName${index + 1}-error`} className="govuk-error-message">
+            <span id={`fare-stage-name-${index + 1}-error`} className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span> {inputCheck.Error}
             </span>
         ) : null}
@@ -35,7 +35,7 @@ export const renderInputField = (index: number, inputCheck: InputCheck): ReactEl
             className={`govuk-input govuk-input--width-30 ${
                 inputCheck?.Error ? 'govuk-input--error' : ''
             } stage-name-input-field`}
-            id={`fareStageName${index + 1}`}
+            id={`fare-stage-name-${index + 1}`}
             name="stageNameInput"
             type="text"
             maxLength={30}

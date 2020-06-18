@@ -54,14 +54,14 @@ const Operator = ({ errors = [], csrfToken }: OperatorProps & CustomAppProps): R
                                         <div className="govuk-radios__item" key={operator.operatorName}>
                                             <input
                                                 className="govuk-radios__input"
-                                                id={`operator-name${index}`}
+                                                id={`operator-name-${index}`}
                                                 name="operator"
                                                 type="radio"
                                                 value={JSON.stringify(operator)}
                                             />
                                             <label
                                                 className="govuk-label govuk-radios__label"
-                                                htmlFor={`operator-name${index}`}
+                                                htmlFor={`operator-name-${index}`}
                                             >
                                                 {`${operator.operatorName}`}
                                             </label>

@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { JourneyPattern } from '../data/auroradb';
 
 interface DirectionProps {
+    selectName: string;
     selectNameID: string;
     dropdownLabel?: string;
     journeyPatterns: JourneyPattern[];
@@ -10,6 +11,7 @@ interface DirectionProps {
 }
 
 const DirectionDropdown = ({
+    selectName,
     selectNameID,
     dropdownLabel = '',
     journeyPatterns,
@@ -29,7 +31,7 @@ const DirectionDropdown = ({
             <label className="govuk-label" htmlFor={selectNameID}>
                 {dropdownLabel}
             </label>
-            <select className="govuk-select" id={selectNameID} name={selectNameID} defaultValue={selectedValue}>
+            <select className="govuk-select" id={selectNameID} name={selectName} defaultValue={selectedValue}>
                 <option value="" disabled>
                     Select One
                 </option>

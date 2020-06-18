@@ -41,7 +41,7 @@ describe('pages', () => {
                     pageProps={[]}
                 />,
             );
-            const journeyWelcome = wrapper.find('#direction-operator-linename-passengertype-hint').first();
+            const journeyWelcome = wrapper.find('#direction-operator-linename-passenger-type-hint').first();
 
             expect(journeyWelcome.text()).toBe('Connexions Buses - X6A - Adult');
         });
