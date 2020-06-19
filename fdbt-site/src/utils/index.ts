@@ -17,7 +17,7 @@ export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, 
             domain,
             path: '/',
             sameSite: 'strict',
-            secure: process.env.NODE_ENV !== 'development',
+            secure: false,
         });
     }
 };

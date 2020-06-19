@@ -41,7 +41,7 @@ export const setDisableAuthCookies = (server: Express): void => {
                 domain: getDomain(req),
                 path: '/',
                 httpOnly: true,
-                secure: !isDevelopment,
+                secure: false,
                 sameSite: 'strict',
             };
 
