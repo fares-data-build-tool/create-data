@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { v4 as uuidv4 } from 'uuid';
 import { decode } from 'jsonwebtoken';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
@@ -47,9 +46,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const decodedIdToken = decode(idToken) as CognitoIdToken;
                 const nocCode = decodedIdToken['custom:noc'];
                 const operatorName = await getOperatorNameByNocCode(nocCode);
-                const uuid = uuidv4();
                 const domain = getDomain(req);
-                const operatorCookieValue = JSON.stringify({ operator: operatorName, uuid });
+                const operatorCookieValue = JSON.stringify({ operator: operatorName });
                 setCookieOnResponseObject(domain, OPERATOR_COOKIE, operatorCookieValue, req, res);
 
                 setCookieOnResponseObject(domain, ID_TOKEN_COOKIE, idToken, req, res);
