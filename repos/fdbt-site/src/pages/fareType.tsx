@@ -6,7 +6,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, setCookieOnServerSide } from '../utils/index';
+import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 
@@ -18,6 +18,12 @@ const errorId = 'fare-type-error';
 type FareTypeProps = {
     operator: string;
     errors: ErrorInfo[];
+};
+
+export const buildUuid = (ctx: NextPageContext): string => {
+    const uuid = uuidv4();
+    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+    return noc + uuid.substring(0, 8);
 };
 
 const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAppProps): ReactElement => {
@@ -111,8 +117,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const operatorInfo = JSON.parse(operatorCookie);
     const { operator } = operatorInfo;
-
-    const uuid = uuidv4();
+    const uuid = buildUuid(ctx);
     const cookieValue = JSON.stringify({ operator, uuid });
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
