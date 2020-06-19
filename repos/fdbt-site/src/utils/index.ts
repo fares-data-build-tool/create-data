@@ -13,7 +13,12 @@ export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, 
         const host = ctx?.req?.headers?.host;
         const domain = host ? host.split(':')[0] : '';
 
-        cookies.set(cookieName, cookieValue, { domain, path: '/' });
+        cookies.set(cookieName, cookieValue, {
+            domain,
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development',
+        });
     }
 };
 
