@@ -83,7 +83,7 @@ describe('stageNames', () => {
         const { req, res } = getMockRequestAndResponse({}, mockBody);
         const mockStageNamesCookieValue = '["a","b","c","d"]';
         stageNames(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith('localhost', STAGE_NAMES_COOKIE, mockStageNamesCookieValue, req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(STAGE_NAMES_COOKIE, mockStageNamesCookieValue, req, res);
     });
 
     it('should set the STAGE_NAME_VALIDATION_COOKIE with a value matching the invalid data entered by the user', () => {
@@ -93,6 +93,6 @@ describe('stageNames', () => {
         const mockInputCheck =
             '[{"Input":" ","Error":"Enter a name for this fare stage"},{"Input":"abcdefghijklmnopqrstuvwxyzabcdefgh","Error":"The name for Fare Stage 2 needs to be less than 30 characters"},{"Input":"   ","Error":"Enter a name for this fare stage"},{"Input":"b","Error":""}]';
         stageNames(req, res);
-        expect(setCookieSpy).toBeCalledWith('localhost', STAGE_NAME_VALIDATION_COOKIE, mockInputCheck, req, res);
+        expect(setCookieSpy).toBeCalledWith(STAGE_NAME_VALIDATION_COOKIE, mockInputCheck, req, res);
     });
 });

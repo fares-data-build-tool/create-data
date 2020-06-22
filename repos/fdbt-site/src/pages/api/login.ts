@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import { ErrorInfo, CognitoIdToken } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 errorMessage: 'Enter an email address in the correct format, like name@example.com',
             });
             const cookieContent = JSON.stringify({ errors });
-            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(OPERATOR_COOKIE, cookieContent, req, res);
             redirectTo(res, '/login');
 
             return;
@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 errorMessage: 'Enter a password',
             });
             const cookieContent = JSON.stringify({ errors });
-            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(OPERATOR_COOKIE, cookieContent, req, res);
             redirectTo(res, '/login');
 
             return;
@@ -46,12 +46,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const decodedIdToken = decode(idToken) as CognitoIdToken;
                 const nocCode = decodedIdToken['custom:noc'];
                 const operatorName = await getOperatorNameByNocCode(nocCode);
-                const domain = getDomain(req);
                 const operatorCookieValue = JSON.stringify({ operator: operatorName });
-                setCookieOnResponseObject(domain, OPERATOR_COOKIE, operatorCookieValue, req, res);
+                setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
 
-                setCookieOnResponseObject(domain, ID_TOKEN_COOKIE, idToken, req, res);
-                setCookieOnResponseObject(domain, REFRESH_TOKEN_COOKIE, refreshToken, req, res);
+                setCookieOnResponseObject(ID_TOKEN_COOKIE, idToken, req, res);
+                setCookieOnResponseObject(REFRESH_TOKEN_COOKIE, refreshToken, req, res);
 
                 console.info('login successful', { noc: nocCode });
                 redirectTo(res, '/fareType');
@@ -65,7 +64,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 errorMessage: 'The email address and/or password are not correct.',
             });
             const cookieContent = JSON.stringify({ errors });
-            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(OPERATOR_COOKIE, cookieContent, req, res);
             redirectTo(res, '/login');
         }
     } catch (error) {

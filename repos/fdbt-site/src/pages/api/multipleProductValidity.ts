@@ -14,7 +14,6 @@ import { isSessionValid } from './service/validator';
 import {
     redirectToError,
     setCookieOnResponseObject,
-    getDomain,
     redirectTo,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
@@ -76,7 +75,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const rawProducts: Product[] = JSON.parse(multipleProductCookie);
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
         const newMultipleProductCookieValue = JSON.stringify(products);
-        setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
+        setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');

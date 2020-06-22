@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 import { OPERATOR_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
@@ -12,11 +12,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
             console.info('transaction start', { uuid });
 
-            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(OPERATOR_COOKIE, cookieValue, req, res);
             redirectTo(res, '/fareType');
         } else {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose an operator from the options' });
-            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(OPERATOR_COOKIE, cookieValue, req, res);
             redirectTo(res, '/operator');
         }
     } catch (error) {

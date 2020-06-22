@@ -12,7 +12,6 @@ import {
     PASSENGER_TYPE_COOKIE,
 } from '../../constants';
 import {
-    getDomain,
     setCookieOnResponseObject,
     redirectToError,
     redirectTo,
@@ -108,13 +107,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 };
             }
 
-            setCookieOnResponseObject(
-                getDomain(req),
-                PERIOD_EXPIRY_COOKIE,
-                JSON.stringify({ periodValid, error: false }),
-                req,
-                res,
-            );
+            setCookieOnResponseObject(PERIOD_EXPIRY_COOKIE, JSON.stringify({ periodValid, error: false }), req, res);
 
             const period: DecisionData = {
                 operatorName: operator.operatorPublicName,
@@ -144,7 +137,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose an option regarding your period ticket validity',
             });
-            setCookieOnResponseObject(getDomain(req), PERIOD_EXPIRY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(PERIOD_EXPIRY_COOKIE, cookieValue, req, res);
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {

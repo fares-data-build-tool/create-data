@@ -151,7 +151,7 @@ describe('csvUpload', () => {
         },
     );
 
-    it('should return 302 redirect to /matching when the happy path is used', async () => {
+    it('should return 302 redirect to /outboundMatching when the happy path is used', async () => {
         const file = {
             'csv-upload': {
                 size: 999,
@@ -174,7 +174,7 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/matching',
+            Location: '/outboundMatching',
         });
     });
 

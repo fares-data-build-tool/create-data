@@ -5,7 +5,6 @@ import {
     redirectToError,
     redirectTo,
     setCookieOnResponseObject,
-    getDomain,
     unescapeAndDecodeCookie,
 } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
@@ -33,7 +32,7 @@ export const config = {
 
 export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(getDomain(req), CSV_UPLOAD_COOKIE, cookieValue, req, res);
+    setCookieOnResponseObject(CSV_UPLOAD_COOKIE, cookieValue, req, res);
 
     if (error) {
         redirectTo(res, '/csvUpload');
@@ -147,6 +146,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             if (journeyObject?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');
+                return;
             }
 
             redirectTo(res, '/matching');
