@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { InputCheck } from '../howManyProducts';
 
@@ -28,7 +28,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const userInputValidity = isNumberOfProductsInvalid(req);
         if (userInputValidity.error !== '') {
             const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
+            setCookieOnResponseObject(NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
             redirectTo(res, '/howManyProducts');
             return;
         }
@@ -41,7 +41,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
+        setCookieOnResponseObject(NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
         redirectTo(res, '/multipleProducts');
     } catch (error) {
         const message = 'There was a problem inputting the number of products:';

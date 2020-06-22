@@ -5,7 +5,6 @@ import {
     redirectToError,
     getUuidFromCookie,
     setCookieOnResponseObject,
-    getDomain,
     unescapeAndDecodeCookie,
 } from './apiUtils';
 import { BasicService, PassengerDetails } from '../../interfaces';
@@ -115,13 +114,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const inboundFareZones = getMatchingFareZonesFromForm(req);
 
         if (isFareStageUnassigned(userFareStages, inboundFareZones) && inboundFareZones !== {}) {
-            setCookieOnResponseObject(
-                getDomain(req),
-                MATCHING_COOKIE,
-                JSON.stringify({ inbound: { error: true } }),
-                req,
-                res,
-            );
+            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ inbound: { error: true } }), req, res);
             redirectTo(res, '/inboundMatching');
             return;
         }
@@ -153,13 +146,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         await putMatchingDataInS3(matchingJson, uuid);
 
-        setCookieOnResponseObject(
-            getDomain(req),
-            MATCHING_COOKIE,
-            JSON.stringify({ inbound: { error: false } }),
-            req,
-            res,
-        );
+        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ inbound: { error: false } }), req, res);
         redirectTo(res, '/thankyou');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';

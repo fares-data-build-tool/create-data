@@ -47,7 +47,7 @@ exports[`Footer should render correctly 1`] = `
           >
             <a
               className="govuk-footer__link"
-              href="/contactUs"
+              href="/contact"
             >
               Contact
             </a>

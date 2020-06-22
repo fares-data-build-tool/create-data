@@ -106,18 +106,18 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                         />
                                     </div>
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="noc-code">
+                                        <label className="govuk-label" htmlFor="nocCode">
                                             Enter National Operator Code
                                         </label>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId="noc-code"
+                                            errorId="nocCode"
                                             errorClass="govuk-input--error"
                                         >
                                             <input
                                                 className="govuk-input"
                                                 id="nocCode"
-                                                name="noc-code"
+                                                name="nocCode"
                                                 type="text"
                                                 aria-describedby="nocCode-hint"
                                                 spellCheck="false"

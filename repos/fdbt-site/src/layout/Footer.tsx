@@ -18,7 +18,7 @@ const Footer: FC = () => (
                             </a>
                         </li>
                         <li className="govuk-footer__inline-list-item">
-                            <a className="govuk-footer__link" href="/contactUs">
+                            <a className="govuk-footer__link" href="/contact">
                                 Contact
                             </a>
                         </li>

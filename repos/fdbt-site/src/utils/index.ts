@@ -10,20 +10,20 @@ import { ErrorInfo, CognitoIdToken } from '../interfaces';
 export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
-        const host = ctx?.req?.headers?.host;
-        const domain = host ? host.split(':')[0] : '';
 
-        cookies.set(cookieName, cookieValue, { domain, path: '/' });
+        cookies.set(cookieName, cookieValue, {
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development',
+        });
     }
 };
 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
-        const host = ctx?.req?.headers?.host;
-        const domain = host ? host.split(':')[0] : '';
 
-        cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
+        cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
     }
 };
 

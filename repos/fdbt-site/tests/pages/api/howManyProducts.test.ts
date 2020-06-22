@@ -79,13 +79,7 @@ describe('howManyProducts', () => {
         const { req, res } = getMockRequestAndResponse({}, mockBody);
         const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '', error: 'Enter a number' });
         howManyProducts(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            NUMBER_OF_PRODUCTS_COOKIE,
-            mockStringifiedInputCheck,
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(NUMBER_OF_PRODUCTS_COOKIE, mockStringifiedInputCheck, req, res);
     });
 
     it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /multipleProducts', () => {
@@ -94,12 +88,6 @@ describe('howManyProducts', () => {
         const { req, res } = getMockRequestAndResponse({}, mockBody);
         const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '8' });
         howManyProducts(req, res);
-        expect(setCookieSpy).toBeCalledWith(
-            'localhost',
-            NUMBER_OF_PRODUCTS_COOKIE,
-            mockStringifiedInputCheck,
-            req,
-            res,
-        );
+        expect(setCookieSpy).toBeCalledWith(NUMBER_OF_PRODUCTS_COOKIE, mockStringifiedInputCheck, req, res);
     });
 });
