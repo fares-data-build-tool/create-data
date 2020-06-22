@@ -3,7 +3,7 @@ import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
-import { signOutUser, setCookieOnResponseObject, getDomain } from '../../src/pages/api/apiUtils';
+import { signOutUser, setCookieOnResponseObject } from '../../src/pages/api/apiUtils';
 import { CognitoIdToken } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
 
@@ -38,18 +38,17 @@ export const setDisableAuthCookies = (server: Express): void => {
             const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
 
             const cookieOptions: SetOption = {
-                domain: getDomain(req),
                 path: '/',
                 httpOnly: true,
-                secure: false,
                 sameSite: 'strict',
+                secure: !isDevelopment,
             };
 
             if (!disableAuthCookie || disableAuthCookie === 'false') {
-                cookies.set(DISABLE_AUTH_COOKIE, 'true');
+                cookies.set(DISABLE_AUTH_COOKIE, 'true', cookieOptions);
                 cookies.set(
                     ID_TOKEN_COOKIE,
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyJ9.-1CZzSU-mmUoLn_RpWvrBKOib2tu_SXE2FQ1HmNYnZk',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
                     cookieOptions,
                 );
                 cookies.set(
@@ -110,13 +109,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                     initiateRefreshAuth(username, refreshToken)
                         .then(data => {
                             if (data.AuthenticationResult?.IdToken) {
-                                setCookieOnResponseObject(
-                                    getDomain(req),
-                                    ID_TOKEN_COOKIE,
-                                    data.AuthenticationResult.IdToken,
-                                    req,
-                                    res,
-                                );
+                                setCookieOnResponseObject(ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken, req, res);
                                 console.info('successfully refreshed ID Token');
                                 next();
 

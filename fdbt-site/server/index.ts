@@ -63,6 +63,8 @@ const setStaticRoutes = (server: Express): void => {
         await app.prepare();
         const server = express();
 
+        server.enable('trust proxy');
+
         setupLogging(server);
         setStaticRoutes(server);
         setSecurityHeaders(server);

@@ -5,7 +5,6 @@ import {
     redirectToError,
     getUuidFromCookie,
     setCookieOnResponseObject,
-    getDomain,
     unescapeAndDecodeCookie,
 } from './apiUtils';
 import { BasicService, PassengerDetails } from '../../interfaces';
@@ -139,7 +138,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const error = { error: true };
-            setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error }), req, res);
+            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ error }), req, res);
             redirectTo(res, '/matching');
             return;
         }
@@ -164,7 +163,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             passengerTypeObject,
         );
 
-        setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
+        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');

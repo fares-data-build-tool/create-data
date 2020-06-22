@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../../interfaces';
 import { confirmForgotPassword } from '../../data/cognito';
@@ -19,7 +19,7 @@ const validatePassword = (password: string, confirmPassword: string): string => 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: InputCheck[], regKey: string, username: string, expiry: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(getDomain(req), USER_COOKIE, cookieContent, req, res);
+        setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
         redirectTo(res, `/resetPassword?key=${regKey}&user_name=${username}&expiry=${expiry}`);
     };
 

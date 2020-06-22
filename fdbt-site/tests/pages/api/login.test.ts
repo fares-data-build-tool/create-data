@@ -63,13 +63,7 @@ describe('login', () => {
         const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
 
         await login(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            OPERATOR_COOKIE,
-            JSON.stringify(expectedCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should redirect when successfully signed in', async () => {
@@ -117,12 +111,6 @@ describe('login', () => {
 
         await login(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            OPERATOR_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 });

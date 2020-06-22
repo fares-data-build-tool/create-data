@@ -92,7 +92,6 @@ describe('definePassengerType', () => {
         );
         await definePassengerType(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
             PASSENGER_TYPE_COOKIE,
             JSON.stringify(mockPassengerTypeCookieValue),
             req,
@@ -156,7 +155,6 @@ describe('definePassengerType', () => {
             const { req, res } = getMockRequestAndResponse({}, mockUserInput, {}, writeHeadMock);
             await definePassengerType(req, res);
             expect(setCookieSpy).toHaveBeenCalledWith(
-                'localhost',
                 PASSENGER_TYPE_COOKIE,
                 JSON.stringify(mockPassengerTypeCookieValue),
                 req,

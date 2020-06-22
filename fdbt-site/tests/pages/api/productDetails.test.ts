@@ -37,7 +37,6 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
             PRODUCT_DETAILS_COOKIE,
             JSON.stringify(mockProductDetailsCookies),
             req,
@@ -67,7 +66,6 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
             PRODUCT_DETAILS_COOKIE,
             JSON.stringify(mockProductDetailsCookies),
             req,
@@ -97,7 +95,6 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
             PRODUCT_DETAILS_COOKIE,
             JSON.stringify(mockProductDetailsCookies),
             req,

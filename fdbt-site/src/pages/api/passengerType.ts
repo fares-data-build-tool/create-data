@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
-    getDomain,
     setCookieOnResponseObject,
     redirectToError,
     redirectTo,
@@ -31,7 +30,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 passengerType,
             });
 
-            setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, cookieValue, req, res);
 
             if (passengerType === 'anyone') {
                 redirectOnFareType(req, res);
@@ -44,7 +43,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const passengerTypeCookieValue = JSON.stringify({
             errorMessage: 'Choose a passenger type from the options',
         });
-        setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+        setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/passengerType');
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';
