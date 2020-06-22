@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../../constants';
@@ -16,7 +16,7 @@ export const config = {
 
 export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+    setCookieOnResponseObject(CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
     redirectTo(res, '/csvZoneUpload');
 };
 
@@ -139,7 +139,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
             const cookieValue = JSON.stringify({ fareZoneName, uuid });
-            setCookieOnResponseObject(getDomain(req), CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
 
             redirectTo(res, '/howManyProducts');
         }

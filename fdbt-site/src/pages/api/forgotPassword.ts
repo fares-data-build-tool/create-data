@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { FORGOT_PASSWORD_COOKIE } from '../../constants/index';
-import { setCookieOnResponseObject, redirectTo, getDomain, redirectToError, checkEmailValid } from './apiUtils';
+import { setCookieOnResponseObject, redirectTo, redirectToError, checkEmailValid } from './apiUtils';
 import { forgotPassword } from '../../data/cognito';
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -9,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (!email || !email.trim().length) {
             const cookieContent = JSON.stringify({ email, error: 'Enter your email address' });
-            setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/forgotPassword');
             return;
         }
@@ -18,14 +18,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             await forgotPassword(email);
 
             const cookieContent = JSON.stringify({ email });
-            setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/resetConfirmation');
         } else {
             const cookieContent = JSON.stringify({
                 email,
                 error: 'Invalid email format - Enter a valid email address',
             });
-            setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/forgotPassword');
         }
     } catch (error) {

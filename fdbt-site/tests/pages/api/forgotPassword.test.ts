@@ -47,6 +47,6 @@ describe('forgotPassword', () => {
         const { req, res } = getMockRequestAndResponse({}, mockBody);
         const mockStringifiedInputCheck = JSON.stringify(mockBody);
         await forgotPassword(req, res);
-        expect(setCookieSpy).toBeCalledWith('localhost', FORGOT_PASSWORD_COOKIE, mockStringifiedInputCheck, req, res);
+        expect(setCookieSpy).toBeCalledWith(FORGOT_PASSWORD_COOKIE, mockStringifiedInputCheck, req, res);
     });
 });

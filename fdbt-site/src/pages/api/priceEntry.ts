@@ -112,6 +112,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (journeyObject?.outboundJourney) {
             redirectTo(res, '/outboundMatching');
+            return;
         }
 
         redirectTo(res, '/matching');

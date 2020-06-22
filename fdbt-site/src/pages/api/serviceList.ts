@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { isArray } from 'util';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
 
@@ -19,7 +19,6 @@ const setServiceListCookie = (
     const serviceListObject: ServiceList = { error: false, selectedServices: [] };
 
     setCookieOnResponseObject(
-        getDomain(req),
         SERVICE_LIST_COOKIE,
         JSON.stringify({ ...serviceListObject, selectedServices: checkedServiceList, error: !!error }),
         req,
@@ -58,7 +57,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose at least one service from the options' });
-            setCookieOnResponseObject(getDomain(req), SERVICE_LIST_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(SERVICE_LIST_COOKIE, cookieValue, req, res);
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }

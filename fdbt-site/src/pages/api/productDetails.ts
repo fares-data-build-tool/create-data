@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
-    getDomain,
     redirectTo,
     redirectToError,
     setCookieOnResponseObject,
@@ -62,14 +61,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
             const invalidInputs = JSON.stringify(productDetails);
 
-            setCookieOnResponseObject(getDomain(req), PRODUCT_DETAILS_COOKIE, invalidInputs, req, res);
+            setCookieOnResponseObject(PRODUCT_DETAILS_COOKIE, invalidInputs, req, res);
             redirectTo(res, '/productDetails');
             return;
         }
 
         if (fareType === 'period') {
             const validInputs = JSON.stringify(productDetails);
-            setCookieOnResponseObject(getDomain(req), PRODUCT_DETAILS_COOKIE, validInputs, req, res);
+            setCookieOnResponseObject(PRODUCT_DETAILS_COOKIE, validInputs, req, res);
             redirectTo(res, '/chooseValidity');
         } else if (fareType === 'flatFare') {
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);

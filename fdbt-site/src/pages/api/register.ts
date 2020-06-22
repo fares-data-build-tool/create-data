@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
@@ -20,7 +20,7 @@ const validatePassword = (password: string, confirmPassword: string): string => 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: InputCheck[], regKey: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(getDomain(req), USER_COOKIE, cookieContent, req, res);
+        setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
         redirectTo(res, `/register?key=${regKey}`);
     };
 

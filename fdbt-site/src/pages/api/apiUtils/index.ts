@@ -10,39 +10,23 @@ import { globalSignOut } from '../../../data/cognito';
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
 
-export const getDomain = (req: Req): string => {
-    const host = req?.headers?.host;
-    return host ? host.split(':')[0] : '';
-};
-
-export const setCookieOnResponseObject = (
-    domain: string,
-    cookieName: string,
-    cookieValue: string,
-    req: Req,
-    res: Res,
-): void => {
-    const cookieOptions = {
-        ...(process.env.NODE_ENV === 'production' ? { secure: true } : null),
-    };
-    const cookies = new Cookies(req, res, cookieOptions);
+export const setCookieOnResponseObject = (cookieName: string, cookieValue: string, req: Req, res: Res): void => {
+    const cookies = new Cookies(req, res);
     // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
     // default. An error will be thrown if you try to send secure cookies over an insecure socket.
     cookies.set(cookieName, cookieValue, {
-        domain,
         path: '/',
         // The Cookies library applies units of Milliseconds to maxAge. For this reason, maxAge of 24 hours needs to be corrected by a factor of 1000.
         maxAge: 1000 * (3600 * 24),
         sameSite: 'strict',
+        secure: process.env.NODE_ENV !== 'development',
     });
 };
 
 export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
     const cookies = new Cookies(req, res);
-    const host = req?.headers?.host;
-    const domain = host ? host.split(':')[0] : '';
 
-    cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
+    cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
 };
 
 export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string): string => {

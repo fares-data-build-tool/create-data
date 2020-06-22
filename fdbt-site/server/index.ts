@@ -24,7 +24,7 @@ const unauthenticatedGetRoutes = [
     '/assets/*',
     '/scripts/*',
     '/error',
-    '/contactUs',
+    '/contact',
     '/requestAccess',
 ];
 
@@ -62,6 +62,8 @@ const setStaticRoutes = (server: Express): void => {
     try {
         await app.prepare();
         const server = express();
+
+        server.enable('trust proxy');
 
         setupLogging(server);
         setStaticRoutes(server);
