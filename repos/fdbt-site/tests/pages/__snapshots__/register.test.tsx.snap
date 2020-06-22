@@ -123,13 +123,13 @@ exports[`pages register should render correctly 1`] = `
             >
               <label
                 className="govuk-label"
-                htmlFor="noc-code"
+                htmlFor="nocCode"
               >
                 Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
-                errorId="noc-code"
+                errorId="nocCode"
                 errors={Array []}
               >
                 <input
@@ -137,7 +137,7 @@ exports[`pages register should render correctly 1`] = `
                   className="govuk-input"
                   defaultValue=""
                   id="nocCode"
-                  name="noc-code"
+                  name="nocCode"
                   spellCheck="false"
                   type="text"
                 />
@@ -369,13 +369,13 @@ exports[`pages register should render error messaging when errors are passed 1`]
             >
               <label
                 className="govuk-label"
-                htmlFor="noc-code"
+                htmlFor="nocCode"
               >
                 Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
-                errorId="noc-code"
+                errorId="nocCode"
                 errors={
                   Array [
                     Object {
@@ -390,7 +390,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                   className="govuk-input"
                   defaultValue=""
                   id="nocCode"
-                  name="noc-code"
+                  name="nocCode"
                   spellCheck="false"
                   type="text"
                 />
@@ -622,13 +622,13 @@ exports[`pages register should store email if entered correctly but other fields
             >
               <label
                 className="govuk-label"
-                htmlFor="noc-code"
+                htmlFor="nocCode"
               >
                 Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
-                errorId="noc-code"
+                errorId="nocCode"
                 errors={
                   Array [
                     Object {
@@ -643,7 +643,7 @@ exports[`pages register should store email if entered correctly but other fields
                   className="govuk-input"
                   defaultValue=""
                   id="nocCode"
-                  name="noc-code"
+                  name="nocCode"
                   spellCheck="false"
                   type="text"
                 />
