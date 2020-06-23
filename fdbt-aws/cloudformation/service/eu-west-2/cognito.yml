@@ -59,6 +59,12 @@ Resources:
             MaxLength: "256"
             MinLength: "1"
           Mutable: true
+        - Name: contactable
+          AttributeDataType: String
+          StringAttributeConstraints:
+            MaxLength: "3"
+            MinLength: "2"
+          Mutable: true
       UsernameAttributes:
         - email
       UsernameConfiguration:
@@ -90,6 +96,7 @@ Resources:
       WriteAttributes:
         - email
         - custom:noc
+        - custom:contactable
       PreventUserExistenceErrors: ENABLED
 
   UserPoolDomain:
