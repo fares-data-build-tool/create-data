@@ -752,6 +752,10 @@ export const naptanStopInfo = [
     },
 ];
 
+export const selectedFareStages: string[] = [
+    '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
+];
+
 export const service = {
     type: 'pointToPoint',
     lineName: '215',

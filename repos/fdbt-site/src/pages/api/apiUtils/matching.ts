@@ -1,8 +1,9 @@
+import { NextApiRequest } from 'next';
 import { UserFareStages } from '../../../data/s3';
 import { Stop } from '../../../data/auroradb';
 import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
 
-const getFareZones = (
+export const getFareZones = (
     userFareStages: UserFareStages,
     matchingFareZones: MatchingFareZones,
 ): MatchingFareZonesData[] => {
@@ -22,4 +23,29 @@ const getFareZones = (
         });
 };
 
-export default getFareZones;
+export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones => {
+    const matchingFareZones: MatchingFareZones = {};
+    const bodyValues: string[] = Object.values(req.body);
+
+    bodyValues.forEach((zoneString: string) => {
+        if (zoneString && typeof zoneString === 'string') {
+            const zone = JSON.parse(zoneString);
+
+            if (matchingFareZones[zone.stage]) {
+                matchingFareZones[zone.stage].stops.push(zone.stop);
+            } else {
+                matchingFareZones[zone.stage] = {
+                    name: zone.stage,
+                    stops: [zone.stop],
+                    prices: [zone.price],
+                };
+            }
+        }
+    });
+
+    if (Object.keys(matchingFareZones).length === 0) {
+        throw new Error('No Stops allocated to fare stages');
+    }
+
+    return matchingFareZones;
+};
