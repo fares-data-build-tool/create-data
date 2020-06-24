@@ -13,6 +13,7 @@ interface MatchingBaseProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
+    selectedFareStages: string[];
     title: string;
     description: string;
     hintText: string;
@@ -27,6 +28,7 @@ const MatchingBase = ({
     stops,
     service,
     error,
+    selectedFareStages,
     title,
     description,
     hintText,
@@ -57,7 +59,11 @@ const MatchingBase = ({
                             {travelineHintText}
                         </span>
                         <FormElementWrapper errors={errors} errorId="dropdown-error" errorClass="">
-                            <MatchingList userFareStages={userFareStages} stops={stops} />
+                            <MatchingList
+                                userFareStages={userFareStages}
+                                stops={stops}
+                                selectedFareStages={selectedFareStages}
+                            />
                         </FormElementWrapper>
                     </div>
 

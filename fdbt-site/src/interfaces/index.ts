@@ -53,6 +53,7 @@ export interface CognitoIdToken {
     exp: number;
     iat: number;
     email: string;
+    'custom:contactable': string;
 }
 
 export interface CustomAppProps extends AppInitialProps {
