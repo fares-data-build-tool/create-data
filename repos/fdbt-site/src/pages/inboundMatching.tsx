@@ -21,6 +21,7 @@ interface MatchingProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
+    selectedFareStages: string[];
 }
 
 const InboundMatching = ({
@@ -29,12 +30,14 @@ const InboundMatching = ({
     service,
     error,
     csrfToken,
+    selectedFareStages,
 }: MatchingProps & CustomAppProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
         service={service}
         error={error}
+        selectedFareStages={selectedFareStages}
         heading={heading}
         title={title}
         description={description}
@@ -91,6 +94,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 serviceDescription: service.serviceDescription,
             },
             error: !parsedMatchingCookie.inbound ? false : JSON.parse(matchingCookie).inbound.error,
+            selectedFareStages: !parsedMatchingCookie.inbound
+                ? []
+                : JSON.parse(matchingCookie).inbound.selectedFareStages,
         },
     };
 };

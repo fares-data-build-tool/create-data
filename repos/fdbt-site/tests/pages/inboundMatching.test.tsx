@@ -10,6 +10,7 @@ import {
     service,
     getMockContext,
     mockRawServiceWithDuplicates,
+    selectedFareStages,
 } from '../testData/mockData';
 import InboundMatching, { getServerSideProps } from '../../src/pages/inboundMatching';
 
@@ -37,6 +38,7 @@ describe('Inbound Matching Page', () => {
                 stops={naptanStopInfo}
                 service={service}
                 error={false}
+                selectedFareStages={selectedFareStages}
                 csrfToken=""
                 pageProps={[]}
             />,
@@ -58,6 +60,7 @@ describe('Inbound Matching Page', () => {
                 stops={naptanStopInfo}
                 service={service}
                 error={false}
+                selectedFareStages={selectedFareStages}
                 csrfToken=""
                 pageProps={[]}
             />,

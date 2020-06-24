@@ -26,6 +26,7 @@ interface MatchingProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
+    selectedFareStages: string[];
 }
 
 const Matching = ({
@@ -33,6 +34,7 @@ const Matching = ({
     stops,
     service,
     error,
+    selectedFareStages,
     csrfToken,
 }: MatchingProps & CustomAppProps): ReactElement => (
     <MatchingBase
@@ -40,6 +42,7 @@ const Matching = ({
         stops={stops}
         service={service}
         error={error}
+        selectedFareStages={selectedFareStages}
         heading={heading}
         title={title}
         description={description}
@@ -111,6 +114,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 serviceDescription: service.serviceDescription,
             },
             error: !matchingCookie ? false : JSON.parse(matchingCookie).error,
+            selectedFareStages: !matchingCookie ? [] : JSON.parse(matchingCookie).selectedFareStages,
         },
     };
 };
