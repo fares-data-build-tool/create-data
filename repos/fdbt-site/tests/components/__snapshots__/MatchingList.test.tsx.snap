@@ -30,13 +30,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option0"
+        htmlFor="option-0"
       >
         New Seaham, S-bound Westlea shops (on B1285 Stockton Road)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option0"
+        htmlFor="option-0"
       >
         durapmja
       </label>
@@ -46,8 +46,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option0"
-          name="option0"
+          id="option-0"
+          name="option-0"
         >
           <option
             value=""
@@ -115,13 +115,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option1"
+        htmlFor="option-1"
       >
         Deneside, NE-bound The Avenue Shops (on The Avenue)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option1"
+        htmlFor="option-1"
       >
         duratgtm
       </label>
@@ -131,8 +131,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option1"
-          name="option1"
+          id="option-1"
+          name="option-1"
         >
           <option
             value=""
@@ -200,13 +200,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option2"
+        htmlFor="option-2"
       >
         Seaham, B Interchange Stand B (on South Crescent)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option2"
+        htmlFor="option-2"
       >
         duratjwd
       </label>
@@ -216,8 +216,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option2"
-          name="option2"
+          id="option-2"
+          name="option-2"
         >
           <option
             value=""
@@ -285,13 +285,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option3"
+        htmlFor="option-3"
       >
         Seaham, NE-bound Adolphus Place (on South Terrace)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option3"
+        htmlFor="option-3"
       >
         duratjga
       </label>
@@ -301,8 +301,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option3"
-          name="option3"
+          id="option-3"
+          name="option-3"
         >
           <option
             value=""
@@ -370,13 +370,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option4"
+        htmlFor="option-4"
       >
         Deneside, NE-bound The Avenue - Essex Crescent (on The Avenue)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option4"
+        htmlFor="option-4"
       >
         duratgpt
       </label>
@@ -386,8 +386,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option4"
-          name="option4"
+          id="option-4"
+          name="option-4"
         >
           <option
             value=""
@@ -455,13 +455,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option5"
+        htmlFor="option-5"
       >
         Seaham, SE-bound New Strangford Road (on New Stranford Road)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option5"
+        htmlFor="option-5"
       >
         duratgma
       </label>
@@ -471,8 +471,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option5"
-          name="option5"
+          id="option-5"
+          name="option-5"
         >
           <option
             value=""
@@ -540,13 +540,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option6"
+        htmlFor="option-6"
       >
         Seaham, NE-bound New Tempest Road - York House (on Tempest Road)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option6"
+        htmlFor="option-6"
       >
         duratgjt
       </label>
@@ -556,8 +556,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option6"
-          name="option6"
+          id="option-6"
+          name="option-6"
         >
           <option
             value=""
@@ -625,13 +625,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option7"
+        htmlFor="option-7"
       >
         New Seaham, NE-bound Mount Pleasant (on The Avenue)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option7"
+        htmlFor="option-7"
       >
         durapmjg
       </label>
@@ -641,8 +641,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option7"
-          name="option7"
+          id="option-7"
+          name="option-7"
         >
           <option
             value=""
@@ -710,13 +710,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option8"
+        htmlFor="option-8"
       >
         Seaham, E-bound Viceroy Street (on Viceroy street)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option8"
+        htmlFor="option-8"
       >
         durgawmt
       </label>
@@ -726,8 +726,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option8"
-          name="option8"
+          id="option-8"
+          name="option-8"
         >
           <option
             value=""
@@ -795,13 +795,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option9"
+        htmlFor="option-9"
       >
         Seaham, S-bound Vane Terrace - Castlereagh (on Vane Terrace)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option9"
+        htmlFor="option-9"
       >
         duratgdt
       </label>
@@ -811,8 +811,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option9"
-          name="option9"
+          id="option-9"
+          name="option-9"
         >
           <option
             value=""
@@ -880,13 +880,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option10"
+        htmlFor="option-10"
       >
         New Seaham, N-bound Estate Hail and Ride (on Windermere Road)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option10"
+        htmlFor="option-10"
       >
         durgawjp
       </label>
@@ -896,8 +896,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option10"
-          name="option10"
+          id="option-10"
+          name="option-10"
         >
           <option
             value=""
@@ -965,13 +965,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option11"
+        htmlFor="option-11"
       >
         Deneside, NE-bound Kingston Avenue (on Kingston Avenue)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option11"
+        htmlFor="option-11"
       >
         durawagw
       </label>
@@ -981,8 +981,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option11"
-          name="option11"
+          id="option-11"
+          name="option-11"
         >
           <option
             value=""
@@ -1050,13 +1050,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option12"
+        htmlFor="option-12"
       >
         Deneside, E-bound Park (on The Avenue)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option12"
+        htmlFor="option-12"
       >
         duratgwg
       </label>
@@ -1066,8 +1066,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option12"
-          name="option12"
+          id="option-12"
+          name="option-12"
         >
           <option
             value=""
@@ -1135,13 +1135,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option13"
+        htmlFor="option-13"
       >
         Deneside, NW-bound Laurel Avenue (on Laurel Avenue)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option13"
+        htmlFor="option-13"
       >
         durawamp
       </label>
@@ -1151,8 +1151,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue=""
-          id="option13"
-          name="option13"
+          id="option-13"
+          name="option-13"
         >
           <option
             value=""
@@ -1220,13 +1220,13 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
     >
       <label
         className="govuk-label matching-stop-name"
-        htmlFor="option14"
+        htmlFor="option-14"
       >
         Seaham, S-bound Sophia Street (on Sophia Street)
       </label>
       <label
         className="govuk-label naptan-code"
-        htmlFor="option14"
+        htmlFor="option-14"
       >
         durgapwp
       </label>
@@ -1236,8 +1236,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
         <select
           className="govuk-select farestage-select"
           defaultValue="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
-          id="option14"
-          name="option14"
+          id="option-14"
+          name="option-14"
         >
           <option
             value=""

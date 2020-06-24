@@ -30,17 +30,17 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
         return (
             <fieldset key={stop.atcoCode} className="govuk-fieldset">
                 <div className="matching-wrapper">
-                    <label className="govuk-label matching-stop-name" htmlFor={`option${index}`}>
+                    <label className="govuk-label matching-stop-name" htmlFor={`option-${index}`}>
                         {formatStopName(stop)}
                     </label>
-                    <label className="govuk-label naptan-code" htmlFor={`option${index}`}>
+                    <label className="govuk-label naptan-code" htmlFor={`option-${index}`}>
                         {stop.naptanCode}
                     </label>
                     <div className="farestage-select-wrapper">
                         <select
                             className="govuk-select farestage-select"
-                            id={`option${index}`}
-                            name={`option${index}`}
+                            id={`option-${index}`}
+                            name={`option-${index}`}
                             defaultValue={selectValue}
                         >
                             <option value="">Not Applicable</option>
