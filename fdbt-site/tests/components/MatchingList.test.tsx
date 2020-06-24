@@ -25,7 +25,7 @@ describe('MatchingList', () => {
                 ]}
             />,
         );
-        const selector = wrapper.find('#option14');
+        const selector = wrapper.find('#option-14');
         expect(selector.prop('defaultValue')).toEqual(
             '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
         );
@@ -35,7 +35,7 @@ describe('MatchingList', () => {
         const wrapper = shallow(
             <MatchingList userFareStages={userFareStages} stops={naptanStopInfo} selectedFareStages={[]} />,
         );
-        const selector = wrapper.find('#option1');
+        const selector = wrapper.find('#option-1');
         expect(selector.prop('defaultValue')).toEqual('');
     });
 });
