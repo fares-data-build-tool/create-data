@@ -26,7 +26,7 @@ const Login = ({ errors = [], csrfToken }: LoginProps & CustomAppProps): ReactEl
                         <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                             <div className="govuk-fieldset" aria-describedby="register-page-heading">
                                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                    <h1 className="govuk-fieldset__heading" id="register-type-page-heading">
+                                    <h1 className="govuk-fieldset__heading" id="register-page-heading">
                                         Sign in
                                     </h1>
                                 </legend>

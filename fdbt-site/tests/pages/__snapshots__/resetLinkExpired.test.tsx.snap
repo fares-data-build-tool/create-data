@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`passwordUpdated should render correctly 1`] = `
+<Component
+  description="Reset Password Link Expired page for the Fares Data Build Tool"
+  title="Reset Password Link Expired - Fares Data Build Tool"
+>
+  <h1
+    className="govuk-heading-l"
+  >
+    Reset Password Link Expired
+  </h1>
+  <p
+    className="govuk-body-l"
+  >
+    Your password link has expired.
+  </p>
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/forgotPassword"
+    id="forgot-password-button"
+    role="button"
+  >
+    Forgotten Password
+  </a>
+</Component>
+`;
