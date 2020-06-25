@@ -117,6 +117,7 @@ Resources:
                   - "cognito-idp:AdminRespondToAuthChallenge"
                   - "cognito-idp:AdminUpdateUserAttributes"
                   - "cognito-idp:AdminGetUser"
+                  - "cognito-idp:AdminSetUserPassword"
                   - "cognito-idp:ListUserPoolClients"
                   - "cognito-idp:DescribeUserPoolClient"
                   - "cognito-idp:ListUsers"
