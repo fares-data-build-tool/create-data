@@ -17,7 +17,7 @@ const ConfirmRegistration: NextPage = (): ReactElement => (
             draggable="false"
             className="govuk-button"
             data-module="govuk-button"
-            id="start-now-button"
+            id="continue-button"
         >
             Continue
         </a>

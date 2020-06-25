@@ -172,3 +172,20 @@ export const confirmForgotPassword = async (
         throw new Error(`Failed to confirm forgotten password: ${error.stack}`);
     }
 };
+
+export const updateUserPassword = async (newPassword: string, username: string): Promise<void> => {
+    console.info('updating user password...');
+
+    const params: CognitoIdentityServiceProvider.AdminSetUserPasswordRequest = {
+        Password: newPassword,
+        Permanent: true,
+        Username: username,
+        UserPoolId: userPoolId,
+    };
+
+    try {
+        await cognito.adminSetUserPassword(params).promise();
+    } catch (error) {
+        throw new Error(`Failed to update user password: ${error.stack}`);
+    }
+};

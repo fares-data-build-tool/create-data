@@ -32,7 +32,7 @@ exports[`pages login should render correctly 1`] = `
             >
               <h1
                 className="govuk-fieldset__heading"
-                id="register-type-page-heading"
+                id="register-page-heading"
               >
                 Sign in
               </h1>
@@ -184,7 +184,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
             >
               <h1
                 className="govuk-fieldset__heading"
-                id="register-type-page-heading"
+                id="register-page-heading"
               >
                 Sign in
               </h1>

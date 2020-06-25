@@ -5,9 +5,11 @@ import {
     redirectOnFareType,
     checkEmailValid,
     getAttributeFromIdToken,
+    validateNewPassword,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
+import { ErrorInfo } from '../../../../src/interfaces';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
@@ -134,6 +136,30 @@ describe('apiUtils', () => {
             const email = getAttributeFromIdToken(req, res, 'custom:noc');
 
             expect(email).toBeNull();
+        });
+    });
+
+    describe('validateNewPassword', () => {
+        const noPasswordError = { id: 'new-password', errorMessage: 'Enter a new password' };
+        const passwordLengthError = { id: 'new-password', errorMessage: 'Password must be at least 8 characters long' };
+        const passwordMatchError = { id: 'new-password', errorMessage: 'Passwords do not match' };
+        it.each([
+            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', []],
+            ['a no password error', 'no input is provided', '', '', [noPasswordError]],
+            ['a no password error', 'no new password is provided', '', 'iLoveBuses', [noPasswordError]],
+            ['a password length error', 'new password is too short', 'bus', 'iLoveBuses', [passwordLengthError]],
+            [
+                'a password match error',
+                'the two passwords do not match',
+                'iHateBuses',
+                'iLoveBuses',
+                [passwordMatchError],
+            ],
+            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', []],
+        ])('should return %s when %s', (_errors, _case, newPassword, confirmNewPassword, expectedResult) => {
+            const inputChecks: ErrorInfo[] = [];
+            const res = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
+            expect(res).toEqual(expectedResult);
         });
     });
 });
