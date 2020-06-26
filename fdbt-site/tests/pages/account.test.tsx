@@ -21,7 +21,12 @@ describe('pages', () => {
         });
 
         it('throws an error when the user email address or noc code is missing from the ID_TOKEN cookie', () => {
-            const ctx = getMockContext();
+            const ctx = getMockContext({
+                cookies: {
+                    idToken:
+                        'eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.Hgdqdw7HX8cNT9NG7jcPP7ihZWHT1TYgPJyQNpKS8YQ',
+                },
+            });
 
             expect(() => getServerSideProps(ctx)).toThrow(
                 'Could not extract the user email address and/or noc code from their ID token',

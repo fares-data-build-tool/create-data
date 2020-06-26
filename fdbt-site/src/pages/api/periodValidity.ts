@@ -17,6 +17,7 @@ import {
     redirectTo,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
+    getAttributeFromIdToken,
 } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
@@ -38,6 +39,8 @@ export interface DecisionData extends PassengerDetails {
     selectedServices?: ServicesInfo[];
     zoneName?: string;
     stops?: Stop[];
+    email: string;
+    uuid: string;
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -109,10 +112,18 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             setCookieOnResponseObject(PERIOD_EXPIRY_COOKIE, JSON.stringify({ periodValid, error: false }), req, res);
 
+            const email = getAttributeFromIdToken(req, res, 'email');
+
+            if (!email) {
+                throw new Error('Could not extract the user email address from their ID token');
+            }
+
             const period: DecisionData = {
                 operatorName: operator.operatorPublicName,
                 type: periodTypeName,
                 nocCode,
+                email,
+                uuid,
                 products: [
                     {
                         productName,
@@ -127,7 +138,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             await putStringInS3(
                 MATCHING_DATA_BUCKET_NAME,
-                `${uuid}.json`,
+                `${nocCode}/${periodTypeName}/${uuid}_${Date.now()}.json`,
                 JSON.stringify(period),
                 'application/json; charset=utf-8',
             );
