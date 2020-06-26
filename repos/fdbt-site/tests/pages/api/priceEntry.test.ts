@@ -4,37 +4,43 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 describe('Price Entry API', () => {
     describe('API validation of number of price inputs', () => {
         it('should return true if number of price inputs matches implied number of price inputs in cookie', () => {
-            const { req, res } = getMockRequestAndResponse({}, [
-                ['Acomb Lane-Canning', '100'],
-                ['BewBush-Canning', '120'],
-                ['BewBush-Acomb Lane', '1120'],
-                ['Chorlton-Canning', '140'],
-                ['Chorlton-Acomb Lane', '160'],
-                ['Chorlton-BewBush', '100'],
-                ['Crawley-Canning', '120'],
-                ['Crawley-Acomb Lane', '140'],
-                ['Crawley-BewBush', '160'],
-                ['Crawley-Chorlton', '100'],
-                ['Cranfield-Canning', '120'],
-                ['Cranfield-Acomb Lane', '140'],
-                ['Cranfield-BewBush', '160'],
-                ['Cranfield-Chorlton', '140'],
-                ['Cranfield-Crawley', '120'],
-            ]);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: [
+                    ['Acomb Lane-Canning', '100'],
+                    ['BewBush-Canning', '120'],
+                    ['BewBush-Acomb Lane', '1120'],
+                    ['Chorlton-Canning', '140'],
+                    ['Chorlton-Acomb Lane', '160'],
+                    ['Chorlton-BewBush', '100'],
+                    ['Crawley-Canning', '120'],
+                    ['Crawley-Acomb Lane', '140'],
+                    ['Crawley-BewBush', '160'],
+                    ['Crawley-Chorlton', '100'],
+                    ['Cranfield-Canning', '120'],
+                    ['Cranfield-Acomb Lane', '140'],
+                    ['Cranfield-BewBush', '160'],
+                    ['Cranfield-Chorlton', '140'],
+                    ['Cranfield-Crawley', '120'],
+                ],
+            });
             const result = numberOfInputsIsValid(req, res);
             expect(result).toBeTruthy();
         });
 
         it('should return false if number of price inputs matches implied number of price inputs in cookie', () => {
-            const { req, res } = getMockRequestAndResponse({}, [
-                ['Acomb Lane-Canning', '100'],
-                ['BewBush-Canning', '120'],
-                ['BewBush-Acomb Lane', '1120'],
-                ['Chorlton-Canning', '140'],
-                ['Chorlton-Acomb Lane', '160'],
-                ['Chorlton-BewBush', '100'],
-                ['Crawley-Canning', '120'],
-            ]);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: [
+                    ['Acomb Lane-Canning', '100'],
+                    ['BewBush-Canning', '120'],
+                    ['BewBush-Acomb Lane', '1120'],
+                    ['Chorlton-Canning', '140'],
+                    ['Chorlton-Acomb Lane', '160'],
+                    ['Chorlton-BewBush', '100'],
+                    ['Crawley-Canning', '120'],
+                ],
+            });
             const result = numberOfInputsIsValid(req, res);
             expect(result).toBe(false);
         });
@@ -58,7 +64,12 @@ describe('Price Entry API', () => {
         ];
 
         test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
-            const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: testData,
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             priceEntry(req, res);
             expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
         });

@@ -52,14 +52,22 @@ describe('definePassengerType', () => {
 
     describe('removeWhitespaceFromTextInput', () => {
         it('should remove whitespace from the request body text inputs of ageRangeMin and ageRangeMax', () => {
-            const { req } = getMockRequestAndResponse({}, { ageRangeMin: '   2   4', ageRangeMax: '   10   0       ' });
+            const { req } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: { ageRangeMin: '   2   4', ageRangeMax: '   10   0       ' },
+            });
             const filtered = removeWhitespaceFromTextInput(req);
             expect(filtered).toEqual({ ageRangeMin: '24', ageRangeMax: '100' });
         });
     });
 
     it('should throw an error and redirect to the error page when the session is invalid', async () => {
-        const { req, res } = getMockRequestAndResponse({ operator: null }, {}, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { operator: null },
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await definePassengerType(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
@@ -67,7 +75,12 @@ describe('definePassengerType', () => {
     });
 
     it('should throw an error and redirect to the error page when the PASSENGER_TYPE_COOKIE and FARE_TYPE_COOKIE are missing', async () => {
-        const { req, res } = getMockRequestAndResponse({ passengerType: null, fareType: null }, {}, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { passengerType: null, fareType: null },
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await definePassengerType(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
@@ -84,12 +97,12 @@ describe('definePassengerType', () => {
             proofDocuments: ['Membership Card', 'Student Card'],
         };
         const mockPassengerTypeCookieValue = { passengerType: 'Adult', ...mockPassengerTypeDetails };
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'single' },
-            mockPassengerTypeDetails,
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'single' },
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await definePassengerType(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
             PASSENGER_TYPE_COOKIE,
@@ -152,7 +165,12 @@ describe('definePassengerType', () => {
                 errors,
                 passengerType: 'Adult',
             };
-            const { req, res } = getMockRequestAndResponse({}, mockUserInput, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: mockUserInput,
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             await definePassengerType(req, res);
             expect(setCookieSpy).toHaveBeenCalledWith(
                 PASSENGER_TYPE_COOKIE,

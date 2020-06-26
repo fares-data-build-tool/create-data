@@ -32,9 +32,12 @@ describe('multipleProductValidity', () => {
 
     describe('addErrorsIfInvalid', () => {
         it('adds errors to incorrect data if there are invalid inputs', () => {
-            const { req } = getMockRequestAndResponse('', {
-                'validity-row0': '',
-                'validity-row1': '',
+            const { req } = getMockRequestAndResponse({
+                cookieValues: '',
+                body: {
+                    'validity-row0': '',
+                    'validity-row1': '',
+                },
             });
 
             const userInputIndex = 0;
@@ -53,9 +56,12 @@ describe('multipleProductValidity', () => {
         });
 
         it('does not add errors to correct data', () => {
-            const { req } = getMockRequestAndResponse('', {
-                'validity-row0': 'endOfCalendarDay',
-                'validity-row1': '24hr',
+            const { req } = getMockRequestAndResponse({
+                cookieValues: '',
+                body: {
+                    'validity-row0': 'endOfCalendarDay',
+                    'validity-row1': '24hr',
+                },
             });
 
             const userInputIndex = 0;
@@ -75,12 +81,12 @@ describe('multipleProductValidity', () => {
     });
 
     it('generates and dumps multiple period product JSON in S3 when the user uploads a fare zone via csv', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period', numberOfProducts: '3', selectedServices: null },
-            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period', numberOfProducts: '3', selectedServices: null },
+            body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await multipleProductValidity(req, res);
         const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
@@ -93,12 +99,12 @@ describe('multipleProductValidity', () => {
     });
 
     it('generates and dumps multiple period product JSON in S3 when the user selects a list of services', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period', numberOfProducts: '3', fareZoneName: null },
-            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period', numberOfProducts: '3', fareZoneName: null },
+            body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await multipleProductValidity(req, res);
         const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
@@ -111,7 +117,12 @@ describe('multipleProductValidity', () => {
     });
 
     it('redirects back to the multipleProductValidity page if there is no body', async () => {
-        const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await multipleProductValidity(req, res);
 
@@ -121,12 +132,12 @@ describe('multipleProductValidity', () => {
     });
 
     it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareZoneName: null },
-            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareZoneName: null },
+            body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await multipleProductValidity(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -135,12 +146,12 @@ describe('multipleProductValidity', () => {
     });
 
     it('should redirect to the error page if a required cookie is missing', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { operator: null },
-            { 'validity-row0': 'endOfCalendarDay' },
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { operator: null },
+            body: { 'validity-row0': 'endOfCalendarDay' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await multipleProductValidity(req, res);
 
@@ -150,12 +161,12 @@ describe('multipleProductValidity', () => {
     });
 
     it('throws an error if no stops are returned from query', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period', numberOfProducts: '3' },
-            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period', numberOfProducts: '3' },
+            body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
 
         await multipleProductValidity(req, res);

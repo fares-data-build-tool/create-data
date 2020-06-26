@@ -11,7 +11,12 @@ describe('service', () => {
     it('should return 302 redirect to /service when the session is valid, but there is no body in the request', () => {
         (isSessionValid as {}) = jest.fn().mockReturnValue(true);
         const writeHeadMock = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/service',
@@ -22,7 +27,12 @@ describe('service', () => {
         (isSessionValid as {}) = jest.fn().mockReturnValue(true);
         (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const writeHeadMock = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, { service: 'test' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { service: 'test' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/singleDirection',
@@ -31,7 +41,12 @@ describe('service', () => {
 
     it('should return 302 redirect to /error when session is not valid', () => {
         const writeHeadMock = jest.fn();
-        const { req, res } = getMockRequestAndResponse({ operator: null }, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { operator: null },
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',

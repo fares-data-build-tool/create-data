@@ -10,14 +10,14 @@ authSignInSpy.mockImplementation(() => Promise.resolve());
 
 describe('forgotPassword', () => {
     it('redirects the user to reset confirmation given a valid email address format', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 email: 'test@test.com',
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await forgotPassword(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -26,14 +26,14 @@ describe('forgotPassword', () => {
     });
 
     it('redirects the user to forgot password  given a invalid email address format', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 email: 'test@test',
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await forgotPassword(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -44,7 +44,7 @@ describe('forgotPassword', () => {
     it('should set the FORGOT_PASSWORD_COOKIE when redirecting', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { email: 'test@email.com' };
-        const { req, res } = getMockRequestAndResponse({}, mockBody);
+        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockStringifiedInputCheck = JSON.stringify(mockBody);
         await forgotPassword(req, res);
         expect(setCookieSpy).toBeCalledWith(FORGOT_PASSWORD_COOKIE, mockStringifiedInputCheck, req, res);

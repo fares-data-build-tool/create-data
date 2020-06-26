@@ -24,12 +24,16 @@ describe('changePassword', () => {
     it('should set the USER_COOKIE and redirect to /passwordUpdated when password update is successful', async () => {
         getAttributeSpy.mockImplementation(() => 'fake.address@email.com');
         initiateAuthSpy.mockImplementation(() => Promise.resolve({ AuthenticationResult: {} }));
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses', confirmNewPassword: 'iReallyLoveBuses' },
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                oldPassword: 'iLoveBuses',
+                newPassword: 'iReallyLoveBuses',
+                confirmNewPassword: 'iReallyLoveBuses',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await changePassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
             USER_COOKIE,
@@ -45,7 +49,11 @@ describe('changePassword', () => {
     it('should redirect to the error page when the ID_TOKEN_COOKIE is missing the username attribute', async () => {
         getAttributeSpy.mockImplementation(() => null);
         initiateAuthSpy.mockImplementation(() => Promise.resolve({ AuthenticationResult: {} }));
-        const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await changePassword(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
@@ -95,7 +103,11 @@ describe('changePassword', () => {
             return Promise.resolve({ AuthenticationResult: {} });
         });
 
-        const { req, res } = getMockRequestAndResponse({}, input, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: input,
+            mockWriteHeadFn: writeHeadMock,
+        });
         await changePassword(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify({ inputChecks }), req, res);

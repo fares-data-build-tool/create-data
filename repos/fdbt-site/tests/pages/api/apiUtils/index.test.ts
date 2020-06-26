@@ -61,8 +61,12 @@ describe('apiUtils', () => {
 
     describe('getUuidFromCookie', () => {
         it('should get the uuid from the cookie', () => {
-            const { req, res } = getMockRequestAndResponse({}, null, {
-                operatorUuid: '780e3459-6305-4ae5-9082-b925b92cb46c',
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: null,
+                uuid: {
+                    operatorUuid: '780e3459-6305-4ae5-9082-b925b92cb46c',
+                },
             });
             const result = getUuidFromCookie(req, res);
             expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
@@ -71,7 +75,12 @@ describe('apiUtils', () => {
 
     describe('redirectOnFareType', () => {
         it('should return 302 redirect to /service when the single ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'single' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'single' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/service',
@@ -79,7 +88,12 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /service when the return ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'return' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'return' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/service',
@@ -87,7 +101,12 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /periodType when the period ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'period' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'period' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/periodType',
@@ -95,7 +114,12 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /serviceList when the flat fare ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'flatFare' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'flatFare' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/serviceList',
@@ -103,7 +127,12 @@ describe('apiUtils', () => {
         });
 
         it('should throw error if unexpected fare type is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'roundabout' }, null, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'roundabout' },
+                body: null,
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
 
             expect(() => {
                 redirectOnFareType(req, res);
@@ -122,7 +151,9 @@ describe('apiUtils', () => {
 
         it('should retrieve given attribute if present', () => {
             const { req, res } = getMockRequestAndResponse({
-                idToken: emailJwt,
+                cookieValues: {
+                    idToken: emailJwt,
+                },
             });
             const email = getAttributeFromIdToken(req, res, 'email');
 
@@ -131,7 +162,9 @@ describe('apiUtils', () => {
 
         it('should return null if not present', () => {
             const { req, res } = getMockRequestAndResponse({
-                idToken: emailJwt,
+                cookieValues: {
+                    idToken: emailJwt,
+                },
             });
             const email = getAttributeFromIdToken(req, res, 'custom:noc');
 

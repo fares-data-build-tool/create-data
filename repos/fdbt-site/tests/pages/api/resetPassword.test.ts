@@ -62,25 +62,30 @@ describe('resetPassword', () => {
     ];
 
     test.each(cases)('given %p, sets the correct error cookie', async (_case, testData, expectedCookieValue) => {
-        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should redirect when successfully resetting password', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 username: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
@@ -100,18 +105,18 @@ describe('resetPassword', () => {
             throw new Error('ExpiredCodeException');
         });
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 username: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
 
@@ -134,18 +139,18 @@ describe('resetPassword', () => {
             ],
         };
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 username: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
 

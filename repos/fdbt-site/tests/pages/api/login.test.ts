@@ -60,22 +60,27 @@ describe('login', () => {
     ];
 
     test.each(cases)('given %p, sets the correct error cookie', async (_, testData, expectedCookieValue) => {
-        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await login(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should redirect when successfully signed in', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 email: 'test@test.com',
                 password: 'abcdefghi',
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await login(req, res);
 
@@ -99,15 +104,15 @@ describe('login', () => {
             ],
         };
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 email: 'test@test.com',
                 password: 'abcdefghi',
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await login(req, res);
 
