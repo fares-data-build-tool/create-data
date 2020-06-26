@@ -30,6 +30,12 @@ describe('Matching API', () => {
     putStringInS3Spy.mockImplementation(() => Promise.resolve());
     const writeHeadMock = jest.fn();
 
+    const mockDate = Date.now();
+
+    beforeEach(() => {
+        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
+    });
+
     afterEach(() => {
         jest.resetAllMocks();
     });
@@ -48,9 +54,10 @@ describe('Matching API', () => {
         await matching(req, res);
 
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
+            `DCCL/single/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );
@@ -71,9 +78,10 @@ describe('Matching API', () => {
         await matching(req, res);
 
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
+            `DCCL/return/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );

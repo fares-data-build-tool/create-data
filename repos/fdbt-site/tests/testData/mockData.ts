@@ -111,7 +111,7 @@ export const getMockRequestAndResponse = ({
             '6#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
             '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
         ],
-        idToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.Hgdqdw7HX8cNT9NG7jcPP7ihZWHT1TYgPJyQNpKS8YQ',
+        idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
     } = cookieValues;
 
@@ -1019,6 +1019,8 @@ export const expectedMatchingJsonSingle = {
     passengerType: 'Adult',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
+    email: 'test@example.com',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     fareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1135,6 +1137,8 @@ export const expectedMatchingJsonReturnNonCircular = {
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
+    email: 'test@example.com',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     inboundFareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1281,6 +1285,8 @@ export const expectedMatchingJsonReturnCircular = {
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     inboundFareZones: [],
     outboundFareZones: [
         {
@@ -1501,6 +1507,8 @@ export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Product A',
@@ -1518,6 +1526,8 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Product A',
@@ -1550,6 +1560,8 @@ export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1579,6 +1591,8 @@ export const expectedMultiProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1624,6 +1638,8 @@ export const expectedFlatFareProductUploadJson = {
     passengerType: 'Adult',
     type: 'flatFare',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Rider',

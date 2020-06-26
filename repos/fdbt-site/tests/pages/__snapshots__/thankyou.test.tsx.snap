@@ -38,7 +38,17 @@ exports[`pages thankyou should render correctly 1`] = `
   <p
     className="govuk-body"
   >
-    Your data will be converted to the NeTEx format and published to the open data hub. You will be contacted should there be a problem with your upload.
+    Your data will be converted to the NeTEx format and will be emailed to 
+    <strong>
+      test@example.com
+    </strong>
+     
+    within the next 5 minutes for the fares you have just told us about.
+  </p>
+  <p
+    className="govuk-body"
+  >
+    You will be contacted should there be a problem with your upload.
   </p>
   <p
     className="govuk-body"

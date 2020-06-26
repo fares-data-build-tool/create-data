@@ -6,7 +6,7 @@ import { getMockContext } from '../testData/mockData';
 describe('pages', () => {
     describe('thankyou', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Thankyou uuid="a1b2c3d4e5" />);
+            const tree = shallow(<Thankyou uuid="a1b2c3d4e5" emailAddress="test@example.com" />);
             expect(tree).toMatchSnapshot();
         });
     });
@@ -22,6 +22,7 @@ describe('pages', () => {
             const expectedResults = {
                 props: {
                     uuid: '84c7b1b4-e178-4849-bc49-bd32cdb2db39',
+                    emailAddress: 'test@example.com',
                 },
             };
 

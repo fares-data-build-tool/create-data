@@ -148,6 +148,10 @@ describe('productDetails', () => {
     });
 
     it('correctly generates JSON for a flat fare product and uploads to S3', async () => {
+        const mockDate = Date.now();
+
+        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'flatFare', fareZoneName: null },
             body: { productDetailsNameInput: 'Weekly Rider', productDetailsPriceInput: '7' },
@@ -159,7 +163,7 @@ describe('productDetails', () => {
         const actualFlatFareProduct = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            `TEST/flatFare/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );

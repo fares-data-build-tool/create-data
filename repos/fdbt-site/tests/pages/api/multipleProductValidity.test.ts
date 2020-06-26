@@ -13,6 +13,8 @@ describe('multipleProductValidity', () => {
     const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
     const writeHeadMock = jest.fn();
 
+    const mockDate = Date.now();
+
     putStringInS3Spy.mockImplementation(() => Promise.resolve());
 
     afterEach(() => {
@@ -23,6 +25,7 @@ describe('multipleProductValidity', () => {
     let batchGetStopsByAtcoCodeSpy: jest.SpyInstance;
 
     beforeEach(() => {
+        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
         jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
 
         batchGetStopsByAtcoCodeSpy = jest
@@ -91,7 +94,7 @@ describe('multipleProductValidity', () => {
         const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            `TEST/period/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );
@@ -109,7 +112,7 @@ describe('multipleProductValidity', () => {
         const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            `TEST/period/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );
