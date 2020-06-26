@@ -1,7 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
 import Head from 'next/head';
-import AlphaBanner from './AlphaBanner';
-import Footer from './Footer';
 
 import favicon from '../assets/images/favicon.ico';
 import { buildTitle } from '../utils';
@@ -27,15 +25,9 @@ export const BaseLayout: FC<LayoutProps> = ({
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta charSet="utf-8" />
         </Head>
-
-        <div className="govuk-width-container app-width-container--wide">
-            <AlphaBanner />
-
-            <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                {children}
-            </main>
-        </div>
-        <Footer />
+        <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
+            {children}
+        </main>
     </div>
 );
 

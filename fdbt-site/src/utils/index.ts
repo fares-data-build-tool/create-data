@@ -7,6 +7,22 @@ import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_CO
 import { Stop } from '../data/auroradb';
 import { ErrorInfo, CognitoIdToken } from '../interfaces';
 
+export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
+    const cookies = parseCookies(ctx);
+
+    if (cookies[cookie]) {
+        if (jsonAttribute) {
+            const parsedCookie = JSON.parse(cookies[cookie]);
+
+            return parsedCookie[jsonAttribute];
+        }
+
+        return cookies[cookie];
+    }
+
+    return null;
+};
+
 export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);

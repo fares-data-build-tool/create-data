@@ -8,7 +8,7 @@ import {
     unescapeAndDecodeCookie,
 } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE } from '../../constants';
+import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE, INPUT_METHOD_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 
@@ -143,6 +143,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const cookies = new Cookies(req, res);
             const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
             const journeyObject = JSON.parse(journeyCookie);
+
+            setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'csv' }), req, res);
 
             if (journeyObject?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');

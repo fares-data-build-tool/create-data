@@ -20,11 +20,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     try {
         const username = getAttributeFromIdToken(req, res, 'email');
         const { oldPassword, newPassword, confirmNewPassword } = req.body;
-
         if (!username) {
             throw new Error('Could not retrieve email from ID_TOKEN_COOKIE');
         }
-
         let inputChecks: ErrorInfo[] = [];
 
         if (!oldPassword) {
@@ -33,17 +31,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             setCookieAndRedirect(req, res, inputChecks);
             return;
         }
-
         inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
-
         if (inputChecks.some(el => el.errorMessage !== '')) {
             setCookieAndRedirect(req, res, inputChecks);
             return;
         }
-
         try {
             const authResponse = await initiateAuth(username, oldPassword);
-
             if (authResponse?.AuthenticationResult) {
                 try {
                     await updateUserPassword(newPassword, username);

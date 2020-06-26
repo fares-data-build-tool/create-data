@@ -9,7 +9,7 @@ describe('periodType', () => {
     });
 
     it('should return 302 redirect to /periodType when no input method is selected', () => {
-        const { req, res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
         periodType(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -18,7 +18,12 @@ describe('periodType', () => {
     });
 
     it('should return 302 redirect to /error when the session is invalid', () => {
-        const { req, res } = getMockRequestAndResponse({ operator: null }, {}, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { operator: null },
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         periodType(req, res);
 
@@ -28,7 +33,12 @@ describe('periodType', () => {
     });
 
     it('should return 302 redirect to /csvZoneUpload when the user selects a geo zone', () => {
-        const { req, res } = getMockRequestAndResponse({}, { periodType: 'periodGeoZone' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { periodType: 'periodGeoZone' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         periodType(req, res);
 
@@ -38,7 +48,12 @@ describe('periodType', () => {
     });
 
     it('should return 302 redirect to /serviceList (with selectAll=false) when the user selects the service selection option', () => {
-        const { req, res } = getMockRequestAndResponse({}, { periodType: 'periodMultipleServices' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { periodType: 'periodMultipleServices' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         periodType(req, res);
 
