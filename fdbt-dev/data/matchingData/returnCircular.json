@@ -4,6 +4,8 @@
   "operatorShortName": "Warrington's Own Buses",
   "serviceDescription": "Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road",
   "type": "return",
+  "email": "test@example.com",
+  "uuid": "BLACc1363964",
   "outboundFareZones": [
     {
       "name": "Shott Drive",

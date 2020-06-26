@@ -2,6 +2,8 @@
   "operatorName": "Blackpool Transport",
   "type": "periodGeoZone",
   "nocCode": "BLAC",
+  "email": "test@example.com",
+  "uuid": "BLACc1363964",
   "products": [
     {
       "productName": "Product 1",

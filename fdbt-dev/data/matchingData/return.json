@@ -4,6 +4,8 @@
   "operatorShortName": "Blackpool Transport",
   "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)",
   "type": "return",
+  "email": "test@example.com",
+  "uuid": "BLACc1363964",
   "inboundFareZones": [
     {
       "name": "Shott Drive",

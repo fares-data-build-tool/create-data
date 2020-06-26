@@ -4,6 +4,8 @@
   "operatorShortName": "Blackpool Transport",
   "serviceDescription": "CLEVELEYS - MERESIDE via Blackpool",
   "type": "single",
+  "email": "test@example.com",
+  "uuid": "BLACc1363964",
   "fareZones": [
     {
       "name": "Test Stage 1",
