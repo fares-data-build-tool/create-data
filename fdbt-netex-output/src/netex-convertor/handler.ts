@@ -18,13 +18,13 @@ const uploadToS3 = async (netex: string, fileName: string): Promise<void> => {
     );
 };
 
-export const generateFileName = (nocCode: string, type: string, uuid: string): string =>
-    `${nocCode}/${type}/${uuid}-${Date.now()}.xml`;
+export const generateFileName = (eventFileName: string): string => eventFileName.replace('.json', '.xml');
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
         const s3Data = await s3.fetchDataFromS3(event);
-        const { type, uuid, nocCode } = s3Data;
+        const s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+        const { type } = s3Data;
 
         console.info(`NeTEx generation starting for type: ${type}...`);
 
@@ -35,7 +35,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const netexGen = pointToPointTicketNetexGenerator(matchingData, operatorData);
             const generatedNetex = await netexGen.generate();
 
-            const fileName = generateFileName(nocCode, type, uuid);
+            const fileName = generateFileName(s3FileName);
 
             await uploadToS3(generatedNetex, fileName);
         } else if (type === 'periodGeoZone' || type === 'periodMultipleServices' || type === 'flatFare') {
@@ -44,7 +44,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const netexGen = periodTicketNetexGenerator(userPeriodTicket, operatorData);
             const generatedNetex = await netexGen.generate();
 
-            const fileName = generateFileName(nocCode, type, uuid);
+            const fileName = generateFileName(s3FileName);
 
             await uploadToS3(generatedNetex, fileName);
         } else {
