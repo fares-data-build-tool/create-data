@@ -10,6 +10,9 @@ exports[`pages chooseStages should render correctly 1`] = `
     csrfToken=""
     method="post"
   >
+    <ErrorSummary
+      errors={Array []}
+    />
     <div
       className="govuk-form-group"
     >
@@ -27,27 +30,26 @@ exports[`pages chooseStages should render correctly 1`] = `
             How many fare stages does the service have?
           </h1>
         </legend>
-        <div
-          className="govuk-form-group"
+        <label
+          className="govuk-hint"
+          htmlFor="fare-stages"
+          id="fare-stage-hint"
         >
-          <label
-            className="govuk-hint"
-            htmlFor="width-2"
-          >
-            Enter the number of fare stages between 1 - 20 (for example 3)
-          </label>
+          Enter the number of fare stages between 2 - 20 (for example 3)
+        </label>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="how-many-stages-error"
+          errors={Array []}
+        >
           <input
+            aria-describedby="fare-stage-hint"
             className="govuk-input govuk-input--width-2"
             id="fare-stages"
-            max="20"
-            maxLength={2}
-            min="1"
             name="fareStageInput"
-            pattern="^[0-9]*$"
-            required={true}
-            type="number"
+            type="text"
           />
-        </div>
+        </FormElementWrapper>
       </fieldset>
     </div>
     <input

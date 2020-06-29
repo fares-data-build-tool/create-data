@@ -1,12 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { FARE_STAGES_COOKIE, JOURNEY_COOKIE, USER_DATA_BUCKET_NAME, INPUT_METHOD_COOKIE } from '../../constants/index';
+import _ from 'lodash';
+import {
+    JOURNEY_COOKIE,
+    USER_DATA_BUCKET_NAME,
+    PRICE_ENTRY_INPUTS_COOKIE,
+    PRICE_ENTRY_ERRORS_COOKIE,
+    INPUT_METHOD_COOKIE,
+} from '../../constants/index';
 import {
     getUuidFromCookie,
     redirectToError,
     redirectTo,
     unescapeAndDecodeCookie,
     setCookieOnResponseObject,
+    deleteCookieOnResponseObject,
 } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
@@ -30,26 +38,43 @@ interface FareTriangleData {
     };
 }
 
-export const numberOfInputsIsValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    const cookies = new Cookies(req, res);
-    const fareStagesCookie = unescapeAndDecodeCookie(cookies, FARE_STAGES_COOKIE);
-    const fareStagesObject = JSON.parse(fareStagesCookie);
-    const numberOfFareStages = fareStagesObject.fareStages;
-    const expectedNumberOfPriceInputs = (numberOfFareStages * (numberOfFareStages - 1)) / 2;
-    const numberOfInputInApiRequest = Object.entries(req.body).length;
+export interface FaresInformation {
+    inputs: FaresInput[];
+    errorInformation: PriceEntryError[];
+}
 
-    return expectedNumberOfPriceInputs === numberOfInputInApiRequest;
-};
+export interface FaresInput {
+    v: string;
+    k: string;
+}
 
-export const priceIsValid = (req: NextApiRequest): boolean => {
-    const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
-    for (let itemNum = 0; itemNum < arrayOfFareItemArrays.length; itemNum += 1) {
-        const price = arrayOfFareItemArrays[itemNum][1];
-        if (!Number.isNaN(Number(price))) {
-            return true;
+export interface PriceEntryError {
+    v: string;
+    k: string;
+}
+
+export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
+    const priceEntries = Object.entries(req.body);
+    const errors: PriceEntryError[] = [];
+    const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
+        if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
+            if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
+                // k and v used to keep cookie size small - key and value
+                errors.push({
+                    v: 'A',
+                    k: priceEntry[0],
+                });
+            }
         }
-    }
-    return false;
+        return {
+            v: priceEntry[1] as string,
+            k: priceEntry[0],
+        };
+    });
+    return {
+        inputs: sortedInputs,
+        errorInformation: errors,
+    };
 };
 
 export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => {
@@ -100,14 +125,28 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!req.body || _.isEmpty(req.body)) {
+            throw new Error('Body of request not found.');
+        }
+
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
 
-        if (!numberOfInputsIsValid(req, res) || !priceIsValid(req)) {
+        const errorCheck = inputsValidityCheck(req);
+
+        if (errorCheck.errorInformation.length > 0) {
+            // two cookies as if there are too many fare stages, cookie gets too large
+            const inputCookieValue = JSON.stringify(errorCheck.inputs);
+            setCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, inputCookieValue, req, res);
+            const errorCookieValue = JSON.stringify(errorCheck.errorInformation);
+            setCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, errorCookieValue, req, res);
             redirectTo(res, '/priceEntry');
             return;
         }
+        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, req, res);
+        deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, req, res);
+
         const mappedData = faresTriangleDataMapper(req);
         const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));
@@ -122,7 +161,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/outboundMatching');
             return;
         }
-
         redirectTo(res, '/matching');
     } catch (error) {
         const message = 'There was a problem generating the priceEntry JSON:';
