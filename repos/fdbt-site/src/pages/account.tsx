@@ -49,6 +49,16 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                     <p className="govuk-body content-three-quarters">{nocCode}</p>
                 </div>
             </div>
+            <a
+                href="/"
+                role="button"
+                draggable="false"
+                className="govuk-button"
+                data-module="govuk-button"
+                id="home-button"
+            >
+                Home
+            </a>
         </TwoThirdsLayout>
     );
 };

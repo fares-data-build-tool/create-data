@@ -10,6 +10,7 @@ import {
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
     FARE_TYPE_COOKIE,
+    INPUT_METHOD_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
     PASSENGER_TYPE_COOKIE,
@@ -20,30 +21,44 @@ import {
     PERIOD_TYPE_COOKIE,
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
+    USER_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, Breadcrumb } from '../../src/interfaces';
 
 interface GetMockContextInput {
     cookies?: any;
     body?: any;
+    url?: any;
     uuid?: any;
     mockWriteHeadFn?: jest.Mock<any, any>;
     mockEndFn?: jest.Mock<any, any>;
     isLoggedin?: boolean;
 }
 
-export const getMockRequestAndResponse = (
-    cookieValues: any = {},
-    body: any = null,
-    uuid: any = {},
+interface GetMockRequestAndResponse {
+    cookieValues?: any;
+    body?: any;
+    uuid?: any;
+    mockWriteHeadFn?: jest.Mock<any, any>;
+    mockEndFn?: jest.Mock<any, any>;
+    requestHeaders?: any;
+    isLoggedin?: boolean;
+    url?: any;
+}
+
+export const getMockRequestAndResponse = ({
+    cookieValues = {},
+    body = null,
+    uuid = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
-    requestHeaders: any = {},
+    requestHeaders = {},
     isLoggedin = true,
-): { req: any; res: any } => {
+    url = null,
+}: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
     res.end = mockEndFn;
@@ -54,6 +69,7 @@ export const getMockRequestAndResponse = (
             operatorPublicName: 'test',
         },
         fareType = 'single',
+        inputMethod = 'csv',
         passengerType = { passengerType: 'Adult' },
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
@@ -95,12 +111,14 @@ export const getMockRequestAndResponse = (
             '6#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
             '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
         ],
-        idToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.Hgdqdw7HX8cNT9NG7jcPP7ihZWHT1TYgPJyQNpKS8YQ',
+        idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
+        userCookieValue = null,
     } = cookieValues;
 
     const {
         operatorUuid = defaultUuid,
         fareTypeUuid = defaultUuid,
+        inputMethodUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
@@ -117,6 +135,10 @@ export const getMockRequestAndResponse = (
 
     cookieString += fareType
         ? `${FARE_TYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
+        : '';
+
+    cookieString += inputMethod
+        ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
         : '';
 
     cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
@@ -164,10 +186,13 @@ export const getMockRequestAndResponse = (
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
 
+    cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
+
     const req = mockRequest({
         connection: {
             encrypted: true,
         },
+        url,
         headers: {
             host: 'localhost:5000',
             cookie: cookieString,
@@ -191,8 +216,18 @@ export const getMockContext = ({
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     isLoggedin = true,
+    url = null,
 }: GetMockContextInput = {}): NextPageContext => {
-    const { req, res } = getMockRequestAndResponse(cookies, body, uuid, mockWriteHeadFn, mockEndFn, {}, isLoggedin);
+    const { req, res } = getMockRequestAndResponse({
+        cookieValues: cookies,
+        body,
+        uuid,
+        mockWriteHeadFn,
+        mockEndFn,
+        requestHeaders: {},
+        isLoggedin,
+        url,
+    });
 
     const ctx: NextPageContext = {
         res,
@@ -984,6 +1019,8 @@ export const expectedMatchingJsonSingle = {
     passengerType: 'Adult',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
+    email: 'test@example.com',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     fareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1100,6 +1137,8 @@ export const expectedMatchingJsonReturnNonCircular = {
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
+    email: 'test@example.com',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     inboundFareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1246,6 +1285,8 @@ export const expectedMatchingJsonReturnCircular = {
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     inboundFareZones: [],
     outboundFareZones: [
         {
@@ -1466,6 +1507,8 @@ export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Product A',
@@ -1483,6 +1526,8 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Product A',
@@ -1515,6 +1560,8 @@ export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1544,6 +1591,8 @@ export const expectedMultiProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1589,6 +1638,8 @@ export const expectedFlatFareProductUploadJson = {
     passengerType: 'Adult',
     type: 'flatFare',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Rider',
@@ -2177,5 +2228,267 @@ export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
     {
         errorMessage: 'Enter a minimum or maximum age',
         id: 'age-range-max',
+    },
+];
+
+export const mockBreadCrumbList: Breadcrumb[] = [
+    { name: 'Home', link: '/', show: true },
+    { name: 'Select Fare Type', link: '/fareType', show: true },
+    { name: 'Select Passenger Type', link: '/passengerType', show: true },
+    { name: 'Select Service', link: '/service', show: true },
+];
+
+export const mockFromHomeBreadcrumbs: Breadcrumb[] = [];
+
+export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Enter Passenger Type Details',
+        link: '/definePassengerType',
+        show: true,
+    },
+    {
+        name: 'Select Service',
+        link: '/service',
+        show: true,
+    },
+    {
+        name: 'Select Direction',
+        link: '/singleDirection',
+        show: true,
+    },
+    {
+        name: 'Select Input Method',
+        link: '/inputMethod',
+        show: true,
+    },
+    {
+        name: 'Upload Fares Triangle CSV',
+        link: '/csvUpload',
+        show: true,
+    },
+    {
+        name: 'Match Stops',
+        link: '/matching',
+        show: true,
+    },
+];
+
+export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Select Service',
+        link: '/service',
+        show: true,
+    },
+    {
+        name: 'Select Direction',
+        link: '/returnDirection',
+        show: true,
+    },
+    {
+        name: 'Select Input Method',
+        link: '/inputMethod',
+        show: true,
+    },
+    {
+        name: 'Stage Count Check',
+        link: '/howManyStages',
+        show: true,
+    },
+    {
+        name: 'Enter Number of Stages',
+        link: '/chooseStages',
+        show: true,
+    },
+    {
+        name: 'Enter Stage Names',
+        link: '/stageNames',
+        show: true,
+    },
+    {
+        name: 'Enter Stage Prices',
+        link: '/priceEntry',
+        show: true,
+    },
+    {
+        name: 'Match Outbound Stops',
+        link: '/outboundMatching',
+        show: true,
+    },
+];
+
+export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Enter Passenger Type Details',
+        link: '/definePassengerType',
+        show: true,
+    },
+    {
+        name: 'Select Period Type',
+        link: '/periodType',
+        show: true,
+    },
+    {
+        name: 'Upload Zone CSV',
+        link: '/csvZoneUpload',
+        show: true,
+    },
+];
+
+export const mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Enter Passenger Type Details',
+        link: '/definePassengerType',
+        show: true,
+    },
+];
+
+export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Select Period Type',
+        link: '/periodType',
+        show: true,
+    },
+    {
+        name: 'Select Services',
+        link: '/serviceList',
+        show: true,
+    },
+    {
+        name: 'Enter Number of Products',
+        link: '/howManyProducts',
+        show: true,
+    },
+    {
+        name: 'Enter Product Details',
+        link: '/multipleProducts',
+        show: true,
+    },
+    {
+        name: 'Select Product Period Validity',
+        link: '/multipleProductValidity',
+        show: true,
+    },
+];
+
+export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Select Period Type',
+        link: '/periodType',
+        show: true,
+    },
+    {
+        name: 'Select Services',
+        link: '/serviceList',
+        show: true,
+    },
+    {
+        name: 'Enter Number of Products',
+        link: '/howManyProducts',
+        show: true,
+    },
+    {
+        name: 'Enter Product Details',
+        link: '/productDetails',
+        show: true,
+    },
+    {
+        name: 'Enter Days Valid',
+        link: '/chooseValidity',
+        show: true,
+    },
+    {
+        name: 'Select Product Period Validity',
+        link: '/periodValidity',
+        show: true,
     },
 ];

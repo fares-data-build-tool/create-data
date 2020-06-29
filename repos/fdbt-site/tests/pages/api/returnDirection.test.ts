@@ -12,7 +12,12 @@ describe('returnDirection', () => {
 
     it('should return 302 redirect to /returnDirection when the session is valid, but there is no request body', () => {
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "single"}' };
-        const { req, res } = getMockRequestAndResponse(mockFareTypeCookie, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: mockFareTypeCookie,
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         (setCookieOnResponseObject as {}) = jest.fn();
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -26,12 +31,12 @@ describe('returnDirection', () => {
         const mockFareTypeCookie = {
             'fdbt-journey': '{errorMessages: [], inboundJourney: "abc", outboundJourney: "def"}',
         };
-        const { req, res } = getMockRequestAndResponse(
-            mockFareTypeCookie,
-            { journeyPattern: 'test_journey', inboundJourney: 'inbound', outboundJourney: 'outbound' },
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: mockFareTypeCookie,
+            body: { journeyPattern: 'test_journey', inboundJourney: 'inbound', outboundJourney: 'outbound' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         (setCookieOnResponseObject as {}) = jest.fn();
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -43,12 +48,12 @@ describe('returnDirection', () => {
         (isSessionValid as {}) = jest.fn().mockReturnValue(true);
         (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "returnSingle"}' };
-        const { req, res } = getMockRequestAndResponse(
-            mockFareTypeCookie,
-            { journeyPattern: 'test_journey' },
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: mockFareTypeCookie,
+            body: { journeyPattern: 'test_journey' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         (setCookieOnResponseObject as {}) = jest.fn();
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -57,7 +62,12 @@ describe('returnDirection', () => {
     });
 
     it('should return 302 redirect to /error when session is not valid', () => {
-        const { req, res } = getMockRequestAndResponse({ operator: null }, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { operator: null },
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',

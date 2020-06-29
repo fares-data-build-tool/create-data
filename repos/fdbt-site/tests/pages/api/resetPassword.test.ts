@@ -4,7 +4,7 @@ import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { USER_COOKIE } from '../../../src/constants';
 import * as auth from '../../../src/data/cognito';
 
-describe('reset password', () => {
+describe('resetPassword', () => {
     const forgotPasswordSubmitSpy = jest.spyOn(auth, 'confirmForgotPassword');
     const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
@@ -30,9 +30,7 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                ],
+                inputChecks: [{ id: 'new-password', errorMessage: 'Password must be at least 8 characters long' }],
             },
         ],
         [
@@ -45,9 +43,7 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                ],
+                inputChecks: [{ id: 'new-password', errorMessage: 'Enter a new password' }],
             },
         ],
         [
@@ -60,37 +56,47 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [{ inputValue: '', id: 'password', error: 'Passwords do not match' }],
+                inputChecks: [{ id: 'new-password', errorMessage: 'Passwords do not match' }],
             },
         ],
     ];
 
-    test.each(cases)('given %p, sets the correct error cookie', async (_, testData, expectedCookieValue) => {
-        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+    test.each(cases)('given %p, sets the correct error cookie', async (_case, testData, expectedCookieValue) => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should redirect when successfully resetting password', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 username: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
-
+        expect(setCookieSpy).toHaveBeenCalledWith(
+            USER_COOKIE,
+            JSON.stringify({ redirectFrom: '/resetPassword' }),
+            req,
+            res,
+        );
         expect(forgotPasswordSubmitSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/resetPasswordSuccess',
+            Location: '/passwordUpdated',
         });
     });
 
@@ -99,18 +105,18 @@ describe('reset password', () => {
             throw new Error('ExpiredCodeException');
         });
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 username: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
 
@@ -127,25 +133,24 @@ describe('reset password', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: '',
-                    id: 'password',
-                    error: 'There was a problem resetting your password.',
+                    id: 'new-password',
+                    errorMessage: 'There was a problem resetting your password.',
                 },
             ],
         };
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 username: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await resetPassword(req, res);
 

@@ -10,8 +10,15 @@ describe('serviceList', () => {
     });
 
     it('redirects back to /serviceList if there are errors', () => {
-        const { req, res } = getMockRequestAndResponse({ fareType: 'period' }, {}, {}, writeHeadMock, jest.fn(), {
-            referer: `http://localhost:5000${selectAllFalseUrl}`,
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period' },
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            mockEndFn: jest.fn(),
+            requestHeaders: {
+                referer: `http://localhost:5000${selectAllFalseUrl}`,
+            },
         });
 
         serviceList(req, res);
@@ -23,16 +30,16 @@ describe('serviceList', () => {
 
     it('should change the query string for select all to true when select all button is selected', () => {
         const selectAllTrueUrl = '/serviceList?selectAll=true';
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period' },
-            { selectAll: 'Select All' },
-            {},
-            writeHeadMock,
-            jest.fn(),
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period' },
+            body: { selectAll: 'Select All' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            mockEndFn: jest.fn(),
+            requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
-        );
+        });
 
         serviceList(req, res);
 
@@ -48,16 +55,16 @@ describe('serviceList', () => {
             '47': 'hhhhhh#23/04/20',
         };
 
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period' },
-            { ...serviceInfo },
-            {},
-            writeHeadMock,
-            jest.fn(),
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period' },
+            body: { ...serviceInfo },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            mockEndFn: jest.fn(),
+            requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
-        );
+        });
 
         serviceList(req, res);
 
@@ -73,16 +80,16 @@ describe('serviceList', () => {
             '47': 'hhhhhh#23/04/20',
         };
 
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'flatFare' },
-            { ...serviceInfo },
-            {},
-            writeHeadMock,
-            jest.fn(),
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'flatFare' },
+            body: { ...serviceInfo },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            mockEndFn: jest.fn(),
+            requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
-        );
+        });
 
         serviceList(req, res);
 

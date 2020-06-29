@@ -28,7 +28,12 @@ describe('chooseStages', () => {
     ];
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
-        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         (setCookieOnResponseObject as {}) = jest.fn();
         chooseStages(req, res);
@@ -36,7 +41,12 @@ describe('chooseStages', () => {
     });
 
     it('should set the fare stages cookie according to the specified number of fare stages', () => {
-        const { req, res } = getMockRequestAndResponse({}, { fareStageInput: '6' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { fareStageInput: '6' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         const mockSetCookies = jest.fn();
 

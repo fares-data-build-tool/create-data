@@ -151,7 +151,12 @@ describe('multipleProduct', () => {
     ];
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
-        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         (setCookieOnResponseObject as {}) = jest.fn();
         multipleProduct(req, res);

@@ -21,14 +21,19 @@ describe('chooseValidity', () => {
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
         const writeHeadMock = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         (setCookieOnResponseObject as {}) = jest.fn();
         chooseValidity(req, res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
     it('should set the validity stages cookie according to the specified number of fare stages', () => {
-        const { req, res } = getMockRequestAndResponse({}, { validityInput: '6' });
+        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: { validityInput: '6' } });
 
         const mockSetCookies = jest.fn();
 

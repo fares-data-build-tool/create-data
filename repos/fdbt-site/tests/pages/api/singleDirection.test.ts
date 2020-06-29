@@ -12,7 +12,12 @@ describe('direction', () => {
 
     it('should return 302 redirect to /singleDirection (i.e. itself) when the session is valid, but there is no request body', () => {
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "single"}' };
-        const { req, res } = getMockRequestAndResponse(mockFareTypeCookie, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: mockFareTypeCookie,
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         (setCookieOnResponseObject as {}) = jest.fn();
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -24,12 +29,12 @@ describe('direction', () => {
         (isSessionValid as {}) = jest.fn().mockReturnValue(true);
         (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "single"}' };
-        const { req, res } = getMockRequestAndResponse(
-            mockFareTypeCookie,
-            { directionJourneyPattern: 'test_journey' },
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: mockFareTypeCookie,
+            body: { directionJourneyPattern: 'test_journey' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         (setCookieOnResponseObject as {}) = jest.fn();
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -38,7 +43,11 @@ describe('direction', () => {
     });
 
     it('should return 302 redirect to /error when session is not valid', () => {
-        const { req, res } = getMockRequestAndResponse({ operator: null }, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { operator: null },
+            body: null,
+            mockWriteHeadFn: writeHeadMock,
+        });
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',

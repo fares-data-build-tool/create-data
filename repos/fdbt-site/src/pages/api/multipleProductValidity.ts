@@ -17,6 +17,7 @@ import {
     redirectTo,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
+    getAttributeFromIdToken,
 } from './apiUtils';
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
@@ -117,17 +118,25 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             };
         }
 
+        const email = getAttributeFromIdToken(req, res, 'email');
+
+        if (!email) {
+            throw new Error('Could not extract the user email address from their ID token');
+        }
+
         const multipleProductPeriod: DecisionData = {
             operatorName: operator.operatorPublicName,
             type: periodTypeName,
             nocCode,
+            email,
+            uuid,
             products,
             ...passengerTypeObject,
             ...props,
         };
         await putStringInS3(
             MATCHING_DATA_BUCKET_NAME,
-            `${uuid}.json`,
+            `${nocCode}/${periodTypeName}/${uuid}_${Date.now()}.json`,
             JSON.stringify(multipleProductPeriod),
             'application/json; charset=utf-8',
         );
