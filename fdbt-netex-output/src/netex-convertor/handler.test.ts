@@ -1,5 +1,5 @@
 import { S3Event } from 'aws-lambda';
-import { netexConvertorHandler } from './handler';
+import { netexConvertorHandler, generateFileName } from './handler';
 import {
     singleTicket,
     periodGeoZoneTicket,
@@ -111,5 +111,12 @@ describe('netexConvertorHandler', () => {
         await netexConvertorHandler(event);
         const generatedNetex: string = mockUploadNetexToS3Spy.mock.calls[0][0];
         expect(generatedNetex.includes('undefined')).toBeFalsy();
+    });
+
+    it('should generate the correct filename', () => {
+        const mockDate = Date.now();
+        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
+        const fileName = generateFileName('DCCL', 'single', 'abcdef123');
+        expect(fileName).toEqual(`DCCL/single/abcdef123-${mockDate}.xml`);
     });
 });
