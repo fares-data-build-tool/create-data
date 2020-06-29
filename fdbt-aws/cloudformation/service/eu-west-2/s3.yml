@@ -23,6 +23,10 @@ Resources:
         Rules:
           - ExpirationInDays: 30
             Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
   RawUserDataBucket:
     Type: AWS::S3::Bucket
@@ -37,6 +41,10 @@ Resources:
         Rules:
           - ExpirationInDays: 30
             Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
   StaticFilesBucket:
     Type: AWS::S3::Bucket

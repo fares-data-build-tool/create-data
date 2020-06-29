@@ -260,6 +260,7 @@ Resources:
       LoadBalancerArn: !Ref PublicLoadBalancer
       Port: 443
       Protocol: HTTPS
+      SslPolicy: ELBSecurityPolicy-TLS-1-2-2017-01
 
   MonitoringListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
