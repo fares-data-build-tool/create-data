@@ -9,7 +9,12 @@ describe('inputMethod', () => {
     });
 
     it('should return 302 redirect to /inputMethod when no input method is selected', () => {
-        const { req, res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         inputMethod(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -18,7 +23,12 @@ describe('inputMethod', () => {
     });
 
     it('should return 302 redirect to /error when an input method value we dont expect is passed', () => {
-        const { req, res } = getMockRequestAndResponse({}, { inputMethod: 'pdf' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { inputMethod: 'pdf' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         inputMethod(req, res);
 
@@ -28,7 +38,12 @@ describe('inputMethod', () => {
     });
 
     it('should return 302 redirect to /csvUpload when csv is the passed input method', () => {
-        const { req, res } = getMockRequestAndResponse({}, { inputMethod: 'csv' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { inputMethod: 'csv' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         inputMethod(req, res);
 

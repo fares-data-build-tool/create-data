@@ -22,10 +22,10 @@ describe('productDetails', () => {
     it('should set PRODUCT_DETAILS_COOKIE with errors when the user input is invalid', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period' },
-            { productDetailsNameInput: '', productDetailsPriceInput: '' },
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period' },
+            body: { productDetailsNameInput: '', productDetailsPriceInput: '' },
+        });
 
         const mockProductDetailsCookies = {
             productName: '',
@@ -47,14 +47,14 @@ describe('productDetails', () => {
     it('should create PRODUCT_DETAILS_COOKIE when the user input is valid', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period' },
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period' },
+            body: {
                 productDetailsNameInput: 'ProductA',
                 productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
-        );
+        });
 
         const mockProductDetailsCookies = {
             productName: 'ProductA',
@@ -76,14 +76,14 @@ describe('productDetails', () => {
     it('should remove leading trailing spaces and tabs', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period' },
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period' },
+            body: {
                 productDetailsNameInput: '     ProductBA',
                 productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
-        );
+        });
 
         const mockProductDetailsCookies = {
             productName: 'ProductBA',
@@ -103,12 +103,12 @@ describe('productDetails', () => {
     });
 
     it('should redirect to /productDetails when the user input is invalid', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'flatFare' },
-            { productDetailsNameInput: '  ', productDetailsPriceInput: '1.4.2.4' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'flatFare' },
+            body: { productDetailsNameInput: '  ', productDetailsPriceInput: '1.4.2.4' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await productDetails(req, res);
 
@@ -118,12 +118,12 @@ describe('productDetails', () => {
     });
 
     it('should redirect to /chooseValidity when the user input is valid and the user is entering details for a period ticket', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period' },
-            { productDetailsNameInput: 'Weekly Ride', productDetailsPriceInput: '7' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'period' },
+            body: { productDetailsNameInput: 'Weekly Ride', productDetailsPriceInput: '7' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await productDetails(req, res);
 
@@ -133,12 +133,12 @@ describe('productDetails', () => {
     });
 
     it('should redirect to /thankyou when the user input is valid and the user is entering details for a flat fare ticket', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'flatFare' },
-            { productDetailsNameInput: 'Day Rider', productDetailsPriceInput: '5' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'flatFare' },
+            body: { productDetailsNameInput: 'Day Rider', productDetailsPriceInput: '5' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await productDetails(req, res);
 
@@ -148,18 +148,22 @@ describe('productDetails', () => {
     });
 
     it('correctly generates JSON for a flat fare product and uploads to S3', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'flatFare', fareZoneName: null },
-            { productDetailsNameInput: 'Weekly Rider', productDetailsPriceInput: '7' },
-            '',
-            writeHeadMock,
-        );
+        const mockDate = Date.now();
+
+        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'flatFare', fareZoneName: null },
+            body: { productDetailsNameInput: 'Weekly Rider', productDetailsPriceInput: '7' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await productDetails(req, res);
 
         const actualFlatFareProduct = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            `TEST/flatFare/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );

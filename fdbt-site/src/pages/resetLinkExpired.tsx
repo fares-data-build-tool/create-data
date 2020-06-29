@@ -7,7 +7,7 @@ import { USER_COOKIE } from '../constants';
 const title = 'Reset Password Link Expired - Fares Data Build Tool';
 const description = 'Reset Password Link Expired page for the Fares Data Build Tool';
 
-const ResetCodeExpiry: NextPage = (): ReactElement => (
+const ResetLinkExpired: NextPage = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-l">Reset Password Link Expired</h1>
         <p className="govuk-body-l">Your password link has expired.</p>
@@ -17,7 +17,7 @@ const ResetCodeExpiry: NextPage = (): ReactElement => (
             draggable="false"
             className="govuk-button"
             data-module="govuk-button"
-            id="start-now-button"
+            id="forgot-password-button"
         >
             Forgotten Password
         </a>
@@ -29,4 +29,4 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     return { props: {} };
 };
 
-export default ResetCodeExpiry;
+export default ResetLinkExpired;

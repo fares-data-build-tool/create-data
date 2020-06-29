@@ -10,7 +10,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /error if faretype cookie is missing', () => {
-        const { req, res } = getMockRequestAndResponse({ fareType: null }, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: null },
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         passengerType(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -19,7 +24,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /passengerType when no passenger type is selected', () => {
-        const { req, res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         passengerType(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -28,7 +38,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /definePassengerType when the user selects Adult', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'Adult' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: 'Adult' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         passengerType(req, res);
 
@@ -38,7 +53,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /definePassengerType when the user selects Child', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'Child' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: 'Child' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         passengerType(req, res);
 
@@ -48,7 +68,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /definePassengerType when the user selects Infant', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'Infant' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: 'Infant' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         passengerType(req, res);
 
@@ -58,7 +83,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /definePassengerType when the user selects Senior', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'Senior' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: 'Senior' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         passengerType(req, res);
 
@@ -68,7 +98,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /definePassengerType when the user selects Student', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'Student' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: 'Student' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         passengerType(req, res);
 
@@ -78,7 +113,12 @@ describe('passengerType', () => {
     });
 
     it('should return 302 redirect to /definePassengerType when the user selects Young Person', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'Young Person' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: 'Young Person' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         passengerType(req, res);
 
@@ -88,7 +128,12 @@ describe('passengerType', () => {
     });
 
     it('should call redirectOnFareType when the user selects Anyone', () => {
-        const { req, res } = getMockRequestAndResponse({}, { passengerType: 'anyone' }, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: 'anyone' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         const redirectOnFareType = jest.spyOn(utils, 'redirectOnFareType');
 
         passengerType(req, res);

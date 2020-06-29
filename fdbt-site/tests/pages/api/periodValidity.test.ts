@@ -9,6 +9,8 @@ import {
 import periodValidity from '../../../src/pages/api/periodValidity';
 
 describe('periodValidity', () => {
+    const mockDate = Date.now();
+
     const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
     const writeHeadMock = jest.fn();
 
@@ -22,6 +24,7 @@ describe('periodValidity', () => {
     let batchGetStopsByAtcoCodeSpy: jest.SpyInstance;
 
     beforeEach(() => {
+        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
         jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
 
         batchGetStopsByAtcoCodeSpy = jest
@@ -30,18 +33,18 @@ describe('periodValidity', () => {
     });
 
     it('correctly generates JSON for period data and uploads to S3 when a user uploads a csv', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { selectedServices: null },
-            { periodValid: '24hr' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { selectedServices: null },
+            body: { periodValid: '24hr' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await periodValidity(req, res);
 
         const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            `TEST/period/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );
@@ -49,18 +52,18 @@ describe('periodValidity', () => {
     });
 
     it('correctly generates JSON for period data and uploads to S3 when a user selects a list of services', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareZoneName: null },
-            { periodValid: '24hr' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareZoneName: null },
+            body: { periodValid: '24hr' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await periodValidity(req, res);
 
         const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            `TEST/period/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );
@@ -68,7 +71,12 @@ describe('periodValidity', () => {
     });
 
     it('redirects back to period validity page if there is no body', async () => {
-        const { req, res } = getMockRequestAndResponse({}, {}, '', writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {},
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await periodValidity(req, res);
 
@@ -78,12 +86,12 @@ describe('periodValidity', () => {
     });
 
     it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareZoneName: null },
-            { periodValid: '24hr' },
-            '',
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareZoneName: null },
+            body: { periodValid: '24hr' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         await periodValidity(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -92,7 +100,12 @@ describe('periodValidity', () => {
     });
 
     it('throws an error if no stops are returned from query', async () => {
-        const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: '',
+            body: { periodValid: '24hr' },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
 
         await periodValidity(req, res);

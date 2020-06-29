@@ -3,12 +3,18 @@ import React, { ReactElement } from 'react';
 import { ServerResponse } from 'http';
 import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
+import Breadcrumbs from '../components/Breadcrumbs';
 import { ID_TOKEN_COOKIE } from '../constants';
+import AlphaBanner from '../layout/AlphaBanner';
+import { Breadcrumb } from '../interfaces';
+import Footer from '../layout/Footer';
+import breadcrumb from '../utils/breadcrumbs';
 
 interface DocumentProps extends DocumentInitialProps {
     nonce: string;
     isAuthed: boolean;
     csrfToken: string;
+    breadcrumbs: Breadcrumb[];
 }
 
 interface ResponseWithLocals extends ServerResponse {
@@ -18,7 +24,7 @@ interface ResponseWithLocals extends ServerResponse {
     };
 }
 
-class MyDocument extends Document<{ nonce: string; isAuthed: boolean; csrfToken: string }> {
+class MyDocument extends Document<DocumentProps> {
     static async getInitialProps(ctx: DocumentContext): Promise<DocumentProps> {
         const initialProps = await Document.getInitialProps(ctx);
         const nonce = (ctx.res as ResponseWithLocals)?.locals?.nonce ?? null;
@@ -31,7 +37,9 @@ class MyDocument extends Document<{ nonce: string; isAuthed: boolean; csrfToken:
         const cookies = parseCookies(ctx);
         const idTokenCookie = cookies[ID_TOKEN_COOKIE];
 
-        return { ...initialProps, nonce, isAuthed: !!idTokenCookie, csrfToken };
+        const breadcrumbs = breadcrumb(ctx).generate();
+
+        return { ...initialProps, nonce, isAuthed: !!idTokenCookie, csrfToken, breadcrumbs };
     }
 
     render(): ReactElement {
@@ -40,7 +48,13 @@ class MyDocument extends Document<{ nonce: string; isAuthed: boolean; csrfToken:
                 <Head nonce={this.props.nonce} />
                 <body className="govuk-template__body app-body-class js-enabled">
                     <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
-                    <Main />
+                    <div className="govuk-width-container app-width-container--wide">
+                        <AlphaBanner />
+                        {this.props.breadcrumbs.length !== 0 && <Breadcrumbs breadcrumbs={this.props.breadcrumbs} />}
+                        <Main />
+                    </div>
+                    <Footer />
+
                     <NextScript nonce={this.props.nonce} />
                     <script src="/scripts/all.js" nonce={this.props.nonce} />
                     <script nonce={this.props.nonce}>window.GOVUKFrontend.initAll()</script>

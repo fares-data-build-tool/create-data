@@ -15,7 +15,13 @@ exports[`_document should render correctly 1`] = `
       csrfToken=""
       isAuthed={true}
     />
-    <Main />
+    <div
+      className="govuk-width-container app-width-container--wide"
+    >
+      <AlphaBanner />
+      <Main />
+    </div>
+    <Footer />
     <NextScript
       nonce=""
     />

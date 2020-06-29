@@ -5,9 +5,11 @@ import {
     redirectOnFareType,
     checkEmailValid,
     getAttributeFromIdToken,
+    validateNewPassword,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
+import { ErrorInfo } from '../../../../src/interfaces';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
@@ -59,8 +61,12 @@ describe('apiUtils', () => {
 
     describe('getUuidFromCookie', () => {
         it('should get the uuid from the cookie', () => {
-            const { req, res } = getMockRequestAndResponse({}, null, {
-                operatorUuid: '780e3459-6305-4ae5-9082-b925b92cb46c',
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: null,
+                uuid: {
+                    operatorUuid: '780e3459-6305-4ae5-9082-b925b92cb46c',
+                },
             });
             const result = getUuidFromCookie(req, res);
             expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
@@ -69,7 +75,12 @@ describe('apiUtils', () => {
 
     describe('redirectOnFareType', () => {
         it('should return 302 redirect to /service when the single ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'single' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'single' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/service',
@@ -77,7 +88,12 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /service when the return ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'return' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'return' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/service',
@@ -85,7 +101,12 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /periodType when the period ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'period' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'period' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/periodType',
@@ -93,7 +114,12 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /serviceList when the flat fare ticket option is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'flatFare' }, {}, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'flatFare' },
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/serviceList',
@@ -101,7 +127,12 @@ describe('apiUtils', () => {
         });
 
         it('should throw error if unexpected fare type is selected', () => {
-            const { req, res } = getMockRequestAndResponse({ fareType: 'roundabout' }, null, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: { fareType: 'roundabout' },
+                body: null,
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
 
             expect(() => {
                 redirectOnFareType(req, res);
@@ -120,7 +151,9 @@ describe('apiUtils', () => {
 
         it('should retrieve given attribute if present', () => {
             const { req, res } = getMockRequestAndResponse({
-                idToken: emailJwt,
+                cookieValues: {
+                    idToken: emailJwt,
+                },
             });
             const email = getAttributeFromIdToken(req, res, 'email');
 
@@ -129,11 +162,37 @@ describe('apiUtils', () => {
 
         it('should return null if not present', () => {
             const { req, res } = getMockRequestAndResponse({
-                idToken: emailJwt,
+                cookieValues: {
+                    idToken: emailJwt,
+                },
             });
             const email = getAttributeFromIdToken(req, res, 'custom:noc');
 
             expect(email).toBeNull();
+        });
+    });
+
+    describe('validateNewPassword', () => {
+        const noPasswordError = { id: 'new-password', errorMessage: 'Enter a new password' };
+        const passwordLengthError = { id: 'new-password', errorMessage: 'Password must be at least 8 characters long' };
+        const passwordMatchError = { id: 'new-password', errorMessage: 'Passwords do not match' };
+        it.each([
+            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', []],
+            ['a no password error', 'no input is provided', '', '', [noPasswordError]],
+            ['a no password error', 'no new password is provided', '', 'iLoveBuses', [noPasswordError]],
+            ['a password length error', 'new password is too short', 'bus', 'iLoveBuses', [passwordLengthError]],
+            [
+                'a password match error',
+                'the two passwords do not match',
+                'iHateBuses',
+                'iLoveBuses',
+                [passwordMatchError],
+            ],
+            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', []],
+        ])('should return %s when %s', (_errors, _case, newPassword, confirmNewPassword, expectedResult) => {
+            const inputChecks: ErrorInfo[] = [];
+            const res = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
+            expect(res).toEqual(expectedResult);
         });
     });
 });

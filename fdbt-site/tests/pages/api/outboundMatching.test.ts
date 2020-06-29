@@ -34,16 +34,16 @@ describe('Outbound Matching API', () => {
     });
 
     it('correctly generates outbound matching fare zones JSON and uploads to S3', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await outboundMatching(req, res);
 
@@ -61,16 +61,16 @@ describe('Outbound Matching API', () => {
     });
 
     it('correctly redirects to outbound matching page when there are fare stages that have not been assigned to stops', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await outboundMatching(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -79,17 +79,17 @@ describe('Outbound Matching API', () => {
     });
 
     it('redirects to outbound matching page if no stops are allocated to fare stages', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await outboundMatching(req, res);
 
@@ -99,28 +99,28 @@ describe('Outbound Matching API', () => {
     });
 
     it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await outboundMatching(req, res);
         expect(writeHeadMock).toBeCalled();
     });
 
     it('redirects back to outbound matching page if no user data in body', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            { ...selectedOptions, service: JSON.stringify(service), userfarestages: '' },
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { ...selectedOptions, service: JSON.stringify(service), userfarestages: '' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await outboundMatching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -129,16 +129,16 @@ describe('Outbound Matching API', () => {
     });
 
     it('redirects back to outbound matching page if no service info in body', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selectedOptions,
                 service: '',
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await outboundMatching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -147,7 +147,12 @@ describe('Outbound Matching API', () => {
     });
 
     it('should redirect to the error page if the cookie UUIDs to do not match', async () => {
-        const { req, res } = getMockRequestAndResponse({}, null, { journeyUuid: 'someUuid' }, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: { journeyUuid: 'someUuid' },
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await outboundMatching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {

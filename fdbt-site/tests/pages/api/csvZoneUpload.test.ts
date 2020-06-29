@@ -10,7 +10,12 @@ const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
 
 describe('csvZoneUpload', () => {
     const writeHeadMock = jest.fn();
-    const { req, res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
+    const { req, res } = getMockRequestAndResponse({
+        cookieValues: {},
+        body: null,
+        uuid: {},
+        mockWriteHeadFn: writeHeadMock,
+    });
     let outputData = '';
 
     beforeEach(() => {

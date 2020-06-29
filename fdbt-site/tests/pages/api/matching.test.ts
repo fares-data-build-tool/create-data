@@ -30,27 +30,34 @@ describe('Matching API', () => {
     putStringInS3Spy.mockImplementation(() => Promise.resolve());
     const writeHeadMock = jest.fn();
 
+    const mockDate = Date.now();
+
+    beforeEach(() => {
+        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
+    });
+
     afterEach(() => {
         jest.resetAllMocks();
     });
 
     it('correctly generates matching JSON for a single ticket and uploads to S3', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selections,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await matching(req, res);
 
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
+            `DCCL/single/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );
@@ -58,22 +65,23 @@ describe('Matching API', () => {
     });
 
     it('correctly generates matching JSON for a return circular ticket and uploads to S3', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            { fareType: 'return' },
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'return' },
+            body: {
                 ...selections,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await matching(req, res);
 
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
+            `DCCL/return/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
             expect.any(String),
             'application/json; charset=utf-8',
         );
@@ -81,16 +89,16 @@ describe('Matching API', () => {
     });
 
     it('correctly redirects to matching page when there are fare stages that have not been assigned to stops', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selections,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
         await matching(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -99,17 +107,17 @@ describe('Matching API', () => {
     });
 
     it('redirects to matching page if no stops are allocated to fare stages', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await matching(req, res);
 
@@ -119,28 +127,28 @@ describe('Matching API', () => {
     });
 
     it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selections,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await matching(req, res);
         expect(writeHeadMock).toBeCalled();
     });
 
     it('redirects back to matching page if no user data in body', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            { ...selections, service: JSON.stringify(service), userfarestages: '' },
-            {},
-            writeHeadMock,
-        );
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { ...selections, service: JSON.stringify(service), userfarestages: '' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await matching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -149,16 +157,16 @@ describe('Matching API', () => {
     });
 
     it('redirects back to matching page if no service info in body', async () => {
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 ...selections,
                 service: '',
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            {},
-            writeHeadMock,
-        );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await matching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -167,7 +175,12 @@ describe('Matching API', () => {
     });
 
     it('should redirect to the error page if the cookie UUIDs to do not match', async () => {
-        const { req, res } = getMockRequestAndResponse({}, null, { journeyUuid: 'someUuid' }, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: { journeyUuid: 'someUuid' },
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await matching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
