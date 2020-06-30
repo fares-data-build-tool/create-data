@@ -116,7 +116,7 @@ describe('netexConvertorHandler', () => {
     it('should generate the correct filename', () => {
         const mockDate = Date.now();
         jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
-        const fileName = generateFileName('DCCL', 'single', 'abcdef123');
-        expect(fileName).toEqual(`DCCL/single/abcdef123-${mockDate}.xml`);
+        const fileName = generateFileName(`DCCL/single/abcdef123_${mockDate}.json`);
+        expect(fileName).toEqual(`DCCL/single/abcdef123_${mockDate}.xml`);
     });
 });
