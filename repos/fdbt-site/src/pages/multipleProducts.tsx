@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import _ from 'lodash';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
@@ -45,7 +46,7 @@ const MultipleProducts = ({
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-hint">
-                            {operator} - {numberOfProductsToDisplay} Products - {passengerType}
+                            {operator} - {numberOfProductsToDisplay} Products - {_.upperFirst(passengerType)}
                         </span>
                     </fieldset>
                     <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>

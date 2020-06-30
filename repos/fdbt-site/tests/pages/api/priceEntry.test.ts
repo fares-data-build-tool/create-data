@@ -1,90 +1,87 @@
-import priceEntry, { numberOfInputsIsValid, putDataInS3 } from '../../../src/pages/api/priceEntry';
+import * as priceEntryApi from '../../../src/pages/api/priceEntry';
+import priceEntry from '../../../src/pages/api/priceEntry';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-describe('Price Entry API', () => {
+describe('priceEntry', () => {
     describe('API validation of number of price inputs', () => {
-        it('should return true if number of price inputs matches implied number of price inputs in cookie', () => {
-            const { req, res } = getMockRequestAndResponse({
+        it('should return fares information with no errors if inputs are valid', () => {
+            const { req } = getMockRequestAndResponse({
                 cookieValues: {},
-                body: [
-                    ['Acomb Lane-Canning', '100'],
-                    ['BewBush-Canning', '120'],
-                    ['BewBush-Acomb Lane', '1120'],
-                    ['Chorlton-Canning', '140'],
-                    ['Chorlton-Acomb Lane', '160'],
-                    ['Chorlton-BewBush', '100'],
-                    ['Crawley-Canning', '120'],
-                    ['Crawley-Acomb Lane', '140'],
-                    ['Crawley-BewBush', '160'],
-                    ['Crawley-Chorlton', '100'],
-                    ['Cranfield-Canning', '120'],
-                    ['Cranfield-Acomb Lane', '140'],
-                    ['Cranfield-BewBush', '160'],
-                    ['Cranfield-Chorlton', '140'],
-                    ['Cranfield-Crawley', '120'],
-                ],
+                body: {
+                    'Acomb Lane-Canning': '100',
+                    'BewBush-Canning': '120',
+                    'BewBush-Acomb Lane': '1120',
+                    'Chorlton-Canning': '140',
+                    'Chorlton-Acomb Lane': '160',
+                    'Chorlton-BewBush': '100',
+                    'Crawley-Canning': '120',
+                    'Crawley-Acomb Lane': '140',
+                    'Crawley-BewBush': '160',
+                    'Crawley-Chorlton': '100',
+                    'Cranfield-Canning': '120',
+                    'Cranfield-Acomb Lane': '140',
+                    'Cranfield-BewBush': '160',
+                    'Cranfield-Chorlton': '140',
+                    'Cranfield-Crawley': '120',
+                },
             });
-            const result = numberOfInputsIsValid(req, res);
-            expect(result).toBeTruthy();
+            const result = priceEntryApi.inputsValidityCheck(req);
+            expect(result.errorInformation.length).toBe(0);
         });
 
-        it('should return false if number of price inputs matches implied number of price inputs in cookie', () => {
-            const { req, res } = getMockRequestAndResponse({
+        it('should return fares information with errors if the inputs contains invalid data', () => {
+            const { req } = getMockRequestAndResponse({
                 cookieValues: {},
-                body: [
-                    ['Acomb Lane-Canning', '100'],
-                    ['BewBush-Canning', '120'],
-                    ['BewBush-Acomb Lane', '1120'],
-                    ['Chorlton-Canning', '140'],
-                    ['Chorlton-Acomb Lane', '160'],
-                    ['Chorlton-BewBush', '100'],
-                    ['Crawley-Canning', '120'],
-                ],
+                body: {
+                    'Acomb Lane-Canning': '',
+                    'BewBush-Canning': '120',
+                    'BewBush-Acomb Lane': '1120',
+                    'Chorlton-Canning': 'd',
+                    'Chorlton-Acomb Lane': '160',
+                    'Chorlton-BewBush': '100',
+                    'Crawley-Canning': 'd',
+                    'Crawley-Acomb Lane': '140',
+                    'Crawley-BewBush': '160',
+                    'Crawley-Chorlton': '',
+                    'Cranfield-Canning': '120',
+                    'Cranfield-Acomb Lane': '140',
+                    'Cranfield-BewBush': '160',
+                    'Cranfield-Chorlton': '140',
+                    'Cranfield-Crawley': '120',
+                },
             });
-            const result = numberOfInputsIsValid(req, res);
-            expect(result).toBe(false);
+            const result = priceEntryApi.inputsValidityCheck(req);
+            expect(result.errorInformation.length).toBe(4);
         });
     });
 
     describe('API validation of format of price inputs', () => {
         const writeHeadMock = jest.fn();
+        const putDataInS3Spy = jest.spyOn(priceEntryApi, 'putDataInS3');
+        putDataInS3Spy.mockImplementation(() => Promise.resolve());
 
         afterEach(() => {
-            jest.resetAllMocks();
+            jest.clearAllMocks();
         });
 
         const cases: {}[] = [
-            [{}, { Location: '/priceEntry' }],
-            [{ ChorltonBewbush: 'abcdefghijk' }, { Location: '/priceEntry' }],
-            [{ ChorltonBewbush: '1.2' }, { Location: '/priceEntry' }],
-            [{ ChorltonBewbush: 1.2 }, { Location: '/priceEntry' }],
-            [{ ChorltonBewbush: '0' }, { Location: '/priceEntry' }],
-            [{ ChorltonBewbush: 0 }, { Location: '/priceEntry' }],
-            [{ ChorltonBewbush: "[]'l..33" }, { Location: '/priceEntry' }],
+            [{}, { Location: '/error' }],
+            [{ 'Crawley-Acomb Lane': '0' }, { Location: '/outboundMatching' }],
+            [{ 'Crawley-Acomb Lane': '100' }, { Location: '/outboundMatching' }],
+            [{ 'Acomb Lane-Canning': 'fgrgregw' }, { Location: '/priceEntry' }],
+            [{ 'Cranfield-Crawley': '1.2' }, { Location: '/priceEntry' }],
+            [{ 'Acomb Lane-Chorlton': '[].. r43' }, { Location: '/priceEntry' }],
         ];
 
-        test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+        test.each(cases)('given %p as request, redirects to %p', async (testData, expectedLocation) => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: testData,
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
             });
-            priceEntry(req, res);
+            await priceEntry(req, res);
             expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
-        });
-    });
-
-    describe('S3 bucket name validation', () => {
-        it('should throw an error when there there is no S3 bucket name variable set', () => {
-            const uuid = '780e3459-6305-4ae5-9082-b925b92cb46c';
-            const text =
-                '{"fareStages":[{"stageName":"Bewbush","prices":[{"price":"1.00","fareZones":["Chorlton"]},{"price":"1.20","fareZones":["Dewsbury"]}]},{"stageName":"Chorlton","prices":[{"price":"1.40","fareZones":["Dewsbury"]}]}]}';
-            try {
-                putDataInS3(uuid, text);
-            } catch {
-                expect(putDataInS3(uuid, text)).toThrow('No Bucket name environment variable not set.');
-            }
         });
     });
 });

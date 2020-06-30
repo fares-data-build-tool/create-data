@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import _ from 'lodash';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
@@ -40,7 +41,7 @@ const Service = ({
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-passenger-type-hint">
-                            {operator} - {passengerType}
+                            {operator} - {_.upperFirst(passengerType)}
                         </span>
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
                             <select className="govuk-select" id="service" name="service" defaultValue="">

@@ -12,8 +12,8 @@ const title = 'Stage Names - Fares Data Build Tool';
 const description = 'Stage Names entry page of the Fares Data Build Tool';
 
 export interface InputCheck {
-    Error: string;
-    Input: string;
+    error: string;
+    input: string;
 }
 
 type StageNameProps = {
@@ -22,25 +22,25 @@ type StageNameProps = {
 };
 
 export const renderInputField = (index: number, inputCheck: InputCheck): ReactElement => (
-    <div className={`govuk-form-group${inputCheck?.Error ? ' govuk-form-group--error input-error' : ''}`}>
+    <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error input-error' : ''}`}>
         <label className="govuk-label" htmlFor={`fare-stage-name-${index + 1}`}>
             Fare Stage {index + 1}
         </label>
-        {inputCheck?.Error ? (
+        {inputCheck?.error ? (
             <span id={`fare-stage-name-${index + 1}-error`} className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span> {inputCheck.Error}
+                <span className="govuk-visually-hidden">Error:</span> {inputCheck.error}
             </span>
         ) : null}
         <input
             className={`govuk-input govuk-input--width-30 ${
-                inputCheck?.Error ? 'govuk-input--error' : ''
+                inputCheck?.error ? 'govuk-input--error' : ''
             } stage-name-input-field`}
             id={`fare-stage-name-${index + 1}`}
             name="stageNameInput"
             type="text"
             maxLength={30}
-            defaultValue={!inputCheck?.Error ? inputCheck?.Input : ''}
-            aria-describedby={inputCheck?.Error ? `fareStageName${index + 1}-error` : ''}
+            defaultValue={!inputCheck?.error ? inputCheck?.input : ''}
+            aria-describedby={inputCheck?.error ? `fareStageName${index + 1}-error` : ''}
         />
     </div>
 );
