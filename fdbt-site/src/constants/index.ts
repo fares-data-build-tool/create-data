@@ -54,6 +54,10 @@ export const REFRESH_TOKEN_COOKIE = 'fdbt-refresh-token';
 
 export const DISABLE_AUTH_COOKIE = 'fdbt-disable-auth';
 
+export const PRICE_ENTRY_INPUTS_COOKIE = 'fdbt-price-entry-inputs';
+
+export const PRICE_ENTRY_ERRORS_COOKIE = 'fdbt-price-entry-errors';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',

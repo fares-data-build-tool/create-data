@@ -9,10 +9,10 @@ describe('pages', () => {
         it('should return a list of html elements that macthes the number of fare stages and inputCheck objects', () => {
             const mockNumberOfFareStages = 4;
             const mockInputCheck: InputCheck[] = [
-                { Error: '', Input: 'ab' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: '', Input: 'cd' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
+                { error: '', input: 'ab' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: '', input: 'cd' },
+                { error: 'Enter a name for this fare stage', input: '' },
             ];
             const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck);
             expect(renderElements).toHaveLength(4);
@@ -44,11 +44,11 @@ describe('pages', () => {
         it('should render correctly when a user is redirected to the page from itself when incorrect data is entered', () => {
             const mockNumberOfFareStages = 5;
             const mockInputChecks: InputCheck[] = [
-                { Error: '', Input: '' },
-                { Error: '', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: '', Input: '' },
-                { Error: '', Input: '' },
+                { error: '', input: '' },
+                { error: '', input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: '', input: '' },
+                { error: '', input: '' },
             ];
             const tree = shallow(
                 <StageNames
@@ -63,10 +63,10 @@ describe('pages', () => {
         it('should render correctly when a user is redirected to the page from itself when no data is entered', () => {
             const mockNumberOfFareStages = 4;
             const mockinputChecks: InputCheck[] = [
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
             ];
             const tree = shallow(
                 <StageNames

@@ -13,10 +13,10 @@ describe('stageNames', () => {
             const mockBody = { stageNameInput: ['', '', '', ''] };
             const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
+                { error: 'Enter a name for this fare stage', input: '' },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
@@ -25,10 +25,10 @@ describe('stageNames', () => {
             const mockBody = { stageNameInput: ['abcd', 'efg', 'hijkl', 'mn'] };
             const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
-                { Error: '', Input: 'abcd' },
-                { Error: '', Input: 'efg' },
-                { Error: '', Input: 'hijkl' },
-                { Error: '', Input: 'mn' },
+                { error: '', input: 'abcd' },
+                { error: '', input: 'efg' },
+                { error: '', input: 'hijkl' },
+                { error: '', input: 'mn' },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
@@ -37,10 +37,22 @@ describe('stageNames', () => {
             const mockBody = { stageNameInput: ['abcde', '   ', 'xyz', ''] };
             const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
-                { Error: '', Input: 'abcde' },
-                { Error: 'Enter a name for this fare stage', Input: '   ' },
-                { Error: '', Input: 'xyz' },
-                { Error: 'Enter a name for this fare stage', Input: '' },
+                { error: '', input: 'abcde' },
+                { error: 'Enter a name for this fare stage', input: '   ' },
+                { error: '', input: 'xyz' },
+                { error: 'Enter a name for this fare stage', input: '' },
+            ];
+            const inputCheck = isStageNameValid(req);
+            expect(inputCheck).toEqual(expectedArray);
+        });
+        it('should return an array of invalid and valid input checks when the user enters correct data but with duplicates', () => {
+            const mockBody = { stageNameInput: ['abc', 'abc', 'a', 'b'] };
+            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
+            const expectedArray = [
+                { error: 'Stage names cannot share exact names', input: 'abc' },
+                { error: 'Stage names cannot share exact names', input: 'abc' },
+                { error: '', input: 'a' },
+                { error: '', input: 'b' },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
@@ -91,7 +103,7 @@ describe('stageNames', () => {
         const mockBody = { stageNameInput: [' ', 'abcdefghijklmnopqrstuvwxyzabcdefgh', '   ', 'b'] };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockInputCheck =
-            '[{"Input":" ","Error":"Enter a name for this fare stage"},{"Input":"abcdefghijklmnopqrstuvwxyzabcdefgh","Error":"The name for Fare Stage 2 needs to be less than 30 characters"},{"Input":"   ","Error":"Enter a name for this fare stage"},{"Input":"b","Error":""}]';
+            '[{"input":" ","error":"Enter a name for this fare stage"},{"input":"abcdefghijklmnopqrstuvwxyzabcdefgh","error":"The name for Fare Stage 2 needs to be less than 30 characters"},{"input":"   ","error":"Enter a name for this fare stage"},{"input":"b","error":""}]';
         stageNames(req, res);
         expect(setCookieSpy).toBeCalledWith(STAGE_NAME_VALIDATION_COOKIE, mockInputCheck, req, res);
     });

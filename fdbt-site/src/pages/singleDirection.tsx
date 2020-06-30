@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
@@ -44,7 +45,7 @@ const SingleDirection = ({
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="direction-operator-linename-passenger-type-hint">
-                            {operator} - {lineName} - {passengerType}
+                            {operator} - {lineName} - {_.upperFirst(passengerType)}
                         </span>
                         <span className="govuk-hint" id="direction-journey-description-hint">
                             {`Journey: ${service.serviceDescription}`}

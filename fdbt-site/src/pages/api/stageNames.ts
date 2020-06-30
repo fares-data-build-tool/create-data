@@ -4,6 +4,19 @@ import { isSessionValid } from './service/validator';
 import { setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
+export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
+    let counter = 0;
+    stageNames.forEach(stage => {
+        if (stage === stageName) {
+            counter += 1;
+        }
+    });
+    if (counter === 1) {
+        return false;
+    }
+    return true;
+};
+
 export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
     const { stageNameInput = [] } = req.body;
     const response: InputCheck[] = [];
@@ -13,10 +26,12 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
             error = 'Enter a name for this fare stage';
         } else if (stageNameInput[i].length > 30) {
             error = `The name for Fare Stage ${i + 1} needs to be less than 30 characters`;
+        } else if (stageNameInArrayMultipleTimes(stageNameInput, stageNameInput[i])) {
+            error = 'Stage names cannot share exact names';
         } else {
             error = '';
         }
-        const check: InputCheck = { Input: stageNameInput[i], Error: error };
+        const check: InputCheck = { input: stageNameInput[i], error };
         response.push(check);
     }
     return response;
@@ -32,7 +47,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('No stage name input received from Stage Names page.');
         }
         const userInputValidity = isStageNameValid(req);
-        if (!userInputValidity.some(el => el.Error !== '')) {
+        if (!userInputValidity.some(el => el.error !== '')) {
             const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
             setCookieOnResponseObject(STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
             redirectTo(res, '/priceEntry');
