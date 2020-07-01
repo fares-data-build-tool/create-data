@@ -88,8 +88,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const service = selectedService.split('#');
                 return {
                     lineName: service[0],
-                    startDate: service[1],
-                    serviceDescription: service[2],
+                    serviceCode: service[1],
+                    startDate: service[2],
+                    serviceDescription: service[3],
                 };
             });
 

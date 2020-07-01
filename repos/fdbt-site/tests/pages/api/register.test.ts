@@ -30,7 +30,14 @@ describe('register', () => {
         authSignOutSpy.mockImplementation(() => Promise.resolve());
         authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
         getServicesByNocCodeSpy.mockImplementation(() =>
-            Promise.resolve([{ lineName: '2AC', startDate: '01012020', description: 'linename for service ' }]),
+            Promise.resolve([
+                {
+                    lineName: '2AC',
+                    startDate: '01012020',
+                    description: 'linename for service ',
+                    serviceCode: 'NW_05_BLAC_2C_1',
+                },
+            ]),
         );
     });
 

@@ -67,7 +67,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const requestBody: { [key: string]: string | string[] } = req.body;
 
         Object.entries(requestBody).forEach(entry => {
-            const lineNameStartDate = entry[0];
+            const lineNameServiceCodeStartDate = entry[0];
             const description = entry[1];
             let serviceDescription: string;
             if (isArray(description)) {
@@ -75,7 +75,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             } else {
                 serviceDescription = description;
             }
-            const data = `${lineNameStartDate}#${serviceDescription}`;
+            const data = `${lineNameServiceCodeStartDate}#${serviceDescription}`;
             checkedServiceList.push(data);
         });
 
