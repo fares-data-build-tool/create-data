@@ -30,9 +30,24 @@ describe('pages', () => {
     };
 
     const mockServices: ServiceType[] = [
-        { lineName: '123', startDate: '05/02/2020', description: 'IW Bus Service 123' },
-        { lineName: 'X1', startDate: '06/02/2020', description: 'Big Blue Bus Service X1' },
-        { lineName: 'Infinity Line', startDate: '07/02/2020', description: 'This is some kind of bus service' },
+        {
+            lineName: '123',
+            startDate: '05/02/2020',
+            description: 'IW Bus Service 123',
+            serviceCode: 'NW_05_BLAC_123_1',
+        },
+        {
+            lineName: 'X1',
+            startDate: '06/02/2020',
+            description: 'Big Blue Bus Service X1',
+            serviceCode: 'NW_05_BLAC_X1_1',
+        },
+        {
+            lineName: 'Infinity Line',
+            startDate: '07/02/2020',
+            description: 'This is some kind of bus service',
+            serviceCode: 'WY_13_IWBT_07_1',
+        },
     ];
 
     beforeEach(() => {

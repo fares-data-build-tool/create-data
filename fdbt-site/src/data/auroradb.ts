@@ -6,6 +6,7 @@ export interface ServiceType {
     lineName: string;
     startDate: string;
     description: string;
+    serviceCode: string;
 }
 
 export interface OperatorNameType {
@@ -134,7 +135,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 
     try {
         const queryInput = `
-            SELECT lineName, startDate, description
+            SELECT lineName, startDate, description, serviceCode
             FROM tndsService
             WHERE nocCode = ?
         `;
@@ -146,6 +147,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
                 lineName: item.lineName,
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
+                serviceCode: item.serviceCode,
             })) || []
         );
     } catch (error) {
