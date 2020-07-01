@@ -31,7 +31,7 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
         } else {
             error = '';
         }
-        const check: InputCheck = { input: stageNameInput[i], error };
+        const check: InputCheck = { input: stageNameInput[i], error, id: `fare-stage-name-${i + 1}-error` };
         response.push(check);
     }
     return response;
