@@ -95,6 +95,7 @@ export interface FlatFareTicket extends BaseTicket {
 
 export interface SelectedService {
     lineName: string;
+    serviceCode: string;
     startDate: string;
     serviceDescription: string;
 }
