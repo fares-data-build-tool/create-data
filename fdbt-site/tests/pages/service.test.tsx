@@ -9,9 +9,19 @@ import { getMockContext } from '../testData/mockData';
 jest.mock('../../src/data/auroradb');
 
 const mockServices: ServiceType[] = [
-    { lineName: '123', startDate: '05/02/2020', description: 'this bus service is 123' },
-    { lineName: 'X1', startDate: '06/02/2020', description: 'this bus service is X1' },
-    { lineName: 'Infinity Line', startDate: '07/02/2020', description: 'this bus service is Infinity Line' },
+    {
+        lineName: '123',
+        startDate: '05/02/2020',
+        description: 'this bus service is 123',
+        serviceCode: 'NW_05_BLAC_123_1',
+    },
+    { lineName: 'X1', startDate: '06/02/2020', description: 'this bus service is X1', serviceCode: 'NW_05_BLAC_X1_1' },
+    {
+        lineName: 'Infinity Line',
+        startDate: '07/02/2020',
+        description: 'this bus service is Infinity Line',
+        serviceCode: 'WY_13_IWBT_07_1',
+    },
 ];
 
 describe('pages', () => {
@@ -82,16 +92,19 @@ describe('pages', () => {
                             lineName: '123',
                             startDate: '05/02/2020',
                             description: 'this bus service is 123',
+                            serviceCode: 'NW_05_BLAC_123_1',
                         },
                         {
                             lineName: 'X1',
                             startDate: '06/02/2020',
                             description: 'this bus service is X1',
+                            serviceCode: 'NW_05_BLAC_X1_1',
                         },
                         {
                             lineName: 'Infinity Line',
                             startDate: '07/02/2020',
                             description: 'this bus service is Infinity Line',
+                            serviceCode: 'WY_13_IWBT_07_1',
                         },
                     ],
                 },

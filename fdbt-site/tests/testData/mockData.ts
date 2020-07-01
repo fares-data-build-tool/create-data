@@ -107,9 +107,9 @@ export const getMockRequestAndResponse = ({
             },
         ],
         selectedServices = [
-            '12A#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
-            '6#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
-            '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+            '12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
+            '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
+            '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
         ],
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
@@ -1539,16 +1539,19 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
     selectedServices: [
         {
             lineName: '12A',
+            serviceCode: 'NW_05_BLAC_12A_1',
             startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
         },
         {
             lineName: '6',
+            serviceCode: 'NW_05_BLAC_6_1',
             startDate: '08/05/2020',
             serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
         },
         {
             lineName: '101',
+            serviceCode: 'NW_05_BLAC_101_1',
             startDate: '06/05/2020',
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
@@ -1616,16 +1619,19 @@ export const expectedMultiProductUploadJsonWithSelectedServices = {
     selectedServices: [
         {
             lineName: '12A',
+            serviceCode: 'NW_05_BLAC_12A_1',
             startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
         },
         {
             lineName: '6',
+            serviceCode: 'NW_05_BLAC_6_1',
             startDate: '08/05/2020',
             serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
         },
         {
             lineName: '101',
+            serviceCode: 'NW_05_BLAC_101_1',
             startDate: '06/05/2020',
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
@@ -1649,16 +1655,19 @@ export const expectedFlatFareProductUploadJson = {
     selectedServices: [
         {
             lineName: '12A',
+            serviceCode: 'NW_05_BLAC_12A_1',
             startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
         },
         {
             lineName: '6',
+            serviceCode: 'NW_05_BLAC_6_1',
             startDate: '08/05/2020',
             serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
         },
         {
             lineName: '101',
+            serviceCode: 'NW_05_BLAC_101_1',
             startDate: '06/05/2020',
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },

@@ -64,7 +64,7 @@ const ServiceList = ({
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
                                 {selectedServices.map((service, index) => {
-                                    const { lineName, startDate, serviceDescription, checked } = service;
+                                    const { lineName, startDate, serviceCode, serviceDescription, checked } = service;
 
                                     let checkboxTitles = `${lineName} - ${serviceDescription} (Start Date ${startDate})`;
 
@@ -78,7 +78,7 @@ const ServiceList = ({
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
-                                                name={`${lineName}#${startDate}`}
+                                                name={`${lineName}#${serviceCode}#${startDate}`}
                                                 type="checkbox"
                                                 value={checkBoxValues}
                                                 defaultChecked={checked}
