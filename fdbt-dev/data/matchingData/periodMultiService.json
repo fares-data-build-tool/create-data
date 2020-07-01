@@ -32,72 +32,86 @@
   "proofDocuments": ["identityDocument"],
   "selectedServices": [
     {
-      "lineName": "2C",
-      "startDate": "05/04/2020",
+      "lineName": "25",
+      "serviceCode": "NW_07_BLAC_25_1",
+      "startDate": "06/04/2020",
       "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
     },
     {
-      "lineName": "17",
-      "startDate": "05/04/2020",
+      "lineName": "25",
+      "serviceCode": "NW_07_BLAC_25_2",
+      "startDate": "13/04/2020",
       "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM"
     },
     {
       "lineName": "4",
+      "serviceCode": "NW_05_BLAC_4_1",
       "startDate": "05/04/2020",
       "serviceDescription": "CLEVELEYS - MERESIDE via Blackpool"
     },
     {
       "lineName": "19",
+      "serviceCode": "NW_05_BLAC_19_1",
       "startDate": "05/04/2020",
       "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
     },
     {
       "lineName": "1",
+      "serviceCode": "NW_05_BLAC_1_1",
       "startDate": "05/04/2020",
       "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
     },
     {
       "lineName": "2",
+      "serviceCode": "NW_05_BLAC_2_1",
       "startDate": "05/04/2020",
       "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
     },
     {
       "lineName": "5",
+      "serviceCode": "NW_05_BLAC_5_1",
       "startDate": "05/04/2020",
       "serviceDescription": "VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE"
     },
     {
       "lineName": "9",
+      "serviceCode": "NW_05_BLAC_9_1",
       "startDate": "05/04/2020",
       "serviceDescription": "CLEVELEYS - BLACKPOOL via Bispham"
     },
     {
       "lineName": "14",
+      "serviceCode": "NW_05_BLAC_14_1",
       "startDate": "05/04/2020",
       "serviceDescription": "FLEETWOOD - BLACKPOOL via Layton"
     },
     {
       "lineName": "18",
+      "serviceCode": "NW_05_BLAC_18_1",
       "startDate": "05/04/2020",
       "serviceDescription": "BLACKPOOL - MERESIDE via South Shore"
     },
     {
       "lineName": "11",
+      "serviceCode": "NW_05_BLAC_11_1",
       "startDate": "05/04/2020",
       "serviceDescription": "LYTHAM - BLACKPOOL via St Annes"
     },
     {
       "lineName": "3",
+      "serviceCode": "NW_05_BLAC_3_1",
       "startDate": "05/04/2020",
       "serviceDescription": "MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK"
     },
     {
       "lineName": "7",
+      "serviceCode": "NW_05_BLAC_7_1",
       "startDate": "05/04/2020",
       "serviceDescription": "CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL"
     },
     {
       "lineName": "6",
+      "serviceCode": "NW_05_BLAC_6_1",
       "startDate": "05/04/2020",
       "serviceDescription": "MERESIDE - BLACKPOOL - GRANGE PARK"
     }
