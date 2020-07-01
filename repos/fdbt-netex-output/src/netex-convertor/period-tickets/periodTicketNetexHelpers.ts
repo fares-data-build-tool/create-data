@@ -37,7 +37,7 @@ export const getLinesList = (userPeriodTicket: PeriodMultipleServicesTicket, ope
     userPeriodTicket.selectedServices
         ? userPeriodTicket.selectedServices.map(service => ({
               version: '1.0',
-              id: `op:${service.lineName}`,
+              id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
               Name: { $t: `Line ${service.lineName}` },
               Description: { $t: service.serviceDescription },
               Url: { $t: getCleanWebsite(operatorData.website) },
@@ -52,7 +52,7 @@ export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): 
     userPeriodTicket.selectedServices
         ? userPeriodTicket.selectedServices.map(service => ({
               version: '1.0',
-              ref: `op:${service.lineName}`,
+              ref: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
           }))
         : [];
 
