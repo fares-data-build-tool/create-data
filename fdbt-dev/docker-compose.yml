@@ -17,8 +17,9 @@ services:
     tty: true
     stdin_open: true
     environment:
-      SERVICES: s3,s3api,sns
+      SERVICES: s3,s3api,sns,dynamodb
       DATA_DIR: /tmp/localstack/data
     ports:
       - "4572:4572"
       - "4575:4575"
+      - "4569:4569"

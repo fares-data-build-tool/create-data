@@ -1,7 +1,7 @@
 PROJECT_NAME=fdbt
 UNVALIDATED_NETEX_BUCKET=fdbt-unvalidated-netex-data-dev
 
-dev: docker-up wait-for-mysql data-reset wait-for-s3-and-sns create-local-buckets create-sns-topics add-data-to-buckets print-help start-site
+dev: docker-up wait-for-mysql data-reset wait-for-s3-and-sns create-local-buckets create-local-dynamodb-table create-sns-topics add-data-to-buckets print-help start-site
 
 
 # DOCKER
@@ -85,6 +85,10 @@ create-local-buckets:
 	awslocal s3 mb s3://fdbt-matching-data-dev
 	awslocal s3 mb s3://fdbt-netex-data-dev
 	awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev
+
+create-local-dynamodb-table:
+	awslocal dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name sessions --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST
+	awslocal dynamodb update-time-to-live --table-name sessions --time-to-live-specification "Enabled=true, AttributeName=expires"
 
 create-sns-topics:
 	awslocal sns create-topic --name AlertsTopic
