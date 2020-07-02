@@ -7,6 +7,8 @@ Parameters:
     Type: String
   PreProdAccountId:
     Type: String
+  ProdAccountId:
+    Type: String
 
 Resources:
   SlackAlertsCodeBucket:
@@ -33,6 +35,7 @@ Resources:
               AWS:
                 - !Sub arn:aws:iam::${TestAccountId}:root
                 - !Sub arn:aws:iam::${PreProdAccountId}:root
+                - !Sub arn:aws:iam::${ProdAccountId}:root
 
   CognitoCustomTriggersBucket:
     Type: AWS::S3::Bucket
@@ -58,3 +61,4 @@ Resources:
               AWS:
                 - !Sub arn:aws:iam::${TestAccountId}:root
                 - !Sub arn:aws:iam::${PreProdAccountId}:root
+                - !Sub arn:aws:iam::${ProdAccountId}:root

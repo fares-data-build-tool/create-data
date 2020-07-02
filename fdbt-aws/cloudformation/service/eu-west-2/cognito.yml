@@ -8,16 +8,15 @@ Parameters:
       - test
       - preprod
       - prod
-  CertificateARN:
-    Type: String
-  AuthDomain:
-    Type: String
   RegistrationLink:
     Type: String
   SESSourceArn:
     Type: String
   ForgottenPasswordLink:
     Type: String
+
+Conditions:
+  IsProd: !Equals [!Ref Stage, "prod"]
 
 Resources:
   CognitoEmailTriggerLambda:
@@ -75,10 +74,15 @@ Resources:
           TemporaryPasswordValidityDays: 3
       EmailConfiguration:
         SourceArn: !Ref SESSourceArn
+        EmailSendingAccount: !If [IsProd, "DEVELOPER", "COGNITO_DEFAULT"]
       AdminCreateUserConfig:
         AllowAdminCreateUserOnly: true
       LambdaConfig:
         CustomMessage: !GetAtt CognitoEmailTriggerLambda.Arn
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
 
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
@@ -98,14 +102,6 @@ Resources:
         - custom:noc
         - custom:contactable
       PreventUserExistenceErrors: ENABLED
-
-  UserPoolDomain:
-    Type: AWS::Cognito::UserPoolDomain
-    Properties:
-      CustomDomainConfig:
-        CertificateArn: !Ref CertificateARN
-      Domain: !Ref AuthDomain
-      UserPoolId: !Ref UserPool
 
 Outputs:
   UserPoolClientID:

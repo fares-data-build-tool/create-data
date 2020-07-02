@@ -7,6 +7,8 @@ Parameters:
     Type: String
   PreProdAccountId:
     Type: String
+  ProdAccountId:
+    Type: String
 
 Resources:
   ManageOwnUserPolicy:
@@ -91,7 +93,8 @@ Resources:
                   - "sts:AssumeRole"
                 Resource:
                   - !Sub arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2
-                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-readonly-preprod-eu-west-2
+                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-admin-preprod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-readonly-prod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref ManageOwnUserPolicy
@@ -111,6 +114,7 @@ Resources:
                 Resource:
                   - !Sub arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2
                   - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-admin-preprod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-admin-prod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref ManageOwnUserPolicy
@@ -130,6 +134,7 @@ Resources:
                 Resource:
                   - !Sub arn:aws:iam::${TestAccountId}:role/tfn-billing-test-eu-west-2
                   - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-billing-preprod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-billing-prod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/Billing
         - !Ref ManageOwnUserPolicy

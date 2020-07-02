@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for Route53 resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+  DomainName:
+    Type: String
+    Description: Domain name for hosted zone
+
+Resources:
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Ref DomainName
+
+Outputs:
+  HostedZoneId:
+    Value: !Ref HostedZone
+    Export:
+      Name: !Sub ${Stage}:HostedZoneId

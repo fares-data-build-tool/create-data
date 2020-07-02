@@ -53,9 +53,14 @@ Parameters:
   MonitoringDomain:
     Type: String
     Description: Domain for monitoring
+  ExternalCertificateArn:
+    Type: String
+    Default: ""
+    Description: ARN for ACM certificate for external domain
 
 Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
+  IsProd: !Equals [!Ref Stage, "prod"]
 
 Resources:
   # ECS Resources
@@ -253,7 +258,12 @@ Resources:
     Properties:
       Certificates:
         - CertificateArn:
-            Fn::ImportValue: !Sub ${Stage}:CertificateArn
+            Fn::ImportValue:
+              !If [
+                IsProd,
+                !Ref ExternalCertificateArn,
+                !Sub "${Stage}:CertificateArn",
+              ]
       DefaultActions:
         - TargetGroupArn: !Ref SiteTargetGroup
           Type: forward

@@ -280,7 +280,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
 
-  Policy:
+  CiPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       Description: Policy for cicd accounts
@@ -306,19 +306,19 @@ Resources:
               - "sns:*"
             Resource: "*"
 
-  Group:
+  CiGroup:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: fdbt-cicd-group
+      GroupName: fdbt-ci-group
       ManagedPolicyArns:
-        - !Ref Policy
+        - !Ref CiPolicy
 
-  User:
+  CiUser:
     Type: AWS::IAM::User
     Properties:
-      UserName: fdbt-circleci-user
+      UserName: fdbt-ci-user
       Groups:
-        - !Ref Group
+        - !Ref CiGroup
 
   UiTestsPolicy:
     Type: AWS::IAM::ManagedPolicy

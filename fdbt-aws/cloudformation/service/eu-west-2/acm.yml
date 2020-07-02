@@ -15,14 +15,20 @@ Parameters:
 Resources:
   Certificate:
     Type: AWS::CertificateManager::Certificate
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       DomainName: !Ref DomainName
       SubjectAlternativeNames:
         - !Sub "*.${DomainName}"
       ValidationMethod: DNS
+      DomainValidationOptions:
+        - HostedZoneId:
+            Fn::ImportValue: !Sub ${Stage}:HostedZoneId
+          DomainName: !Ref DomainName
 
 Outputs:
-  VpcId:
+  CertificateArn:
     Value: !Ref Certificate
     Export:
       Name: !Sub ${Stage}:CertificateArn
