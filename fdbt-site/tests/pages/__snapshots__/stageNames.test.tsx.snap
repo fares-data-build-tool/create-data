@@ -10,145 +10,180 @@ exports[`pages stageNames should render correctly when a user first visits the p
     csrfToken=""
     method="post"
   >
-    <div
-      className="govuk-form-group"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <fieldset
+      aria-describedby="stage-names-input"
+      className="govuk-fieldset"
     >
-      <fieldset
-        aria-describedby="stage-names-input"
-        className="govuk-fieldset"
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-fieldset__heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
+          Enter the names of the fare stages in order from first to last
+        </h1>
+        <p
+          className="govuk-hint"
+        >
+          Fare stage names are limited to 30 characters
+        </p>
+      </legend>
+      <div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-1"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-1"
           >
-            Enter the names of the fare stages in order from first to last
-          </h1>
-          <p
-            className="govuk-hint"
+            Fare Stage 
+            1
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-1-error"
+            errors={Array []}
           >
-            Fare stage names are limited to 30 characters
-          </p>
-        </legend>
-        <div>
-          <div
-            className="govuk-form-group"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-1"
-            >
-              Fare Stage 
-              1
-            </label>
             <input
               aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fare-stage-name-1"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-2"
-            >
-              Fare Stage 
-              2
-            </label>
-            <input
-              aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fare-stage-name-2"
-              maxLength={30}
-              name="stageNameInput"
-              type="text"
-            />
-          </div>
-          <div
-            className="govuk-form-group"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-3"
-            >
-              Fare Stage 
-              3
-            </label>
-            <input
-              aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fare-stage-name-3"
-              maxLength={30}
-              name="stageNameInput"
-              type="text"
-            />
-          </div>
-          <div
-            className="govuk-form-group"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-4"
-            >
-              Fare Stage 
-              4
-            </label>
-            <input
-              aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fare-stage-name-4"
-              maxLength={30}
-              name="stageNameInput"
-              type="text"
-            />
-          </div>
-          <div
-            className="govuk-form-group"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-5"
-            >
-              Fare Stage 
-              5
-            </label>
-            <input
-              aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fare-stage-name-5"
-              maxLength={30}
-              name="stageNameInput"
-              type="text"
-            />
-          </div>
-          <div
-            className="govuk-form-group"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-6"
-            >
-              Fare Stage 
-              6
-            </label>
-            <input
-              aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
-              id="fare-stage-name-6"
-              maxLength={30}
-              name="stageNameInput"
-              type="text"
-            />
-          </div>
+          </FormElementWrapper>
         </div>
-      </fieldset>
-    </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-2"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-2"
+          >
+            Fare Stage 
+            2
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-2-error"
+            errors={Array []}
+          >
+            <input
+              aria-describedby=""
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
+              id="fare-stage-name-2"
+              name="stageNameInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-3"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-3"
+          >
+            Fare Stage 
+            3
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-3-error"
+            errors={Array []}
+          >
+            <input
+              aria-describedby=""
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
+              id="fare-stage-name-3"
+              name="stageNameInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-4"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-4"
+          >
+            Fare Stage 
+            4
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-4-error"
+            errors={Array []}
+          >
+            <input
+              aria-describedby=""
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
+              id="fare-stage-name-4"
+              name="stageNameInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-5"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-5"
+          >
+            Fare Stage 
+            5
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-5-error"
+            errors={Array []}
+          >
+            <input
+              aria-describedby=""
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
+              id="fare-stage-name-5"
+              name="stageNameInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-6"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-6"
+          >
+            Fare Stage 
+            6
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-6-error"
+            errors={Array []}
+          >
+            <input
+              aria-describedby=""
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
+              id="fare-stage-name-6"
+              name="stageNameInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </div>
+      </div>
+    </fieldset>
     <input
       className="govuk-button"
       id="continue-button"
@@ -169,143 +204,160 @@ exports[`pages stageNames should render correctly when a user is redirected to t
     csrfToken=""
     method="post"
   >
-    <div
-      className="govuk-form-group"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <fieldset
+      aria-describedby="stage-names-input"
+      className="govuk-fieldset"
     >
-      <fieldset
-        aria-describedby="stage-names-input"
-        className="govuk-fieldset"
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-fieldset__heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
+          Enter the names of the fare stages in order from first to last
+        </h1>
+        <p
+          className="govuk-hint"
+        >
+          Fare stage names are limited to 30 characters
+        </p>
+      </legend>
+      <div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-1"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-1"
           >
-            Enter the names of the fare stages in order from first to last
-          </h1>
-          <p
-            className="govuk-hint"
+            Fare Stage 
+            1
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-1-error"
+            errors={Array []}
           >
-            Fare stage names are limited to 30 characters
-          </p>
-        </legend>
-        <div>
-          <div
-            className="govuk-form-group"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-1"
-            >
-              Fare Stage 
-              1
-            </label>
             <input
               aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-1"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group"
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-2"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-2"
           >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-2"
-            >
-              Fare Stage 
-              2
-            </label>
+            Fare Stage 
+            2
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-2-error"
+            errors={Array []}
+          >
             <input
               aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-2"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group govuk-form-group--error input-error"
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-3"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-3"
           >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-3"
-            >
-              Fare Stage 
-              3
-            </label>
-            <span
-              className="govuk-error-message"
-              id="fare-stage-name-3-error"
-            >
-              <span
-                className="govuk-visually-hidden"
-              >
-                Error:
-              </span>
-               
-              Enter a name for this fare stage
-            </span>
+            Fare Stage 
+            3
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-3-error"
+            errors={Array []}
+          >
             <input
               aria-describedby="fareStageName3-error"
-              className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-3"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group"
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-4"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-4"
           >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-4"
-            >
-              Fare Stage 
-              4
-            </label>
+            Fare Stage 
+            4
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-4-error"
+            errors={Array []}
+          >
             <input
               aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-4"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group"
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="fare-stage-name-5"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-5"
           >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-5"
-            >
-              Fare Stage 
-              5
-            </label>
+            Fare Stage 
+            5
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-5-error"
+            errors={Array []}
+          >
             <input
               aria-describedby=""
-              className="govuk-input govuk-input--width-30  stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-5"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
+          </FormElementWrapper>
         </div>
-      </fieldset>
-    </div>
+      </div>
+    </fieldset>
     <input
       className="govuk-button"
       id="continue-button"
@@ -326,159 +378,134 @@ exports[`pages stageNames should render correctly when a user is redirected to t
     csrfToken=""
     method="post"
   >
-    <div
-      className="govuk-form-group"
+    <ErrorSummary
+      errors={Array []}
+    />
+    <fieldset
+      aria-describedby="stage-names-input"
+      className="govuk-fieldset"
     >
-      <fieldset
-        aria-describedby="stage-names-input"
-        className="govuk-fieldset"
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-fieldset__heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
+          Enter the names of the fare stages in order from first to last
+        </h1>
+        <p
+          className="govuk-hint"
+        >
+          Fare stage names are limited to 30 characters
+        </p>
+      </legend>
+      <div>
+        <div
+          className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-1"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-1"
           >
-            Enter the names of the fare stages in order from first to last
-          </h1>
-          <p
-            className="govuk-hint"
+            Fare Stage 
+            1
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-1-error"
+            errors={Array []}
           >
-            Fare stage names are limited to 30 characters
-          </p>
-        </legend>
-        <div>
-          <div
-            className="govuk-form-group govuk-form-group--error input-error"
-          >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-1"
-            >
-              Fare Stage 
-              1
-            </label>
-            <span
-              className="govuk-error-message"
-              id="fare-stage-name-1-error"
-            >
-              <span
-                className="govuk-visually-hidden"
-              >
-                Error:
-              </span>
-               
-              Enter a name for this fare stage
-            </span>
             <input
               aria-describedby="fareStageName1-error"
-              className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-1"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group govuk-form-group--error input-error"
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-2"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-2"
           >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-2"
-            >
-              Fare Stage 
-              2
-            </label>
-            <span
-              className="govuk-error-message"
-              id="fare-stage-name-2-error"
-            >
-              <span
-                className="govuk-visually-hidden"
-              >
-                Error:
-              </span>
-               
-              Enter a name for this fare stage
-            </span>
+            Fare Stage 
+            2
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-2-error"
+            errors={Array []}
+          >
             <input
               aria-describedby="fareStageName2-error"
-              className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-2"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group govuk-form-group--error input-error"
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-3"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-3"
           >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-3"
-            >
-              Fare Stage 
-              3
-            </label>
-            <span
-              className="govuk-error-message"
-              id="fare-stage-name-3-error"
-            >
-              <span
-                className="govuk-visually-hidden"
-              >
-                Error:
-              </span>
-               
-              Enter a name for this fare stage
-            </span>
+            Fare Stage 
+            3
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-3-error"
+            errors={Array []}
+          >
             <input
               aria-describedby="fareStageName3-error"
-              className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-3"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
-          <div
-            className="govuk-form-group govuk-form-group--error input-error"
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-4"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="fare-stage-name-4"
           >
-            <label
-              className="govuk-label"
-              htmlFor="fare-stage-name-4"
-            >
-              Fare Stage 
-              4
-            </label>
-            <span
-              className="govuk-error-message"
-              id="fare-stage-name-4-error"
-            >
-              <span
-                className="govuk-visually-hidden"
-              >
-                Error:
-              </span>
-               
-              Enter a name for this fare stage
-            </span>
+            Fare Stage 
+            4
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="fare-stage-name-4-error"
+            errors={Array []}
+          >
             <input
               aria-describedby="fareStageName4-error"
-              className="govuk-input govuk-input--width-30 govuk-input--error stage-name-input-field"
+              className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-4"
-              maxLength={30}
               name="stageNameInput"
               type="text"
             />
-          </div>
+          </FormElementWrapper>
         </div>
-      </fieldset>
-    </div>
+      </div>
+    </fieldset>
     <input
       className="govuk-button"
       id="continue-button"
