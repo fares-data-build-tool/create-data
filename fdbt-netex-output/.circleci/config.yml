@@ -1,220 +1,295 @@
 version: 2.1
 
 jobs:
-    checkout-repo:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - checkout
-            - persist_to_workspace:
-                  root: ~/project
-                  paths:
-                      - '*'
+  checkout-repo:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - '*'
 
-    build-netex-output-resources:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Starting build"
-                      npm install
-                      npm run build
-            - persist_to_workspace:
-                  root: ~/project
-                  paths:
-                      - './node_modules'
+  build-netex-output-resources:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Starting build"
+            npm install
+            npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - './node_modules'
 
-    audit-netex-output-resources:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      npx audit-ci --moderate
+  audit-netex-output-resources:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            npx audit-ci --moderate
 
-    test-netex-output-resources:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Running tests"
-                      npm run test:ci
+  test-netex-output-resources:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Running tests"
+            npm run test:ci
 
-    lint-netex-output-resources:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Linting site"
-                      npm run lint
+  lint-netex-output-resources:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Linting site"
+            npm run lint
 
-    deploy-netex-output-resources-to-test:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Deploying..."
-                      sudo npm i -g serverless
-                      export SLS_DEBUG="*" && sls deploy --stage=test
-                      echo "Finished deploy"
+  deploy-netex-output-resources-to-test:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            sudo npm i -g serverless
+            export SLS_DEBUG="*" && sls deploy --stage=test
+            echo "Finished deploy"
 
-    deploy-netex-output-resources-to-preprod:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Deploying..."
-                      sudo npm i -g serverless
-                      export SLS_DEBUG="*" && sls deploy --stage=preprod
-                      echo "Finished deploy"
+  deploy-netex-output-resources-to-preprod:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            sudo npm i -g serverless
+            export SLS_DEBUG="*" && sls deploy --stage=preprod
+            echo "Finished deploy"
 
-    audit-netex-validator:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      cd src/netex-validator
-                      npx audit-ci --moderate
+  deploy-netex-output-resources-to-prod:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            sudo npm i -g serverless
+            export SLS_DEBUG="*" && sls deploy --stage=prod
+            echo "Finished deploy"
 
-    deploy-netex-validator-to-test:
-        docker:
-            - image: circleci/python:3.8
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-                      sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
-                      cd src/netex-validator
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=test
-                      echo "Finished deploy"
+  audit-netex-validator:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            cd src/netex-validator
+            npx audit-ci --moderate
 
-    deploy-netex-validator-to-preprod:
-        docker:
-            - image: circleci/python:3.8
-        working_directory: ~/project
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - run:
-                  command: |
-                      echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-                      sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
-                      cd src/netex-validator
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=preprod
-                      echo "Finished deploy"
+  deploy-netex-validator-to-test:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/netex-validator
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=test
+            echo "Finished deploy"
+
+  deploy-netex-validator-to-preprod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/netex-validator
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=preprod
+            echo "Finished deploy"
+
+  deploy-netex-validator-to-prod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/netex-validator
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=prod
+            echo "Finished deploy"
 
 workflows:
-    version: 2
-    build-test-and-deploy-netex-output-lambdas:
-        jobs:
+  version: 2
+  build-test-and-deploy-netex-output-lambdas:
+    jobs:
+      - checkout-repo:
+          filters:
+            tags:
+              only: /^v.*/
+
+      - audit-netex-output-resources:
+          requires:
             - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
 
-            - audit-netex-output-resources:
-                  requires:
-                      - checkout-repo
+      - audit-netex-validator:
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
 
-            - audit-netex-validator:
-                  requires:
-                      - checkout-repo
+      - deploy-netex-validator-to-test:
+          requires:
+            - audit-netex-validator
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only:
+                - develop
 
-            - deploy-netex-validator-to-test:
-                  requires:
-                      - audit-netex-validator
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only:
-                              - develop
+      - deploy-netex-validator-to-preprod:
+          requires:
+            - audit-netex-validator
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only:
+                - master
 
-            - hold-netex-validator-preprod-deployment:
-                  type: approval
-                  requires:
-                      - audit-netex-validator
-                  filters:
-                      branches:
-                          only: master
+      - hold-netex-validator-prod-deployment:
+          type: approval
+          requires:
+            - audit-netex-validator
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 
-            - deploy-netex-validator-to-preprod:
-                  requires:
-                      - hold-netex-validator-preprod-deployment
-                  context: tfn-fdbt-preprod
-                  filters:
-                      branches:
-                          only:
-                              - master
+      - deploy-netex-validator-to-prod:
+          requires:
+            - hold-netex-validator-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 
-            - build-netex-output-resources:
-                  requires:
-                      - audit-netex-output-resources
+      - build-netex-output-resources:
+          requires:
+            - audit-netex-output-resources
+          filters:
+            tags:
+              only: /^v.*/
 
-            - test-netex-output-resources:
-                  requires:
-                      - build-netex-output-resources
+      - test-netex-output-resources:
+          requires:
+            - build-netex-output-resources
+          filters:
+            tags:
+              only: /^v.*/
 
-            - lint-netex-output-resources:
-                  requires:
-                      - build-netex-output-resources
+      - lint-netex-output-resources:
+          requires:
+            - build-netex-output-resources
+          filters:
+            tags:
+              only: /^v.*/
 
-            - deploy-netex-output-resources-to-test:
-                  requires:
-                      - test-netex-output-resources
-                      - lint-netex-output-resources
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only:
-                              - develop
+      - deploy-netex-output-resources-to-test:
+          requires:
+            - test-netex-output-resources
+            - lint-netex-output-resources
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only:
+                - develop
 
-            - hold-preprod-deployment:
-                  type: approval
-                  requires:
-                      - test-netex-output-resources
-                      - lint-netex-output-resources
-                  filters:
-                      branches:
-                          only: master
+      - deploy-netex-output-resources-to-preprod:
+          requires:
+            - test-netex-output-resources
+            - lint-netex-output-resources
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only: master
 
-            - deploy-netex-output-resources-to-preprod:
-                  requires:
-                      - hold-preprod-deployment
-                  context: tfn-fdbt-preprod
-                  filters:
-                      branches:
-                          only: master
+      - hold-prod-deployment:
+          type: approval
+          requires:
+            - test-netex-output-resources
+            - lint-netex-output-resources
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-netex-output-resources-to-prod:
+          requires:
+            - hold-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
