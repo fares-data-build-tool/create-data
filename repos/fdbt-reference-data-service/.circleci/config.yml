@@ -74,6 +74,24 @@ jobs:
             export SLS_DEBUG="*" && sls deploy --stage=preprod
             echo "Finished deploy"
 
+  deploy-reference-data-uploaders-to-prod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/uploaders
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=prod
+            echo "Finished deploy"
+
   audit-reference-data-retrievers:
     docker:
       - image: circleci/node:12
@@ -122,15 +140,39 @@ jobs:
             export SLS_DEBUG="*" && sls deploy --stage=preprod
             echo "Finished deploy"
 
+  deploy-reference-data-retrievers-to-prod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless
+            cd src/retrievers
+            npm install
+            export SLS_DEBUG="*" && sls deploy --stage=prod
+            echo "Finished deploy"
+
 workflows:
   version: 2
   audit-test-and-deploy-reference-data-lambdas:
     jobs:
-      - checkout-repo
+      - checkout-repo:
+          filters:
+            tags:
+              only: /^v.*/
 
       - audit-reference-data-retrievers:
           requires:
             - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
 
       - deploy-reference-data-retrievers-to-test:
           requires:
@@ -140,29 +182,47 @@ workflows:
             branches:
               only: develop
 
-      - hold-reference-data-retrievers-preprod-deployment:
-          type: approval
-          requires:
-            - audit-reference-data-retrievers
-          filters:
-            branches:
-              only: master
-
       - deploy-reference-data-retrievers-to-preprod:
           requires:
-            - hold-reference-data-retrievers-preprod-deployment
+            - audit-reference-data-retrievers
           context: tfn-fdbt-preprod
           filters:
             branches:
               only: master
 
+      - hold-reference-data-retrievers-prod-deployment:
+          type: approval
+          requires:
+            - audit-reference-data-retrievers
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-reference-data-retrievers-to-prod:
+          requires:
+            - hold-reference-data-retrievers-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
       - audit-reference-data-uploaders:
           requires:
             - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
 
       - test-reference-data-uploaders:
           requires:
             - audit-reference-data-uploaders
+          filters:
+            tags:
+              only: /^v.*/
 
       - deploy-reference-data-uploaders-to-test:
           requires:
@@ -172,18 +232,30 @@ workflows:
             branches:
               only: develop
 
-      - hold-reference-data-uploaders-preprod-deployment:
-          type: approval
-          requires:
-            - test-reference-data-uploaders
-          filters:
-            branches:
-              only: master
-
       - deploy-reference-data-uploaders-to-preprod:
           requires:
-            - hold-reference-data-uploaders-preprod-deployment
+            - test-reference-data-uploaders
           context: tfn-fdbt-preprod
           filters:
             branches:
               only: master
+
+      - hold-reference-data-uploaders-prod-deployment:
+          type: approval
+          requires:
+            - test-reference-data-uploaders
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-reference-data-uploaders-to-prod:
+          requires:
+            - hold-reference-data-uploaders-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
