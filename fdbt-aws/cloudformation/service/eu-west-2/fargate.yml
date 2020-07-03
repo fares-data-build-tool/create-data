@@ -53,6 +53,14 @@ Parameters:
   MonitoringDomain:
     Type: String
     Description: Domain for monitoring
+  SessionSecret:
+    AllowedPattern: "[a-zA-Z0-9]+"
+    ConstraintDescription: must be between 8 to 41 alphanumeric characters.
+    Description: The session secret, between 8 to 41 alphanumeric characters.
+    MaxLength: "41"
+    MinLength: "8"
+    NoEcho: "true"
+    Type: String
   ExternalCertificateArn:
     Type: String
     Default: ""
@@ -118,6 +126,8 @@ Resources:
                 Fn::ImportValue: !Sub ${Stage}:UserPoolID
             - Name: ALLOW_DISABLE_AUTH
               Value: !If [IsTest, "1", "0"]
+            - Name: SESSION_SECRET
+              Value: !Ref SessionSecret
 
   MonitoringTaskDefinitionTemp:
     Type: Custom::TaskDefinition

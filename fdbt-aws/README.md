@@ -23,6 +23,7 @@ Then in each service account you wish to deploy the tool into, run in the follow
 - fargate.yml
 - waf.yml (optional to restrict access to the ALB)
 - rds.yml
+- dynamo.yml
 
 ## Running helper scripts
 
