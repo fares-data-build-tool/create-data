@@ -89,10 +89,12 @@ functions:
         threshold: 50000
         treatMissingData: notBreaching
       - name: functionThrottles
+        threshold: 1000
         treatMissingData: notBreaching
       - name: functionErrors
         treatMissingData: notBreaching
       - name: functionInvocations
+        threshold: 5000
         treatMissingData: notBreaching
 
 package:
