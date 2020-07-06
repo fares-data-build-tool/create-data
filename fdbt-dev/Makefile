@@ -63,6 +63,8 @@ validate-latest-file:
 generate-validate-all: add-data-to-buckets
 	./scripts/generate_validate_all_netex.sh
 
+generate-email-odh-uploader:
+	./scripts/trigger_odh_uploader.sh $(file)
 
 # DATA
 

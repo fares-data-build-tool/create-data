@@ -48,3 +48,5 @@ This will start the following:
 ## Other features
 
 The Makefile has other functionality such as running tests (`make test-site`) and tailing logs (`make logs-site`), see the Makefile for a full list of commands.
+
+For the ODH Uploader it will not send the email locally therefore the purpose of running the make command is show the output which includes the email address and the email template with the populated fields. This will allow you to validate it locally.
