@@ -21,14 +21,16 @@ export interface UserFareZone {
 }
 
 const getS3Client = (): AWS.S3 => {
-    let options = {};
+    let options: AWS.S3.ClientConfiguration = {
+        region: 'eu-west-2',
+    };
 
     if (process.env.NODE_ENV === 'development') {
         options = {
             s3ForcePathStyle: true,
             accessKeyId: 'S3RVER',
             secretAccessKey: 'S3RVER',
-            endpoint: new AWS.Endpoint('http://localhost:4572'),
+            endpoint: 'http://localhost:4572',
         };
     }
 
