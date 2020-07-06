@@ -1,6 +1,6 @@
 import definePassengerType, {
     passengerTypeDetailsSchema,
-    removeWhitespaceFromTextInput,
+    formatRequestBody,
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -50,14 +50,25 @@ describe('definePassengerType', () => {
         });
     });
 
-    describe('removeWhitespaceFromTextInput', () => {
+    describe('formatRequestBody', () => {
         it('should remove whitespace from the request body text inputs of ageRangeMin and ageRangeMax', () => {
+            const reqBodyParams = { ageRange: 'Yes', proof: 'No' };
             const { req } = getMockRequestAndResponse({
                 cookieValues: {},
-                body: { ageRangeMin: '   2   4', ageRangeMax: '   10   0       ' },
+                body: { ageRangeMin: '   2   4', ageRangeMax: '   10   0       ', ...reqBodyParams },
             });
-            const filtered = removeWhitespaceFromTextInput(req);
-            expect(filtered).toEqual({ ageRangeMin: '24', ageRangeMax: '100' });
+            const filtered = formatRequestBody(req);
+            expect(filtered).toEqual({ ageRangeMin: '24', ageRangeMax: '100', ...reqBodyParams });
+        });
+
+        it('should force proof documents to always be an array, even if there is only one selected', () => {
+            const reqBodyParams = { ageRange: 'No', proof: 'Yes' };
+            const { req } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: { proofDocuments: 'membershipCard', ...reqBodyParams },
+            });
+            const filtered = formatRequestBody(req);
+            expect(filtered).toEqual({ proofDocuments: ['membershipCard'], ...reqBodyParams });
         });
     });
 
