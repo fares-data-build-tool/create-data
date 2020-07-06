@@ -9,6 +9,7 @@ exports[`Breadcrumbs should render the breadcrumbs 1`] = `
   >
     <li
       className="govuk-breadcrumbs__list-item"
+      key="Home"
     >
       <a
         className="govuk-breadcrumbs__link"
@@ -19,6 +20,7 @@ exports[`Breadcrumbs should render the breadcrumbs 1`] = `
     </li>
     <li
       className="govuk-breadcrumbs__list-item"
+      key="Select Fare Type"
     >
       <a
         className="govuk-breadcrumbs__link"
@@ -29,6 +31,7 @@ exports[`Breadcrumbs should render the breadcrumbs 1`] = `
     </li>
     <li
       className="govuk-breadcrumbs__list-item"
+      key="Select Passenger Type"
     >
       <a
         className="govuk-breadcrumbs__link"
@@ -39,6 +42,7 @@ exports[`Breadcrumbs should render the breadcrumbs 1`] = `
     </li>
     <li
       className="govuk-breadcrumbs__list-item"
+      key="Select Service"
     >
       <a
         className="govuk-breadcrumbs__link"

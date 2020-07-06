@@ -6,7 +6,8 @@ const clientId = process.env.FDBT_USER_POOL_CLIENT_ID as string;
 const userPoolId = process.env.FDBT_USER_POOL_ID as string;
 let clientSecret: string | undefined;
 
-const getCognitoClient = (): CognitoIdentityServiceProvider => new CognitoIdentityServiceProvider();
+const getCognitoClient = (): CognitoIdentityServiceProvider =>
+    new CognitoIdentityServiceProvider({ region: 'eu-west-2' });
 
 const cognito = getCognitoClient();
 

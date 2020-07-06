@@ -4,6 +4,7 @@ import requireAuth, { setDisableAuthCookies } from './middleware/authentication'
 import setupCsrfProtection from './middleware/csrf';
 import setSecurityHeaders from './middleware/security';
 import setupLogging from './middleware/logging';
+import setupSessions from './middleware/sessions';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
@@ -70,6 +71,7 @@ const setStaticRoutes = (server: Express): void => {
         setSecurityHeaders(server);
         setDisableAuthCookies(server);
         setupCsrfProtection(server);
+        setupSessions(server);
 
         unauthenticatedGetRoutes.forEach(route => {
             server.get(route, (req: Request, res: Response) => {
