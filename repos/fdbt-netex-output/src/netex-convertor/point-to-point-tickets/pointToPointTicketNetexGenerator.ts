@@ -1,4 +1,4 @@
-import { FareZoneList, PointToPointTicket, Operator, ScheduledStopPoints } from '../types';
+import { FareZoneList, PointToPointTicket, Operator, ScheduledStopPoints } from '../../types';
 import {
     getDistanceMatrixElements,
     getFareZoneList,

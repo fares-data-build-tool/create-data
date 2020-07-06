@@ -1,4 +1,4 @@
-import { Operator, PeriodTicket } from '../types';
+import { Operator, PeriodTicket } from '../../types';
 import {
     getScheduledStopPointsList,
     getTopographicProjectionRefList,

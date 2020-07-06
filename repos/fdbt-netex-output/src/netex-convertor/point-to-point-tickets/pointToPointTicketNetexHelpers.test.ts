@@ -1,6 +1,6 @@
 import * as netexHelpers from './pointToPointTicketNetexHelpers';
-import { FareZone, PointToPointTicket } from '../types';
-import { singleTicket, returnNonCircularTicket, returnCircularTicket } from '../test-data/matchingData';
+import { FareZone, PointToPointTicket } from '../../types';
+import { singleTicket, returnNonCircularTicket, returnCircularTicket } from '../../test-data/matchingData';
 import { NetexObject } from '../sharedHelpers';
 
 describe('Netex Helpers', () => {

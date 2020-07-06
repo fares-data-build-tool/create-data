@@ -12,6 +12,8 @@ export const singleTicket: SingleTicket = {
     operatorShortName: 'Manchester Community Tr',
     serviceDescription: 'Ashton Under Lyne - Glossop',
     type: 'single',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
     fareZones: [
         {
             name: 'Fare Zone 1',
@@ -88,6 +90,8 @@ export const returnNonCircularTicket: ReturnTicket = {
     operatorShortName: 'Rotala Preston Bus',
     serviceDescription: 'PRESTON - PRESTON via New Hall Lane',
     type: 'return',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
     inboundFareZones: [
         {
             name: 'Shott Drive',
@@ -397,6 +401,8 @@ export const returnCircularTicket: ReturnTicket = {
     operatorShortName: "Warrington's Own Buses",
     serviceDescription: 'Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road',
     type: 'return',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
     outboundFareZones: [
         {
             name: 'Shott Drive',
@@ -574,6 +580,8 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
     operatorName: 'Blackpool Transport',
     type: 'periodGeoZone',
     nocCode: 'BLAC',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
     products: [
         { productName: 'Selenium Test Product', productPrice: '10.50', productDuration: '1', productValidity: '24hr' },
         {
@@ -777,6 +785,8 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
 export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
     operatorName: 'Lancashire County Council',
     type: 'periodMultipleServices',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
     nocCode: 'PBLT',
     products: [
         { productName: 'Day Rider', productPrice: '12', productDuration: '1', productValidity: '24hr' },
@@ -978,6 +988,8 @@ export const flatFareTicket: FlatFareTicket = {
     operatorName: "Warrington's Own Buses",
     nocCode: 'WBTR',
     type: 'flatFare',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
     products: [{ productName: 'Weekly Rider', productPrice: '100' }],
     selectedServices: [
         {
