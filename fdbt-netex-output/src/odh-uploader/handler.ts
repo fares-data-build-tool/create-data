@@ -62,9 +62,9 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
         const info: SentMessageInfo = await mailTransporter.sendMail(mailOptions);
 
         if (info.message) {
-            console.info(`Email sent: ${info.message.toString()}`);
+            console.info(`Email sent ${info.message.toString()}`);
         } else {
-            console.info(`Email sent.`);
+            console.info(`Email sent`);
         }
     } catch (err) {
         throw new Error(`SES SendEmail failed. Error: ${err.stack}`);

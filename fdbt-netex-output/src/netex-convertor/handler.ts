@@ -25,7 +25,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
         const { type } = s3Data;
 
-        console.info(`NeTEx generation starting for type: ${type}...`);
+        console.info(`NeTEx generation starting for type ${type}...`);
 
         if (type === 'single' || type === 'return') {
             const matchingData: PointToPointTicket = s3Data;
@@ -37,6 +37,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const fileName = generateFileName(s3FileName);
 
             await uploadToS3(generatedNetex, fileName);
+            console.info(`NeTEx generation complete for type ${type}`);
         } else if (type === 'periodGeoZone' || type === 'periodMultipleServices' || type === 'flatFare') {
             const userPeriodTicket: PeriodTicket = s3Data;
             const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
@@ -46,6 +47,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const fileName = generateFileName(s3FileName);
 
             await uploadToS3(generatedNetex, fileName);
+            console.info(`NeTEx generation complete for type ${type}`);
         } else {
             throw new Error(
                 `The JSON object '${decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '))}' in the '${
@@ -57,8 +59,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         console.error(error.stack);
         throw new Error(error);
     }
-
-    console.info('NeTEx generation complete!');
 };
 
 export default netexConvertorHandler;

@@ -66,3 +66,24 @@ functions:
         events:
             - s3: unvalidatedNetexDataBucket
               event: s3:ObjectCreated:*
+
+resources:
+    Resources:
+        NetexValidFilter:
+            Type: 'AWS::Logs::MetricFilter'
+            Properties:
+                LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexValidator
+                FilterPattern: 'XML valid schema validation ok'
+                MetricTransformations:
+                    - MetricValue: '1'
+                      MetricNamespace: 'FDBT/Netex-Validator'
+                      MetricName: 'netex-valid-${self:provider.stage}'
+        NetexInvalidFilter:
+            Type: 'AWS::Logs::MetricFilter'
+            Properties:
+                LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexValidator
+                FilterPattern: '?Syntax ?Schema'
+                MetricTransformations:
+                    - MetricValue: '1'
+                      MetricNamespace: 'FDBT/Netex-Validator'
+                      MetricName: 'netex-invalid-${self:provider.stage}'
