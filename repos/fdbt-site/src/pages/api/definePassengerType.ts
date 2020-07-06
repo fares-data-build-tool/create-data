@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import * as yup from 'yup';
+import { isArray } from 'lodash';
 import {
     redirectToError,
     redirectTo,
@@ -79,8 +80,8 @@ export const passengerTypeDetailsSchema = yup
     })
     .required();
 
-export const removeWhitespaceFromTextInput = (req: NextApiRequest): { [key: string]: string } => {
-    const filteredReqBody: { [key: string]: string } = {};
+export const formatRequestBody = (req: NextApiRequest): {} => {
+    const filteredReqBody: { [key: string]: string | string[] } = {};
     Object.entries(req.body).forEach(entry => {
         if (entry[0] === 'ageRangeMin' || entry[0] === 'ageRangeMax') {
             const input = entry[1] as string;
@@ -89,6 +90,10 @@ export const removeWhitespaceFromTextInput = (req: NextApiRequest): { [key: stri
                 return;
             }
             filteredReqBody[entry[0]] = strippedInput;
+            return;
+        }
+        if (entry[0] === 'proofDocuments') {
+            filteredReqBody[entry[0]] = !isArray(entry[1]) ? [entry[1] as string] : (entry[1] as string[]);
             return;
         }
         filteredReqBody[entry[0]] = entry[1] as string;
@@ -117,7 +122,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         let errors: ExtractedValidationError[] = [];
 
-        const filteredReqBody = removeWhitespaceFromTextInput(req);
+        const filteredReqBody = formatRequestBody(req);
 
         try {
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
