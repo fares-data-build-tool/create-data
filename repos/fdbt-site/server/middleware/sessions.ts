@@ -3,11 +3,22 @@ import AWS, { DynamoDB } from 'aws-sdk';
 import session, { SessionOptions } from 'express-session';
 import connectDynamoDb from 'connect-dynamodb';
 
+interface DynamoDbOptions {
+    table: string;
+    AWSConfigJSON: {
+        region: string;
+    };
+    client?: DynamoDB;
+}
+
 export default (server: Express): void => {
     const DynamoDbStore = connectDynamoDb(session);
 
-    const dynamoDbOptions: { table: string; client?: DynamoDB } = {
+    const dynamoDbOptions: DynamoDbOptions = {
         table: 'sessions',
+        AWSConfigJSON: {
+            region: 'eu-west-2',
+        },
     };
 
     if (process.env.NODE_ENV === 'development') {
