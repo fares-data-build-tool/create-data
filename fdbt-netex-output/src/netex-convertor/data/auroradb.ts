@@ -1,6 +1,6 @@
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
-import { Operator, Service } from '../types';
+import { Operator, Service } from '../../types';
 
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
