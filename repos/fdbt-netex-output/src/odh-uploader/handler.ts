@@ -80,7 +80,8 @@ export const setMailOptions = (
 export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
     try {
         const s3ObjectParams = setS3ObjectParams(event);
-        const pathToSavedNetex = `/tmp/${s3ObjectParams.Key}`;
+        const splitKey = s3ObjectParams.Key.split('/').pop();
+        const pathToSavedNetex = `/tmp/${splitKey}`;
         const netexFile = await getFileFromS3(s3ObjectParams);
 
         const dataAsString: MatchingData = await fetchDataFromS3<MatchingData>(event, true);
