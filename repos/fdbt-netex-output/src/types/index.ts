@@ -38,6 +38,8 @@ export interface BaseTicket {
     ageRangeMax?: string;
     proof?: string;
     proofDocuments?: string[];
+    email: string;
+    uuid: string;
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;

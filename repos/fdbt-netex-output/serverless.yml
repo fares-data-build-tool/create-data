@@ -1,91 +1,150 @@
 service: netex-output-service
 
 provider:
-    name: aws
-    runtime: nodejs12.x
-    region: eu-west-2
-    stage: ${opt:stage, 'test'}
-    stackName: ${self:service}-${self:provider.stage}
-    timeout: 30
-    memorySize: 512
-    iamRoleStatements:
-        - Effect: 'Allow'
-          Action:
-              - 'ssm:GetParameter'
-          Resource: '*'
-        - Effect: 'Allow'
-          Action:
-              - 's3:GetObject'
-              - 's3:PutObject'
-          Resource:
-              - !Sub arn:aws:s3:::fdbt-matching-data-${self:provider.stage}/*
-              - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*
-              - !Sub arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*
-        - Effect: 'Allow'
-          Action:
-              - ses:SendEmail
-              - ses:SendRawEmail
-          Resource:
-              - '*'
-    s3:
-        matchingDataBucket:
-            name: fdbt-matching-data-${self:provider.stage}
-            publicAccessBlockConfiguration:
-                BlockPublicAcls: true
-                BlockPublicPolicy: true
-                IgnorePublicAcls: true
-                RestrictPublicBuckets: true
-            bucketEncryption:
-                ServerSideEncryptionConfiguration:
-                    - ServerSideEncryptionByDefault:
-                          SSEAlgorithm: AES256
-            lifecycleConfiguration:
-                Rules:
-                    - Id: ExpiryRule
-                      Status: Enabled
-                      ExpirationInDays: '60'
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+  stage: ${opt:stage, 'test'}
+  stackName: ${self:service}-${self:provider.stage}
+  timeout: 30
+  memorySize: 512
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'ssm:GetParameter'
+      Resource: '*'
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:PutObject'
+      Resource:
+        - !Sub arn:aws:s3:::fdbt-matching-data-${self:provider.stage}/*
+        - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*
+        - !Sub arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*
+    - Effect: 'Allow'
+      Action:
+        - ses:SendEmail
+        - ses:SendRawEmail
+      Resource:
+        - '*'
+  s3:
+    matchingDataBucket:
+      name: fdbt-matching-data-${self:provider.stage}
+      publicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      lifecycleConfiguration:
+        Rules:
+          - Id: ExpiryRule
+            Status: Enabled
+            ExpirationInDays: '60'
 
-        netexDataBucket:
-            name: fdbt-netex-data-${self:provider.stage}
-            publicAccessBlockConfiguration:
-                BlockPublicAcls: true
-                BlockPublicPolicy: true
-                IgnorePublicAcls: true
-                RestrictPublicBuckets: true
-            bucketEncryption:
-                ServerSideEncryptionConfiguration:
-                    - ServerSideEncryptionByDefault:
-                          SSEAlgorithm: AES256
+    netexDataBucket:
+      name: fdbt-netex-data-${self:provider.stage}
+      publicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
 functions:
-    NetexConvertor:
-        handler: src/netex-convertor/handler.netexConvertorHandler
-        events:
-            - s3: matchingDataBucket
-              event: s3:ObjectCreated:*
-        vpc:
-            securityGroupIds:
-                - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
-            subnetIds:
-                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
-                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
-        environment:
-            AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
-            UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
-            RDS_HOST:
-                Fn::ImportValue: ${self:provider.stage}:RdsHostName
+  NetexConvertor:
+    handler: src/netex-convertor/handler.netexConvertorHandler
+    events:
+      - s3: matchingDataBucket
+        event: s3:ObjectCreated:*
+    vpc:
+      securityGroupIds:
+        - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
+      subnetIds:
+        - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
+        - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
+    environment:
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+      UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
+      RDS_HOST:
+        Fn::ImportValue: ${self:provider.stage}:RdsHostName
 
-    OdhUploader:
-        handler: src/odh-uploader/handler.odhUploaderHandler
-        events:
-            - s3: netexDataBucket
-              event: s3:ObjectCreated:*
+  OdhUploader:
+    handler: src/odh-uploader/handler.odhUploaderHandler
+    events:
+      - s3: netexDataBucket
+        event: s3:ObjectCreated:*
+    environment:
+      MATCHING_DATA_BUCKET: fdbt-matching-data-${self:provider.stage}
+
+resources:
+  Resources:
+    NetexCompleteSingleFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        FilterPattern: 'NeTEx generation complete for type single'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Output'
+            MetricName: 'netex-complete-single-${self:provider.stage}'
+    NetexCompleteReturnFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        FilterPattern: 'NeTEx generation complete for type return'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Output'
+            MetricName: 'netex-complete-return-${self:provider.stage}'
+    NetexCompletePeriodGeoZoneFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        FilterPattern: 'NeTEx generation complete for type periodGeoZone'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Output'
+            MetricName: 'netex-complete-periodgeozone-${self:provider.stage}'
+    NetexCompletePeriodMultipleServicesFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        FilterPattern: 'NeTEx generation complete for type periodMultipleServices'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Output'
+            MetricName: 'netex-complete-periodmultipleservices-${self:provider.stage}'
+    NetexCompleteFlatFareFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        FilterPattern: 'NeTEx generation complete for type flatFare'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Output'
+            MetricName: 'netex-complete-flatfare-${self:provider.stage}'
+    SESEmailsSentFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-OdhUploader
+        FilterPattern: 'Email sent'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-OdhUploader'
+            MetricName: 'SES-emails-sent-${self:provider.stage}'
 
 plugins:
-    - serverless-plugin-typescript
-    - serverless-offline
+  - serverless-plugin-typescript
+  - serverless-offline
 
 package:
-    include:
-        - ./src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml
-        - ./src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml
+  include:
+    - ./src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml
+    - ./src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml

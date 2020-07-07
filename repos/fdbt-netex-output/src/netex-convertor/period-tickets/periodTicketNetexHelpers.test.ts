@@ -1,6 +1,6 @@
-import { PeriodGeoZoneTicket, PeriodTicket } from '../types';
+import { PeriodGeoZoneTicket, PeriodTicket } from '../../types';
 import * as netexHelpers from './periodTicketNetexHelpers';
-import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../test-data/matchingData';
+import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../../test-data/matchingData';
 import operatorData from '../test-data/operatorData';
 
 describe('periodTicketNetexHelpers', () => {

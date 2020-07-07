@@ -6,7 +6,7 @@ import {
     PointToPointTicket,
     ReturnTicket,
     SingleTicket,
-} from '../types';
+} from '../../types';
 import { NetexObject } from '../sharedHelpers';
 
 export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>

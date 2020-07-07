@@ -1,27 +1,21 @@
-import AWS from 'aws-sdk';
 import { S3Event } from 'aws-lambda';
 import nodemailer from 'nodemailer';
 import * as testData from './testData/testData';
 import { createMailTransporter, odhUploaderHandler } from './handler';
+import * as s3 from '../utils/s3';
+import { periodGeoZoneTicket } from '../test-data/matchingData';
 
 jest.mock('aws-sdk');
 
 describe('odhHandler SES emailer', () => {
-    const mockS3GetObject = jest.fn();
     const mockMailTransporter = jest.fn();
 
-    beforeEach(() => {
-        (AWS.S3 as {}) = jest.fn().mockImplementation(() => {
-            return {
-                getObject: mockS3GetObject,
-            };
-        });
+    const mockFetchDataFromS3Spy = jest.spyOn(s3, 'fetchDataFromS3');
+    const mockGetNetexFileFromS3 = jest.spyOn(s3, 'getFileFromS3');
 
-        mockS3GetObject.mockImplementation(() => ({
-            promise(): Promise<{}> {
-                return Promise.resolve({ Body: testData.testNetexFromS3 });
-            },
-        }));
+    beforeEach(() => {
+        mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodGeoZoneTicket));
+        mockGetNetexFileFromS3.mockImplementation(() => Promise.resolve('Body: testData.testNetexFromS3'));
 
         (createMailTransporter as {}) = jest.fn().mockImplementation(() => {
             return {
@@ -39,7 +33,6 @@ describe('odhHandler SES emailer', () => {
     });
 
     afterEach(() => {
-        mockS3GetObject.mockReset();
         mockMailTransporter.mockReset();
     });
 

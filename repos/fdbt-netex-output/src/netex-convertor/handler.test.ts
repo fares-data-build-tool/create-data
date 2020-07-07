@@ -6,7 +6,7 @@ import {
     periodMultipleServicesTicket,
     flatFareTicket,
     periodGeoZoneTicketWithNoType,
-} from './test-data/matchingData';
+} from '../test-data/matchingData';
 import mockS3Event from './test-data/mockS3Event';
 import * as s3 from './data/s3';
 import * as pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';

@@ -77,7 +77,7 @@ def validate_netex(download_path):
         try:
             xmlschema = etree.XMLSchema(file='./xsd/NeTEx_publication.xsd')
             xmlschema.assertValid(parsed_netex)
-            logger.info('XML valid, schema validation ok.')
+            logger.info('XML valid schema validation ok.')
 
         except etree.DocumentInvalid as schema_errors:
             logger.error('Schema validation error')
