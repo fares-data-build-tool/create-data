@@ -1,68 +1,89 @@
 service: netex-validator
 
 provider:
-    name: aws
-    runtime: python3.8
-    region: eu-west-2
-    stage: ${opt:stage, 'test'}
-    timeout: 180
-    memorySize: 512
-    iamRoleStatements:
-        - Effect: 'Allow'
-          Action:
-              - 's3:GetObject'
-              - 's3:PutObject'
-          Resource:
-              - !Sub 'arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*'
-              - !Sub 'arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*'
-        - Effect: 'Allow'
-          Action:
-              - 'sns:Publish'
-          Resource:
-              - Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
+  name: aws
+  runtime: python3.8
+  region: eu-west-2
+  stage: ${opt:stage, 'test'}
+  timeout: 180
+  memorySize: 512
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:PutObject'
+      Resource:
+        - !Sub 'arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*'
+        - !Sub 'arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*'
+    - Effect: 'Allow'
+      Action:
+        - 'sns:Publish'
+      Resource:
+        - Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
 
-    environment:
-        VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
-        SNS_ALERTS_ARN: ${self:custom.sns.alertsTopic.${self:provider.stage}, self:custom.sns.alertsTopic.other}
+  environment:
+    VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
+    SNS_ALERTS_ARN: ${self:custom.sns.alertsTopic.${self:provider.stage}, self:custom.sns.alertsTopic.other}
 
-    s3:
-        unvalidatedNetexDataBucket:
-            name: fdbt-unvalidated-netex-data-${self:provider.stage}
-            publicAccessBlockConfiguration:
-                BlockPublicAcls: true
-                BlockPublicPolicy: true
-                IgnorePublicAcls: true
-                RestrictPublicBuckets: true
-            bucketEncryption:
-                ServerSideEncryptionConfiguration:
-                    - ServerSideEncryptionByDefault:
-                          SSEAlgorithm: AES256
-            lifecycleConfiguration:
-                Rules:
-                    - Id: ExpiryRule
-                      Status: Enabled
-                      ExpirationInDays: '60'
+  s3:
+    unvalidatedNetexDataBucket:
+      name: fdbt-unvalidated-netex-data-${self:provider.stage}
+      publicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      lifecycleConfiguration:
+        Rules:
+          - Id: ExpiryRule
+            Status: Enabled
+            ExpirationInDays: '60'
 
 plugins:
-    - serverless-python-requirements
+  - serverless-python-requirements
 
 custom:
-    pythonRequirements:
-        dockerizePip: false
-    sns:
-        alertsTopic:
-            dev: arn:aws:sns:us-east-1:000000000000:AlertsTopic
-            other:
-                Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
+  pythonRequirements:
+    dockerizePip: false
+  sns:
+    alertsTopic:
+      dev: arn:aws:sns:us-east-1:000000000000:AlertsTopic
+      other:
+        Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
 package:
-    include:
-        - xsd/*
-    exclude:
-        - node_modules/**
+  include:
+    - xsd/*
+  exclude:
+    - node_modules/**
 
 functions:
-    NetexValidator:
-        handler: main.lambda_handler
-        events:
-            - s3: unvalidatedNetexDataBucket
-              event: s3:ObjectCreated:*
+  NetexValidator:
+    handler: main.lambda_handler
+    events:
+      - s3: unvalidatedNetexDataBucket
+        event: s3:ObjectCreated:*
+
+resources:
+  Resources:
+    NetexValidFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexValidator
+        FilterPattern: 'XML valid schema validation ok'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Validator'
+            MetricName: 'netex-valid-${self:provider.stage}'
+    NetexInvalidFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexValidator
+        FilterPattern: '?Syntax ?Schema'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Validator'
+            MetricName: 'netex-invalid-${self:provider.stage}'

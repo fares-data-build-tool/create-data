@@ -10,7 +10,7 @@ import {
     Line,
     LineRef,
     ProductDetails,
-} from '../types';
+} from '../../types';
 import { getCleanWebsite, NetexObject } from '../sharedHelpers';
 
 export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
