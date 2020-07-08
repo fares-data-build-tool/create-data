@@ -2252,7 +2252,7 @@ export const mockFromHomeBreadcrumbs: Breadcrumb[] = [];
 export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
     {
         name: 'Home',
-        link: '/',
+        link: '/home',
         show: true,
     },
     {
@@ -2300,7 +2300,7 @@ export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
 export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[] = [
     {
         name: 'Home',
-        link: '/',
+        link: '/home',
         show: true,
     },
     {
@@ -2358,7 +2358,7 @@ export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[]
 export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] = [
     {
         name: 'Home',
-        link: '/',
+        link: '/home',
         show: true,
     },
     {
@@ -2391,7 +2391,7 @@ export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] =
 export const mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs: Breadcrumb[] = [
     {
         name: 'Home',
-        link: '/',
+        link: '/home',
         show: true,
     },
     {
@@ -2414,7 +2414,7 @@ export const mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs: Breadcrumb[]
 export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Breadcrumb[] = [
     {
         name: 'Home',
-        link: '/',
+        link: '/home',
         show: true,
     },
     {
@@ -2457,7 +2457,7 @@ export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Brea
 export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] = [
     {
         name: 'Home',
-        link: '/',
+        link: '/home',
         show: true,
     },
     {

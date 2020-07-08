@@ -86,7 +86,7 @@ describe('login', () => {
 
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefghi');
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/fareType',
+            Location: '/home',
         });
     });
 

@@ -97,7 +97,7 @@ exports[`pages account should render correctly 1`] = `
     className="govuk-button"
     data-module="govuk-button"
     draggable="false"
-    href="/"
+    href="/home"
     id="home-button"
     role="button"
   >
