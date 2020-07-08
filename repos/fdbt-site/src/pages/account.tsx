@@ -50,7 +50,7 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                 </div>
             </div>
             <a
-                href="/"
+                href="/home"
                 role="button"
                 draggable="false"
                 className="govuk-button"
