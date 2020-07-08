@@ -15,6 +15,72 @@ Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
 
 Resources:
+  CognitoManagerPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Permissions to manage users in Cognito User Pool
+      ManagedPolicyName: CognitoManager
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              [
+                "cognito-idp:AdminGetDevice",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:AddCustomAttributes",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:ListIdentityProviders",
+                "cognito-idp:AdminSetUserSettings",
+                "cognito-idp:GetIdentityProviderByIdentifier",
+                "cognito-idp:AdminAddUserToGroup",
+                "cognito-idp:AdminRespondToAuthChallenge",
+                "cognito-idp:GetUICustomization",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:ListUserPoolClients",
+                "cognito-idp:AdminConfirmSignUp",
+                "cognito-idp:ListUsersInGroup",
+                "cognito-idp:DescribeUserPool",
+                "cognito-idp:AdminEnableUser",
+                "cognito-idp:AdminListUserAuthEvents",
+                "cognito-idp:ListGroups",
+                "cognito-idp:ListResourceServers",
+                "cognito-idp:AdminListDevices",
+                "cognito-idp:DescribeIdentityProvider",
+                "cognito-idp:DescribeResourceServer",
+                "cognito-idp:AdminDisableUser",
+                "cognito-idp:AdminRemoveUserFromGroup",
+                "cognito-idp:DescribeUserImportJob",
+                "cognito-idp:DescribeUserPoolClient",
+                "cognito-idp:AdminDeleteUser",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminDeleteUserAttributes",
+                "cognito-idp:GetSigningCertificate",
+                "cognito-idp:GetCSVHeader",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:ListTagsForResource",
+                "cognito-idp:GetUserPoolMfaConfig",
+                "cognito-idp:GetGroup",
+                "cognito-idp:DescribeRiskConfiguration",
+                "cognito-idp:AdminUpdateUserAttributes",
+                "cognito-idp:AdminListGroupsForUser",
+                "cognito-idp:AdminResetUserPassword",
+                "cognito-idp:ListUserImportJobs",
+                "cognito-idp:ListUsers",
+              ]
+            Resource: !Sub arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/*
+          - Effect: Allow
+            Action:
+              [
+                "cognito-idp:GetDevice",
+                "cognito-idp:GetUser",
+                "cognito-idp:DescribeUserPoolDomain",
+                "cognito-idp:ListDevices",
+                "cognito-idp:GetUserAttributeVerificationCode",
+                "cognito-idp:ListUserPools",
+              ]
+            Resource: "*"
+
   AdminRole:
     Type: AWS::IAM::Role
     Properties:
@@ -52,6 +118,26 @@ Resources:
       RoleName: !Sub tfn-readonly-${Stage}-${AWS::Region}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
+
+  CognitoManagerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Ref CoreAccountId
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: true
+      RoleName: !Sub tfn-cognito-manager-${Stage}-${AWS::Region}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - !Ref CognitoManagerPolicy
 
   BillingRole:
     Type: AWS::IAM::Role

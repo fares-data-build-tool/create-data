@@ -94,9 +94,26 @@ Resources:
                 Resource:
                   - !Sub arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2
                   - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-admin-preprod-eu-west-2
-                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-readonly-prod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-cognito-manager-prod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - !Ref ManageOwnUserPolicy
+
+  CognitoManagerGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: tfn-cognito-managers
+      Policies:
+        - PolicyName: allow-cognito-manager-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sts:AssumeRole"
+                Resource:
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-cognito-manager-prod-eu-west-2
+      ManagedPolicyArns:
         - !Ref ManageOwnUserPolicy
 
   ServiceAdminGroup:
