@@ -10,6 +10,6 @@ describe('Header', () => {
 
     it('expect title_link to be root', () => {
         const tree = shallow(<Header isAuthed csrfToken="" />);
-        expect(tree.find('#title-link').prop('href')).toEqual('/');
+        expect(tree.find('#title-link').prop('href')).toEqual('/home');
     });
 });

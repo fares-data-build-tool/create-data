@@ -53,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 setCookieOnResponseObject(REFRESH_TOKEN_COOKIE, refreshToken, req, res);
 
                 console.info('login successful', { noc: nocCode });
-                redirectTo(res, '/fareType');
+                redirectTo(res, '/home');
             } else {
                 throw new Error('Auth response invalid');
             }

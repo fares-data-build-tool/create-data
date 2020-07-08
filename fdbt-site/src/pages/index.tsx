@@ -5,7 +5,7 @@ import TwoThirdsLayout from '../layout/Layout';
 const title = 'Fares Data Build Tool';
 const description = 'Fares Data Build Tool is a service that allows you to generate data in NeTEx format';
 
-const Home: NextPage = (): ReactElement => (
+const Start: NextPage = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Fares Data Build Tool</h1>
 
@@ -57,4 +57,4 @@ export const getServerSideProps = (): {} => {
     return { props: {} };
 };
 
-export default Home;
+export default Start;

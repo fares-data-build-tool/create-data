@@ -164,7 +164,7 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
         const breadcrumbList: Breadcrumb[] = [
             {
                 name: 'Home',
-                link: '/',
+                link: '/home',
                 show: true,
             },
             {
