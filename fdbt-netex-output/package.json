@@ -35,7 +35,7 @@
         "aws-sdk": "^2.639.0",
         "libxmljs": "^0.19.7",
         "libxmljs2": "^0.25.0",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "mysql2": "^2.1.0",
         "nodemailer": "^6.4.5",
         "typescript": "^3.8.3",
@@ -63,6 +63,6 @@
         "serverless-dynamodb-local": "^0.2.39",
         "serverless-offline": "^5.12.1",
         "serverless-plugin-typescript": "^1.1.9",
-        "ts-jest": "^24.3.0"
+        "ts-jest": "^26.1.1"
     }
 }
