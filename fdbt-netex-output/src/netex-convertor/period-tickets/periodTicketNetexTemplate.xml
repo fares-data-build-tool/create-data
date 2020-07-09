@@ -124,13 +124,11 @@
 								<TypeOfTravelDocument version="1.0" id="op:p-ticket">
 									<Name>Bought on the bus with Cash</Name>
 									<Description>Paper ticket</Description>
-									<Url></Url>
 									<IsSmartCard>false</IsSmartCard>
 									<MediaType>paperTicket</MediaType>
 								</TypeOfTravelDocument>
 								<TypeOfTravelDocument version="1.0" id="op:m-ticket">
 									<Name>Stored on your mobile phone as m-tickets</Name>
-									<Url></Url>
 									<IsSmartCard>false</IsSmartCard>
 									<MediaType>mobileApp</MediaType>
 								</TypeOfTravelDocument>
@@ -157,9 +155,6 @@
 							<OrganisationType>operator</OrganisationType>
 							<Address>
 								<Street></Street>
-								<Town></Town>
-								<PostCode></PostCode>
-								<PostalRegion></PostalRegion>
 							</Address>
 							<PrimaryMode></PrimaryMode>
 						</Operator>
@@ -190,7 +185,6 @@
 							<projections>
 								<TopographicProjectionRef></TopographicProjectionRef>
 							</projections>
-							<ParentFareZoneRef version="1.0" ref="" />
 							<ZoneTopology>nested</ZoneTopology>
 							<ScopingMethod>explicitStops</ScopingMethod>
 						</FareZone>
@@ -266,168 +260,6 @@
 					</PricingParameterSet>
 					<fareTables></fareTables>
 				</FareFrame>
-				<!-- ====== Travel shops Advanced stuff - This just to show that we can capture access sdetails about travel shops  -->
-				<SiteFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
-					<Name></Name>
-					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP" />
-					<FrameDefaults>
-						<DefaultCodespaceRef ref="op_data" />
-						<DefaultDataSourceRef ref="op:src" version="1.0" />
-						<DefaultResponsibilitySetRef ref="op:tariffs" version="1.0" />
-					</FrameDefaults>
-					<pointsOfInterest>
-						<PointOfInterest version="1.0" id="op:travel_shop@PLACE1">
-							<validityConditions>
-								<AvailabilityCondition version="1.0" id="op:travel_shop@PLACE1">
-									<Name>PLACE1</Name>
-									<IsAvailable>false</IsAvailable>
-									<dayTypes>
-										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE1@M-F" />
-										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE1@Sat" />
-									</dayTypes>
-								</AvailabilityCondition>
-							</validityConditions>
-							<Name>PLACE1</Name>
-							<Centroid>
-								<Location>
-									<gml:pos srsName="WGS84">12345 6789</gml:pos>
-								</Location>
-							</Centroid>
-							<Url>PLACE1</Url>
-							<PostalAddress id="op:travel_shop@PLACE1@address" version="1.0">
-								<BuildingName>PLACE1</BuildingName>
-								<Street>PLACE1</Street>
-								<Town>PLACE1</Town>
-								<PostCode>PLACE1</PostCode>
-							</PostalAddress>
-							<SiteType>retail</SiteType>
-							<classifications>
-								<PointOfInterestClassificationRef ref="fxc:operator_travel_shop" version="fxc:v1.0" />
-							</classifications>
-						</PointOfInterest>
-						<PointOfInterest version="1.0" id="op:travel_shop@PLACE2">
-							<validityConditions>
-								<AvailabilityCondition version="1.0" id="op:travel_shop@PLACE2">
-									<Name>PLACE2</Name>
-									<IsAvailable>false</IsAvailable>
-									<dayTypes>
-										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE2@M-F" />
-										<DayTypeRef version="1.0" ref="op:travel_shop@PLACE2@Sat" />
-									</dayTypes>
-								</AvailabilityCondition>
-							</validityConditions>
-							<Name>PLACE2</Name>
-							<Centroid>
-								<Location>
-									<gml:pos srsName="WGS84">12345 6789</gml:pos>
-								</Location>
-							</Centroid>
-							<Url>PLACE2</Url>
-							<PostalAddress id="op:travel_shop@PLACE2@address" version="1.0">
-								<BuildingName>PLACE2</BuildingName>
-								<Street>PLACE2</Street>
-								<Town>PLACE2</Town>
-								<PostCode>PLACE2</PostCode>
-							</PostalAddress>
-							<SiteType>retail</SiteType>
-							<OperatingOrganisationView>
-								<ContactDetails>
-									<Phone>0123456789</Phone>
-								</ContactDetails>
-							</OperatingOrganisationView>
-							<classifications>
-								<PointOfInterestClassificationRef ref="fxc:operator_travel_shop" version="fxc:v1.0" />
-							</classifications>
-						</PointOfInterest>
-					</pointsOfInterest>
-				</SiteFrame>
-
-				<ServiceCalendarFrame version="1.0" id="" responsibilitySetRef="op:tariffs">
-					<Name> Specific Calendar: openng times for Travel shops</Name>
-					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_CALENDAR:FXCP" />
-					<FrameDefaults>
-						<DefaultCodespaceRef ref="op_data" />
-						<DefaultDataSourceRef ref="op:src" version="1.0" />
-						<DefaultResponsibilitySetRef ref="op:tariffs" version="1.0" />
-					</FrameDefaults>
-					<dayTypes>
-						<FareDayType version="1.0" id="op:travel_shop@PLACE1@M-F">
-							<Name>PLACE1 Working Day</Name>
-							<Description>PLACE1 Weekday</Description>
-							<EarliestTime>00:00:00</EarliestTime>
-							<properties>
-								<PropertyOfDay>
-									<DaysOfWeek>Weekdays</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
-								</PropertyOfDay>
-							</properties>
-							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@PLACE1@M-F">
-									<StartTime>00:00:00</StartTime>
-									<EndTime>00:00:00</EndTime>
-								</Timeband>
-							</timebands>
-						</FareDayType>
-						<FareDayType version="1.0" id="op:travel_shop@PLACE1@Sat">
-							<Name>PLACE1 Working Day</Name>
-							<Description>PLACE1 Weekend</Description>
-							<properties>
-								<PropertyOfDay>
-									<DaysOfWeek>Weekend</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
-								</PropertyOfDay>
-							</properties>
-							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@PLACE1@Sat">
-									<StartTime>00:00:00</StartTime>
-									<EndTime>00:00:00</EndTime>
-								</Timeband>
-							</timebands>
-						</FareDayType>
-						<FareDayType version="1.0" id="op:travel_shop@PLACE2@M-F">
-							<Name>PLACE2 Working Day</Name>
-							<Description>PLACE2 Weekday</Description>
-							<EarliestTime>00:00:00</EarliestTime>
-							<properties>
-								<PropertyOfDay>
-									<DaysOfWeek>Weekdays</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
-								</PropertyOfDay>
-							</properties>
-							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@PLACE2@M-F">
-									<StartTime>00:00:00</StartTime>
-									<EndTime>00:00:00</EndTime>
-								</Timeband>
-							</timebands>
-						</FareDayType>
-						<FareDayType version="1.0" id="op:travel_shop@PLACE2@Sat">
-							<Name>PLACE2 Working Day</Name>
-							<Description>PLACE2 Weekend</Description>
-							<properties>
-								<PropertyOfDay>
-									<DaysOfWeek>Weekend</DaysOfWeek>
-									<HolidayTypes>NotHoliday</HolidayTypes>
-								</PropertyOfDay>
-							</properties>
-							<timebands>
-								<Timeband version="1.0" id="op:travel_shop@PLACE2@Sat">
-									<StartTime>00:00:00</StartTime>
-									<EndTime>00:00:00</EndTime>
-								</Timeband>
-							</timebands>
-						</FareDayType>
-						<FareDayType version="1.0" id="op:anytime">
-							<Name>Anytime</Name>
-							<properties>
-								<PropertyOfDay>
-									<DaysOfWeek>Everyday</DaysOfWeek>
-									<HolidayTypes>AnyDay</HolidayTypes>
-								</PropertyOfDay>
-							</properties>
-						</FareDayType>
-					</dayTypes>
-				</ServiceCalendarFrame>
 				<ServiceFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
 					<Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
