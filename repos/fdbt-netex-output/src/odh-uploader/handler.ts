@@ -1,7 +1,7 @@
 import { S3Event } from 'aws-lambda';
 import AWS from 'aws-sdk';
 import { promises as fs } from 'fs';
-import nodemailer, { SentMessageInfo } from 'nodemailer';
+import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { fetchDataFromS3, getFileFromS3 } from '../utils/s3';
 import emailTemplate from './template/emailTemplate';
@@ -57,14 +57,14 @@ export const setMailOptions = (
     products?: ProductList[],
 ): Mail.Options => {
     return {
-        from: 'tfn@infinityworks.com',
+        from: 'fdbt@transportforthenorth.com',
         to: email,
         subject: `NeTEx created for ${params.Key}`,
         text: `There was a file uploaded to '${params.Bucket}' [Filename: '${params.Key} ']`,
         html: emailTemplate(
             uuid,
             passengerType,
-            `${new Date(Date.now()).toLocaleString()}}`,
+            new Date(Date.now()).toLocaleString(),
             fareType,
             selectedServices,
             products,
@@ -105,17 +105,11 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
             products,
         );
 
-        console.info(`Mail options: ${JSON.stringify(mailOptions, null, 4)}`);
-
         if (process.env.NODE_ENV !== 'development') {
             const mailTransporter = createMailTransporter();
-            const info: SentMessageInfo = await mailTransporter.sendMail(mailOptions);
+            await mailTransporter.sendMail(mailOptions);
 
-            if (info.message) {
-                console.info(`Email sent: ${info.message.toString()}`);
-            } else {
-                console.info(`Email sent.`);
-            }
+            console.info(`Email sent.`);
         }
     } catch (err) {
         throw new Error(`SES SendEmail failed. Error: ${err.stack}`);
