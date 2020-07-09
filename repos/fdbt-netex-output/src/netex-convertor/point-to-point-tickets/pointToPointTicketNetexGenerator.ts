@@ -80,14 +80,6 @@ const pointToPointTicketNetexGenerator = (
         return resourceFrameToUpdate;
     };
 
-    const updateSiteFrame = (siteFrame: NetexObject): NetexObject => {
-        const siteFrameToUpdate = { ...siteFrame };
-        siteFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:SiteFrame_UK_PI_NETWORK:${lineIdName}:op`;
-        siteFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${matchingData.nocCode}:ResourceFrame_UK_PI_COMMON:op`;
-
-        return siteFrameToUpdate;
-    };
-
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject => {
         const serviceFrameToUpdate = { ...serviceFrame };
         serviceFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:ServiceFrame_UK_PI_NETWORK:${lineIdName}:op`;
@@ -219,7 +211,6 @@ const pointToPointTicketNetexGenerator = (
         );
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
-        netexFrames.SiteFrame = updateSiteFrame(netexFrames.SiteFrame);
         netexFrames.ResourceFrame = updateResourceFrame(netexFrames.ResourceFrame);
         netexFrames.ServiceFrame = updateServiceFrame(netexFrames.ServiceFrame);
         netexFrames.FareFrame[0] = updateZoneFareFrame(netexFrames.FareFrame[0]);

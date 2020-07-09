@@ -18,7 +18,19 @@ describe('periodTicketNetexHelpers', () => {
             version: '1.0',
         });
 
-    const getFareTableSchema = (matchingData: PeriodTicket, representingObject: {} | null): {} => ({
+    const getExpectedFareTableRow = (representingObject: {} | null): jest.Expect =>
+        expect.objectContaining({
+            Name: expect.objectContaining({ $t: expect.any(String) }),
+            id: opString,
+            representing: representingObject ? expect.objectContaining(representingObject) : null,
+            version: '1.0',
+        });
+
+    const getFareTableSchema = (
+        matchingData: PeriodTicket,
+        representingColumnsObject: {} | null,
+        representingRowsObject: {} | null,
+    ): {} => ({
         version: '1.0',
         id: opString,
         Name: expect.objectContaining({ $t: expect.any(String) }),
@@ -38,7 +50,7 @@ describe('periodTicketNetexHelpers', () => {
             FareTable: {
                 Name: { $t: expect.any(String) },
                 columns: {
-                    FareTableColumn: getExpectedFareTableColumn(representingObject),
+                    FareTableColumn: getExpectedFareTableColumn(representingColumnsObject),
                 },
                 id: opString,
                 includes: {
@@ -60,7 +72,10 @@ describe('periodTicketNetexHelpers', () => {
                             },
                         },
                         columns: {
-                            FareTableColumn: getExpectedFareTableColumn(representingObject),
+                            FareTableColumn: getExpectedFareTableColumn(representingColumnsObject),
+                        },
+                        rows: {
+                            FareTableRow: getExpectedFareTableRow(representingRowsObject),
                         },
                         id: opString,
                         limitations: {
@@ -163,7 +178,14 @@ describe('periodTicketNetexHelpers', () => {
                 TypeOfTravelDocumentRef: expect.objectContaining({ ref: opString, version: '1.0' }),
                 UserProfileRef: expect.objectContaining({ ref: opString, version: '1.0' }),
             };
-            const geoZoneFareTableSchema = getFareTableSchema(geoUserPeriodTicket, representingObjectTypeOfTravelDoc);
+            const representingObjectTimeIntervalDoc = {
+                TimeIntervalRef: expect.objectContaining({ ref: opString, version: '1.0' }),
+            };
+            const geoZoneFareTableSchema = getFareTableSchema(
+                geoUserPeriodTicket,
+                representingObjectTypeOfTravelDoc,
+                representingObjectTimeIntervalDoc,
+            );
             const expectedLength = geoUserPeriodTicket.products.length;
             const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(geoUserPeriodTicket, placeHolderText);
             expect(geoZoneFareTables).toHaveLength(expectedLength);
@@ -179,9 +201,13 @@ describe('periodTicketNetexHelpers', () => {
                 TypeOfTravelDocumentRef: expect.objectContaining({ ref: opString, version: '1.0' }),
                 UserProfileRef: expect.objectContaining({ ref: opString, version: '1.0' }),
             };
+            const representingObjectTimeIntervalDoc = {
+                TimeIntervalRef: expect.objectContaining({ ref: opString, version: '1.0' }),
+            };
             const multiServiceFareTableSchema = getFareTableSchema(
                 periodMultipleServicesTicket,
                 representingObjectTypeOfTravelDoc,
+                representingObjectTimeIntervalDoc,
             );
             const expectedLength = periodMultipleServicesTicket.products.length;
             const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(periodMultipleServicesTicket);
