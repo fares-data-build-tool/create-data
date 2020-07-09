@@ -59,8 +59,10 @@ export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): 
 export const getGeoZoneFareTable = (
     userPeriodTicket: PeriodGeoZoneTicket,
     placeHolderGroupOfProductsName: string,
-): NetexObject[] =>
-    userPeriodTicket.products.map(product => ({
+): NetexObject[] => {
+    const name = `${userPeriodTicket.nocCode}-geo-zone`;
+
+    return userPeriodTicket.products.map(product => ({
         version: '1.0',
         id: `op:${product.productName}@${userPeriodTicket.zoneName}`,
         Name: { $t: `${userPeriodTicket.zoneName}` },
@@ -145,6 +147,21 @@ export const getGeoZoneFareTable = (
                                 },
                             },
                         },
+                        rows: {
+                            FareTableRow: {
+                                version: '1.0',
+                                id: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
+                                Name: { $t: product.productDuration },
+                                representing: {
+                                    TimeIntervalRef: {
+                                        version: '1.0',
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
+                                            product.productDuration === '1' ? 'day' : 'days'
+                                        }`,
+                                    },
+                                },
+                            },
+                        },
                         cells: {
                             Cell: {
                                 version: '1.0',
@@ -171,9 +188,7 @@ export const getGeoZoneFareTable = (
                                 },
                                 RowRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${product.productDuration}${
-                                        product.productDuration === '1' ? 'day' : 'days'
-                                    }`,
+                                    ref: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
                                 },
                             },
                         },
@@ -182,6 +197,7 @@ export const getGeoZoneFareTable = (
             },
         },
     }));
+};
 
 const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): NetexObject[] => {
     const name = `${userPeriodTicket.nocCode}-multi-service`;
@@ -202,7 +218,7 @@ const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): Ne
         includes: {
             FareTable: {
                 version: '1.0',
-                id: `op:${product.productName}@${name}@p-ticket`,
+                id: `op:${product.productName}@${name}@all_media`,
                 Name: { $t: `${product.productName} - Cash` },
                 pricesFor: {
                     SalesOfferPackageRef: {
@@ -219,7 +235,7 @@ const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): Ne
                 columns: {
                     FareTableColumn: {
                         version: '1.0',
-                        id: `op:${product.productName}@${name}@p-ticket`,
+                        id: `op:${product.productName}@${name}@all_media@paper`,
                         Name: { $t: 'Cash' },
                         representing: {
                             TypeOfTravelDocumentRef: {
@@ -261,6 +277,21 @@ const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): Ne
                                 },
                             },
                         },
+                        rows: {
+                            FareTableRow: {
+                                version: '1.0',
+                                id: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
+                                Name: { $t: product.productDuration },
+                                representing: {
+                                    TimeIntervalRef: {
+                                        version: '1.0',
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
+                                            product.productDuration === '1' ? 'day' : 'days'
+                                        }`,
+                                    },
+                                },
+                            },
+                        },
                         cells: {
                             Cell: {
                                 version: '1.0',
@@ -287,9 +318,7 @@ const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): Ne
                                 },
                                 RowRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${product.productDuration}${
-                                        product.productDuration === '1' ? 'day' : 'days'
-                                    }`,
+                                    ref: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
                                 },
                             },
                         },

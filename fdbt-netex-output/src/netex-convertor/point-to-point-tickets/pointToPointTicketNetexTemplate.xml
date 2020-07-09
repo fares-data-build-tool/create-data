@@ -119,9 +119,6 @@
 							<OrganisationType>operator</OrganisationType>
 							<Address>
 								<Street></Street>
-								<Town></Town>
-								<PostCode></PostCode>
-								<PostalRegion></PostalRegion>
 							</Address>
 							<PrimaryMode>bus</PrimaryMode>
 							<CustomerServiceContactDetails>
@@ -130,56 +127,7 @@
 						</Operator>
 					</organisations>
 				</ResourceFrame>
-				<SiteFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_STOP:sale_pois:op" responsibilitySetRef="nptg:data" dataSourceRef="nptg:dft">
-					<Description>This frame contains the NPTG locality definitions used by the stops in the service. It could also be exchanged separately.</Description>
-					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP" />
-					<prerequisites>
-						<ResourceFrameRef version="1.0" ref="epd:UK:HCTY:ResourceFrame_UK_PI_COMMON:op" />
-					</prerequisites>
-					<topographicPlaces>
-						<TopographicPlace responsibilitySetRef="nptgAdminArea:068" created="2005-10-05T10:45:19Z" changed="2005-10-05T10:45:19Z" version="0" id="nptgLocality:E0055251">
-							<Centroid>
-								<Location id="nptgLocality:E0055251">
-									<gml:pos srsName="UKOS">376748  452260</gml:pos>
-								</Location>
-							</Centroid>
-							<ParentZoneRef ref="nptgUkDistrict:310" versionRef="nptg:v2.1">EXTERNAL</ParentZoneRef>
-							<Descriptor>
-								<Name lang="EN">York</Name>
-							</Descriptor>
-							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-ENG" />
-						</TopographicPlace>
-						<TopographicPlace responsibilitySetRef="nptgAdminArea:068" created="2005-10-05T10:45:19Z" changed="2005-10-05T10:45:19Z" version="0" id="nptgLocality:E0043573">
-							<Centroid>
-								<Location id="nptgLocality:E0043573">
-									<gml:pos srsName="UKOS">457239	451260</gml:pos>
-								</Location>
-							</Centroid>
-							<ParentZoneRef ref="nptgUkDistrict:310" versionRef="nptg:v2.1">EXTERNAL</ParentZoneRef>
-							<Descriptor>
-								<Name lang="EN">Acomb</Name>
-								<Qualify>
-									<QualifierName>York</QualifierName>
-									<TopographicPlaceRef version="0" ref="nptgLocality:E0055251" />
-								</Qualify>
-							</Descriptor>
-							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-ENG" />
-						</TopographicPlace>
-						<TopographicPlace responsibilitySetRef="nptgAdminArea:068" created="2005-10-05T10:45:19Z" changed="2005-10-05T10:45:19Z" version="0" id="nptgLocality:E0043596">
-							<Centroid>
-								<Location id="nptgLocality:E0043596">
-									<gml:pos srsName="UKOS">458484   451536</gml:pos>
-								</Location>
-							</Centroid>
-							<ParentZoneRef ref="nptgUkDistrict:310" versionRef="nptg:v2.1">EXTERNAL</ParentZoneRef>
-							<Descriptor>
-								<Name lang="EN">Holgate</Name>
-							</Descriptor>
-							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-ENG" />
-						</TopographicPlace>
-					</topographicPlaces>
-				</SiteFrame>
-				<!--==== STEP 3:: Define EACH BUS STOP IN THE ENTIRE SERVICE, IN ALL ZONES ====-->
+				<!--==== STEP 2:: Define EACH BUS STOP IN THE ENTIRE SERVICE, IN ALL ZONES ====-->
 				<ServiceFrame version="1.0" id="epd:UK:HCTY:ServiceFrame_UK_PI_NETWORK:HCTY:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
 					<Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
@@ -197,7 +145,7 @@
 					<!--==== STOP POINTs ==== -->
 					<scheduledStopPoints></scheduledStopPoints>
 				</ServiceFrame>
-				<!--==== STEP 4:: THIS IS OUR FARE STAGES DEFINED IN HERE AND LINKED TO THE SERVICE FRAME ====-->
+				<!--==== STEP 3:: THIS IS OUR FARE STAGES DEFINED IN HERE AND LINKED TO THE SERVICE FRAME ====-->
 				<FareFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_NETWORK:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="network_data">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== Fare zones ===     NB These are just a guess from the map  and may be bogus.in places -->
@@ -322,7 +270,7 @@
 						</FareZone>
 					</fareZones>
 				</FareFrame>
-				<!--==== STEP 5:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
+				<!--==== STEP 4:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
 				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRODUCT:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" versionRef="fxc:v1.0" />
 					<!--==== Fare Structure ==== -->
