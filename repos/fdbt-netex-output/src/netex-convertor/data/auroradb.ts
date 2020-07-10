@@ -40,20 +40,29 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
     return JSON.parse(JSON.stringify(rows));
 };
 
+const replaceIWBusCoNocCode = (nocCode: string): string => {
+    if (nocCode === 'IWBusCo') {
+        return 'WBTR';
+    }
+
+    return nocCode;
+};
+
 export const getOperatorDataByNocCode = async (nocCode: string): Promise<Operator> => {
     try {
+        const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
         const queryInput =
             'SELECT nocTable.opId, nocTable.vosaPsvLicenseName, nocTable.operatorPublicName,' +
             ' nocPublicName.website, nocPublicName.ttrteEnq, nocPublicName.fareEnq, nocPublicName.complEnq, nocLine.mode' +
             ' FROM nocTable JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId' +
             ' JOIN nocLine ON nocTable.nocCode = nocLine.nocCode WHERE nocTable.nocCode = ?';
 
-        const queryResult = await executeQuery<Operator[]>(queryInput, [nocCode]);
+        const queryResult = await executeQuery<Operator[]>(queryInput, [nocCodeParameter]);
 
         const operatorData = queryResult[0];
 
         if (!operatorData) {
-            throw new Error(`No operator data found for nocCode: ${nocCode}`);
+            throw new Error(`No operator data found for nocCode: ${nocCodeParameter}`);
         }
 
         return operatorData;
@@ -64,9 +73,10 @@ export const getOperatorDataByNocCode = async (nocCode: string): Promise<Operato
 
 export const getTndsServiceDataByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<Service> => {
     try {
+        const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
         const queryInput = 'SELECT tndsService.description FROM tndsService WHERE (`nocCode` = ? and `lineName` = ?)';
 
-        const queryResult = await executeQuery<Service[]>(queryInput, [nocCode, lineName]);
+        const queryResult = await executeQuery<Service[]>(queryInput, [nocCodeParameter, lineName]);
 
         const tndsServiceData = queryResult[0];
 
