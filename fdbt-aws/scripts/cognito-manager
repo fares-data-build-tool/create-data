@@ -1,0 +1,50 @@
+COMMAND=$1
+EMAIL=$2
+NOC=$3
+TEMP_PASSWORD=$4
+
+USER_POOL=$(aws cognito-idp list-user-pools --max-results 1 | jq -r '.UserPools[0].Id')
+
+function add_user() {
+  if [ -z $EMAIL ] || [ -z $NOC ] || [ -z $TEMP_PASSWORD ]; then
+    echo "usage: cognito-manager add-user <email> <noc> <temp_password>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$NOC --temporary-password $TEMP_PASSWORD --region eu-west-2
+}
+
+function delete_user() {
+  if [ -z $EMAIL ]; then
+    echo "usage: cognito-manager delete-user <email>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-delete-user --user-pool-id $USER_POOL --username $EMAIL --region eu-west-2
+}
+
+function update_noc() {
+  if [ -z $EMAIL ] || [ -z $NOC ]; then
+    echo "usage: cognito-manager update-noc <email> <noc>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$NOC --region eu-west-2
+}
+
+if [ -z $USER_POOL ]; then
+  echo "You must be authenticated against the target AWS account"
+  exit 1
+fi
+
+if [[ $COMMAND = 'add-user' ]]; then
+  add_user
+elif [[ $COMMAND = 'delete-user' ]]; then
+  delete_user
+elif [[ $COMMAND = 'update-noc' ]]; then
+  update_noc
+else
+  echo "usage cognito-manager <add-user | delete-user | update-noc>"
+  exit 1
+fi
+
