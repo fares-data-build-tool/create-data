@@ -46,6 +46,10 @@ export const getJourneysByStartAndEndPoint = (
     );
 
 // Gets a unique set of stop point refs from an array of journey pattern sections
-export const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
-    ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
-];
+export const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => {
+    const sortedJourneys = journeys.sort((a, b) => {
+        return b.orderedStopPoints.length - a.orderedStopPoints.length;
+    });
+
+    return [...new Set(sortedJourneys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef)))];
+};

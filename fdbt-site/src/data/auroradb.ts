@@ -140,7 +140,7 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-    console.info('retrieving services for given noc', { noc: nocCodeParameter });
+    console.info('retrieving services for given noc', { noc: nocCode });
 
     try {
         const queryInput = `
@@ -167,7 +167,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
 
-    console.info('retrieving operator name for given noc', { noc: nocCodeParameter });
+    console.info('retrieving operator name for given noc', { noc: nocCode });
     const queryInput = `
     SELECT operatorPublicName
     FROM nocTable
@@ -240,7 +240,7 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
 
-    console.info('retrieving service info for given noc and line name', { noc: nocCodeParameter, lineName });
+    console.info('retrieving service info for given noc and line name', { noc: nocCode, lineName });
 
     const serviceQuery = `
         SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
@@ -250,7 +250,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
         LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
         WHERE os.nocCode = ? AND os.lineName = ?
-        ORDER BY pl.orderInSequence, pl.journeyPatternId ASC
+        ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
     let queryResult: QueryData[];

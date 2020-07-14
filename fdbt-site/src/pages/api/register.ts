@@ -3,7 +3,7 @@ import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
-import { initiateAuth, respondToNewPasswordChallenge, globalSignOut, updateUserAttributes } from '../../data/cognito';
+import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 
 const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';
@@ -55,10 +55,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             error: nocCode === '' ? 'National Operator Code cannot be empty' : '',
         });
 
-        if (nocCode !== '') {
+        if (nocCode !== '' && nocCode !== 'IWBusCo') {
             const servicesForNoc = await getServicesByNocCode(nocCode);
 
             if (servicesForNoc.length === 0) {
+                console.warn('NOC not found in database');
+
                 inputChecks.push({
                     inputValue: '',
                     id: 'email',
@@ -75,12 +77,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         try {
             const { ChallengeName, ChallengeParameters, Session } = await initiateAuth(email, regKey);
 
-            if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters && Session) {
+            if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters?.userAttributes && Session) {
+                const parameters = JSON.parse(ChallengeParameters.userAttributes);
+
+                if (!parameters['custom:noc'] || parameters['custom:noc'] !== nocCode) {
+                    throw new Error('NOC does not match');
+                }
+
                 await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);
-                await updateUserAttributes(email, [
-                    { Name: 'custom:noc', Value: nocCode },
-                    { Name: 'custom:contactable', Value: contactable },
-                ]);
+                await updateUserAttributes(email, [{ Name: 'custom:contactable', Value: contactable }]);
                 await globalSignOut(email);
 
                 console.info('Registration Successful', { noc: nocCode, contactable });
