@@ -32,7 +32,7 @@ const ResetConfirmation = ({ email, csrfToken }: ResetConfirmationProps & Custom
                         <b>{` ${email}`}</b>.
                     </p>
                     <p className="govuk-body">
-                        Check your email and follow the link within 24 hours to reset your password.
+                        Check your email and follow the link within 1 hour to reset your password.
                     </p>
                     <p className="govuk-body">
                         If you cannot find the email then look in your spam or junk email folder.
