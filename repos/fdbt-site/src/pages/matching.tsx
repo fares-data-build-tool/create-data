@@ -1,18 +1,13 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import {
-    getServiceByNocCodeAndLineName,
-    batchGetStopsByAtcoCode,
-    Stop,
-    RawService,
-    RawJourneyPattern,
-} from '../data/auroradb';
+import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
 import { BasicService, CustomAppProps } from '../interfaces/index';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
 import { getNocFromIdToken } from '../utils';
+import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 
 const title = 'Matching - Fares Data Build Tool';
 const description = 'Matching page of the Fares Data Build Tool';
@@ -52,23 +47,6 @@ const Matching = ({
         csrfToken={csrfToken}
     />
 );
-
-// Gets a list of journey pattern sections with a given start and end point
-const getJourneysByStartAndEndPoint = (
-    service: RawService,
-    selectedStartPoint: string,
-    selectedEndPoint: string,
-): RawJourneyPattern[] =>
-    service.journeyPatterns.filter(
-        item =>
-            item.orderedStopPoints[0].stopPointRef === selectedStartPoint &&
-            item.orderedStopPoints.slice(-1)[0].stopPointRef === selectedEndPoint,
-    );
-
-// Gets a unique set of stop point refs from an array of journey pattern sections
-const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
-    ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
-];
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);

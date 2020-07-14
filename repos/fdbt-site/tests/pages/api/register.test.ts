@@ -12,6 +12,9 @@ const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse
     ChallengeName: 'NEW_PASSWORD_REQUIRED',
     ChallengeParameters: {
         USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+        userAttributes: JSON.stringify({
+            'custom:noc': 'DCCL',
+        }),
     },
     Session: 'session',
 };
@@ -283,6 +286,55 @@ describe('register', () => {
         expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 
+    it('should error when the NOC does not match what is in Cognito', async () => {
+        authSignInSpy.mockImplementation(() =>
+            Promise.resolve({
+                ChallengeName: 'NEW_PASSWORD_REQUIRED',
+                ChallengeParameters: {
+                    USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+                    userAttributes: JSON.stringify({
+                        'custom:noc': 'FAKE',
+                    }),
+                },
+                Session: 'session',
+            }),
+        );
+
+        const mockUserCookieValue = {
+            inputChecks: [
+                {
+                    inputValue: 'test@test.com',
+                    id: 'email',
+                    error: '',
+                },
+                { inputValue: '', id: 'password', error: '' },
+                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                {
+                    inputValue: '',
+                    id: 'email',
+                    error: 'There was a problem creating your account',
+                },
+            ],
+        };
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                email: 'test@test.com',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+            },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await register(req, res);
+
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
+    });
+
     it('should update user attributes as contactable=yes if yes', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
@@ -301,7 +353,6 @@ describe('register', () => {
         await register(req, res);
 
         expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
-            { Name: 'custom:noc', Value: 'DCCL' },
             { Name: 'custom:contactable', Value: 'yes' },
         ]);
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
@@ -334,7 +385,6 @@ describe('register', () => {
         await register(req, res);
 
         expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
-            { Name: 'custom:noc', Value: 'DCCL' },
             { Name: 'custom:contactable', Value: 'no' },
         ]);
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
