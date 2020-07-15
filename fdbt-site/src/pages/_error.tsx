@@ -41,7 +41,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
         )}
 
         <br />
-        <a href="/operator" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
+        <a href="/" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
             Start again
         </a>
     </TwoThirdsLayout>

@@ -16,8 +16,6 @@ export const setCookieOnResponseObject = (cookieName: string, cookieValue: strin
     // default. An error will be thrown if you try to send secure cookies over an insecure socket.
     cookies.set(cookieName, cookieValue, {
         path: '/',
-        // The Cookies library applies units of Milliseconds to maxAge. For this reason, maxAge of 24 hours needs to be corrected by a factor of 1000.
-        maxAge: 1000 * (3600 * 24),
         sameSite: 'strict',
         secure: process.env.NODE_ENV !== 'development',
     });

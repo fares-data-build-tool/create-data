@@ -52,7 +52,6 @@ describe('apiUtils', () => {
             setCookieOnResponseObject(cookieName, cookieValue, req, res);
             expect(Cookies.prototype.set).toBeCalledWith(cookieName, cookieValue, {
                 path: '/',
-                maxAge: 1000 * (3600 * 24),
                 sameSite: 'strict',
                 secure: true,
             });
