@@ -43,6 +43,7 @@ describe('login', () => {
                         errorMessage: 'Enter an email address in the correct format, like name@example.com',
                     },
                 ],
+                email: 'testtfncom',
             },
         ],
         [
@@ -55,6 +56,7 @@ describe('login', () => {
                         errorMessage: 'Enter a password',
                     },
                 ],
+                email: 'test@test.com',
             },
         ],
     ];

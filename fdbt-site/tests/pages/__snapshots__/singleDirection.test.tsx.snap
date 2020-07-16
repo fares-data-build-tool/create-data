@@ -50,7 +50,7 @@ exports[`pages direction should render correctly 1`] = `
 			
         </span>
         <FormElementWrapper
-          errorClass="govuk-radios--error"
+          errorClass="govuk-select--error"
           errorId="direction-error"
           errors={Array []}
         >

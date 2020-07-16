@@ -10,6 +10,9 @@ exports[`pages productDetails should render correctly 1`] = `
     csrfToken=""
     method="post"
   >
+    <ErrorSummary
+      errors={Array []}
+    />
     <div
       className="govuk-form-group"
     >
@@ -38,8 +41,9 @@ exports[`pages productDetails should render correctly 1`] = `
           Adult
         </span>
       </fieldset>
-      <div
-        className="govuk-form-group "
+      <Component
+        errorId="product-name-error"
+        errors={Array []}
       >
         <label
           className="govuk-label"
@@ -53,25 +57,24 @@ exports[`pages productDetails should render correctly 1`] = `
         >
           Enter the name of your product
         </span>
-        <span
-          className="govuk-error-message"
-          id="product-name-error"
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="product-name-error"
+          errors={Array []}
         >
-          <span
-            className="govuk-visually-hidden"
+          <input
+            className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+            defaultValue=""
+            id="product-details-name"
+            maxLength={50}
+            name="productDetailsNameInput"
+            type="text"
           />
-        </span>
-        <input
-          className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input  "
-          defaultValue=""
-          id="product-details-name"
-          maxLength={50}
-          name="productDetailsNameInput"
-          type="text"
-        />
-      </div>
-      <div
-        className="govuk-form-group "
+        </FormElementWrapper>
+      </Component>
+      <Component
+        errorId="product-price-error"
+        errors={Array []}
       >
         <label
           className="govuk-label"
@@ -85,14 +88,6 @@ exports[`pages productDetails should render correctly 1`] = `
         >
           For example, £2.99
         </span>
-        <span
-          className="govuk-error-message"
-          id="product-price-error"
-        >
-          <span
-            className="govuk-visually-hidden"
-          />
-        </span>
         <div
           className="govuk-currency-input"
         >
@@ -104,18 +99,24 @@ exports[`pages productDetails should render correctly 1`] = `
             >
               £
             </span>
-            <input
-              aria-label="Enter amount in pounds"
-              className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input "
-              data-non-numeric={true}
-              defaultValue=""
-              id="product-details-price"
-              name="productDetailsPriceInput"
-              type="text"
-            />
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId="product-price-error"
+              errors={Array []}
+            >
+              <input
+                aria-label="Enter amount in pounds"
+                className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
+                data-non-numeric={true}
+                defaultValue=""
+                id="product-details-price"
+                name="productDetailsPriceInput"
+                type="text"
+              />
+            </FormElementWrapper>
           </div>
         </div>
-      </div>
+      </Component>
     </div>
     <input
       className="govuk-button"

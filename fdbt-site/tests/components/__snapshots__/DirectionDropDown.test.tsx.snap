@@ -7,7 +7,7 @@ exports[`DirectionDropdown should render the dropdown with options 1`] = `
     htmlFor="test-drop-down"
   />
   <select
-    className="govuk-select"
+    className="govuk-select "
     defaultValue=""
     id="test-drop-down"
     name="testDropDown"

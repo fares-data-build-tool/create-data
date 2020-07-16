@@ -40,7 +40,7 @@ exports[`pages service should render correctly 1`] = `
           Adult
         </span>
         <FormElementWrapper
-          errorClass="govuk-radios--error"
+          errorClass="govuk-select--error"
           errorId="service-error"
           errors={Array []}
         >
