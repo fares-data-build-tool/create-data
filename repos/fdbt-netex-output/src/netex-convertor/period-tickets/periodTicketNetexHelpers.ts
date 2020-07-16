@@ -573,13 +573,10 @@ const getAvailabilityElement = (
     },
 });
 
-const getDurationElement = (userPeriodTicket: PeriodTicket, product: ProductDetails, index: number): NetexObject => ({
+const getDurationElement = (userPeriodTicket: PeriodTicket, product: ProductDetails): NetexObject => ({
     version: '1.0',
     id: `op:Tariff@${product.productName}@durations@${userPeriodTicket.passengerType}`,
     Name: { $t: `Available duration combination - ${userPeriodTicket.passengerType} ticket` },
-    Description: {
-        $t: 'All periods allowed, 60 mins, but no evening - used in for some mticket, single zone.',
-    },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: 'fxc:durations',
@@ -587,32 +584,12 @@ const getDurationElement = (userPeriodTicket: PeriodTicket, product: ProductDeta
     timeIntervals: {
         TimeIntervalRef: [
             {
+                version: '1.0',
                 ref: `op:Tariff@${product.productName}@${product.productDuration}${
                     product.productDuration === '1' ? 'day' : 'days'
                 }`,
             },
         ],
-    },
-    GenericParameterAssignment: {
-        id: `op:Tariff@${product.productName}@${userPeriodTicket.passengerType}`,
-        version: '1.0',
-        order: `${index + 1}`,
-        Description: {
-            $t: `${userPeriodTicket.passengerType} cash ticket ${
-                product.productDuration ? `available for ${product.productDuration} day${product.productDuration}` : ''
-            }`,
-        },
-        TypeOfAccessRightAssignmentRef: {
-            version: 'fxc:v1.0',
-            ref: 'fxc:eligible',
-        },
-        LimitationGroupingType: { $t: 'XOR' },
-        limitations: {
-            UserProfileRef: {
-                version: '1.0',
-                ref: `op:${product.productName}@${userPeriodTicket.passengerType}`,
-            },
-        },
     },
 });
 
@@ -621,12 +598,6 @@ const getUserProfile = (userPeriodTicket: PeriodTicket, product: ProductDetails)
         version: '1.0',
         id: `op:${product.productName}@${userPeriodTicket.passengerType}`,
         Name: { $t: userPeriodTicket.passengerType },
-        prices: {
-            UsageParameterPrice: {
-                version: '1.0',
-                id: `op:${product.productName}@${userPeriodTicket.passengerType}`,
-            },
-        },
         TypeOfConcessionRef: {
             version: 'fxc:v1.0',
             ref: `fxc:${
@@ -763,7 +734,7 @@ export const getFareStructuresElements = (
         ) {
             return [
                 getAvailabilityElement(availabilityElementId, validityParameterGroupingType, validityParametersObject),
-                getDurationElement(userPeriodTicket, product, index),
+                getDurationElement(userPeriodTicket, product),
                 getEligibilityElement(userPeriodTicket, product, index),
                 getConditionsElement(product),
             ];
