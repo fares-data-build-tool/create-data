@@ -10,8 +10,11 @@ exports[`Choose Validity Page should render correctly 1`] = `
     csrfToken=""
     method="post"
   >
+    <ErrorSummary
+      errors={Array []}
+    />
     <div
-      className="govuk-form-group"
+      className="govuk-form-group "
     >
       <fieldset
         aria-describedby="choose-validity-page-heading"
@@ -38,7 +41,7 @@ exports[`Choose Validity Page should render correctly 1`] = `
           </p>
         </legend>
         <div
-          className="govuk-form-group "
+          className="govuk-form-group"
         >
           <label
             className="govuk-label"
@@ -51,21 +54,19 @@ exports[`Choose Validity Page should render correctly 1`] = `
           >
             Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
           </p>
-          <span
-            className="govuk-error-message"
-            id="product-validity-error"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="validity-error"
+            errors={Array []}
           >
-            <span
-              className="govuk-visually-hidden"
+            <input
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="validity"
+              name="validityInput"
+              type="text"
             />
-          </span>
-          <input
-            className="govuk-input govuk-input--width-2 "
-            defaultValue=""
-            id="validity"
-            name="validityInput"
-            type="text"
-          />
+          </FormElementWrapper>
         </div>
       </fieldset>
     </div>

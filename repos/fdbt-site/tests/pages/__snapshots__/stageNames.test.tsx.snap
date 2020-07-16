@@ -279,7 +279,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </FormElementWrapper>
         </div>
         <div
-          className="govuk-form-group govuk-form-group--error input-error"
+          className="govuk-form-group govuk-form-group--error"
           key="fare-stage-name-3"
         >
           <label
@@ -401,7 +401,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       </legend>
       <div>
         <div
-          className="govuk-form-group govuk-form-group--error input-error"
+          className="govuk-form-group govuk-form-group--error"
           key="fare-stage-name-1"
         >
           <label
@@ -427,7 +427,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </FormElementWrapper>
         </div>
         <div
-          className="govuk-form-group govuk-form-group--error input-error"
+          className="govuk-form-group govuk-form-group--error"
           key="fare-stage-name-2"
         >
           <label
@@ -453,7 +453,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </FormElementWrapper>
         </div>
         <div
-          className="govuk-form-group govuk-form-group--error input-error"
+          className="govuk-form-group govuk-form-group--error"
           key="fare-stage-name-3"
         >
           <label
@@ -479,7 +479,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </FormElementWrapper>
         </div>
         <div
-          className="govuk-form-group govuk-form-group--error input-error"
+          className="govuk-form-group govuk-form-group--error"
           key="fare-stage-name-4"
         >
           <label
