@@ -1,8 +1,8 @@
-import odhUploaderHandler from './handler';
+import netexEmailerHandler from './handler';
 
 const event = JSON.parse(process.argv.slice(2)[0]);
 
-odhUploaderHandler(event)
+netexEmailerHandler(event)
     .then(() => process.exit(0))
     .catch(error => {
         console.error(error);
