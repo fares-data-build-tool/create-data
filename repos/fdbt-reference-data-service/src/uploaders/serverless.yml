@@ -24,8 +24,37 @@ provider:
         - "s3:GetObject"
         - "s3:ListBucket"
       Resource:
-        - "arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*"
-        - "arn:aws:s3:::fdbt-xml-reference-data-${self:provider.stage}/*"
+        - "arn:aws:s3:::fdbt-csv-ref-data-${self:provider.stage}/*"
+        - "arn:aws:s3:::fdbt-xml-ref-data-${self:provider.stage}/*"
+  s3:
+    csvRefData:
+      name: fdbt-csv-ref-data-${self:provider.stage}
+      publicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+    xmlRefData:
+      name: fdbt-xml-ref-data-${self:provider.stage}
+      publicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      lifecycleConfiguration:
+        Rules:
+          - Id: ExpiryRule
+            Status: Enabled
+            ExpirationInDays: "5"
 
 plugins:
   - serverless-python-requirements
@@ -62,7 +91,7 @@ functions:
     timeout: 60
     memorySize: 256
     events:
-      - s3: fdbt-csv-reference-data-${self:provider.stage}
+      - s3: csvRefData
         event: s3:ObjectCreated:*
     alarms:
       - name: functionDuration
@@ -81,7 +110,7 @@ functions:
     timeout: 60
     memorySize: 1024
     events:
-      - s3: fdbt-xml-reference-data-${self:provider.stage}
+      - s3: xmlRefData
         event: s3:ObjectCreated:*
     reservedConcurrency: 40
     alarms:
