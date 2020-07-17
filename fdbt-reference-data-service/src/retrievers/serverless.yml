@@ -16,9 +16,21 @@ provider:
         - "s3:PutObject"
         - "s3:GetObject"
       Resource:
-        - !Sub arn:aws:s3:::fdbt-csv-reference-data-${self:provider.stage}/*
-        - !Sub arn:aws:s3:::fdbt-xml-reference-data-${self:provider.stage}/*
-        - !Sub arn:aws:s3:::fdbt-tnds-data-zipped-${self:provider.stage}/*
+        - !Sub arn:aws:s3:::fdbt-csv-ref-data-${self:provider.stage}/*
+        - !Sub arn:aws:s3:::fdbt-xml-ref-data-${self:provider.stage}/*
+        - !Sub arn:aws:s3:::fdbt-tnds-ref-data-zipped-${self:provider.stage}/*
+  s3:
+    tndsZippedData:
+      name: fdbt-tnds-ref-data-zipped-${self:provider.stage}
+      publicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
 plugins:
   - serverless-python-requirements
@@ -59,7 +71,7 @@ functions:
     memorySize: 256
     environment:
       DATA_URL: https://www.travelinedata.org.uk/wp-content/themes/desktop/nocadvanced_download.php?reportFormat=csvFlatFile&allTable%5B%5D=table_noclines&allTable%5B%5D=table_noc_table&allTable%5B%5D=table_public_name&submit=Submit
-      BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
+      BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
       CONTENT_TYPE: text/csv
     events:
       - schedule:
@@ -82,7 +94,7 @@ functions:
     memorySize: 512
     environment:
       DATA_URL: http://naptan.app.dft.gov.uk/DataRequest/Naptan.ashx?format=csv
-      BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
+      BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
       CONTENT_TYPE: text/csv
       TARGET_FILE: Stops.csv
     events:
@@ -106,8 +118,8 @@ functions:
     memorySize: 1024
     environment:
       FTP_HOST: ftp.tnds.basemap.co.uk
-      BUCKET_NAME: fdbt-csv-reference-data-${self:provider.stage}
-      ZIPPED_BUCKET_NAME: fdbt-tnds-data-zipped-${self:provider.stage}
+      BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
+      ZIPPED_BUCKET_NAME: fdbt-tnds-ref-data-zipped-${self:provider.stage}
       RDS_HOST:
         Fn::ImportValue: ${self:provider.stage}:RdsHostName
     events:
@@ -136,9 +148,9 @@ functions:
     timeout: 300
     memorySize: 512
     environment:
-      BUCKET_NAME: fdbt-xml-reference-data-${self:provider.stage}
+      BUCKET_NAME: fdbt-xml-ref-data-${self:provider.stage}
     events:
-      - s3: fdbt-tnds-data-zipped-${self:provider.stage}
+      - s3: tndsZippedData
         event: s3:ObjectCreated:*
     alarms:
       - name: functionDuration
