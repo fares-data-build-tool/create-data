@@ -1,20 +1,47 @@
 import { S3Event } from 'aws-lambda';
-import format from 'xml-formatter';
+import libxslt from 'libxslt';
 import pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';
 import periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
 import * as db from './data/auroradb';
 import * as s3 from './data/s3';
 import { PointToPointTicket, PeriodTicket } from '../types';
 
+const xsl = `
+    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output omit-xml-declaration="yes" indent="yes"/>
+        <xsl:strip-space elements="*"/>
+
+        <xsl:template match="node()|@*">
+            <xsl:copy>
+                <xsl:apply-templates select="node()|@*"/>
+            </xsl:copy>
+        </xsl:template>
+
+        <xsl:template match="@id">
+            <xsl:attribute name="id">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
+
+        <xsl:template match="@ref">
+            <xsl:attribute name="ref">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
+
+        <xsl:template match="*[not(@*|*|comment()|processing-instruction()) and normalize-space()='']"/>
+    </xsl:stylesheet>
+`;
+
 const uploadToS3 = async (netex: string, fileName: string): Promise<void> => {
-    await s3.uploadNetexToS3(
-        netex
-            ? format(netex, {
-                  collapseContent: true,
-              })
-            : '',
-        fileName,
-    );
+    if (process.env.NODE_ENV !== 'test') {
+        const parsedXsl = libxslt.parse(xsl);
+        const transformedNetex = parsedXsl.apply(netex);
+
+        await s3.uploadNetexToS3(transformedNetex, fileName);
+    } else {
+        await s3.uploadNetexToS3(netex, fileName);
+    }
 };
 
 export const generateFileName = (eventFileName: string): string => eventFileName.replace('.json', '.xml');

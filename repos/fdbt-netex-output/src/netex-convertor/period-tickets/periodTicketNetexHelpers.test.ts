@@ -7,7 +7,7 @@ describe('periodTicketNetexHelpers', () => {
     const { stops } = periodGeoZoneTicket;
     const geoUserPeriodTicket: PeriodGeoZoneTicket = periodGeoZoneTicket;
     const opData = operatorData;
-    const placeHolderText = 'PLACEHOLDER';
+    const placeHolderText = `${geoUserPeriodTicket.nocCode}_products`;
     const opString = expect.stringContaining('op:');
 
     const getExpectedFareTableColumn = (representingObject: {} | null): jest.Expect =>
@@ -460,13 +460,11 @@ describe('periodTicketNetexHelpers', () => {
                 version: '1.0',
                 id: expect.stringContaining('op:Tariff@'),
                 Name: expect.objectContaining({ $t: expect.any(String) }),
-                Description: expect.objectContaining({ $t: expect.any(String) }),
                 TypeOfFareStructureElementRef: expect.objectContaining({
                     version: expect.any(String),
                     ref: expect.any(String),
                 }),
                 timeIntervals: expect.objectContaining({ TimeIntervalRef: expect.anything() }),
-                GenericParameterAssignment: expect.any(Object),
             };
 
             const expectedEligibilityFareStructureElement = {

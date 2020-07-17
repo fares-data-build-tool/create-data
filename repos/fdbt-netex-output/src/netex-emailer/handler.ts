@@ -49,13 +49,10 @@ export const setS3ObjectParams = (event: S3Event): S3ObjectParameters => {
 export const setMailOptions = (
     params: S3ObjectParameters,
     pathToNetex: string,
-    email: string,
-    uuid: string,
-    fareType: string,
-    passengerType: string,
-    selectedServices?: ServiceList[],
-    products?: ProductList[],
+    matchingData: MatchingData,
 ): Mail.Options => {
+    const { email, uuid, passengerType, type, selectedServices, products } = matchingData;
+
     return {
         from: 'fdbt@transportforthenorth.com',
         to: email,
@@ -65,7 +62,7 @@ export const setMailOptions = (
             uuid,
             passengerType,
             new Date(Date.now()).toLocaleString(),
-            fareType,
+            type,
             selectedServices,
             products,
         ),
@@ -77,33 +74,22 @@ export const setMailOptions = (
     };
 };
 
-export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
+export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
     try {
         const s3ObjectParams = setS3ObjectParams(event);
         const splitKey = s3ObjectParams.Key.split('/').pop();
         const pathToSavedNetex = `/tmp/${splitKey}`;
         const netexFile = await getFileFromS3(s3ObjectParams);
 
-        const dataAsString: MatchingData = await fetchDataFromS3<MatchingData>(event, true);
+        const matchingData: MatchingData = await fetchDataFromS3<MatchingData>(event, true);
 
-        const { uuid, email, selectedServices, products, type, passengerType } = dataAsString;
-
-        if (!email) {
+        if (!matchingData.email) {
             return;
         }
 
         await fs.writeFile(pathToSavedNetex, netexFile);
 
-        const mailOptions = setMailOptions(
-            s3ObjectParams,
-            pathToSavedNetex,
-            email,
-            uuid,
-            type,
-            passengerType,
-            selectedServices,
-            products,
-        );
+        const mailOptions = setMailOptions(s3ObjectParams, pathToSavedNetex, matchingData);
 
         if (process.env.NODE_ENV !== 'development') {
             const mailTransporter = createMailTransporter();
@@ -116,4 +102,4 @@ export const odhUploaderHandler = async (event: S3Event): Promise<void> => {
     }
 };
 
-export default odhUploaderHandler;
+export default netexEmailerHandler;

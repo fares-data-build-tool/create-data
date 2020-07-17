@@ -14,7 +14,7 @@
 						<FromDate>2017-01-01T00:00:00Z</FromDate>
 					</AvailabilityCondition>
 				</selectionValidityConditions>
-				<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP" />
+				<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP" />
 				<NetworkFilterByValue>
 					<objectReferences>
 						<OperatorRef version="1.0" ref=""></OperatorRef>
@@ -33,13 +33,9 @@
 	<!-- =============== RESULTS =========== -->
 	<dataObjects>
 		<CompositeFrame version="1.0" id="" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
-			<ValidBetween>
-				<FromDate>2017-01-01T00:00:00</FromDate>
-				<ToDate>2020-12-31T12:00:00</ToDate>
-			</ValidBetween>
 			<Name></Name>
 			<Description></Description>
-			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP" />
+			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP" />
 			<!--==== CODESPACEs ==== -->
 			<codespaces>
 				<CodespaceRef ref="epd_data" />
@@ -246,18 +242,6 @@
 					<prerequisites>
 						<FareFrameRef version="1.0" ref="" />
 					</prerequisites>
-					<!--==== Pricing Parameters ====-->
-					<PricingParameterSet version="1.0" id="">
-						<pricingRules>
-							<DiscountingRule version="1.0" id="op:half_price">
-								<Name>Discount for concession  fares></Name>
-								<DiscountAsPercentage>50</DiscountAsPercentage>
-							</DiscountingRule>
-							<DiscountingRule version="1.0" id="op:free">
-								<DiscountAsPercentage>100</DiscountAsPercentage>
-							</DiscountingRule>
-						</pricingRules>
-					</PricingParameterSet>
 					<fareTables></fareTables>
 				</FareFrame>
 				<ServiceFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
