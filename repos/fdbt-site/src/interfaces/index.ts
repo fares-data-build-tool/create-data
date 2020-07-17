@@ -3,8 +3,6 @@ import { AppInitialProps } from 'next/app';
 export interface ProductInfo {
     productName: string;
     productPrice: string;
-    productNameError: string;
-    productPriceError: string;
 }
 
 export interface ServicesInfo {

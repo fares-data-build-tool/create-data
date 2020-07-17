@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { DAYS_VALID_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
+import { ErrorInfo } from '../../interfaces';
 
 export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
     const { validityInput } = req.body;
@@ -22,17 +23,21 @@ export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
 };
 
 export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
-    if (error === '') {
-        const daysValid = req.body.validityInput;
+    const daysValid = req.body.validityInput;
 
-        const uuid = getUuidFromCookie(req, res);
-        const cookieValue = JSON.stringify({ daysValid, uuid });
+    if (error) {
+        const errorInfo: ErrorInfo = {
+            errorMessage: error,
+            id: 'validity-error',
+        };
+        const cookieValue = JSON.stringify({ daysValid, error: errorInfo });
         setCookieOnResponseObject(DAYS_VALID_COOKIE, cookieValue, req, res);
+        redirectTo(res, '/chooseValidity');
         return;
     }
 
-    const daysValid = req.body.validityInput;
-    const cookieValue = JSON.stringify({ daysValid, error });
+    const uuid = getUuidFromCookie(req, res);
+    const cookieValue = JSON.stringify({ daysValid, uuid });
     setCookieOnResponseObject(DAYS_VALID_COOKIE, cookieValue, req, res);
 };
 
@@ -44,15 +49,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         if (req.body.validityInput === '0') {
             setCookie(req, res, 'The value of days your product is valid for cannot be 0.');
-            console.warn('0 entered as value for days your product is valid for.');
-            redirectTo(res, '/chooseValidity');
             return;
         }
 
         if (!req.body.validityInput) {
             setCookie(req, res, 'The value of days your product is valid for cannot be empty.');
-            console.warn('Nothing entered as value for days your product is valid for.');
-            redirectTo(res, '/chooseValidity');
             return;
         }
 
@@ -62,8 +63,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 res,
                 'The value of days your product is valid for has to be a whole number between 1 and 366.',
             );
-            console.warn('Invalid number entered as value for days your product is valid for.');
-            redirectTo(res, '/chooseValidity');
             return;
         }
 

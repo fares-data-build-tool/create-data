@@ -1,14 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import StageNames, {
-    renderInputFields,
-    InputCheck,
-    getServerSideProps,
-    filterErrors,
-} from '../../src/pages/stageNames';
+import StageNames, { renderInputFields, InputCheck, getServerSideProps } from '../../src/pages/stageNames';
 import { getMockContext } from '../testData/mockData';
-import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('renderInputFields', () => {
@@ -97,49 +91,6 @@ describe('pages', () => {
                     numberOfFareStages: 6,
                     inputChecks: [],
                 },
-            });
-        });
-        describe('filter errors', () => {
-            it('changes an error info array into a unique error info array, as it removes duplicates', () => {
-                const arrayOfErrors: ErrorInfo[] = [
-                    { errorMessage: 'Message One', id: 'id1' },
-                    { errorMessage: 'Message One', id: 'id2' },
-                    { errorMessage: 'Message Two', id: 'id3' },
-                ];
-                const result = filterErrors(arrayOfErrors);
-
-                expect(result).toStrictEqual([
-                    { errorMessage: 'Message One', id: 'id1' },
-                    { errorMessage: 'Message Two', id: 'id3' },
-                ]);
-            });
-            it('does not alter arrays with no duplicates', () => {
-                const arrayOfErrors: ErrorInfo[] = [
-                    { errorMessage: 'Message One', id: 'id1' },
-                    { errorMessage: 'Message Two', id: 'id2' },
-                    { errorMessage: 'Message Three', id: 'id3' },
-                ];
-                const result = filterErrors(arrayOfErrors);
-
-                expect(result).toStrictEqual([
-                    { errorMessage: 'Message One', id: 'id1' },
-                    { errorMessage: 'Message Two', id: 'id2' },
-                    { errorMessage: 'Message Three', id: 'id3' },
-                ]);
-            });
-            it('only removes duplicate error messages, not ids', () => {
-                const arrayOfErrors: ErrorInfo[] = [
-                    { errorMessage: 'Message One', id: 'id1' },
-                    { errorMessage: 'Message Two', id: 'id1' },
-                    { errorMessage: 'Message Three', id: 'id1' },
-                ];
-                const result = filterErrors(arrayOfErrors);
-
-                expect(result).toStrictEqual([
-                    { errorMessage: 'Message One', id: 'id1' },
-                    { errorMessage: 'Message Two', id: 'id1' },
-                    { errorMessage: 'Message Three', id: 'id1' },
-                ]);
             });
         });
     });

@@ -8,6 +8,7 @@ interface DirectionProps {
     journeyPatterns: JourneyPattern[];
     outboundJourney?: string;
     inboundJourney?: string;
+    className?: string;
 }
 
 const DirectionDropdown = ({
@@ -17,6 +18,7 @@ const DirectionDropdown = ({
     journeyPatterns,
     outboundJourney,
     inboundJourney,
+    className,
 }: DirectionProps): ReactElement => {
     let selectedValue = '';
 
@@ -31,7 +33,12 @@ const DirectionDropdown = ({
             <label className="govuk-label" htmlFor={selectNameID}>
                 {dropdownLabel}
             </label>
-            <select className="govuk-select" id={selectNameID} name={selectName} defaultValue={selectedValue}>
+            <select
+                className={`govuk-select ${className || ''}`}
+                id={selectNameID}
+                name={selectName}
+                defaultValue={selectedValue}
+            >
                 <option value="" disabled>
                     Select One
                 </option>

@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
@@ -27,7 +26,7 @@ type StageNameProps = {
 
 export const renderInputField = (index: number, inputCheck: InputCheck, errors: ErrorInfo[] = []): ReactElement => (
     <div
-        className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error input-error' : ''}`}
+        className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}
         key={`fare-stage-name-${index + 1}`}
     >
         <label className="govuk-label" htmlFor={`fare-stage-name-${index + 1}`}>
@@ -63,8 +62,6 @@ export const renderInputFields = (
     return elements;
 };
 
-export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => _.uniqBy(errors, 'errorMessage');
-
 const StageNames = ({
     numberOfFareStages,
     inputChecks,
@@ -74,7 +71,7 @@ const StageNames = ({
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/stageNames" method="post" csrfToken={csrfToken}>
             <>
-                <ErrorSummary errors={filterErrors(errors)} />
+                <ErrorSummary errors={errors} />
                 <fieldset className="govuk-fieldset" aria-describedby="stage-names-input">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 className="govuk-fieldset__heading">

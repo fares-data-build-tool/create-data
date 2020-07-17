@@ -48,7 +48,7 @@ const ReturnDirection = ({
                             <FormElementWrapper
                                 errors={errors}
                                 errorId={outboundErrorId}
-                                errorClass="govuk-radios--error"
+                                errorClass="govuk-select--error"
                             >
                                 <DirectionDropdown
                                     selectName="outboundJourney"
@@ -63,7 +63,7 @@ const ReturnDirection = ({
                             <FormElementWrapper
                                 errors={errors}
                                 errorId={inboundErrorId}
-                                errorClass="govuk-radios--error"
+                                errorClass="govuk-select--error"
                             >
                                 <DirectionDropdown
                                     selectName="inboundJourney"

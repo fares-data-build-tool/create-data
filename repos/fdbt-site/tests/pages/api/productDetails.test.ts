@@ -28,10 +28,20 @@ describe('productDetails', () => {
         });
 
         const mockProductDetailsCookies = {
-            productName: '',
-            productPrice: '',
-            productNameError: 'Product name cannot have less than 2 characters',
-            productPriceError: 'This field cannot be empty',
+            body: {
+                productName: '',
+                productPrice: '',
+            },
+            errors: [
+                {
+                    errorMessage: 'Product name cannot have less than 2 characters',
+                    id: 'product-name-error',
+                },
+                {
+                    errorMessage: 'This field cannot be empty',
+                    id: 'product-price-error',
+                },
+            ],
         };
 
         productDetails(req, res);
@@ -59,8 +69,6 @@ describe('productDetails', () => {
         const mockProductDetailsCookies = {
             productName: 'ProductA',
             productPrice: '121',
-            productNameError: '',
-            productPriceError: '',
         };
 
         productDetails(req, res);
@@ -88,8 +96,6 @@ describe('productDetails', () => {
         const mockProductDetailsCookies = {
             productName: 'ProductBA',
             productPrice: '121',
-            productNameError: '',
-            productPriceError: '',
         };
 
         productDetails(req, res);

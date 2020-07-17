@@ -7,8 +7,6 @@ import { getMockContext } from '../testData/mockData';
 const mockproductDetails: ProductInfo = {
     productPrice: '',
     productName: '',
-    productNameError: '',
-    productPriceError: '',
 };
 
 describe('pages', () => {
@@ -22,6 +20,7 @@ describe('pages', () => {
                     hintText="Test Zone"
                     csrfToken=""
                     pageProps={[]}
+                    errors={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -31,7 +30,7 @@ describe('pages', () => {
             it('should return expected props to the page when the page is first visited by the user', () => {
                 const ctx = getMockContext({ cookies: { productName: null, productPrice: null, fareZoneName: null } });
                 const result = getServerSideProps(ctx);
-                expect(result.props.product).toEqual({});
+                expect(result.props.product).toBeNull();
                 expect(result.props.operator).toBe('test');
                 expect(result.props.passengerType).toBe('Adult');
                 expect(result.props.hintText).toBe('Multiple Services');

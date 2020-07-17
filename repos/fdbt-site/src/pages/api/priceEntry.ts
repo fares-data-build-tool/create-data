@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import {
     JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,
@@ -125,7 +125,7 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
-        if (!req.body || _.isEmpty(req.body)) {
+        if (!req.body || isEmpty(req.body)) {
             throw new Error('Body of request not found.');
         }
 

@@ -12,7 +12,7 @@ import { getCookieValue } from '.';
 export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
 
-    if (!url || url === '/') {
+    if (!url || url === '/' || url === '/home') {
         return {
             generate: (): Breadcrumb[] => [],
         };

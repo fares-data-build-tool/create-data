@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 
-import _ from 'lodash';
+import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     MULTIPLE_PRODUCT_COOKIE,
@@ -63,7 +63,7 @@ const MultipleProductValidity = ({
                         </h1>
                     </legend>
                     <span className="govuk-hint" id="operator-products-hint">
-                        {operator} - {numberOfProducts} products - {_.upperFirst(passengerType)}
+                        {operator} - {numberOfProducts} products - {upperFirst(passengerType)}
                     </span>
                     <span className="govuk-hint" id="multiple-product-validity-page-hint">
                         We need to know the time that this product would be valid until.

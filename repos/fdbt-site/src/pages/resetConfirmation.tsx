@@ -38,7 +38,7 @@ const ResetConfirmation = ({ email, csrfToken }: ResetConfirmationProps & Custom
                         If you cannot find the email then look in your spam or junk email folder.
                     </p>
                 </div>
-                <a href="/operator" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
+                <a href="/" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
                     Home
                 </a>
             </>

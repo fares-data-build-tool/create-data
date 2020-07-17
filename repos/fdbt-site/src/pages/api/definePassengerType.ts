@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import * as yup from 'yup';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import {
     redirectToError,
     redirectTo,

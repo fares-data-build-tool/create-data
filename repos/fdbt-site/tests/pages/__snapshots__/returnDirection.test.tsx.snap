@@ -35,7 +35,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
           className="govuk-!-margin-top-5"
         >
           <FormElementWrapper
-            errorClass="govuk-radios--error"
+            errorClass="govuk-select--error"
             errorId="outbound-error"
             errors={Array []}
           >
@@ -108,7 +108,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
           className="govuk-!-margin-top-6"
         >
           <FormElementWrapper
-            errorClass="govuk-radios--error"
+            errorClass="govuk-select--error"
             errorId="inbound-error"
             errors={Array []}
           >
