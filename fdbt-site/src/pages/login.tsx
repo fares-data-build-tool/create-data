@@ -14,9 +14,10 @@ const description = 'Login page of the Fares data build tool';
 
 interface LoginProps {
     errors: ErrorInfo[];
+    email: string;
 }
 
-const Login = ({ errors = [], csrfToken }: LoginProps & CustomAppProps): ReactElement => (
+const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
@@ -46,6 +47,7 @@ const Login = ({ errors = [], csrfToken }: LoginProps & CustomAppProps): ReactEl
                                             aria-describedby="email-hint"
                                             autoComplete="email"
                                             spellCheck="false"
+                                            defaultValue={email || ''}
                                         />
                                     </FormElementWrapper>
                                 </div>
@@ -108,9 +110,9 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const operatorCookieParsed = JSON.parse(operatorCookie);
 
         if (operatorCookieParsed.errors) {
-            const { errors } = operatorCookieParsed;
+            const { errors, email } = operatorCookieParsed;
             deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
-            return { props: { errors } };
+            return { props: { errors, email } };
         }
     }
 

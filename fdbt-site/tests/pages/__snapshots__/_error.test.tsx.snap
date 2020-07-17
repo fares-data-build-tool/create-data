@@ -42,7 +42,7 @@ exports[`pages error page should render 404 page correctly 1`] = `
     className="govuk-button"
     data-module="govuk-button"
     draggable="false"
-    href="/operator"
+    href="/"
     role="button"
   >
     Start again
@@ -91,7 +91,7 @@ exports[`pages error page should render error page correctly 1`] = `
     className="govuk-button"
     data-module="govuk-button"
     draggable="false"
-    href="/operator"
+    href="/"
     role="button"
   >
     Start again

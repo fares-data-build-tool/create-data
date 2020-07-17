@@ -17,11 +17,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 id: 'email',
                 errorMessage: 'Enter an email address in the correct format, like name@example.com',
             });
-            const cookieContent = JSON.stringify({ errors });
-            setCookieOnResponseObject(OPERATOR_COOKIE, cookieContent, req, res);
-            redirectTo(res, '/login');
-
-            return;
         }
 
         if (!password) {
@@ -29,7 +24,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 id: 'password',
                 errorMessage: 'Enter a password',
             });
-            const cookieContent = JSON.stringify({ errors });
+        }
+
+        if (errors.length > 0) {
+            const cookieContent = JSON.stringify({ errors, email });
             setCookieOnResponseObject(OPERATOR_COOKIE, cookieContent, req, res);
             redirectTo(res, '/login');
 

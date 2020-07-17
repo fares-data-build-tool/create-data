@@ -56,7 +56,7 @@ exports[`pages fareType should render correctly 1`] = `
       className="govuk-button"
       data-module="govuk-button"
       draggable="false"
-      href="/operator"
+      href="/"
       role="button"
     >
       Home

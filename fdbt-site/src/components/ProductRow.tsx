@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../interfaces';
-import FormElementWrapper from './FormElementWrapper';
+import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 import { MultiProduct } from '../pages/api/multipleProducts';
 
 export interface ProductRowProps {
@@ -16,13 +16,8 @@ export const continueButton = (): ReactElement => {
 export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (
     <div className="flex-container">
         <div className="govuk-grid-column-one-half">
-            <FormElementWrapper
-                errors={errors}
-                errorId={`multiple-product-name-input-${index}`}
-                errorClass="govuk-form-group--error"
-                addFormGroupError
-            >
-                <div className="govuk-form-group">
+            <FormGroupWrapper errors={errors} errorId={`multiple-product-name-input-${index}`}>
+                <>
                     <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
                         Product Name
                     </label>
@@ -33,25 +28,26 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                     ) : (
                         ''
                     )}
-                    <input
-                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                        id={`multiple-product-name-${index}`}
-                        name={`multipleProductNameInput${index}`}
-                        type="text"
-                        maxLength={50}
-                        defaultValue={userInput.length > 0 ? userInput[index].productName : ''}
-                    />
-                </div>
-            </FormElementWrapper>
+                    <FormElementWrapper
+                        errors={errors}
+                        errorId={`multiple-product-name-input-${index}`}
+                        errorClass="govuk-input--error"
+                    >
+                        <input
+                            className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                            id={`multiple-product-name-${index}`}
+                            name={`multipleProductNameInput${index}`}
+                            type="text"
+                            maxLength={50}
+                            defaultValue={userInput.length > 0 ? userInput[index].productName : ''}
+                        />
+                    </FormElementWrapper>
+                </>
+            </FormGroupWrapper>
         </div>
         <div className="govuk-grid-column-one-quarter">
-            <FormElementWrapper
-                errors={errors}
-                errorId={`multiple-product-price-input-${index}`}
-                errorClass="govuk-form-group--error"
-                addFormGroupError
-            >
-                <div className="govuk-form-group">
+            <FormGroupWrapper errors={errors} errorId={`multiple-product-price-input-${index}`}>
+                <>
                     <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
                         Product Price
                     </label>
@@ -65,28 +61,29 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                     <div className="govuk-currency-input">
                         <div className="govuk-currency-input__inner">
                             <span className="govuk-currency-input__inner__unit">£</span>
-                            <input
-                                className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
-                                aria-label="Enter amount in pounds"
-                                name={`multipleProductPriceInput${index}`}
-                                data-non-numeric
-                                type="text"
-                                id={`multiple-product-price-${index}`}
-                                defaultValue={userInput.length > 0 ? userInput[index].productPrice : ''}
-                            />
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId={`multiple-product-price-input-${index}`}
+                                errorClass="govuk-input--error"
+                            >
+                                <input
+                                    className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
+                                    aria-label="Enter amount in pounds"
+                                    name={`multipleProductPriceInput${index}`}
+                                    data-non-numeric
+                                    type="text"
+                                    id={`multiple-product-price-${index}`}
+                                    defaultValue={userInput.length > 0 ? userInput[index].productPrice : ''}
+                                />
+                            </FormElementWrapper>
                         </div>
                     </div>
-                </div>
-            </FormElementWrapper>
+                </>
+            </FormGroupWrapper>
         </div>
         <div className="govuk-grid-column-one-quarter">
-            <FormElementWrapper
-                errors={errors}
-                errorId={`multiple-product-duration-input-${index}`}
-                errorClass="govuk-form-group--error"
-                addFormGroupError
-            >
-                <div className="govuk-form-group">
+            <FormGroupWrapper errors={errors} errorId={`multiple-product-duration-input-${index}`}>
+                <>
                     <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
                         Product Duration
                     </label>
@@ -97,16 +94,22 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                     ) : (
                         ''
                     )}
-                    <input
-                        className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
-                        id={`multiple-product-duration-${index}`}
-                        name={`multipleProductDurationInput${index}`}
-                        type="text"
-                        maxLength={366}
-                        defaultValue={userInput.length > 0 ? userInput[index].productDuration : ''}
-                    />
-                </div>
-            </FormElementWrapper>
+                    <FormElementWrapper
+                        errors={errors}
+                        errorId={`multiple-product-duration-input-${index}`}
+                        errorClass="govuk-input--error"
+                    >
+                        <input
+                            className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
+                            id={`multiple-product-duration-${index}`}
+                            name={`multipleProductDurationInput${index}`}
+                            type="text"
+                            maxLength={366}
+                            defaultValue={userInput.length > 0 ? userInput[index].productDuration : ''}
+                        />
+                    </FormElementWrapper>
+                </>
+            </FormGroupWrapper>
         </div>
     </div>
 );

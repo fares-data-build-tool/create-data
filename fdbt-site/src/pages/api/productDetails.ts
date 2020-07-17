@@ -9,7 +9,7 @@ import {
     getAttributeFromIdToken,
 } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
+import { ProductInfo, ServicesInfo, PassengerDetails, ErrorInfo } from '../../interfaces';
 import {
     PRODUCT_DETAILS_COOKIE,
     FARE_TYPE_COOKIE,
@@ -22,26 +22,19 @@ import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } fr
 import { putStringInS3 } from '../../data/s3';
 import { DecisionData } from './periodValidity';
 
-export const checkIfInputInvalid = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
-    let productNameError = '';
-    let productPriceError = '';
-
+const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
     const cleanedPriceInput = removeExcessWhiteSpace(productDetailsPriceInput);
-
-    productNameError = checkProductNameIsValid(cleanedNameInput);
-
-    productPriceError = checkPriceIsValid(cleanedPriceInput);
 
     return {
         productName: cleanedNameInput,
         productPrice: cleanedPriceInput,
-        productNameError,
-        productPriceError,
     };
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+    const errors: ErrorInfo[] = [];
+
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -57,10 +50,28 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
 
-        const productDetails = checkIfInputInvalid(productDetailsNameInput, productDetailsPriceInput);
+        const productDetails = getProductDetails(productDetailsNameInput, productDetailsPriceInput);
 
-        if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
-            const invalidInputs = JSON.stringify(productDetails);
+        const productNameError = checkProductNameIsValid(productDetails.productName);
+
+        if (productNameError) {
+            errors.push({
+                errorMessage: productNameError,
+                id: 'product-name-error',
+            });
+        }
+
+        const productPriceError = checkPriceIsValid(productDetails.productPrice);
+
+        if (productPriceError) {
+            errors.push({
+                errorMessage: productPriceError,
+                id: 'product-price-error',
+            });
+        }
+
+        if (errors.length) {
+            const invalidInputs = JSON.stringify({ body: { ...productDetails }, errors });
 
             setCookieOnResponseObject(PRODUCT_DETAILS_COOKIE, invalidInputs, req, res);
             redirectTo(res, '/productDetails');
