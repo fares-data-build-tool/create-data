@@ -112,9 +112,6 @@ Resources:
               Value: !Ref Stage
             - Name: AWS_NODEJS_CONNECTION_REUSE_ENABLED
               Value: "1"
-            - Name: STATIC_FILES_BUCKET_URL
-              Value:
-                Fn::ImportValue: !Sub ${Stage}:StaticFilesBucketUrl
             - Name: RDS_HOST
               Value:
                 Fn::ImportValue: !Sub ${Stage}:RdsHostName
