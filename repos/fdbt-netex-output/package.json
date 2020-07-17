@@ -35,6 +35,8 @@
         "libxmljs2": "^0.25.0",
         "libxslt": "^0.9.0",
         "lodash": "^4.17.19",
+        "moment": "^2.27.0",
+        "moment-timezone": "^0.5.31",
         "mysql2": "^2.1.0",
         "nodemailer": "^6.4.5",
         "typescript": "^3.8.3",

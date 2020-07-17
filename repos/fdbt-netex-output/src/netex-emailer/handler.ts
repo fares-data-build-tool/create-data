@@ -3,6 +3,7 @@ import AWS from 'aws-sdk';
 import { promises as fs } from 'fs';
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import moment from 'moment-timezone';
 import { fetchDataFromS3, getFileFromS3 } from '../utils/s3';
 import emailTemplate from './template/emailTemplate';
 
@@ -61,7 +62,9 @@ export const setMailOptions = (
         html: emailTemplate(
             uuid,
             passengerType,
-            new Date(Date.now()).toLocaleString(),
+            moment()
+                .tz('Europe/London')
+                .format('DD-MM-YYYY, HH:mm'),
             type,
             selectedServices,
             products,
@@ -90,6 +93,10 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
         await fs.writeFile(pathToSavedNetex, netexFile);
 
         const mailOptions = setMailOptions(s3ObjectParams, pathToSavedNetex, matchingData);
+
+        if (process.env.NODE_ENV === 'development') {
+            console.info('mailOptions', mailOptions);
+        }
 
         if (process.env.NODE_ENV !== 'development') {
             const mailTransporter = createMailTransporter();
