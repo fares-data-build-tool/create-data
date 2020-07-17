@@ -28,13 +28,13 @@ export const getFileFromS3 = async (params: S3ObjectParameters): Promise<string>
     return data.Body?.toString('utf-8') ?? '';
 };
 
-export const fetchDataFromS3 = async <T>(event: S3Event, isOdhUploader = false): Promise<T> => {
+export const fetchDataFromS3 = async <T>(event: S3Event, isEmailer = false): Promise<T> => {
     try {
-        const s3BucketName: string = !isOdhUploader
+        const s3BucketName: string = !isEmailer
             ? event.Records[0].s3.bucket.name
             : process.env.MATCHING_DATA_BUCKET || '';
 
-        const s3FileName: string = !isOdhUploader
+        const s3FileName: string = !isEmailer
             ? decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '))
             : event.Records[0].s3.object.key.replace('.xml', '.json');
 

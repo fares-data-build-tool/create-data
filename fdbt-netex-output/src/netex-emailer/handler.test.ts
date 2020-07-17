@@ -1,13 +1,13 @@
 import { S3Event } from 'aws-lambda';
 import nodemailer from 'nodemailer';
 import * as testData from './testData/testData';
-import { createMailTransporter, odhUploaderHandler } from './handler';
+import { createMailTransporter, netexEmailerHandler } from './handler';
 import * as s3 from '../utils/s3';
 import { periodGeoZoneTicket } from '../test-data/matchingData';
 
 jest.mock('aws-sdk');
 
-describe('odhHandler SES emailer', () => {
+describe('netexEmailer SES emailer', () => {
     const mockMailTransporter = jest.fn();
 
     const mockFetchDataFromS3Spy = jest.spyOn(s3, 'fetchDataFromS3');
@@ -40,7 +40,7 @@ describe('odhHandler SES emailer', () => {
         const key = 'NameOfNetexFile.xml';
         const event: S3Event = testData.testS3Event('thisIsMyBucket', key);
 
-        await odhUploaderHandler(event);
+        await netexEmailerHandler(event);
 
         expect(mockMailTransporter).toBeCalledTimes(1);
     });

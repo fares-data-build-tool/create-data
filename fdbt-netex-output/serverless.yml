@@ -75,8 +75,8 @@ functions:
       RDS_HOST:
         Fn::ImportValue: ${self:provider.stage}:RdsHostName
 
-  OdhUploader:
-    handler: src/odh-uploader/handler.odhUploaderHandler
+  NetexEmailer:
+    handler: src/netex-emailer/handler.netexEmailerHandler
     events:
       - s3: netexDataBucket
         event: s3:ObjectCreated:*
@@ -133,11 +133,11 @@ resources:
     SESEmailsSentFilter:
       Type: 'AWS::Logs::MetricFilter'
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-OdhUploader
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexEmailer
         FilterPattern: 'Email sent'
         MetricTransformations:
           - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-OdhUploader'
+            MetricNamespace: 'FDBT/Netex-Emailer'
             MetricName: 'SES-emails-sent-${self:provider.stage}'
 
 plugins:

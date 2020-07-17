@@ -14,13 +14,13 @@ import {
 } from './periodTicketNetexHelpers';
 import { NetexObject, getCleanWebsite, getNetexTemplateAsJson, convertJsonToXml } from '../sharedHelpers';
 
-const placeHolderGroupOfProductsName = 'PLACEHOLDER';
-
 const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData: Operator): { generate: Function } => {
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${userPeriodTicket.nocCode}`;
     const currentDate = new Date(Date.now());
     const website = getCleanWebsite(operatorData.website);
+    const placeHolderGroupOfProductsName = `${userPeriodTicket.nocCode}_products`;
+    const brandingId = `op:${userPeriodTicket.nocCode}@brand`;
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
         const publicationTimeStampToUpdate = { ...publicationTimeStamp };
@@ -33,17 +33,32 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         const publicationRequestToUpdate = { ...publicationRequest };
         publicationRequestToUpdate.RequestTimestamp.$t = currentDate;
         publicationRequestToUpdate.Description.$t = `Request for ${userPeriodTicket.nocCode} bus pass fares`;
+        publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${
+            isGeoZoneTicket(userPeriodTicket) ? 'NETWORK' : 'LINE'
+        }_FARE_OFFER:FXCP`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
-        // below ref is being set to the first product name, so the ID can be found.
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef.ref = `op:Pass@${userPeriodTicket.products[0].productName}_${userPeriodTicket.passengerType}`;
+
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef = userPeriodTicket.products.map(
+            product => ({
+                version: '1.0',
+                ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+            }),
+        );
+
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.BrandingRef = {
+            version: '1.0',
+            ref: brandingId,
+        };
 
         return publicationRequestToUpdate;
     };
 
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
-        compositeFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@${placeHolderGroupOfProductsName}:op`;
+        compositeFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:CompositeFrame_UK_PI_${
+            isGeoZoneTicket(userPeriodTicket) ? 'NETWORK' : 'LINE'
+        }_FARE_OFFER:Pass@${placeHolderGroupOfProductsName}:op`;
         compositeFrameToUpdate.Name.$t = `Fares for ${userPeriodTicket.operatorName}`;
         compositeFrameToUpdate.Description.$t = `Period ticket for ${userPeriodTicket.operatorName}`;
 
@@ -62,7 +77,7 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
             operatorData.operatorPublicName;
-        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.id = `op:${userPeriodTicket.operatorName}@brand`;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.id = brandingId;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = operatorData.operatorPublicName;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = website;
         resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
@@ -81,7 +96,7 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
         if (isMultiServiceTicket(userPeriodTicket)) {
             const serviceFrameToUpdate = { ...serviceFrame };
-            serviceFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:ServiceFrame_UK_PI_NETWORK:Line_${placeHolderGroupOfProductsName}:op`;
+            serviceFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:ServiceFrame_UK_PI_NETWORK:${placeHolderGroupOfProductsName}:op`;
 
             serviceFrameToUpdate.lines.Line = getLinesList(userPeriodTicket, operatorData);
 
@@ -129,14 +144,12 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
                 FromDate: { $t: currentDate.toISOString() },
-                ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
             },
         };
         priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${placeHolderGroupOfProductsName} - Tariff`;
         priceFareFrameToUpdate.tariffs.Tariff.Description.$t = `${placeHolderGroupOfProductsName} single zone tariff`;
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;
-        priceFareFrameToUpdate.tariffs.Tariff.geographicalIntervals.GeographicalInterval.id = `op:Tariff@${placeHolderGroupOfProductsName}@1zone`;
 
         // Time intervals
         if (
@@ -173,7 +186,6 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         fareTableFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRICE:${placeHolderGroupOfProductsName}@pass:op`;
         fareTableFareFrameToUpdate.Name.$t = `${placeHolderGroupOfProductsName} Prices`;
         fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
-        fareTableFareFrameToUpdate.PricingParameterSet.id = `op:Pass@${placeHolderGroupOfProductsName}`;
 
         if (isGeoZoneTicket(userPeriodTicket)) {
             fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(

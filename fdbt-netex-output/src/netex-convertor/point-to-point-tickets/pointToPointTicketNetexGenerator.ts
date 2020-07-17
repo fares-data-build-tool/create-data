@@ -20,12 +20,12 @@ const pointToPointTicketNetexGenerator = (
 ): { generate: Function } => {
     const opIdNocFormat = `noc:${operatorData.opId}`;
     const nocCodeNocFormat = `noc:${matchingData.nocCode}`;
-    const opIdBrandFormat = `${operatorData.opId}@brand`;
     const operatorPublicNameLineNameFormat = `${operatorData.operatorPublicName} ${matchingData.lineName}`;
     const noccodeLineNameFormat = `${matchingData.nocCode}_${matchingData.lineName}`;
     const lineIdName = `Line_${matchingData.lineName}`;
     const currentDate = new Date(Date.now());
     const website = getCleanWebsite(operatorData.website);
+    const brandingId = `op:${matchingData.nocCode}@brand`;
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
         const publicationTimeStampToUpdate = { ...publicationTimeStamp };
@@ -42,6 +42,10 @@ const pointToPointTicketNetexGenerator = (
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref =
             matchingData.lineName;
+        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.BrandingRef = {
+            version: '1.0',
+            ref: brandingId,
+        };
 
         return publicationRequestToUpdate;
     };
@@ -66,7 +70,7 @@ const pointToPointTicketNetexGenerator = (
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
             operatorData.operatorPublicName;
-        resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.id = opIdBrandFormat;
+        resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.id = brandingId;
         resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
         resourceFrameToUpdate.organisations.Operator.PublicCode.$t = matchingData.nocCode;
         resourceFrameToUpdate.organisations.Operator.Name.$t = operatorData.operatorPublicName;
@@ -137,7 +141,6 @@ const pointToPointTicketNetexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
                 FromDate: { $t: currentDate.toISOString() },
-                ToDate: { $t: new Date(currentDate.setFullYear(currentDate.getFullYear() + 99)).toISOString() },
             },
         };
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
