@@ -49,62 +49,62 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
 
     const getSingleAndReturnBreadcrumbs = (): Breadcrumb[] => [
         {
-            name: 'Select Service',
+            name: 'Service',
             link: '/service',
             show: isSingle || isReturn,
         },
         {
-            name: 'Select Direction',
+            name: 'Direction',
             link: '/singleDirection',
             show: isSingle,
         },
         {
-            name: 'Select Direction',
+            name: 'Direction',
             link: '/returnDirection',
             show: isReturn,
         },
         {
-            name: 'Select Input Method',
+            name: 'Input method',
             link: '/inputMethod',
             show: isSingle || isReturn,
         },
         {
-            name: 'Upload Fares Triangle CSV',
+            name: 'Upload CSV',
             link: '/csvUpload',
             show: isCsvUploadJourney,
         },
         {
-            name: 'Stage Count Check',
+            name: 'Stage count check',
             link: '/howManyStages',
             show: isManualUploadJourney,
         },
         {
-            name: 'Enter Number of Stages',
+            name: 'Number of stages',
             link: '/chooseStages',
             show: isManualUploadJourney,
         },
         {
-            name: 'Enter Stage Names',
+            name: 'Stage names',
             link: '/stageNames',
             show: isManualUploadJourney,
         },
         {
-            name: 'Enter Stage Prices',
+            name: 'Stage prices',
             link: '/priceEntry',
             show: isManualUploadJourney,
         },
         {
-            name: 'Match Stops',
+            name: 'Match stops',
             link: '/matching',
             show: isSingle || isCircular,
         },
         {
-            name: 'Match Outbound Stops',
+            name: 'Outbound stops',
             link: '/outboundMatching',
             show: isReturn && !isCircular,
         },
         {
-            name: 'Match Inbound Stops',
+            name: 'Inbound stops',
             link: '/inboundMatching',
             show: isReturn && !isCircular,
         },
@@ -112,47 +112,47 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
 
     const getPeriodAndFlatFareBreadcrumbs = (): Breadcrumb[] => [
         {
-            name: 'Select Period Type',
+            name: 'Period type',
             link: '/periodType',
             show: isPeriod,
         },
         {
-            name: 'Select Services',
+            name: 'Services',
             link: '/serviceList',
             show: isMultiService || isFlatFare,
         },
         {
-            name: 'Upload Zone CSV',
+            name: 'Upload CSV',
             link: '/csvZoneUpload',
             show: isGeoZone,
         },
         {
-            name: 'Enter Number of Products',
+            name: 'Number of products',
             link: '/howManyProducts',
             show: isMultiService || isGeoZone,
         },
         {
-            name: 'Enter Product Details',
+            name: 'Product details',
             link: '/productDetails',
             show: isFlatFare || isSingleProduct,
         },
         {
-            name: 'Enter Days Valid',
+            name: 'Days valid',
             link: '/chooseValidity',
             show: isSingleProduct,
         },
         {
-            name: 'Select Product Period Validity',
+            name: 'Product period validity',
             link: '/periodValidity',
             show: isSingleProduct,
         },
         {
-            name: 'Enter Product Details',
+            name: 'Product details',
             link: '/multipleProducts',
             show: isMultiProduct,
         },
         {
-            name: 'Select Product Period Validity',
+            name: 'Product period validity',
             link: '/multipleProductValidity',
             show: isMultiProduct,
         },
@@ -168,17 +168,17 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
                 show: true,
             },
             {
-                name: 'Select Fare Type',
+                name: 'Fare type',
                 link: '/fareType',
                 show: true,
             },
             {
-                name: 'Select Passenger Type',
+                name: 'Passenger type',
                 link: '/passengerType',
                 show: true,
             },
             {
-                name: 'Enter Passenger Type Details',
+                name: 'Passenger type details',
                 link: '/definePassengerType',
                 show: isNotAnyonePassengerType,
             },
