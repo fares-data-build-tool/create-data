@@ -21,13 +21,13 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): Reac
             {...uploadProps}
             detailBody={
                 <>
-                    <p>Some common issues with csv uploads include:</p>
+                    <p>Some common issues with CSV uploads include:</p>
                     <ul className="govuk-list govuk-list--bullet">
                         <li>Commas in fare zone names</li>
                     </ul>
                     <p>
-                        Use the help file document for a more detailed help on constructing a fare zone csv in the
-                        required format or download the csv template to create a new file.
+                        Use the help file document for a more detailed help on constructing a fare zone CSV in the
+                        required format or download the CSV template to create a new file.
                     </p>
                 </>
             }
@@ -52,15 +52,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
         props: {
             csvUploadApiRoute: '/api/csvZoneUpload',
             csvUploadHintText:
-                'Upload a fare zone as a csv file below. Refer to the documents section to download a help file and a template.',
+                'Upload a fare zone as a CSV file below. Refer to the documents section to download a help file and a template.',
             guidanceDocDisplayName: 'Download Help File',
             guidanceDocAttachmentUrl: HowToUploadFareZone,
             guidanceDocSize: '1.0MB',
-            csvTemplateDisplayName: 'Download fare zone csv template',
+            csvTemplateDisplayName: 'Download fare zone CSV template',
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
             csvTemplateSize: '600B',
             errors: !csvZoneUpload?.error ? [] : [{ errorMessage: csvZoneUpload.error, id: errorId }],
-            detailSummary: "My csv won't upload",
+            detailSummary: "My CSV won't upload",
         },
     };
 

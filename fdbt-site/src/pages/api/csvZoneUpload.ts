@@ -144,7 +144,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/howManyProducts');
         }
     } catch (error) {
-        const message = 'There was a problem uploading the csv:';
+        const message = 'There was a problem uploading the CSV:';
         redirectToError(res, message, error);
     }
 };
