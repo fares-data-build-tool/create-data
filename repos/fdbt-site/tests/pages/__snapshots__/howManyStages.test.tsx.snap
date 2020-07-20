@@ -34,7 +34,7 @@ exports[`pages howManyStages should render correctly 1`] = `
           className="govuk-hint"
           id="number-of-stages-hint"
         >
-          If the service has more than 20 fare stages you will be required to upload a csv file. A template file is available if required.
+          If the service has more than 20 fare stages you will be required to upload a CSV file. A template file is available if required.
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"

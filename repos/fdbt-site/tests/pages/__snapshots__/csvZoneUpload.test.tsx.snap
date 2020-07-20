@@ -16,7 +16,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     detailBody={
       <React.Fragment>
         <p>
-          Some common issues with csv uploads include:
+          Some common issues with CSV uploads include:
         </p>
         <ul
           className="govuk-list govuk-list--bullet"
@@ -26,7 +26,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
           </li>
         </ul>
         <p>
-          Use the help file document for a more detailed help on constructing a fare zone csv in the required format or download the csv template to create a new file.
+          Use the help file document for a more detailed help on constructing a fare zone CSV in the required format or download the CSV template to create a new file.
         </p>
       </React.Fragment>
     }
