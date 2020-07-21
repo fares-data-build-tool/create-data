@@ -45,7 +45,26 @@ class MyDocument extends Document<DocumentProps> {
     render(): ReactElement {
         return (
             <Html lang="en" className="govuk-template app-html-class flexbox no-flexboxtweener">
-                <Head nonce={this.props.nonce} />
+                <Head nonce={this.props.nonce}>
+                    {process.env.STAGE === 'prod' && (
+                        <>
+                            <script
+                                async
+                                src="https://www.googletagmanager.com/gtag/js?id=UA-173062045-1"
+                                nonce={this.props.nonce}
+                            />
+                            <script
+                                nonce={this.props.nonce}
+                                dangerouslySetInnerHTML={{
+                                    __html: `window.dataLayer = window.dataLayer || [];
+                                        function gtag(){dataLayer.push(arguments);}
+                                        gtag('js', new Date());
+                                        gtag('config', 'UA-173062045-1');`,
+                                }}
+                            />
+                        </>
+                    )}
+                </Head>
                 <body className="govuk-template__body app-body-class js-enabled">
                     <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
                     <div className="govuk-width-container app-width-container--wide">
