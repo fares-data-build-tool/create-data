@@ -29,7 +29,7 @@ const HowManyStages = ({ errors = [], csrfToken }: HowManyStagesProps & CustomAp
                             <h1 className="govuk-fieldset__heading">How many fare stages does the service have?</h1>
                         </legend>
                         <span className="govuk-hint" id="number-of-stages-hint">
-                            If the service has more than 20 fare stages you will be required to upload a csv file. A
+                            If the service has more than 20 fare stages you will be required to upload a CSV file. A
                             template file is available if required.
                         </span>
                         <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
