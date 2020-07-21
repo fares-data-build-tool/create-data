@@ -21,7 +21,7 @@ const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactEle
             {...uploadProps}
             detailBody={
                 <>
-                    <p>Some common issues with csv uploads include:</p>
+                    <p>Some common issues with CSV uploads include:</p>
                     <ul className="govuk-list govuk-list--bullet">
                         <li>Commas in fare stage names</li>
                         <li>Not providing a price in every cell</li>
@@ -29,7 +29,7 @@ const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactEle
                     </ul>
                     <p>
                         Use the help file for a more detailed guide on constructing a fares triangle in the required
-                        format or download the csv template to create a new file.
+                        format or download the CSV template to create a new file.
                     </p>
                 </>
             }
@@ -54,15 +54,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
         props: {
             csvUploadApiRoute: '/api/csvUpload',
             csvUploadHintText:
-                'Upload a fares triangle as a csv file below. Refer to the documents section to download a help file and a fares triangle template.',
+                'Upload a fares triangle as a CSV file below. Refer to the documents section to download a help file and a fares triangle template.',
             guidanceDocDisplayName: 'Download Help File',
             guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
             guidanceDocSize: '600KB',
-            csvTemplateDisplayName: 'Download fares triangle csv template',
+            csvTemplateDisplayName: 'Download fares triangle CSV template',
             csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '400B',
             errors: !csvUpload?.error ? [] : [{ errorMessage: csvUpload.error, id: errorId }],
-            detailSummary: "My csv won't upload",
+            detailSummary: "My CSV won't upload",
         },
     };
 
