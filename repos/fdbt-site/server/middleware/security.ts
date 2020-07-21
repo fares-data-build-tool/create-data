@@ -40,6 +40,7 @@ export default (server: Express): void => {
             },
             hsts: {
                 includeSubDomains: true,
+                preload: true,
                 maxAge: 31536000,
             },
             expectCt: {
