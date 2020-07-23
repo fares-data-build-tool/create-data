@@ -1,16 +1,16 @@
 COMMAND=$1
 EMAIL=$2
 NOC=$3
-TEMP_PASSWORD=$4
 
 USER_POOL=$(aws cognito-idp list-user-pools --max-results 1 | jq -r '.UserPools[0].Id')
 
 function add_user() {
-  if [ -z $EMAIL ] || [ -z $NOC ] || [ -z $TEMP_PASSWORD ]; then
-    echo "usage: cognito-manager add-user <email> <noc> <temp_password>"
+  if [ -z $EMAIL ] || [ -z $NOC ]; then
+    echo "usage: cognito-manager add-user <email> <noc>"
     exit 1
   fi
 
+  TEMP_PASSWORD=$(cat /dev/urandom | env LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
   aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$NOC --temporary-password $TEMP_PASSWORD --region eu-west-2
 }
 
