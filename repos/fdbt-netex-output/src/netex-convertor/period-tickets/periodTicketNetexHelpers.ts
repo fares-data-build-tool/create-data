@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {
+    NetexSalesOfferPackage,
     Stop,
     Operator,
     PeriodTicket,
@@ -10,7 +11,10 @@ import {
     Line,
     LineRef,
     ProductDetails,
-} from '../../types';
+    DistributionAssignment,
+    SalesOfferPackageElement,
+} from '../../types/index';
+
 import { getCleanWebsite, NetexObject } from '../sharedHelpers';
 
 export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
@@ -59,6 +63,7 @@ export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): 
 export const getGeoZoneFareTable = (
     userPeriodTicket: PeriodGeoZoneTicket,
     placeHolderGroupOfProductsName: string,
+    ticketUserConcat: string,
 ): NetexObject[] => {
     const name = `${userPeriodTicket.nocCode}-geo-zone`;
 
@@ -93,7 +98,7 @@ export const getGeoZoneFareTable = (
                 pricesFor: {
                     SalesOfferPackageRef: {
                         version: '1.0',
-                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
+                        ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${product.salesOfferPackages[0].name}`,
                     },
                 },
                 specifics: {
@@ -199,7 +204,10 @@ export const getGeoZoneFareTable = (
     }));
 };
 
-const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): NetexObject[] => {
+const getMultiServiceList = (
+    userPeriodTicket: PeriodMultipleServicesTicket,
+    ticketUserConcat: string,
+): NetexObject[] => {
     const name = `${userPeriodTicket.nocCode}-multi-service`;
 
     return userPeriodTicket.products.map(product => ({
@@ -223,7 +231,7 @@ const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): Ne
                 pricesFor: {
                     SalesOfferPackageRef: {
                         version: '1.0',
-                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
+                        ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${product.salesOfferPackages[0].name}`,
                     },
                 },
                 specifics: {
@@ -329,7 +337,7 @@ const getMultiServiceList = (userPeriodTicket: PeriodMultipleServicesTicket): Ne
     }));
 };
 
-const getFlatFareList = (userPeriodTicket: PeriodMultipleServicesTicket): NetexObject[] =>
+const getFlatFareList = (userPeriodTicket: PeriodMultipleServicesTicket, ticketUserConcat: string): NetexObject[] =>
     userPeriodTicket.products.map(product => ({
         version: '1.0',
         id: `op:${product.productName}`,
@@ -342,7 +350,7 @@ const getFlatFareList = (userPeriodTicket: PeriodMultipleServicesTicket): NetexO
                 pricesFor: {
                     SalesOfferPackageRef: {
                         version: '1.0',
-                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
+                        ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${product.salesOfferPackages[0].name}`,
                     },
                 },
                 limitations: {
@@ -362,55 +370,74 @@ const getFlatFareList = (userPeriodTicket: PeriodMultipleServicesTicket): NetexO
         },
     }));
 
-export const getMultiServiceFareTable = (userPeriodTicket: PeriodMultipleServicesTicket): NetexObject[] => {
+export const getMultiServiceFareTable = (
+    userPeriodTicket: PeriodMultipleServicesTicket,
+    ticketUserConcat: string,
+): NetexObject[] => {
     if (userPeriodTicket.products[0].productDuration) {
-        return getMultiServiceList(userPeriodTicket);
+        return getMultiServiceList(userPeriodTicket, ticketUserConcat);
     }
 
-    return getFlatFareList(userPeriodTicket);
+    return getFlatFareList(userPeriodTicket, ticketUserConcat);
 };
 
-export const getSalesOfferPackageList = (userPeriodTicket: PeriodTicket): NetexObject[] =>
-    userPeriodTicket.products.map(product => ({
-        version: '1.0',
-        id: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
-        Name: { $t: `${product.productName} - ${userPeriodTicket.passengerType} - paper ticket` },
-        Description: { $t: 'Unlimited Travel in a given zone' },
-        distributionAssignments: {
-            DistributionAssignment: {
+export const getSalesOfferPackageList = (
+    userPeriodTicket: PeriodTicket,
+    ticketUserConcat: string,
+): NetexSalesOfferPackage[][] =>
+    userPeriodTicket.products.map(product => {
+        return product.salesOfferPackages.map(salesOfferPackage => {
+            const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
+
+            const buildDistributionAssignments = (): DistributionAssignment[] => {
+                const distribAssignments = salesOfferPackage.purchaseLocations.map(purchaseLocation => {
+                    return {
+                        version: '1.0',
+                        id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${purchaseLocation}`,
+                        order: '1',
+                        DistributionChannelRef: {
+                            ref: `fxc:${purchaseLocation}`,
+                            version: 'fxc:v1.0',
+                        },
+                        DistributionChannelType: { $t: `${purchaseLocation}` },
+                        PaymentMethods: {
+                            $t: combineArrayedStrings(salesOfferPackage.paymentMethods),
+                        },
+                    };
+                });
+                return distribAssignments;
+            };
+
+            const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
+                const salesOfferPackageElements = salesOfferPackage.ticketFormats.map(ticketFormat => {
+                    return {
+                        id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}@${ticketFormat}`,
+                        version: '1.0',
+                        order: '3',
+                        TypeOfTravelDocumentRef: {
+                            version: 'fxc:v1.0',
+                            ref: `fxc:${ticketFormat}`,
+                        },
+                        PreassignedFareProductRef: {
+                            version: '1.0',
+                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                        },
+                    };
+                });
+                return salesOfferPackageElements;
+            };
+            return {
                 version: '1.0',
-                id: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket@on_board`,
-                order: '1',
-                Name: { $t: 'Onboard' },
-                Description: { $t: 'Pay for ticket onboard.' },
-                DistributionChannelRef: {
-                    version: 'fxc:v1.0',
-                    ref: 'fxc:on_board',
+                id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
+                Name: {
+                    $t: `${product.productName} - ${userPeriodTicket.passengerType} - ${salesOfferPackage.name}`,
                 },
-                DistributionChannelType: { $t: 'onBoard' },
-                PaymentMethods: { $t: 'cash contactlessPaymentCard' },
-                FulfilmentMethodRef: {
-                    ref: 'fxc:collect_on_board',
-                    version: 'fxc:v1.0',
-                },
-            },
-        },
-        salesOfferPackageElements: {
-            SalesOfferPackageElement: {
-                version: '1.0',
-                id: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}-SOP@p-ticket`,
-                order: '3',
-                TypeOfTravelDocumentRef: {
-                    version: '1.0',
-                    ref: 'op:p-ticket',
-                },
-                PreassignedFareProductRef: {
-                    version: '1.0',
-                    ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                },
-            },
-        },
-    }));
+                Description: { $t: `${salesOfferPackage.description}` },
+                distributionAssignments: { DistributionAssignment: buildDistributionAssignments() },
+                salesOfferPackageElements: { SalesOfferPackageElement: buildSalesOfferPackageElements() },
+            };
+        });
+    });
 
 const getPeriodTicketFareStructureElementRefs = (
     elementZeroRef: string,
