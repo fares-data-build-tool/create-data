@@ -7,9 +7,9 @@ CREATE TABLE salesOfferPackage(
     `nocCode` varchar(255) NOT NULL,
     `name` varchar(255) DEFAULT NULL,
     `description` varchar(255) DEFAULT NULL,
-    `purchaseLocation` varchar(255) DEFAULT NULL,
-    `paymentMethod` varchar(255) DEFAULT NULL,
-    `ticketFormat` varchar(255) DEFAULT NULL,
+    `purchaseLocations` varchar(255) DEFAULT NULL,
+    `paymentMethods` varchar(255) DEFAULT NULL,
+    `ticketFormats` varchar(255) DEFAULT NULL,
     INDEX idx_nocCode (nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
