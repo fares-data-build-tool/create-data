@@ -8,9 +8,9 @@ INSERT INTO `salesOfferPackage` (
         nocCode,
         name,
         description,
-        purchaseLocation,
-        paymentMethod,
-        ticketFormat
+        purchaseLocations,
+        paymentMethods,
+        ticketFormats
     )
 VALUES (
         'BLAC',

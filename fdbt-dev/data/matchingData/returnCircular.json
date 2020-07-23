@@ -6,6 +6,53 @@
   "type": "return",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
+  "products": [{
+    "salesOfferPackages": [{
+      "name": "onboard sales offer package",
+      "description": "this sales offer package explains how to buy the ticket onboard",
+      "purchaseLocations": [
+        "onBoard"
+      ],
+      "paymentMethods": [
+        "cash",
+        "debitCard",
+        "creditCard"
+      ],
+      "ticketFormats": [
+        "paperTicket"
+      ]
+    },
+    {
+      "name": "mobile app offer package",
+      "description": "this sales offer package explains how to buy the ticket on a mobile app",
+      "purchaseLocations": [
+        "mobileDevice"
+      ],
+      "paymentMethods": [
+        "debitCard",
+        "creditCard",
+        "mobilePhone"
+      ],
+      "ticketFormats": [
+        "mobileApp"
+      ]
+    },
+    {
+      "name": "online offer package",
+      "description": "this sales offer package explains how to buy the ticket on a mobile app",
+      "purchaseLocations": [
+        "online"
+      ],
+      "paymentMethods": [
+        "debitCard",
+        "creditCard",
+        "directDebit"
+      ],
+      "ticketFormats": [
+        "paperTicket"
+      ]
+    }]
+  }],
   "outboundFareZones": [
     {
       "name": "Shott Drive",

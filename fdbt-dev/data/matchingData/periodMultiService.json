@@ -9,19 +9,154 @@
       "productName": "Test Product 1",
       "productPrice": "3",
       "productDuration": "1",
-      "productValidity": "24hr"
+      "productValidity": "24hr",
+      "salesOfferPackages": [{
+        "name": "onboard sales offer package",
+        "description": "this sales offer package explains how to buy the ticket onboard",
+        "purchaseLocations": [
+          "onBoard"
+        ],
+        "paymentMethods": [
+          "cash",
+          "debitCard",
+          "creditCard"
+        ],
+        "ticketFormats": [
+          "paperTicket"
+        ]
+      },
+      {
+        "name": "mobile app offer package",
+        "description": "this sales offer package explains how to buy the ticket on a mobile app",
+        "purchaseLocations": [
+          "mobileDevice"
+        ],
+        "paymentMethods": [
+          "debitCard",
+          "creditCard",
+          "mobilePhone"
+        ],
+        "ticketFormats": [
+          "mobileApp"
+        ]
+      },
+      {
+        "name": "online offer package",
+        "description": "this sales offer package explains how to buy the ticket on a mobile app",
+        "purchaseLocations": [
+          "online"
+        ],
+        "paymentMethods": [
+          "debitCard",
+          "creditCard",
+          "directDebit"
+        ],
+        "ticketFormats": [
+          "paperTicket"
+        ]
+      }]
     },
     {
       "productName": "Test Product 2",
       "productPrice": "5",
       "productDuration": "2",
-      "productValidity": "24hr"
+      "productValidity": "24hr",
+      "salesOfferPackages": [{
+        "name": "onboard sales offer package",
+        "description": "this sales offer package explains how to buy the ticket onboard",
+        "purchaseLocations": [
+          "onBoard"
+        ],
+        "paymentMethods": [
+          "cash",
+          "debitCard",
+          "creditCard"
+        ],
+        "ticketFormats": [
+          "paperTicket"
+        ]
+      },
+      {
+        "name": "mobile app offer package",
+        "description": "this sales offer package explains how to buy the ticket on a mobile app",
+        "purchaseLocations": [
+          "mobileDevice"
+        ],
+        "paymentMethods": [
+          "debitCard",
+          "creditCard",
+          "mobilePhone"
+        ],
+        "ticketFormats": [
+          "mobileApp"
+        ]
+      },
+      {
+        "name": "online offer package",
+        "description": "this sales offer package explains how to buy the ticket on a mobile app",
+        "purchaseLocations": [
+          "online"
+        ],
+        "paymentMethods": [
+          "debitCard",
+          "creditCard",
+          "directDebit"
+        ],
+        "ticketFormats": [
+          "paperTicket"
+        ]
+      }]
     },
     {
       "productName": "Test Product 3",
       "productPrice": "100",
       "productDuration": "365",
-      "productValidity": "24hr"
+      "productValidity": "24hr",
+      "salesOfferPackages": [{
+        "name": "onboard sales offer package",
+        "description": "this sales offer package explains how to buy the ticket onboard",
+        "purchaseLocations": [
+          "onBoard"
+        ],
+        "paymentMethods": [
+          "cash",
+          "debitCard",
+          "creditCard"
+        ],
+        "ticketFormats": [
+          "paperTicket"
+        ]
+      },
+      {
+        "name": "mobile app offer package",
+        "description": "this sales offer package explains how to buy the ticket on a mobile app",
+        "purchaseLocations": [
+          "mobileDevice"
+        ],
+        "paymentMethods": [
+          "debitCard",
+          "creditCard",
+          "mobilePhone"
+        ],
+        "ticketFormats": [
+          "mobileApp"
+        ]
+      },
+      {
+        "name": "online offer package",
+        "description": "this sales offer package explains how to buy the ticket on a mobile app",
+        "purchaseLocations": [
+          "online"
+        ],
+        "paymentMethods": [
+          "debitCard",
+          "creditCard",
+          "directDebit"
+        ],
+        "ticketFormats": [
+          "paperTicket"
+        ]
+      }]
     }
   ],
   "passengerType": "youngPerson",
