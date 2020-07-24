@@ -6,10 +6,26 @@ import {
     checkEmailValid,
     getAttributeFromIdToken,
     validateNewPassword,
+    getSelectedStages,
+    // getSingleTicketJson,
+    // getReturnTicketJson,
+    // getPeriodGeoZoneTicketJson,
+    // getPeriodMultipleServicesTicketJson,
+    // getFlatFareTicketJson,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
-import { getMockRequestAndResponse } from '../../../testData/mockData';
+import {
+    getMockRequestAndResponse,
+    // expectedMatchingJsonSingle,
+    // expectedSingleProductUploadJsonWithZoneUpload,
+    // expectedSingleProductUploadJsonWithSelectedServices,
+    // expectedFlatFareProductUploadJson,
+    // userFareStages,
+    // mockBasicServiceSingleTicketJson,
+    // mockMatchingFaresZones,
+} from '../../../testData/mockData';
 import { ErrorInfo } from '../../../../src/interfaces';
+// import { MATCHING_ATTRIBUTE } from '../../../../src/constants';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
@@ -194,4 +210,84 @@ describe('apiUtils', () => {
             expect(res).toEqual(expectedResult);
         });
     });
+
+    describe('getSelectedStages', () => {
+        it('should return a string array', () => {
+            const { req } = getMockRequestAndResponse({});
+            const result = getSelectedStages(req);
+            expect(result).toEqual([]);
+        });
+    });
+
+    // describe('getSingleTicketJson', () => {
+    //     it.only('should return a SingleTicket object', () => {
+    //         const { req, res } = getMockRequestAndResponse({
+    //             body: {
+    //                 Onboard: {
+    //                     name: 'Onboard',
+    //                     description: 'Cash, Card',
+    //                     purchaseLocations: 'onBoard',
+    //                     paymentMethods: 'cash,debitCard,creditCard,contactlessPaymentCard,mobilePhone',
+    //                     ticketFormats: 'paperTicket',
+    //                 },
+    //             },
+    //             session: {
+    //                 [MATCHING_ATTRIBUTE]: {
+    //                     service: mockBasicServiceSingleTicketJson,
+    //                     userFareStages,
+    //                     matchingFareZones: mockMatchingFaresZones,
+    //                 },
+    //             },
+    //         });
+    //         const result = getSingleTicketJson(req, res);
+    //         expect(result).toEqual(expectedMatchingJsonSingle);
+    //     });
+    // });
+
+    // describe('getReturnTicketJson', () => {
+    //     it('should return a ReturnTicket object', () => {
+    //         const { req, res } = getMockRequestAndResponse({
+    //             cookieValues: {},
+    //             body: {},
+    //             uuid: {},
+    //             mockWriteHeadFn: writeHeadMock,
+    //         });
+    //         const result = getReturnTicketJson(req, res);
+    //         expect(result).toEqual(expectedMatchingJsonReturn);
+    //     });
+    // });
+
+    // describe('getPeriodGeoZoneTicketJson', () => {
+    //     it('should return a PeriodGeoZoneTicket object', () => {
+    //         const { req, res } = getMockRequestAndResponse({});
+    //         const result = getPeriodGeoZoneTicketJson(req, res);
+    //         expect(result).toEqual(expectedSingleProductUploadJsonWithZoneUpload);
+    //     });
+    // });
+
+    // describe('getPeriodMulipleServicesTicketJson', () => {
+    //     it('should return a string PeriodMultipleServicesTicket object', () => {
+    //         const { req, res } = getMockRequestAndResponse({
+    //             cookieValues: {},
+    //             body: {},
+    //             uuid: {},
+    //             mockWriteHeadFn: writeHeadMock,
+    //         });
+    //         const result = getPeriodMultipleServicesTicketJson(req, res);
+    //         expect(result).toEqual(expectedSingleProductUploadJsonWithSelectedServices);
+    //     });
+    // });
+
+    // describe('getFlatFareTicketJson', () => {
+    //     it('should return a string a FlatFareTicket object', () => {
+    //         const { req, res } = getMockRequestAndResponse({
+    //             cookieValues: {},
+    //             body: {},
+    //             uuid: {},
+    //             mockWriteHeadFn: writeHeadMock,
+    //         });
+    //         const result = getFlatFareTicketJson(req, res);
+    //         expect(result).toEqual(expectedFlatFareProductUploadJson);
+    //     });
+    // });
 });

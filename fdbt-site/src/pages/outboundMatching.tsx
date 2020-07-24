@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, CustomAppProps } from '../interfaces/index';
+import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
 import { getNocFromIdToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
+import { isMatchingWithErrors } from './matching';
 
 const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Fares Data Build Tool';
@@ -48,12 +49,11 @@ const OutboundMatching = ({
     />
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
-    const matchingCookie = cookies[MATCHING_COOKIE];
     const nocCode = getNocFromIdToken(ctx);
 
     if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
@@ -81,7 +81,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
-    const parsedMatchingCookie = !matchingCookie ? false : JSON.parse(matchingCookie);
+    const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
 
     return {
         props: {
@@ -93,10 +93,11 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: !parsedMatchingCookie.outbound ? false : JSON.parse(matchingCookie).outbound.error,
-            selectedFareStages: !parsedMatchingCookie.outbound
-                ? []
-                : JSON.parse(matchingCookie).outbound.selectedFareStages,
+            error: matchingAttribute && isMatchingWithErrors(matchingAttribute) ? matchingAttribute.error : false,
+            selectedFareStages:
+                matchingAttribute && isMatchingWithErrors(matchingAttribute)
+                    ? matchingAttribute.selectedFareStages
+                    : [],
         },
     };
 };

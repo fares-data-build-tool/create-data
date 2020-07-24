@@ -1,30 +1,20 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import {
-    redirectTo,
-    redirectToError,
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    getSelectedStages,
-} from './apiUtils';
-import { putStringInS3, UserFareStages } from '../../data/s3';
+import { NextApiResponse } from 'next';
+import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
+import { UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
+import { MATCHING_ATTRIBUTE } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
-import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
+import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession, BasicService } from '../../interfaces';
 
-export const putOutboundMatchingDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
-    await putStringInS3(
-        USER_DATA_BUCKET_NAME,
-        `return/outbound/${uuid}.json`,
-        JSON.stringify(data),
-        'application/json; charset=utf-8',
-    );
-};
+export interface MatchingValues {
+    service: BasicService;
+    userFareStages: UserFareStages;
+    matchingFareZones: MatchingFareZones;
+}
 
-const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
-    userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
-
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -38,8 +28,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('No service or userfarestages info found');
         }
 
+        const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
-
         const matchingFareZones = getMatchingFareZonesFromForm(req);
 
         // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
@@ -47,17 +37,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         delete req.body.userfarestages;
 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
-            const selectedStagesList: {}[] = getSelectedStages(req);
-
-            const outbound = { error: true, selectedFareStages: selectedStagesList };
-
-            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
+            const selectedStagesList: string[] = getSelectedStages(req);
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, { error: true, selectedFareStages: selectedStagesList });
             redirectTo(res, '/outboundMatching');
             return;
         }
-
-        const uuid = getUuidFromCookie(req, res);
-
         const formatMatchingFareZones = getFareZones(userFareStages, matchingFareZones);
 
         const matchedFareZones: MatchingFareZones = {};
@@ -65,10 +49,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             matchedFareZones[fareStage.name] = fareStage;
         });
 
-        await putOutboundMatchingDataInS3(matchedFareZones, uuid);
+        const matchingValues: MatchingValues = {
+            service,
+            userFareStages,
+            matchingFareZones: matchedFareZones,
+        };
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound: { error: false } }), req, res);
-
+        updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingValues);
         redirectTo(res, '/inboundMatching');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';

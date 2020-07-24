@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { DecisionData } from './periodValidity';
 import {
     MULTIPLE_PRODUCT_COOKIE,
     OPERATOR_COOKIE,
@@ -125,7 +124,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Could not extract the user email address from their ID token');
         }
 
-        const multipleProductPeriod: DecisionData = {
+        const multipleProductPeriod = {
             operatorName: operator.operatorPublicName,
             type: periodTypeName,
             nocCode,

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { NextPageContext } from 'next';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
@@ -16,7 +15,7 @@ import {
     PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
     SERVICE_LIST_COOKIE,
@@ -26,9 +25,11 @@ import {
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo, Breadcrumb } from '../../src/interfaces';
+import { ErrorInfo, Breadcrumb, NextPageContextWithSession, BasicService } from '../../src/interfaces';
+import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 
 interface GetMockContextInput {
+    session?: any;
     cookies?: any;
     body?: any;
     url?: any;
@@ -39,6 +40,7 @@ interface GetMockContextInput {
 }
 
 interface GetMockRequestAndResponse {
+    session?: any;
     cookieValues?: any;
     body?: any;
     uuid?: any;
@@ -58,6 +60,7 @@ export const getMockRequestAndResponse = ({
     requestHeaders = {},
     isLoggedin = true,
     url = null,
+    session = {},
 }: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -153,7 +156,7 @@ export const getMockRequestAndResponse = ({
             : '';
 
     cookieString += productName
-        ? `${PRODUCT_DETAILS_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
+        ? `${PRODUCT_DETAILS_ATTRIBUTE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
         : '';
 
     cookieString += fareZoneName
@@ -200,6 +203,7 @@ export const getMockRequestAndResponse = ({
             ...requestHeaders,
         },
         cookies: cookieValues,
+        session,
     });
 
     if (body) {
@@ -210,6 +214,7 @@ export const getMockRequestAndResponse = ({
 };
 
 export const getMockContext = ({
+    session = {},
     cookies = {},
     body = null,
     uuid = {},
@@ -217,8 +222,9 @@ export const getMockContext = ({
     mockEndFn = jest.fn(),
     isLoggedin = true,
     url = null,
-}: GetMockContextInput = {}): NextPageContext => {
+}: GetMockContextInput = {}): NextPageContextWithSession => {
     const { req, res } = getMockRequestAndResponse({
+        session,
         cookieValues: cookies,
         body,
         uuid,
@@ -229,7 +235,7 @@ export const getMockContext = ({
         url,
     });
 
-    const ctx: NextPageContext = {
+    const ctx: NextPageContextWithSession = {
         res,
         req,
         pathname: '',
@@ -240,31 +246,126 @@ export const getMockContext = ({
     return ctx;
 };
 
-export const mockSingleService: RawService = {
+export const mockBasicServiceSingleTicketJson: BasicService = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
-    journeyPatterns: [
-        {
-            orderedStopPoints: [
-                {
-                    stopPointRef: '13003921A',
-                    commonName: 'Estate (Hail and Ride) N/B',
-                },
-                {
-                    stopPointRef: '13003612D',
-                    commonName: 'New Strangford Road SE/B',
-                },
-                {
-                    stopPointRef: '13003611B',
-                    commonName: 'New Tempest Road (York House) NE/B',
-                },
-                {
-                    stopPointRef: '13003655B',
-                    commonName: 'Interchange Stand B',
-                },
-            ],
-        },
-    ],
+    lineName: '12C',
+    nocCode: 'IWBusCo',
+};
+
+export const mockMatchingFaresZones: MatchingFareZones = {
+    'Acomb Green Lane': {
+        name: 'Acomb Green Lane',
+        stops: [
+            {
+                stopName: 'Yoden Way - Chapel Hill Road',
+                naptanCode: 'duratdmj',
+                atcoCode: '13003521G',
+                localityCode: 'E0045956',
+                parentLocalityName: '',
+                localityName: 'Peterlee',
+                indicator: 'W-bound',
+                street: 'Yodan Way',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Mattison Way': {
+        name: 'Mattison Way',
+        stops: [
+            {
+                stopName: 'Yoden Way',
+                naptanCode: 'duratdmt',
+                atcoCode: '13003522F',
+                localityCode: 'E0010183',
+                parentLocalityName: '',
+                localityName: 'Horden',
+                indicator: 'SW-bound',
+                street: 'Yoden Way',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Holl Bank/Beech Ave': {
+        name: 'Holl Bank/Beech Ave',
+        stops: [
+            {
+                stopName: 'Surtees Rd-Edenhill Rd',
+                naptanCode: 'durapgdw',
+                atcoCode: '13003219H',
+                localityCode: 'E0045956',
+                parentLocalityName: '',
+                localityName: 'Peterlee',
+                indicator: 'NW-bound',
+                street: 'Surtees Road',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Blossom Street': {
+        name: 'Blossom Street',
+        stops: [
+            {
+                stopName: 'Bus Station',
+                naptanCode: 'duratdma',
+                atcoCode: '13003519H',
+                localityCode: 'E0045956',
+                parentLocalityName: '',
+                localityName: 'Peterlee',
+                indicator: 'H',
+                street: 'Bede Way',
+            },
+        ],
+        prices: [
+            {
+                price: '1.00',
+                fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Piccadilly (York)': {
+        name: 'Piccadilly (York)',
+        stops: [
+            {
+                stopName: 'Kell Road',
+                naptanCode: 'duraptwp',
+                atcoCode: '13003345D',
+                localityCode: 'E0010183',
+                parentLocalityName: '',
+                localityName: 'Horden',
+                indicator: 'SE-bound',
+                street: 'Kell Road',
+            },
+        ],
+        prices: [{ price: '1.00', fareZones: ['Piccadilly (York)'] }],
+    },
 };
 
 export const mockRawService: RawService = {
@@ -1014,13 +1115,26 @@ export const mockMatchingUserFareStagesWithAllStagesAssigned = {
 
 export const expectedMatchingJsonSingle = {
     type: 'single',
-    lineName: '215',
-    nocCode: 'DCCL',
+    lineName: '12C',
+    nocCode: 'IWBusCo',
     passengerType: 'Adult',
-    operatorShortName: 'DCC',
-    serviceDescription: 'Worthing - Seaham - Crawley',
+    operatorShortName: 'HCTY',
+    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    products: [
+        {
+            salesOfferPackage: [
+                {
+                    name: 'Onboard',
+                    description: 'Cash, Card',
+                    purchaseLocations: ['onBoard'],
+                    paymentMethods: ['cash', 'debitcard', 'creditCard', 'contactlessPaymentCard', 'mobilePhone'],
+                    ticketFormats: ['paperTicket'],
+                },
+            ],
+        },
+    ],
     fareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1031,6 +1145,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003521G',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
+                    parentLocalityName: '',
                     indicator: 'W-bound',
                     street: 'Yodan Way',
                     qualifierName: '',
@@ -1058,6 +1173,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003522F',
                     localityCode: 'E0010183',
                     localityName: 'Horden',
+                    parentLocalityName: '',
                     indicator: 'SW-bound',
                     street: 'Yoden Way',
                     qualifierName: '',
@@ -1085,6 +1201,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003219H',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
+                    parentLocalityName: '',
                     indicator: 'NW-bound',
                     street: 'Surtees Road',
                     qualifierName: '',
@@ -1104,6 +1221,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003519H',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
+                    parentLocalityName: '',
                     indicator: 'H',
                     street: 'Bede Way',
                     qualifierName: '',
@@ -1120,12 +1238,13 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003345D',
                     localityCode: 'E0010183',
                     localityName: 'Horden',
+                    parentLocalityName: '',
                     indicator: 'SE-bound',
                     street: 'Kell Road',
                     qualifierName: '',
                 },
             ],
-            prices: {},
+            prices: [],
         },
     ],
 };

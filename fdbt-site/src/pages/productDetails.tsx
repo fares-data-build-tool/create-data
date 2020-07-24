@@ -1,19 +1,26 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
     CSV_ZONE_UPLOAD_COOKIE,
     SERVICE_LIST_COOKIE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
-import { ProductInfo, CustomAppProps, ErrorInfo } from '../interfaces';
+import {
+    ProductInfo,
+    CustomAppProps,
+    NextPageContextWithSession,
+    ProductData,
+    ProductInfoWithErrors,
+    ErrorInfo,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -25,6 +32,15 @@ type ProductDetailsProps = {
     hintText?: string;
     errors: ErrorInfo[];
 };
+
+export const isProductInfoWithErrors = (
+    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
+): productDetailsAttribute is ProductInfoWithErrors =>
+    (productDetailsAttribute as ProductInfoWithErrors)?.errors !== undefined;
+
+export const isProductInfo = (
+    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
+): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;
 
 const ProductDetails = ({
     product,
@@ -115,9 +131,8 @@ const ProductDetails = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
-    const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
@@ -154,18 +169,17 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
         };
     }
 
-    let productDetailsCookieParsed = null;
-
-    if (productDetailsCookie) {
-        productDetailsCookieParsed = JSON.parse(productDetailsCookie);
-    }
+    const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     return {
         props: {
-            product: productDetailsCookieParsed?.body ?? null,
+            product: productDetailsAttribute && isProductInfo(productDetailsAttribute) ? productDetailsAttribute : null,
             operator: operator.operatorPublicName,
             passengerType,
-            errors: productDetailsCookieParsed?.errors ?? [],
+            errors:
+                productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)
+                    ? productDetailsAttribute.errors
+                    : [],
             ...props,
         },
     };
