@@ -36,12 +36,13 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             numberOfProductsInput: userInputValidity.numberOfProductsInput,
         });
 
+        setCookieOnResponseObject(NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
+
         if (userInputValidity.numberOfProductsInput === '1') {
             redirectTo(res, '/productDetails');
             return;
         }
 
-        setCookieOnResponseObject(NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
         redirectTo(res, '/multipleProducts');
     } catch (error) {
         const message = 'There was a problem inputting the number of products:';

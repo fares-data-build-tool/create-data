@@ -140,23 +140,23 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
 
     if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
-        throw new Error('Required session object does not exist to create single ticket json');
+        throw new Error('Required session object does not exist to create return ticket json');
     }
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
-
-    if (!inboundMatchingAttributeInfo || !isInboundMatchingInfo(inboundMatchingAttributeInfo)) {
-        throw new Error('Required session object does not exist to create single ticket json');
-    }
-
-    const { inboundUserFareStages, inboundMatchingFareZones } = inboundMatchingAttributeInfo;
 
     return {
         ...service,
         type: fareTypeObject.fareType,
         ...passengerTypeObject,
         outboundFareZones: getFareZones(userFareStages, matchingFareZones),
-        inboundFareZones: getFareZones(inboundUserFareStages, inboundMatchingFareZones),
+        inboundFareZones:
+            inboundMatchingAttributeInfo && isInboundMatchingInfo(inboundMatchingAttributeInfo)
+                ? getFareZones(
+                      inboundMatchingAttributeInfo.inboundUserFareStages,
+                      inboundMatchingAttributeInfo.inboundMatchingFareZones,
+                  )
+                : [],
         email: decodedIdToken.email,
         uuid,
         products: [{ salesOfferPackages }],
@@ -204,7 +204,7 @@ export const getPeriodGeoZoneTicketJson = async (
     }
 
     if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
-        throw new Error('Required session object does not exist to create single ticket json');
+        throw new Error('Required session object does not exist to create period ticket json');
     }
 
     const { products } = periodExpiryAttributeInfo;
@@ -270,7 +270,7 @@ export const getPeriodMultipleServicesTicketJson = (
     });
 
     if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
-        throw new Error('Required session object does not exist to create single ticket json');
+        throw new Error('Required session object does not exist to create period multi service ticket json');
     }
 
     const { products } = periodExpiryAttributeInfo;
@@ -332,7 +332,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     });
 
     if (!productDetailsAttributeInfo || !isProductData(productDetailsAttributeInfo)) {
-        throw new Error('Required session object does not exist to create single ticket json');
+        throw new Error('Required session object does not exist to create flat fare ticket json');
     }
 
     const { products } = productDetailsAttributeInfo;
