@@ -5,6 +5,7 @@ import {
     INPUT_METHOD_COOKIE,
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
+    NUMBER_OF_PRODUCTS_COOKIE,
 } from '../constants/index';
 import { Breadcrumb } from '../interfaces';
 import { getCookieValue } from '.';
@@ -23,11 +24,13 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
     const inputMethod = getCookieValue(ctx, INPUT_METHOD_COOKIE, 'inputMethod');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
     const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
+    const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];
     const singleProductUrls = ['/productDetails', '/chooseValidity', '/periodValidity'];
     const multiProductUrls = ['/multipleProducts', '/multipleProductValidity'];
+    const salesOfferPackagesUrls = ['/selectSalesOfferPackage', '/salesOfferPackages', '/describeSalesOfferPackage'];
 
     const isSingle = fareType === 'single';
     const isReturn = fareType === 'return';
@@ -37,11 +40,12 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
     const isGeoZone = periodType === 'periodGeoZone';
     const isCircular = isReturn && !outboundJourney;
 
-    const isSingleProduct = singleProductUrls.includes(url);
-    const isMultiProduct = multiProductUrls.includes(url);
+    const isSingleProduct = singleProductUrls.includes(url) || numberOfProducts === '1';
+    const isMultiProduct = multiProductUrls.includes(url) || (numberOfProducts !== null && numberOfProducts !== '1');
 
     const isCsvUploadUrl = csvUploadUrls.includes(url);
     const isManualUploadUrl = manualUploadUrls.includes(url);
+    const isSalesOfferPackageUrl = salesOfferPackagesUrls.includes(url);
     const isCsvUploadCookie = !isCsvUploadUrl && !isManualUploadUrl && inputMethod === 'csv';
     const isManualUploadCookie = !isCsvUploadUrl && !isManualUploadUrl && inputMethod === 'manual';
     const isCsvUploadJourney = isCsvUploadUrl || isCsvUploadCookie;
@@ -108,16 +112,6 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
             link: '/inboundMatching',
             show: isReturn && !isCircular,
         },
-        {
-            name: 'How are the tickets sold',
-            link: '/salesOfferPackages',
-            show: isReturn && !isCircular,
-        },
-        {
-            name: 'Describe sales offer package',
-            link: '/describeSalesOfferPackage',
-            show: isReturn && !isCircular,
-        },
     ];
 
     const getPeriodAndFlatFareBreadcrumbs = (): Breadcrumb[] => [
@@ -166,15 +160,23 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
             link: '/multipleProductValidity',
             show: isMultiProduct,
         },
+    ];
+
+    const getSalesOfferPackageBreadcrumbs = (): Breadcrumb[] => [
         {
-            name: 'How are the tickets sold',
+            name: 'Select sales offer packages',
+            link: '/selectSalesOfferPackage',
+            show: isSalesOfferPackageUrl,
+        },
+        {
+            name: 'Define sales offer package',
             link: '/salesOfferPackages',
-            show: isFlatFare || isSingleProduct || isMultiProduct,
+            show: isSalesOfferPackageUrl,
         },
         {
             name: 'Describe sales offer package',
             link: '/describeSalesOfferPackage',
-            show: isFlatFare || isSingleProduct || isMultiProduct,
+            show: isSalesOfferPackageUrl,
         },
     ];
 
@@ -211,6 +213,8 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
         if (isPeriod || isFlatFare) {
             breadcrumbList.push(...getPeriodAndFlatFareBreadcrumbs());
         }
+
+        breadcrumbList.push(...getSalesOfferPackageBreadcrumbs());
 
         return breadcrumbList;
     };
