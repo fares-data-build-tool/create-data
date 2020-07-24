@@ -409,11 +409,11 @@ export const getSalesOfferPackageList = (
             };
 
             const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
-                const salesOfferPackageElements = salesOfferPackage.ticketFormats.map(ticketFormat => {
+                const salesOfferPackageElements = salesOfferPackage.ticketFormats.map((ticketFormat, index) => {
                     return {
                         id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}@${ticketFormat}`,
                         version: '1.0',
-                        order: '3',
+                        order: `${index + 1}`,
                         TypeOfTravelDocumentRef: {
                             version: 'fxc:v1.0',
                             ref: `fxc:${ticketFormat}`,
