@@ -1,11 +1,13 @@
 import productDetails from '../../../src/pages/api/productDetails';
-import { PRODUCT_DETAILS_COOKIE } from '../../../src/constants';
+import { PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
 import * as s3 from '../../../src/data/s3';
 import * as validator from '../../../src/pages/api/service/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { getMockRequestAndResponse, expectedFlatFareProductUploadJson } from '../../testData/mockData';
+import * as sessions from '../../../src/utils/sessions';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('productDetails', () => {
+    const updateAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
     putStringInS3Spy.mockImplementation(() => Promise.resolve());
 
@@ -19,19 +21,15 @@ describe('productDetails', () => {
             .mockReturnValue(true);
     });
 
-    it('should set PRODUCT_DETAILS_COOKIE with errors when the user input is invalid', () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
+    it('should set PRODUCT_DETAILS_ATTRIBUTE with errors when the user input is invalid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'period' },
             body: { productDetailsNameInput: '', productDetailsPriceInput: '' },
         });
 
-        const mockProductDetailsCookies = {
-            body: {
-                productName: '',
-                productPrice: '',
-            },
+        const expectedProductDetails = {
+            productName: '',
+            productPrice: '',
             errors: [
                 {
                     errorMessage: 'Product name cannot have less than 2 characters',
@@ -46,15 +44,10 @@ describe('productDetails', () => {
 
         productDetails(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_COOKIE,
-            JSON.stringify(mockProductDetailsCookies),
-            req,
-            res,
-        );
+        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
     });
 
-    it('should create PRODUCT_DETAILS_COOKIE when the user input is valid', () => {
+    it('should create PRODUCT_DETAILS_ATTRIBUTE when the user input is valid for a period ticket', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse({
@@ -74,14 +67,14 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_COOKIE,
+            PRODUCT_DETAILS_ATTRIBUTE,
             JSON.stringify(mockProductDetailsCookies),
             req,
             res,
         );
     });
 
-    it('should remove leading trailing spaces and tabs', () => {
+    it('should remove leading and trailing spaces and tabs from valid user input', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse({
@@ -101,14 +94,14 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_COOKIE,
+            PRODUCT_DETAILS_ATTRIBUTE,
             JSON.stringify(mockProductDetailsCookies),
             req,
             res,
         );
     });
 
-    it('should redirect to /productDetails when the user input is invalid', async () => {
+    it('should redirect to /productDetails when the user input is invalid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'flatFare' },
             body: { productDetailsNameInput: '  ', productDetailsPriceInput: '1.4.2.4' },
@@ -116,14 +109,14 @@ describe('productDetails', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await productDetails(req, res);
+        productDetails(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/productDetails',
         });
     });
 
-    it('should redirect to /chooseValidity when the user input is valid and the user is entering details for a period ticket', async () => {
+    it('should redirect to /chooseValidity when the user input is valid and the user is entering details for a period ticket', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'period' },
             body: { productDetailsNameInput: 'Weekly Ride', productDetailsPriceInput: '7' },
@@ -131,14 +124,14 @@ describe('productDetails', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await productDetails(req, res);
+        productDetails(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/chooseValidity',
         });
     });
 
-    it('should redirect to /thankyou when the user input is valid and the user is entering details for a flat fare ticket', async () => {
+    it('should redirect to /selectSalesOfferPackage when the user input is valid and the user is entering details for a flat fare ticket', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'flatFare' },
             body: { productDetailsNameInput: 'Day Rider', productDetailsPriceInput: '5' },
@@ -146,33 +139,10 @@ describe('productDetails', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await productDetails(req, res);
+        productDetails(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/thankyou',
+            Location: '/selectSalesOfferPackage',
         });
-    });
-
-    it('correctly generates JSON for a flat fare product and uploads to S3', async () => {
-        const mockDate = Date.now();
-
-        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
-
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'flatFare', fareZoneName: null },
-            body: { productDetailsNameInput: 'Weekly Rider', productDetailsPriceInput: '7' },
-            uuid: '',
-            mockWriteHeadFn: writeHeadMock,
-        });
-        await productDetails(req, res);
-
-        const actualFlatFareProduct = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
-        expect(putStringInS3Spy).toBeCalledWith(
-            'fdbt-matching-data-dev',
-            `TEST/flatFare/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
-            expect.any(String),
-            'application/json; charset=utf-8',
-        );
-        expect(actualFlatFareProduct).toEqual(expectedFlatFareProductUploadJson);
     });
 });

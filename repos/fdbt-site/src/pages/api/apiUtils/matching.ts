@@ -49,3 +49,6 @@ export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZ
 
     return matchingFareZones;
 };
+
+export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
+    userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);

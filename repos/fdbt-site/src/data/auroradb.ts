@@ -1,6 +1,7 @@
 import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
+import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
 
 export interface ServiceType {
     lineName: string;
@@ -164,6 +165,30 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     }
 };
 
+export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
+    try {
+        const queryInput = `
+            SELECT name, description, purchaseLocations, paymentMethods, ticketFormats
+            FROM salesOfferPackage
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCode]);
+
+        return (
+            queryResults.map(item => ({
+                name: item.name,
+                description: item.description,
+                purchaseLocations: item.purchaseLocations,
+                paymentMethods: item.paymentMethods,
+                ticketFormats: item.ticketFormats,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
 
@@ -296,4 +321,28 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         operatorShortName: service.operatorShortName,
         journeyPatterns: rawPatternService,
     };
+};
+
+export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
+    console.info('inserting sales offer package into salesOfferPackage table for given noc', { noc: nocCode });
+
+    const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
+    const paymentMethods = salesOfferPackage.paymentMethods.toString();
+    const ticketFormats = salesOfferPackage.ticketFormats.toString();
+
+    const insertQuery = `INSERT INTO salesOfferPackage 
+    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats) 
+    VALUES (?, ?, ?, ?, ?, ?)`;
+    try {
+        await executeQuery(insertQuery, [
+            nocCode,
+            salesOfferPackage.name,
+            salesOfferPackage.description,
+            purchaseLocations,
+            paymentMethods,
+            ticketFormats,
+        ]);
+    } catch (error) {
+        throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
+    }
 };

@@ -55,6 +55,7 @@ class MyDocument extends Document<DocumentProps> {
                             />
                             <script
                                 nonce={this.props.nonce}
+                                // eslint-disable-next-line react/no-danger
                                 dangerouslySetInnerHTML={{
                                     __html: `window.dataLayer = window.dataLayer || [];
                                         function gtag(){dataLayer.push(arguments);}

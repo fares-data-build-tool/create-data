@@ -1,0 +1,356 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`describeSalesOfferPackage should be able to handle being passed undefined props 1`] = `
+<Component
+  description="Sales Offer Package Description page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Sales Offer Package Description - Fares Data Build Tool"
+>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <CsrfForm
+        action="/api/describeSalesOfferPackage"
+        csrfToken=""
+        method="post"
+      >
+        <ErrorSummary
+          errors={Array []}
+        />
+        <div
+          className="govuk-form-group"
+        >
+          <fieldset
+            aria-describedby="page-heading"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="page-heading"
+              >
+                Describe your sales offer package
+              </h1>
+            </legend>
+            <span
+              className="govuk-hint"
+              id="describe-sop-hint"
+            >
+              Enter a name and description for your sales offer package that means something to you. This will be displayed back to you when you choose from your saved sales offer packages.
+            </span>
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="sop-name"
+              >
+                Name
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId=""
+                errors={Array []}
+              >
+                <input
+                  aria-describedby=""
+                  className="govuk-input"
+                  defaultValue=""
+                  id="sop-name"
+                  name="salesOfferPackageName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </div>
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="sop-description"
+              >
+                Description
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-textarea--error"
+                errorId=""
+                errors={Array []}
+              >
+                <textarea
+                  aria-describedby=""
+                  className="govuk-textarea"
+                  id="sop-description"
+                  name="salesOfferPackageDescription"
+                  rows={4}
+                />
+              </FormElementWrapper>
+            </div>
+          </fieldset>
+        </div>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Continue"
+        />
+      </CsrfForm>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <Component />
+    </div>
+  </div>
+</Component>
+`;
+
+exports[`describeSalesOfferPackage should render the page with errors when errors are present 1`] = `
+<Component
+  description="Sales Offer Package Description page of the Fares Data Build Tool"
+  errors={
+    Array [
+      ObjectContaining {
+        "errorMessage": Any<String>,
+        "id": Any<String>,
+      },
+    ]
+  }
+  title="Sales Offer Package Description - Fares Data Build Tool"
+>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <CsrfForm
+        action="/api/describeSalesOfferPackage"
+        csrfToken=""
+        method="post"
+      >
+        <ErrorSummary
+          errors={
+            Array [
+              ObjectContaining {
+                "errorMessage": Any<String>,
+                "id": Any<String>,
+              },
+            ]
+          }
+        />
+        <div
+          className="govuk-form-group govuk-form-group--error"
+        >
+          <fieldset
+            aria-describedby="page-heading"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="page-heading"
+              >
+                Describe your sales offer package
+              </h1>
+            </legend>
+            <span
+              className="govuk-hint"
+              id="describe-sop-hint"
+            >
+              Enter a name and description for your sales offer package that means something to you. This will be displayed back to you when you choose from your saved sales offer packages.
+            </span>
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="sop-name"
+              >
+                Name
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId=""
+                errors={
+                  Array [
+                    ObjectContaining {
+                      "errorMessage": Any<String>,
+                      "id": Any<String>,
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby=""
+                  className="govuk-input"
+                  defaultValue=""
+                  id="sop-name"
+                  name="salesOfferPackageName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </div>
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="sop-description"
+              >
+                Description
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-textarea--error"
+                errorId=""
+                errors={
+                  Array [
+                    ObjectContaining {
+                      "errorMessage": Any<String>,
+                      "id": Any<String>,
+                    },
+                  ]
+                }
+              >
+                <textarea
+                  aria-describedby=""
+                  className="govuk-textarea"
+                  id="sop-description"
+                  name="salesOfferPackageDescription"
+                  rows={4}
+                />
+              </FormElementWrapper>
+            </div>
+          </fieldset>
+        </div>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Continue"
+        />
+      </CsrfForm>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <Component />
+    </div>
+  </div>
+</Component>
+`;
+
+exports[`describeSalesOfferPackage should render the page with no errors when no errors are present 1`] = `
+<Component
+  description="Sales Offer Package Description page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Sales Offer Package Description - Fares Data Build Tool"
+>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <CsrfForm
+        action="/api/describeSalesOfferPackage"
+        csrfToken=""
+        method="post"
+      >
+        <ErrorSummary
+          errors={Array []}
+        />
+        <div
+          className="govuk-form-group"
+        >
+          <fieldset
+            aria-describedby="page-heading"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="page-heading"
+              >
+                Describe your sales offer package
+              </h1>
+            </legend>
+            <span
+              className="govuk-hint"
+              id="describe-sop-hint"
+            >
+              Enter a name and description for your sales offer package that means something to you. This will be displayed back to you when you choose from your saved sales offer packages.
+            </span>
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="sop-name"
+              >
+                Name
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId=""
+                errors={Array []}
+              >
+                <input
+                  aria-describedby=""
+                  className="govuk-input"
+                  defaultValue=""
+                  id="sop-name"
+                  name="salesOfferPackageName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </div>
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="sop-description"
+              >
+                Description
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-textarea--error"
+                errorId=""
+                errors={Array []}
+              >
+                <textarea
+                  aria-describedby=""
+                  className="govuk-textarea"
+                  id="sop-description"
+                  name="salesOfferPackageDescription"
+                  rows={4}
+                />
+              </FormElementWrapper>
+            </div>
+          </fieldset>
+        </div>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Continue"
+        />
+      </CsrfForm>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <Component />
+    </div>
+  </div>
+</Component>
+`;
