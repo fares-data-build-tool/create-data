@@ -2,14 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ErrorSummary } from '../../components/ErrorSummary';
 import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
-import { isSessionValid } from './service/validator';
 import { redirectToError, setCookieOnResponseObject, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import {
+    isSessionValid,
     removeExcessWhiteSpace,
     checkProductNameIsValid,
     checkPriceIsValid,
     checkDurationIsValid,
-} from './service/inputValidator';
+} from './apiUtils/validator';
 
 export interface MultiProduct {
     productName: string;
@@ -118,7 +118,7 @@ export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduc
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
         const cookies = new Cookies(req, res);
         const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_COOKIE);
@@ -174,6 +174,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {
         const message = 'There was a problem inputting the product name, price and/or duration:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.multipleProducts', error);
     }
 };

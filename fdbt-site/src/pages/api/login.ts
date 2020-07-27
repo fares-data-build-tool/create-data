@@ -5,6 +5,7 @@ import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../co
 import { ErrorInfo, CognitoIdToken } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 import { initiateAuth } from '../../data/cognito';
+import logger from '../../utils/logger';
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
@@ -50,13 +51,18 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 setCookieOnResponseObject(ID_TOKEN_COOKIE, idToken, req, res);
                 setCookieOnResponseObject(REFRESH_TOKEN_COOKIE, refreshToken, req, res);
 
-                console.info('login successful', { noc: nocCode });
+                logger.info({
+                    context: 'api.login',
+                    message: 'login successful',
+                    noc: nocCode,
+                });
                 redirectTo(res, '/home');
             } else {
                 throw new Error('Auth response invalid');
             }
         } catch (error) {
-            console.warn('login failed', { error: error.message });
+            logger.error(error, { context: 'api.login', message: 'login failed' });
+
             errors.push({
                 id: 'login',
                 errorMessage: 'The email address and/or password are not correct.',
@@ -67,6 +73,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem signing into your account';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.login', error);
     }
 };

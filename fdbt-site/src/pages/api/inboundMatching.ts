@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { UserFareStages } from '../../data/s3';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../../constants';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -38,6 +38,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.inboundMatching', error);
     }
 };

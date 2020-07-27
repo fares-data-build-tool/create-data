@@ -9,6 +9,7 @@ import {
 } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
+import logger from '../../utils/logger';
 
 export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
     const cookieContent = JSON.stringify({ inputChecks });
@@ -49,7 +50,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                     );
                     redirectTo(res, '/passwordUpdated');
                 } catch (error) {
-                    console.warn('update password failed', { error: error?.message });
+                    logger.warn(error, {
+                        context: 'api.changePassword',
+                        message: 'update password failed',
+                    });
+
                     inputChecks.push({
                         id: 'new-password',
                         errorMessage: 'There was a problem resetting your password',
@@ -60,7 +65,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 throw new Error('Auth response invalid');
             }
         } catch (error) {
-            console.warn('User authentication failed', { error: error.message });
+            logger.warn(error, {
+                context: 'api.changePassword',
+                message: 'user authentication failed',
+            });
             inputChecks.push({
                 id: 'old-password',
                 errorMessage: 'Your old password is incorrect',
@@ -68,7 +76,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             setCookieAndRedirect(req, res, inputChecks);
         }
     } catch (error) {
-        const message = 'There was an error updating the user password';
-        redirectToError(res, message, error);
+        const message = 'there was an error updating the user password';
+        redirectToError(res, message, 'api.changePassword', error);
     }
 };

@@ -1,10 +1,14 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { redirectTo, redirectToError, unescapeAndDecodeCookie, setCookieOnResponseObject } from './apiUtils';
-import { isSessionValid } from './service/validator';
-import { ProductInfo, NextApiRequestWithSession, ProductData, Product, ErrorInfo } from '../../interfaces';
+import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
+import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
 import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_COOKIE } from '../../constants';
-import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
+import {
+    isSessionValid,
+    removeExcessWhiteSpace,
+    checkPriceIsValid,
+    checkProductNameIsValid,
+} from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
@@ -22,7 +26,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const cookies = new Cookies(req, res);
@@ -80,6 +84,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         return;
     } catch (error) {
         const message = 'There was a problem processing the product details.';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.productDetails', error);
     }
 };

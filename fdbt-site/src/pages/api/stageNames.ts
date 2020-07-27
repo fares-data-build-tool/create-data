@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../constants/index';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
@@ -40,7 +40,7 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (!req.body.stageNameInput || req.body.stageNameInput.length === 0) {
@@ -58,6 +58,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
     } catch (error) {
         const message = 'There was a problem entering stage names:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.stageNames', error);
     }
 };

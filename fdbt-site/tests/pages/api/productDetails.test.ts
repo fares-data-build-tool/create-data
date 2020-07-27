@@ -1,7 +1,7 @@
 import productDetails from '../../../src/pages/api/productDetails';
 import { PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
 import * as s3 from '../../../src/data/s3';
-import * as validator from '../../../src/pages/api/service/validator';
+import * as validator from '../../../src/pages/api/apiUtils/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';

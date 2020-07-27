@@ -1,6 +1,7 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import awsParamStore from 'aws-param-store';
 import crypto from 'crypto';
+import logger from '../utils/logger';
 
 const clientId = process.env.FDBT_USER_POOL_CLIENT_ID as string;
 const userPoolId = process.env.FDBT_USER_POOL_ID as string;
@@ -26,7 +27,10 @@ export const initiateAuth = async (
     username: string,
     password: string,
 ): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
-    console.info('initiating auth...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'initiating auth',
+    });
 
     const params: CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
         AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
@@ -52,7 +56,10 @@ export const initiateRefreshAuth = async (
     username: string,
     refreshToken: string,
 ): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
-    console.info('initiating refresh auth...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'initiating refresh auth',
+    });
 
     const params: CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
         AuthFlow: 'REFRESH_TOKEN_AUTH',
@@ -78,7 +85,10 @@ export const respondToNewPasswordChallenge = async (
     password: string,
     session: string,
 ): Promise<void> => {
-    console.info('new password challenge initiated...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'new password challenge initiated',
+    });
 
     const params: CognitoIdentityServiceProvider.AdminRespondToAuthChallengeRequest = {
         ChallengeName: 'NEW_PASSWORD_REQUIRED',
@@ -100,7 +110,10 @@ export const respondToNewPasswordChallenge = async (
 };
 
 export const globalSignOut = async (username: string): Promise<void> => {
-    console.info('performing global sign out...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'performing global sign out',
+    });
 
     const params: CognitoIdentityServiceProvider.AdminUserGlobalSignOutRequest = {
         Username: username,
@@ -118,7 +131,10 @@ export const updateUserAttributes = async (
     username: string,
     attributes: { Name: string; Value: string }[],
 ): Promise<void> => {
-    console.info('updating user attributes...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'updating user attributes',
+    });
 
     const params: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest = {
         UserAttributes: attributes,
@@ -134,7 +150,10 @@ export const updateUserAttributes = async (
 };
 
 export const forgotPassword = async (username: string): Promise<void> => {
-    console.info('start forgot password...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'start forgot password',
+    });
 
     const params: CognitoIdentityServiceProvider.ForgotPasswordRequest = {
         ClientId: clientId,
@@ -154,7 +173,10 @@ export const confirmForgotPassword = async (
     confirmationCode: string,
     password: string,
 ): Promise<void> => {
-    console.info('confirm forgot password...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'confirm forgot password',
+    });
 
     const params: CognitoIdentityServiceProvider.ConfirmForgotPasswordRequest = {
         ClientId: clientId,
@@ -175,7 +197,10 @@ export const confirmForgotPassword = async (
 };
 
 export const updateUserPassword = async (newPassword: string, username: string): Promise<void> => {
-    console.info('updating user password...');
+    logger.info({
+        context: 'data.cognito',
+        message: 'updating user password',
+    });
 
     const params: CognitoIdentityServiceProvider.AdminSetUserPasswordRequest = {
         Password: newPassword,

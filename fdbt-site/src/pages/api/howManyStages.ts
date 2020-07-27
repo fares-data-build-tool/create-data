@@ -2,12 +2,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils/index';
 import { NUMBER_OF_STAGES_COOKIE } from '../../constants/index';
 
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (req.body.howManyStages) {
@@ -19,7 +19,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                     redirectTo(res, '/csvUpload');
                     return;
                 default:
-                    throw new Error('Number of fare stages we expect was not received.');
+                    throw new Error('number of fare stages we expect was not received.');
             }
         } else {
             const cookieValue = JSON.stringify({
@@ -30,6 +30,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
     } catch (error) {
         const message = 'There was a problem selecting how many fares stages the triangle has:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.howManyStages', error);
     }
 };
