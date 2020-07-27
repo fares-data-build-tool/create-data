@@ -1,7 +1,7 @@
 import { getUuidFromCookie, setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import returnDirection from '../../../src/pages/api/returnDirection';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { isSessionValid } from '../../../src/pages/api/service/validator';
+import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';
 
 describe('returnDirection', () => {
     const writeHeadMock = jest.fn();

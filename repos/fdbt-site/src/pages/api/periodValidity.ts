@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_COOKIE } from '../../constants';
 import { redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, ProductData } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -13,7 +13,7 @@ export interface PeriodExpiryWithErrors {
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (req.body.periodValid) {
@@ -54,6 +54,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
     } catch (error) {
         const message = 'There was a problem selecting the period validity:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.periodValidity', error);
     }
 };

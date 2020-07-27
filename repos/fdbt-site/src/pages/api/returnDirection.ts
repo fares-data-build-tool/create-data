@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { setCookieOnResponseObject, redirectTo, redirectToError, getUuidFromCookie } from './apiUtils/index';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { JOURNEY_COOKIE } from '../../constants';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const { inboundJourney, outboundJourney } = req.body;
@@ -39,6 +39,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
     } catch (error) {
         const message = 'There was a problem selecting the directions:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.returnDirection', error);
     }
 };

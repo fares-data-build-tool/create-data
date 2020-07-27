@@ -9,7 +9,7 @@ import {
     getFlatFareTicketJson,
     putUserDataInS3,
 } from './apiUtils/userData';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_COOKIE, PERIOD_TYPE_COOKIE } from '../../constants';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -76,6 +76,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     } catch (error) {
         const message =
             'There was a problem processing the selected sales offer packages from the salesOfferPackage page:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.selectSalesOfferPackage', error);
     }
 };

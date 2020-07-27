@@ -9,6 +9,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import logger from '../utils/logger';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
@@ -122,7 +123,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
 
-    console.info('transaction start', { uuid });
+    logger.info({
+        context: 'pages.fareType',
+        message: 'transaction start',
+    });
 
     if (cookies[FARE_TYPE_COOKIE]) {
         const fareTypeCookie = cookies[FARE_TYPE_COOKIE];

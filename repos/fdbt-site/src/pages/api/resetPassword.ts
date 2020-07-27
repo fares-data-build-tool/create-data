@@ -3,6 +3,7 @@ import { redirectTo, redirectToError, setCookieOnResponseObject, validateNewPass
 import { USER_COOKIE } from '../../constants';
 import { ErrorInfo } from '../../interfaces';
 import { confirmForgotPassword } from '../../data/cognito';
+import logger from '../../utils/logger';
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: ErrorInfo[], regKey: string, username: string, expiry: string): void => {
@@ -40,7 +41,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 return;
             }
 
-            console.warn('reset password failed', { error: error?.message });
+            logger.error(error, {
+                context: 'api.resetPassword',
+                message: 'reset password failed',
+            });
             inputChecks.push({
                 id: 'new-password',
                 errorMessage: 'There was a problem resetting your password.',
@@ -50,6 +54,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was an error resetting password.';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.resetPassword', error);
     }
 };

@@ -6,6 +6,7 @@ import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
 import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
+import logger from '../../../utils/logger';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -45,8 +46,13 @@ export const redirectTo = (res: NextApiResponse | ServerResponse, location: stri
     res.end();
 };
 
-export const redirectToError = (res: NextApiResponse | ServerResponse, message: string, error: Error): void => {
-    console.error(message, error.stack);
+export const redirectToError = (
+    res: NextApiResponse | ServerResponse,
+    message: string,
+    context: string,
+    error: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+): void => {
+    logger.error(error, { context, message });
     redirectTo(res, '/error');
 };
 

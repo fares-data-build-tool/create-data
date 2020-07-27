@@ -17,7 +17,7 @@ import {
     deleteCookieOnResponseObject,
 } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 
 interface UserFareStages {
     fareStages: {
@@ -130,7 +130,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const errorCheck = inputsValidityCheck(req);
@@ -164,7 +164,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         redirectTo(res, '/matching');
     } catch (error) {
         const message = 'There was a problem generating the priceEntry JSON:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.priceEntry', error);
     }
     res.end();
 };

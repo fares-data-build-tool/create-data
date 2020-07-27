@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME } from '../constants';
 import { MatchingFareZones } from '../interfaces/matchingInterface';
+import logger from '../utils/logger';
 
 export interface FareStage {
     stageName: string;
@@ -46,7 +47,11 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
     };
 
     try {
-        console.info('retrieving user fare stages from S3', { uuid });
+        logger.info({
+            context: 'data.s3',
+            message: 'retrieving user fare stages from S3',
+            uuid,
+        });
 
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
@@ -64,7 +69,11 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
     };
 
     try {
-        console.info('retrieving user csv zone data from S3', { uuid });
+        logger.info({
+            context: 'data.s3',
+            message: 'retrieving user csv zone data from S3',
+            uuid,
+        });
 
         const response = await s3.getObject(params).promise();
 
@@ -87,7 +96,11 @@ export const getOutboundMatchingFareStages = async (uuid: string): Promise<Match
     };
 
     try {
-        console.info('retrieving outbound matching fare stages from S3', { uuid });
+        logger.info({
+            context: 'data.s3',
+            message: 'retrieving outbound matching fare stages from S3',
+            uuid,
+        });
 
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
@@ -104,7 +117,12 @@ export const putStringInS3 = async (
     text: string,
     contentType: string,
 ): Promise<void> => {
-    console.info('uploading string to S3', { bucket: bucketName, key });
+    logger.info({
+        context: 'data.s3',
+        message: 'uploading string to S3',
+        bucket: bucketName,
+        key,
+    });
 
     const request: AWS.S3.Types.PutObjectRequest = {
         Bucket: bucketName,
@@ -132,7 +150,12 @@ export const putDataInS3 = async (
         contentType = 'text/csv; charset=utf-8';
     }
 
-    console.info('uploading data to S3', { bucket: bucketName, key });
+    logger.info({
+        context: 'data.s3',
+        message: 'uploading data to S3',
+        bucket: bucketName,
+        key,
+    });
 
     await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };

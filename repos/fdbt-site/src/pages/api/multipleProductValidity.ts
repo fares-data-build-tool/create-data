@@ -9,7 +9,7 @@ import {
     MATCHING_DATA_BUCKET_NAME,
     PASSENGER_TYPE_COOKIE,
 } from '../../constants/index';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import {
     redirectToError,
     setCookieOnResponseObject,
@@ -51,7 +51,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
         const cookies = new Cookies(req, res);
         const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
@@ -143,6 +143,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         redirectTo(res, '/thankyou');
     } catch (error) {
         const message = 'There was a problem collecting the user defined products:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.multipleProductValidity', error);
     }
 };

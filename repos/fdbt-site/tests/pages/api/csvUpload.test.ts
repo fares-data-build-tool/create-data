@@ -3,6 +3,7 @@ import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
 import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import logger from '../../../src/utils/logger';
 
 jest.spyOn(s3, 'putStringInS3');
 
@@ -14,17 +15,9 @@ describe('csvUpload', () => {
         uuid: {},
         mockWriteHeadFn: writeHeadMock,
     });
-    let outputData = '';
+    const loggerSpy = jest.spyOn(logger, 'warn');
 
     beforeEach(() => {
-        outputData = '';
-
-        // eslint-disable-next-line no-return-assign
-        const storeLog = (inputs: string): string => (outputData += inputs);
-        console.warn = jest.fn(storeLog);
-    });
-
-    afterEach(() => {
         jest.resetAllMocks();
     });
 
@@ -54,7 +47,11 @@ describe('csvUpload', () => {
             Location: '/csvUpload',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
-        expect(outputData).toBe('Empty CSV Selected, name: string');
+        expect(loggerSpy).toBeCalledWith({
+            context: 'api.utils.validateFile',
+            fileName: 'string',
+            message: 'empty CSV Selected',
+        });
     });
 
     it('should return 302 redirect to /csvUpload with an error message when a the attached file is too large', async () => {
@@ -82,7 +79,12 @@ describe('csvUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
-        expect(outputData).toBe('File is too large. Uploaded file is 999999999999999 Bytes, max size is 5242880 Bytes');
+        expect(loggerSpy).toBeCalledWith({
+            context: 'api.utils.validateFile',
+            maxSize: 5242880,
+            message: 'file is too large',
+            size: 999999999999999,
+        });
     });
 
     it('should return 302 redirect to /csvUpload with an error message when the attached file is not a csv', async () => {
@@ -110,7 +112,11 @@ describe('csvUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
-        expect(outputData).toBe('File not of allowed type, uploaded file is text/pdf');
+        expect(loggerSpy).toBeCalledWith({
+            context: 'api.utils.validateFile',
+            message: 'file not of allowed type',
+            type: 'text/pdf',
+        });
     });
 
     it.each([

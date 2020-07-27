@@ -74,6 +74,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         redirectTo(res, '/describeSalesOfferPackage');
     } catch (err) {
         const message = 'There was a problem in the sales offer package API.';
-        redirectToError(res, message, err);
+        redirectToError(res, message, 'api.salesOfferPackages', err);
     }
 };

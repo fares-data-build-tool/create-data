@@ -1,6 +1,6 @@
 import service from '../../../src/pages/api/service';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { isSessionValid } from '../../../src/pages/api/service/validator';
+import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';
 import { getUuidFromCookie } from '../../../src/pages/api/apiUtils';
 
 afterEach(() => {
