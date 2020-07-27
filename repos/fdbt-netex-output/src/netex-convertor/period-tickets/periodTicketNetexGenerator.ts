@@ -21,6 +21,7 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
     const website = getCleanWebsite(operatorData.website);
     const placeHolderGroupOfProductsName = `${userPeriodTicket.nocCode}_products`;
     const brandingId = `op:${userPeriodTicket.nocCode}@brand`;
+    const ticketUserConcat = `${userPeriodTicket.type}_${userPeriodTicket.passengerType}`;
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
         const publicationTimeStampToUpdate = { ...publicationTimeStamp };
@@ -174,8 +175,9 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
             opIdNocFormat,
         );
 
-        // Sales Offer Package
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = getSalesOfferPackageList(userPeriodTicket);
+        // Sales Offer Packages
+        const salesOfferPackages = getSalesOfferPackageList(userPeriodTicket, ticketUserConcat);
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = salesOfferPackages.flat();
 
         return priceFareFrameToUpdate;
     };
@@ -191,9 +193,13 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
             fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(
                 userPeriodTicket,
                 placeHolderGroupOfProductsName,
+                ticketUserConcat,
             );
         } else if (isMultiServiceTicket(userPeriodTicket)) {
-            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(userPeriodTicket);
+            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(
+                userPeriodTicket,
+                ticketUserConcat,
+            );
         }
         return fareTableFareFrameToUpdate;
     };

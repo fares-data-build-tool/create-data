@@ -29,6 +29,14 @@ export interface Stop {
 
 // Matching Data (created by the user on the site)
 
+export interface SalesOfferPackage {
+    name: string;
+    description: string;
+    purchaseLocations: string[];
+    paymentMethods: string[];
+    ticketFormats: string[];
+}
+
 export interface BaseTicket {
     nocCode: string;
     type: string;
@@ -48,6 +56,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     operatorShortName: string;
     lineName: string;
     serviceDescription: string;
+    products: BaseProduct[];
 }
 
 export interface SingleTicket extends BasePointToPointTicket {
@@ -88,10 +97,7 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
 
 export interface FlatFareTicket extends BaseTicket {
     operatorName: string;
-    products: {
-        productName: string;
-        productPrice: string;
-    }[];
+    products: FlatFareProductDetails[];
     selectedServices: SelectedService[];
 }
 
@@ -102,11 +108,20 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
-export interface ProductDetails {
+export interface BaseProduct {
+    salesOfferPackages: SalesOfferPackage[];
+}
+
+interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
-    productDuration?: string;
-    productValidity?: string;
+}
+
+export interface ProductDetails extends BaseProduct {
+    productName: string;
+    productPrice: string;
+    productDuration: string;
+    productValidity: string;
 }
 
 // NeTEx
@@ -162,4 +177,46 @@ export interface FareStructureElement {
     TypeOfFareStructureElementRef?: object;
     GenericParameterAssignment: object;
     timeIntervals?: object;
+}
+
+export interface DistributionAssignment {
+    version: string;
+    id: string;
+    order: string;
+    DistributionChannelRef: {
+        ref: string;
+        version: string;
+    };
+    PaymentMethods: {
+        $t: string;
+    };
+    DistributionChannelType: {
+        $t: string;
+    };
+}
+
+export interface SalesOfferPackageElement {
+    id: string;
+    version: string;
+    order: string;
+    TypeOfTravelDocumentRef: {
+        version: string;
+        ref: string;
+    };
+    PreassignedFareProductRef: {
+        ref: string;
+    };
+}
+
+export interface NetexSalesOfferPackage {
+    Name: {
+        $t: string;
+    };
+    Description: {
+        $t: string;
+    };
+    version: string;
+    id: string;
+    distributionAssignments: { DistributionAssignment: DistributionAssignment[] };
+    salesOfferPackageElements: { SalesOfferPackageElement: SalesOfferPackageElement[] };
 }
