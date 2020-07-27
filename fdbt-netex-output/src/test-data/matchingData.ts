@@ -7,6 +7,25 @@ import {
 } from '../types';
 
 export const singleTicket: SingleTicket = {
+    products: [
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+        },
+    ],
     lineName: '237',
     nocCode: 'MCTR',
     operatorShortName: 'Manchester Community Tr',
@@ -85,6 +104,32 @@ export const singleTicket: SingleTicket = {
 };
 
 export const returnNonCircularTicket: ReturnTicket = {
+    products: [
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+        },
+    ],
     lineName: '16',
     nocCode: 'PBLT',
     operatorShortName: 'Rotala Preston Bus',
@@ -396,6 +441,32 @@ export const returnNonCircularTicket: ReturnTicket = {
 };
 
 export const returnCircularTicket: ReturnTicket = {
+    products: [
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+        },
+    ],
     lineName: '709',
     nocCode: 'WBTR',
     operatorShortName: "Warrington's Own Buses",
@@ -583,15 +654,118 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
     email: 'test@example.com',
     uuid: 'BLACadge12d',
     products: [
-        { productName: 'Selenium Test Product', productPrice: '10.50', productDuration: '1', productValidity: '24hr' },
         {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Selenium Test Product',
+            productPrice: '10.50',
+            productDuration: '1',
+            productValidity: '24hr',
+        },
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
             productName: 'Selenium Test Product 2',
             productPrice: '150',
             productDuration: '2',
             productValidity: 'Calendar',
         },
-        { productName: 'Selenium Test Product 3', productPrice: '170', productDuration: '3', productValidity: '24hr' },
-        { productName: 'Selenium Test Product 4', productPrice: '15', productDuration: '4', productValidity: '24hr' },
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Selenium Test Product 3',
+            productPrice: '170',
+            productDuration: '3',
+            productValidity: '24hr',
+        },
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Selenium Test Product 4',
+            productPrice: '15',
+            productDuration: '4',
+            productValidity: '24hr',
+        },
     ],
     passengerType: 'student',
     ageRange: 'Yes',
@@ -789,8 +963,62 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
     uuid: 'BLACadge12d',
     nocCode: 'PBLT',
     products: [
-        { productName: 'Day Rider', productPrice: '12', productDuration: '1', productValidity: '24hr' },
-        { productName: 'Weekly Rider', productPrice: '30', productDuration: '7', productValidity: '24hr' },
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Day Rider',
+            productPrice: '12',
+            productDuration: '1',
+            productValidity: '24hr',
+        },
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Weekly Rider',
+            productPrice: '30',
+            productDuration: '7',
+            productValidity: '24hr',
+        },
     ],
     passengerType: 'adult',
     ageRange: 'Yes',
@@ -990,7 +1218,34 @@ export const flatFareTicket: FlatFareTicket = {
     type: 'flatFare',
     email: 'test@example.com',
     uuid: 'BLACadge12d',
-    products: [{ productName: 'Weekly Rider', productPrice: '100' }],
+    products: [
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Weekly Rider',
+            productPrice: '100',
+        },
+    ],
     selectedServices: [
         {
             lineName: '709',

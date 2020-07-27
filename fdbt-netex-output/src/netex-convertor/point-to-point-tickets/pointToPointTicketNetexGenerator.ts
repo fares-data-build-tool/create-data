@@ -9,8 +9,8 @@ import {
     getPreassignedFareProduct,
     isReturnTicket,
     isSingleTicket,
-    getSalesOfferPackage,
-    getFareTable,
+    buildSalesOfferPackages,
+    getFareTables,
 } from './pointToPointTicketNetexHelpers';
 import { convertJsonToXml, getCleanWebsite, getNetexTemplateAsJson, NetexObject } from '../sharedHelpers';
 
@@ -156,7 +156,12 @@ const pointToPointTicketNetexGenerator = (
             matchingData,
         );
         priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(matchingData);
-        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = getSalesOfferPackage(matchingData);
+
+        const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
+        priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
+            matchingData.products[0],
+            ticketUserConcat,
+        );
 
         if (isReturnTicket(matchingData)) {
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].id =
@@ -195,7 +200,7 @@ const pointToPointTicketNetexGenerator = (
         fareTableFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_PRICE:${lineIdName}:op`;
 
         fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(matchingData);
-        fareTableFareFrameToUpdate.fareTables.FareTable = getFareTable(matchingData);
+        fareTableFareFrameToUpdate.fareTables.FareTable = getFareTables(matchingData);
 
         return fareTableFareFrameToUpdate;
     };

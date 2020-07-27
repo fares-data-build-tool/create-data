@@ -2,6 +2,7 @@ import * as netexHelpers from './pointToPointTicketNetexHelpers';
 import { FareZone, PointToPointTicket } from '../../types';
 import { singleTicket, returnNonCircularTicket, returnCircularTicket } from '../../test-data/matchingData';
 import { NetexObject } from '../sharedHelpers';
+import { buildSalesOfferPackage, buildSalesOfferPackages } from './pointToPointTicketNetexHelpers';
 
 describe('Netex Helpers', () => {
     let fareZones: FareZone[];
@@ -278,6 +279,7 @@ describe('Netex Helpers', () => {
                 'c',
                 singleTicket.type,
                 singleTicket.passengerType,
+                'salesOfferPackageName',
             );
 
             expect(fareTableElements).toHaveLength(fareZones.length - 1);
@@ -290,6 +292,7 @@ describe('Netex Helpers', () => {
                 'c',
                 singleTicket.type,
                 singleTicket.passengerType,
+                'salesOfferPackageName',
             );
 
             expect(fareTableElements).toEqual([
@@ -316,6 +319,7 @@ describe('Netex Helpers', () => {
                 lineIdName,
                 singleTicket.type,
                 singleTicket.passengerType,
+                'salesOfferPackageName',
             );
 
             const cells = fareTables.flatMap((table: NetexObject) => {
@@ -486,54 +490,16 @@ describe('Netex Helpers', () => {
             ['single ticket', singleTicket],
             ['return non-circular ticket', returnNonCircularTicket],
             ['return circular ticket', returnCircularTicket],
-        ])('should return a sales offer package object object for a %s', (_ticketType, ticket) => {
-            const tripString = 'Trip@';
-            const getDistributionAssigmentSchema = (purchaseLocation: string): {} => ({
-                version: '1.0',
-                id: expect.stringContaining(purchaseLocation),
-                order: expect.any(String),
-                Name: { $t: expect.any(String) },
-                Description: { $t: expect.any(String) },
-                DistributionChannelRef: {
-                    ref: expect.stringContaining('fxc:'),
-                    version: 'fxc:v1.0',
-                },
-                PaymentMethods: { $t: 'debitCard creditCard cash' },
-                FulfilmentMethodRef: {
-                    ref: expect.stringContaining('fxc:collect'),
-                    version: 'fxc:v1.0',
-                },
-            });
-            const expectedSalesOfferPackage = {
-                id: expect.stringContaining(tripString),
-                BrandingRef: {
-                    ref: expect.stringContaining('@brand'),
-                },
-                distributionAssignments: {
-                    DistributionAssignment: [
-                        getDistributionAssigmentSchema('atStop'),
-                        getDistributionAssigmentSchema('onBoard'),
-                    ],
-                },
-                salesOfferPackageElements: {
-                    SalesOfferPackageElement: {
-                        id: expect.stringContaining(tripString),
-                        order: '2',
-                        version: '1.0',
-                        TypeOfTravelDocumentRef: {
-                            version: 'fxc:v1.0',
-                            ref: 'fxc:printed_ticket',
-                        },
-                        PreassignedFareProductRef: {
-                            ref: expect.stringContaining(tripString),
-                        },
-                    },
-                },
-                version: '1.0',
-            };
-            const actualSalesOfferPackage = netexHelpers.getSalesOfferPackage(ticket);
-            expect(actualSalesOfferPackage).toEqual(expectedSalesOfferPackage);
-        });
+        ])(
+            'should return a sales offer package object in an array for each sales offer package within the ticket for a %s',
+            (_ticketType, ticket) => {
+                const actualSalesOfferPackages = netexHelpers.buildSalesOfferPackages(
+                    ticket.products[0],
+                    `${ticket.type}_${ticket.passengerType}`,
+                );
+                expect(actualSalesOfferPackages.length).toEqual(ticket.products[0].salesOfferPackages.length);
+            },
+        );
     });
 
     describe('getFareTable', () => {
@@ -541,46 +507,53 @@ describe('Netex Helpers', () => {
             ['single ticket', singleTicket],
             ['return non-circular ticket', returnNonCircularTicket],
             ['return circular ticket', returnCircularTicket],
-        ])('should return a fare table object object for a %s', (_ticketType, ticket) => {
-            const tripString = 'Trip@';
-            const expectedFareTable = {
-                id: expect.stringContaining(tripString),
-                version: '1.0',
-                Name: { $t: expect.any(String) },
-                Description: {
-                    $t: expect.any(String),
-                },
-                pricesFor: {
-                    PreassignedFareProductRef: {
-                        ref: expect.stringContaining(tripString),
-                    },
-                    SalesOfferPackageRef: {
-                        ref: expect.stringContaining(tripString),
-                    },
-                    UserProfileRef: {
-                        ref: expect.any(String),
-                    },
-                },
-                usedIn: {
-                    TariffRef: { version: '1.0', ref: expect.stringContaining('Tariff') },
-                },
-                specifics: {
-                    LineRef: {
-                        ref: expect.any(String),
-                    },
-                },
-                columns: {
-                    FareTableColumn: expect.any(Array),
-                },
-                rows: {
-                    FareTableRow: expect.any(Array),
-                },
-                includes: {
-                    FareTable: expect.any(Array),
-                },
-            };
-            const actualFareTable = netexHelpers.getFareTable(ticket);
-            expect(actualFareTable).toEqual(expectedFareTable);
+        ])('should return a fare table object array for each sales offer package for a %s', (_ticketType, ticket) => {
+            const actualFareTable = netexHelpers.getFareTables(ticket);
+            expect(actualFareTable.length).toEqual(ticket.products[0].salesOfferPackages.length);
         });
+    });
+
+    describe('buildSalesOfferPackage', () => {
+        it.each([
+            ['single ticket', singleTicket],
+            ['return non-circular ticket', returnNonCircularTicket],
+            ['return circular ticket', returnCircularTicket],
+        ])(
+            'should return a single salesOfferPackage with a distribution assignment for each purchase location and a sales offer package element for each ticket format for a %s',
+            (_ticketType, ticket) => {
+                const returnedSalesOfferPackage = buildSalesOfferPackage(
+                    ticket.products[0].salesOfferPackages[0],
+                    `${ticket.type}_${ticket.passengerType}`,
+                );
+                expect(returnedSalesOfferPackage.distributionAssignments.DistributionAssignment.length).toBe(
+                    ticket.products[0].salesOfferPackages[0].purchaseLocations.length,
+                );
+                expect(returnedSalesOfferPackage.salesOfferPackageElements.SalesOfferPackageElement.length).toBe(
+                    ticket.products[0].salesOfferPackages[0].ticketFormats.length,
+                );
+            },
+        );
+    });
+
+    describe('buildSalesOfferPackages', () => {
+        it.each([
+            ['single ticket', singleTicket],
+            ['return non-circular ticket', returnNonCircularTicket],
+            ['return circular ticket', returnCircularTicket],
+        ])(
+            'should return an array of sales Offer Packages for each sales offer package inside the ticket  %s',
+            (_ticketType, ticket) => {
+                const returnedSalesOfferPackageArray = buildSalesOfferPackages(ticket.products[0], 'a string');
+
+                const testDataSalesOfferPackage = ticket.products[0].salesOfferPackages;
+
+                expect(returnedSalesOfferPackageArray.length).toBe(ticket.products[0].salesOfferPackages.length);
+
+                returnedSalesOfferPackageArray.forEach((salesOfferPackage, index) => {
+                    expect(salesOfferPackage.Name.$t).toBe(testDataSalesOfferPackage[index].name);
+                    expect(salesOfferPackage.Description.$t).toBe(testDataSalesOfferPackage[index].description);
+                });
+            },
+        );
     });
 });

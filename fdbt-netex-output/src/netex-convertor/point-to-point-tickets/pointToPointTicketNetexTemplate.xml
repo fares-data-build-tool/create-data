@@ -359,36 +359,6 @@
 					</fareProducts>
 					<!--==== Sales Packages==== -->
 					<salesOfferPackages>
-						<SalesOfferPackage version="1.0" id="Trip@single-SOP@p-ticket">
-							<BrandingRef ref="operator@brand" />
-							<TypeOfSalesOfferPackageRef version="fxc:v1.0" ref="fxc:standard_product@operator" />
-							<distributionAssignments>
-								<DistributionAssignment version="10" id="Trip@single-SOP@p-ticket@atStop" order="1">
-									<Name>atStop</Name>
-									<Description>Pay for ticket atStop</Description>
-									<DistributionChannelRef version="fxc:v1.0" ref="fxc:at_stop" />
-									<DistributionChannelType>atStop</DistributionChannelType>
-									<TicketingServiceFacilityList>purchase</TicketingServiceFacilityList>
-									<PaymentMethods>cashAndCard</PaymentMethods>
-									<FulfilmentMethodRef ref="fxc:collect_from_machine" version="fxc:v1.0" />
-								</DistributionAssignment>
-								<DistributionAssignment version="1.0" id="Trip@single-SOP@p-ticket@onBoard" order="2">
-									<Name>Onboard</Name>
-									<Description>Pay for  ticket onboard</Description>
-									<DistributionChannelRef version="fxc:v1.0" ref="fxc:on_board" />
-									<DistributionChannelType>onBoard</DistributionChannelType>
-									<TicketingServiceFacilityList>purchase</TicketingServiceFacilityList>
-									<PaymentMethods>cashAndCard</PaymentMethods>
-									<FulfilmentMethodRef ref="fxc:collect_on_board" version="fxc:v1.0" />
-								</DistributionAssignment>
-							</distributionAssignments>
-							<salesOfferPackageElements>
-								<SalesOfferPackageElement version="1.0" id="Trip@single-SOP@p-ticket" order="1">
-									<TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:printed_ticket" />
-									<PreassignedFareProductRef version="1.0" ref="Trip@single" />
-								</SalesOfferPackageElement>
-							</salesOfferPackageElements>
-						</SalesOfferPackage>
 					</salesOfferPackages>
 				</FareFrame>
 				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRICE:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
@@ -441,7 +411,7 @@
 							</usedIn>
 							<specifics>
 								<LineRef ref="Line_1" />
-								<TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:printed_ticket" />
+								<TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket" />
 							</specifics>
 							<columns>
 								<!-- <FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West" order="1">
@@ -657,7 +627,7 @@
 							<DistributionChannelType>online</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
-						<DistributionChannel id="fxc:at_stop" version="fxc:v1.0">
+						<DistributionChannel id="fxc:atStop" version="fxc:v1.0">
 							<ShortName>In station sale by machine, counter or payg</ShortName>
 							<DistributionChannelType>atStop</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
@@ -683,14 +653,14 @@
 							<DistributionChannelType>atStop</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
-						<DistributionChannel id="fxc:on_board" version="fxc:v1.0">
+						<DistributionChannel id="fxc:onBoard" version="fxc:v1.0">
 							<ShortName>on_board</ShortName>
 							<DistributionChannelType>onBoard</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
-						<DistributionChannel id="fxc:call_centre" version="fxc:v1.0">
-							<ShortName>Call Centre</ShortName>
-							<DistributionChannelType>telephone</DistributionChannelType>
+						<DistributionChannel id="fxc:mobileDevice" version="fxc:v1.0">
+							<ShortName>Mobile Device</ShortName>
+							<DistributionChannelType>mobileDevice</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
 						<DistributionChannel id="fxc:operator_travel_shop" version="fxc:v1.0">
@@ -719,7 +689,7 @@
 							<Name>Collect on board</Name>
 							<FulfilmentMethodType>conductor</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
@@ -728,7 +698,7 @@
 							<FulfilmentMethodType>ticketMachine</FulfilmentMethodType>
 							<RequiresBookingReference>true</RequiresBookingReference>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
@@ -736,27 +706,27 @@
 							<Name>Collect at counter</Name>
 							<FulfilmentMethodType>ticketOffice</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_from_agent" version="fxc:v1.0">
 							<Name>Travel agent issues ticket directly</Name>
 							<FulfilmentMethodType>agent</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:mobile_app" version="fxc:v1.0">
+						<FulfilmentMethod id="fxc:mobileApp" version="fxc:v1.0">
 							<Name>Mobile App</Name>
 							<FulfilmentMethodType>mobileApp</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:mobileApp" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:self_print" version="fxc:v1.0">
@@ -771,8 +741,8 @@
 							<Name>Online propagation</Name>
 							<FulfilmentMethodType>validator</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobile_app_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:mobileApp" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:email" version="fxc:v1.0">
@@ -786,20 +756,20 @@
 							<Name>Send ticket by post</Name>
 							<FulfilmentMethodType>post</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:courier" version="fxc:v1.0">
 							<Name>Send ticket by courier</Name>
 							<FulfilmentMethodType>other</FulfilmentMethodType>
 							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 					</fulfilmentMethods>
@@ -808,7 +778,7 @@
 							<Name>Depends on channel used</Name>
 							<MediaType>other</MediaType>
 						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:printed_ticket" version="fxc:v1.0">
+						<TypeOfTravelDocument id="fxc:paperTicket" version="fxc:v1.0">
 							<Name>Printed Ticket</Name>
 							<MediaType>paperTicket</MediaType>
 							<MachineReadable>ocr</MachineReadable>
@@ -830,11 +800,11 @@
 							<MediaType>card</MediaType>
 							<MachineReadable>barCode</MachineReadable>
 						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:mobile_app_ticket" version="fxc:v1.0">
+						<TypeOfTravelDocument id="fxc:mobileApp" version="fxc:v1.0">
 							<MediaType>mobileApp</MediaType>
 							<MachineReadable>ocr</MachineReadable>
 						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:smart_card" version="fxc:v1.0">
+						<TypeOfTravelDocument id="fxc:smartCard" version="fxc:v1.0">
 							<MediaType>card</MediaType>
 							<MachineReadable>chip</MachineReadable>
 						</TypeOfTravelDocument>
