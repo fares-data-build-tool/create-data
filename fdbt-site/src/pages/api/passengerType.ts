@@ -8,12 +8,12 @@ import {
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const cookies = new Cookies(req, res);
@@ -47,6 +47,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/passengerType');
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.passengerType', error);
     }
 };

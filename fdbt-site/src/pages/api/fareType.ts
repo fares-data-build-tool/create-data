@@ -2,12 +2,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils/index';
 import { FARE_TYPE_COOKIE } from '../../constants/index';
 
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (req.body.fareType) {
@@ -28,6 +28,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
     } catch (error) {
         const message = 'There was a problem selecting the fare type.';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.fareType', error);
     }
 };

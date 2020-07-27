@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import uniqBy from 'lodash/uniqBy';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
@@ -61,6 +62,8 @@ export const renderInputFields = (
 
     return elements;
 };
+
+export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => uniqBy(errors, 'errorMessage');
 
 const StageNames = ({
     numberOfFareStages,

@@ -10,7 +10,7 @@ import {
     setCookieOnResponseObject,
 } from './apiUtils/index';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 
 export interface ExtractedValidationError {
     input: string;
@@ -104,7 +104,7 @@ export const formatRequestBody = (req: NextApiRequest): {} => {
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const cookies = new Cookies(req, res);
@@ -144,6 +144,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.definePassengerType', error);
     }
 };

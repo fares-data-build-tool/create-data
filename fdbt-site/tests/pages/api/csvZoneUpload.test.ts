@@ -16,15 +16,10 @@ describe('csvZoneUpload', () => {
         uuid: {},
         mockWriteHeadFn: writeHeadMock,
     });
-    let outputData = '';
 
     beforeEach(() => {
         jest.resetAllMocks();
-        outputData = '';
         Cookies.prototype.set = jest.fn();
-        // eslint-disable-next-line no-return-assign
-        const storeLog = (inputs: string): string => (outputData += inputs);
-        console.warn = jest.fn(storeLog);
     });
 
     it.each([

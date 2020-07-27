@@ -1,6 +1,8 @@
 import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
+import logger from '../utils/logger';
+import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
 
 export interface ServiceType {
     lineName: string;
@@ -140,7 +142,11 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-    console.info('retrieving services for given noc', { noc: nocCode });
+    logger.info({
+        context: 'data.auroradb',
+        message: 'retrieving services for given noc',
+        noc: nocCode,
+    });
 
     try {
         const queryInput = `
@@ -166,8 +172,12 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
+    logger.info({
+        context: 'data.auroradb',
+        message: 'retrieving operator name for given noc',
+        noc: nocCode,
+    });
 
-    console.info('retrieving operator name for given noc', { noc: nocCode });
     const queryInput = `
     SELECT operatorPublicName
     FROM nocTable
@@ -186,7 +196,10 @@ export const getOperatorNameByNocCode = async (nocCode: string): Promise<Operato
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
-    console.info('retrieving naptan info for given atco codes');
+    logger.info({
+        context: 'data.auroradb',
+        message: 'retrieving naptan info for atco codes',
+    });
 
     try {
         const substitution = atcoCodes.map(() => '?').join(',');
@@ -216,7 +229,10 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 };
 
 export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
-    console.info('retrieving atco codes for given naptan codes');
+    logger.info({
+        context: 'data.auroradb',
+        message: 'retrieving atco codes by naptan codes',
+    });
 
     const substitution = naptanCodes.map(() => '?').join(',');
     const atcoCodesByNaptanCodeQuery = `
@@ -239,8 +255,12 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-
-    console.info('retrieving service info for given noc and line name', { noc: nocCode, lineName });
+    logger.info({
+        context: 'data.auroradb',
+        message: 'retrieving service info for given noc and line name',
+        noc: nocCode,
+        lineName,
+    });
 
     const serviceQuery = `
         SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
@@ -296,4 +316,62 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         operatorShortName: service.operatorShortName,
         journeyPatterns: rawPatternService,
     };
+};
+
+export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
+    logger.info({
+        context: 'data.auroradb',
+        message: 'retrieving sales offer packages for given noc',
+        noc: nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT name, description, purchaseLocations, paymentMethods, ticketFormats
+            FROM salesOfferPackage
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCode]);
+
+        return (
+            queryResults.map(item => ({
+                name: item.name,
+                description: item.description,
+                purchaseLocations: item.purchaseLocations,
+                paymentMethods: item.paymentMethods,
+                ticketFormats: item.ticketFormats,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
+    logger.info({
+        context: 'data.auroradb',
+        message: 'inserting sales offer package for given noc',
+        noc: nocCode,
+    });
+
+    const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
+    const paymentMethods = salesOfferPackage.paymentMethods.toString();
+    const ticketFormats = salesOfferPackage.ticketFormats.toString();
+
+    const insertQuery = `INSERT INTO salesOfferPackage 
+    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats) 
+    VALUES (?, ?, ?, ?, ?, ?)`;
+    try {
+        await executeQuery(insertQuery, [
+            nocCode,
+            salesOfferPackage.name,
+            salesOfferPackage.description,
+            purchaseLocations,
+            paymentMethods,
+            ticketFormats,
+        ]);
+    } catch (error) {
+        throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
+    }
 };

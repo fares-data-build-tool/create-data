@@ -1,4 +1,4 @@
-import { isSessionValid } from '../../../src/pages/api/service/validator';
+import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';
 import { setCookieOnResponseObject, getUuidFromCookie } from '../../../src/pages/api/apiUtils/index';
 import direction from '../../../src/pages/api/singleDirection';
 import { getMockRequestAndResponse } from '../../testData/mockData';

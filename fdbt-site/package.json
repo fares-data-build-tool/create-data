@@ -23,7 +23,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && tsc"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && tsc && tsc --project tsconfig.server.json"
         }
     },
     "lint-staged": {
@@ -45,13 +45,13 @@
         "dateformat": "^3.0.3",
         "express": "^4.17.1",
         "express-session": "^1.17.1",
+        "express-winston": "^4.0.3",
         "formidable": "^1.2.2",
         "govuk-frontend": "^3.6.0",
         "helmet": "^3.22.0",
         "jsonwebtoken": "^8.5.1",
         "jwks-rsa": "^1.8.0",
         "lodash": "^4.17.15",
-        "morgan": "^1.10.0",
         "mysql2": "^2.1.0",
         "next": "^9.4.2",
         "next-compose-plugins": "^2.2.0",
@@ -61,6 +61,7 @@
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
         "uuid": "^7.0.2",
+        "winston": "^3.3.3",
         "yup": "^0.29.0"
     },
     "devDependencies": {
@@ -80,7 +81,6 @@
         "@types/jsonwebtoken": "^8.5.0",
         "@types/lodash": "^4.14.155",
         "@types/mock-req-res": "^1.1.0",
-        "@types/morgan": "^1.9.0",
         "@types/mysql2": "github:types/mysql2",
         "@types/next": "^9.0.0",
         "@types/node": "^13.13.6",

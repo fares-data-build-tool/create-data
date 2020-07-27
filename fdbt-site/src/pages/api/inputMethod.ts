@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils/index';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { INPUT_METHOD_COOKIE } from '../../constants';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (req.body.inputMethod) {
@@ -30,6 +30,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
     } catch (error) {
         const message = 'There was a problem selecting the input method for the triangle:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.inputMethod', error);
     }
 };

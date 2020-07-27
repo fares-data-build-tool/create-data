@@ -4,7 +4,7 @@ const withImages = require('next-images');
 const nextConfig = {
     target: 'server',
     poweredByHeader: false,
-    webpack: config => {
+    webpack: (config, { isServer }) => {
         config.module.rules.push({
             test: /\.(pdf|csv)$/,
             use: {
@@ -17,6 +17,12 @@ const nextConfig = {
                 },
             },
         });
+
+        if (!isServer) {
+            config.node = {
+                fs: 'empty',
+            };
+        }
 
         return config;
     },

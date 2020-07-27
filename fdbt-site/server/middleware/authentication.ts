@@ -6,6 +6,7 @@ import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_CO
 import { signOutUser, setCookieOnResponseObject } from '../../src/pages/api/apiUtils';
 import { CognitoIdToken } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
+import logger from '../../src/utils/logger';
 
 const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
 
@@ -72,7 +73,10 @@ export default (req: Request, res: Response, next: NextFunction): void => {
         signOutUser(username, req, res)
             .then(() => res.redirect('/login'))
             .catch(error => {
-                console.error(`failed to sign out user: ${error.stack}`);
+                logger.error(error, {
+                    context: 'server.middleware.authentication',
+                    message: 'failed to sign out user',
+                });
                 res.redirect('/login');
             });
     };
@@ -104,13 +108,20 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                 const refreshToken = cookies.get(REFRESH_TOKEN_COOKIE) ?? null;
 
                 if (refreshToken) {
-                    console.info('ID Token expired, attempting refresh...');
+                    logger.info({
+                        context: 'server.middleware.authentication',
+                        message: 'ID Token expired, attempting refresh',
+                    });
 
                     initiateRefreshAuth(username, refreshToken)
                         .then(data => {
                             if (data.AuthenticationResult?.IdToken) {
                                 setCookieOnResponseObject(ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken, req, res);
-                                console.info('successfully refreshed ID Token');
+                                logger.info({
+                                    context: 'server.middleware.authentication',
+                                    message: 'successfully refreshed ID Token',
+                                });
+
                                 next();
 
                                 return;
@@ -119,7 +130,10 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                             logoutAndRedirect(username);
                         })
                         .catch(error => {
-                            console.warn(`failed to refresh ID token: ${error.stack}`);
+                            logger.warn(error, {
+                                context: 'server.middleware.authentication',
+                                message: 'failed to refresh ID token',
+                            });
                             logoutAndRedirect(username);
                         });
 
@@ -127,7 +141,10 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                 }
             }
 
-            console.warn('ID Token invalid, clearing user session...');
+            logger.warn({
+                context: 'server.middleware.authentication',
+                message: 'ID Token invalid, clearing user session',
+            });
             logoutAndRedirect(username);
 
             return;

@@ -6,6 +6,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK, ID_TOKEN_COOKIE } from '../constants';
 import { getUuidFromCookies, deleteAllCookiesOnServerSide } from '../utils';
 import { CognitoIdToken } from '../interfaces';
+import logger from '../utils/logger';
 
 const title = 'Thank You - Fares Data Build Tool';
 const description = 'Thank you page for the Fares Data Build Tool';
@@ -49,7 +50,7 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const uuid = getUuidFromCookies(ctx);
-    console.info('transaction complete', { uuid });
+    logger.info({ context: 'pages.thankyou', message: 'transaction complete', uuid });
 
     const cookies = parseCookies(ctx);
     const idToken = cookies[ID_TOKEN_COOKIE];

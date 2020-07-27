@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-
 import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {

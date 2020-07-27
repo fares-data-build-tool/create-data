@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { shallow } from 'enzyme';
 import React from 'react';
 import MultipleProducts, { getServerSideProps } from '../../src/pages/multipleProducts';

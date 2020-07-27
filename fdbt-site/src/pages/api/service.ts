@@ -8,12 +8,12 @@ import {
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
 import { FARE_TYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
         const { service } = req.body;
 
@@ -45,6 +45,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/singleDirection');
     } catch (error) {
         const message = 'There was a problem selecting the service:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.service', error);
     }
 };

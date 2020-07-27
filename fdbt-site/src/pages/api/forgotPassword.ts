@@ -30,6 +30,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem with requesting a password reset.';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.forgotPassword', error);
     }
 };
