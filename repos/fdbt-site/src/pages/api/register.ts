@@ -4,6 +4,7 @@ import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
+import logger from '../../utils/logger';
 
 const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';
@@ -59,7 +60,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const servicesForNoc = await getServicesByNocCode(nocCode);
 
             if (servicesForNoc.length === 0) {
-                console.warn('NOC not found in database');
+                logger.warn({
+                    context: 'api.register',
+                    message: 'NOC not found in database',
+                });
 
                 inputChecks.push({
                     inputValue: '',
@@ -81,6 +85,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const parameters = JSON.parse(ChallengeParameters.userAttributes);
 
                 if (!parameters['custom:noc'] || parameters['custom:noc'] !== nocCode) {
+                    logger.warn({
+                        context: 'api.register',
+                        message: 'NOC does not match',
+                        inputtedNoc: nocCode,
+                        requiredNoc: parameters['custom:noc'] || '',
+                    });
+
                     throw new Error('NOC does not match');
                 }
 
@@ -88,13 +99,22 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 await updateUserAttributes(email, [{ Name: 'custom:contactable', Value: contactable }]);
                 await globalSignOut(email);
 
-                console.info('Registration Successful', { noc: nocCode, contactable });
+                logger.info({
+                    context: 'api.register',
+                    message: 'registration successful',
+                    noc: nocCode,
+                });
+
                 redirectTo(res, '/confirmRegistration');
             } else {
                 throw new Error(`unexpected challenge: ${ChallengeName}`);
             }
         } catch (error) {
-            console.warn('Registration Failed', { error: error.message });
+            logger.error(error, {
+                context: 'api.register',
+                message: 'registration failed',
+            });
+
             inputChecks.push({
                 inputValue: '',
                 id: 'email',
@@ -105,6 +125,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem with the creation of the account';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.register', error);
     }
 };

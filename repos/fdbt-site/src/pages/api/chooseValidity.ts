@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { DAYS_VALID_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo } from '../../interfaces';
 
 export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
@@ -44,7 +44,7 @@ export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = '')
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (req.body.validityInput === '0') {
@@ -70,6 +70,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         redirectTo(res, '/periodValidity');
     } catch (error) {
         const message = 'There was a problem inputting the number of days the product is valid for:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.chooseValidity', error);
     }
 };

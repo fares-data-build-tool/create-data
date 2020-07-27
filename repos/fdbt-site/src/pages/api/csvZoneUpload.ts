@@ -4,8 +4,9 @@ import { getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirect
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../../constants';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
+import logger from '../../utils/logger';
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -61,7 +62,10 @@ export const processCsv = async (
     try {
         parsedFileContent = csvParser(fileContent);
     } catch (error) {
-        console.warn('Failed to parse fare zone CSV, error: ', error.stack());
+        logger.warn(error, {
+            context: 'api.csvZoneUpload',
+            message: 'failed to parse fare zone CSV',
+        });
         setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
 
         return null;
@@ -78,9 +82,11 @@ export const processCsv = async (
                 };
 
                 if (!item.FareZoneName || item.NaptanCodes === undefined || item.AtcoCodes === undefined) {
-                    console.warn(
-                        'The uploaded CSV was not of the correct format. One of the required columns of information is missing or misnamed.',
-                    );
+                    logger.warn({
+                        context: 'api.csvZoneUpload',
+                        message:
+                            'the uploaded CSV was not of the correct format, one of the required columns of information is missing or misnamed',
+                    });
                     csvValid = false;
                 }
 
@@ -89,7 +95,10 @@ export const processCsv = async (
             .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
 
         if (rawUserFareZones.length === 0) {
-            console.warn('The uploaded CSV contained no Naptan Codes or Atco Codes');
+            logger.warn({
+                context: 'api.csvZoneUpload',
+                message: 'the uploaded CSV contained no Naptan Codes or Atco Codes',
+            });
             csvValid = false;
         }
 
@@ -117,7 +126,7 @@ export const processCsv = async (
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
@@ -145,6 +154,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem uploading the CSV:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.csvZoneUpload', error);
     }
 };

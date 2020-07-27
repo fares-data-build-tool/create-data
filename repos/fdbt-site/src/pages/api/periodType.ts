@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { PERIOD_TYPE_COOKIE } from '../../constants';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (req.body.periodType) {
@@ -36,6 +36,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
     } catch (error) {
         const message = 'There was a problem selecting the type of period ticket:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.periodType', error);
     }
 };

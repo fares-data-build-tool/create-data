@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { isArray } from 'util';
 import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
 
 interface ServiceList {
@@ -32,7 +32,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const cookies = new Cookies(req, res);
@@ -90,6 +90,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         return;
     } catch (error) {
         const message = 'There was a problem processing the selected services from the servicesList page:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.serviceList', error);
     }
 };

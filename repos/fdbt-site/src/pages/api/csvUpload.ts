@@ -9,8 +9,9 @@ import {
 } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
 import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE, INPUT_METHOD_COOKIE } from '../../constants';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
+import logger from '../../utils/logger';
 
 interface FareTriangleData {
     fareStages: {
@@ -53,7 +54,7 @@ export const faresTriangleDataMapper = (
     const fareStageCount = dataAsLines.length;
 
     if (fareStageCount < 2) {
-        console.warn(`At least 2 fare stages are needed, only ${fareStageCount} found`);
+        logger.warn(`At least 2 fare stages are needed, only ${fareStageCount} found`);
 
         setUploadCookieAndRedirect(req, res, 'At least 2 fare stages are needed');
         return null;
@@ -106,9 +107,10 @@ export const faresTriangleDataMapper = (
     ).length;
 
     if (numberOfPrices !== expectedNumberOfPrices) {
-        console.warn(
-            `Data conversion has not worked properly. Expected ${expectedNumberOfPrices}, got ${numberOfPrices}`,
-        );
+        logger.warn({
+            context: 'api.csvUpload',
+            message: `Data conversion has not worked properly. Expected ${expectedNumberOfPrices}, got ${numberOfPrices}`,
+        });
 
         setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
         return null;
@@ -120,7 +122,7 @@ export const faresTriangleDataMapper = (
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
@@ -155,6 +157,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem uploading the CSV:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.csvUpload', error);
     }
 };

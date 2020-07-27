@@ -5,6 +5,7 @@ import App, { AppProps, AppContext } from 'next/app';
 import React, { ReactElement } from 'react';
 import { Response } from 'express';
 import { CustomAppProps } from '../interfaces';
+import logger from '../utils/logger';
 
 const MyApp = ({ Component, pageProps, csrfToken }: AppProps & { csrfToken: string }): ReactElement => (
     // Prop spreading is the recommended way to implement this, from Next.js docs
@@ -28,7 +29,7 @@ MyApp.getInitialProps = async (appContext: AppContext): Promise<{}> => {
             (appProps as CustomAppProps).csrfToken = locals.csrfToken;
         }
     } catch (error) {
-        console.error(`Unhandled exception: ${error.stack}`);
+        logger.error(error, { context: 'pages.app', message: 'unhandled exception' });
         throw error;
     }
 

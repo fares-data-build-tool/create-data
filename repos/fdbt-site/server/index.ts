@@ -5,6 +5,7 @@ import setupCsrfProtection from './middleware/csrf';
 import setSecurityHeaders from './middleware/security';
 import setupLogging from './middleware/logging';
 import setupSessions from './middleware/sessions';
+import logger from '../src/utils/logger';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
@@ -99,10 +100,13 @@ const setStaticRoutes = (server: Express): void => {
             if (err) {
                 throw err;
             }
-            console.info(`> Ready on http://localhost:${port} - env ${process.env.NODE_ENV}`);
+            logger.info({
+                context: 'server.index',
+                message: `> Ready on http://localhost:${port} - env ${process.env.NODE_ENV}`,
+            });
         });
-    } catch (e) {
-        console.error(e);
+    } catch (error) {
+        logger.error(error, { context: 'server.index' });
         process.exit(1);
     }
 })();
