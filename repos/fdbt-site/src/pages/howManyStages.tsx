@@ -46,9 +46,9 @@ const HowManyStages = ({ errors = [], csrfToken }: HowManyStagesProps & CustomAp
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label govuk-label--s"
-                                        htmlFor="selection"
+                                        htmlFor="less-than-20-fare-stages"
                                     >
-                                        20 fare stages or less
+                                        20 fare stages or fewer
                                     </label>
                                 </div>
                                 <div className="govuk-radios__item">
@@ -63,9 +63,9 @@ const HowManyStages = ({ errors = [], csrfToken }: HowManyStagesProps & CustomAp
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label govuk-label--s"
-                                        htmlFor="selection-2"
+                                        htmlFor="more-than-20-fare-stages"
                                     >
-                                        More than 20 fare stages
+                                        Greater than 20 fare stages
                                     </label>
                                 </div>
                             </div>
