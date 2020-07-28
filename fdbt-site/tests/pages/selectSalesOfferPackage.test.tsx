@@ -79,18 +79,6 @@ describe('pages', () => {
                 expect(result.props.salesOfferPackagesList).toEqual(expectedSalesOfferPackageList);
             });
 
-            it('should redirect to /salesOfferPackage when the user has no stored sales offer packageses', async () => {
-                const writeHeadMock = jest.fn();
-
-                const mockSalesOfferPackages: SalesOfferPackage[] = [];
-                (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
-                const ctx = getMockContext({ mockWriteHeadFn: writeHeadMock });
-                await getServerSideProps(ctx);
-                expect(writeHeadMock).toBeCalledWith(302, {
-                    Location: '/salesOfferPackages',
-                });
-            });
-
             it('should throw an error when necessary nocCode is missing', async () => {
                 const ctx = getMockContext({
                     cookies: { operator: null },

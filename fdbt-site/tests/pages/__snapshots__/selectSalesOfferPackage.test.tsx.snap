@@ -73,12 +73,12 @@ exports[`pages serviceList should render an error when an error message is passe
             <strong>
               sales offer package
             </strong>
-            . You can choose from one you have already setup or create a new one for these products.
+            . You can choose from one you have already setup, a premade one, or create a new one for these products.
           </p>
           <p
             className="govuk-body"
           >
-            Choose from your previously used sales offer packages or create a new one:
+            Select a sales offer package, or create a new one:
           </p>
           <p
             className="govuk-body govuk-!-font-weight-bold content-one-quarter"
@@ -193,12 +193,12 @@ exports[`pages serviceList should render correctly 1`] = `
             <strong>
               sales offer package
             </strong>
-            . You can choose from one you have already setup or create a new one for these products.
+            . You can choose from one you have already setup, a premade one, or create a new one for these products.
           </p>
           <p
             className="govuk-body"
           >
-            Choose from your previously used sales offer packages or create a new one:
+            Select a sales offer package, or create a new one:
           </p>
           <p
             className="govuk-body govuk-!-font-weight-bold content-one-quarter"
