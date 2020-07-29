@@ -628,9 +628,9 @@
 								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:collect_from_agent" version="fxc:v1.0">
@@ -661,7 +661,7 @@
 							<FulfilmentMethodType>validator</FulfilmentMethodType>
 							<typesOfTravelDocument>
 								<TypeOfTravelDocumentRef ref="fxc:mobileApp" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:email" version="fxc:v1.0">
@@ -678,7 +678,7 @@
 								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 						<FulfilmentMethod id="fxc:courier" version="fxc:v1.0">
@@ -688,7 +688,7 @@
 								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
 								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smart_card" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
 							</typesOfTravelDocument>
 						</FulfilmentMethod>
 					</fulfilmentMethods>
@@ -723,7 +723,7 @@
 							<MediaType>mobileApp</MediaType>
 							<MachineReadable>ocr</MachineReadable>
 						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:smart_card" version="fxc:v1.0">
+						<TypeOfTravelDocument id="fxc:smartCard" version="fxc:v1.0">
 							<MediaType>card</MediaType>
 							<MachineReadable>chip</MachineReadable>
 						</TypeOfTravelDocument>
