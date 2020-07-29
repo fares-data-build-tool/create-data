@@ -6,10 +6,7 @@ export default (server: Express): void => {
     server.use(
         expressWinston.logger({
             transports: [new winston.transports.Console()],
-            format:
-                process.env.NODE_ENV === 'production'
-                    ? format.combine(format.json(), format.prettyPrint())
-                    : format.simple(),
+            format: process.env.NODE_ENV === 'production' ? format.json() : format.simple(),
             colorize: false,
             metaField: 'null',
             ignoreRoute: req => req.originalUrl.startsWith('/_next') || req.originalUrl.startsWith('/assets'),
