@@ -10,10 +10,12 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
+    GROUP_TICKET_ATTRIBUTE,
 } from '../constants';
 import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import { MatchingValues } from '../pages/api/outboundMatching';
+import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
@@ -23,6 +25,7 @@ type GetSessionAttributeTypes = {
     [PERIOD_EXPIRY_ATTRIBUTE]: undefined | PeriodExpiryWithErrors | ProductData;
     [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData | ProductInfoWithErrors;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
+    [GROUP_TICKET_ATTRIBUTE]: undefined | GroupTicketAttribute | GroupTicketAttributeWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -41,6 +44,7 @@ type UpdateSessionAttributeTypes = {
     [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | PeriodExpiryWithErrors;
     [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
+    [GROUP_TICKET_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

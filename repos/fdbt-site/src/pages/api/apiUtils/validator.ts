@@ -17,6 +17,8 @@ export const removeExcessWhiteSpace = (input: string): string => {
     return input.trim().replace(/\s+/g, ' ');
 };
 
+export const removeAllWhiteSpace = (input: string): string => input.replace(/\s+/g, '');
+
 export const isCurrency = (periodPriceInput: string): boolean => {
     const regex = /^\d+(\.\d{1,2})?$/;
     return regex.test(periodPriceInput);

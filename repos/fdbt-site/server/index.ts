@@ -100,7 +100,7 @@ const setStaticRoutes = (server: Express): void => {
             if (err) {
                 throw err;
             }
-            logger.info({
+            logger.info('', {
                 context: 'server.index',
                 message: `> Ready on http://localhost:${port} - env ${process.env.NODE_ENV}`,
             });

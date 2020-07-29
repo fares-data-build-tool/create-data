@@ -50,7 +50,7 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const uuid = getUuidFromCookies(ctx);
-    logger.info({ context: 'pages.thankyou', message: 'transaction complete', uuid });
+    logger.info('', { context: 'pages.thankyou', message: 'transaction complete', uuid });
 
     const cookies = parseCookies(ctx);
     const idToken = cookies[ID_TOKEN_COOKIE];

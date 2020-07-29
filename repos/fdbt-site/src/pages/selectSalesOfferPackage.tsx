@@ -7,27 +7,60 @@ import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { redirectTo } from './api/apiUtils';
 import { getSessionAttribute } from '../utils/sessions';
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
 const errorId = 'sales-offer-package-error';
 
+export const defaultSalesOfferPackageOne: SalesOfferPackage = {
+    name: 'Onboard (cash)',
+    description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+    purchaseLocations: ['onBoard'],
+    paymentMethods: ['cash'],
+    ticketFormats: ['paperTicket'],
+};
+
+export const defaultSalesOfferPackageTwo: SalesOfferPackage = {
+    name: 'Onboard (contactless)',
+    description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
+    purchaseLocations: ['onBoard'],
+    paymentMethods: ['contactlessPaymentCard'],
+    ticketFormats: ['paperTicket'],
+};
+
+export const defaultSalesOfferPackageThree: SalesOfferPackage = {
+    name: 'Online (smart card)',
+    description:
+        'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
+    purchaseLocations: ['online'],
+    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+    ticketFormats: ['smartCard'],
+};
+
+export const defaultSalesOfferPackageFour: SalesOfferPackage = {
+    name: 'Mobile App',
+    description:
+        'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
+    purchaseLocations: ['mobileDevice'],
+    paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
+    ticketFormats: ['mobileApp'],
+};
+
 export interface SelectSalesOfferPackageProps {
     salesOfferPackagesList: SalesOfferPackage[];
-    error: ErrorInfo[];
+    errors: ErrorInfo[];
 }
 
 const SelectSalesOfferPackage = ({
     salesOfferPackagesList,
     csrfToken,
-    error,
+    errors,
 }: SelectSalesOfferPackageProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
             <>
-                <ErrorSummary errors={error} />
+                <ErrorSummary errors={errors} />
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="select-sales-offer-package-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -36,8 +69,8 @@ const SelectSalesOfferPackage = ({
                             </h1>
                         </legend>
                         <span id="radio-error" className="govuk-error-message">
-                            <span className={error.length > 0 ? '' : 'govuk-visually-hidden'}>
-                                {error[0] ? error[0].errorMessage : ''}
+                            <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
+                                {errors[0] ? errors[0].errorMessage : ''}
                             </span>
                         </span>
                         <div>
@@ -51,25 +84,24 @@ const SelectSalesOfferPackage = ({
                             </ol>
                             <p className="govuk-body">
                                 This combination of information is called a <strong>sales offer package</strong>. You
-                                can choose from one you have already setup or create a new one for these products.
+                                can choose from one you have already setup, a premade one, or create a new one for these
+                                products.
                             </p>
-                            <p className="govuk-body">
-                                Choose from your previously used sales offer packages or create a new one:
-                            </p>
+                            <p className="govuk-body">Select a sales offer package, or create a new one:</p>
                             <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">
                                 Your sales offer packages
                             </p>
                         </div>
                     </fieldset>
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
-                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
+                        <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
-                                {salesOfferPackagesList.map((offer: SalesOfferPackage, index) => {
-                                    const { name, description } = offer;
-                                    let checkboxTitles = `${name} - ${description}`;
+                                {salesOfferPackagesList.map((salesOfferPackage: SalesOfferPackage, index) => {
+                                    let { description } = salesOfferPackage;
+                                    const { name } = salesOfferPackage;
 
-                                    if (checkboxTitles.length > 110) {
-                                        checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
+                                    if (description.length > 140) {
+                                        description = `${description.substr(0, description.length - 10)}...`;
                                     }
 
                                     return (
@@ -79,13 +111,14 @@ const SelectSalesOfferPackage = ({
                                                 id={`checkbox-${index}`}
                                                 name={name}
                                                 type="checkbox"
-                                                value={JSON.stringify(offer)}
+                                                value={JSON.stringify(salesOfferPackage)}
                                             />
                                             <label
                                                 className="govuk-label govuk-checkboxes__label"
                                                 htmlFor={`checkbox-${index}`}
                                             >
-                                                {checkboxTitles}
+                                                <span className="govuk-!-font-weight-bold"> {name} </span> -{' '}
+                                                {description}
                                             </label>
                                         </div>
                                     );
@@ -124,20 +157,21 @@ export const getServerSideProps = async (
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
     const salesOfferPackagesList = await getSalesOfferPackagesByNocCode(nocCode);
-    if (salesOfferPackagesList.length === 0) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/salesOfferPackages');
-        }
-    }
+    salesOfferPackagesList.unshift(
+        defaultSalesOfferPackageOne,
+        defaultSalesOfferPackageTwo,
+        defaultSalesOfferPackageThree,
+        defaultSalesOfferPackageFour,
+    );
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-    const error: ErrorInfo[] = [];
+    const errors: ErrorInfo[] = [];
     if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
         const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
-        error.push(errorInfo);
+        errors.push(errorInfo);
         return {
             props: {
                 salesOfferPackagesList,
-                error,
+                errors,
             },
         };
     }
@@ -145,7 +179,7 @@ export const getServerSideProps = async (
     return {
         props: {
             salesOfferPackagesList,
-            error: [],
+            errors: [],
         },
     };
 };

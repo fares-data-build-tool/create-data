@@ -54,7 +54,10 @@ export const faresTriangleDataMapper = (
     const fareStageCount = dataAsLines.length;
 
     if (fareStageCount < 2) {
-        logger.warn(`At least 2 fare stages are needed, only ${fareStageCount} found`);
+        logger.warn('', {
+            context: 'api.csvUpload',
+            message: `At least 2 fare stages are needed, only ${fareStageCount} found`,
+        });
 
         setUploadCookieAndRedirect(req, res, 'At least 2 fare stages are needed');
         return null;
@@ -107,7 +110,7 @@ export const faresTriangleDataMapper = (
     ).length;
 
     if (numberOfPrices !== expectedNumberOfPrices) {
-        logger.warn({
+        logger.warn('', {
             context: 'api.csvUpload',
             message: `Data conversion has not worked properly. Expected ${expectedNumberOfPrices}, got ${numberOfPrices}`,
         });

@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages groupSize should render correctly 1`] = `
+<Component
+  description="Group Size entry page of the Fares Data Build Tool"
+  title="Group Size - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/groupSize"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="group-size-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="group-size-page-heading"
+          >
+            How many passengers can use this ticket at one time?
+          </h1>
+          <p
+            className="govuk-hint"
+            id="group-size-page-example"
+          >
+            We need to know the size of the group of passengers that can use this ticket at one time. Example: Up to 5 passengers at a time.
+          </p>
+          <p
+            className="govuk-hint"
+            id="group-size-page-hint"
+          >
+            You will be able to specify the exact number of passengers for each passenger type in the next step.
+          </p>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId=""
+          errors={Array []}
+        >
+          <input
+            className="govuk-input govuk-input--width-2"
+            defaultValue=""
+            id="max-group-size"
+            name="maxGroupSize"
+            type="text"
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages groupSize should render error messaging when errors are passed 1`] = `
+<Component
+  description="Group Size entry page of the Fares Data Build Tool"
+  title="Group Size - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/groupSize"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 30",
+            "id": "max-group-size",
+            "userInput": "not a number",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="group-size-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="group-size-page-heading"
+          >
+            How many passengers can use this ticket at one time?
+          </h1>
+          <p
+            className="govuk-hint"
+            id="group-size-page-example"
+          >
+            We need to know the size of the group of passengers that can use this ticket at one time. Example: Up to 5 passengers at a time.
+          </p>
+          <p
+            className="govuk-hint"
+            id="group-size-page-hint"
+          >
+            You will be able to specify the exact number of passengers for each passenger type in the next step.
+          </p>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="max-group-size"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Enter a whole number between 1 and 30",
+                "id": "max-group-size",
+                "userInput": "not a number",
+              },
+            ]
+          }
+        >
+          <input
+            className="govuk-input govuk-input--width-2"
+            defaultValue="not a number"
+            id="max-group-size"
+            name="maxGroupSize"
+            type="text"
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

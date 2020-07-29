@@ -108,7 +108,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                 const refreshToken = cookies.get(REFRESH_TOKEN_COOKIE) ?? null;
 
                 if (refreshToken) {
-                    logger.info({
+                    logger.info('', {
                         context: 'server.middleware.authentication',
                         message: 'ID Token expired, attempting refresh',
                     });
@@ -117,7 +117,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                         .then(data => {
                             if (data.AuthenticationResult?.IdToken) {
                                 setCookieOnResponseObject(ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken, req, res);
-                                logger.info({
+                                logger.info('', {
                                     context: 'server.middleware.authentication',
                                     message: 'successfully refreshed ID Token',
                                 });
@@ -141,7 +141,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                 }
             }
 
-            logger.warn({
+            logger.warn('', {
                 context: 'server.middleware.authentication',
                 message: 'ID Token invalid, clearing user session',
             });

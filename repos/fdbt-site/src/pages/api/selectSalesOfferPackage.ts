@@ -26,6 +26,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const cookies = new Cookies(req, res);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        if (!fareTypeCookie) {
+            throw new Error('No fare type cookie found.');
+        }
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const { fareType } = fareTypeObject;
 

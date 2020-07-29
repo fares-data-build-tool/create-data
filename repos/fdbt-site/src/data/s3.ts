@@ -47,7 +47,7 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
     };
 
     try {
-        logger.info({
+        logger.info('', {
             context: 'data.s3',
             message: 'retrieving user fare stages from S3',
             uuid,
@@ -69,7 +69,7 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
     };
 
     try {
-        logger.info({
+        logger.info('', {
             context: 'data.s3',
             message: 'retrieving user csv zone data from S3',
             uuid,
@@ -96,7 +96,7 @@ export const getOutboundMatchingFareStages = async (uuid: string): Promise<Match
     };
 
     try {
-        logger.info({
+        logger.info('', {
             context: 'data.s3',
             message: 'retrieving outbound matching fare stages from S3',
             uuid,
@@ -117,7 +117,7 @@ export const putStringInS3 = async (
     text: string,
     contentType: string,
 ): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.s3',
         message: 'uploading string to S3',
         bucket: bucketName,
@@ -150,7 +150,7 @@ export const putDataInS3 = async (
         contentType = 'text/csv; charset=utf-8';
     }
 
-    logger.info({
+    logger.info('', {
         context: 'data.s3',
         message: 'uploading data to S3',
         bucket: bucketName,

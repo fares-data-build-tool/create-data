@@ -3,6 +3,10 @@ import { shallow } from 'enzyme';
 import SelectSalesOfferPackage, {
     SelectSalesOfferPackageProps,
     getServerSideProps,
+    defaultSalesOfferPackageOne,
+    defaultSalesOfferPackageTwo,
+    defaultSalesOfferPackageThree,
+    defaultSalesOfferPackageFour,
 } from '../../src/pages/selectSalesOfferPackage';
 import { getMockContext } from '../testData/mockData';
 import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
@@ -12,30 +16,46 @@ jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
     const selectSalesOfferPackagePropsInfoNoError: SelectSalesOfferPackageProps = {
-        salesOfferPackagesList: [],
-        error: [],
+        salesOfferPackagesList: [
+            defaultSalesOfferPackageOne,
+            defaultSalesOfferPackageTwo,
+            defaultSalesOfferPackageThree,
+            defaultSalesOfferPackageFour,
+        ],
+        errors: [],
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
-        salesOfferPackagesList: [],
-        error: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
+        salesOfferPackagesList: [
+            defaultSalesOfferPackageOne,
+            defaultSalesOfferPackageTwo,
+            defaultSalesOfferPackageThree,
+            defaultSalesOfferPackageFour,
+        ],
+        errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
     };
 
     describe('serviceList', () => {
         it('should render correctly', () => {
-            // eslint-disable-next-line react/jsx-props-no-spreading
             const tree = shallow(
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                <SelectSalesOfferPackage {...selectSalesOfferPackagePropsInfoNoError} csrfToken="" pageProps={[]} />,
+                <SelectSalesOfferPackage
+                    salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
+                    errors={selectSalesOfferPackagePropsInfoNoError.errors}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render an error when an error message is passed through to props', () => {
-            // eslint-disable-next-line react/jsx-props-no-spreading
             const tree = shallow(
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                <SelectSalesOfferPackage {...selectSalesOfferPackagePropsInfoWithError} csrfToken="" pageProps={[]} />,
+                <SelectSalesOfferPackage
+                    salesOfferPackagesList={selectSalesOfferPackagePropsInfoWithError.salesOfferPackagesList}
+                    errors={selectSalesOfferPackagePropsInfoWithError.errors}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -75,20 +95,8 @@ describe('pages', () => {
                         };
                     },
                 );
-                expect(result.props.error.length).toBe(0);
+                expect(result.props.errors.length).toBe(0);
                 expect(result.props.salesOfferPackagesList).toEqual(expectedSalesOfferPackageList);
-            });
-
-            it('should redirect to /salesOfferPackage when the user has no stored sales offer packageses', async () => {
-                const writeHeadMock = jest.fn();
-
-                const mockSalesOfferPackages: SalesOfferPackage[] = [];
-                (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
-                const ctx = getMockContext({ mockWriteHeadFn: writeHeadMock });
-                await getServerSideProps(ctx);
-                expect(writeHeadMock).toBeCalledWith(302, {
-                    Location: '/salesOfferPackages',
-                });
             });
 
             it('should throw an error when necessary nocCode is missing', async () => {
