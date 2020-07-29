@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 setCookieOnResponseObject(ID_TOKEN_COOKIE, idToken, req, res);
                 setCookieOnResponseObject(REFRESH_TOKEN_COOKIE, refreshToken, req, res);
 
-                logger.info({
+                logger.info('', {
                     context: 'api.login',
                     message: 'login successful',
                     noc: nocCode,
