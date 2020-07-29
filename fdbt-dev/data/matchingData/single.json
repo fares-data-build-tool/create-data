@@ -6,53 +6,52 @@
   "type": "single",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
-  "products": [{
-    "salesOfferPackages": [{
-      "name": "onboard sales offer package",
-      "description": "this sales offer package explains how to buy the ticket onboard",
-      "purchaseLocations": [
-        "onBoard"
-      ],
-      "paymentMethods": [
-        "cash",
-        "debitCard",
-        "creditCard"
-      ],
-      "ticketFormats": [
-        "paperTicket"
-      ]
-    },
+  "products": [
     {
-      "name": "mobile app offer package",
-      "description": "this sales offer package explains how to buy the ticket on a mobile app",
-      "purchaseLocations": [
-        "mobileDevice"
-      ],
-      "paymentMethods": [
-        "debitCard",
-        "creditCard",
-        "mobilePhone"
-      ],
-      "ticketFormats": [
-        "mobileApp"
+      "salesOfferPackages": [
+        {
+          "name": "Onboard (cash)",
+          "description": "Purchasable on board the bus, with cash, as a paper ticket.",
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["cash"],
+          "ticketFormats": ["paperTicket"]
+        },
+        {
+          "name": "Onboard (contactless)",
+          "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["contactlessPaymentCard"],
+          "ticketFormats": ["paperTicket"]
+        },
+        {
+          "name": "Online (smart card)",
+          "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
+          "purchaseLocations": ["online"],
+          "paymentMethods": ["directDebit", "creditCard", "debitCard"],
+          "ticketFormats": ["smartCard"]
+        },
+        {
+          "name": "Mobile App",
+          "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
+          "purchaseLocations": ["mobileDevice"],
+          "paymentMethods": [
+            "debitCard",
+            "creditCard",
+            "mobilePhone",
+            "directDebit"
+          ],
+          "ticketFormats": ["mobileApp"]
+        },
+        {
+          "name": "All Encompassing",
+          "description": "All currently available options selected",
+          "purchaseLocations": ["onBoard", "online", "mobileDevice"],
+          "paymentMethods": ["cash", "debitCard", "creditCard", "mobilePhone"],
+          "ticketFormats": ["paperTicket", "mobileApp", "smartCard"]
+        }
       ]
-    },
-    {
-      "name": "online offer package",
-      "description": "this sales offer package explains how to buy the ticket on a mobile app",
-      "purchaseLocations": [
-        "online"
-      ],
-      "paymentMethods": [
-        "debitCard",
-        "creditCard",
-        "directDebit"
-      ],
-      "ticketFormats": [
-        "paperTicket"
-      ]
-    }]
-  }],
+    }
+  ],
   "fareZones": [
     {
       "name": "Test Stage 1",
@@ -72,29 +71,19 @@
       "prices": [
         {
           "price": "1.00",
-          "fareZones": [
-            "Test Stage 2"
-          ]
+          "fareZones": ["Test Stage 2"]
         },
         {
           "price": "2.00",
-          "fareZones": [
-            "Test Stage 3"
-          ]
+          "fareZones": ["Test Stage 3"]
         },
         {
           "price": "3.00",
-          "fareZones": [
-            "Test Stage 4"
-          ]
+          "fareZones": ["Test Stage 4"]
         },
         {
           "price": "4.00",
-          "fareZones": [
-            "Test Stage 5",
-            "Test Stage 6",
-            "Test Stage 7"
-          ]
+          "fareZones": ["Test Stage 5", "Test Stage 6", "Test Stage 7"]
         },
         {
           "price": "5.00",
@@ -108,26 +97,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -149,23 +127,15 @@
       "prices": [
         {
           "price": "2.00",
-          "fareZones": [
-            "Test Stage 3"
-          ]
+          "fareZones": ["Test Stage 3"]
         },
         {
           "price": "3.00",
-          "fareZones": [
-            "Test Stage 4"
-          ]
+          "fareZones": ["Test Stage 4"]
         },
         {
           "price": "4.00",
-          "fareZones": [
-            "Test Stage 5",
-            "Test Stage 6",
-            "Test Stage 7"
-          ]
+          "fareZones": ["Test Stage 5", "Test Stage 6", "Test Stage 7"]
         },
         {
           "price": "5.00",
@@ -179,26 +149,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -231,17 +190,11 @@
       "prices": [
         {
           "price": "3.00",
-          "fareZones": [
-            "Test Stage 4"
-          ]
+          "fareZones": ["Test Stage 4"]
         },
         {
           "price": "4.00",
-          "fareZones": [
-            "Test Stage 5",
-            "Test Stage 6",
-            "Test Stage 7"
-          ]
+          "fareZones": ["Test Stage 5", "Test Stage 6", "Test Stage 7"]
         },
         {
           "price": "5.00",
@@ -255,26 +208,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -296,11 +238,7 @@
       "prices": [
         {
           "price": "4.00",
-          "fareZones": [
-            "Test Stage 5",
-            "Test Stage 6",
-            "Test Stage 7"
-          ]
+          "fareZones": ["Test Stage 5", "Test Stage 6", "Test Stage 7"]
         },
         {
           "price": "5.00",
@@ -314,26 +252,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -355,10 +282,7 @@
       "prices": [
         {
           "price": "4.00",
-          "fareZones": [
-            "Test Stage 6",
-            "Test Stage 7"
-          ]
+          "fareZones": ["Test Stage 6", "Test Stage 7"]
         },
         {
           "price": "5.00",
@@ -372,26 +296,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -413,9 +326,7 @@
       "prices": [
         {
           "price": "4.00",
-          "fareZones": [
-            "Test Stage 7"
-          ]
+          "fareZones": ["Test Stage 7"]
         },
         {
           "price": "5.00",
@@ -429,26 +340,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -491,26 +391,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -541,26 +430,15 @@
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -582,34 +460,19 @@
       "prices": [
         {
           "price": "5.00",
-          "fareZones": [
-            "Test Stage 10",
-            "Test Stage 11",
-            "Test Stage 12"
-          ]
+          "fareZones": ["Test Stage 10", "Test Stage 11", "Test Stage 12"]
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -631,33 +494,19 @@
       "prices": [
         {
           "price": "5.00",
-          "fareZones": [
-            "Test Stage 11",
-            "Test Stage 12"
-          ]
+          "fareZones": ["Test Stage 11", "Test Stage 12"]
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -679,32 +528,19 @@
       "prices": [
         {
           "price": "5.00",
-          "fareZones": [
-            "Test Stage 12"
-          ]
+          "fareZones": ["Test Stage 12"]
         },
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -726,26 +562,15 @@
       "prices": [
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 13",
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 13", "Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -767,25 +592,15 @@
       "prices": [
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 14",
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 14", "Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -807,24 +622,15 @@
       "prices": [
         {
           "price": "6.00",
-          "fareZones": [
-            "Test Stage 15"
-          ]
+          "fareZones": ["Test Stage 15"]
         },
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -846,18 +652,11 @@
       "prices": [
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 16",
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 16", "Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -879,17 +678,11 @@
       "prices": [
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 17",
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 17", "Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -922,16 +715,11 @@
       "prices": [
         {
           "price": "7.00",
-          "fareZones": [
-            "Test Stage 18"
-          ]
+          "fareZones": ["Test Stage 18"]
         },
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -953,10 +741,7 @@
       "prices": [
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 19",
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 19", "Test Stage 20"]
         }
       ]
     },
@@ -989,9 +774,7 @@
       "prices": [
         {
           "price": "8.00",
-          "fareZones": [
-            "Test Stage 20"
-          ]
+          "fareZones": ["Test Stage 20"]
         }
       ]
     },
