@@ -66,6 +66,8 @@ export const SOP_INFO_ATTRIBUTE = 'fdbt-sales-offer-package-info';
 
 export const SALES_OFFER_PACKAGES_ATTRIBUTE = 'fdbt-select-sales-offer-packages';
 
+export const GROUP_TICKET_ATTRIBUTE = 'fdbt-group-tickets';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',
