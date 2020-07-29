@@ -27,7 +27,7 @@ export const initiateAuth = async (
     username: string,
     password: string,
 ): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'initiating auth',
     });
@@ -56,7 +56,7 @@ export const initiateRefreshAuth = async (
     username: string,
     refreshToken: string,
 ): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'initiating refresh auth',
     });
@@ -85,7 +85,7 @@ export const respondToNewPasswordChallenge = async (
     password: string,
     session: string,
 ): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'new password challenge initiated',
     });
@@ -110,7 +110,7 @@ export const respondToNewPasswordChallenge = async (
 };
 
 export const globalSignOut = async (username: string): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'performing global sign out',
     });
@@ -131,7 +131,7 @@ export const updateUserAttributes = async (
     username: string,
     attributes: { Name: string; Value: string }[],
 ): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'updating user attributes',
     });
@@ -150,7 +150,7 @@ export const updateUserAttributes = async (
 };
 
 export const forgotPassword = async (username: string): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'start forgot password',
     });
@@ -173,7 +173,7 @@ export const confirmForgotPassword = async (
     confirmationCode: string,
     password: string,
 ): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'confirm forgot password',
     });
@@ -197,7 +197,7 @@ export const confirmForgotPassword = async (
 };
 
 export const updateUserPassword = async (newPassword: string, username: string): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.cognito',
         message: 'updating user password',
     });

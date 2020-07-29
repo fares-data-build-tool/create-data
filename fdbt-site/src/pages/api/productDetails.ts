@@ -74,6 +74,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             };
             setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, JSON.stringify(periodProduct), req, res);
             redirectTo(res, '/chooseValidity');
+
+            return;
         }
 
         const flatFareProduct: ProductData = {

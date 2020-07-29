@@ -47,7 +47,7 @@ describe('csvUpload', () => {
             Location: '/csvUpload',
         });
         expect(writeHeadMock).toHaveBeenCalledTimes(1);
-        expect(loggerSpy).toBeCalledWith({
+        expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             fileName: 'string',
             message: 'empty CSV Selected',
@@ -79,7 +79,7 @@ describe('csvUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
-        expect(loggerSpy).toBeCalledWith({
+        expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             maxSize: 5242880,
             message: 'file is too large',
@@ -112,7 +112,7 @@ describe('csvUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
-        expect(loggerSpy).toBeCalledWith({
+        expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             message: 'file not of allowed type',
             type: 'text/pdf',

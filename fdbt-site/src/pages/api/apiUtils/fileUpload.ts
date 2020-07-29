@@ -42,25 +42,30 @@ export const validateFile = (fileData: formidable.File, fileContents: string): s
     const { size, type, name } = fileData;
 
     if (!fileContents && name === '') {
-        logger.warn({ context: 'api.utils.validateFile', message: 'no file attached.' });
+        logger.warn('', { context: 'api.utils.validateFile', message: 'no file attached.' });
 
         return 'Select a CSV file to upload';
     }
 
     if (!fileContents && name !== '') {
-        logger.warn({ context: 'api.utils.validateFile', message: 'empty CSV Selected', fileName: name });
+        logger.warn('', { context: 'api.utils.validateFile', message: 'empty CSV Selected', fileName: name });
 
         return 'The selected file is empty';
     }
 
     if (size > MAX_FILE_SIZE) {
-        logger.warn({ context: 'api.utils.validateFile', message: 'file is too large', size, maxSize: MAX_FILE_SIZE });
+        logger.warn('', {
+            context: 'api.utils.validateFile',
+            message: 'file is too large',
+            size,
+            maxSize: MAX_FILE_SIZE,
+        });
 
         return `The selected file must be smaller than 5MB`;
     }
 
     if (!ALLOWED_CSV_FILE_TYPES.includes(type)) {
-        logger.warn({ context: 'api.utils.validateFile', message: 'file not of allowed type', type });
+        logger.warn('', { context: 'api.utils.validateFile', message: 'file not of allowed type', type });
 
         return 'The selected file must be a CSV';
     }
