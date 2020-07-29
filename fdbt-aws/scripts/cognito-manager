@@ -32,6 +32,16 @@ function update_noc() {
   aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$NOC --region eu-west-2
 }
 
+function get_user_status() {
+  if [ -z $EMAIL ]; then
+    echo "usage: cognito-manager get-user-status <email>"
+    exit 1
+  fi
+
+  STATUS=$(aws cognito-idp admin-get-user --user-pool-id $USER_POOL --username $EMAIL --region eu-west-2 | jq .UserStatus)
+  echo $STATUS
+}
+
 if [ -z $USER_POOL ]; then
   echo "You must be authenticated against the target AWS account"
   exit 1
@@ -43,6 +53,8 @@ elif [[ $COMMAND = 'delete-user' ]]; then
   delete_user
 elif [[ $COMMAND = 'update-noc' ]]; then
   update_noc
+elif [[ $COMMAND = 'get-user-status' ]]; then
+  get_user_status
 else
   echo "usage cognito-manager <add-user | delete-user | update-noc>"
   exit 1
