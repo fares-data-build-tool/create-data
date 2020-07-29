@@ -366,7 +366,7 @@ Resources:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=2*, res, b, response_time]"
+      FilterPattern: "{$.res.statusCode=2*}"
       MetricTransformations:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
@@ -376,7 +376,7 @@ Resources:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=3*, res, b, response_time]"
+      FilterPattern: "{$.res.statusCode=3*}"
       MetricTransformations:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
@@ -386,7 +386,7 @@ Resources:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=4*, res, b, response_time]"
+      FilterPattern: "{$.res.statusCode=4*}"
       MetricTransformations:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
@@ -396,7 +396,7 @@ Resources:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: "[remote_addr, a, method, path, http_version, status_code=5*, res, b, response_time]"
+      FilterPattern: "{$.res.statusCode=5*}"
       MetricTransformations:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
@@ -406,17 +406,27 @@ Resources:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: "[remote_addr, a, method, path, http_version, status_code, res, b, response_time, ms]"
+      FilterPattern: "{$.responseTime=*}"
       MetricTransformations:
-        - MetricValue: "$response_time"
+        - MetricValue: "$.responseTime"
           MetricNamespace: "FDBT/Site"
           MetricName: "responseTime"
+
+  TransactionStartLogMetrics:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref SiteLogGroup
+      FilterPattern: '{$.message="*transaction start"}'
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "FDBT/Site"
+          MetricName: "startedTransactions"
 
   TransactionSuccessLogMetrics:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: '[log="*transaction complete*"]'
+      FilterPattern: '{$.message="*transaction complete"}'
       MetricTransformations:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
