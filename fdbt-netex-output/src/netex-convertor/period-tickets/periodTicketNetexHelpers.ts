@@ -390,11 +390,11 @@ export const getSalesOfferPackageList = (
             const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
             const buildDistributionAssignments = (): DistributionAssignment[] => {
-                const distribAssignments = salesOfferPackage.purchaseLocations.map(purchaseLocation => {
+                const distribAssignments = salesOfferPackage.purchaseLocations.map((purchaseLocation, index) => {
                     return {
-                        version: '1.0',
-                        id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${purchaseLocation}`,
-                        order: '1',
+                        version: 'any',
+                        id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}@${purchaseLocation}`,
+                        order: `${index + 1}`,
                         DistributionChannelRef: {
                             ref: `fxc:${purchaseLocation}`,
                             version: 'fxc:v1.0',
