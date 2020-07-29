@@ -90,6 +90,14 @@ export interface RawService {
     journeyPatterns: RawJourneyPattern[];
 }
 
+interface RawSalesOfferPackage {
+    name: string;
+    description: string;
+    purchaseLocations: string;
+    paymentMethods: string;
+    ticketFormats: string;
+}
+
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
 
@@ -142,7 +150,7 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-    logger.info({
+    logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving services for given noc',
         noc: nocCode,
@@ -172,7 +180,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-    logger.info({
+    logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operator name for given noc',
         noc: nocCode,
@@ -196,7 +204,7 @@ export const getOperatorNameByNocCode = async (nocCode: string): Promise<Operato
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
-    logger.info({
+    logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving naptan info for atco codes',
     });
@@ -229,7 +237,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 };
 
 export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
-    logger.info({
+    logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving atco codes by naptan codes',
     });
@@ -255,7 +263,7 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-    logger.info({
+    logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving service info for given noc and line name',
         noc: nocCode,
@@ -319,7 +327,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 };
 
 export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
-    logger.info({
+    logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving sales offer packages for given noc',
         noc: nocCode,
@@ -332,15 +340,15 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCode]);
+        const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode]);
 
         return (
             queryResults.map(item => ({
                 name: item.name,
                 description: item.description,
-                purchaseLocations: item.purchaseLocations,
-                paymentMethods: item.paymentMethods,
-                ticketFormats: item.ticketFormats,
+                purchaseLocations: item.purchaseLocations.split(','),
+                paymentMethods: item.paymentMethods.split(','),
+                ticketFormats: item.ticketFormats.split(','),
             })) || []
         );
     } catch (error) {
@@ -349,7 +357,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
 };
 
 export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
-    logger.info({
+    logger.info('', {
         context: 'data.auroradb',
         message: 'inserting sales offer package for given noc',
         noc: nocCode,

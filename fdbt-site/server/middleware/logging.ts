@@ -6,16 +6,11 @@ export default (server: Express): void => {
     server.use(
         expressWinston.logger({
             transports: [new winston.transports.Console()],
-            format:
-                process.env.NODE_ENV === 'production'
-                    ? format.combine(format.json(), format.prettyPrint())
-                    : format.simple(),
-            meta: false,
+            format: process.env.NODE_ENV === 'production' ? format.json() : format.simple(),
             colorize: false,
             metaField: 'null',
-            msg:
-                '{{req.ip}} - {{req.method}} {{req.url}} HTTP/{{req.httpVersion}} {{res.statusCode}} - - {{res.responseTime}}ms',
             ignoreRoute: req => req.originalUrl.startsWith('/_next') || req.originalUrl.startsWith('/assets'),
+            requestWhitelist: ['url', 'method', 'httpVersion'],
         }),
     );
 };

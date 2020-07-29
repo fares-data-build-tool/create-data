@@ -82,7 +82,7 @@ export const processCsv = async (
                 };
 
                 if (!item.FareZoneName || item.NaptanCodes === undefined || item.AtcoCodes === undefined) {
-                    logger.warn({
+                    logger.warn('', {
                         context: 'api.csvZoneUpload',
                         message:
                             'the uploaded CSV was not of the correct format, one of the required columns of information is missing or misnamed',
@@ -95,7 +95,7 @@ export const processCsv = async (
             .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
 
         if (rawUserFareZones.length === 0) {
-            logger.warn({
+            logger.warn('', {
                 context: 'api.csvZoneUpload',
                 message: 'the uploaded CSV contained no Naptan Codes or Atco Codes',
             });

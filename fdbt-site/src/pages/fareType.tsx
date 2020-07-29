@@ -123,7 +123,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
 
-    logger.info({
+    logger.info('', {
         context: 'pages.fareType',
         message: 'transaction start',
     });

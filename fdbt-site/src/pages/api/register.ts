@@ -60,9 +60,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const servicesForNoc = await getServicesByNocCode(nocCode);
 
             if (servicesForNoc.length === 0) {
-                logger.warn({
+                logger.warn('', {
                     context: 'api.register',
                     message: 'NOC not found in database',
+                    nocCode,
                 });
 
                 inputChecks.push({
@@ -85,7 +86,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const parameters = JSON.parse(ChallengeParameters.userAttributes);
 
                 if (!parameters['custom:noc'] || parameters['custom:noc'] !== nocCode) {
-                    logger.warn({
+                    logger.warn('', {
                         context: 'api.register',
                         message: 'NOC does not match',
                         inputtedNoc: nocCode,
@@ -99,7 +100,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 await updateUserAttributes(email, [{ Name: 'custom:contactable', Value: contactable }]);
                 await globalSignOut(email);
 
-                logger.info({
+                logger.info('', {
                     context: 'api.register',
                     message: 'registration successful',
                     noc: nocCode,
