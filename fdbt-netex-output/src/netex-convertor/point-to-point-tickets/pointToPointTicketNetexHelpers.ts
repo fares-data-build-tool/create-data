@@ -265,11 +265,11 @@ export const buildSalesOfferPackage = (
     const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
     const buildDistributionAssignments = (): DistributionAssignment[] => {
-        const distribAssignments = salesOfferPackageInfo.purchaseLocations.map(purchaseLocation => {
+        const distribAssignments = salesOfferPackageInfo.purchaseLocations.map((purchaseLocation, index) => {
             return {
-                version: '1.0',
-                id: `Trip@${ticketUserConcat}-SOP@${purchaseLocation}`,
-                order: '0',
+                version: 'any',
+                id: `Trip@${ticketUserConcat}-SOP@${salesOfferPackageInfo.name}@${purchaseLocation}`,
+                order: `${index + 1}`,
                 DistributionChannelRef: {
                     ref: `fxc:${purchaseLocation}`,
                     version: 'fxc:v1.0',
@@ -284,11 +284,11 @@ export const buildSalesOfferPackage = (
     };
 
     const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
-        const salesOfferPackageElements = salesOfferPackageInfo.ticketFormats.map(ticketFormat => {
+        const salesOfferPackageElements = salesOfferPackageInfo.ticketFormats.map((ticketFormat, index) => {
             return {
                 id: `${salesOfferPackageInfo.name}@${ticketUserConcat}-SOP@${ticketFormat}`,
                 version: '1.0',
-                order: '2',
+                order: `${index + 1}`,
                 TypeOfTravelDocumentRef: {
                     version: 'fxc:v1.0',
                     ref: `fxc:${ticketFormat}`,
