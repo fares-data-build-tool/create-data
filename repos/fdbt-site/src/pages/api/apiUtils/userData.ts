@@ -41,7 +41,7 @@ import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.';
 
-const generateSalesOfferPackages = (entry: string[]) => {
+const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
 
     entry.forEach(sop => {
@@ -237,7 +237,7 @@ export const getPeriodGeoZoneTicketJson = async (
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
 
-    let productDetailsList: ProductDetails[] = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
+    let productDetailsList: ProductDetails[];
 
     if (!multipleProductCookie) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
@@ -255,6 +255,8 @@ export const getPeriodGeoZoneTicketJson = async (
             productValidity: isPeriodProductDetails(product) ? product.productValidity : '',
             salesOfferPackages,
         }));
+    } else {
+        productDetailsList = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
     }
 
     return {
@@ -311,7 +313,7 @@ export const getPeriodMultipleServicesTicketJson = (
         };
     });
 
-    let productDetailsList: ProductDetails[] = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
+    let productDetailsList: ProductDetails[];
 
     if (!isMultiProducts) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
@@ -331,6 +333,8 @@ export const getPeriodMultipleServicesTicketJson = (
                 salesOfferPackages,
             };
         });
+    } else {
+        productDetailsList = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
     }
 
     return {
