@@ -18,7 +18,7 @@ exports[`_document should render correctly 1`] = `
     <div
       className="govuk-width-container app-width-container--wide"
     >
-      <AlphaBanner />
+      <Banner />
       <Main />
     </div>
     <Footer />
