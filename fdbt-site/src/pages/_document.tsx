@@ -5,7 +5,7 @@ import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { ID_TOKEN_COOKIE } from '../constants';
-import AlphaBanner from '../layout/AlphaBanner';
+import Banner from '../layout/Banner';
 import { Breadcrumb } from '../interfaces';
 import Footer from '../layout/Footer';
 import breadcrumb from '../utils/breadcrumbs';
@@ -69,7 +69,7 @@ class MyDocument extends Document<DocumentProps> {
                 <body className="govuk-template__body app-body-class js-enabled">
                     <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
                     <div className="govuk-width-container app-width-container--wide">
-                        <AlphaBanner />
+                        <Banner />
                         {this.props.breadcrumbs.length !== 0 && <Breadcrumbs breadcrumbs={this.props.breadcrumbs} />}
                         <Main />
                     </div>
