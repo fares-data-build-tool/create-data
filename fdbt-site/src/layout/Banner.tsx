@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { FEEDBACK_LINK } from '../constants';
 
-const AlphaBanner: FC = () => (
+const Banner: FC = () => (
     <div className="govuk-phase-banner">
         <p className="govuk-phase-banner__content">
-            <strong className="govuk-tag govuk-phase-banner__content__tag">alpha</strong>
+            <strong className="govuk-tag govuk-phase-banner__content__tag">beta</strong>
             <span className="govuk-phase-banner__text">
                 This is a new service – your{' '}
                 <a className="govuk-link" id="feedback-link" href={FEEDBACK_LINK}>
@@ -16,4 +16,4 @@ const AlphaBanner: FC = () => (
     </div>
 );
 
-export default AlphaBanner;
+export default Banner;
