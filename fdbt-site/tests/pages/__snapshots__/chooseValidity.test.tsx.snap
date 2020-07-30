@@ -25,9 +25,9 @@ exports[`Choose Validity Page should render correctly 1`] = `
         >
           <h1
             className="govuk-fieldset__heading"
-            id="page-heading"
+            id="choose-validity-page-heading"
           >
-            What duration is your product valid for?
+            How many days is your product valid for?
           </h1>
           <p
             className="govuk-hint"
@@ -39,35 +39,26 @@ exports[`Choose Validity Page should render correctly 1`] = `
              - 
             Adult
           </p>
-        </legend>
-        <div
-          className="govuk-form-group"
-        >
-          <label
-            className="govuk-label"
-            htmlFor="validity"
-          >
-            How many days is your product valid for?
-          </label>
           <p
             className="govuk-hint"
+            id="choose-validity-page-hint"
           >
-            Enter a whole number, for example a day ticket would be 1 and two weeks would be 14
+            Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
           </p>
-          <FormElementWrapper
-            errorClass="govuk-input--error"
-            errorId="validity-error"
-            errors={Array []}
-          >
-            <input
-              className="govuk-input govuk-input--width-2"
-              defaultValue=""
-              id="validity"
-              name="validityInput"
-              type="text"
-            />
-          </FormElementWrapper>
-        </div>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="validity-error"
+          errors={Array []}
+        >
+          <input
+            className="govuk-input govuk-input--width-2"
+            defaultValue=""
+            id="validity"
+            name="validityInput"
+            type="text"
+          />
+        </FormElementWrapper>
       </fieldset>
     </div>
     <input
