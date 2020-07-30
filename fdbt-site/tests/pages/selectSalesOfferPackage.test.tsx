@@ -23,9 +23,11 @@ describe('pages', () => {
             defaultSalesOfferPackageFour,
         ],
         errors: [],
+        productNamesList: [],
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
+        productNamesList: [],
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
@@ -40,6 +42,7 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
+                    productNamesList={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
                     pageProps={[]}
@@ -52,6 +55,7 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoWithError.salesOfferPackagesList}
+                    productNamesList={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
                     pageProps={[]}

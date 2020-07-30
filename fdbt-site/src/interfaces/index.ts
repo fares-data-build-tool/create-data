@@ -188,12 +188,8 @@ export interface FlatFareProductDetails extends BaseProduct {
     productPrice: string;
 }
 
-export interface ProductDetails extends BaseProduct {
-    productName: string;
-    productPrice: string;
-    productDuration: string;
-    productValidity: string;
-}
+export interface ProductDetails extends Product, BaseProduct {}
+
 export interface Stop {
     stopName: string;
     naptanCode: string;
