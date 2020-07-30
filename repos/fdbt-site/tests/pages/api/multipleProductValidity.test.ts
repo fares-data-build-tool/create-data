@@ -134,7 +134,7 @@ describe('multipleProductValidity', () => {
         });
     });
 
-    it('redirects to thankyou page if all valid', async () => {
+    it('redirects to selectSalesOfferPackage page if all valid', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
             body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
@@ -144,7 +144,7 @@ describe('multipleProductValidity', () => {
         await multipleProductValidity(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/thankyou',
+            Location: '/selectSalesOfferPackage',
         });
     });
 
