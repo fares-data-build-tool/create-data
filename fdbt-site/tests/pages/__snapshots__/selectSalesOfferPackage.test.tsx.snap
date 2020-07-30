@@ -113,7 +113,7 @@ exports[`pages serviceList should render an error when an error message is passe
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-0"
+                id="product-0-checkbox-0"
                 name="Onboard (cash)"
                 type="checkbox"
                 value="{\\"name\\":\\"Onboard (cash)\\",\\"description\\":\\"Purchasable on board the bus, with cash, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"cash\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
@@ -132,7 +132,7 @@ exports[`pages serviceList should render an error when an error message is passe
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-1"
+                id="product-0-checkbox-1"
                 name="Onboard (contactless)"
                 type="checkbox"
                 value="{\\"name\\":\\"Onboard (contactless)\\",\\"description\\":\\"Purchasable on board the bus, with a contactless card or device, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"contactlessPaymentCard\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
@@ -151,7 +151,7 @@ exports[`pages serviceList should render an error when an error message is passe
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-2"
+                id="product-0-checkbox-2"
                 name="Online (smart card)"
                 type="checkbox"
                 value="{\\"name\\":\\"Online (smart card)\\",\\"description\\":\\"Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.\\",\\"purchaseLocations\\":[\\"online\\"],\\"paymentMethods\\":[\\"directDebit\\",\\"creditCard\\",\\"debitCard\\"],\\"ticketFormats\\":[\\"smartCard\\"]}"
@@ -170,7 +170,7 @@ exports[`pages serviceList should render an error when an error message is passe
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-3"
+                id="product-0-checkbox-3"
                 name="Mobile App"
                 type="checkbox"
                 value="{\\"name\\":\\"Mobile App\\",\\"description\\":\\"Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.\\",\\"purchaseLocations\\":[\\"mobileDevice\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\",\\"mobilePhone\\",\\"directDebit\\"],\\"ticketFormats\\":[\\"mobileApp\\"]}"
@@ -303,7 +303,7 @@ exports[`pages serviceList should render correctly 1`] = `
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-0"
+                id="product-0-checkbox-0"
                 name="Onboard (cash)"
                 type="checkbox"
                 value="{\\"name\\":\\"Onboard (cash)\\",\\"description\\":\\"Purchasable on board the bus, with cash, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"cash\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
@@ -322,7 +322,7 @@ exports[`pages serviceList should render correctly 1`] = `
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-1"
+                id="product-0-checkbox-1"
                 name="Onboard (contactless)"
                 type="checkbox"
                 value="{\\"name\\":\\"Onboard (contactless)\\",\\"description\\":\\"Purchasable on board the bus, with a contactless card or device, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"contactlessPaymentCard\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
@@ -341,7 +341,7 @@ exports[`pages serviceList should render correctly 1`] = `
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-2"
+                id="product-0-checkbox-2"
                 name="Online (smart card)"
                 type="checkbox"
                 value="{\\"name\\":\\"Online (smart card)\\",\\"description\\":\\"Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.\\",\\"purchaseLocations\\":[\\"online\\"],\\"paymentMethods\\":[\\"directDebit\\",\\"creditCard\\",\\"debitCard\\"],\\"ticketFormats\\":[\\"smartCard\\"]}"
@@ -360,7 +360,7 @@ exports[`pages serviceList should render correctly 1`] = `
               <input
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
-                id="product-undefined-checkbox-3"
+                id="product-0-checkbox-3"
                 name="Mobile App"
                 type="checkbox"
                 value="{\\"name\\":\\"Mobile App\\",\\"description\\":\\"Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.\\",\\"purchaseLocations\\":[\\"mobileDevice\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\",\\"mobilePhone\\",\\"directDebit\\"],\\"ticketFormats\\":[\\"mobileApp\\"]}"
