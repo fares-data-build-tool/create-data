@@ -1,16 +1,12 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import MatchingList from '../../src/components/MatchingList';
-import { userFareStages, selectedFareStages, naptanStopInfo } from '../testData/mockData';
+import { userFareStages, selectedFareStages, zoneStops } from '../testData/mockData';
 
 describe('MatchingList', () => {
     it('should render the matchinglist with options', () => {
         const wrapper = shallow(
-            <MatchingList
-                userFareStages={userFareStages}
-                stops={naptanStopInfo}
-                selectedFareStages={selectedFareStages}
-            />,
+            <MatchingList userFareStages={userFareStages} stops={zoneStops} selectedFareStages={selectedFareStages} />,
         );
         expect(wrapper).toMatchSnapshot();
     });
@@ -19,7 +15,7 @@ describe('MatchingList', () => {
         const wrapper = shallow(
             <MatchingList
                 userFareStages={userFareStages}
-                stops={naptanStopInfo}
+                stops={zoneStops}
                 selectedFareStages={[
                     '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
                 ]}
@@ -33,7 +29,7 @@ describe('MatchingList', () => {
 
     it('should render no value as default value if empty array passed in selectedFareStages', () => {
         const wrapper = shallow(
-            <MatchingList userFareStages={userFareStages} stops={naptanStopInfo} selectedFareStages={[]} />,
+            <MatchingList userFareStages={userFareStages} stops={zoneStops} selectedFareStages={[]} />,
         );
         const selector = wrapper.find('#option-1');
         expect(selector.prop('defaultValue')).toEqual('');

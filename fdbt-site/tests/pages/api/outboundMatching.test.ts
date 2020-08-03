@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import outboundMatching from '../../../src/pages/api/outboundMatching';
 import {
     getMockRequestAndResponse,
     service,
     mockMatchingUserFareStagesWithUnassignedStages,
     mockMatchingUserFareStagesWithAllStagesAssigned,
-    // matchingOutBound,
 } from '../../testData/mockData';
-import * as s3 from '../../../src/data/s3';
-
-jest.mock('../../../src/data/s3.ts');
+import * as sessions from '../../../src/utils/sessions';
+import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
+import { MATCHING_ATTRIBUTE } from '../../../src/constants';
 
 const selectedOptions = {
     option0:
@@ -25,54 +23,49 @@ const selectedOptions = {
 };
 
 describe('Outbound Matching API', () => {
-    const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
-    putStringInS3Spy.mockImplementation(() => Promise.resolve());
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
 
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    // it('correctly generates outbound matching fare zones JSON and uploads to S3', () => {
-    //     const { req, res } = getMockRequestAndResponse({
-    //         cookieValues: {},
-    //         body: {
-    //             ...selectedOptions,
-    //             service: JSON.stringify(service),
-    //             userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
-    //         },
-    //         uuid: {},
-    //         mockWriteHeadFn: writeHeadMock,
-    //     });
-
-    //     outboundMatching(req, res);
-
-    //     const actualMatchingOutbound = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
-
-    //     expect(putStringInS3Spy).toBeCalledTimes(1);
-    //     expect(putStringInS3Spy).toBeCalledWith(
-    //         'fdbt-user-data-dev',
-    //         'return/outbound/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
-    //         expect.any(String),
-    //         'application/json; charset=utf-8',
-    //     );
-
-    //     expect(actualMatchingOutbound).toEqual(matchingOutBound);
-    // });
-
-    it('correctly redirects to outbound matching page when there are fare stages that have not been assigned to stops', () => {
+    it('correctly generates matching info, updates the MATCHING_ATTRIBUTE and then redirects to inboundMatching page is all is valid', () => {
+        const mockMatchingInfo: MatchingInfo = {
+            service: expect.any(Object),
+            userFareStages: expect.any(Object),
+            matchingFareZones: expect.any(Object),
+        };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
+            body: {
+                ...selectedOptions,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        outboundMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingInfo);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/inboundMatching' });
+    });
+
+    it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
+        const mockMatchingError: MatchingWithErrors = {
+            error: true,
+            selectedFareStages: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
             body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
         outboundMatching(req, res);
 
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingError);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/outboundMatching',
         });
@@ -80,14 +73,12 @@ describe('Outbound Matching API', () => {
 
     it('redirects to outbound matching page if no stops are allocated to fare stages', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -98,27 +89,9 @@ describe('Outbound Matching API', () => {
         });
     });
 
-    it('redirects to thankyou page if all valid', () => {
+    it('redirects back to error page if no user data in body', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                ...selectedOptions,
-                service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
-            },
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        outboundMatching(req, res);
-        expect(writeHeadMock).toBeCalled();
-    });
-
-    it('redirects back to outbound matching page if no user data in body', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: { ...selectedOptions, service: JSON.stringify(service), userfarestages: '' },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -128,29 +101,13 @@ describe('Outbound Matching API', () => {
         });
     });
 
-    it('redirects back to outbound matching page if no service info in body', () => {
+    it('redirects back to error page if no service info in body', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 ...selectedOptions,
                 service: '',
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        outboundMatching(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
-    it('should redirect to the error page if the cookie UUIDs to do not match', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: null,
-            uuid: { journeyUuid: 'someUuid' },
             mockWriteHeadFn: writeHeadMock,
         });
 
