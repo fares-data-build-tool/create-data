@@ -6,7 +6,7 @@ import * as s3 from '../../src/data/s3';
 import {
     mockRawService,
     userFareStages,
-    naptanStopInfo,
+    zoneStops,
     service,
     getMockContext,
     mockRawServiceWithDuplicates,
@@ -35,7 +35,7 @@ describe('Matching Page', () => {
         wrapper = shallow(
             <Matching
                 userFareStages={userFareStages}
-                stops={naptanStopInfo}
+                stops={zoneStops}
                 service={service}
                 error={false}
                 selectedFareStages={selectedFareStages}
@@ -57,7 +57,7 @@ describe('Matching Page', () => {
         const mountedWrapper = mount(
             <Matching
                 userFareStages={userFareStages}
-                stops={naptanStopInfo}
+                stops={zoneStops}
                 service={service}
                 error={false}
                 selectedFareStages={selectedFareStages}
@@ -102,7 +102,7 @@ describe('Matching Page', () => {
 
         it('preserves the stops order', async () => {
             getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
-            batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(naptanStopInfo));
+            batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
 
             const ctx = getMockContext({
                 cookies: {

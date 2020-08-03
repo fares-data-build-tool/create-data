@@ -19,7 +19,6 @@ exports[`Inbound OutboundMatching Page should render correctly 1`] = `
       "nocCode": "DCCL",
       "operatorShortName": "DCC",
       "serviceDescription": "Worthing - Seaham - Crawley",
-      "type": "pointToPoint",
     }
   }
   stops={
