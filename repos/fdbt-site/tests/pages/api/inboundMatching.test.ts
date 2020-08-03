@@ -1,16 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import inboundMatching from '../../../src/pages/api/inboundMatching';
 import {
     getMockRequestAndResponse,
     service,
     mockMatchingUserFareStagesWithUnassignedStages,
     mockMatchingUserFareStagesWithAllStagesAssigned,
-    // expectedMatchingJsonReturnNonCircular,
 } from '../../testData/mockData';
-import * as s3 from '../../../src/data/s3';
-import { MatchingFareZones } from '../../../src/interfaces/matchingInterface';
-
-jest.mock('../../../src/data/s3.ts');
+import * as sessions from '../../../src/utils/sessions';
+import { InboundMatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
+import { INBOUND_MATCHING_ATTRIBUTE } from '../../../src/constants';
 
 const selectedOptions = {
     option0:
@@ -25,91 +22,49 @@ const selectedOptions = {
         '{"stop":{"stopName":"Kell Road","naptanCode":"duraptwp","atcoCode":"13003345D","localityCode":"E0010183","localityName":"Horden","indicator":"SE-bound","street":"Kell Road"},"stage":"Piccadilly (York)"}',
 };
 
-const matchingOutBound: MatchingFareZones = {
-    'Acomb Green Lane': {
-        name: 'Acomb Green Lane',
-        stops: [
-            {
-                stopName: 'Yoden Way - Chapel Hill Road',
-                atcoCode: '13003521G',
-                localityCode: 'E0045956',
-                naptanCode: 'duratdmj',
-                localityName: 'Peterlee',
-                indicator: 'W-bound',
-                street: 'Yodan Way',
-                qualifierName: '',
-                parentLocalityName: 'IW Test',
-            },
-        ],
-        prices: [
-            {
-                price: '1.10',
-                fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
-            },
-            {
-                price: '1.70',
-                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
-            },
-        ],
-    },
-};
-
 describe('Inbound Matching API', () => {
-    const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
-    putStringInS3Spy.mockImplementation(() => Promise.resolve());
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
-    const matchingFareZones = jest.spyOn(s3, 'getOutboundMatchingFareStages');
-    matchingFareZones.mockImplementation(() => Promise.resolve(matchingOutBound));
     const writeHeadMock = jest.fn();
-
-    const mockDate = Date.now();
-
-    beforeEach(() => {
-        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
-    });
-
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    // it('correctly generates matching JSON and uploads to S3', () => {
-    //     const { req, res } = getMockRequestAndResponse({
-    //         cookieValues: {},
-    //         body: {
-    //             ...selectedOptions,
-    //             service: JSON.stringify(service),
-    //             userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
-    //         },
-    //         uuid: {},
-    //         mockWriteHeadFn: writeHeadMock,
-    //     });
-
-    //     inboundMatching(req, res);
-
-    //     const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
-    //     expect(putStringInS3Spy).toBeCalledWith(
-    //         'fdbt-matching-data-dev',
-    //         `DCCL/return/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
-    //         expect.any(String),
-    //         'application/json; charset=utf-8',
-    //     );
-    //     expect(expectedMatchingJsonReturnNonCircular).toEqual(actualMatchingData);
-    // });
-
-    it('correctly redirects to inboundMatching page when there are fare stages that have not been assigned to stops', () => {
+    it('correctly generates matching info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to selectSalesOfferPackage page is all is valid', () => {
+        const mockMatchingInfo: InboundMatchingInfo = {
+            inboundUserFareStages: expect.any(Object),
+            inboundMatchingFareZones: expect.any(Object),
+        };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
+            body: {
+                ...selectedOptions,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        inboundMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingInfo);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/selectSalesOfferPackage' });
+    });
+
+    it('correctly generates matching error info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
+        const mockMatchingError: MatchingWithErrors = {
+            error: true,
+            selectedFareStages: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
             body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-
         inboundMatching(req, res);
 
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingError);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/inboundMatching',
         });
@@ -117,14 +72,12 @@ describe('Inbound Matching API', () => {
 
     it('redirects to inboundMatching page if no stops are allocated to fare stages', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -135,27 +88,9 @@ describe('Inbound Matching API', () => {
         });
     });
 
-    it('redirects to thankyou page if all valid', () => {
+    it('redirects back to error page if no user data in body', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                ...selectedOptions,
-                service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
-            },
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        inboundMatching(req, res);
-        expect(writeHeadMock).toBeCalled();
-    });
-
-    it('redirects back to inbound matching page if no user data in body', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: { ...selectedOptions, service: JSON.stringify(service), userfarestages: '' },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -165,29 +100,13 @@ describe('Inbound Matching API', () => {
         });
     });
 
-    it('redirects back to inbound matching page if no service info in body', () => {
+    it('redirects back to error page if no service info in body', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 ...selectedOptions,
                 service: '',
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        inboundMatching(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
-    it('should redirect to the error page if the cookie UUIDs to do not match', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: null,
-            uuid: { journeyUuid: 'someUuid' },
             mockWriteHeadFn: writeHeadMock,
         });
 

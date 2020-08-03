@@ -6,7 +6,6 @@ import {
     CSV_ZONE_UPLOAD_COOKIE,
     SERVICE_LIST_COOKIE,
     PERIOD_TYPE_COOKIE,
-    MATCHING_DATA_BUCKET_NAME,
     PASSENGER_TYPE_COOKIE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
@@ -16,12 +15,8 @@ import {
     redirectTo,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
-    getAttributeFromIdToken,
 } from './apiUtils';
 import { Product } from '../multipleProductValidity';
-import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
-import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
-import { ServicesInfo } from '../../interfaces';
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
@@ -48,7 +43,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
     };
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -82,64 +77,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             return;
         }
 
-        let props = {};
-        const { operator, uuid } = JSON.parse(operatorCookie);
-        const { periodTypeName } = JSON.parse(periodTypeCookie);
-        const passengerTypeObject = JSON.parse(passengerTypeCookie);
-
-        if (fareZoneCookie) {
-            const { fareZoneName } = JSON.parse(fareZoneCookie);
-            const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
-            const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
-
-            if (zoneStops.length === 0) {
-                throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
-            }
-
-            props = {
-                zoneName: fareZoneName,
-                stops: zoneStops,
-            };
-        }
-
-        if (serviceListCookie) {
-            const { selectedServices } = JSON.parse(serviceListCookie);
-            const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
-                const service = selectedService.split('#');
-                return {
-                    lineName: service[0],
-                    serviceCode: service[1],
-                    startDate: service[2],
-                    serviceDescription: service[3],
-                };
-            });
-            props = {
-                selectedServices: formattedServiceInfo,
-            };
-        }
-
-        const email = getAttributeFromIdToken(req, res, 'email');
-
-        if (!email) {
-            throw new Error('Could not extract the user email address from their ID token');
-        }
-
-        const multipleProductPeriod = {
-            operatorName: operator.operatorPublicName,
-            type: periodTypeName,
-            nocCode,
-            email,
-            uuid,
-            products,
-            ...passengerTypeObject,
-            ...props,
-        };
-        await putStringInS3(
-            MATCHING_DATA_BUCKET_NAME,
-            `${nocCode}/${periodTypeName}/${uuid}_${Date.now()}.json`,
-            JSON.stringify(multipleProductPeriod),
-            'application/json; charset=utf-8',
-        );
         redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem collecting the user defined products:';

@@ -41,7 +41,7 @@ import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.';
 
-const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
+export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
 
     entry.forEach(sop => {
@@ -69,11 +69,8 @@ export const getProductsAndSalesOfferPackages = (
 
     Object.entries(reqBody).forEach(entry => {
         const salesOfferPackageValue = !isArray(entry[1]) ? [entry[1]] : (entry[1] as string[]);
-
         const salesOfferPackageList = generateSalesOfferPackages(salesOfferPackageValue);
-
         const parsedMultipleCookie = JSON.parse(multipleProductCookie);
-
         const productDetail = parsedMultipleCookie.find((product: Product) => {
             return product.productName === entry[0];
         });
@@ -123,7 +120,6 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const passengerTypeObject = JSON.parse(passengerTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
-
     const requestBody: { [key: string]: string } = req.body;
     const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
@@ -289,7 +285,6 @@ export const getPeriodMultipleServicesTicketJson = (
     const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-
     if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
         throw new Error('Necessary session object or cookie not found to create user data json');
     }
@@ -301,6 +296,7 @@ export const getPeriodMultipleServicesTicketJson = (
     const isMultiProducts = multipleProductCookie;
 
     const requestBody: { [key: string]: string } = req.body;
+
     const operatorObject = JSON.parse(operatorCookie);
     const { selectedServices } = JSON.parse(serviceListCookie);
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
@@ -372,7 +368,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const uuid = getUuidFromCookie(req, res);
 
     const requestBody: { [key: string]: string } = req.body;
-    const salesOfferPackages = Object.values(requestBody);
+    const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
     const operatorObject = JSON.parse(operatorCookie);
     const { selectedServices } = JSON.parse(serviceListCookie);
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
