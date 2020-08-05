@@ -5,7 +5,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
-import { GROUP_TICKET_ATTRIBUTE } from '../constants';
+import { GROUP_SIZE } from '../constants';
 import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from './api/groupSize';
 
 const title = 'Group Size - Fares Data Build Tool';
@@ -65,7 +65,7 @@ const GroupSize = ({ groupTicketInfo, csrfToken }: GroupSizeProps & CustomAppPro
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: GroupSizeProps } => {
-    const groupTicketInfo = getSessionAttribute(ctx.req, GROUP_TICKET_ATTRIBUTE);
+    const groupTicketInfo = getSessionAttribute(ctx.req, GROUP_SIZE);
     const defaultGroupTicketInfo: GroupTicketAttribute = {
         maxGroupSize: '',
     };

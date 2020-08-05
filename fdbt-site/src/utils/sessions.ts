@@ -1,3 +1,4 @@
+import { GroupPassengerTypes, GroupPassengerTypesWithErrors } from '../pages/api/defineGroupPassengers';
 import { IncomingMessageWithSession, ProductInfo, ProductData, ProductInfoWithErrors } from '../interfaces';
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -10,7 +11,8 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
-    GROUP_TICKET_ATTRIBUTE,
+    GROUP_SIZE,
+    GROUP_PASSENGER_TYPES,
 } from '../constants';
 import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
@@ -25,7 +27,8 @@ type GetSessionAttributeTypes = {
     [PERIOD_EXPIRY_ATTRIBUTE]: undefined | PeriodExpiryWithErrors | ProductData;
     [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData | ProductInfoWithErrors;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
-    [GROUP_TICKET_ATTRIBUTE]: undefined | GroupTicketAttribute | GroupTicketAttributeWithErrors;
+    [GROUP_SIZE]: undefined | GroupTicketAttribute | GroupTicketAttributeWithErrors;
+    [GROUP_PASSENGER_TYPES]: undefined | GroupPassengerTypes | GroupPassengerTypesWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -44,7 +47,8 @@ type UpdateSessionAttributeTypes = {
     [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | PeriodExpiryWithErrors;
     [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
-    [GROUP_TICKET_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
+    [GROUP_SIZE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
+    [GROUP_PASSENGER_TYPES]: GroupPassengerTypes | GroupPassengerTypesWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
