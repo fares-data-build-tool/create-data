@@ -1,18 +1,25 @@
-import { FareZoneList, PointToPointTicket, Operator, ScheduledStopPoints } from '../../types';
+import { FareZoneList, PointToPointTicket, Operator, ScheduledStopPoints, User } from '../../types';
 import {
     getDistanceMatrixElements,
     getFareZoneList,
     getNetexMode,
     getPriceGroups,
     getScheduledStopPointsList,
-    getUserProfile,
     getPreassignedFareProduct,
     isReturnTicket,
     isSingleTicket,
     buildSalesOfferPackages,
     getFareTables,
 } from './pointToPointTicketNetexHelpers';
-import { convertJsonToXml, getCleanWebsite, getNetexTemplateAsJson, NetexObject } from '../sharedHelpers';
+import {
+    convertJsonToXml,
+    getCleanWebsite,
+    getNetexTemplateAsJson,
+    NetexObject,
+    getUserProfile,
+    isGroupTicket,
+    getGroupElement,
+} from '../sharedHelpers';
 
 const pointToPointTicketNetexGenerator = (
     matchingData: PointToPointTicket,
@@ -152,8 +159,19 @@ const pointToPointTicketNetexGenerator = (
         );
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref =
             matchingData.lineName;
-        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.limitations.UserProfile = getUserProfile(
-            matchingData,
+
+        const users = isGroupTicket(matchingData)
+            ? matchingData.groupDefinition.companions
+            : [
+                  {
+                      ageRangeMin: matchingData.ageRangeMin,
+                      ageRangeMax: matchingData.ageRangeMax,
+                      passengerType: matchingData.passengerType,
+                      proofDocuments: matchingData.proofDocuments,
+                  } as User,
+              ];
+        priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.limitations.UserProfile = users.map(
+            getUserProfile,
         );
         priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(matchingData);
 
@@ -175,21 +193,27 @@ const pointToPointTicketNetexGenerator = (
                 'Tariff@return@eligibility';
 
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].id =
-                'Trip@return@conditions_of_travel';
+                'Tariff@return@conditions_of_travel';
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.id =
-                'Trip@return@conditions_of_travel';
+                'Tariff@return@conditions_of_travel';
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.RoundTrip.id =
-                'Trip@return@condition@direction';
+                'Tariff@return@condition@direction';
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.RoundTrip.Name.$t =
                 'return Trip';
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.RoundTrip.TripType.$t =
                 'return';
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.FrequencyOfUse.id =
-                'Trip@return@oneTrip';
+                'Tariff@return@oneTrip';
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.FrequencyOfUse.Name.$t =
                 'One trip no transfers';
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.Interchanging.id =
-                'Trip@return@NoTransfers';
+                'Tariff@return@NoTransfers';
+        }
+
+        if (isGroupTicket(matchingData)) {
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement.push(
+                getGroupElement(matchingData),
+            );
         }
 
         return priceFareFrameToUpdate;

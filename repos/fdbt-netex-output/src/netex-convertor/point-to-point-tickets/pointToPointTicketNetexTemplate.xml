@@ -36,40 +36,41 @@
 			<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP" version="fxc:v1.0" />
 			<!--==== CODESPACEs ==== -->
 			<codespaces>
-				<CodespaceRef ref="napt" />
-				<CodespaceRef ref="naptStop" />
-				<CodespaceRef ref="nptgLocality" />
-				<CodespaceRef ref="nptgUkAdministrativeArea" />
-				<CodespaceRef ref="noc" />
-				<CodespaceRef ref="op" />
+				<CodespaceRef ref="epd_data" />
+				<CodespaceRef ref="fxc_metadata" />
+				<CodespaceRef ref="naptStop_data" />
+				<CodespaceRef ref="nptgLocality_data" />
+				<CodespaceRef ref="noc_data" />
+				<CodespaceRef ref="op_data" />
 			</codespaces>
 			<!--==== FRAME DEFAULTS ==== -->
 			<FrameDefaults>
 				<!---  The default means that actually we could leave off all ids that belong to the  namespace. -->
-				<DefaultCodespaceRef ref="op" />
-				<DefaultDataSourceRef ref="operator" version="1.0" />
+				<DefaultCodespaceRef ref="op_data" />
+				<DefaultDataSourceRef version="1.0" ref="op:src" />
+				<DefaultResponsibilitySetRef version="1.0" ref="op:tariffs" />
 				<DefaultCurrency>GBP</DefaultCurrency>
 			</FrameDefaults>
 			<frames>
 				<!--==== STEP 1:: Define some data regarding the operator - OPERATOR COMMON RESOURCES ====-->
-				<ResourceFrame version="1.0" id="operator" dataSourceRef="op:operator" responsibilitySetRef="network_data">
+				<ResourceFrame version="1.0" id="operator" dataSourceRef="op:src" responsibilitySetRef="network_data">
 					<Name>Operator specific common resources</Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0" />
 					<codespaces>
-						<Codespace id="op">
+						<Codespace id="op_data">
 							<Xmlns>op</Xmlns>
 							<XmlnsUrl></XmlnsUrl>
 							<Description>Operator data</Description>
 						</Codespace>
 					</codespaces>
 					<dataSources>
-						<DataSource id="operator" version="1.0">
-							<Email>feedback@example.co.uk</Email>
+						<DataSource id="op:src" version="1.0">
+							<Email></Email>
 						</DataSource>
 					</dataSources>
 					<!-- ========Responsibility Sets========== -->
 					<responsibilitySets>
-						<ResponsibilitySet version="1.0" id="tariffs">
+						<ResponsibilitySet version="1.0" id="op:tariffs">
 							<Name>Operator Tariffs</Name>
 							<roles>
 								<ResponsibilityRoleAssignment version="1.0" id="tariff_data@creates">
@@ -124,7 +125,7 @@
 					</organisations>
 				</ResourceFrame>
 				<!--==== STEP 2:: Define EACH BUS STOP IN THE ENTIRE SERVICE, IN ALL ZONES ====-->
-				<ServiceFrame version="1.0" id="epd:UK:HCTY:ServiceFrame_UK_PI_NETWORK:HCTY:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+				<ServiceFrame version="1.0" id="epd:UK:HCTY:ServiceFrame_UK_PI_NETWORK:HCTY:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
 					<Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== LINEs ==== -->
@@ -267,7 +268,7 @@
 					</fareZones>
 				</FareFrame>
 				<!--==== STEP 4:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
-				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRODUCT:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRODUCT:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" versionRef="fxc:v1.0" />
 					<!--==== Fare Structure ==== -->
 					<tariffs>
@@ -360,7 +361,7 @@
 					<!--==== Sales Packages==== -->
 					<salesOfferPackages></salesOfferPackages>
 				</FareFrame>
-				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRICE:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRICE:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0" />
 					<FrameDefaults>
 						<!-- Fares are shown in pence. -->
@@ -526,368 +527,52 @@
 			</frames>
 		</CompositeFrame>
 		<!--   ========== UK BUs Fares Generic Metadata ========== -->
-		<CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:common">
+		<CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
 			<ValidBetween>
-				<FromDate>2015-02-01T00:00:00</FromDate>
-				<ToDate>2020-12-31T12:00:00</ToDate>
+				<FromDate>2019-05-01T00:00:00</FromDate>
+				<ToDate>2022-12-31T12:00:00</ToDate>
 			</ValidBetween>
 			<Name>UK FXCP Passenger Information Profile common resources</Name>
 			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" />
+			<codespaces>
+				<Codespace id="naptStop_data">
+					<Xmlns>naptStop</Xmlns>
+					<XmlnsUrl>http://www.naptan.org.uk/stops</XmlnsUrl>
+					<Description>UK National Public Transport Access Nodes: Stops.</Description>
+				</Codespace>
+				<Codespace id="noc_data">
+					<Xmlns>noc</Xmlns>
+					<XmlnsUrl>http://www.traveline.co.uk/noc</XmlnsUrl>
+					<Description>UK national operator codes</Description>
+				</Codespace>
+			</codespaces>
 			<FrameDefaults>
-				<DefaultCodespaceRef ref="fxc" />
-				<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
+				<DefaultCodespaceRef ref="fxc_metadata" />
+				<DefaultDataSourceRef ref="fxc:dft" version="fxc:v1.0" />
 				<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
 			</FrameDefaults>
 			<frames>
-				<FareFrame id="fxc:Common_UK_Fare_Components" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata">
-					<Name>Common Country independent fare component</Name>
-					<FrameDefaults>
-						<DefaultCodespaceRef ref="fxc" />
-						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
-						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
-					</FrameDefaults>
-					<PricingParameterSet id="fxc:Common_Resources" version="fxc:v1.0">
-						<priceUnits>
-							<PriceUnit id="fxc:GBP" version="fxc:v1.0">
-								<Name>Pound Sterling</Name>
-								<PrivateCode>�</PrivateCode>
-								<Precision>2</Precision>
-							</PriceUnit>
-							<PriceUnit id="fxc:EUR" version="fxc:v1.0">
-								<Name>Euro</Name>
-								<PrivateCode>�</PrivateCode>
-								<Precision>2</Precision>
-							</PriceUnit>
-						</priceUnits>
-					</PricingParameterSet>
-					<geographicalUnits>
-						<GeographicalUnit id="fxc:mi" version="fxc:v1.0">
-							<Name>Distance Unit Miles</Name>
-						</GeographicalUnit>
-						<GeographicalUnit id="fxc:km" version="fxc:v1.0">
-							<Name>Distance Unit Kilometres</Name>
-						</GeographicalUnit>
-						<GeographicalUnit id="fxc:unit_stage" version="fxc:v1.0">
-							<Name>Distance Unit Stage</Name>
-						</GeographicalUnit>
-					</geographicalUnits>
-					<usageParameters>
-						<UserProfile version="fxc:v1.0" id="fxc:adult">
-							<Name>Adult</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none" />
-							<companionProfiles>
-								<CompanionProfile version="fxc:v1.0" id="fxc:adult@infant">
-									<UserProfileRef ref="fxc:infant" version="fxc:v1.0" />
-									<MinimumNumberOfPersons>0</MinimumNumberOfPersons>
-									<MaximumNumberOfPersons>3</MaximumNumberOfPersons>
-								</CompanionProfile>
-							</companionProfiles>
-						</UserProfile>
-						<UserProfile version="fxc:v1.0" id="fxc:child">
-							<Name>Child</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child" />
-							<MinimumAge>5</MinimumAge>
-							<MaximumAge>15</MaximumAge>
-						</UserProfile>
-						<UserProfile version="fxc:v1.0" id="fxc:infant">
-							<Name>Infant</Name>
-							<Description>Up to three children under 5 years of age, accompanied by a fare paying adult or child passenger, and not occupying a seat, may travel free of charge on the Company's services.</Description>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:infant" />
-							<MinimumAge>0</MinimumAge>
-							<MaximumAge>4</MaximumAge>
-							<DiscountBasis>free</DiscountBasis>
-							<companionProfiles>
-								<CompanionProfile id="fxc:infant@adult" version="fxc:v1.0">
-									<UserProfileRef ref="fxc:adult" version="fxc:v1.0" />
-									<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-									<MaximumNumberOfPersons>1</MaximumNumberOfPersons>
-									<DiscountBasis>none</DiscountBasis>
-								</CompanionProfile>
-							</companionProfiles>
-						</UserProfile>
-						<UserProfile version="fxc:v1.0" id="fxc:senior">
-							<Name>Senior</Name>
-							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior" />
-							<ProofRequired>membershipCard</ProofRequired>
-							<DiscountBasis>discount</DiscountBasis>
-						</UserProfile>
-					</usageParameters>
-					<distributionChannels>
-						<DistributionChannel id="fxc:online" version="fxc:v1.0">
-							<ShortName>Internet sales</ShortName>
-							<alternativeNames>
-								<AlternativeName order="1" id="fxc:online_de" version="fxc:v1.0">
-									<Name lang="de">Internetverkauf</Name>
-								</AlternativeName>
-								<AlternativeName order="1" id="fxc:online_fr" version="fxc:v1.0">
-									<Name lang="fr">A vendre par l'internet</Name>
-								</AlternativeName>
-							</alternativeNames>
-							<DistributionChannelType>online</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:atStop" version="fxc:v1.0">
-							<ShortName>In station sale by machine, counter or payg</ShortName>
-							<DistributionChannelType>atStop</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:self_service_ticket_machine" version="fxc:v1.0">
-							<ShortName>Automatic Ticket Machine</ShortName>
-							<DistributionChannelType>atStop</DistributionChannelType>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:pay_as_you_go_device" version="fxc:v1.0">
-							<ShortName>Automatic Ticket Machine</ShortName>
-							<DistributionChannelType>atStop</DistributionChannelType>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:at_counter" version="fxc:v1.0">
-							<ShortName>Ticket counter sale</ShortName>
-							<alternativeNames>
-								<AlternativeName order="1" id="fxc:at_counter_de" version="fxc:v1.0">
-									<Name lang="de">Schalter</Name>
-								</AlternativeName>
-								<AlternativeName order="1" id="fxc:at_counter_fr" version="fxc:v1.0">
-									<Name lang="fr">A vendre par le guichet</Name>
-								</AlternativeName>
-							</alternativeNames>
-							<DistributionChannelType>atStop</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:onBoard" version="fxc:v1.0">
-							<ShortName>on_board</ShortName>
-							<DistributionChannelType>onBoard</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:mobileDevice" version="fxc:v1.0">
-							<ShortName>Mobile Device</ShortName>
-							<DistributionChannelType>mobileDevice</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:operator_travel_shop" version="fxc:v1.0">
-							<ShortName>Operator Travel Shop</ShortName>
-							<DistributionChannelType>telephone</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:travel_agent" version="fxc:v1.0">
-							<ShortName>Travel Agent</ShortName>
-							<DistributionChannelType>agency</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:employee_organisation" version="fxc:v1.0">
-							<ShortName>Employee Organisation</ShortName>
-							<DistributionChannelType>other</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-						<DistributionChannel id="fxc:statutory_organisation" version="fxc:v1.0">
-							<ShortName>Statutory Organisation</ShortName>
-							<DistributionChannelType>other</DistributionChannelType>
-							<IsObligatory>false</IsObligatory>
-						</DistributionChannel>
-					</distributionChannels>
-					<fulfilmentMethods>
-						<FulfilmentMethod id="fxc:collect_on_board" version="fxc:v1.0">
-							<Name>Collect on board</Name>
-							<FulfilmentMethodType>conductor</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:collect_from_machine" version="fxc:v1.0">
-							<Name>Collect from machine</Name>
-							<FulfilmentMethodType>ticketMachine</FulfilmentMethodType>
-							<RequiresBookingReference>true</RequiresBookingReference>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:collect_at_counter" version="fxc:v1.0">
-							<Name>Collect at counter</Name>
-							<FulfilmentMethodType>ticketOffice</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:collect_from_agent" version="fxc:v1.0">
-							<Name>Travel agent issues ticket directly</Name>
-							<FulfilmentMethodType>agent</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:mobileApp" version="fxc:v1.0">
-							<Name>Mobile App</Name>
-							<FulfilmentMethodType>mobileApp</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobileApp" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:self_print" version="fxc:v1.0">
-							<Name>Self Print</Name>
-							<FulfilmentMethodType>selfprint</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:online_propagation" version="fxc:v1.0">
-							<Name>Online propagation</Name>
-							<FulfilmentMethodType>validator</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:mobileApp" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:email" version="fxc:v1.0">
-							<Name>EMAIL</Name>
-							<FulfilmentMethodType>email</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:post" version="fxc:v1.0">
-							<Name>Send ticket by post</Name>
-							<FulfilmentMethodType>post</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-						<FulfilmentMethod id="fxc:courier" version="fxc:v1.0">
-							<Name>Send ticket by courier</Name>
-							<FulfilmentMethodType>other</FulfilmentMethodType>
-							<typesOfTravelDocument>
-								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
-								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
-							</typesOfTravelDocument>
-						</FulfilmentMethod>
-					</fulfilmentMethods>
-					<typesOfTravelDocuments>
-						<TypeOfTravelDocument id="fxc:distribution_channel_dependent" version="fxc:v1.0">
-							<Name>Depends on channel used</Name>
-							<MediaType>other</MediaType>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:paperTicket" version="fxc:v1.0">
-							<Name>Printed Ticket</Name>
-							<MediaType>paperTicket</MediaType>
-							<MachineReadable>ocr</MachineReadable>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:hand_written_ticket" version="fxc:v1.0">
-							<Name>Hand written ticket</Name>
-							<MediaType>paperTicket</MediaType>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:magstripe_printed_ticket" version="fxc:v1.0">
-							<Name>Printed Ticket with magnetic Stripe</Name>
-							<MediaType>paperTicket</MediaType>
-							<MachineReadable>magneticStrip</MachineReadable>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:self_print_ticket" version="fxc:v1.0">
-							<MediaType>selfPrintPaperTicket</MediaType>
-							<MachineReadable>ocr</MachineReadable>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:pass" version="fxc:v1.0">
-							<MediaType>card</MediaType>
-							<MachineReadable>barCode</MachineReadable>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:mobileApp" version="fxc:v1.0">
-							<MediaType>mobileApp</MediaType>
-							<MachineReadable>ocr</MachineReadable>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:smartCard" version="fxc:v1.0">
-							<MediaType>card</MediaType>
-							<MachineReadable>chip</MachineReadable>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:electronic_document" version="fxc:v1.0">
-							<MediaType>none</MediaType>
-							<MachineReadable>ocr</MachineReadable>
-						</TypeOfTravelDocument>
-						<TypeOfTravelDocument id="fxc:membership_card" version="fxc:v1.0">
-							<MediaType>card</MediaType>
-							<MachineReadable>none</MachineReadable>
-						</TypeOfTravelDocument>
-					</typesOfTravelDocuments>
-				</FareFrame>
-				<ResourceFrame id="fxc:UK_Bus_Tariffs@Common_Resources" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:common">
-					<Name>NaBT Common Country independent code values</Name>
+				<!-- === Profile Frame Types ===  -->
+				<ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA_FRAMES:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
+					<Name>UK FXCP  Fare profile Frame types and codepaces</Name>
 					<codespaces>
-						<Codespace id="fxc">
+						<Codespace id="fxc_metadata">
 							<Xmlns>fxc</Xmlns>
-							<XmlnsUrl>http://farexchange.org.uk/fxc</XmlnsUrl>
-							<Description>National Bus Tariff Profile metadata</Description>
+							<XmlnsUrl>netex.org.uk/fxc</XmlnsUrl>
+							<Description>UK FareXChange Profile metadata</Description>
 						</Codespace>
-						<Codespace id="napt">
-							<Xmlns>napt</Xmlns>
-							<XmlnsUrl>http://naptan.org.uk/napt</XmlnsUrl>
-							<Description>NaPTAN metadata</Description>
-						</Codespace>
-						<Codespace id="naptStop">
-							<Xmlns>naptStop"&gt;</Xmlns>
-							<XmlnsUrl>http://naptan.org.uk/stops</XmlnsUrl>
-							<Description>T stop data</Description>
-						</Codespace>
-						<Codespace id="nptg">
-							<Xmlns>nptg</Xmlns>
-							<XmlnsUrl>http://nptg.org.uk/</XmlnsUrl>
-							<Description>National Public Transport gazetteer</Description>
-						</Codespace>
-						<Codespace id="nptgLocality">
-							<Xmlns>nptgLocality</Xmlns>
-							<XmlnsUrl>http://nptg.org.uk/locations</XmlnsUrl>
-							<Description>National Public Transport gazetteer locations</Description>
-						</Codespace>
-						<Codespace id="nptgTariffZone">
-							<Xmlns>nptgTariffZone</Xmlns>
-							<XmlnsUrl>http://nptg.org.uk/tariffZones</XmlnsUrl>
-							<Description>National Public Transport gazetteer plus bus zones</Description>
-						</Codespace>
-						<Codespace id="nptgUkAdministrativeArea">
-							<Xmlns>nptgUkAdministrativeArea</Xmlns>
-							<XmlnsUrl>http://www.nptg.org.uk/adminAreas</XmlnsUrl>
-							<Description>UK National Public Transport gazetteer. Codes of administrative areas, are unique within the UK.</Description>
-						</Codespace>
-						<Codespace id="noc">
-							<Xmlns>noc</Xmlns>
-							<XmlnsUrl>http://www.traveline.co.uk/noc</XmlnsUrl>
-							<Description>UKnational operator codes</Description>
+						<Codespace id="epd_data">
+							<Xmlns>epd</Xmlns>
+							<XmlnsUrl>http://fnetex-cen.eu/epd</XmlnsUrl>
+							<Description>European Passenger Information profile data -use for UK frame names</Description>
 						</Codespace>
 					</codespaces>
-					<FrameDefaults>
-						<DefaultCodespaceRef ref="fxc" />
-						<DefaultDataSourceRef ref="fxc:common" version="fxc:v1.0" />
-						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
-						<DefaultLocale>
-							<TimeZoneOffset>0</TimeZoneOffset>
-							<TimeZone>GMT</TimeZone>
-							<SummerTimeZoneOffset>+1</SummerTimeZoneOffset>
-							<SummerTimeZone>BST</SummerTimeZone>
-							<DefaultLanguage>en</DefaultLanguage>
-						</DefaultLocale>
-						<DefaultLocationSystem>WGS84</DefaultLocationSystem>
-						<DefaultSystemOfUnits>SiKilometresAndMetres</DefaultSystemOfUnits>
-						<!-- NB NK invalid content  -->
-						<DefaultCurrency>GBP</DefaultCurrency>
-					</FrameDefaults>
-					<versions>
-						<Version id="fxc:v1.0" version="any">
-							<Description>NPTG version 2.1</Description>
-							<VersionType>baseline</VersionType>
-						</Version>
-					</versions>
 					<dataSources>
-						<DataSource id="fxc:common" version="fxc:v1.0">
-							<Email>standards@nptg.org.uk</Email>
+						<DataSource id="fxc:dft" version="fxc:v1.0">
+							<Email>standards@netex.org.uk</Email>
 						</DataSource>
 					</dataSources>
+					<!-- ========Responsibility Sets========== -->
 					<responsibilitySets>
 						<ResponsibilitySet version="fxc:v1.0" id="fxc:FXC_metadata">
 							<Name>Common</Name>
@@ -895,8 +580,8 @@
 								<ResponsibilityRoleAssignment version="fxc:v1.0" id="fxc:FXC_metadata:DfT">
 									<DataRoleType>creates distributes</DataRoleType>
 									<StakeholderRoleType>DataRegistrar</StakeholderRoleType>
-									<ResponsibleOrganisationRef ref="fxc:DfT" version="fxc:v1.0" />
-									<ResponsibleAreaRef ref="fxc:UK">TODO</ResponsibleAreaRef>
+									<ResponsibleOrganisationRef ref="nptg:DfT" versionRef="nptg:v2.1" />
+									<ResponsibleAreaRef ref="nptgUkRegion:GB" versionRef="nptg:v2.1" />
 								</ResponsibilityRoleAssignment>
 							</roles>
 						</ResponsibilitySet>
@@ -998,9 +683,357 @@
 								</TypeOfFrame>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:PointOfInterestClassification" classOfValues="PointOfInterestClassification">
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_Transaction_Frame" classOfValues="TypeOfFrame">
+							<Name>Types of UK Trasnaction  Frame</Name>
+							<values>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_TRANSACTIONS:FXCP">
+									<Name>UK Bus Profile Operator sample transactions</Name>
+									<FrameClassRef nameOfClass="SalesTransactionFrame" />
+								</TypeOfFrame>
+							</values>
+						</ValueSet>
+					</typesOfValue>
+				</ResourceFrame>
+				<!-- ====COMMON UK PI Profile  RESOURCEs:  META DATA - COULD BE EXTERNALISED ===== ============ -->
+				<!-- === FareXChange  Common fixed definitions  ===  -->
+				<FareFrame id="fxc:UK:DFT:FareFrame_UK_PI_METADATA:FareXChange:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
+					<Name>FXCP Values for Farexchange</Name>
+					<FrameDefaults>
+						<DefaultCodespaceRef ref="fxc_metadata" />
+						<DefaultDataSourceRef ref="fxc:dft" version="fxc:v1.0" />
+						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
+					</FrameDefaults>
+					<PricingParameterSet id="fxc:Common_Resources" version="fxc:v1.0">
+						<priceUnits>
+							<PriceUnit id="fxc:GBP" version="fxc:v1.0">
+								<Name>Pound Sterling</Name>
+								<PrivateCode>&#163;</PrivateCode>
+								<Precision>2</Precision>
+							</PriceUnit>
+							<PriceUnit id="fxc:EUR" version="fxc:v1.0">
+								<Name>Euro</Name>
+								<PrivateCode>&#8364;</PrivateCode>
+								<Precision>2</Precision>
+							</PriceUnit>
+						</priceUnits>
+					</PricingParameterSet>
+					<geographicalUnits>
+						<GeographicalUnit id="fxc:mi" version="fxc:v1.0">
+							<Name>Distance Unit Miles</Name>
+						</GeographicalUnit>
+						<GeographicalUnit id="fxc:km" version="fxc:v1.0">
+							<Name>Distance Unit Kilometres</Name>
+						</GeographicalUnit>
+						<GeographicalUnit id="fxc:unit_stage" version="fxc:v1.0">
+							<Name>Distance Unit Stage</Name>
+						</GeographicalUnit>
+					</geographicalUnits>
+					<!-- === USAGE PARAMETERS === -->
+					<usageParameters>
+						<UserProfile version="fxc:v1.0" id="fxc:adult">
+							<Name>Adult</Name>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none" />
+							<UserType>adult</UserType>
+							<DiscountBasis>none</DiscountBasis>
+							<companionProfiles>
+								<CompanionProfile version="fxc:v1.0" id="fxc:adult@infant">
+									<UserProfileRef ref="fxc:infant" version="fxc:v1.0" />
+									<MinimumNumberOfPersons>0</MinimumNumberOfPersons>
+									<MaximumNumberOfPersons>3</MaximumNumberOfPersons>
+								</CompanionProfile>
+							</companionProfiles>
+						</UserProfile>
+						<UserProfile version="fxc:v1.0" id="fxc:child">
+							<Name>Child</Name>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child" />
+							<UserType>child</UserType>
+							<MinimumAge>5</MinimumAge>
+							<MaximumAge>15</MaximumAge>
+						</UserProfile>
+						<UserProfile version="fxc:v1.0" id="fxc:infant">
+							<Name>Infant</Name>
+							<Description>Up to three children under 5 years of age, accompanied by a fare paying adult or child passenger, and not occupying a seat, may travel free of charge on the Companys services.</Description>
+							<prices>
+								<UsageParameterPrice version="fxc:v1.0" id="fxc:infant">
+									<Amount>0</Amount>
+								</UsageParameterPrice>
+							</prices>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:infant" />
+							<UserType>infant</UserType>
+							<MinimumAge>0</MinimumAge>
+							<MaximumAge>4</MaximumAge>
+							<DiscountBasis>free</DiscountBasis>
+							<companionProfiles>
+								<CompanionProfile id="fxc:infant@adult" version="fxc:v1.0">
+									<UserProfileRef ref="fxc:adult" version="fxc:v1.0" />
+									<MinimumNumberOfPersons>1</MinimumNumberOfPersons>
+									<MaximumNumberOfPersons>1</MaximumNumberOfPersons>
+									<DiscountBasis>none</DiscountBasis>
+								</CompanionProfile>
+							</companionProfiles>
+						</UserProfile>
+						<UserProfile version="fxc:v1.0" id="fxc:student">
+							<Name>Student</Name>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:student" />
+							<UserType>student</UserType>
+							<ProofRequired>membershipCard</ProofRequired>
+							<DiscountBasis>discount</DiscountBasis>
+						</UserProfile>
+						<UserProfile version="fxc:v1.0" id="fxc:senior">
+							<Name>Senior</Name>
+							<TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child" />
+							<UserType>senior</UserType>
+							<MinimumAge>60</MinimumAge>
+						</UserProfile>
+					</usageParameters>
+					<!-- ====CHANNELS -->
+					<distributionChannels>
+						<DistributionChannel id="fxc:online" version="fxc:v1.0">
+							<ShortName>Internet sales</ShortName>
+							<alternativeNames>
+								<AlternativeName order="1" id="fxc:online_de" version="fxc:v1.0">
+									<Name lang="de">Internetverkauf</Name>
+								</AlternativeName>
+								<AlternativeName order="1" id="fxc:online_fr" version="fxc:v1.0">
+									<Name lang="fr">A vendre par l'internet</Name>
+								</AlternativeName>
+							</alternativeNames>
+							<DistributionChannelType>online</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:online_subscription" version="fxc:v1.0">
+							<ShortName>online autonatic subscription to renew</ShortName>
+							<DistributionChannelType>online</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:atStop" version="fxc:v1.0">
+							<ShortName>In station sale by machine, counter or payg</ShortName>
+							<DistributionChannelType>atStop</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:self_service_ticket_machine" version="fxc:v1.0">
+							<ShortName>Automatic Ticket Machine</ShortName>
+							<DistributionChannelType>atStop</DistributionChannelType>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:pay_as_you_go_device" version="fxc:v1.0">
+							<ShortName>Pay as you go device - eg smartcard</ShortName>
+							<DistributionChannelType>atStop</DistributionChannelType>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:at_counter" version="fxc:v1.0">
+							<ShortName>Ticket counter sale</ShortName>
+							<alternativeNames>
+								<AlternativeName order="1" id="fxc:at_counter_de" version="fxc:v1.0">
+									<Name lang="de">Schalter</Name>
+								</AlternativeName>
+								<AlternativeName order="1" id="fxc:at_counter_fr" version="fxc:v1.0">
+									<Name lang="fr">A vendre par le guichet</Name>
+								</AlternativeName>
+							</alternativeNames>
+							<DistributionChannelType>atStop</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:onBoard" version="fxc:v1.0">
+							<ShortName>on_board</ShortName>
+							<DistributionChannelType>onBoard</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:mobileDevice" version="fxc:v1.0">
+							<ShortName>Mobile Device</ShortName>
+							<DistributionChannelType>mobileDevice</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:call_centre" version="fxc:v1.0">
+							<ShortName>Call Centre</ShortName>
+							<DistributionChannelType>telephone</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:operator_travel_shop" version="fxc:v1.0">
+							<ShortName>Operator Travel Shop</ShortName>
+							<DistributionChannelType>telephone</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:travel_agent" version="fxc:v1.0">
+							<ShortName>Travel Agent</ShortName>
+							<DistributionChannelType>agency</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:employee_organisation" version="fxc:v1.0">
+							<ShortName>Employee Organisation</ShortName>
+							<DistributionChannelType>other</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:statutory_organisation" version="fxc:v1.0">
+							<ShortName>Statutory Organisation</ShortName>
+							<DistributionChannelType>other</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+					</distributionChannels>
+					<fulfilmentMethods>
+						<FulfilmentMethod id="fxc:collect_on_board" version="fxc:v1.0">
+							<Name>Collect on board</Name>
+							<FulfilmentMethodType>conductor</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:collect_from_machine" version="fxc:v1.0">
+							<Name>Collect from machine</Name>
+							<FulfilmentMethodType>ticketMachine</FulfilmentMethodType>
+							<RequiresBookingReference>true</RequiresBookingReference>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:collect_at_counter" version="fxc:v1.0">
+							<Name>Collect at counter</Name>
+							<FulfilmentMethodType>ticketOffice</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:hand_written_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:collect_from_agent" version="fxc:v1.0">
+							<Name>Travel agent issues ticket directly</Name>
+							<FulfilmentMethodType>agent</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:mobile_app" version="fxc:v1.0">
+							<Name>Mobile App</Name>
+							<FulfilmentMethodType>mobileApp</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:mobileApp" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:self_print" version="fxc:v1.0">
+							<Name>Self Print</Name>
+							<FulfilmentMethodType>selfprint</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:electronic_document" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:online_propagation" version="fxc:v1.0">
+							<Name>Online propagation</Name>
+							<FulfilmentMethodType>validator</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:mobileApp" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:email" version="fxc:v1.0">
+							<Name>EMAIL</Name>
+							<FulfilmentMethodType>email</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:self_print_ticket" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:post" version="fxc:v1.0">
+							<Name>Send ticket by post</Name>
+							<FulfilmentMethodType>post</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+						<FulfilmentMethod id="fxc:courier" version="fxc:v1.0">
+							<Name>Send ticket by courier</Name>
+							<FulfilmentMethodType>other</FulfilmentMethodType>
+							<typesOfTravelDocument>
+								<TypeOfTravelDocumentRef ref="fxc:paperTicket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:magstripe_printed_ticket" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:pass" version="fxc:v1.0" />
+								<TypeOfTravelDocumentRef ref="fxc:smartCard" version="fxc:v1.0" />
+							</typesOfTravelDocument>
+						</FulfilmentMethod>
+					</fulfilmentMethods>
+					<typesOfTravelDocuments>
+						<TypeOfTravelDocument id="fxc:distribution_channel_dependent" version="fxc:v1.0">
+							<Name>Depends on channel used</Name>
+							<MediaType>other</MediaType>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:paperTicket" version="fxc:v1.0">
+							<Name>Printed Ticket</Name>
+							<MediaType>paperTicket</MediaType>
+							<MachineReadable>ocr</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:hand_written_ticket" version="fxc:v1.0">
+							<Name>Hand written ticket</Name>
+							<MediaType>paperTicket</MediaType>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:magstripe_printed_ticket" version="fxc:v1.0">
+							<Name>Printed Ticket with magnetic Stripe</Name>
+							<MediaType>paperTicket</MediaType>
+							<MachineReadable>magneticStrip</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:self_print_ticket" version="fxc:v1.0">
+							<MediaType>selfPrintPaperTicket</MediaType>
+							<MachineReadable>ocr</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:pass" version="fxc:v1.0">
+							<MediaType>card</MediaType>
+							<MachineReadable>barCode</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:mobileApp" version="fxc:v1.0">
+							<MediaType>mobileApp</MediaType>
+							<MachineReadable>ocr</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:smartCard" version="fxc:v1.0">
+							<MediaType>card</MediaType>
+							<MachineReadable>chip</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:electronic_document" version="fxc:v1.0">
+							<MediaType>none</MediaType>
+							<MachineReadable>ocr</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:membership_card" version="fxc:v1.0">
+							<MediaType>card</MediaType>
+							<MachineReadable>none</MachineReadable>
+						</TypeOfTravelDocument>
+					</typesOfTravelDocuments>
+				</FareFrame>
+				<ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA:FareXChange:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
+					<Name>FXCP - Fare profile  metadata</Name>
+					<FrameDefaults>
+						<DefaultCodespaceRef ref="fxc_metadata" />
+						<DefaultDataSourceRef ref="fxc:dft" version="fxc:v1.0" />
+						<DefaultResponsibilitySetRef ref="fxc:FXC_metadata" version="fxc:v1.0" />
+						<DefaultLocale>
+							<TimeZoneOffset>0</TimeZoneOffset>
+							<TimeZone>GMT</TimeZone>
+							<SummerTimeZoneOffset>+1</SummerTimeZoneOffset>
+							<SummerTimeZone>BST</SummerTimeZone>
+							<DefaultLanguage>en</DefaultLanguage>
+						</DefaultLocale>
+						<DefaultLocationSystem>WGS84</DefaultLocationSystem>
+						<DefaultSystemOfUnits>SiKilometresAndMetres</DefaultSystemOfUnits>
+						<DefaultCurrency>GBP</DefaultCurrency>
+					</FrameDefaults>
+					<versions>
+						<Version id="fxc:v1.0" version="any">
+							<ValidBetween>
+								<FromDate>2019-01-01T01:01:01Z</FromDate>
+							</ValidBetween>
+							<Description>FXC version 2.1</Description>
+							<VersionType>baseline</VersionType>
+						</Version>
+					</versions>
+					<typesOfValue>
+						<!-- ======== Code sets ========= -->
+						<ValueSet version="fxc:v1.0" id="fxc:PointsOfInterest_Classifications" classOfValues="PointOfInterestClassification">
 							<Name>Types of POI</Name>
 							<values>
+								<!--- ====Type of Product category ========= -->
 								<PointOfInterestClassification version="fxc:v1.0" id="fxc:operator_travel_shop">
 									<Name>Travel Shop</Name>
 								</PointOfInterestClassification>
@@ -1009,9 +1042,10 @@
 								</PointOfInterestClassification>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypeOfFareZone" classOfValues="TypeOfZone">
-							<Name>Types of Fare Zone</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareZone" classOfValues="TypeOfZone">
+							<Name>Types of FARE ZONE</Name>
 							<values>
+								<!--- ====Type of Product category ========= -->
 								<TypeOfZone version="fxc:v1.0" id="fxc:fare_zone@operator">
 									<Name>Operator defined zone</Name>
 								</TypeOfZone>
@@ -1023,9 +1057,10 @@
 								</TypeOfZone>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfProductCategory" classOfValues="TypeOfProductCategory">
-							<Name>Types of Product Category</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_ProductCategory" classOfValues="TypeOfProductCategory">
+							<Name>Types of PRODUCT CATEGORY</Name>
 							<values>
+								<!--- ====Type of Product category ========= -->
 								<TypeOfProductCategory version="fxc:v1.0" id="fxc:urban_bus">
 									<Name>Urban Bus</Name>
 								</TypeOfProductCategory>
@@ -1040,14 +1075,16 @@
 						<ValueSet version="fxc:v1.0" id="fxc:PurposesOfGrouping" classOfValues="PurposeOfGrouping">
 							<Name>Purposes of Grouping</Name>
 							<values>
+								<!--- ====Type of Product category ========= -->
 								<PurposeOfGrouping version="fxc:v1.0" id="fxc:route_exclusion">
-									<Name>Routes to be ommited</Name>
+									<Name>Routes to be ommitted</Name>
 								</PurposeOfGrouping>
 							</values>
 						</ValueSet>
 						<ValueSet version="fxc:v1.0" id="fxc:ChargingMoments" classOfValues="ChargingMoment">
-							<Name>Charging Moments</Name>
+							<Name>Types of CHARGING MOMENT</Name>
 							<values>
+								<!--- ==== TypeOfChargingMoment ========= -->
 								<ChargingMoment version="fxc:v1.0" id="fxc:prepayment">
 									<Name>Prepaid</Name>
 								</ChargingMoment>
@@ -1061,32 +1098,36 @@
 									<Name>Prepaid - free issue</Name>
 								</ChargingMoment>
 								<ChargingMoment version="fxc:v1.0" id="fxc::post_payment">
-									<Name>Prepaid</Name>
+									<Name>Postpaid</Name>
+								</ChargingMoment>
+								<ChargingMoment version="fxc:v1.0" id="fxc::post_payment_periodic">
+									<Name>Postpaid</Name>
 								</ChargingMoment>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfFareProduct@trip" classOfValues="TypeOfFareProduct">
-							<Name>Types Of Fare Product - Trip</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareProduct@trip" classOfValues="TypeOfFareProduct">
+							<Name>Types of FARE PRODUCT - Trip</Name>
 							<values>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@trip@short_hop">
 									<Name>Short hop fare</Name>
 								</TypeOfFareProduct>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@trip@single">
-									<Name>single fare</Name>
+									<Name>Single fare</Name>
 								</TypeOfFareProduct>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:era:standard_product@trip@time_limited">
 									<Name>Time Limited fare</Name>
 								</TypeOfFareProduct>
-								<TypeOfFareProduct version="fxc:v1.0" id="fxc:special_product@Trip@period_single">
-									<Name>Period single fare</Name>
+								<!--- Special -->
+								<TypeOfFareProduct version="fxc:v1.0" id="fxc:special_product@trip@period_return">
+									<Name>Period return fare</Name>
 								</TypeOfFareProduct>
-								<TypeOfFareProduct version="fxc:v1.0" id="fxc:era:special_produc@tript@day_single">
-									<Name>Day retirn fare</Name>
+								<TypeOfFareProduct version="fxc:v1.0" id="fxc:era:special_produc@trip@day_return">
+									<Name>Day return fare</Name>
 								</TypeOfFareProduct>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfFareProduct@pass" classOfValues="TypeOfFareProduct">
-							<Name>Types Of Fare Product - Pass</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareProduct@pass" classOfValues="TypeOfFareProduct">
+							<Name>Types of FARE PRODUCT - Pass</Name>
 							<values>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@pass@day">
 									<Name>day pass - till end of fare day</Name>
@@ -1099,8 +1140,8 @@
 								</TypeOfFareProduct>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfFareProduct@carnet" classOfValues="TypeOfFareProduct">
-							<Name>Types Of Fare Product - Pass</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareProduct@carnet" classOfValues="TypeOfFareProduct">
+							<Name>Types Of FARE PRODUCT- Pass</Name>
 							<values>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@carnet@trips">
 									<Name>Carnet of trips.</Name>
@@ -1110,8 +1151,8 @@
 								</TypeOfFareProduct>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfFareProduct@discount" classOfValues="TypeOfFareProduct">
-							<Name>Types Of Fare Product - Pass</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareProduct@discount" classOfValues="TypeOfFareProduct">
+							<Name>Types Of FARE PRODUCT - Pass</Name>
 							<values>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@discount@sales">
 									<Name>Sales discount righty</Name>
@@ -1121,34 +1162,35 @@
 								</TypeOfFareProduct>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfFareProduct@stored_value" classOfValues="TypeOfFareProduct">
-							<Name>Types Of Fare Product  - Epurse</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareProduct@stored_value" classOfValues="TypeOfFareProduct">
+							<Name>Types of FARE PRODUCT - Epurse</Name>
 							<values>
 								<TypeOfFareProduct version="fxc:v1.0" id="fxc:standard_product@stored_value@epurse">
 									<Name>Epurse</Name>
 								</TypeOfFareProduct>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfSalesOfferPackage" classOfValues="TypeOfSalesOfferPackage">
-							<Name>Types Of Sales Offer  Product</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_SalesOfferPackage" classOfValues="TypeOfSalesOfferPackage">
+							<Name>Types of SALES OFFER PACKAGE.</Name>
 							<values>
 								<TypeOfSalesOfferPackage version="fxc:v1.0" id="fxc:standard_product@all_operators">
-									<Name>Product is standrad and supported by all operators</Name>
+									<Name>Product is standard and supported by all operators</Name>
 								</TypeOfSalesOfferPackage>
 								<TypeOfSalesOfferPackage version="fxc:v1.0" id="fxc:standard_product@multi_operator">
 									<Name>Product is standrad and supported by all operators</Name>
 								</TypeOfSalesOfferPackage>
 								<TypeOfSalesOfferPackage version="fxc:v1.0" id="fxc:standard_product@operator">
-									<Name>single operator standard product</Name>
+									<Name>Single operator standard product</Name>
 								</TypeOfSalesOfferPackage>
 								<TypeOfSalesOfferPackage version="fxc:v1.0" id="fxc:special_product@operator">
-									<Name>single operator special product</Name>
+									<Name>Single operator special product</Name>
 								</TypeOfSalesOfferPackage>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:ClassesOfUse" classOfValues="ClassOfUse">
-							<Name>Classes of Use</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Classes_of_Use" classOfValues="ClassOfUse">
+							<Name>Types of CLASS OF USE.</Name>
 							<values>
+								<!--- ====ClassOfUse ========= -->
 								<ClassOfUse version="fxc:v1.0" id="fxc:first">
 									<Name>First Class</Name>
 								</ClassOfUse>
@@ -1157,17 +1199,19 @@
 								</ClassOfUse>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfProjection" classOfValues="TypeOfProjection">
-							<Name>TypesOf Projection</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_Projection" classOfValues="TypeOfProjection">
+							<Name>Types of PROJECTION</Name>
 							<values>
+								<!--- ====ClassOfUse ========= -->
 								<TypeOfProjection version="fxc:v1.0" id="fxc:tariff_zone_border">
 									<Name>The boundary stops for a fare_zone</Name>
 								</TypeOfProjection>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfFareContractEntry" classOfValues="TypeOfFareContractEntry">
-							<Name>Types of fare contract entry</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareContractEntry" classOfValues="TypeOfFareContractEntry">
+							<Name>Types of FARE CONTRACT ENTRY</Name>
 							<values>
+								<!--- ====TypeOfFareContractEntry ========= -->
 								<TypeOfFareContractEntry version="fxc:v1.0" id="fxc:product_purchase">
 									<Name>Purchase</Name>
 								</TypeOfFareContractEntry>
@@ -1182,20 +1226,21 @@
 								</TypeOfFareContractEntry>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfConcession" classOfValues="TypeOfConcession">
-							<Name>Types of concession</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_Concession" classOfValues="TypeOfConcession">
+							<Name>Types of CONCESSION</Name>
 							<values>
+								<!--- ====TypeOfConcession method========= -->
 								<TypeOfConcession version="fxc:v1.0" id="fxc:none">
 									<Name>Adult</Name>
-								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:infant">
-									<Name>Infant</Name>
 								</TypeOfConcession>
 								<TypeOfConcession version="fxc:v1.0" id="fxc:child">
 									<Name>Child</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:youth">
-									<Name>Youth</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:infant">
+									<Name>Infant</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:senior">
+									<Name>Senior</Name>
 								</TypeOfConcession>
 								<TypeOfConcession version="fxc:v1.0" id="fxc:school_pupil">
 									<Name>School pupil</Name>
@@ -1203,29 +1248,36 @@
 								<TypeOfConcession version="fxc:v1.0" id="fxc:student">
 									<Name>Student</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:young_adult">
-									<Name>Youth</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:young_person">
+									<Name>Young Person</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:senior">
-									<Name>Senior</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:disabled">
+									<Name>Disabled</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:registered_disabled">
-									<Name>Registered disabled</Name>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:disabled_companion">
+									<Name>Disabled Companion</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:employee">
+									<Name>Employee</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:military">
+									<Name>Military</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:job_seeker">
+									<Name>Job Seeker</Name>
+								</TypeOfConcession>
+								<TypeOfConcession version="fxc:v1.0" id="fxc:guide_dog">
+									<Name>Guide Dog</Name>
 								</TypeOfConcession>
 								<TypeOfConcession version="fxc:v1.0" id="fxc:animal">
 									<Name>Animal</Name>
 								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:social">
-									<Name>Social</Name>
-								</TypeOfConcession>
-								<TypeOfConcession version="fxc:v1.0" id="fxc:statutory">
-									<Name>Statutory</Name>
-								</TypeOfConcession>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfTariff" classOfValues="TypeOfTariff">
-							<Name>Types of Tariff</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_Tariff" classOfValues="TypeOfTariff">
+							<Name>Spatial Types of Tariff</Name>
 							<values>
+								<!--- ====Types OfTariff ========= -->
 								<TypeOfTariff version="fxc:v1.0" id="fxc:Distance_kilometers">
 									<Name>Kilometer Distance Kilometers</Name>
 								</TypeOfTariff>
@@ -1234,6 +1286,9 @@
 								</TypeOfTariff>
 								<TypeOfTariff version="fxc:v1.0" id="fxc:point_to_point">
 									<Name>Point to point</Name>
+								</TypeOfTariff>
+								<TypeOfTariff version="fxc:v1.0" id="fxc:zone_to_zone">
+									<Name>Zone to Zone</Name>
 								</TypeOfTariff>
 								<TypeOfTariff version="fxc:v1.0" id="fxc:zonal">
 									<Name>Zonal</Name>
@@ -1247,13 +1302,63 @@
 								<TypeOfTariff version="fxc:v1.0" id="fxc:stored_value">
 									<Name>Stored value</Name>
 								</TypeOfTariff>
+								<TypeOfTariff version="fxc:v1.0" id="fxc:discount">
+									<Name>Discount value</Name>
+								</TypeOfTariff>
 								<TypeOfTariff version="fxc:v1.0" id="fxc:multitrip">
 									<Name>Multitrip carnet</Name>
 								</TypeOfTariff>
+								<TypeOfTariff version="fxc:v1.0" id="fxc:identity_card">
+									<Name>SIdentity</Name>
+								</TypeOfTariff>
 							</values>
 						</ValueSet>
-						<ValueSet version="fxc:v1.0" id="fxc:TypesOfAccessRightAssignment" classOfValues="TypeOfAccessRightAssignment">
-							<Name>Types of Access right Assignment</Name>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_FareStructureElement" classOfValues="TypeOfFareStructureElement">
+							<Name>FXCP: Types of FARE STRUCTURE ELEMENT.</Name>
+							<values>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:access">
+									<Name>Access rights</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:access_when">
+									<Name>Fare demand :peak /off peak etc access rights to use or travel during some period</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:accepted_by">
+									<Name>Accepted by operator</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:eligibility">
+									<Name>Eligibility to purchase</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:groups">
+									<Name>Group tickets available</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:durations">
+									<Name>Time intervals</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:prerequisites">
+									<Name>Defines required entitlements</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:entitles">
+									<Name>Gives right to other products</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:sale_conditions">
+									<Name>Defines a condition or restriction on purchase</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:travel_conditions">
+									<Name>Condition on use</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:carnet_units">
+									<Name>Specifies units for purchase</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:outlets">
+									<Name>Specifies where a purchase can be made</Name>
+								</TypeOfFareStructureElement>
+								<TypeOfFareStructureElement version="fxc:v1.0" id="fxc:quotas">
+									<Name>Quota applies</Name>
+								</TypeOfFareStructureElement>
+							</values>
+						</ValueSet>
+						<ValueSet version="fxc:v1.0" id="fxc:Types_of_AccessRightAssignment" classOfValues="TypeOfAccessRightAssignment">
+							<Name>Types of Access Right Assignment</Name>
 							<values>
 								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:eligible">
 									<Name>Eligible for a product or discount</Name>
@@ -1303,7 +1408,7 @@
 								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:can_use_to_pay_for">
 									<Name>Gives ability to purchase automatically using</Name>
 								</TypeOfAccessRightAssignment>
-								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:payment_schedule">
+								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:payment_schedules">
 									<Name>Specifices if subscription or single payment</Name>
 								</TypeOfAccessRightAssignment>
 								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:reservation_condition">
@@ -1312,11 +1417,14 @@
 								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:distribution_channel_restriction">
 									<Name>Constrains availability for distribution by a channel</Name>
 								</TypeOfAccessRightAssignment>
-								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:takes_properties_from_group">
+								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:use_before">
 									<Name>Takes properties from group package</Name>
 								</TypeOfAccessRightAssignment>
 								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:quota_applies">
 									<Name>Quota applies</Name>
+								</TypeOfAccessRightAssignment>
+								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:promotion_applies">
+									<Name>Promotion applies</Name>
 								</TypeOfAccessRightAssignment>
 								<TypeOfAccessRightAssignment version="fxc:v1.0" id="fxc:validity_chaining">
 									<Name>Quota applies</Name>
@@ -1324,12 +1432,14 @@
 							</values>
 						</ValueSet>
 					</typesOfValue>
+					<!-- ========Operators ========== -->
 					<organisations>
 						<GeneralOrganisation version="fxc:v1.0" id="fxc:DfT">
 							<Name>Department for Transport</Name>
 							<ShortName>DfT</ShortName>
 							<OrganisationType>statutoryBody</OrganisationType>
 						</GeneralOrganisation>
+						<!-- === UIC RUs ==== -->
 						<Operator version="fxc:v1.0" id="uic:operator:1170">
 							<PublicCode>ATOC</PublicCode>
 							<Name>Association of Train Operating Companies Limited</Name>
@@ -1338,9 +1448,9 @@
 								<FromDate>2001-01-01T00:00:00Z</FromDate>
 								<ToDate>2020-01-01T00:00:00Z</ToDate>
 							</ValidityPeriod>
-							<CountryRef ref="uk" refPrincipality="GB-UKM" />
+							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-UKM" />
 						</Operator>
-						<Operator version="fxc:v1.0" id="uic:Station_Management:0070">
+						<Operator version="fxc:v1.0" id="uicStation_Management:0070">
 							<PublicCode>NR</PublicCode>
 							<Name>Network Rail Limited</Name>
 							<ShortName>Network Rail</ShortName>
@@ -1348,8 +1458,637 @@
 								<FromDate>2003-09-22T00:00:00Z</FromDate>
 								<ToDate>2020-01-01T00:00:00Z</ToDate>
 							</ValidityPeriod>
-							<CountryRef ref="uk" refPrincipality="GB-UKM" />
+							<CountryRef ref="uk" refPrincipality="iso3166-2:GB-UKM" />
 						</Operator>
+					</organisations>
+					<groupsOfEntities>
+						<Layer version="fxc:v1.0" id="fxc:fare_network+fare_products+fare_prices">
+							<Name>Fares and fare prices</Name>
+						</Layer>
+						<Layer version="fxc:v1.0" id="fxc:fare_network">
+							<Name>Fares networks</Name>
+						</Layer>
+						<Layer version="fxc:v1.0" id="fxc:fare_products">
+							<Name>Fares ad fare prices</Name>
+						</Layer>
+						<Layer version="fxc:v1.0" id="fxc:fare_prices">
+							<Name>Fares and fare prices</Name>
+						</Layer>
+					</groupsOfEntities>
+				</ResourceFrame>
+				<!-- === NPTG Common fixed definitions  ===  -->
+				<ResourceFrame version="nptg:v2.1" id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA:NPTG:nptg" responsibilitySetRef="nptg:NPTG_metadata" dataSourceRef="nptg:dft">
+					<ValidBetween>
+						<FromDate>2004-01-01T00:00:00</FromDate>
+					</ValidBetween>
+					<Name>Static code values for UK NPTG data</Name>
+					<Description>This frame contains code  valuesused to validate the NPTG  </Description>
+					<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA:FXCP" />
+					<codespaces>
+						<Codespace id="nptg_metadata">
+							<Xmlns>nptg</Xmlns>
+							<XmlnsUrl>http://www.nptg.org.uk/nptg</XmlnsUrl>
+							<Description>UK National Public Transport gazetteer     fixed codes.   .</Description>
+						</Codespace>
+						<Codespace id="nptgLocality_data">
+							<Xmlns>nptgLocality</Xmlns>
+							<XmlnsUrl>http://nptg.org.uk/locations</XmlnsUrl>
+							<Description>National Public Transport gazetteer locations</Description>
+						</Codespace>
+						<Codespace id="nptgTariffZone_data">
+							<Xmlns>nptgTariffZone</Xmlns>
+							<XmlnsUrl>http://nptg.org.uk/tariffZones</XmlnsUrl>
+							<Description>National Public Transport gazetteer plus bus zones</Description>
+						</Codespace>
+						<Codespace id="nptgAdminArea_data">
+							<Xmlns>nptgAdminArea</Xmlns>
+							<XmlnsUrl>http://www.nptg.org.uk/adminAreas</XmlnsUrl>
+							<Description>UK National Public Transport gazetteer. Codes of administrative areas, are unique within the UK.</Description>
+						</Codespace>
+					</codespaces>
+					<FrameDefaults>
+						<DefaultCodespaceRef ref="nptg_metadata" />
+						<DefaultDataSourceRef ref="nptg:dft" version="nptg:v2.1" />
+						<DefaultResponsibilitySetRef ref="nptg:NPTG_metadata" version="nptg:v2.1" />
+					</FrameDefaults>
+					<versions>
+						<Version id="nptg:v2.1" version="any">
+							<Description>NPTG version 2.1</Description>
+							<VersionType>baseline</VersionType>
+						</Version>
+					</versions>
+					<dataSources>
+						<DataSource id="nptg:dft" version="nptg:v2.1">
+							<Email>standards@nptg.org.uk</Email>
+						</DataSource>
+					</dataSources>
+					<!-- ========Responsibility Sets========== -->
+					<responsibilitySets>
+						<ResponsibilitySet version="nptg:v2.1" id="nptg:NPTG_metadata">
+							<Name>Common</Name>
+							<roles>
+								<ResponsibilityRoleAssignment version="nptg:v2.1" id="nptg:NPTG_metadata">
+									<DataRoleType>creates distributes</DataRoleType>
+									<StakeholderRoleType>DataRegistrar</StakeholderRoleType>
+									<ResponsibleOrganisationRef ref="nptg:DfT" version="nptg:v2.1" />
+									<ResponsibleAreaRef ref="nptgUkRegion:GB" nameOfRefClass="TransportAdministrativeZone" versionRef="0" xsi:type="TransportAdministrativeZoneRefStructure">UK</ResponsibleAreaRef>
+								</ResponsibilityRoleAssignment>
+							</roles>
+						</ResponsibilitySet>
+						<ResponsibilitySet version="nptg:v2.1" id="nptg:NPTG_data">
+							<Name>Common</Name>
+							<roles>
+								<ResponsibilityRoleAssignment version="nptg:v2.1" id="nptg:NPTG_data">
+									<DataRoleType>creates distributes</DataRoleType>
+									<StakeholderRoleType>EntityLegalOwnership</StakeholderRoleType>
+									<ResponsibleOrganisationRef ref="nptg:DfT" version="nptg:v2.1" />
+									<ResponsibleAreaRef ref="nptg:UK">TODO</ResponsibleAreaRef>
+								</ResponsibilityRoleAssignment>
+							</roles>
+						</ResponsibilitySet>
+					</responsibilitySets>
+					<!-- ==== Fixed values == -->
+					<typesOfValue>
+						<!-- ====Frame Types   TODO MERGE FRAME TYPES INTO FXC PI frame types== -->
+						<ValueSet version="nptg:v2.1" id="nptg:UK_NPTG_profile@Types_of_frame" classOfValues="TypeOfFrame">
+							<Name>Types of frame for UK NKTG profile</Name>
+							<values>
+								<TypeOfFrame version="nptg:v2.1" id="nptg:UK_NPTG_profile_payload">
+									<Name>NPTG Locations and  Tariff Zones Frame</Name>
+									<FrameClassRef nameOfClass="SiteeFrame" />
+									<classes>
+										<ClassInFrame nameOfClass="TopographicPlace">
+											<!-- 	 TopographicPlace maps to  a NPTG Locality 
+<NptgLocality Status="active" Modification="delete" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" ModificationDateTime="2001-12-17T09:30:47Z" id="E0000003" RevisionNumber="1">
+			<NptgLocalityCode>E0000003</NptgLocalityCode>
+			<Descriptor Modification="delete" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" id="E0000001-1" RevisionNumber="1">
+				<LocalityName>Locality Three</LocalityName>
+				<ShortName>Locality 3</ShortName>
+				<Qualify>
+					<QualifierName>Loc 22 </QualifierName>
+					<NptgLocalityRef>E0000022</NptgLocalityRef>
+				</Qualify>
+			</Descriptor> 
+			<ParentNptgLocalityRef Status="pending" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">E0000022</ParentNptgLocalityRef>
+			<AdministrativeAreaRef>101</AdministrativeAreaRef>
+			<NptgDistrictRef>111</NptgDistrictRef>
+			<AdjacentLocalities>
+				<NptgLocalityRef Status="active" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">E0000001</NptgLocalityRef>
+			</AdjacentLocalities>
+			<SourceLocalityType> Pa</SourceLocalityType>
+			<LocalityClassification> village</LocalityClassification>
+			<Location id="NMTOKEN" Precision="10m">
+				<GridType>UKOS</GridType>
+				<Easting>999999</Easting>
+				<Northing>1999999</Northing>
+			</Location> 
+		</NptgLocality>			-->
+											<Mandatory>required</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="_id">
+													<!--  NptgLocality.NptgLocalityCode-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_version">
+													<!--  NptgLocality.RevisionNumber-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_created">
+													<!--  NptgLocality.CreationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_changed">
+													<!--  NptgLocality.ModificationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_modification">
+													<!--  NptgLocality.Modification -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_status">
+													<!--  NptgLocality.Status -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Name">
+													<!--  NptgLocality.Descriptor.LocalityName -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Name.lang">
+													<!--  NptgLocality.Descriptor.Name.Lang-->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Centroid.Location.Longitude">
+													<!--  NptgLocality.Location.Longitude -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Centroid.Location.Latitude">
+													<!--  NptgLocality.Location.Latitude -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Centroid.Location.gml.pos">
+													<!-- NptgLocality.Location.GridType .  NptgLocality.Location.Easting,    NptgLocality.Location.Northing>  -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Centroid.Location.Precision">
+													<!-- NptgLocality.Location.Precision.    -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Descriptor.Name">
+													<!--  NptgLocality.Descriptor.LocalityName -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Descriptor.Name._lang">
+													<!--  NptgLocality.Descriptor.LocalityName.Lang-->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Descriptor.ShortName">
+													<!--  NptgLocality.Descriptor.ShortName -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Descriptor.ShortName._lang">
+													<!--  NptgLocality.Descriptor.ShortName.Lang-->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Descriptor.Qualifier">
+													<!--  NptgLocality.Descriptor.Qualify.QualifierName -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Descriptor.Qualifier.Name._lang">
+													<!--  NptgLocality.Descriptor.Qualify.QualifierName.Lang-->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="TypeOfTopographicPlace">
+													<!--  NptgLocality.LocalityClassification -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+											<relationships>
+												<ClassRelationshipInFrame name="responsibilitySet">
+													<!--  NptgLocality.AdministrativeAreaRef -->
+													<RelationshipRef nameOfClass="ResponsibilitySetRef" />
+													<Mandatory>required</Mandatory>
+													<Containment>byReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="parentZone">
+													<RelationshipRef nameOfClass="ParentZoneRef" />
+													<!--  NptgLocality.NptgDistrictRef-->
+													<Mandatory>optional</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="placeTypes">
+													<RelationshipRef nameOfClass="TypeOfPlaceRef" />
+													<!--  NptgLocality.SourceLocalityType -->
+													<Mandatory>required</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="country">
+													<RelationshipRef nameOfClass="CountryRef" />
+													<Mandatory>optional</Mandatory>
+													<Containment>byReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="parentTopographicPlace">
+													<RelationshipRef nameOfClass="ParentTopographicPlaceRef" />
+													<!--  NptgLocality.ParentNptgLocalityRef -->
+													<Mandatory>optional</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="alternativeDescriptors">
+													<!--  NB Only coccasionally  actually populated in current data set -->
+													<RelationshipRef nameOfClass="TopographicPlaceDescriptior" />
+													<!--   NptgLocality.alternativeDeiscriptors.Descriptor -->
+													<Mandatory>optional</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="adjacentLocalities">
+													<!--  NB Only coccasionally  actually populated in current data set -->
+													<RelationshipRef nameOfClass="TopographicPlaceRef" />
+													<!--   NptgLocality.AdjacentLocalities.NptgLocalityRef -->
+													<Mandatory>optional</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="containedIn">
+													<!--  NB Not  actually populated in current data set ? -->
+													<RelationshipRef nameOfClass="TopographicPlaceRef" />
+													<!--   NptgLocality.Descriptor.Qualify.NptgLocalityRef -->
+													<Mandatory>optional</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+											</relationships>
+										</ClassInFrame>
+										<ClassInFrame nameOfClass="TopographicDescriptor">
+											<!-- 	 TopographicPlace maps to  a NPTG Locality. 		lternativeDescriptors.Descrip  -->
+											<Mandatory>required</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="_id">
+													<!--  NptgLocality.AlternativeDescriptors.Descriptor.NptgLocalityCode-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_version">
+													<!--  NptgLocality.AlternativeDescriptors.Descriptor.RevisionNumber-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_created">
+													<!--  NptgLocality.AlternativeDescriptors.Descriptor.CreationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_changed">
+													<!--  NptgLocality.AlternativeDescriptors.Descriptor.ModificationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_modification">
+													<!--  NptgLocality.AlternativeDescriptors.Descriptor.Modification -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Name">
+													<!-- NptgLocality.AlternativeDescriptors.Descriptor.LocalityName -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="ShortName">
+													<!--  NptgLocality.AlternativeDescriptors.Descriptor.ShortName -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Qualifier">
+													<!--  NptgLocality.AlternativeDescriptors.Descriptor.Qualify.QualifierName -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+											<relationships>
+												<ClassRelationshipInFrame name="responsibilitySet">
+													<!--  NptgLocality.AdministrativeAreaRef -->
+													<RelationshipRef nameOfClass="ResponsibilitySetRef" />
+													<Mandatory>required</Mandatory>
+													<Containment>byReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="containedIn">
+													<!--  NB Not  actually populated in current data set ? -->
+													<RelationshipRef nameOfClass="TopographicPlaceRef" />
+													<!--   NptgLocality.AlternativeDescriptors.Descriptor.Qualify.NptgLocalityRef -->
+													<Mandatory>optional</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+											</relationships>
+										</ClassInFrame>
+										<!-- Classes for Plus Bus Zone -->
+										<ClassInFrame nameOfClass="TariffZone">
+											<!-- 	 TariffZone  maps to  a NPTG PlusBuzSOne -->
+											<Mandatory>required</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="_id">
+													<!--  NptgPlusBusZone.PlusBusZoneCode-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_version">
+													<!--  NptgPlusBusZone.RevisionNumber-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_created">
+													<!--  NptgPlusBusZone.CreationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_changed">
+													<!--  NptgPlusBusZone.ModificationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_modification">
+													<!--  NptgPlusBusZone.Modification -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Name">
+													<!--  NptgPlusBusZone.Name-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Name._lang">
+													<!--  NptgPlusBusZone.Name.Lang-->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="PrivateCode">
+													<!--  NptgPlusBusZone.PlusBusZoneCode-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+											<relationships>
+												<ClassRelationshipInFrame name="types">
+													<!--  Fixed    -->
+													<RelationshipRef nameOfClass="TypeOfZoneRef" />
+													<Mandatory>required</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="country">
+													<!--  NptgPlusBusZone.Country-->
+													<RelationshipRef nameOfClass="CountryRef" />
+													<Mandatory>optional</Mandatory>
+													<Containment>byReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="projection">
+													<!--  NptgPlusBusZone.Mapping  ..  <Location><Easting>  .. <Northing>  -->
+													<RelationshipRef nameOfClass="Polygon" />
+													<Mandatory>required</Mandatory>
+													<Containment>inline</Containment>
+												</ClassRelationshipInFrame>
+											</relationships>
+										</ClassInFrame>
+										<ClassInFrame nameOfClass="Polygon">
+											<!-- 	 gml:Polygon  maps to  a NPTG PlusBusZone.Mapping  -->
+											<Mandatory>required</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="_gml.id">
+													<!--  NptgPlusBusZone.Mapping.PlusBusZoneCode -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_srsName">
+													<!-- NptgPlusBusZone.Mapping.GridType -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="gml.exterior.LinearRIng.pos">
+													<!-- NptgPlusBusZone.Mapping.GridType.Easting  NptgPlusBusZone.Mapping.GridType.Northng  -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+										</ClassInFrame>
+									</classes>
+									<ModificationSet>all</ModificationSet>
+								</TypeOfFrame>
+								<TypeOfFrame version="nptg:v2.1" id="nptg:UK_NPTG_profile_admin_context">
+									<Name>NPTG Admin areas for NPTG </Name>
+									<classes>
+										<ClassInFrame nameOfClass="GeneralOrganisation">
+											<!--  Fixed    -->
+											<Mandatory>required</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="Name">
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+											<relationships>
+												<ClassRelationshipInFrame name="parts">
+													<!--  NPTG Region    -->
+													<RelationshipRef nameOfClass="OrganisationPart" />
+													<Mandatory>required</Mandatory>
+													<Containment>inline</Containment>
+												</ClassRelationshipInFrame>
+											</relationships>
+										</ClassInFrame>
+										<ClassInFrame nameOfClass="OrganisationPart">
+											<Mandatory>required</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="Name">
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="PublicCode">
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+											<relationships>
+												<ClassRelationshipInFrame name="administrativeZones">
+													<RelationshipRef nameOfClass="TransportAdministrativeZone" />
+													<Mandatory>required</Mandatory>
+													<Containment>inline</Containment>
+												</ClassRelationshipInFrame>
+											</relationships>
+										</ClassInFrame>
+										<ClassInFrame nameOfClass="TransportAdministrativeZone">
+											<!-- Maps some aspects of  NPTG Admin Area								
+	<AdministrativeArea Modification="new" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">
+					<AdministrativeAreaCode>101</AdministrativeAreaCode>
+					<AtcoAreaCode>001</AtcoAreaCode>
+					<Name>Nptg Admin area 101</Name>
+					<ShortName>Nptg Admin area 101 short Name</ShortName>
+
+
+
+		<MaximumLengthForShortNames>24</MaximumLengthForShortNames>   USE KEY LIST FOR MAPPING
+					<National>false</National>       represent by TypeOf 
+					<NaptanPrefixes>   <CodespaceAssignment><CodePrefix>
+						<AlphaPrefix>333</AlphaPrefix>
+					</NaptanPrefixes>
+					<CleardownRange>   
+						<CleardownStart>2</CleardownStart>   <CodespaceAssignment><StartValue>
+						<CleardownEnd>4</CleardownEnd>  <CodespaceAssignment><EndValue>
+					</CleardownRange>
+
+  -->
+											<Mandatory>required</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="_id">
+													<!--  Nptg AdministrativeArea.AdministrativeAreaCode -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_version">
+													<!--  Nptg AdministrativeArea.RevisionNumber-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_created">
+													<!--  Nptg AdministrativeArea.CreationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_changed">
+													<!--  Nptg AdministrativeArea.ModificationDateTime  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_modification">
+													<!--  Nptg AdministrativeArea.Modification -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="Name">
+													<!--  Nptg AdministrativeArea.Name -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="ShortName">
+													<!--  Nptg AdministrativeArea.ShortName -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="PrivateCode">
+													<!--  N ptg AdministrativeArea.AtcoAreaCode>  -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+											<relationships>
+												<ClassRelationshipInFrame name="types">
+													<!--  N ptg AdministrativeArea.National>  -->
+													<RelationshipRef nameOfClass="TypeOfZoneRef" />
+													<Mandatory>required</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="projections">
+													<RelationshipRef nameOfClass="TopographicProjection" />
+													<Mandatory>optional</Mandatory>
+													<Containment>inline</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="subzones">
+													<RelationshipRef nameOfClass="TransportAdministrativeZone" />
+													<Mandatory>optional</Mandatory>
+													<Containment>inline</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="codespaceAssignments">
+													<!--  N ptg AdministrativeArea.NaptanPrefixes>  -->
+													<RelationshipRef nameOfClass="CodespaceAssignment" />
+													<Mandatory>optional</Mandatory>
+													<Containment>inline</Containment>
+												</ClassRelationshipInFrame>
+											</relationships>
+										</ClassInFrame>
+										<ClassInFrame nameOfClass="CodespaceAssignment">
+											<!--   NPTG  <AdministrativeArea 	 
+							........
+					<NaptanPrefixes>   <CodespaceAssignment><CodePrefix>
+						<AlphaPrefix>333</AlphaPrefix>
+					</NaptanPrefixes>
+					<CleardownRange>   
+						<CleardownStart>2</CleardownStart>   <CodespaceAssignment><StartValue>
+						<CleardownEnd>4</CleardownEnd>  <CodespaceAssignment><EndValue>
+					</CleardownRange> -->
+											<Mandatory>optional</Mandatory>
+											<attributes>
+												<ClassAttributeInFrame name="_id">
+													<!--  Nptg AdministrativeArea.AdministrativeAreaCode  + prefix -->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="_version">
+													<!--  Nptg AdministrativeArea.RevisionNumber-->
+													<Mandatory>required</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="CodePrefix">
+													<!--  Nptg AdministrativeArea.AtcoCode  -->
+													<!--  Nptg AdministrativeArea.NaptanPrefixes.AlphaPrefix   -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="StartValue">
+													<!--  Nptg AdministrativeArea.CleardownRange.Start  -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+												<ClassAttributeInFrame name="EndValue">
+													<!--  Nptg AdministrativeArea.CleardownRange.End -->
+													<Mandatory>optional</Mandatory>
+												</ClassAttributeInFrame>
+											</attributes>
+											<relationships>
+												<ClassRelationshipInFrame name="codespace">
+													<RelationshipRef nameOfClass="CodespaceRef" />
+													<Mandatory>required</Mandatory>
+													<Containment>byReference</Containment>
+												</ClassRelationshipInFrame>
+												<ClassRelationshipInFrame name="typeOfCodespaceAssignment">
+													<!--  Nptg AdministrativeArea.AtcoCode -->
+													<!--  Nptg AdministrativeArea.NaptanPrefixes -->
+													<!--  Nptg AdministrativeArea.CleardownRange -->
+													<RelationshipRef nameOfClass="TypeOfCodespaceAssignmentRef" />
+													<Mandatory>required</Mandatory>
+													<Containment>byVersionedReference</Containment>
+												</ClassRelationshipInFrame>
+											</relationships>
+										</ClassInFrame>
+									</classes>
+									<ModificationSet>all</ModificationSet>
+								</TypeOfFrame>
+							</values>
+						</ValueSet>
+						<!-- ==== Fixed values == -->
+						<ValueSet version="nptg:v2.1" id="nptg:UK_NPTG_profile@Place_types" classOfValues="TypeOfPlace">
+							<Name>NPTG Place Types   s</Name>
+							<values>
+								<TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Lo">
+									<Name>NPTG Source Loc  = Lo</Name>
+								</TypeOfPlace>
+								<TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Co">
+									<Name>NPTG Source Loc  = Co</Name>
+								</TypeOfPlace>
+								<TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Pa">
+									<Name>NPTG Source Loc  = Pa</Name>
+								</TypeOfPlace>
+								<TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@ar">
+									<Name>NPTG Source Loc  = ar</Name>
+								</TypeOfPlace>
+								<TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Add">
+									<Name>NPTG Source Loc  = Add</Name>
+								</TypeOfPlace>
+								<TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@U">
+									<Name>NPTG Source Loc  = U</Name>
+								</TypeOfPlace>
+							</values>
+						</ValueSet>
+						<ValueSet version="nptg:v2.1" id="nptg:UK_NPTG_profile@Organisation_part_types" classOfValues="TypeOfZone">
+							<Name>NPTG Organisation Part Types   s</Name>
+							<values>
+								<TypeOfZone version="nptg:v2.1" id="nptg:UkRegion">
+									<Name>An NPTG Region</Name>
+								</TypeOfZone>
+								<TypeOfZone version="nptg:v2.1" id="nptg:AdministrativeArea@National">
+									<Name>An NPTG Administrative Area with National scope (e.g. 910, 920 etc)</Name>
+								</TypeOfZone>
+								<TypeOfZone version="nptg:v2.1" id="nptg:AdministrativeArea@Local">
+									<Name>An NPTG Administrative Area with Local scope</Name>
+								</TypeOfZone>
+								<TypeOfZone version="nptg:v2.1" id="nptg:UkDistrict">
+									<Name>An NPTG District</Name>
+								</TypeOfZone>
+								<TypeOfZone version="nptg:v2.1" id="nptg:UkLocality">
+									<Name>An NPTG Locality</Name>
+								</TypeOfZone>
+								<TypeOfZone version="nptg:v2.1" id="nptg:PlusBusZone">
+									<Name>An PlusBus Tariff Zone</Name>
+								</TypeOfZone>
+							</values>
+						</ValueSet>
+						<ValueSet version="nptg:v2.1" id="nptg:UK_NPTG_profile@Sms_codes" classOfValues="TypeOfCodespaceAssignment">
+							<Name>NPTG Codespace Assignment Types</Name>
+							<values>
+								<TypeOfCodespaceAssignment version="nptg:v2.1" id="nptg:naptan_prefix">
+									<Name>NPTG Stop prefix</Name>
+								</TypeOfCodespaceAssignment>
+								<TypeOfCodespaceAssignment version="nptg:v2.1" id="nptg:naptan_sms">
+									<Name>NPTG  Stop SMS prefix</Name>
+								</TypeOfCodespaceAssignment>
+								<TypeOfCodespaceAssignment version="nptg:v2.1" id="nptg:naptan_cleardown">
+									<Name>NPTG  stop cleardown range  </Name>
+								</TypeOfCodespaceAssignment>
+							</values>
+						</ValueSet>
+					</typesOfValue>
+					<organisations>
+						<!---  DFT  -->
+						<GeneralOrganisation id="nptg:DfT" modification="new" status="active" responsibilitySetRef="nptg:NPTG" version="nptg:v2.1">
+							<Name>Department for Transport</Name>
+						</GeneralOrganisation>
 					</organisations>
 				</ResourceFrame>
 			</frames>

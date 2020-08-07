@@ -416,8 +416,8 @@ describe('periodTicketNetexHelpers', () => {
             expect(result.length).toBe(expectedLength);
         });
 
-        it('returns 4 fareSructureElements for each product in the products array for multiService; Access Zones, Durations, Eligibility and Conditions of Travel', () => {
-            const expectedLength = periodMultipleServicesTicket.products.length * 4;
+        it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
+            const expectedLength = periodMultipleServicesTicket.products.length * 3 + 1;
             const result = netexHelpers.getFareStructuresElements(periodMultipleServicesTicket, placeHolderText);
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
@@ -434,8 +434,8 @@ describe('periodTicketNetexHelpers', () => {
             expect(result.length).toBe(expectedLength);
         });
 
-        it('returns 4 fareSructureElements for each product in the products array for geoZone; Access Zones, Durations, Eligibility and Conditions of Travel', () => {
-            const expectedLength = geoUserPeriodTicket.products.length * 4;
+        it('returns 3 fareStructureElements for each product in the products array for geoZone; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
+            const expectedLength = geoUserPeriodTicket.products.length * 3 + 1;
             const result = netexHelpers.getFareStructuresElements(geoUserPeriodTicket, placeHolderText);
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;

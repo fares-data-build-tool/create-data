@@ -50,6 +50,25 @@ export interface BaseTicket {
     uuid: string;
 }
 
+export interface User {
+    passengerType: string;
+    ageRangeMin?: number;
+    ageRangeMax?: number;
+    proofDocuments?: string[];
+}
+
+export interface GroupCompanion extends User {
+    minNumber: number;
+    maxNumber: number;
+}
+
+export type GroupTicket = (PointToPointTicket | PeriodTicket) & {
+    groupDefinition: {
+        maxPeople: string;
+        companions: GroupCompanion[];
+    };
+};
+
 export type PointToPointTicket = SingleTicket | ReturnTicket;
 
 export interface BasePointToPointTicket extends BaseTicket {
