@@ -29,6 +29,11 @@ generate-single:
 
 generate-validate-single: generate-single validate-latest-file
 
+generate-single-group:
+	./scripts/trigger_netex_convertor.sh singleGroup
+
+generate-validate-single-group: generate-single-group validate-latest-file
+
 generate-multi-service:
 	./scripts/trigger_netex_convertor.sh periodMultiService
 
@@ -39,20 +44,35 @@ generate-flat-fare:
 
 generate-validate-flat-fare: generate-flat-fare validate-latest-file
 
+generate-flat-fare-group:
+	./scripts/trigger_netex_convertor.sh flatFareGroup
+
+generate-validate-flat-fare-group: generate-flat-fare-group validate-latest-file
+
 generate-geo-zone:
 	./scripts/trigger_netex_convertor.sh periodGeoZone
 
 generate-validate-geo-zone: generate-geo-zone validate-latest-file
 
-generate-return-service:
+generate-geo-zone-group:
+	./scripts/trigger_netex_convertor.sh periodGeoZoneGroup
+
+generate-validate-geo-zone-group: generate-geo-zone-group validate-latest-file
+
+generate-return:
 	./scripts/trigger_netex_convertor.sh return
 
-generate-validate-return-service: generate-return-service validate-latest-file
+generate-validate-return: generate-return validate-latest-file
 
-generate-return-service-circular:
+generate-return-circular:
 	./scripts/trigger_netex_convertor.sh returnCircular
 
-generate-validate-return-service-circular: generate-return-service-circular validate-latest-file
+generate-validate-return-circular: generate-return-circular validate-latest-file
+
+generate-return-circular-group:
+	./scripts/trigger_netex_convertor.sh returnCircularGroup
+
+generate-validate-return-circular-group: generate-return-circular-group validate-latest-file
 
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
