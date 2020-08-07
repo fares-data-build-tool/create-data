@@ -2,45 +2,23 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE } from '../constants';
+import { PASSENGER_TYPE_COOKIE, PASSENGER_TYPES_LIST } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import InsetText from '../components/InsetText';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';
 
 const errorId = 'passenger-type-error';
-
-type PassengerAttributes = {
-    passengerTypeDisplay: string;
-    passengerTypeValue: string;
-    greyedOut: boolean;
-};
+const insetText = 'More passenger types will become available soon';
 
 type PassengerTypeProps = {
     errors?: ErrorInfo[];
 };
-
-const passengerTypesList: PassengerAttributes[] = [
-    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone', greyedOut: false },
-    { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult', greyedOut: false },
-    { passengerTypeDisplay: 'Child', passengerTypeValue: 'child', greyedOut: false },
-    { passengerTypeDisplay: 'Infant', passengerTypeValue: 'infant', greyedOut: false },
-    { passengerTypeDisplay: 'Senior', passengerTypeValue: 'senior', greyedOut: false },
-    { passengerTypeDisplay: 'Student', passengerTypeValue: 'student', greyedOut: false },
-    { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson', greyedOut: false },
-    { passengerTypeDisplay: 'School Pupil', passengerTypeValue: 'schoolPupil', greyedOut: true },
-    { passengerTypeDisplay: 'Disabled', passengerTypeValue: 'disabled', greyedOut: true },
-    { passengerTypeDisplay: 'Disabled Companion', passengerTypeValue: 'disabledCompanion', greyedOut: true },
-    { passengerTypeDisplay: 'Employee', passengerTypeValue: 'employee', greyedOut: true },
-    { passengerTypeDisplay: 'Military', passengerTypeValue: 'military', greyedOut: true },
-    { passengerTypeDisplay: 'Job Seeker', passengerTypeValue: 'jobSeeker', greyedOut: true },
-    { passengerTypeDisplay: 'Guide Dog', passengerTypeValue: 'guideDog', greyedOut: true },
-    { passengerTypeDisplay: 'Animal', passengerTypeValue: 'animal', greyedOut: true },
-];
 
 const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -59,7 +37,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                         </span>
                         <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                             <div className="govuk-radios">
-                                {passengerTypesList.map(
+                                {PASSENGER_TYPES_LIST.map(
                                     (passenger, index): ReactElement => (
                                         <div className="govuk-radios__item" key={passenger.passengerTypeValue}>
                                             <input
@@ -68,8 +46,6 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                                                 name="passengerType"
                                                 type="radio"
                                                 value={passenger.passengerTypeValue}
-                                                disabled={passenger.greyedOut}
-                                                aria-disabled={passenger.greyedOut}
                                             />
                                             <label
                                                 className="govuk-label govuk-radios__label"
@@ -84,6 +60,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                         </FormElementWrapper>
                     </fieldset>
                 </div>
+                <InsetText text={insetText} />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>

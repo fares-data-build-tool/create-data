@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
-import { GROUP_TICKET_ATTRIBUTE } from '../../constants';
+import { GROUP_SIZE } from '../../constants';
 import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { redirectToError, redirectTo } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -53,10 +53,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 maxGroupSize: attributeValue.maxGroupSize,
                 errors,
             };
-            updateSessionAttribute(req, GROUP_TICKET_ATTRIBUTE, attributeValueWithErrors);
+            updateSessionAttribute(req, GROUP_SIZE, attributeValueWithErrors);
             redirectTo(res, '/groupSize');
         }
-        updateSessionAttribute(req, GROUP_TICKET_ATTRIBUTE, attributeValue);
+        updateSessionAttribute(req, GROUP_SIZE, attributeValue);
         redirectTo(res, '/groupPassengerTypes');
     } catch (error) {
         const message = 'There was a problem setting the total group size:';
