@@ -5,7 +5,7 @@ import groupSize, {
 } from '../../../src/pages/api/groupSize';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessionUtils from '../../../src/utils/sessions';
-import { GROUP_TICKET_ATTRIBUTE } from '../../../src/constants';
+import { GROUP_SIZE } from '../../../src/constants';
 
 describe('groupSize', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
@@ -32,7 +32,7 @@ describe('groupSize', () => {
         });
     });
 
-    it('should update the GROUP_TICKET_ATTRIBUTE and redirect to itself (i.e. /groupSize) when there are validation errors', async () => {
+    it('should update the GROUP_SIZE and redirect to itself (i.e. /groupSize) when there are validation errors', async () => {
         const { req, res } = getMockRequestAndResponse({ body: { maxGroupSize: 'wrong input' } });
         const groupTicketInfoWithErrors: GroupTicketAttributeWithErrors = {
             maxGroupSize: 'wronginput',
@@ -45,17 +45,17 @@ describe('groupSize', () => {
             ],
         };
         await groupSize(req, res);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GROUP_TICKET_ATTRIBUTE, groupTicketInfoWithErrors);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GROUP_SIZE, groupTicketInfoWithErrors);
         expect(res.writeHead).toBeCalledWith(302, { Location: '/groupSize' });
     });
 
-    it('should update the GROUP_TICKET_ATTRIBUTE and redirect to /groupPassengerTypes when there are validation errors', async () => {
+    it('should update the GROUP_SIZE and redirect to /groupPassengerTypes when there are validation errors', async () => {
         const { req, res } = getMockRequestAndResponse({ body: { maxGroupSize: '5' } });
         const groupTicketInfo: GroupTicketAttribute = {
             maxGroupSize: '5',
         };
         await groupSize(req, res);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GROUP_TICKET_ATTRIBUTE, groupTicketInfo);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GROUP_SIZE, groupTicketInfo);
         expect(res.writeHead).toBeCalledWith(302, { Location: '/groupPassengerTypes' });
     });
 });

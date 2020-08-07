@@ -1,0 +1,586 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages defineGroupPassengers should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
+<Component
+  description="Group Passengers selection page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose one or two passenger types - you cannot exceed this limit",
+        "id": "",
+      },
+    ]
+  }
+  title="Define Group Passengers - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/defineGroupPassengers"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one or two passenger types - you cannot exceed this limit",
+            "id": "",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Select a passenger type
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="passenger-type-hint"
+        >
+          Relate the ticket(s) to a passenger type
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-checkboxes--error"
+          errorId=""
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Choose one or two passenger types - you cannot exceed this limit",
+                "id": "",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-checkboxes"
+          >
+            <div
+              className="govuk-checkboxes__item"
+              key="anyone"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-0"
+                name="passengerTypes"
+                type="checkbox"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-0"
+              >
+                Anyone
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="adult"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-1"
+                name="passengerTypes"
+                type="checkbox"
+                value="adult"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-1"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="child"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-2"
+                name="passengerTypes"
+                type="checkbox"
+                value="child"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-2"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="infant"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-3"
+                name="passengerTypes"
+                type="checkbox"
+                value="infant"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-3"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="senior"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-4"
+                name="passengerTypes"
+                type="checkbox"
+                value="senior"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-4"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="student"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-5"
+                name="passengerTypes"
+                type="checkbox"
+                value="student"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-5"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="youngPerson"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-6"
+                name="passengerTypes"
+                type="checkbox"
+                value="youngPerson"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-6"
+              >
+                Young Person
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <InsetText
+      text="More passenger types will become available soon"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages defineGroupPassengers should render correctly with group info and no errors 1`] = `
+<Component
+  description="Group Passengers selection page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Define Group Passengers - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/defineGroupPassengers"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Select a passenger type
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="passenger-type-hint"
+        >
+          Relate the ticket(s) to a passenger type
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-checkboxes--error"
+          errorId=""
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+          >
+            <div
+              className="govuk-checkboxes__item"
+              key="anyone"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-0"
+                name="passengerTypes"
+                type="checkbox"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-0"
+              >
+                Anyone
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="adult"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-1"
+                name="passengerTypes"
+                type="checkbox"
+                value="adult"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-1"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="child"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-2"
+                name="passengerTypes"
+                type="checkbox"
+                value="child"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-2"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="infant"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-3"
+                name="passengerTypes"
+                type="checkbox"
+                value="infant"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-3"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="senior"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-4"
+                name="passengerTypes"
+                type="checkbox"
+                value="senior"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-4"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="student"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-5"
+                name="passengerTypes"
+                type="checkbox"
+                value="student"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-5"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="youngPerson"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-6"
+                name="passengerTypes"
+                type="checkbox"
+                value="youngPerson"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-6"
+              >
+                Young Person
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <InsetText
+      text="More passenger types will become available soon"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages defineGroupPassengers should render correctly with no GroupPassengerTypes 1`] = `
+<Component
+  description="Group Passengers selection page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Define Group Passengers - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/defineGroupPassengers"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Select a passenger type
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="passenger-type-hint"
+        >
+          Relate the ticket(s) to a passenger type
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-checkboxes--error"
+          errorId=""
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+          >
+            <div
+              className="govuk-checkboxes__item"
+              key="anyone"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-0"
+                name="passengerTypes"
+                type="checkbox"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-0"
+              >
+                Anyone
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="adult"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-1"
+                name="passengerTypes"
+                type="checkbox"
+                value="adult"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-1"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="child"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-2"
+                name="passengerTypes"
+                type="checkbox"
+                value="child"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-2"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="infant"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-3"
+                name="passengerTypes"
+                type="checkbox"
+                value="infant"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-3"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="senior"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-4"
+                name="passengerTypes"
+                type="checkbox"
+                value="senior"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-4"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="student"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-5"
+                name="passengerTypes"
+                type="checkbox"
+                value="student"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-5"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="youngPerson"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-6"
+                name="passengerTypes"
+                type="checkbox"
+                value="youngPerson"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-6"
+              >
+                Young Person
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <InsetText
+      text="More passenger types will become available soon"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
