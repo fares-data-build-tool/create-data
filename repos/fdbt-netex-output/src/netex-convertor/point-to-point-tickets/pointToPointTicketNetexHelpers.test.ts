@@ -1,7 +1,7 @@
 import * as netexHelpers from './pointToPointTicketNetexHelpers';
-import { FareZone, PointToPointTicket } from '../../types';
+import { FareZone, PointToPointTicket, User } from '../../types';
 import { singleTicket, returnNonCircularTicket, returnCircularTicket } from '../../test-data/matchingData';
-import { NetexObject } from '../sharedHelpers';
+import { NetexObject, getUserProfile } from '../sharedHelpers';
 import { buildSalesOfferPackage, buildSalesOfferPackages } from './pointToPointTicketNetexHelpers';
 
 describe('Netex Helpers', () => {
@@ -375,10 +375,22 @@ describe('Netex Helpers', () => {
                 const expectedUserProfile = {
                     version: '1.0',
                     id: expect.any(String),
+                    MaximumAge: {
+                        $t: null,
+                    },
+                    MinimumAge: {
+                        $t: null,
+                    },
+                    ProofRequired: {
+                        $t: null,
+                    },
+                    TypeOfConcessionRef: {
+                        ref: expect.any(String),
+                        version: 'fxc:v1.0',
+                    },
                     Name: { $t: expect.any(String) },
-                    UserType: { $t: expect.any(String) },
                 };
-                const actualUserProfile = netexHelpers.getUserProfile(ticket);
+                const actualUserProfile = getUserProfile(ticket as User);
                 expect(actualUserProfile).toEqual(expectedUserProfile);
             },
         );
@@ -394,10 +406,13 @@ describe('Netex Helpers', () => {
                     version: '1.0',
                     id: expect.any(String),
                     Name: { $t: expect.any(String) },
-                    UserType: { $t: expect.any(String) },
                     MinimumAge: { $t: expect.any(String) },
                     MaximumAge: { $t: expect.any(String) },
                     ProofRequired: { $t: expect.any(String) },
+                    TypeOfConcessionRef: {
+                        ref: expect.any(String),
+                        version: 'fxc:v1.0',
+                    },
                 };
                 const ticketWithAgeRangeAndProof: PointToPointTicket = {
                     ...ticket,
@@ -407,7 +422,7 @@ describe('Netex Helpers', () => {
                     proof: 'Yes',
                     proofDocuments: ['Membership Card'],
                 };
-                const actualUserProfile = netexHelpers.getUserProfile(ticketWithAgeRangeAndProof);
+                const actualUserProfile = getUserProfile(ticketWithAgeRangeAndProof as User);
                 expect(actualUserProfile).toEqual(expectedUserProfile);
             },
         );
@@ -423,15 +438,24 @@ describe('Netex Helpers', () => {
                     version: '1.0',
                     id: expect.any(String),
                     Name: { $t: expect.any(String) },
-                    UserType: { $t: expect.any(String) },
+                    MaximumAge: {
+                        $t: null,
+                    },
                     MinimumAge: { $t: expect.any(String) },
+                    ProofRequired: {
+                        $t: null,
+                    },
+                    TypeOfConcessionRef: {
+                        ref: expect.any(String),
+                        version: 'fxc:v1.0',
+                    },
                 };
                 const ticketWithAgeRange: PointToPointTicket = {
                     ...ticket,
                     ageRange: 'Yes',
                     ageRangeMin: '18',
                 };
-                const actualUserProfile = netexHelpers.getUserProfile(ticketWithAgeRange);
+                const actualUserProfile = getUserProfile(ticketWithAgeRange as User);
                 expect(actualUserProfile).toEqual(expectedUserProfile);
             },
         );
@@ -447,7 +471,7 @@ describe('Netex Helpers', () => {
             const expectedPreassignedFareProduct = {
                 id: expect.stringContaining(tripString),
                 Name: { $t: expect.any(String) },
-                TypeOfFareProductRef: { ref: expect.stringContaining('fxc:standard_product@trip@') },
+                TypeOfFareProductRef: { version: '1.0', ref: expect.stringContaining('fxc:standard_product@trip@') },
                 validableElements: {
                     ValidableElement: {
                         id: expect.stringContaining(tripString),
@@ -455,12 +479,15 @@ describe('Netex Helpers', () => {
                         fareStructureElements: {
                             FareStructureElementRef: [
                                 {
+                                    version: '1.0',
                                     ref: expect.stringContaining('@lines'),
                                 },
                                 {
+                                    version: '1.0',
                                     ref: expect.stringContaining('@eligibility'),
                                 },
                                 {
+                                    version: '1.0',
                                     ref: expect.stringContaining('@conditions_of_travel'),
                                 },
                             ],
@@ -472,6 +499,7 @@ describe('Netex Helpers', () => {
                     AccessRightInProduct: {
                         id: expect.stringContaining(tripString),
                         ValidableElementRef: {
+                            version: '1.0',
                             ref: expect.stringContaining(tripString),
                         },
                         order: '1',
