@@ -12,7 +12,7 @@ import {
     BaseProduct,
     NetexSalesOfferPackage,
 } from '../../types';
-import { NetexObject } from '../sharedHelpers';
+import { NetexObject, getProfileRef, isGroupTicket } from '../sharedHelpers';
 
 export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>
     ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
@@ -184,36 +184,6 @@ export const getNetexMode = (mode: string): string => {
     return modeMap[mode] ?? 'other';
 };
 
-export const getUserProfile = (matchingData: PointToPointTicket): NetexObject => {
-    let userProfile: NetexObject = {
-        version: '1.0',
-        id: matchingData.passengerType,
-        Name: { $t: matchingData.passengerType },
-        UserType: { $t: matchingData.passengerType },
-    };
-    if (matchingData.ageRange && matchingData.ageRange === 'Yes') {
-        if (matchingData.ageRangeMin) {
-            userProfile = {
-                ...userProfile,
-                MinimumAge: { $t: matchingData.ageRangeMin },
-            };
-        }
-        if (matchingData.ageRangeMax) {
-            userProfile = {
-                ...userProfile,
-                MaximumAge: { $t: matchingData.ageRangeMax },
-            };
-        }
-    }
-    if (matchingData.proof && matchingData.proof === 'Yes') {
-        userProfile = {
-            ...userProfile,
-            ProofRequired: { $t: matchingData.proofDocuments?.join(' ') },
-        };
-    }
-    return userProfile;
-};
-
 export const getPreassignedFareProduct = (matchingData: PointToPointTicket): NetexObject => {
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
     return {
@@ -223,7 +193,8 @@ export const getPreassignedFareProduct = (matchingData: PointToPointTicket): Net
             $t: `${matchingData.type} Ticket - ${matchingData.passengerType}`,
         },
         TypeOfFareProductRef: {
-            ref: `fxc:standard_product@trip@${matchingData.type}`,
+            version: '1.0',
+            ref: `fxc:standard_product@trip@${matchingData.type === 'return' ? 'day_return' : 'single'}`,
         },
         validableElements: {
             ValidableElement: {
@@ -233,12 +204,17 @@ export const getPreassignedFareProduct = (matchingData: PointToPointTicket): Net
                 fareStructureElements: {
                     FareStructureElementRef: [
                         {
+                            version: '1.0',
                             ref: `Tariff@${matchingData.type}@lines`,
                         },
                         {
-                            ref: `Tariff@${matchingData.type}@eligibility`,
+                            version: '1.0',
+                            ref: isGroupTicket(matchingData)
+                                ? 'op:Tariff@group'
+                                : `Tariff@${matchingData.type}@eligibility`,
                         },
                         {
+                            version: '1.0',
                             ref: `Tariff@${matchingData.type}@conditions_of_travel`,
                         },
                     ],
@@ -251,6 +227,7 @@ export const getPreassignedFareProduct = (matchingData: PointToPointTicket): Net
                 version: '1.0',
                 order: '1',
                 ValidableElementRef: {
+                    version: '1.0',
                     ref: `Trip@${ticketUserConcat}@travel`,
                 },
             },
@@ -294,6 +271,7 @@ export const buildSalesOfferPackage = (
                     ref: `fxc:${ticketFormat}`,
                 },
                 PreassignedFareProductRef: {
+                    version: '1.0',
                     ref: `Trip@${ticketUserConcat}`,
                 },
             };
@@ -340,20 +318,21 @@ export const getFareTables = (matchingData: PointToPointTicket): NetexObject[] =
             },
             pricesFor: {
                 PreassignedFareProductRef: {
+                    version: '1.0',
                     ref: `Trip@${ticketUserConcat}`,
                 },
                 SalesOfferPackageRef: {
+                    version: '1.0',
                     ref: `Trip@${ticketUserConcat}-SOP@${salesOfferPackage.name}`,
                 },
-                UserProfileRef: {
-                    ref: matchingData.passengerType,
-                },
+                ...getProfileRef(matchingData),
             },
             usedIn: {
                 TariffRef: { version: '1.0', ref: `Tariff@${matchingData.type}@${lineIdName}` },
             },
             specifics: {
                 LineRef: {
+                    version: '1.0',
                     ref: matchingData.lineName,
                 },
             },
