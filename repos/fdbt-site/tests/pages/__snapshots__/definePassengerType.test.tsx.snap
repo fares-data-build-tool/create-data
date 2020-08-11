@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages definePassengerType should render correctly 1`] = `
+exports[`pages definePassengerType should render correctly when on the group ticket user journey 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={Array []}
@@ -25,19 +25,82 @@ exports[`pages definePassengerType should render correctly 1`] = `
           Provide passenger type details
         </h1>
       </legend>
-      <span
-        className="govuk-hint"
-        id="define-passenger-type-hint"
+      <br />
+      <br />
+      <div
+        className="govuk-form-group "
       >
-        Select if the passenger type requires an age range or proof document
-      </span>
-      <br />
-      <br />
+        <fieldset
+          aria-describedby="number-of-passenger-type-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          >
+            <h2
+              className="govuk-fieldset__heading"
+              id="number-of-passenger-type-heading"
+            >
+              How many child passengers can be in the group?
+            </h2>
+          </legend>
+          <div
+            className="govuk-form-group"
+            key="min-number-of-passengers"
+          >
+            <label
+              className="govuk-label"
+              htmlFor="min-number-of-passengers"
+            >
+              Minimum (optional)
+            </label>
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId=""
+              errors={Array []}
+            >
+              <input
+                className="govuk-input govuk-input--width-2"
+                defaultValue=""
+                id="min-number-of-passengers"
+                name="minNumber"
+                type="text"
+              />
+            </FormElementWrapper>
+          </div>
+          <div
+            className="govuk-form-group"
+            key="max-number-of-passengers"
+          >
+            <label
+              className="govuk-label"
+              htmlFor="max-number-of-passengers"
+            >
+              Maximum (required)
+            </label>
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId=""
+              errors={Array []}
+            >
+              <input
+                className="govuk-input govuk-input--width-2"
+                defaultValue=""
+                id="max-number-of-passengers"
+                name="maxNumber"
+                type="text"
+              />
+            </FormElementWrapper>
+          </div>
+        </fieldset>
+        <br />
+        <br />
+      </div>
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type have an age range?",
+              "content": Any<String>,
               "id": "define-passenger-age-range",
             },
             "radioError": Array [],
@@ -82,7 +145,150 @@ exports[`pages definePassengerType should render correctly 1`] = `
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type require a proof document?",
+              "content": Any<String>,
+              "id": "define-passenger-proof",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "proof-required-conditional",
+                "hint": Object {
+                  "content": "Select the applicable proof document(s).",
+                  "id": "define-passenger-proof-hint",
+                },
+                "id": "proof-required",
+                "inputErrors": Array [],
+                "inputType": "checkbox",
+                "inputs": Array [
+                  Object {
+                    "id": "membership-card",
+                    "label": "Membership Card",
+                    "name": "proofDocuments",
+                  },
+                  Object {
+                    "id": "student-card",
+                    "label": "Student Card",
+                    "name": "proofDocuments",
+                  },
+                  Object {
+                    "id": "identity-document",
+                    "label": "Identity Document",
+                    "name": "proofDocuments",
+                  },
+                ],
+                "label": "Yes",
+                "name": "proof",
+                "value": "Yes",
+              },
+              Object {
+                "id": "proof-not-required",
+                "label": "No",
+                "name": "proof",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="define-passenger-proof"
+      />
+    </div>
+    <input
+      name="groupPassengerType"
+      type="hidden"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages definePassengerType should render correctly when on the non-group ticket user journey 1`] = `
+<Component
+  description="Define Passenger Type page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Define Passenger Type - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/definePassengerType"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div>
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+          id="define-passenger-type-page-heading"
+        >
+          Provide passenger type details
+        </h1>
+      </legend>
+      <span
+        className="govuk-hint"
+        id="define-passenger-type-hint"
+      >
+        Select if the passenger type requires an age range or proof document
+      </span>
+      <br />
+      <br />
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": Any<String>,
+              "id": "define-passenger-age-range",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "age-range-required-conditional",
+                "hint": Object {
+                  "content": "Enter a minimum and/or maximum age for this passenger type.",
+                  "id": "define-passenger-age-range-hint",
+                },
+                "id": "age-range-required",
+                "inputErrors": Array [],
+                "inputType": "text",
+                "inputs": Array [
+                  Object {
+                    "id": "age-range-min",
+                    "label": "Minimum Age (if applicable)",
+                    "name": "ageRangeMin",
+                  },
+                  Object {
+                    "id": "age-range-max",
+                    "label": "Maximum Age (if applicable)",
+                    "name": "ageRangeMax",
+                  },
+                ],
+                "label": "Yes",
+                "name": "ageRange",
+                "value": "Yes",
+              },
+              Object {
+                "id": "age-range-not-required",
+                "label": "No",
+                "name": "ageRange",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="define-passenger-age-range"
+      />
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": Any<String>,
               "id": "define-passenger-proof",
             },
             "radioError": Array [],
@@ -221,11 +427,11 @@ exports[`pages definePassengerType should render errors correctly when input err
                 "inputErrors": Array [
                   Object {
                     "errorMessage": "Enter a minimum or maximum age",
-                    "id": "define-passenger-age-range",
+                    "id": "age-range-min",
                   },
                   Object {
                     "errorMessage": "Enter a minimum or maximum age",
-                    "id": "define-passenger-age-range",
+                    "id": "age-range-max",
                   },
                 ],
                 "inputType": "text",
@@ -275,7 +481,8 @@ exports[`pages definePassengerType should render errors correctly when input err
                 "inputErrors": Array [
                   Object {
                     "errorMessage": "Select at least one proof document",
-                    "id": "define-passenger-proof",
+                    "id": "proof-required",
+                    "userInput": "",
                   },
                 ],
                 "inputType": "checkbox",

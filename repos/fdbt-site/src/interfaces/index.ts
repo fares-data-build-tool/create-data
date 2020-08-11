@@ -3,6 +3,12 @@ import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { IncomingMessage } from 'http';
 
+export interface BaseReactElement {
+    id: string;
+    name: string;
+    label: string;
+}
+
 export interface ProductInfo {
     productName: string;
     productPrice: string;
@@ -111,6 +117,33 @@ export interface Product {
 
 export interface ProductData {
     products: Product[];
+}
+
+export interface GroupPassengerInfo extends CompanionInfo {
+    ageRange: string;
+    proof: string;
+}
+
+export interface CompanionInfo {
+    passengerType: string;
+    minNumber: number;
+    maxNumber: number;
+    minAge: number;
+    maxAge: number;
+    proofDocuments: string[];
+}
+
+export interface GroupDefinition {
+    maxGroupSize: number;
+    companions: CompanionInfo[];
+}
+
+export interface BaseGroupTicket {
+    nocCode: string;
+    type: string;
+    groupDefinition: GroupDefinition;
+    email: string;
+    uuid: string;
 }
 
 export interface BaseTicket {

@@ -1,6 +1,7 @@
 import definePassengerType, {
     passengerTypeDetailsSchema,
     formatRequestBody,
+    getErrorIdFromValidityError,
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -44,6 +45,64 @@ describe('definePassengerType', () => {
                 },
                 true,
             ],
+            [{ maxNumber: '', maxGroupSize: '12', groupPassengerType: 'adult', ageRange: 'No', proof: 'No' }, false],
+            [{ maxNumber: '24', maxGroupSize: '12', groupPassengerType: 'adult', ageRange: 'No', proof: 'No' }, false],
+            [
+                {
+                    minNumber: 'uno',
+                    maxNumber: 'dos',
+                    maxGroupSize: '12',
+                    groupPassengerType: 'adult',
+                    ageRange: 'No',
+                    proof: 'No',
+                },
+                false,
+            ],
+            [
+                {
+                    minNumber: '15',
+                    maxNumber: '10',
+                    maxGroupSize: '12',
+                    groupPassengerType: 'adult',
+                    ageRange: 'No',
+                    proof: 'No',
+                },
+                false,
+            ],
+            [
+                {
+                    minNumber: '15',
+                    maxNumber: '13',
+                    maxGroupSize: '12',
+                    groupPassengerType: 'adult',
+                    ageRange: 'No',
+                    proof: 'No',
+                },
+                false,
+            ],
+            [
+                {
+                    minNumber: '-12',
+                    maxNumber: '3.45',
+                    maxGroupSize: '12',
+                    groupPassengerType: 'adult',
+                    ageRange: 'No',
+                    proof: 'No',
+                },
+                false,
+            ],
+            [{ maxNumber: '10', maxGroupSize: '12', groupPassengerType: 'adult', ageRange: 'No', proof: 'No' }, true],
+            [
+                {
+                    minNumber: '2',
+                    maxNumber: '5',
+                    maxGroupSize: '12',
+                    groupPassengerType: 'adult',
+                    ageRange: 'No',
+                    proof: 'No',
+                },
+                true,
+            ],
         ])('should validate that %s is %s', (candidate, validity) => {
             const result = passengerTypeDetailsSchema.isValidSync(candidate);
             expect(result).toEqual(validity);
@@ -51,14 +110,26 @@ describe('definePassengerType', () => {
     });
 
     describe('formatRequestBody', () => {
-        it('should remove whitespace from the request body text inputs of ageRangeMin and ageRangeMax', () => {
+        it('should remove whitespace from the request body text inputs of ageRangeMin, ageRangeMax, minNumber and maxNumber', () => {
             const reqBodyParams = { ageRange: 'Yes', proof: 'No' };
             const { req } = getMockRequestAndResponse({
                 cookieValues: {},
-                body: { ageRangeMin: '   2   4', ageRangeMax: '   10   0       ', ...reqBodyParams },
+                body: {
+                    ageRangeMin: '   2   4',
+                    ageRangeMax: '   10   0       ',
+                    minNumber: '   2   ',
+                    maxNumber: '   1  0 ',
+                    ...reqBodyParams,
+                },
             });
             const filtered = formatRequestBody(req);
-            expect(filtered).toEqual({ ageRangeMin: '24', ageRangeMax: '100', ...reqBodyParams });
+            expect(filtered).toEqual({
+                ageRangeMin: '24',
+                ageRangeMax: '100',
+                minNumber: '2',
+                maxNumber: '10',
+                ...reqBodyParams,
+            });
         });
 
         it('should force proof documents to always be an array, even if there is only one selected', () => {
@@ -69,6 +140,25 @@ describe('definePassengerType', () => {
             });
             const filtered = formatRequestBody(req);
             expect(filtered).toEqual({ proofDocuments: ['membershipCard'], ...reqBodyParams });
+        });
+    });
+
+    describe('getErrorIdFromValidityError', () => {
+        it.each([
+            ['define-passenger-age-range', 'ageRange'],
+            ['define-passenger-proof', 'proof'],
+            ['age-range-min', 'ageRangeMin'],
+            ['age-range-max', 'ageRangeMax'],
+            ['proof-required', 'proofDocuments'],
+            ['min-number-of-passengers', 'minNumber'],
+            ['max-number-of-passengers', 'maxNumber'],
+        ])('should return the id as %s when the error path is %s', (expectedId, errorPath) => {
+            const actualId = getErrorIdFromValidityError(errorPath);
+            expect(actualId).toEqual(expectedId);
+        });
+
+        it('should throw an error when the error path does not match a valid input field', () => {
+            expect(() => getErrorIdFromValidityError('notValid')).toThrow();
         });
     });
 
@@ -137,16 +227,17 @@ describe('definePassengerType', () => {
             },
             [
                 {
-                    input: 'ageRangeMax',
-                    message: 'Enter a minimum or maximum age',
+                    id: 'age-range-max',
+                    errorMessage: 'Enter a minimum or maximum age',
                 },
                 {
-                    input: 'ageRangeMin',
-                    message: 'Enter a minimum or maximum age',
+                    id: 'age-range-min',
+                    errorMessage: 'Enter a minimum or maximum age',
                 },
                 {
-                    input: 'proofDocuments',
-                    message: 'Select at least one proof document',
+                    id: 'proof-required',
+                    errorMessage: 'Select at least one proof document',
+                    userInput: '',
                 },
             ],
         ],
@@ -159,12 +250,14 @@ describe('definePassengerType', () => {
             },
             [
                 {
-                    input: 'ageRangeMax',
-                    message: 'Maximum age cannot be less than minimum age',
+                    id: 'age-range-max',
+                    errorMessage: 'Maximum age cannot be less than minimum age',
+                    userInput: 12,
                 },
                 {
-                    input: 'ageRangeMin',
-                    message: 'Minimum age cannot be greater than maximum age',
+                    id: 'age-range-min',
+                    errorMessage: 'Minimum age cannot be greater than maximum age',
+                    userInput: 25,
                 },
             ],
         ],

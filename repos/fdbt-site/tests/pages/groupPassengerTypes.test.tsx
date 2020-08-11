@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import DefineGroupPassengers from '../../src/pages/defineGroupPassengers';
+import DefineGroupPassengers from '../../src/pages/groupPassengerTypes';
 
 describe('pages', () => {
     describe('defineGroupPassengers', () => {
