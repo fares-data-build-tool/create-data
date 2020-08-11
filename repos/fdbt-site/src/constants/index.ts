@@ -96,11 +96,16 @@ export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
 
 export const PASSENGER_TYPES_LIST: PassengerAttributes[] = [
-    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone' },
     { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult' },
     { passengerTypeDisplay: 'Child', passengerTypeValue: 'child' },
     { passengerTypeDisplay: 'Infant', passengerTypeValue: 'infant' },
     { passengerTypeDisplay: 'Senior', passengerTypeValue: 'senior' },
     { passengerTypeDisplay: 'Student', passengerTypeValue: 'student' },
     { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson' },
+    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone' },
+];
+
+export const PASSENGER_TYPES_WITH_GROUP: PassengerAttributes[] = [
+    { passengerTypeDisplay: 'Group (more than one passenger)', passengerTypeValue: 'group' },
+    ...PASSENGER_TYPES_LIST,
 ];

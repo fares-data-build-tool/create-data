@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, PASSENGER_TYPES_LIST } from '../constants';
+import { PASSENGER_TYPE_COOKIE, PASSENGER_TYPES_WITH_GROUP } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
@@ -37,12 +37,12 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                         </span>
                         <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                             <div className="govuk-radios">
-                                {PASSENGER_TYPES_LIST.map(
+                                {PASSENGER_TYPES_WITH_GROUP.map(
                                     (passenger, index): ReactElement => (
                                         <div className="govuk-radios__item" key={passenger.passengerTypeValue}>
                                             <input
                                                 className="govuk-radios__input"
-                                                id={`passenger-type-${index}`}
+                                                id={`passenger-type-${passenger.passengerTypeValue}`}
                                                 name="passengerType"
                                                 type="radio"
                                                 value={passenger.passengerTypeValue}

@@ -47,20 +47,20 @@ exports[`pages operator should render correctly 1`] = `
           >
             <div
               className="govuk-radios__item"
-              key="anyone"
+              key="group"
             >
               <input
                 className="govuk-radios__input"
-                id="passenger-type-0"
+                id="passenger-type-group"
                 name="passengerType"
                 type="radio"
-                value="anyone"
+                value="group"
               />
               <label
                 className="govuk-label govuk-radios__label"
                 htmlFor="passenger-type-0"
               >
-                Anyone
+                Group (more than one passenger)
               </label>
             </div>
             <div
@@ -69,7 +69,7 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="passenger-type-1"
+                id="passenger-type-adult"
                 name="passengerType"
                 type="radio"
                 value="adult"
@@ -87,7 +87,7 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="passenger-type-2"
+                id="passenger-type-child"
                 name="passengerType"
                 type="radio"
                 value="child"
@@ -105,7 +105,7 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="passenger-type-3"
+                id="passenger-type-infant"
                 name="passengerType"
                 type="radio"
                 value="infant"
@@ -123,7 +123,7 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="passenger-type-4"
+                id="passenger-type-senior"
                 name="passengerType"
                 type="radio"
                 value="senior"
@@ -141,7 +141,7 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="passenger-type-5"
+                id="passenger-type-student"
                 name="passengerType"
                 type="radio"
                 value="student"
@@ -159,7 +159,7 @@ exports[`pages operator should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                id="passenger-type-6"
+                id="passenger-type-youngPerson"
                 name="passengerType"
                 type="radio"
                 value="youngPerson"
@@ -169,6 +169,24 @@ exports[`pages operator should render correctly 1`] = `
                 htmlFor="passenger-type-6"
               >
                 Young Person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+              key="anyone"
+            >
+              <input
+                className="govuk-radios__input"
+                id="passenger-type-anyone"
+                name="passengerType"
+                type="radio"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="passenger-type-7"
+              >
+                Anyone
               </label>
             </div>
           </div>
