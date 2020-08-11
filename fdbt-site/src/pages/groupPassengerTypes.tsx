@@ -2,12 +2,12 @@ import React, { ReactElement } from 'react';
 import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPES_LIST, GROUP_PASSENGER_TYPES } from '../constants';
+import { PASSENGER_TYPES_LIST, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { GroupPassengerTypesWithErrors, GroupPassengerTypes } from './api/defineGroupPassengers';
+import { GroupPassengerTypesWithErrors, GroupPassengerTypes } from './api/groupPassengerTypes';
 
 const title = 'Define Group Passengers - Fares Data Build Tool';
 const description = 'Group Passengers selection page of the Fares Data Build Tool';
@@ -36,7 +36,7 @@ const DefineGroupPassengers = ({
     const errors: ErrorInfo[] = isGroupPassengerWithErrors(groupPassengerInfo) ? groupPassengerInfo.errors : [];
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
-            <CsrfForm action="/api/defineGroupPassengers" method="post" csrfToken={csrfToken}>
+            <CsrfForm action="/api/groupPassengerTypes" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
@@ -87,7 +87,7 @@ const DefineGroupPassengers = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PassengerTypeProps } => {
-    const defineGroupPassengersAttribute = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES);
+    const defineGroupPassengersAttribute = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
 
     const defaultGroupPassengerInfo: GroupPassengerTypes = {
         passengerTypes: [],

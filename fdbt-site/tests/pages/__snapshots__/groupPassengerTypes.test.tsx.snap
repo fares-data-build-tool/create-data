@@ -14,7 +14,7 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
   title="Define Group Passengers - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/defineGroupPassengers"
+    action="/api/groupPassengerTypes"
     csrfToken=""
     method="post"
   >
@@ -216,7 +216,7 @@ exports[`pages defineGroupPassengers should render correctly with group info and
   title="Define Group Passengers - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/defineGroupPassengers"
+    action="/api/groupPassengerTypes"
     csrfToken=""
     method="post"
   >
@@ -404,7 +404,7 @@ exports[`pages defineGroupPassengers should render correctly with no GroupPassen
   title="Define Group Passengers - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/defineGroupPassengers"
+    action="/api/groupPassengerTypes"
     csrfToken=""
     method="post"
   >

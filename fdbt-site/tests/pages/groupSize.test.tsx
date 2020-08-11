@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import GroupSize, { getServerSideProps, GroupSizeProps } from '../../src/pages/groupSize';
 import { getMockContext } from '../testData/mockData';
 import { GroupTicketAttributeWithErrors } from '../../src/pages/api/groupSize';
-import { GROUP_SIZE } from '../../src/constants';
+import { GROUP_SIZE_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('groupSize', () => {
@@ -34,7 +34,7 @@ describe('pages', () => {
     });
 
     describe('getServerSideProps', () => {
-        it('should return default props when there is no GROUP_SIZE', () => {
+        it('should return default props when there is no GROUP_SIZE_ATTRIBUTE', () => {
             const ctx = getMockContext();
             const expectedProps: { props: GroupSizeProps } = {
                 props: {
@@ -47,7 +47,7 @@ describe('pages', () => {
             expect(props).toEqual(expectedProps);
         });
 
-        it('should return props containing errors when the GROUP_SIZE contains errors', () => {
+        it('should return props containing errors when the GROUP_SIZE_ATTRIBUTE contains errors', () => {
             const groupTicketInfoWithErrors: GroupTicketAttributeWithErrors = {
                 maxGroupSize: 'wrong input',
                 errors: [
@@ -60,7 +60,7 @@ describe('pages', () => {
             };
             const ctx = getMockContext({
                 session: {
-                    [GROUP_SIZE]: groupTicketInfoWithErrors,
+                    [GROUP_SIZE_ATTRIBUTE]: groupTicketInfoWithErrors,
                 },
             });
             const expectedProps: { props: GroupSizeProps } = {

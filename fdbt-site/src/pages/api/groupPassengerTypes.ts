@@ -3,7 +3,7 @@ import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectToError, redirectTo } from './apiUtils/index';
-import { GROUP_PASSENGER_TYPES } from '../../constants/index';
+import { GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../../constants/index';
 
 export interface GroupPassengerTypes {
     passengerTypes: string[];
@@ -25,13 +25,22 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                         },
                     ],
                 };
-                updateSessionAttribute(req, GROUP_PASSENGER_TYPES, passengerTypeErrorMessage);
+                updateSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, passengerTypeErrorMessage);
                 redirectTo(res, '/defineGroupPassengers');
                 return;
             }
 
-            updateSessionAttribute(req, GROUP_PASSENGER_TYPES, chosenPassengerTypes);
-            redirectTo(res, '/definePassengerType');
+            const passengerTypes: string[] = [];
+
+            if (!isArray(chosenPassengerTypes)) {
+                passengerTypes.push(chosenPassengerTypes);
+            } else {
+                chosenPassengerTypes.forEach(passenger => {
+                    passengerTypes.push(passenger);
+                });
+            }
+            updateSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, { passengerTypes });
+            redirectTo(res, `/definePassengerType?groupPassengerType=${passengerTypes[0]}`);
             return;
         }
 
@@ -41,7 +50,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             ],
         };
 
-        updateSessionAttribute(req, GROUP_PASSENGER_TYPES, passengerTypeErrorMessage);
+        updateSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, passengerTypeErrorMessage);
         redirectTo(res, '/defineGroupPassengers');
     } catch (error) {
         const message = 'There was a problem selecting the passenger types:';
