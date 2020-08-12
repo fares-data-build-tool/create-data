@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import DefineGroupPassengers from '../../src/pages/groupPassengerTypes';
+import GroupPassengerTypes from '../../src/pages/groupPassengerTypes';
 
 describe('pages', () => {
-    describe('defineGroupPassengers', () => {
+    describe('groupPassengerTypes', () => {
         it('should render correctly with no GroupPassengerTypes', () => {
             const tree = shallow(
-                <DefineGroupPassengers
+                <GroupPassengerTypes
                     groupPassengerInfo={{
                         passengerTypes: [],
                     }}
@@ -18,7 +18,7 @@ describe('pages', () => {
         });
         it('should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors)', () => {
             const tree = shallow(
-                <DefineGroupPassengers
+                <GroupPassengerTypes
                     groupPassengerInfo={{
                         errors: [
                             {
@@ -35,7 +35,7 @@ describe('pages', () => {
         });
         it('should render correctly with group info and no errors', () => {
             const tree = shallow(
-                <DefineGroupPassengers
+                <GroupPassengerTypes
                     groupPassengerInfo={{
                         passengerTypes: ['adult', 'child'],
                     }}

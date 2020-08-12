@@ -38,7 +38,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                         <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                             <div className="govuk-radios">
                                 {PASSENGER_TYPES_WITH_GROUP.map(
-                                    (passenger, index): ReactElement => (
+                                    (passenger): ReactElement => (
                                         <div className="govuk-radios__item" key={passenger.passengerTypeValue}>
                                             <input
                                                 className="govuk-radios__input"
@@ -49,7 +49,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                                             />
                                             <label
                                                 className="govuk-label govuk-radios__label"
-                                                htmlFor={`passenger-type-${index}`}
+                                                htmlFor={`passenger-type-${passenger.passengerTypeValue}`}
                                             >
                                                 {`${passenger.passengerTypeDisplay}`}
                                             </label>

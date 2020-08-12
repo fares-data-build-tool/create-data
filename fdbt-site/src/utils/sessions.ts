@@ -26,7 +26,10 @@ import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import { MatchingValues } from '../pages/api/outboundMatching';
 import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
-import { GroupPassengerTypes, GroupPassengerTypesWithErrors } from '../pages/api/groupPassengerTypes';
+import {
+    GroupPassengerTypesCollection,
+    GroupPassengerTypesCollectionWithErrors,
+} from '../pages/api/groupPassengerTypes';
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 
 type GetSessionAttributeTypes = {
@@ -38,7 +41,10 @@ type GetSessionAttributeTypes = {
     [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData | ProductInfoWithErrors;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: undefined | GroupTicketAttribute | GroupTicketAttributeWithErrors;
-    [GROUP_PASSENGER_TYPES_ATTRIBUTE]: undefined | GroupPassengerTypes | GroupPassengerTypesWithErrors;
+    [GROUP_PASSENGER_TYPES_ATTRIBUTE]:
+        | undefined
+        | GroupPassengerTypesCollection
+        | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
 };
@@ -60,7 +66,7 @@ type UpdateSessionAttributeTypes = {
     [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
-    [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypes | GroupPassengerTypesWithErrors;
+    [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
 };

@@ -58,7 +58,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-0"
+                htmlFor="passenger-type-group"
               >
                 Group (more than one passenger)
               </label>
@@ -76,7 +76,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-1"
+                htmlFor="passenger-type-adult"
               >
                 Adult
               </label>
@@ -94,7 +94,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-2"
+                htmlFor="passenger-type-child"
               >
                 Child
               </label>
@@ -112,7 +112,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-3"
+                htmlFor="passenger-type-infant"
               >
                 Infant
               </label>
@@ -130,7 +130,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-4"
+                htmlFor="passenger-type-senior"
               >
                 Senior
               </label>
@@ -148,7 +148,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-5"
+                htmlFor="passenger-type-student"
               >
                 Student
               </label>
@@ -166,7 +166,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-6"
+                htmlFor="passenger-type-youngPerson"
               >
                 Young Person
               </label>
@@ -184,7 +184,7 @@ exports[`pages operator should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-7"
+                htmlFor="passenger-type-anyone"
               >
                 Anyone
               </label>
