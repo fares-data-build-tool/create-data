@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages defineGroupPassengers should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
+exports[`pages groupPassengerTypes should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={
@@ -209,7 +209,7 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
 </Component>
 `;
 
-exports[`pages defineGroupPassengers should render correctly with group info and no errors 1`] = `
+exports[`pages groupPassengerTypes should render correctly with group info and no errors 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={Array []}
@@ -397,7 +397,7 @@ exports[`pages defineGroupPassengers should render correctly with group info and
 </Component>
 `;
 
-exports[`pages defineGroupPassengers should render correctly with no GroupPassengerTypes 1`] = `
+exports[`pages groupPassengerTypes should render correctly with no GroupPassengerTypes 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={Array []}
