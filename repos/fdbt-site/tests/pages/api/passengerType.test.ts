@@ -1,6 +1,5 @@
 import passengerType from '../../../src/pages/api/passengerType';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import * as utils from '../../../src/pages/api/apiUtils';
 
 describe('passengerType', () => {
     const writeHeadMock = jest.fn();
@@ -55,18 +54,19 @@ describe('passengerType', () => {
         },
     );
 
-    it('should call redirectOnFareType when the user selects Anyone', () => {
+    it('should redirect to timeRestrictions when the user selects Anyone', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { passengerType: 'anyone' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        const redirectOnFareType = jest.spyOn(utils, 'redirectOnFareType');
 
         passengerType(req, res);
 
-        expect(redirectOnFareType).toHaveBeenCalled();
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/timeRestrictions',
+        });
     });
 
     it('should return 302 redirect to /groupSize when the user selects group', () => {

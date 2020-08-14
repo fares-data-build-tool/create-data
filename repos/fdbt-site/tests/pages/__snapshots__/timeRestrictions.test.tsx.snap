@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages timeRestrictions should render correctly with errors 1`] = `
+<Component
+  description="Time Restrictions selection page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Error",
+        "id": "id",
+      },
+    ]
+  }
+  title="Time Restrictions - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/timeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Error",
+            "id": "id",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="time-restrictions-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="time-restrictions-page-heading"
+          >
+            Are there time restrictions on your ticket(s)?
+          </h1>
+          <p
+            className="govuk-hint"
+            id="time-restrictions-page-example"
+          >
+            We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+          </p>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="time-restrictions-error"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Error",
+                "id": "id",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input govuk-input--error "
+                id="time-restrictions-yes"
+                name="timeRestrictions"
+                type="radio"
+                value="yes"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="time-restrictions-yes"
+              >
+                Yes
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input govuk-input--error "
+                id="time-restrictions-no"
+                name="timeRestrictions"
+                type="radio"
+                value="no"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="time-restrictions-no"
+              >
+                No
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages timeRestrictions should render correctly with no errors 1`] = `
+<Component
+  description="Time Restrictions selection page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Time Restrictions - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/timeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="time-restrictions-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="time-restrictions-page-heading"
+          >
+            Are there time restrictions on your ticket(s)?
+          </h1>
+          <p
+            className="govuk-hint"
+            id="time-restrictions-page-example"
+          >
+            We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+          </p>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="time-restrictions-error"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="time-restrictions-yes"
+                name="timeRestrictions"
+                type="radio"
+                value="yes"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="time-restrictions-yes"
+              >
+                Yes
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="time-restrictions-no"
+                name="timeRestrictions"
+                type="radio"
+                value="no"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="time-restrictions-no"
+              >
+                No
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
