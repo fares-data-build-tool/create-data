@@ -1,3 +1,4 @@
+import { TimeRestrictionsAttributeWithErrors } from '../pages/api/timeRestrictions';
 import {
     IncomingMessageWithSession,
     ProductInfo,
@@ -5,11 +6,9 @@ import {
     ProductInfoWithErrors,
     GroupDefinition,
     GroupPassengerInfo,
-} from '../interfaces';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
-import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
-import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
+} from '../interfaces/index';
 import {
+    TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
     SOP_INFO_ATTRIBUTE,
@@ -21,7 +20,12 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_DEFINITION_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
-} from '../constants';
+} from '../constants/index';
+
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
+import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
+import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
+
 import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import { MatchingValues } from '../pages/api/outboundMatching';
@@ -47,6 +51,7 @@ type GetSessionAttributeTypes = {
         | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
+    [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttributeWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -69,6 +74,7 @@ type UpdateSessionAttributeTypes = {
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
+    [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttributeWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

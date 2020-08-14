@@ -2,15 +2,8 @@ import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
+import { redirectToError, redirectTo, unescapeAndDecodeCookie, setCookieOnResponseObject } from './apiUtils/index';
 import {
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-    redirectOnFareType,
-    setCookieOnResponseObject,
-} from './apiUtils/index';
-import {
-    FARE_TYPE_COOKIE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
@@ -192,7 +185,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const cookies = new Cookies(req, res);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
 
         let passengerType = '';
 
@@ -204,11 +196,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             passengerType = JSON.parse(passengerTypeCookie).passengerType;
         }
 
-        const { fareType } = JSON.parse(fareTypeCookie);
-
-        if (!fareType) {
-            throw new Error('Failed to retrieve the fareType cookie for the definePassengerType API');
-        }
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');
         }
@@ -274,13 +261,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             }`,
                         );
                     } else {
-                        redirectOnFareType(req, res);
+                        redirectTo(res, '/timeRestrictions');
                     }
                     return;
                 }
             }
 
-            redirectOnFareType(req, res);
+            redirectTo(res, '/timeRestrictions');
             return;
         }
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });

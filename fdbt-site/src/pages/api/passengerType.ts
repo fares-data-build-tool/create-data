@@ -1,12 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import {
-    setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
-    redirectOnFareType,
-    unescapeAndDecodeCookie,
-} from './apiUtils/index';
+import { setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils/index';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 
@@ -35,7 +29,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, cookieValue, req, res);
 
             if (passengerType === 'anyone') {
-                redirectOnFareType(req, res);
+                redirectTo(res, '/timeRestrictions');
                 return;
             }
 

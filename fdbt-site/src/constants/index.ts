@@ -76,6 +76,8 @@ export const GROUP_PASSENGER_INFO_ATTRIBUTE = 'fdbt-group-passenger-info';
 
 export const GROUP_DEFINITION_ATTRIBUTE = 'fdbt-group-definition';
 
+export const TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-time-restrictions';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',
