@@ -10,7 +10,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { GroupPassengerTypesCollection } from './groupPassengerTypes';
 
@@ -223,7 +223,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (errors.length === 0) {
             let passengerTypeCookieValue = '';
-
             if (!group) {
                 passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
                 setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
@@ -240,18 +239,28 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                     (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.splice(index, 1);
 
-                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, ageRange, proof } = req.body;
+                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proofDocuments } = req.body;
 
-                    updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, {
+                    const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+
+                    const companions: CompanionInfo[] = [];
+
+                    if (sessionGroup) {
+                        sessionGroup.forEach(companion => {
+                            companions.push(companion);
+                        });
+                    }
+
+                    companions.push({
                         minNumber,
                         maxNumber,
-                        minAge: ageRangeMin,
-                        maxAge: ageRangeMax,
-                        ageRange,
-                        proofDocuments: proof,
+                        ageRangeMin,
+                        ageRangeMax,
+                        proofDocuments,
                         passengerType: submittedPassengerType,
-                        proof,
                     });
+
+                    updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
                     if ((selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length > 0) {
                         redirectTo(

@@ -5,8 +5,8 @@ import {
     ProductData,
     ProductInfoWithErrors,
     GroupDefinition,
-    GroupPassengerInfo,
-} from '../interfaces/index';
+    CompanionInfo,
+} from '../interfaces';
 import {
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -49,7 +49,7 @@ type GetSessionAttributeTypes = {
         | undefined
         | GroupPassengerTypesCollection
         | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttributeWithErrors;
 };
@@ -72,7 +72,7 @@ type UpdateSessionAttributeTypes = {
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttributeWithErrors;
 };
