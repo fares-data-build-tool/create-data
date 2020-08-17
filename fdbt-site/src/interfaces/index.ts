@@ -126,11 +126,11 @@ export interface GroupPassengerInfo extends CompanionInfo {
 
 export interface CompanionInfo {
     passengerType: string;
-    minNumber: number;
-    maxNumber: number;
-    minAge: number;
-    maxAge: number;
-    proofDocuments: string[];
+    minNumber: string;
+    maxNumber: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proofDocuments?: string[];
 }
 
 export interface GroupDefinition {

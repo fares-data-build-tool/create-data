@@ -5,10 +5,20 @@ import definePassengerType, {
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { PASSENGER_TYPE_COOKIE } from '../../../src/constants';
+import {
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
+    GROUP_SIZE_ATTRIBUTE,
+    PASSENGER_TYPE_COOKIE,
+} from '../../../src/constants';
+import { GroupPassengerTypesCollection } from '../../../src/pages/api/groupPassengerTypes';
+import * as sessions from '../../../src/utils/sessions';
+import { CompanionInfo } from '../../../src/interfaces';
+import { GroupTicketAttribute } from '../../../src/pages/api/groupSize';
 
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -287,4 +297,111 @@ describe('definePassengerType', () => {
             });
         },
     );
+
+    it('should set the session attribute GROUP_PASSENGER_INFO_ATTRIBUTE with the first passenger type in the group', async () => {
+        const mockPassengerTypeDetails = {
+            groupPassengerType: 'adult',
+            ageRange: 'Yes',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
+            minNumber: '2',
+            maxNumber: '10',
+            proof: 'Yes',
+            proofDocuments: ['Membership Card', 'Student Card'],
+        };
+
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
+        const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'single' },
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
+                [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
+            },
+        });
+
+        const mockPassengerCompanions: CompanionInfo[] = [
+            {
+                minNumber: '2',
+                maxNumber: '10',
+                ageRangeMin: '5',
+                ageRangeMax: '10',
+                proofDocuments: ['Membership Card', 'Student Card'],
+                passengerType: 'adult',
+            },
+        ];
+
+        await definePassengerType(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, mockPassengerCompanions);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/definePassengerType?groupPassengerType=child',
+        });
+    });
+
+    it('should set the session attribute GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group', async () => {
+        const mockPassengerTypeDetails = {
+            groupPassengerType: 'child',
+            ageRange: 'Yes',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
+            minNumber: '2',
+            maxNumber: '10',
+            proof: 'Yes',
+            proofDocuments: ['Membership Card', 'Student Card'],
+        };
+
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['child'] };
+        const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const groupPassengerInfoAttribute: CompanionInfo[] = [
+            {
+                minNumber: '2',
+                maxNumber: '10',
+                ageRangeMin: '5',
+                ageRangeMax: '10',
+                proofDocuments: ['Membership Card', 'Student Card'],
+                passengerType: 'adult',
+            },
+        ];
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'single' },
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
+                [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
+                [GROUP_PASSENGER_INFO_ATTRIBUTE]: groupPassengerInfoAttribute,
+            },
+        });
+
+        const mockPassengerCompanions: CompanionInfo[] = [
+            {
+                minNumber: '2',
+                maxNumber: '10',
+                ageRangeMin: '5',
+                ageRangeMax: '10',
+                proofDocuments: ['Membership Card', 'Student Card'],
+                passengerType: 'adult',
+            },
+            {
+                minNumber: '2',
+                maxNumber: '10',
+                ageRangeMin: '5',
+                ageRangeMax: '10',
+                proofDocuments: ['Membership Card', 'Student Card'],
+                passengerType: 'child',
+            },
+        ];
+
+        await definePassengerType(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, mockPassengerCompanions);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/timeRestrictions',
+        });
+    });
 });
