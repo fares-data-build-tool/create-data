@@ -15,9 +15,11 @@ import {
     FARE_TYPE_COOKIE,
     PERIOD_TYPE_COOKIE,
     MULTIPLE_PRODUCT_COOKIE,
+    GROUP_SIZE_ATTRIBUTE,
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../../constants';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export interface SelectSalesOfferPackageWithError {
     errorMessage: string;
@@ -92,7 +94,24 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
-            await putUserDataInS3(userDataJson, uuid);
+            const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+            const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
+            const group = !!sessionGroup && !!groupSize;
+
+            if (group) {
+                const userDataWithGroupJson = {
+                    ...userDataJson,
+                    groupDefinition: {
+                        maxPeople: groupSize?.maxGroupSize,
+                        companions: sessionGroup,
+                    },
+                };
+
+                await putUserDataInS3(userDataWithGroupJson, uuid);
+            } else {
+                await putUserDataInS3(userDataJson, uuid);
+            }
+
             redirectTo(res, '/thankyou');
         }
         return;

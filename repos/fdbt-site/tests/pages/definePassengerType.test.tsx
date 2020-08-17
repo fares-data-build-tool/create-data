@@ -3,9 +3,8 @@ import { shallow } from 'enzyme';
 
 import DefinePassengerType, {
     getServerSideProps,
-    collectErrors,
     getFieldsets,
-    ErrorCollection,
+    getNumberOfPassengerTypeFieldset,
 } from '../../src/pages/definePassengerType';
 import {
     mockDefinePassengerTypeFieldsets,
@@ -14,180 +13,219 @@ import {
     mockDefinePassengerTypeFieldsetsWithInputErrors,
     mockCombinedErrorInfoForInputErrors,
     mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors,
-    mockCombinedErrorInfoForRadioAndInputErrors,
     getMockContext,
+    mockNumberOfPassengerTypeFieldset,
+    mockNumberOfPassengerTypeFieldsetWithErrors,
 } from '../testData/mockData';
-import { ExtractedValidationError } from '../../src/pages/api/definePassengerType';
+import { ErrorInfo } from '../../src/interfaces';
+import { GROUP_PASSENGER_TYPES_ATTRIBUTE, GROUP_DEFINITION_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('getFieldsets', () => {
         it('should return fieldsets with no errors when no errors are passed', () => {
-            const emptyErrors: ErrorCollection = {
-                combinedErrors: [],
-                ageRangeRadioError: [],
-                proofSelectRadioError: [],
-                ageRangeInputErrors: [],
-                proofSelectInputError: [],
-            };
+            const emptyErrors: ErrorInfo[] = [];
             const fieldsets = getFieldsets(emptyErrors);
             expect(fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
         });
 
         it('should return fieldsets with radio errors when radio errors are passed', () => {
-            const radioErrors: ErrorCollection = {
-                combinedErrors: [
-                    {
-                        errorMessage: 'Choose one of the options below',
-                        id: 'define-passenger-age-range',
-                    },
-                    {
-                        errorMessage: 'Choose one of the options below',
-                        id: 'define-passenger-proof',
-                    },
-                ],
-                ageRangeRadioError: [
-                    {
-                        errorMessage: 'Choose one of the options below',
-                        id: 'define-passenger-age-range',
-                    },
-                ],
-                proofSelectRadioError: [
-                    {
-                        errorMessage: 'Choose one of the options below',
-                        id: 'define-passenger-proof',
-                    },
-                ],
-                ageRangeInputErrors: [],
-                proofSelectInputError: [],
-            };
+            const radioErrors: ErrorInfo[] = [
+                {
+                    errorMessage: 'Choose one of the options below',
+                    id: 'define-passenger-age-range',
+                },
+                {
+                    errorMessage: 'Choose one of the options below',
+                    id: 'define-passenger-proof',
+                },
+            ];
             const fieldsets = getFieldsets(radioErrors);
             expect(fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioErrors);
         });
 
         it('should return fieldsets with input errors when input errors are passed', () => {
-            const inputErrors: ErrorCollection = {
-                combinedErrors: [
-                    {
-                        errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
-                    },
-                    {
-                        errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
-                    },
-                    {
-                        errorMessage: 'Select at least one proof document',
-                        id: 'define-passenger-proof',
-                    },
-                ],
-                ageRangeRadioError: [],
-                proofSelectRadioError: [],
-                ageRangeInputErrors: [
-                    {
-                        errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
-                    },
-                    {
-                        errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
-                    },
-                ],
-                proofSelectInputError: [
-                    {
-                        errorMessage: 'Select at least one proof document',
-                        id: 'define-passenger-proof',
-                    },
-                ],
-            };
+            const inputErrors: ErrorInfo[] = [
+                {
+                    errorMessage: 'Enter a minimum or maximum age',
+                    id: 'age-range-min',
+                },
+                {
+                    errorMessage: 'Enter a minimum or maximum age',
+                    id: 'age-range-max',
+                },
+                {
+                    errorMessage: 'Select at least one proof document',
+                    id: 'proof-required',
+                    userInput: '',
+                },
+            ];
             const fieldsets = getFieldsets(inputErrors);
             expect(fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithInputErrors);
         });
+
+        it('should alter the heading content when a passenger type is provided', () => {
+            const passengerType = 'adult';
+            const emptyErrors: ErrorInfo[] = [];
+            const fieldsets = getFieldsets(emptyErrors, passengerType);
+            expect(fieldsets[0].heading.content).toEqual('Do adult passengers have an age range?');
+            expect(fieldsets[1].heading.content).toEqual('Do adult passengers require a proof document?');
+        });
     });
 
-    describe('collectErrors', () => {
-        it('should add an error to the collectedErrors array when an error is passed', () => {
-            const mockErrorCollection: ErrorCollection = {
-                combinedErrors: [],
-                ageRangeRadioError: [],
-                proofSelectRadioError: [],
-                ageRangeInputErrors: [],
-                proofSelectInputError: [],
-            };
-            const expectedErrorCollection: ErrorCollection = {
-                combinedErrors: [],
-                ageRangeRadioError: [],
-                proofSelectRadioError: [],
-                ageRangeInputErrors: [],
-                proofSelectInputError: [
-                    {
-                        errorMessage: 'Select at least one proof document',
-                        id: 'define-passenger-proof',
-                    },
-                ],
-            };
-            const mockValidationError: ExtractedValidationError = {
-                input: 'proofDocuments',
-                message: 'Select at least one proof document',
-            };
-            collectErrors(mockValidationError, mockErrorCollection);
-            expect(mockErrorCollection).toEqual(expectedErrorCollection);
+    describe('getNumberOfPassengerTypeFieldset', () => {
+        it('should return a fieldset containing two text inputs with no errors when no errors are passed', () => {
+            const errors: ErrorInfo[] = [];
+            const passengerType = 'child';
+            const fieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
+            expect(fieldset).toEqual(mockNumberOfPassengerTypeFieldset);
         });
 
-        it('should throw an error when the error type does not match a case', () => {
-            const mockErrorCollection: ErrorCollection = {
-                combinedErrors: [],
-                ageRangeRadioError: [],
-                proofSelectRadioError: [],
-                ageRangeInputErrors: [],
-                proofSelectInputError: [],
-            };
-            const mockValidationError: ExtractedValidationError = {
-                input: 'fakeError',
-                message: 'Throw an error, I dare you',
-            };
-            expect(() => collectErrors(mockValidationError, mockErrorCollection)).toThrow(
-                'Could not match the following error with an expected input.',
-            );
+        it('should return a fieldset containing two text inputs with errors attached when errors are passed', () => {
+            const errors: ErrorInfo[] = [
+                {
+                    id: 'min-number-of-passengers',
+                    errorMessage: 'Enter a number between 1 and 30',
+                },
+                {
+                    id: 'max-number-of-passengers',
+                    errorMessage: 'Enter a number between 1 and 30',
+                },
+            ];
+            const passengerType = 'adult';
+            const fieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
+            expect(fieldset).toEqual(mockNumberOfPassengerTypeFieldsetWithErrors);
         });
     });
 
     describe('getServerSideProps', () => {
-        it('should throw an error if there is no PASSENGER_TYPE_COOKIE', () => {
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
+
+        it('should throw an error if there is no PASSENGER_TYPE_COOKIE and no GROUP_PASSENGER_TYPES_ATTRIBUTE attribute', () => {
             const ctx = getMockContext({ cookies: { passengerType: null } });
             expect(() => getServerSideProps(ctx)).toThrow(
-                'Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page',
+                'Failed to retrieve passenger type details for the define passenger type page',
             );
         });
 
-        it('should return props containing no errors and valid fieldsets when no errors are present', () => {
-            const ctx = getMockContext();
+        it.each([
+            ['non-group', {}, { group: false, numberOfPassengerTypeFieldset: undefined }],
+            [
+                'group',
+                {
+                    cookies: { passengerType: null },
+                    session: {
+                        [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
+                    },
+                    query: {
+                        groupPassengerType: 'child',
+                    },
+                },
+                { group: true, numberOfPassengerTypeFieldset: mockNumberOfPassengerTypeFieldset },
+            ],
+        ])(
+            'should return props containing no errors and valid fieldsets when no errors are present on a %s ticket user journey',
+            (_journey, ctxParams, propsParams) => {
+                const ctx = getMockContext(ctxParams);
+
+                const result = getServerSideProps(ctx);
+                expect(result.props.errors).toEqual([]);
+                expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
+                expect(result.props.group).toEqual(propsParams.group);
+                expect(result.props.numberOfPassengerTypeFieldset).toEqual(propsParams.numberOfPassengerTypeFieldset);
+            },
+        );
+        it('should return props containing errors and valid fieldsets when radio and input errors are present on a non-group ticket user journey', () => {
+            const errors: ErrorInfo[] = [
+                { errorMessage: 'Choose one of the options below', id: 'define-passenger-proof' },
+                { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-min' },
+                { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-max' },
+            ];
+            const ctx = getMockContext({
+                cookies: {
+                    passengerType: {
+                        passengerType: 'adult',
+                        errors,
+                    },
+                },
+            });
             const result = getServerSideProps(ctx);
-            expect(result.props.combinedErrors).toEqual([]);
-            expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
+            expect(result.props.group).toEqual(false);
+            expect(result.props.errors).toEqual(errors);
+            expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors);
         });
 
-        it('should return props containing errors and valid fieldsets when radio and input errors are present', () => {
-            const mockPassengerTypeCookieValue = {
-                passengerType: 'Adult',
-                errors: [
-                    { input: 'ageRangeMin', message: 'Enter a minimum or maximum age' },
-                    { input: 'ageRangeMax', message: 'Enter a minimum or maximum age' },
-                    { input: 'proof', message: 'Choose one of the options below' },
-                ],
-            };
-            const ctx = getMockContext({ cookies: { passengerType: mockPassengerTypeCookieValue } });
+        it('should return props containing errors and valid fieldsets when radio and all input errors are present on a group ticket user journey', () => {
+            const errors: ErrorInfo[] = [
+                { errorMessage: 'Choose one of the options below', id: 'define-passenger-proof' },
+                { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-min' },
+                { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-max' },
+                {
+                    id: 'min-number-of-passengers',
+                    errorMessage: 'Enter a number between 1 and 30',
+                },
+                {
+                    id: 'max-number-of-passengers',
+                    errorMessage: 'Enter a number between 1 and 30',
+                },
+            ];
+            const ctx = getMockContext({
+                url: '/definePassengerType?groupPassengerType=adult',
+                cookies: {
+                    passengerType: {
+                        passengerType: 'adult',
+                        errors,
+                    },
+                },
+                session: {
+                    [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
+                    [GROUP_DEFINITION_ATTRIBUTE]: {
+                        maxGroupSize: 2,
+                        companions: {
+                            passengerType: 'child',
+                            minNumber: 0,
+                            maxNumber: 2,
+                            minAge: 16,
+                            maxAge: 150,
+                            proofDocuments: [],
+                        },
+                        errors,
+                    },
+                },
+                query: {
+                    groupPassengerType: 'adult',
+                },
+            });
             const result = getServerSideProps(ctx);
-            expect(result.props.combinedErrors).toEqual(mockCombinedErrorInfoForRadioAndInputErrors);
+            expect(result.props.group).toEqual(true);
+            expect(result.props.errors).toEqual(errors);
             expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors);
+            expect(result.props.numberOfPassengerTypeFieldset).toEqual(mockNumberOfPassengerTypeFieldsetWithErrors);
         });
     });
 
     describe('definePassengerType', () => {
-        it('should render correctly', () => {
+        it('should render correctly when on the non-group ticket user journey', () => {
             const wrapper = shallow(
                 <DefinePassengerType
-                    combinedErrors={[]}
+                    group={false}
+                    errors={[]}
                     fieldsets={mockDefinePassengerTypeFieldsets}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
+        it('should render correctly when on the group ticket user journey', () => {
+            const wrapper = shallow(
+                <DefinePassengerType
+                    group
+                    errors={[]}
+                    fieldsets={mockDefinePassengerTypeFieldsets}
+                    numberOfPassengerTypeFieldset={mockNumberOfPassengerTypeFieldset}
                     csrfToken=""
                     pageProps={[]}
                 />,
@@ -198,7 +236,8 @@ describe('pages', () => {
         it('should render errors correctly when radio errors are passed to the page', () => {
             const wrapper = shallow(
                 <DefinePassengerType
-                    combinedErrors={mockCombinedErrorInfoForRadioErrors}
+                    group={false}
+                    errors={mockCombinedErrorInfoForRadioErrors}
                     fieldsets={mockDefinePassengerTypeFieldsetsWithRadioErrors}
                     csrfToken=""
                     pageProps={[]}
@@ -210,7 +249,8 @@ describe('pages', () => {
         it('should render errors correctly when input errors are passed to the page', () => {
             const wrapper = shallow(
                 <DefinePassengerType
-                    combinedErrors={mockCombinedErrorInfoForInputErrors}
+                    group={false}
+                    errors={mockCombinedErrorInfoForInputErrors}
                     fieldsets={mockDefinePassengerTypeFieldsetsWithInputErrors}
                     csrfToken=""
                     pageProps={[]}

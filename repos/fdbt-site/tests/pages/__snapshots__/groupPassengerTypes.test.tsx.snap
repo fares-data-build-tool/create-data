@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages defineGroupPassengers should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
+exports[`pages groupPassengerTypes should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={
@@ -14,7 +14,7 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
   title="Define Group Passengers - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/defineGroupPassengers"
+    action="/api/groupPassengerTypes"
     csrfToken=""
     method="post"
   >
@@ -68,36 +68,18 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
           >
             <div
               className="govuk-checkboxes__item"
-              key="anyone"
+              key="adult"
             >
               <input
                 className="govuk-checkboxes__input"
                 id="passenger-type-0"
                 name="passengerTypes"
                 type="checkbox"
-                value="anyone"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-0"
-              >
-                Anyone
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="adult"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                id="passenger-type-1"
-                name="passengerTypes"
-                type="checkbox"
                 value="adult"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-1"
+                htmlFor="passenger-type-0"
               >
                 Adult
               </label>
@@ -108,14 +90,14 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-2"
+                id="passenger-type-1"
                 name="passengerTypes"
                 type="checkbox"
                 value="child"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-2"
+                htmlFor="passenger-type-1"
               >
                 Child
               </label>
@@ -126,14 +108,14 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-3"
+                id="passenger-type-2"
                 name="passengerTypes"
                 type="checkbox"
                 value="infant"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-3"
+                htmlFor="passenger-type-2"
               >
                 Infant
               </label>
@@ -144,14 +126,14 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-4"
+                id="passenger-type-3"
                 name="passengerTypes"
                 type="checkbox"
                 value="senior"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-4"
+                htmlFor="passenger-type-3"
               >
                 Senior
               </label>
@@ -162,14 +144,14 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-5"
+                id="passenger-type-4"
                 name="passengerTypes"
                 type="checkbox"
                 value="student"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-5"
+                htmlFor="passenger-type-4"
               >
                 Student
               </label>
@@ -180,16 +162,34 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-6"
+                id="passenger-type-5"
                 name="passengerTypes"
                 type="checkbox"
                 value="youngPerson"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-6"
+                htmlFor="passenger-type-5"
               >
                 Young Person
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="anyone"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-6"
+                name="passengerTypes"
+                type="checkbox"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-6"
+              >
+                Anyone
               </label>
             </div>
           </div>
@@ -209,14 +209,14 @@ exports[`pages defineGroupPassengers should render correctly with GroupPassenger
 </Component>
 `;
 
-exports[`pages defineGroupPassengers should render correctly with group info and no errors 1`] = `
+exports[`pages groupPassengerTypes should render correctly with group info and no errors 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={Array []}
   title="Define Group Passengers - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/defineGroupPassengers"
+    action="/api/groupPassengerTypes"
     csrfToken=""
     method="post"
   >
@@ -256,36 +256,18 @@ exports[`pages defineGroupPassengers should render correctly with group info and
           >
             <div
               className="govuk-checkboxes__item"
-              key="anyone"
+              key="adult"
             >
               <input
                 className="govuk-checkboxes__input"
                 id="passenger-type-0"
                 name="passengerTypes"
                 type="checkbox"
-                value="anyone"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-0"
-              >
-                Anyone
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="adult"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                id="passenger-type-1"
-                name="passengerTypes"
-                type="checkbox"
                 value="adult"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-1"
+                htmlFor="passenger-type-0"
               >
                 Adult
               </label>
@@ -296,14 +278,14 @@ exports[`pages defineGroupPassengers should render correctly with group info and
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-2"
+                id="passenger-type-1"
                 name="passengerTypes"
                 type="checkbox"
                 value="child"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-2"
+                htmlFor="passenger-type-1"
               >
                 Child
               </label>
@@ -314,14 +296,14 @@ exports[`pages defineGroupPassengers should render correctly with group info and
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-3"
+                id="passenger-type-2"
                 name="passengerTypes"
                 type="checkbox"
                 value="infant"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-3"
+                htmlFor="passenger-type-2"
               >
                 Infant
               </label>
@@ -332,14 +314,14 @@ exports[`pages defineGroupPassengers should render correctly with group info and
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-4"
+                id="passenger-type-3"
                 name="passengerTypes"
                 type="checkbox"
                 value="senior"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-4"
+                htmlFor="passenger-type-3"
               >
                 Senior
               </label>
@@ -350,14 +332,14 @@ exports[`pages defineGroupPassengers should render correctly with group info and
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-5"
+                id="passenger-type-4"
                 name="passengerTypes"
                 type="checkbox"
                 value="student"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-5"
+                htmlFor="passenger-type-4"
               >
                 Student
               </label>
@@ -368,16 +350,34 @@ exports[`pages defineGroupPassengers should render correctly with group info and
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-6"
+                id="passenger-type-5"
                 name="passengerTypes"
                 type="checkbox"
                 value="youngPerson"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-6"
+                htmlFor="passenger-type-5"
               >
                 Young Person
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="anyone"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-6"
+                name="passengerTypes"
+                type="checkbox"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-6"
+              >
+                Anyone
               </label>
             </div>
           </div>
@@ -397,14 +397,14 @@ exports[`pages defineGroupPassengers should render correctly with group info and
 </Component>
 `;
 
-exports[`pages defineGroupPassengers should render correctly with no GroupPassengerTypes 1`] = `
+exports[`pages groupPassengerTypes should render correctly with no GroupPassengerTypes 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={Array []}
   title="Define Group Passengers - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/defineGroupPassengers"
+    action="/api/groupPassengerTypes"
     csrfToken=""
     method="post"
   >
@@ -444,36 +444,18 @@ exports[`pages defineGroupPassengers should render correctly with no GroupPassen
           >
             <div
               className="govuk-checkboxes__item"
-              key="anyone"
+              key="adult"
             >
               <input
                 className="govuk-checkboxes__input"
                 id="passenger-type-0"
                 name="passengerTypes"
                 type="checkbox"
-                value="anyone"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-0"
-              >
-                Anyone
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="adult"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                id="passenger-type-1"
-                name="passengerTypes"
-                type="checkbox"
                 value="adult"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-1"
+                htmlFor="passenger-type-0"
               >
                 Adult
               </label>
@@ -484,14 +466,14 @@ exports[`pages defineGroupPassengers should render correctly with no GroupPassen
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-2"
+                id="passenger-type-1"
                 name="passengerTypes"
                 type="checkbox"
                 value="child"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-2"
+                htmlFor="passenger-type-1"
               >
                 Child
               </label>
@@ -502,14 +484,14 @@ exports[`pages defineGroupPassengers should render correctly with no GroupPassen
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-3"
+                id="passenger-type-2"
                 name="passengerTypes"
                 type="checkbox"
                 value="infant"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-3"
+                htmlFor="passenger-type-2"
               >
                 Infant
               </label>
@@ -520,14 +502,14 @@ exports[`pages defineGroupPassengers should render correctly with no GroupPassen
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-4"
+                id="passenger-type-3"
                 name="passengerTypes"
                 type="checkbox"
                 value="senior"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-4"
+                htmlFor="passenger-type-3"
               >
                 Senior
               </label>
@@ -538,14 +520,14 @@ exports[`pages defineGroupPassengers should render correctly with no GroupPassen
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-5"
+                id="passenger-type-4"
                 name="passengerTypes"
                 type="checkbox"
                 value="student"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-5"
+                htmlFor="passenger-type-4"
               >
                 Student
               </label>
@@ -556,16 +538,34 @@ exports[`pages defineGroupPassengers should render correctly with no GroupPassen
             >
               <input
                 className="govuk-checkboxes__input"
-                id="passenger-type-6"
+                id="passenger-type-5"
                 name="passengerTypes"
                 type="checkbox"
                 value="youngPerson"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-6"
+                htmlFor="passenger-type-5"
               >
                 Young Person
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="anyone"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="passenger-type-6"
+                name="passengerTypes"
+                type="checkbox"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-6"
+              >
+                Anyone
               </label>
             </div>
           </div>

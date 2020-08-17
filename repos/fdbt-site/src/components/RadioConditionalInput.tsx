@@ -1,15 +1,9 @@
 import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
-interface BaseElement {
-    id: string;
-    name: string;
-    label: string;
-}
-
-export interface RadioWithoutConditionals extends BaseElement {
+export interface RadioWithoutConditionals extends BaseReactElement {
     value: string;
 }
 
@@ -20,7 +14,7 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
         content: string;
     };
     inputType: string;
-    inputs: BaseElement[];
+    inputs: BaseReactElement[];
     inputErrors: ErrorInfo[];
 }
 
@@ -39,7 +33,7 @@ export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
 }
 
-const createErrorId = (input: BaseElement, inputErrors: ErrorInfo[]): string => {
+export const createErrorId = (input: BaseReactElement, inputErrors: ErrorInfo[]): string => {
     const el = inputErrors.find(({ id }) => id === input.id);
     if (el) {
         return el.id;

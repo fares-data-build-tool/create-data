@@ -1,13 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import {
-    setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
-    redirectOnFareType,
-    unescapeAndDecodeCookie,
-} from './apiUtils/index';
-import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
+import { setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils/index';
+import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -23,7 +17,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Necessary fare type cookie not found for passenger type page');
         }
 
-        if (req.body.passengerType) {
+        const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map(type => type.passengerTypeValue);
+
+        if (req.body.passengerType && passengerTypeValues.includes(req.body.passengerType)) {
             const { passengerType } = req.body;
 
             const cookieValue = JSON.stringify({
@@ -33,9 +29,15 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, cookieValue, req, res);
 
             if (passengerType === 'anyone') {
-                redirectOnFareType(req, res);
+                redirectTo(res, '/timeRestrictions');
                 return;
             }
+
+            if (passengerType === 'group') {
+                redirectTo(res, '/groupSize');
+                return;
+            }
+
             redirectTo(res, '/definePassengerType');
             return;
         }
