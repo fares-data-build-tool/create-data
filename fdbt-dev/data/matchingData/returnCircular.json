@@ -6,6 +6,11 @@
   "type": "return",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
+  "timeRestriction": {
+    "startTime": "1031",
+    "endTime": "1600",
+    "validDays": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+  },
   "products": [
     {
       "salesOfferPackages": [

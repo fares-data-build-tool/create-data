@@ -4,6 +4,9 @@
   "nocCode": "BLAC",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
+  "timeRestriction": {
+    "validDays": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+  },
   "products": [
     {
       "productName": "Test Product 1",

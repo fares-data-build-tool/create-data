@@ -4,6 +4,11 @@
   "type": "flatFare",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
+  "timeRestriction": {
+    "startTime": "0000",
+    "endTime": "1200",
+    "validDays": ["monday"]
+  },
   "products": [
     {
       "productName": "Weekly Rider",

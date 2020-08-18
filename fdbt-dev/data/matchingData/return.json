@@ -6,6 +6,9 @@
   "type": "return",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
+  "timeRestriction": {
+    "validDays": ["thursday"]
+  },
   "products": [
     {
       "salesOfferPackages": [
