@@ -1,6 +1,7 @@
 import xmltodict
 import xml.etree.ElementTree as eT
 
+
 def make_list(item):
     if not isinstance(item, list):
         return [item]
@@ -16,7 +17,8 @@ def get_operators(data_dict):
 
 def get_services_for_operator(data_dict, operator):
     services = make_list(data_dict['TransXChange']['Services']['Service'])
-    services_for_operator = [service for service in services if service['RegisteredOperatorRef'] == operator['@id']]
+    services_for_operator = [
+        service for service in services if service['RegisteredOperatorRef'] == operator['@id']]
 
     return services_for_operator
 
@@ -30,8 +32,9 @@ def extract_data_for_tnds_operator_service_table(operator, service):
     start_date = service['OperatingPeriod']['StartDate']
     operator_short_name = operator['OperatorShortName']
     service_description = service['Description'] if 'Description' in service else ''
+    service_code = service['ServiceCode'] if 'ServiceCode' in service else None
 
-    return noc_code, start_date, operator_short_name, service_description
+    return noc_code, start_date, operator_short_name, service_description, service_code
 
 
 def collect_journey_pattern_section_refs_and_info(raw_journey_patterns):
@@ -78,7 +81,8 @@ def process_journey_pattern_sections(journey_pattern_section_refs, raw_journey_p
                         'run_time': raw_journey_pattern_timing_link['RunTime']
                     }
 
-                    journey_pattern_timing_links.append(journey_pattern_timing_link)
+                    journey_pattern_timing_links.append(
+                        journey_pattern_timing_link)
 
                 journey_pattern_sections.append(journey_pattern_timing_links)
 
@@ -86,17 +90,20 @@ def process_journey_pattern_sections(journey_pattern_section_refs, raw_journey_p
 
 
 def collect_journey_patterns(data_dict, service):
-    raw_journey_patterns = make_list(service['StandardService']['JourneyPattern'])
+    raw_journey_patterns = make_list(
+        service['StandardService']['JourneyPattern'])
     raw_journey_pattern_sections = make_list(
         data_dict['TransXChange']['JourneyPatternSections']['JourneyPatternSection']
     )
 
-    journey_patterns_section_refs_and_info = collect_journey_pattern_section_refs_and_info(raw_journey_patterns)
+    journey_patterns_section_refs_and_info = collect_journey_pattern_section_refs_and_info(
+        raw_journey_patterns)
 
     journey_patterns = []
 
     for journey_pattern in journey_patterns_section_refs_and_info:
-        journey_pattern_section_refs = make_list(journey_pattern['journey_pattern_section_refs'])
+        journey_pattern_section_refs = make_list(
+            journey_pattern['journey_pattern_section_refs'])
 
         processed_journey_pattern = {
             'journey_pattern_sections': process_journey_pattern_sections(
@@ -124,7 +131,8 @@ def iterate_through_journey_patterns_and_run_insert_queries(cursor, data_dict, o
             for journey_pattern_timing_link in journey_pattern_section:
                 links.append(journey_pattern_timing_link)
 
-        insert_into_tnds_journey_pattern_link_table(cursor, links, journey_pattern_id)
+        insert_into_tnds_journey_pattern_link_table(
+            cursor, links, journey_pattern_id)
 
 
 def insert_into_tnds_journey_pattern_table(cursor, operator_service_id, journey_pattern_info):
@@ -168,11 +176,12 @@ def insert_into_tnds_operator_service_table(cursor, operator, service, line):
         noc_code,
         start_date,
         operator_short_name,
-        service_description
+        service_description,
+        service_code
     ) = extract_data_for_tnds_operator_service_table(operator, service)
 
-    query = """INSERT INTO tndsOperatorService (nocCode, lineName, startDate, operatorShortName, serviceDescription) 
-        VALUES (%s, %s, %s, %s, %s)"""
+    query = """INSERT INTO tndsOperatorService (nocCode, lineName, startDate, operatorShortName, serviceDescription, serviceCode) 
+        VALUES (%s, %s, %s, %s, %s, %s)"""
 
     cursor.execute(
         query,
@@ -182,6 +191,7 @@ def insert_into_tnds_operator_service_table(cursor, operator, service, line):
             start_date,
             operator_short_name,
             service_description,
+            service_code,
         ]
     )
     operator_service_id = cursor.lastrowid
@@ -207,7 +217,8 @@ def write_to_database(data_dict, db_connection, logger):
                     lines = get_lines_for_service(service)
 
                     for line in lines:
-                        operator_service_id = insert_into_tnds_operator_service_table(cursor, operator, service, line)
+                        operator_service_id = insert_into_tnds_operator_service_table(
+                            cursor, operator, service, line)
                         iterate_through_journey_patterns_and_run_insert_queries(
                             cursor, data_dict, operator_service_id, service
                         )
