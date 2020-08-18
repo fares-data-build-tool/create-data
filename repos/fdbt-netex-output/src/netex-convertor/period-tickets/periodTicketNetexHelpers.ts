@@ -23,6 +23,7 @@ import {
     getUserProfile,
     getGroupElement,
     getProfileRef,
+    isValidTimeRestriction,
 } from '../sharedHelpers';
 
 export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
@@ -559,7 +560,11 @@ export const getTimeIntervals = (userPeriodTicket: PeriodTicket): NetexObject[] 
     return timeIntervals.flatMap(item => item);
 };
 
-const getAvailabilityElement = (id: string, validityParametersObject: object): NetexObject => ({
+const getAvailabilityElement = (
+    id: string,
+    validityParametersObject: object,
+    hasTimeRestriction: boolean,
+): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
     Name: { $t: 'Available zones' },
@@ -568,6 +573,14 @@ const getAvailabilityElement = (id: string, validityParametersObject: object): N
         version: 'fxc:v1.0',
         ref: 'fxc:access',
     },
+    qualityStructureFactors: hasTimeRestriction
+        ? {
+              FareDemandFactorRef: {
+                  ref: 'op@Tariff@Demand',
+                  version: '1.0',
+              },
+          }
+        : null,
     GenericParameterAssignment: {
         id,
         version: '1.0',
@@ -695,6 +708,8 @@ export const getFareStructuresElements = (
     const fareStructureElements = userPeriodTicket.products.flatMap((product: ProductDetails) => {
         let availabilityElementId = '';
         let validityParametersObject = {};
+        const hasTimeRestriction =
+            !!userPeriodTicket.timeRestriction && isValidTimeRestriction(userPeriodTicket.timeRestriction);
 
         if (isGeoZoneTicket(userPeriodTicket)) {
             availabilityElementId = `Tariff@${product.productName}@access_zones`;
@@ -714,13 +729,16 @@ export const getFareStructuresElements = (
             (isMultiServiceTicket(userPeriodTicket) && userPeriodTicket.products[0].productDuration)
         ) {
             return [
-                getAvailabilityElement(availabilityElementId, validityParametersObject),
+                getAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
                 getDurationElement(userPeriodTicket, product),
                 getConditionsElement(product),
             ];
         }
 
-        return [getAvailabilityElement(availabilityElementId, validityParametersObject), getConditionsElement(product)];
+        return [
+            getAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+            getConditionsElement(product),
+        ];
     });
 
     fareStructureElements.push(...getEligibilityElement(userPeriodTicket));

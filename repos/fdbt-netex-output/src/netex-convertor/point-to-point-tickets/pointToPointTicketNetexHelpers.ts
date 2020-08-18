@@ -12,7 +12,7 @@ import {
     BaseProduct,
     NetexSalesOfferPackage,
 } from '../../types';
-import { NetexObject, getProfileRef, isGroupTicket } from '../sharedHelpers';
+import { NetexObject, getProfileRef, isGroupTicket, isValidTimeRestriction } from '../sharedHelpers';
 
 export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>
     ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
@@ -184,8 +184,45 @@ export const getNetexMode = (mode: string): string => {
     return modeMap[mode] ?? 'other';
 };
 
+export const getAvailabilityElement = (id: string): NetexObject => ({
+    version: '1.0',
+    id,
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: 'fxc:access',
+    },
+    qualityStructureFactors: {
+        FareDemandFactorRef: {
+            ref: 'op@Tariff@Demand',
+            version: '1.0',
+        },
+    },
+});
+
 export const getPreassignedFareProduct = (matchingData: PointToPointTicket): NetexObject => {
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
+    const fareStructureElementList = [
+        {
+            version: '1.0',
+            ref: `Tariff@${matchingData.type}@lines`,
+        },
+        {
+            version: '1.0',
+            ref: isGroupTicket(matchingData) ? 'op:Tariff@group' : `Tariff@${matchingData.type}@eligibility`,
+        },
+        {
+            version: '1.0',
+            ref: `Tariff@${matchingData.type}@conditions_of_travel`,
+        },
+    ];
+
+    if (matchingData.timeRestriction && isValidTimeRestriction(matchingData.timeRestriction)) {
+        fareStructureElementList.push({
+            version: '1.0',
+            ref: `Tariff@${matchingData.type}@availability`,
+        });
+    }
+
     return {
         id: `Trip@${ticketUserConcat}`,
         version: '1.0',
@@ -202,22 +239,7 @@ export const getPreassignedFareProduct = (matchingData: PointToPointTicket): Net
                 version: '1.0',
                 Name: { $t: `${matchingData.type} Ride` },
                 fareStructureElements: {
-                    FareStructureElementRef: [
-                        {
-                            version: '1.0',
-                            ref: `Tariff@${matchingData.type}@lines`,
-                        },
-                        {
-                            version: '1.0',
-                            ref: isGroupTicket(matchingData)
-                                ? 'op:Tariff@group'
-                                : `Tariff@${matchingData.type}@eligibility`,
-                        },
-                        {
-                            version: '1.0',
-                            ref: `Tariff@${matchingData.type}@conditions_of_travel`,
-                        },
-                    ],
+                    FareStructureElementRef: fareStructureElementList,
                 },
             },
         },
