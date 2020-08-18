@@ -28,7 +28,7 @@ class TestDatabaseInsertQuerying:
 class TestDataCollectionFunctionality:
     def test_extract_data_for_tnds_operator_service_table(self):
         expected_operator_and_service_info = (
-            'ANWE', '2018-01-28', 'ANW', 'Macclesfield - Upton Priory Circular')
+            'ANWE', '2018-01-28', 'ANW', 'Macclesfield - Upton Priory Circular', 'NW_01_ANW_4_1')
         operator = mock_data_dict['TransXChange']['Operators']['Operator']
         service = mock_data_dict['TransXChange']['Services']['Service']
 
