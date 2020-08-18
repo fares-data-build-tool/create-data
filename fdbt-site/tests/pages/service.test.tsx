@@ -138,7 +138,9 @@ describe('pages', () => {
                 mockEndFn,
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
+            await expect(getServerSideProps(ctx)).rejects.toThrow(
+                'Could not render the service selection page. Necessary cookies not found.',
+            );
         });
 
         it('throws error if passengerType cookie does not exist', async () => {
@@ -153,7 +155,9 @@ describe('pages', () => {
                 mockEndFn,
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
+            await expect(getServerSideProps(ctx)).rejects.toThrow(
+                'Could not render the service selection page. Necessary cookies not found.',
+            );
         });
     });
 });

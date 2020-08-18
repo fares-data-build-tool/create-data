@@ -17,6 +17,7 @@ import {
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { getErrorsByIds } from '../utils';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
@@ -42,19 +43,7 @@ export interface DefinePassengerTypeProps {
     groupPassengerType?: string;
 }
 
-export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
-    const compactErrors: ErrorInfo[] = [];
-    errors.forEach(error => {
-        if (ids.includes(error.id)) {
-            compactErrors.push(error);
-        }
-    });
-    return compactErrors;
-};
-
 export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): RadioConditionalInputFieldset[] => {
-    const fieldsets = [];
-
     const ageRangeFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-age-range',
@@ -145,8 +134,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
         ],
         radioError: getErrorsByIds(['define-passenger-proof'], errors),
     };
-    fieldsets.push(ageRangeFieldset, proofRequiredFieldset);
-    return fieldsets;
+    return [ageRangeFieldset, proofRequiredFieldset];
 };
 
 export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerType: string): TextInputFieldset => ({

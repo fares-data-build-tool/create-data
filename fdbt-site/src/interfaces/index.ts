@@ -146,7 +146,14 @@ export interface BaseGroupTicket {
     uuid: string;
 }
 
+export interface TimeRestriction {
+    startTime?: string;
+    endTime?: string;
+    validDays?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
+}
+
 export interface BaseTicket {
+    timeRestriction: TimeRestriction;
     nocCode: string;
     type: string;
     passengerType: string;

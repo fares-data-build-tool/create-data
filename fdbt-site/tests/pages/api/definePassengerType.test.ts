@@ -185,20 +185,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should throw an error and redirect to the error page when the PASSENGER_TYPE_COOKIE and FARE_TYPE_COOKIE are missing', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { passengerType: null, fareType: null },
-            body: {},
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-        await definePassengerType(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
-    it('should set the PASSENGER_TYPE_COOKIE and redirect to timeRestrictions when no errors are found', async () => {
+    it('should set the PASSENGER_TYPE_COOKIE and redirect to /timeRestrictions when no errors are found', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockPassengerTypeDetails = {
             ageRange: 'Yes',
