@@ -17,6 +17,7 @@ import {
     PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
     MULTIPLE_PRODUCT_COOKIE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
 } from '../../../constants';
 import {
     CognitoIdToken,
@@ -107,15 +108,24 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
 
     const cookies = new Cookies(req, res);
-
     const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
-    const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
 
-    if (!fareTypeCookie || !passengerTypeCookie || !idToken) {
-        throw new Error('Necessary session object or cookie not found to create user data json');
+    const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
+    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+
+    if (
+        !fareTypeCookie ||
+        !passengerTypeCookie ||
+        !idToken ||
+        !matchingAttributeInfo ||
+        !isMatchingInfo(matchingAttributeInfo) ||
+        !timeRestriction
+    ) {
+        throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
+
     const fareTypeObject = JSON.parse(fareTypeCookie);
     const passengerTypeObject = JSON.parse(passengerTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
@@ -123,13 +133,10 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const requestBody: { [key: string]: string } = req.body;
     const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
-        throw new Error('Required session object does not exist to create single ticket json');
-    }
-
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
     return {
+        timeRestriction,
         ...service,
         type: fareTypeObject.fareType,
         ...passengerTypeObject,
@@ -150,15 +157,23 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         (inboundMatchingAttributeInfo as InboundMatchingInfo)?.inboundUserFareStages !== null;
 
     const cookies = new Cookies(req, res);
-
     const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
+    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (!fareTypeCookie || !passengerTypeCookie || !idToken) {
-        throw new Error('Necessary session object or cookie not found to create user data json');
+    if (
+        !fareTypeCookie ||
+        !passengerTypeCookie ||
+        !idToken ||
+        !matchingAttributeInfo ||
+        !isMatchingInfo(matchingAttributeInfo) ||
+        !timeRestriction
+    ) {
+        throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
     const fareTypeObject = JSON.parse(fareTypeCookie);
     const passengerTypeObject = JSON.parse(passengerTypeCookie);
@@ -168,13 +183,10 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const requestBody: { [key: string]: string } = req.body;
     const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
-        throw new Error('Required session object does not exist to create return ticket json');
-    }
-
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
     return {
+        timeRestriction,
         ...service,
         type: fareTypeObject.fareType,
         ...passengerTypeObject,
@@ -204,19 +216,31 @@ export const getPeriodGeoZoneTicketJson = async (
         periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
-    const cookies = new Cookies(req, res);
-
     const nocCode = getNocFromIdToken(req, res);
+
+    const cookies = new Cookies(req, res);
     const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
     const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
 
-    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !fareZoneCookie) {
-        throw new Error('Necessary session object or cookie not found to create user data json');
+    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+
+    if (
+        !nocCode ||
+        !periodTypeCookie ||
+        !passengerTypeCookie ||
+        !operatorCookie ||
+        !idToken ||
+        !fareZoneCookie ||
+        !timeRestriction
+    ) {
+        throw new Error(
+            'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
+        );
     }
     const passengerTypeObject = JSON.parse(passengerTypeCookie);
     const { periodTypeName } = JSON.parse(periodTypeCookie);
@@ -237,7 +261,9 @@ export const getPeriodGeoZoneTicketJson = async (
 
     if (!multipleProductCookie) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
-            throw new Error('Required session object does not exist to create period ticket json');
+            throw new Error(
+                'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
+            );
         }
 
         const { products } = periodExpiryAttributeInfo;
@@ -256,6 +282,7 @@ export const getPeriodGeoZoneTicketJson = async (
     }
 
     return {
+        timeRestriction,
         nocCode,
         type: periodTypeName,
         ...passengerTypeObject,
@@ -275,19 +302,34 @@ export const getPeriodMultipleServicesTicketJson = (
     const isProductData = (
         periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
-    const cookies = new Cookies(req, res);
 
     const nocCode = getNocFromIdToken(req, res);
+
+    const cookies = new Cookies(req, res);
     const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
     const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
-        throw new Error('Necessary session object or cookie not found to create user data json');
+
+    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+
+    if (
+        !nocCode ||
+        !periodTypeCookie ||
+        !passengerTypeCookie ||
+        !operatorCookie ||
+        !idToken ||
+        !serviceListCookie ||
+        !timeRestriction
+    ) {
+        throw new Error(
+            'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
+        );
     }
+
     const passengerTypeObject = JSON.parse(passengerTypeCookie);
     const { periodTypeName } = JSON.parse(periodTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
@@ -313,7 +355,9 @@ export const getPeriodMultipleServicesTicketJson = (
 
     if (!isMultiProducts) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
-            throw new Error('Required session object does not exist to create period multi service ticket json');
+            throw new Error(
+                'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
+            );
         }
 
         const { products } = periodExpiryAttributeInfo;
@@ -334,6 +378,7 @@ export const getPeriodMultipleServicesTicketJson = (
     }
 
     return {
+        timeRestriction,
         nocCode,
         type: periodTypeName,
         ...passengerTypeObject,
@@ -349,18 +394,31 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const isProductData = (
         productDetailsAttributeInfo: ProductData | ProductInfo,
     ): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
-    const cookies = new Cookies(req, res);
 
     const nocCode = getNocFromIdToken(req, res);
+
+    const cookies = new Cookies(req, res);
     const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
     const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-    const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
 
-    if (!nocCode || !fareTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
-        throw new Error('Necessary session object or cookie not found to create user data json');
+    const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+
+    if (
+        !nocCode ||
+        !fareTypeCookie ||
+        !passengerTypeCookie ||
+        !operatorCookie ||
+        !idToken ||
+        !serviceListCookie ||
+        !productDetailsAttributeInfo ||
+        !isProductData(productDetailsAttributeInfo) ||
+        !timeRestriction
+    ) {
+        throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
     }
     const fareTypeObject = JSON.parse(fareTypeCookie);
     const passengerTypeObject = JSON.parse(passengerTypeCookie);
@@ -381,10 +439,6 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         };
     });
 
-    if (!productDetailsAttributeInfo || !isProductData(productDetailsAttributeInfo)) {
-        throw new Error('Required session object does not exist to create flat fare ticket json');
-    }
-
     const { products } = productDetailsAttributeInfo;
 
     const productDetailsList = products.map(product => ({
@@ -394,6 +448,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     }));
 
     return {
+        timeRestriction,
         nocCode,
         type: fareTypeObject.fareType,
         ...passengerTypeObject,

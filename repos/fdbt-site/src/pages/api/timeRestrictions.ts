@@ -7,7 +7,11 @@ import { redirectToError, redirectOnFareType, redirectTo, unescapeAndDecodeCooki
 import { isSessionValid } from './apiUtils/validator';
 import { timeRestrictionsErrorId } from '../timeRestrictions';
 
-export interface TimeRestrictionsAttributeWithErrors {
+export interface TimeRestrictionsAttribute {
+    timeRestrictions: boolean;
+}
+
+export interface TimeRestrictionsAttributeWithErrors extends TimeRestrictionsAttribute {
     errors: ErrorInfo[];
 }
 
@@ -25,16 +29,23 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { timeRestrictions } = req.body;
 
         if (timeRestrictions === 'no') {
+            updateSessionAttribute(req, TIME_RESTRICTIONS_ATTRIBUTE, {
+                timeRestrictions: false,
+            });
             redirectOnFareType(req, res);
             return;
         }
 
         if (timeRestrictions === 'yes') {
+            updateSessionAttribute(req, TIME_RESTRICTIONS_ATTRIBUTE, {
+                timeRestrictions: true,
+            });
             redirectTo(res, '/defineTimeRestrictions');
             return;
         }
 
         updateSessionAttribute(req, TIME_RESTRICTIONS_ATTRIBUTE, {
+            timeRestrictions: false,
             errors: [{ errorMessage: 'Choose either yes or no', id: timeRestrictionsErrorId }],
         });
         redirectTo(res, '/timeRestrictions');

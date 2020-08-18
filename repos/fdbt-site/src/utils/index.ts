@@ -120,3 +120,13 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 };
 
 export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');
+
+export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
+    const compactErrors: ErrorInfo[] = [];
+    errors.forEach(error => {
+        if (ids.includes(error.id)) {
+            compactErrors.push(error);
+        }
+    });
+    return compactErrors;
+};

@@ -173,7 +173,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
         case 'maxNumber':
             return 'max-number-of-passengers';
         default:
-            throw new Error('Could not match the following error with an expected input.');
+            throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
 };
 
@@ -186,15 +186,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const cookies = new Cookies(req, res);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
 
-        let passengerType = '';
+        const passengerType = passengerTypeCookie ? JSON.parse(passengerTypeCookie).passengerType : '';
 
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
         const group = !!groupPassengerTypes && !!groupSize;
-
-        if (!group) {
-            passengerType = JSON.parse(passengerTypeCookie).passengerType;
-        }
 
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');

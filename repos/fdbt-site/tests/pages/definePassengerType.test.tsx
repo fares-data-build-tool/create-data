@@ -11,7 +11,7 @@ import {
     mockDefinePassengerTypeFieldsetsWithRadioErrors,
     mockCombinedErrorInfoForRadioErrors,
     mockDefinePassengerTypeFieldsetsWithInputErrors,
-    mockCombinedErrorInfoForInputErrors,
+    mockPassengerTypeInputErrors,
     mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors,
     getMockContext,
     mockNumberOfPassengerTypeFieldset,
@@ -250,7 +250,7 @@ describe('pages', () => {
             const wrapper = shallow(
                 <DefinePassengerType
                     group={false}
-                    errors={mockCombinedErrorInfoForInputErrors}
+                    errors={mockPassengerTypeInputErrors}
                     fieldsets={mockDefinePassengerTypeFieldsetsWithInputErrors}
                     csrfToken=""
                     pageProps={[]}
