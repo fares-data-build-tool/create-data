@@ -219,6 +219,7 @@
 							</geographicalIntervals>
 							<timeIntervals></timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
+							<qualityStructureFactors></qualityStructureFactors>
 							<fareStructureElements></fareStructureElements>
 						</Tariff>
 					</tariffs>
