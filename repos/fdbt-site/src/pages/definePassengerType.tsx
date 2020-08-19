@@ -134,7 +134,15 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
         ],
         radioError: getErrorsByIds(['define-passenger-proof'], errors),
     };
-    return [ageRangeFieldset, proofRequiredFieldset];
+
+    const fieldsets: RadioConditionalInputFieldset[] = [];
+    fieldsets.push(ageRangeFieldset);
+
+    if (!passengerType || (passengerType && passengerType !== 'adult')) {
+        fieldsets.push(proofRequiredFieldset);
+    }
+
+    return fieldsets;
 };
 
 export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerType: string): TextInputFieldset => ({
@@ -260,8 +268,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
-    const errors: ErrorInfo[] =
-        passengerTypeCookie && JSON.parse(passengerTypeCookie).errors ? JSON.parse(passengerTypeCookie).errors : [];
+    const { errors, passengerType } = JSON.parse(passengerTypeCookie);
+
+    const passengerTypeErrors: ErrorInfo[] = passengerTypeCookie && errors ? errors : [];
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
@@ -269,22 +278,23 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     if (group) {
         const groupPassengerType = ctx.query.groupPassengerType as string;
-        fieldsets = getFieldsets(errors, groupPassengerType);
-        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, groupPassengerType);
+        fieldsets = getFieldsets(passengerTypeErrors, groupPassengerType);
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(passengerTypeErrors, groupPassengerType);
 
         return {
             props: {
                 group,
-                errors,
+                errors: passengerTypeErrors,
                 fieldsets,
                 numberOfPassengerTypeFieldset,
                 groupPassengerType,
             },
         };
     }
-    fieldsets = getFieldsets(errors);
 
-    return { props: { group, errors, fieldsets } };
+    fieldsets = getFieldsets(passengerTypeErrors, passengerType);
+
+    return { props: { group, errors: passengerTypeErrors, fieldsets } };
 };
 
 export default DefinePassengerType;

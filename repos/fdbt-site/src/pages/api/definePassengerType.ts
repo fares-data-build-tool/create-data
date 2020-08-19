@@ -96,10 +96,13 @@ export const passengerTypeDetailsSchema = yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
-        proof: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
+        proof: yup.string().when('groupPassengerType', {
+            is: groupPassengerTypeNameValue => groupPassengerTypeNameValue !== 'adult',
+            then: yup
+                .string()
+                .oneOf(['Yes', 'No'])
+                .required(radioButtonError),
+        }),
         ageRangeMin: yup.number().when('ageRange', {
             is: 'Yes',
             then: yup
