@@ -12,6 +12,9 @@ function add_user() {
 
   TEMP_PASSWORD=$(cat /dev/urandom | env LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
   aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$NOC --temporary-password $TEMP_PASSWORD --region eu-west-2
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=email_verified,Value=true
+
+  echo "https://fares-data.dft.gov.uk/register?key=$TEMP_PASSWORD"
 }
 
 function delete_user() {
@@ -42,6 +45,13 @@ function get_user_status() {
   echo $STATUS
 }
 
+function verify_all_emails() {
+  aws cognito-idp list-users --user-pool-id $USER_POOL | jq -rc '.Users[].Username' | while read i; do
+    echo $i
+    aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $i --user-attributes Name=email_verified,Value=true
+  done
+}
+
 if [ -z $USER_POOL ]; then
   echo "You must be authenticated against the target AWS account"
   exit 1
@@ -55,8 +65,10 @@ elif [[ $COMMAND = 'update-noc' ]]; then
   update_noc
 elif [[ $COMMAND = 'get-user-status' ]]; then
   get_user_status
+elif [[ $COMMAND = 'verify-all-emails' ]]; then
+  verify_all_emails
 else
-  echo "usage cognito-manager <add-user | delete-user | update-noc>"
+  echo "usage cognito-manager <add-user | delete-user | update-noc | verify-all-emails>"
   exit 1
 fi
 
