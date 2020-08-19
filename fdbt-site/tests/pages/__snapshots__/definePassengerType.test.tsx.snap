@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages definePassengerType should render correctly when on the group ticket user journey 1`] = `
+exports[`pages definePassengerType definePassengerType should render correctly when on the group ticket user journey 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={Array []}
@@ -206,7 +206,7 @@ exports[`pages definePassengerType should render correctly when on the group tic
 </Component>
 `;
 
-exports[`pages definePassengerType should render correctly when on the non-group ticket user journey 1`] = `
+exports[`pages definePassengerType definePassengerType should render correctly when on the non-group ticket user journey 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={Array []}
@@ -345,7 +345,7 @@ exports[`pages definePassengerType should render correctly when on the non-group
 </Component>
 `;
 
-exports[`pages definePassengerType should render errors correctly when input errors are passed to the page 1`] = `
+exports[`pages definePassengerType definePassengerType should render errors correctly when input errors are passed to the page 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={
@@ -529,7 +529,7 @@ exports[`pages definePassengerType should render errors correctly when input err
 </Component>
 `;
 
-exports[`pages definePassengerType should render errors correctly when radio errors are passed to the page 1`] = `
+exports[`pages definePassengerType definePassengerType should render errors correctly when radio errors are passed to the page 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={
