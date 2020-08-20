@@ -1,7 +1,9 @@
-import _ from 'lodash';
+import snakeCase from 'lodash/snakeCase';
+import capitalize from 'lodash/capitalize';
 import parser from 'xml2json';
 import fs from 'fs';
-import { PeriodTicket, PointToPointTicket, GroupTicket, User, GroupCompanion } from '../types';
+import moment from 'moment';
+import { PeriodTicket, PointToPointTicket, GroupTicket, User, GroupCompanion, TimeRestriction } from '../types';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -63,7 +65,7 @@ export const getUserProfile = (user: User | GroupCompanion): NetexObject => ({
     TypeOfConcessionRef: {
         version: 'fxc:v1.0',
         ref: `fxc:${
-            user.passengerType === 'anyone' || user.passengerType === 'adult' ? 'none' : _.snakeCase(user.passengerType)
+            user.passengerType === 'anyone' || user.passengerType === 'adult' ? 'none' : snakeCase(user.passengerType)
         }`,
     },
     MinimumAge: { $t: user.ageRangeMin || null },
@@ -117,3 +119,62 @@ export const getGroupElement = (userPeriodTicket: GroupTicket): NetexObject => {
         },
     };
 };
+
+export const isValidTimeRestriction = (timeRestriction: TimeRestriction): boolean =>
+    (!!timeRestriction.startTime && !!timeRestriction.endTime) ||
+    (!!timeRestriction.validDays && timeRestriction.validDays.length > 0);
+
+const getTime = (time: string): string => moment(time, 'HHmm').format('HH:mm:ss');
+
+const getDayLength = (startTime: string, endTime: string): string => {
+    const startMoment = moment(startTime, 'HHmm');
+    const endMoment = moment(endTime, 'HHmm');
+    const diff = endMoment.diff(startMoment, 'minute');
+
+    return moment.duration(diff, 'minute').toISOString();
+};
+
+const getDaysList = (list: string[]): string => list.map(capitalize).join(' ');
+
+export const getTimeRestrictions = (timeRestrictionData: TimeRestriction): NetexObject => ({
+    FareDemandFactor: {
+        id: 'op@Tariff@Demand',
+        version: '1.0',
+        validityConditions: {
+            AvailabilityCondition: {
+                id: 'op@Tariff@Condition',
+                version: '1.0',
+                IsAvailable: {
+                    $t: true,
+                },
+                dayTypes: {
+                    FareDayType: {
+                        id: 'op@Tariff@DayType',
+                        version: '1.0',
+                        EarliestTime: {
+                            $t:
+                                timeRestrictionData.startTime && timeRestrictionData.endTime
+                                    ? getTime(timeRestrictionData.startTime)
+                                    : null,
+                        },
+                        DayLength: {
+                            $t:
+                                timeRestrictionData.startTime && timeRestrictionData.endTime
+                                    ? getDayLength(timeRestrictionData.startTime, timeRestrictionData.endTime)
+                                    : null,
+                        },
+                        properties: timeRestrictionData.validDays
+                            ? {
+                                  PropertyOfDay: {
+                                      DaysOfWeek: {
+                                          $t: getDaysList(timeRestrictionData.validDays),
+                                      },
+                                  },
+                              }
+                            : null,
+                    },
+                },
+            },
+        },
+    },
+});
