@@ -19,6 +19,7 @@ import {
     convertJsonToXml,
     getTimeRestrictions,
     isValidTimeRestriction,
+    getNetexMode,
 } from '../sharedHelpers';
 
 const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData: Operator): { generate: Function } => {
@@ -96,7 +97,7 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = operatorData.fareEnq;
         resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = website;
         resourceFrameToUpdate.organisations.Operator.Address.Street.$t = operatorData.complEnq;
-        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = operatorData.mode.toLowerCase();
+        resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(operatorData.mode);
 
         return resourceFrameToUpdate;
     };
