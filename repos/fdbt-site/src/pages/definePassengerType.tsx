@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import lowerCase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
+import { GROUP_PASSENGER_TYPES_ATTRIBUTE, PASSENGER_TYPE_ERRORS_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
@@ -258,6 +258,7 @@ export const isGroupDefinitionWithErrors = (
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePassengerTypeProps } => {
     const cookies = parseCookies(ctx);
+    const passengerTypeErrorsCookie = cookies[PASSENGER_TYPE_ERRORS_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
@@ -266,7 +267,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
-    const errors: ErrorInfo[] = JSON.parse(passengerTypeCookie).errors ? JSON.parse(passengerTypeCookie).errors : [];
+    const errors: ErrorInfo[] =
+        passengerTypeErrorsCookie && JSON.parse(passengerTypeErrorsCookie).errors
+            ? JSON.parse(passengerTypeErrorsCookie).errors
+            : [];
     const passengerType: string = ctx.query.groupPassengerType
         ? ctx.query.groupPassengerType
         : JSON.parse(passengerTypeCookie).passengerType;
