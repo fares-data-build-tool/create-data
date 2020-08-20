@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages definePassengerType definePassengerType should render correctly when on the group ticket user journey 1`] = `
+exports[`pages definePassengerType should render correctly when on the group ticket user journey 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={Array []}
@@ -193,8 +193,9 @@ exports[`pages definePassengerType definePassengerType should render correctly w
       />
     </div>
     <input
-      name="groupPassengerType"
+      name="passengerType"
       type="hidden"
+      value="senior"
     />
     <input
       className="govuk-button"
@@ -206,7 +207,7 @@ exports[`pages definePassengerType definePassengerType should render correctly w
 </Component>
 `;
 
-exports[`pages definePassengerType definePassengerType should render correctly when on the non-group ticket user journey 1`] = `
+exports[`pages definePassengerType should render correctly when on the non-group ticket user journey 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={Array []}
@@ -336,6 +337,11 @@ exports[`pages definePassengerType definePassengerType should render correctly w
       />
     </div>
     <input
+      name="passengerType"
+      type="hidden"
+      value="adult"
+    />
+    <input
       className="govuk-button"
       id="continue-button"
       type="submit"
@@ -345,7 +351,7 @@ exports[`pages definePassengerType definePassengerType should render correctly w
 </Component>
 `;
 
-exports[`pages definePassengerType definePassengerType should render errors correctly when input errors are passed to the page 1`] = `
+exports[`pages definePassengerType should render errors correctly when input errors are passed to the page 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={
@@ -412,7 +418,7 @@ exports[`pages definePassengerType definePassengerType should render errors corr
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type have an age range?",
+              "content": "Do child passengers have an age range?",
               "id": "define-passenger-age-range",
             },
             "radioError": Array [],
@@ -466,7 +472,7 @@ exports[`pages definePassengerType definePassengerType should render errors corr
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type require a proof document?",
+              "content": "Do child passengers require a proof document?",
               "id": "define-passenger-proof",
             },
             "radioError": Array [],
@@ -520,6 +526,11 @@ exports[`pages definePassengerType definePassengerType should render errors corr
       />
     </div>
     <input
+      name="passengerType"
+      type="hidden"
+      value="child"
+    />
+    <input
       className="govuk-button"
       id="continue-button"
       type="submit"
@@ -529,7 +540,7 @@ exports[`pages definePassengerType definePassengerType should render errors corr
 </Component>
 `;
 
-exports[`pages definePassengerType definePassengerType should render errors correctly when radio errors are passed to the page 1`] = `
+exports[`pages definePassengerType should render errors correctly when radio errors are passed to the page 1`] = `
 <Component
   description="Define Passenger Type page of the Fares Data Build Tool"
   errors={
@@ -588,7 +599,7 @@ exports[`pages definePassengerType definePassengerType should render errors corr
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type have an age range?",
+              "content": "Do child passengers have an age range?",
               "id": "define-passenger-age-range",
             },
             "radioError": Array [
@@ -638,7 +649,7 @@ exports[`pages definePassengerType definePassengerType should render errors corr
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type require a proof document?",
+              "content": "Do child passengers require a proof document?",
               "id": "define-passenger-proof",
             },
             "radioError": Array [
@@ -690,6 +701,11 @@ exports[`pages definePassengerType definePassengerType should render errors corr
         key="define-passenger-proof"
       />
     </div>
+    <input
+      name="passengerType"
+      type="hidden"
+      value="infant"
+    />
     <input
       className="govuk-button"
       id="continue-button"

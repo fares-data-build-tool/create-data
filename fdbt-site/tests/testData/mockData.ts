@@ -1879,7 +1879,6 @@ export const expectedFlatFareProductUploadJson: FlatFareTicket = {
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Weekly Rider',
@@ -2160,7 +2159,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-age-range',
-            content: 'Does the passenger type have an age range?',
+            content: 'Do child passengers have an age range?',
         },
         radios: [
             {
@@ -2205,7 +2204,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-proof',
-            content: 'Does the passenger type require a proof document?',
+            content: 'Do child passengers require a proof document?',
         },
         radios: [
             {
@@ -2264,7 +2263,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-age-range',
-            content: 'Does the passenger type have an age range?',
+            content: 'Do child passengers have an age range?',
         },
         radios: [
             {
@@ -2313,7 +2312,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-proof',
-            content: 'Does the passenger type require a proof document?',
+            content: 'Do child passengers require a proof document?',
         },
         radios: [
             {

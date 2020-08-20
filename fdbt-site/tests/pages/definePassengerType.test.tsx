@@ -22,7 +22,65 @@ import { GROUP_PASSENGER_TYPES_ATTRIBUTE, GROUP_DEFINITION_ATTRIBUTE } from '../
 
 describe('pages', () => {
     const defaultPassengerType = 'child';
+
     describe('definePassengerType', () => {
+        it('should render correctly when on the non-group ticket user journey', () => {
+            const wrapper = shallow(
+                <DefinePassengerType
+                    group={false}
+                    errors={[]}
+                    fieldsets={mockDefinePassengerTypeFieldsets}
+                    passengerType="adult"
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
+        it('should render correctly when on the group ticket user journey', () => {
+            const wrapper = shallow(
+                <DefinePassengerType
+                    group
+                    errors={[]}
+                    fieldsets={mockDefinePassengerTypeFieldsets}
+                    numberOfPassengerTypeFieldset={mockNumberOfPassengerTypeFieldset}
+                    passengerType="senior"
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
+        it('should render errors correctly when radio errors are passed to the page', () => {
+            const wrapper = shallow(
+                <DefinePassengerType
+                    group={false}
+                    errors={mockCombinedErrorInfoForRadioErrors}
+                    fieldsets={mockDefinePassengerTypeFieldsetsWithRadioErrors}
+                    passengerType="infant"
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
+        it('should render errors correctly when input errors are passed to the page', () => {
+            const wrapper = shallow(
+                <DefinePassengerType
+                    group={false}
+                    errors={mockPassengerTypeInputErrors}
+                    fieldsets={mockDefinePassengerTypeFieldsetsWithInputErrors}
+                    passengerType="child"
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
         describe('getFieldsets', () => {
             it('should return fieldsets with no errors when no errors are passed', () => {
                 const emptyErrors: ErrorInfo[] = [];
@@ -41,7 +99,7 @@ describe('pages', () => {
                         id: 'define-passenger-proof',
                     },
                 ];
-                const fieldsets = getFieldsets(radioErrors);
+                const fieldsets = getFieldsets(radioErrors, defaultPassengerType);
                 expect(fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioErrors);
             });
 
@@ -61,7 +119,7 @@ describe('pages', () => {
                         userInput: '',
                     },
                 ];
-                const fieldsets = getFieldsets(inputErrors);
+                const fieldsets = getFieldsets(inputErrors, defaultPassengerType);
                 expect(fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithInputErrors);
             });
 
@@ -220,61 +278,6 @@ describe('pages', () => {
                 expect(result.props.errors).toEqual(errors);
                 expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors);
                 expect(result.props.numberOfPassengerTypeFieldset).toEqual(mockNumberOfPassengerTypeFieldsetWithErrors);
-            });
-        });
-
-        describe('definePassengerType', () => {
-            it('should render correctly when on the non-group ticket user journey', () => {
-                const wrapper = shallow(
-                    <DefinePassengerType
-                        group={false}
-                        errors={[]}
-                        fieldsets={mockDefinePassengerTypeFieldsets}
-                        csrfToken=""
-                        pageProps={[]}
-                    />,
-                );
-                expect(wrapper).toMatchSnapshot();
-            });
-
-            it('should render correctly when on the group ticket user journey', () => {
-                const wrapper = shallow(
-                    <DefinePassengerType
-                        group
-                        errors={[]}
-                        fieldsets={mockDefinePassengerTypeFieldsets}
-                        numberOfPassengerTypeFieldset={mockNumberOfPassengerTypeFieldset}
-                        csrfToken=""
-                        pageProps={[]}
-                    />,
-                );
-                expect(wrapper).toMatchSnapshot();
-            });
-
-            it('should render errors correctly when radio errors are passed to the page', () => {
-                const wrapper = shallow(
-                    <DefinePassengerType
-                        group={false}
-                        errors={mockCombinedErrorInfoForRadioErrors}
-                        fieldsets={mockDefinePassengerTypeFieldsetsWithRadioErrors}
-                        csrfToken=""
-                        pageProps={[]}
-                    />,
-                );
-                expect(wrapper).toMatchSnapshot();
-            });
-
-            it('should render errors correctly when input errors are passed to the page', () => {
-                const wrapper = shallow(
-                    <DefinePassengerType
-                        group={false}
-                        errors={mockPassengerTypeInputErrors}
-                        fieldsets={mockDefinePassengerTypeFieldsetsWithInputErrors}
-                        csrfToken=""
-                        pageProps={[]}
-                    />,
-                );
-                expect(wrapper).toMatchSnapshot();
             });
         });
     });

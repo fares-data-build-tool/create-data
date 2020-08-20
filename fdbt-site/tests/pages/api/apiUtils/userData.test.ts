@@ -229,7 +229,6 @@ describe('getFlatFareTicketJson', () => {
                         },
                     ],
                 },
-                [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
             },
         });
         const result = getFlatFareTicketJson(req, res);

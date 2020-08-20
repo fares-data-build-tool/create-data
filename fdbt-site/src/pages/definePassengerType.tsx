@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
+import lowerCase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
@@ -40,16 +41,16 @@ export interface DefinePassengerTypeProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
     numberOfPassengerTypeFieldset?: TextInputFieldset;
-    groupPassengerType?: string;
+    passengerType: string;
 }
 
-export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): RadioConditionalInputFieldset[] => {
+export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioConditionalInputFieldset[] => {
+    const fieldsets: RadioConditionalInputFieldset[] = [];
+
     const ageRangeFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-age-range',
-            content: passengerType
-                ? `Do ${passengerType} passengers have an age range?`
-                : 'Does the passenger type have an age range?',
+            content: `Do ${lowerCase(passengerType)} passengers have an age range?`,
         },
         radios: [
             {
@@ -90,9 +91,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
     const proofRequiredFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-proof',
-            content: passengerType
-                ? `Do ${passengerType} passengers require a proof document?`
-                : 'Does the passenger type require a proof document?',
+            content: `Do ${lowerCase(passengerType)} passengers require a proof document?`,
         },
         radios: [
             {
@@ -135,7 +134,6 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
         radioError: getErrorsByIds(['define-passenger-proof'], errors),
     };
 
-    const fieldsets: RadioConditionalInputFieldset[] = [];
     fieldsets.push(ageRangeFieldset);
 
     if (!passengerType || (passengerType && passengerType !== 'adult')) {
@@ -148,7 +146,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
 export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerType: string): TextInputFieldset => ({
     heading: {
         id: 'number-of-passenger-type-heading',
-        content: `How many ${passengerType} passengers can be in the group?`,
+        content: `How many ${lowerCase(passengerType)} passengers can be in the group?`,
     },
     inputs: [
         {
@@ -219,7 +217,7 @@ const DefinePassengerType = ({
     fieldsets,
     numberOfPassengerTypeFieldset,
     csrfToken,
-    groupPassengerType,
+    passengerType,
 }: DefinePassengerTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
@@ -247,7 +245,7 @@ const DefinePassengerType = ({
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                 </div>
-                {group === true && <input value={groupPassengerType} type="hidden" name="groupPassengerType" />}
+                <input value={passengerType} type="hidden" name="passengerType" />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
@@ -264,37 +262,38 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
 
-    if (!passengerTypeCookie && !groupPassengerTypes) {
+    if (!passengerTypeCookie && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
-    const { errors, passengerType } = JSON.parse(passengerTypeCookie);
+    const errors: ErrorInfo[] = JSON.parse(passengerTypeCookie).errors ? JSON.parse(passengerTypeCookie).errors : [];
+    const passengerType: string = ctx.query.groupPassengerType
+        ? ctx.query.groupPassengerType
+        : JSON.parse(passengerTypeCookie).passengerType;
 
-    const passengerTypeErrors: ErrorInfo[] = passengerTypeCookie && errors ? errors : [];
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
     const group = !!groupPassengerTypes;
 
     if (group) {
-        const groupPassengerType = ctx.query.groupPassengerType as string;
-        fieldsets = getFieldsets(passengerTypeErrors, groupPassengerType);
-        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(passengerTypeErrors, groupPassengerType);
+        fieldsets = getFieldsets(errors, passengerType);
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
 
         return {
             props: {
                 group,
-                errors: passengerTypeErrors,
+                errors,
                 fieldsets,
                 numberOfPassengerTypeFieldset,
-                groupPassengerType,
+                passengerType,
             },
         };
     }
 
-    fieldsets = getFieldsets(passengerTypeErrors, passengerType);
+    fieldsets = getFieldsets(errors, passengerType);
 
-    return { props: { group, errors: passengerTypeErrors, fieldsets } };
+    return { props: { group, errors, fieldsets, passengerType } };
 };
 
 export default DefinePassengerType;

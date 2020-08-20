@@ -120,8 +120,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !passengerTypeCookie ||
         !idToken ||
         !matchingAttributeInfo ||
-        !isMatchingInfo(matchingAttributeInfo) ||
-        !timeRestriction
+        !isMatchingInfo(matchingAttributeInfo)
     ) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
@@ -136,7 +135,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
     return {
-        timeRestriction,
+        ...(timeRestriction && { timeRestriction }),
         ...service,
         type: fareTypeObject.fareType,
         ...passengerTypeObject,
@@ -170,8 +169,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !passengerTypeCookie ||
         !idToken ||
         !matchingAttributeInfo ||
-        !isMatchingInfo(matchingAttributeInfo) ||
-        !timeRestriction
+        !isMatchingInfo(matchingAttributeInfo)
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
@@ -186,7 +184,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
     return {
-        timeRestriction,
+        ...(timeRestriction && { timeRestriction }),
         ...service,
         type: fareTypeObject.fareType,
         ...passengerTypeObject,
@@ -229,15 +227,7 @@ export const getPeriodGeoZoneTicketJson = async (
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (
-        !nocCode ||
-        !periodTypeCookie ||
-        !passengerTypeCookie ||
-        !operatorCookie ||
-        !idToken ||
-        !fareZoneCookie ||
-        !timeRestriction
-    ) {
+    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !fareZoneCookie) {
         throw new Error(
             'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
         );
@@ -282,7 +272,7 @@ export const getPeriodGeoZoneTicketJson = async (
     }
 
     return {
-        timeRestriction,
+        ...(timeRestriction && { timeRestriction }),
         nocCode,
         type: periodTypeName,
         ...passengerTypeObject,
@@ -316,15 +306,7 @@ export const getPeriodMultipleServicesTicketJson = (
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (
-        !nocCode ||
-        !periodTypeCookie ||
-        !passengerTypeCookie ||
-        !operatorCookie ||
-        !idToken ||
-        !serviceListCookie ||
-        !timeRestriction
-    ) {
+    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
         throw new Error(
             'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
         );
@@ -378,7 +360,7 @@ export const getPeriodMultipleServicesTicketJson = (
     }
 
     return {
-        timeRestriction,
+        ...(timeRestriction && { timeRestriction }),
         nocCode,
         type: periodTypeName,
         ...passengerTypeObject,
@@ -415,8 +397,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         !idToken ||
         !serviceListCookie ||
         !productDetailsAttributeInfo ||
-        !isProductData(productDetailsAttributeInfo) ||
-        !timeRestriction
+        !isProductData(productDetailsAttributeInfo)
     ) {
         throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
     }
@@ -448,7 +429,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     }));
 
     return {
-        timeRestriction,
+        ...(timeRestriction && { timeRestriction }),
         nocCode,
         type: fareTypeObject.fareType,
         ...passengerTypeObject,

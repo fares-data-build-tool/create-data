@@ -188,13 +188,13 @@ describe('definePassengerType', () => {
     it('should set the PASSENGER_TYPE_COOKIE and redirect to /timeRestrictions when no errors are found', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockPassengerTypeDetails = {
+            passengerType: 'Adult',
             ageRange: 'Yes',
             ageRangeMin: '5',
             ageRangeMax: '10',
             proof: 'Yes',
             proofDocuments: ['Membership Card', 'Student Card'],
         };
-        const mockPassengerTypeCookieValue = { passengerType: 'Adult', ...mockPassengerTypeDetails };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'single' },
             body: mockPassengerTypeDetails,
@@ -204,7 +204,7 @@ describe('definePassengerType', () => {
         await definePassengerType(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
             PASSENGER_TYPE_COOKIE,
-            JSON.stringify(mockPassengerTypeCookieValue),
+            JSON.stringify(mockPassengerTypeDetails),
             req,
             res,
         );
@@ -221,6 +221,7 @@ describe('definePassengerType', () => {
                 ageRangeMax: '',
                 proof: 'Yes',
                 proofDocuments: [],
+                passengerType: 'Adult',
             },
             [
                 {
@@ -244,6 +245,7 @@ describe('definePassengerType', () => {
                 ageRangeMin: '25',
                 ageRangeMax: '12',
                 proof: 'No',
+                passengerType: 'Adult',
             },
             [
                 {
@@ -287,7 +289,7 @@ describe('definePassengerType', () => {
 
     it('should set the session attribute GROUP_PASSENGER_INFO_ATTRIBUTE with the first passenger type in the group', async () => {
         const mockPassengerTypeDetails = {
-            groupPassengerType: 'adult',
+            passengerType: 'adult',
             ageRange: 'Yes',
             ageRangeMin: '5',
             ageRangeMax: '10',
@@ -330,20 +332,9 @@ describe('definePassengerType', () => {
     });
 
     it('should set the session attribute GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group', async () => {
-        const mockPassengerTypeDetails = {
-            groupPassengerType: 'child',
-            ageRange: 'Yes',
-            ageRangeMin: '5',
-            ageRangeMax: '10',
-            minNumber: '2',
-            maxNumber: '10',
-            proof: 'Yes',
-            proofDocuments: ['Membership Card', 'Student Card'],
-        };
-
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
-        const groupPassengerInfoAttribute: CompanionInfo[] = [
+        const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
             {
                 minNumber: '2',
                 maxNumber: '10',
@@ -353,15 +344,27 @@ describe('definePassengerType', () => {
                 passengerType: 'adult',
             },
         ];
+
+        const mockCurrentPassengerTypeDetails = {
+            passengerType: 'child',
+            ageRange: 'Yes',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
+            minNumber: '2',
+            maxNumber: '10',
+            proof: 'Yes',
+            proofDocuments: 'Membership Card',
+        };
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'single' },
-            body: mockPassengerTypeDetails,
+            body: mockCurrentPassengerTypeDetails,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
                 [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
                 [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
-                [GROUP_PASSENGER_INFO_ATTRIBUTE]: groupPassengerInfoAttribute,
+                [GROUP_PASSENGER_INFO_ATTRIBUTE]: mockPreviousPassengerTypeDetails,
             },
         });
 
@@ -379,7 +382,7 @@ describe('definePassengerType', () => {
                 maxNumber: '10',
                 ageRangeMin: '5',
                 ageRangeMax: '10',
-                proofDocuments: ['Membership Card', 'Student Card'],
+                proofDocuments: ['Membership Card'],
                 passengerType: 'child',
             },
         ];
