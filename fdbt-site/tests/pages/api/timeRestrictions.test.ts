@@ -39,6 +39,7 @@ describe('timeRestrictions', () => {
                 Location: '/timeRestrictions',
             });
             expect(updateSessionAttributeSpy).toHaveBeenLastCalledWith(req, TIME_RESTRICTIONS_ATTRIBUTE, {
+                timeRestrictions: false,
                 errors: [{ errorMessage: 'Choose either yes or no', id: timeRestrictionsErrorId }],
             });
         });

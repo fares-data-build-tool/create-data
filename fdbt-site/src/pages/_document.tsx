@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document';
+import Document, { Html, Head, Main, NextScript, DocumentInitialProps } from 'next/document';
 import React, { ReactElement } from 'react';
 import { ServerResponse } from 'http';
 import { parseCookies } from 'nookies';
@@ -6,7 +6,7 @@ import Header from '../layout/Header';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { ID_TOKEN_COOKIE } from '../constants';
 import Banner from '../layout/Banner';
-import { Breadcrumb } from '../interfaces';
+import { Breadcrumb, DocumentContextWithSession } from '../interfaces';
 import Footer from '../layout/Footer';
 import breadcrumb from '../utils/breadcrumbs';
 
@@ -25,7 +25,7 @@ interface ResponseWithLocals extends ServerResponse {
 }
 
 class MyDocument extends Document<DocumentProps> {
-    static async getInitialProps(ctx: DocumentContext): Promise<DocumentProps> {
+    static async getInitialProps(ctx: DocumentContextWithSession): Promise<DocumentProps> {
         const initialProps = await Document.getInitialProps(ctx);
         const nonce = (ctx.res as ResponseWithLocals)?.locals?.nonce ?? null;
         const csrfToken = (ctx.res as ResponseWithLocals)?.locals?.csrfToken ?? null;

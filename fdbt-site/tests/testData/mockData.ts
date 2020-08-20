@@ -21,6 +21,7 @@ import {
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
     USER_COOKIE,
+    PASSENGER_TYPE_ERRORS_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -38,6 +39,7 @@ import {
     FlatFareTicket,
     SalesOfferPackage,
     ProductDetails,
+    TimeRestriction,
 } from '../../src/interfaces';
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -89,6 +91,7 @@ export const getMockRequestAndResponse = ({
         fareType = 'single',
         inputMethod = 'csv',
         passengerType = { passengerType: 'Adult' },
+        passengerTypeErrors = null,
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -160,6 +163,10 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
+
+    cookieString += passengerTypeErrors
+        ? `${PASSENGER_TYPE_ERRORS_COOKIE}=${encodeURI(JSON.stringify(passengerTypeErrors))};`
+        : '';
 
     cookieString += serviceLineName
         ? `${SERVICE_COOKIE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`
@@ -1200,6 +1207,12 @@ export const expectedProductDetailsArray: ProductDetails[] = [
     },
 ];
 
+export const mockTimeRestriction: TimeRestriction = {
+    startTime: '0900',
+    endTime: '1500',
+    validDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+};
+
 export const expectedMatchingJsonSingle: SingleTicket = {
     type: 'single',
     lineName: '215',
@@ -1209,6 +1222,7 @@ export const expectedMatchingJsonSingle: SingleTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             salesOfferPackages: [
@@ -1346,6 +1360,7 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             salesOfferPackages: [
@@ -1513,6 +1528,7 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             salesOfferPackages: [
@@ -1648,6 +1664,10 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    zoneName: 'fare zone 1',
+    stops: zoneStops,
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Product A',
@@ -1666,9 +1686,6 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
             ],
         },
     ],
-    zoneName: 'fare zone 1',
-    stops: zoneStops,
-    passengerType: 'Adult',
 };
 
 export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
@@ -1677,6 +1694,8 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Product A',
@@ -1715,7 +1734,6 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
-    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket = {
@@ -1724,6 +1742,10 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    zoneName: 'fare zone 1',
+    stops: zoneStops,
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1774,9 +1796,6 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
             ],
         },
     ],
-    zoneName: 'fare zone 1',
-    stops: zoneStops,
-    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
@@ -1785,6 +1804,8 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1855,7 +1876,6 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
-    passengerType: 'Adult',
 };
 
 export const expectedFlatFareProductUploadJson: FlatFareTicket = {
@@ -2145,7 +2165,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-age-range',
-            content: 'Does the passenger type have an age range?',
+            content: 'Do child passengers have an age range?',
         },
         radios: [
             {
@@ -2190,7 +2210,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-proof',
-            content: 'Does the passenger type require a proof document?',
+            content: 'Do child passengers require a proof document?',
         },
         radios: [
             {
@@ -2249,7 +2269,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-age-range',
-            content: 'Does the passenger type have an age range?',
+            content: 'Do child passengers have an age range?',
         },
         radios: [
             {
@@ -2298,7 +2318,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
     {
         heading: {
             id: 'define-passenger-proof',
-            content: 'Does the passenger type require a proof document?',
+            content: 'Do child passengers require a proof document?',
         },
         radios: [
             {
@@ -2343,7 +2363,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
     },
 ];
 
-export const mockCombinedErrorInfoForInputErrors: ErrorInfo[] = [
+export const mockPassengerTypeInputErrors: ErrorInfo[] = [
     {
         errorMessage: 'Enter a minimum or maximum age',
         id: 'define-passenger-age-range',
@@ -2455,7 +2475,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
     },
 ];
 
-export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
+export const mockPassengerTypeRadioAndInputErrors: ErrorInfo[] = [
     {
         userInput: '',
         errorMessage: 'Choose one of the options below',
@@ -2496,7 +2516,7 @@ export const mockNumberOfPassengerTypeFieldset: TextInputFieldset = {
 export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
     heading: {
         id: 'number-of-passenger-type-heading',
-        content: 'How many adult passengers can be in the group?',
+        content: 'How many child passengers can be in the group?',
     },
     inputs: [
         {
@@ -2521,6 +2541,411 @@ export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
         },
     ],
 };
+
+export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (required)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (required)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDaysSelected',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (required)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (required)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                id: 'define-time-restrictions',
+                errorMessage: 'Choose one of the options below',
+            },
+        ],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDaysSelected',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                id: 'define-valid-days',
+                errorMessage: 'Choose one of the options below',
+            },
+        ],
+    },
+];
+
+export const mockTimeRestrictionsRadioErrors: ErrorInfo[] = [
+    {
+        id: 'define-time-restrictions',
+        errorMessage: 'Choose one of the options below',
+    },
+    {
+        id: 'define-valid-days',
+        errorMessage: 'Choose one of the options below',
+    },
+];
+
+export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (required)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (required)',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        id: 'start-time',
+                        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
+                    },
+                    {
+                        id: 'end-time',
+                        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
+                    },
+                ],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [
+                    {
+                        id: 'valid-days-required',
+                        errorMessage: 'Select at least one day',
+                    },
+                ],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDaysSelected',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockTimeRestrictionsInputErrors: ErrorInfo[] = [
+    {
+        id: 'start-time',
+        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
+        userInput: undefined,
+    },
+    {
+        id: 'end-time',
+        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
+        userInput: undefined,
+    },
+    {
+        id: 'valid-days-required',
+        errorMessage: 'Select at least one day',
+        userInput: undefined,
+    },
+];
+
+export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (required)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (required)',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        id: 'start-time',
+                        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
+                    },
+                    {
+                        id: 'end-time',
+                        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
+                    },
+                ],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDaysSelected',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                id: 'define-valid-days',
+                errorMessage: 'Choose one of the options below',
+            },
+        ],
+    },
+];
+
+export const mockTimeRestrictionsRadioAndInputErrors: ErrorInfo[] = [
+    {
+        id: 'define-valid-days',
+        errorMessage: 'Choose one of the options below',
+        userInput: undefined,
+    },
+    {
+        id: 'start-time',
+        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
+        userInput: undefined,
+    },
+    {
+        id: 'end-time',
+        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
+        userInput: undefined,
+    },
+];
 
 export const mockBreadCrumbList: Breadcrumb[] = [
     { name: 'Home', link: '/', show: true },
@@ -2550,6 +2975,11 @@ export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
     {
         name: 'Passenger type details',
         link: '/definePassengerType',
+        show: true,
+    },
+    {
+        name: 'Time restrictions',
+        link: '/timeRestrictions',
         show: true,
     },
     {
@@ -2593,6 +3023,11 @@ export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[]
     {
         name: 'Passenger type',
         link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Time restrictions',
+        link: '/timeRestrictions',
         show: true,
     },
     {
@@ -2659,6 +3094,11 @@ export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] =
         show: true,
     },
     {
+        name: 'Time restrictions',
+        link: '/timeRestrictions',
+        show: true,
+    },
+    {
         name: 'Period type',
         link: '/periodType',
         show: true,
@@ -2710,6 +3150,11 @@ export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Brea
         show: true,
     },
     {
+        name: 'Time restrictions',
+        link: '/timeRestrictions',
+        show: true,
+    },
+    {
         name: 'Period type',
         link: '/periodType',
         show: true,
@@ -2750,6 +3195,16 @@ export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] 
     {
         name: 'Passenger type',
         link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Time restrictions',
+        link: '/timeRestrictions',
+        show: true,
+    },
+    {
+        name: 'Time restrictions details',
+        link: '/defineTimeRestrictions',
         show: true,
     },
     {

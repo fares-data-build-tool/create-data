@@ -6,6 +6,8 @@ export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
 
 export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
 
+export const PASSENGER_TYPE_ERRORS_COOKIE = 'fdbt-passenger-type-errors';
+
 export const SERVICE_COOKIE = 'fdbt-service';
 
 export const JOURNEY_COOKIE = 'fdbt-journey';
@@ -77,6 +79,8 @@ export const GROUP_PASSENGER_INFO_ATTRIBUTE = 'fdbt-group-passenger-info';
 export const GROUP_DEFINITION_ATTRIBUTE = 'fdbt-group-definition';
 
 export const TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-time-restrictions';
+
+export const TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE = 'fdbt-time-restrictions-definition';
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',

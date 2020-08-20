@@ -193,8 +193,9 @@ exports[`pages definePassengerType should render correctly when on the group tic
       />
     </div>
     <input
-      name="groupPassengerType"
+      name="passengerType"
       type="hidden"
+      value="senior"
     />
     <input
       className="govuk-button"
@@ -336,6 +337,11 @@ exports[`pages definePassengerType should render correctly when on the non-group
       />
     </div>
     <input
+      name="passengerType"
+      type="hidden"
+      value="adult"
+    />
+    <input
       className="govuk-button"
       id="continue-button"
       type="submit"
@@ -412,7 +418,7 @@ exports[`pages definePassengerType should render errors correctly when input err
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type have an age range?",
+              "content": "Do child passengers have an age range?",
               "id": "define-passenger-age-range",
             },
             "radioError": Array [],
@@ -466,7 +472,7 @@ exports[`pages definePassengerType should render errors correctly when input err
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type require a proof document?",
+              "content": "Do child passengers require a proof document?",
               "id": "define-passenger-proof",
             },
             "radioError": Array [],
@@ -519,6 +525,11 @@ exports[`pages definePassengerType should render errors correctly when input err
         key="define-passenger-proof"
       />
     </div>
+    <input
+      name="passengerType"
+      type="hidden"
+      value="child"
+    />
     <input
       className="govuk-button"
       id="continue-button"
@@ -588,7 +599,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type have an age range?",
+              "content": "Do child passengers have an age range?",
               "id": "define-passenger-age-range",
             },
             "radioError": Array [
@@ -638,7 +649,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
         fieldset={
           Object {
             "heading": Object {
-              "content": "Does the passenger type require a proof document?",
+              "content": "Do child passengers require a proof document?",
               "id": "define-passenger-proof",
             },
             "radioError": Array [
@@ -690,6 +701,11 @@ exports[`pages definePassengerType should render errors correctly when radio err
         key="define-passenger-proof"
       />
     </div>
+    <input
+      name="passengerType"
+      type="hidden"
+      value="infant"
+    />
     <input
       className="govuk-button"
       id="continue-button"

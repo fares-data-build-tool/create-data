@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
+import lowerCase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
+import { GROUP_PASSENGER_TYPES_ATTRIBUTE, PASSENGER_TYPE_ERRORS_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
@@ -17,6 +18,7 @@ import {
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { getErrorsByIds } from '../utils';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
@@ -39,28 +41,16 @@ export interface DefinePassengerTypeProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
     numberOfPassengerTypeFieldset?: TextInputFieldset;
-    groupPassengerType?: string;
+    passengerType: string;
 }
 
-export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
-    const compactErrors: ErrorInfo[] = [];
-    errors.forEach(error => {
-        if (ids.includes(error.id)) {
-            compactErrors.push(error);
-        }
-    });
-    return compactErrors;
-};
-
-export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): RadioConditionalInputFieldset[] => {
-    const fieldsets = [];
+export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioConditionalInputFieldset[] => {
+    const fieldsets: RadioConditionalInputFieldset[] = [];
 
     const ageRangeFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-age-range',
-            content: passengerType
-                ? `Do ${passengerType} passengers have an age range?`
-                : 'Does the passenger type have an age range?',
+            content: `Do ${lowerCase(passengerType)} passengers have an age range?`,
         },
         radios: [
             {
@@ -101,9 +91,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
     const proofRequiredFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-proof',
-            content: passengerType
-                ? `Do ${passengerType} passengers require a proof document?`
-                : 'Does the passenger type require a proof document?',
+            content: `Do ${lowerCase(passengerType)} passengers require a proof document?`,
         },
         radios: [
             {
@@ -145,14 +133,20 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
         ],
         radioError: getErrorsByIds(['define-passenger-proof'], errors),
     };
-    fieldsets.push(ageRangeFieldset, proofRequiredFieldset);
+
+    fieldsets.push(ageRangeFieldset);
+
+    if (!passengerType || (passengerType && passengerType !== 'adult')) {
+        fieldsets.push(proofRequiredFieldset);
+    }
+
     return fieldsets;
 };
 
 export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerType: string): TextInputFieldset => ({
     heading: {
         id: 'number-of-passenger-type-heading',
-        content: `How many ${passengerType} passengers can be in the group?`,
+        content: `How many ${lowerCase(passengerType)} passengers can be in the group?`,
     },
     inputs: [
         {
@@ -223,7 +217,7 @@ const DefinePassengerType = ({
     fieldsets,
     numberOfPassengerTypeFieldset,
     csrfToken,
-    groupPassengerType,
+    passengerType,
 }: DefinePassengerTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
@@ -251,7 +245,7 @@ const DefinePassengerType = ({
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                 </div>
-                {group === true && <input value={groupPassengerType} type="hidden" name="groupPassengerType" />}
+                <input value={passengerType} type="hidden" name="passengerType" />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
@@ -264,25 +258,31 @@ export const isGroupDefinitionWithErrors = (
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePassengerTypeProps } => {
     const cookies = parseCookies(ctx);
+    const passengerTypeErrorsCookie = cookies[PASSENGER_TYPE_ERRORS_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
 
-    if (!passengerTypeCookie && !groupPassengerTypes) {
+    if (!passengerTypeCookie && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
     const errors: ErrorInfo[] =
-        passengerTypeCookie && JSON.parse(passengerTypeCookie).errors ? JSON.parse(passengerTypeCookie).errors : [];
+        passengerTypeErrorsCookie && JSON.parse(passengerTypeErrorsCookie).errors
+            ? JSON.parse(passengerTypeErrorsCookie).errors
+            : [];
+    const passengerType: string = ctx.query.groupPassengerType
+        ? ctx.query.groupPassengerType
+        : JSON.parse(passengerTypeCookie).passengerType;
+
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
     const group = !!groupPassengerTypes;
 
     if (group) {
-        const groupPassengerType = ctx.query.groupPassengerType as string;
-        fieldsets = getFieldsets(errors, groupPassengerType);
-        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, groupPassengerType);
+        fieldsets = getFieldsets(errors, passengerType);
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
 
         return {
             props: {
@@ -290,13 +290,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
                 errors,
                 fieldsets,
                 numberOfPassengerTypeFieldset,
-                groupPassengerType,
+                passengerType,
             },
         };
     }
-    fieldsets = getFieldsets(errors);
 
-    return { props: { group, errors, fieldsets } };
+    fieldsets = getFieldsets(errors, passengerType);
+
+    return { props: { group, errors, fieldsets, passengerType } };
 };
 
 export default DefinePassengerType;

@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next';
 import {
     PASSENGER_TYPE_COOKIE,
     FARE_TYPE_COOKIE,
@@ -6,11 +5,13 @@ import {
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
+    TIME_RESTRICTIONS_ATTRIBUTE,
 } from '../constants/index';
-import { Breadcrumb } from '../interfaces';
+import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
+import { getSessionAttribute } from './sessions';
 
-export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
+export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
 
     if (!url || url === '/' || url === '/home') {
@@ -25,6 +26,8 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
     const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
     const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
     const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
+
+    const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];
@@ -182,6 +185,7 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
 
     const getFullBreadcrumbList = (): Breadcrumb[] => {
         const isNotAnyonePassengerType = passengerType !== 'anyone';
+        const isTimeRestrictionDefined = timeRestrictionsAttribute?.timeRestrictions || false;
 
         const breadcrumbList: Breadcrumb[] = [
             {
@@ -203,6 +207,16 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
                 name: 'Passenger type details',
                 link: '/definePassengerType',
                 show: isNotAnyonePassengerType,
+            },
+            {
+                name: 'Time restrictions',
+                link: '/timeRestrictions',
+                show: true,
+            },
+            {
+                name: 'Time restrictions details',
+                link: '/defineTimeRestrictions',
+                show: isTimeRestrictionDefined,
             },
         ];
 
