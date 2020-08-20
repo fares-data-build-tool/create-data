@@ -10,6 +10,7 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
+    PASSENGER_TYPE_ERRORS_COOKIE,
 } from '../../../src/constants';
 import { GroupPassengerTypesCollection } from '../../../src/pages/api/groupPassengerTypes';
 import * as sessions from '../../../src/utils/sessions';
@@ -19,6 +20,8 @@ import { GroupTicketAttribute } from '../../../src/pages/api/groupSize';
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    const deleteCookieSpy = jest.spyOn(apiUtils, 'deleteCookieOnResponseObject');
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -185,8 +188,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set the PASSENGER_TYPE_COOKIE and redirect to /timeRestrictions when no errors are found', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    it('should set the PASSENGER_TYPE_COOKIE, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to /timeRestrictions when no errors are found', async () => {
         const mockPassengerTypeDetails = {
             passengerType: 'Adult',
             ageRange: 'Yes',
@@ -202,12 +204,8 @@ describe('definePassengerType', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         await definePassengerType(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            PASSENGER_TYPE_COOKIE,
-            JSON.stringify(mockPassengerTypeDetails),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toBeCalledWith(PASSENGER_TYPE_COOKIE, JSON.stringify(mockPassengerTypeDetails), req, res);
+        expect(deleteCookieSpy).toBeCalledWith(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/timeRestrictions',
         });
@@ -261,9 +259,8 @@ describe('definePassengerType', () => {
             ],
         ],
     ])(
-        'should set the PASSENGER_TYPE_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
+        'should set the PASSENGER_TYPE_ERRORS_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
         async (mockUserInput, errors) => {
-            const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
             const mockPassengerTypeCookieValue = {
                 errors,
                 passengerType: 'Adult',
@@ -275,8 +272,8 @@ describe('definePassengerType', () => {
                 mockWriteHeadFn: writeHeadMock,
             });
             await definePassengerType(req, res);
-            expect(setCookieSpy).toHaveBeenCalledWith(
-                PASSENGER_TYPE_COOKIE,
+            expect(setCookieSpy).toBeCalledWith(
+                PASSENGER_TYPE_ERRORS_COOKIE,
                 JSON.stringify(mockPassengerTypeCookieValue),
                 req,
                 res,
@@ -287,7 +284,7 @@ describe('definePassengerType', () => {
         },
     );
 
-    it('should set the session attribute GROUP_PASSENGER_INFO_ATTRIBUTE with the first passenger type in the group', async () => {
+    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the first passenger type in the group, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to the same page', async () => {
         const mockPassengerTypeDetails = {
             passengerType: 'adult',
             ageRange: 'Yes',
@@ -324,14 +321,14 @@ describe('definePassengerType', () => {
         ];
 
         await definePassengerType(req, res);
-
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, mockPassengerCompanions);
+        expect(deleteCookieSpy).toBeCalledWith(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/definePassengerType?groupPassengerType=child',
         });
     });
 
-    it('should set the session attribute GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group', async () => {
+    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to /timeRestrictions', async () => {
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
@@ -388,8 +385,8 @@ describe('definePassengerType', () => {
         ];
 
         await definePassengerType(req, res);
-
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, mockPassengerCompanions);
+        expect(deleteCookieSpy).toBeCalledWith(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/timeRestrictions',
         });

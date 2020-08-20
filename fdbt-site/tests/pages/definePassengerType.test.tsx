@@ -222,8 +222,8 @@ describe('pages', () => {
                     cookies: {
                         passengerType: {
                             passengerType: 'group',
-                            errors,
                         },
+                        passengerTypeErrors: { errors },
                     },
                 });
                 const result = getServerSideProps(ctx);
@@ -251,8 +251,8 @@ describe('pages', () => {
                     cookies: {
                         passengerType: {
                             passengerType: 'child',
-                            errors,
                         },
+                        passengerTypeErrors: { errors },
                     },
                     session: {
                         [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
@@ -266,7 +266,6 @@ describe('pages', () => {
                                 maxAge: 150,
                                 proofDocuments: [],
                             },
-                            errors,
                         },
                     },
                     query: {

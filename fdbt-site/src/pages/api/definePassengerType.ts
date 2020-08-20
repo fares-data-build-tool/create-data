@@ -1,12 +1,13 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
-import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils/index';
+import { redirectToError, redirectTo, setCookieOnResponseObject, deleteCookieOnResponseObject } from './apiUtils/index';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
     GROUP_SIZE_ATTRIBUTE,
+    PASSENGER_TYPE_ERRORS_COOKIE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
@@ -256,6 +257,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
                     if ((selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length > 0) {
+                        deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
                         redirectTo(
                             res,
                             `/definePassengerType?groupPassengerType=${
@@ -263,17 +265,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             }`,
                         );
                     } else {
+                        deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
                         redirectTo(res, '/timeRestrictions');
                     }
                     return;
                 }
             }
-
+            deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
             redirectTo(res, '/timeRestrictions');
             return;
         }
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
-        setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+        setCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, passengerTypeCookieValue, req, res);
         if (group) {
             redirectTo(res, `/definePassengerType?groupPassengerType=${passengerType}`);
             return;

@@ -21,6 +21,7 @@ import {
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
     USER_COOKIE,
+    PASSENGER_TYPE_ERRORS_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -90,6 +91,7 @@ export const getMockRequestAndResponse = ({
         fareType = 'single',
         inputMethod = 'csv',
         passengerType = { passengerType: 'Adult' },
+        passengerTypeErrors = null,
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -161,6 +163,10 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
+
+    cookieString += passengerTypeErrors
+        ? `${PASSENGER_TYPE_ERRORS_COOKIE}=${encodeURI(JSON.stringify(passengerTypeErrors))};`
+        : '';
 
     cookieString += serviceLineName
         ? `${SERVICE_COOKIE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`
