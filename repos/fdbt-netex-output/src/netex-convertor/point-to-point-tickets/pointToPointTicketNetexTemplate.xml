@@ -280,6 +280,7 @@
 							</OperatorRef>
 							<LineRef version="1.0" ref="" />
 							<TariffBasis>zoneToZone</TariffBasis>
+							<qualityStructureFactors></qualityStructureFactors>
 							<fareStructureElements>
 								<FareStructureElement version="1.0" id="Tariff@single@lines">
 									<Name></Name>

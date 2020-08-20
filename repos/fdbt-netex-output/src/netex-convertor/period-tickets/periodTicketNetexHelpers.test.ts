@@ -465,6 +465,7 @@ describe('periodTicketNetexHelpers', () => {
                     ref: expect.any(String),
                 }),
                 GenericParameterAssignment: expect.any(Object),
+                qualityStructureFactors: null,
             };
 
             const expectedDurationsFareStructureElement = {

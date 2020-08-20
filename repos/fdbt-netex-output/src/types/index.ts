@@ -37,6 +37,12 @@ export interface SalesOfferPackage {
     ticketFormats: string[];
 }
 
+export interface TimeRestriction {
+    startTime?: string;
+    endTime?: string;
+    validDays?: DayOfWeek[];
+}
+
 export interface BaseTicket {
     nocCode: string;
     type: string;
@@ -48,7 +54,10 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
+    timeRestriction?: TimeRestriction;
 }
+
+type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
 export interface User {
     passengerType: string;
