@@ -1,8 +1,7 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
-import { redirectToError, redirectTo, unescapeAndDecodeCookie, setCookieOnResponseObject } from './apiUtils/index';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils/index';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
@@ -14,10 +13,11 @@ import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../inter
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { GroupPassengerTypesCollection } from './groupPassengerTypes';
 
-interface FilteredRequestBody {
+export interface FilteredRequestBody {
     minNumber?: string;
     maxNumber?: string;
     maxGroupSize?: string;
+    groupPassengerType?: string;
     ageRange?: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
@@ -96,8 +96,8 @@ export const passengerTypeDetailsSchema = yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
-        proof: yup.string().when('groupPassengerType', {
-            is: groupPassengerTypeNameValue => groupPassengerTypeNameValue !== 'adult',
+        proof: yup.string().when('passengerType', {
+            is: passengerTypeValue => passengerTypeValue !== 'adult',
             then: yup
                 .string()
                 .oneOf(['Yes', 'No'])
@@ -186,10 +186,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-
-        const passengerType = passengerTypeCookie ? JSON.parse(passengerTypeCookie).passengerType : '';
+        const { passengerType } = req.body;
 
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
@@ -203,8 +200,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const filteredReqBody = formatRequestBody(req);
 
-        if (group && groupSize?.maxGroupSize) {
+        if (groupPassengerTypes && groupSize) {
             filteredReqBody.maxGroupSize = groupSize.maxGroupSize;
+            filteredReqBody.groupPassengerType = passengerType;
         }
 
         try {
@@ -218,18 +216,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }));
         }
 
-        const { groupPassengerType } = req.body;
-
         if (errors.length === 0) {
-            let passengerTypeCookieValue = '';
             if (!group) {
-                passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
+                const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
                 setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
             } else {
-                passengerTypeCookieValue = JSON.stringify({ errors: [], passengerType });
-                setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
                 const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-                const submittedPassengerType = groupPassengerType;
+                const submittedPassengerType = passengerType;
 
                 if (selectedPassengerTypes) {
                     const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
@@ -238,7 +231,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                     (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.splice(index, 1);
 
-                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proofDocuments } = req.body;
+                    const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
+                    const { minNumber, maxNumber } = req.body;
 
                     const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
 
@@ -281,7 +275,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
         setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         if (group) {
-            redirectTo(res, `/definePassengerType?groupPassengerType=${groupPassengerType}`);
+            redirectTo(res, `/definePassengerType?groupPassengerType=${passengerType}`);
             return;
         }
         redirectTo(res, '/definePassengerType');

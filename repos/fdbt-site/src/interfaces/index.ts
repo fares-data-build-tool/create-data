@@ -126,7 +126,7 @@ export interface GroupPassengerInfo extends CompanionInfo {
 
 export interface CompanionInfo {
     passengerType: string;
-    minNumber: string;
+    minNumber?: string;
     maxNumber: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
@@ -153,7 +153,7 @@ export interface TimeRestriction {
 }
 
 export interface BaseTicket {
-    timeRestriction: TimeRestriction;
+    timeRestriction?: TimeRestriction;
     nocCode: string;
     type: string;
     passengerType: string;

@@ -64,7 +64,6 @@ module.exports = {
         '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
         'react/jsx-indent': [2, 4],
-        'no-console': 0,
         'import/extensions': [
             'error',
             'ignorePackages',
