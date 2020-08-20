@@ -1,23 +1,24 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
-import { redirectToError, redirectTo, unescapeAndDecodeCookie, setCookieOnResponseObject } from './apiUtils/index';
+import { redirectToError, redirectTo, setCookieOnResponseObject, deleteCookieOnResponseObject } from './apiUtils/index';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
     GROUP_SIZE_ATTRIBUTE,
+    PASSENGER_TYPE_ERRORS_COOKIE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { GroupPassengerTypesCollection } from './groupPassengerTypes';
 
-interface FilteredRequestBody {
+export interface FilteredRequestBody {
     minNumber?: string;
     maxNumber?: string;
     maxGroupSize?: string;
+    groupPassengerType?: string;
     ageRange?: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
@@ -96,10 +97,13 @@ export const passengerTypeDetailsSchema = yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
-        proof: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
+        proof: yup.string().when('passengerType', {
+            is: passengerTypeValue => passengerTypeValue !== 'adult',
+            then: yup
+                .string()
+                .oneOf(['Yes', 'No'])
+                .required(radioButtonError),
+        }),
         ageRangeMin: yup.number().when('ageRange', {
             is: 'Yes',
             then: yup
@@ -173,7 +177,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
         case 'maxNumber':
             return 'max-number-of-passengers';
         default:
-            throw new Error('Could not match the following error with an expected input.');
+            throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
 };
 
@@ -183,18 +187,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-
-        let passengerType = '';
+        const { passengerType } = req.body;
 
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
         const group = !!groupPassengerTypes && !!groupSize;
-
-        if (!group) {
-            passengerType = JSON.parse(passengerTypeCookie).passengerType;
-        }
 
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');
@@ -204,8 +201,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const filteredReqBody = formatRequestBody(req);
 
-        if (group && groupSize?.maxGroupSize) {
+        if (groupPassengerTypes && groupSize) {
             filteredReqBody.maxGroupSize = groupSize.maxGroupSize;
+            filteredReqBody.groupPassengerType = passengerType;
         }
 
         try {
@@ -219,18 +217,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }));
         }
 
-        const { groupPassengerType } = req.body;
-
         if (errors.length === 0) {
-            let passengerTypeCookieValue = '';
             if (!group) {
-                passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
+                const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
                 setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
             } else {
-                passengerTypeCookieValue = JSON.stringify({ errors: [], passengerType });
-                setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
                 const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-                const submittedPassengerType = groupPassengerType;
+                const submittedPassengerType = passengerType;
 
                 if (selectedPassengerTypes) {
                     const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
@@ -239,7 +232,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                     (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.splice(index, 1);
 
-                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proofDocuments } = req.body;
+                    const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
+                    const { minNumber, maxNumber } = req.body;
 
                     const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
 
@@ -263,6 +257,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
                     if ((selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length > 0) {
+                        deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
                         redirectTo(
                             res,
                             `/definePassengerType?groupPassengerType=${
@@ -270,19 +265,20 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             }`,
                         );
                     } else {
+                        deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
                         redirectTo(res, '/timeRestrictions');
                     }
                     return;
                 }
             }
-
+            deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
             redirectTo(res, '/timeRestrictions');
             return;
         }
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
-        setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+        setCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, passengerTypeCookieValue, req, res);
         if (group) {
-            redirectTo(res, `/definePassengerType?groupPassengerType=${groupPassengerType}`);
+            redirectTo(res, `/definePassengerType?groupPassengerType=${passengerType}`);
             return;
         }
         redirectTo(res, '/definePassengerType');

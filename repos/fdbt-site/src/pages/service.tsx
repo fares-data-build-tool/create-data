@@ -87,7 +87,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const nocCode = getNocFromIdToken(ctx);
 
     if (!operatorCookie || !passengerTypeCookie || !nocCode) {
-        throw new Error('Necessary cookies not found to show matching page');
+        throw new Error('Could not render the service selection page. Necessary cookies not found.');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);

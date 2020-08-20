@@ -158,8 +158,8 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 
     try {
         const queryInput = `
-            SELECT lineName, startDate, description, serviceCode
-            FROM tndsService
+            SELECT lineName, startDate, serviceDescription AS description, serviceCode
+            FROM tndsOperatorService
             WHERE nocCode = ?
         `;
 
