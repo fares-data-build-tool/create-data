@@ -2,7 +2,6 @@ import { FareZoneList, PointToPointTicket, Operator, ScheduledStopPoints, User }
 import {
     getDistanceMatrixElements,
     getFareZoneList,
-    getNetexMode,
     getPriceGroups,
     getScheduledStopPointsList,
     getPreassignedFareProduct,
@@ -22,6 +21,7 @@ import {
     getGroupElement,
     getTimeRestrictions,
     isValidTimeRestriction,
+    getNetexMode,
 } from '../sharedHelpers';
 
 const pointToPointTicketNetexGenerator = (
