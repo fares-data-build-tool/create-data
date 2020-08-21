@@ -55,6 +55,7 @@ const SingleDirection = ({
                                 selectName="directionJourneyPattern"
                                 selectNameID="direction-journey-pattern"
                                 journeyPatterns={service.journeyPatterns}
+                                dropdownLabel="Journey direction"
                             />
                         </FormElementWrapper>
                         <span className="govuk-hint hint-text" id="traveline-hint">

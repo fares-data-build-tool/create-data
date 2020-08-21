@@ -174,7 +174,7 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                     </CsrfForm>
                 </div>
                 <div className="govuk-grid-column-one-thirds">
-                    <h3 className="govuk-heading-m">Already have an account?</h3>
+                    <h1 className="govuk-heading-m">Already have an account?</h1>
                     <a href="/signin" className="govuk-link">
                         Sign in
                     </a>

@@ -43,6 +43,9 @@ const Service = ({
                         <span className="govuk-hint" id="service-operator-passenger-type-hint">
                             {operator} - {upperFirst(passengerType)}
                         </span>
+                        <label className="govuk-visually-hidden" htmlFor="service">
+                            Service list
+                        </label>
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
                             <select className="govuk-select" id="service" name="service" defaultValue="">
                                 <option value="" disabled>
