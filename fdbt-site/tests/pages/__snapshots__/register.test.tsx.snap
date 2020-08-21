@@ -207,11 +207,11 @@ exports[`pages register should render correctly 1`] = `
     <div
       className="govuk-grid-column-one-thirds"
     >
-      <h3
+      <h1
         className="govuk-heading-m"
       >
         Already have an account?
-      </h3>
+      </h1>
       <a
         className="govuk-link"
         href="/signin"
@@ -465,11 +465,11 @@ exports[`pages register should render error messaging when errors are passed 1`]
     <div
       className="govuk-grid-column-one-thirds"
     >
-      <h3
+      <h1
         className="govuk-heading-m"
       >
         Already have an account?
-      </h3>
+      </h1>
       <a
         className="govuk-link"
         href="/signin"
@@ -723,11 +723,11 @@ exports[`pages register should store email if entered correctly but other fields
     <div
       className="govuk-grid-column-one-thirds"
     >
-      <h3
+      <h1
         className="govuk-heading-m"
       >
         Already have an account?
-      </h3>
+      </h1>
       <a
         className="govuk-link"
         href="/signin"

@@ -182,6 +182,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Chapeltown-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-1-0"
+            >
+              Cell on row 
+              1
+               and column 
+              1
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -201,6 +210,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Chapel Allerton-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-2-0"
+            >
+              Cell on row 
+              2
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -209,6 +227,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Chapel Allerton-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-2-1"
+            >
+              Cell on row 
+              2
+               and column 
+              2
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -228,6 +255,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Moortown-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-3-0"
+            >
+              Cell on row 
+              3
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -236,6 +272,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Moortown-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-3-1"
+            >
+              Cell on row 
+              3
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -244,6 +289,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Moortown-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-3-2"
+            >
+              Cell on row 
+              3
+               and column 
+              3
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -263,6 +317,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harrogate Road-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-4-0"
+            >
+              Cell on row 
+              4
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -271,6 +334,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harrogate Road-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-4-1"
+            >
+              Cell on row 
+              4
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -279,6 +351,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harrogate Road-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-4-2"
+            >
+              Cell on row 
+              4
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -287,6 +368,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harrogate Road-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-4-3"
+            >
+              Cell on row 
+              4
+               and column 
+              4
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -306,6 +396,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harehills-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-5-0"
+            >
+              Cell on row 
+              5
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -314,6 +413,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harehills-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-5-1"
+            >
+              Cell on row 
+              5
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -322,6 +430,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harehills-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-5-2"
+            >
+              Cell on row 
+              5
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -330,6 +447,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harehills-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-5-3"
+            >
+              Cell on row 
+              5
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -338,6 +464,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Harehills-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-5-4"
+            >
+              Cell on row 
+              5
+               and column 
+              5
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -357,6 +492,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Gipton-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-6-0"
+            >
+              Cell on row 
+              6
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -365,6 +509,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Gipton-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-6-1"
+            >
+              Cell on row 
+              6
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -373,6 +526,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Gipton-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-6-2"
+            >
+              Cell on row 
+              6
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -381,6 +543,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Gipton-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-6-3"
+            >
+              Cell on row 
+              6
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -389,6 +560,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Gipton-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-6-4"
+            >
+              Cell on row 
+              6
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -397,6 +577,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Gipton-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-6-5"
+            >
+              Cell on row 
+              6
+               and column 
+              6
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -416,6 +605,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Armley-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-7-0"
+            >
+              Cell on row 
+              7
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -424,6 +622,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Armley-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-7-1"
+            >
+              Cell on row 
+              7
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -432,6 +639,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Armley-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-7-2"
+            >
+              Cell on row 
+              7
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -440,6 +656,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Armley-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-7-3"
+            >
+              Cell on row 
+              7
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -448,6 +673,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Armley-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-7-4"
+            >
+              Cell on row 
+              7
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -456,6 +690,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Armley-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-7-5"
+            >
+              Cell on row 
+              7
+               and column 
+              6
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -464,6 +707,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Armley-Gipton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-7-6"
+            >
+              Cell on row 
+              7
+               and column 
+              7
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -483,6 +735,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-0"
+            >
+              Cell on row 
+              8
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -491,6 +752,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-1"
+            >
+              Cell on row 
+              8
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -499,6 +769,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-2"
+            >
+              Cell on row 
+              8
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -507,6 +786,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-3"
+            >
+              Cell on row 
+              8
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -515,6 +803,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-4"
+            >
+              Cell on row 
+              8
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -523,6 +820,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-5"
+            >
+              Cell on row 
+              8
+               and column 
+              6
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -531,6 +837,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Gipton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-6"
+            >
+              Cell on row 
+              8
+               and column 
+              7
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -539,6 +854,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Stanningley-Armley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-8-7"
+            >
+              Cell on row 
+              8
+               and column 
+              8
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -558,6 +882,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-0"
+            >
+              Cell on row 
+              9
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -566,6 +899,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-1"
+            >
+              Cell on row 
+              9
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -574,6 +916,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-2"
+            >
+              Cell on row 
+              9
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -582,6 +933,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-3"
+            >
+              Cell on row 
+              9
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -590,6 +950,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-4"
+            >
+              Cell on row 
+              9
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -598,6 +967,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-5"
+            >
+              Cell on row 
+              9
+               and column 
+              6
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -606,6 +984,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Gipton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-6"
+            >
+              Cell on row 
+              9
+               and column 
+              7
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -614,6 +1001,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Armley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-7"
+            >
+              Cell on row 
+              9
+               and column 
+              8
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -622,6 +1018,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Pudsey-Stanningley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-9-8"
+            >
+              Cell on row 
+              9
+               and column 
+              9
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -641,6 +1046,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-0"
+            >
+              Cell on row 
+              10
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -649,6 +1063,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-1"
+            >
+              Cell on row 
+              10
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -657,6 +1080,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-2"
+            >
+              Cell on row 
+              10
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -665,6 +1097,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-3"
+            >
+              Cell on row 
+              10
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -673,6 +1114,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-4"
+            >
+              Cell on row 
+              10
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -681,6 +1131,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-5"
+            >
+              Cell on row 
+              10
+               and column 
+              6
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -689,6 +1148,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Gipton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-6"
+            >
+              Cell on row 
+              10
+               and column 
+              7
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -697,6 +1165,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Armley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-7"
+            >
+              Cell on row 
+              10
+               and column 
+              8
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -705,6 +1182,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Stanningley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-8"
+            >
+              Cell on row 
+              10
+               and column 
+              9
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -713,6 +1199,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Seacroft-Pudsey"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-10-9"
+            >
+              Cell on row 
+              10
+               and column 
+              10
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -732,6 +1227,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-0"
+            >
+              Cell on row 
+              11
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -740,6 +1244,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-1"
+            >
+              Cell on row 
+              11
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -748,6 +1261,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-2"
+            >
+              Cell on row 
+              11
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -756,6 +1278,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-3"
+            >
+              Cell on row 
+              11
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -764,6 +1295,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-4"
+            >
+              Cell on row 
+              11
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -772,6 +1312,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-5"
+            >
+              Cell on row 
+              11
+               and column 
+              6
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -780,6 +1329,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Gipton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-6"
+            >
+              Cell on row 
+              11
+               and column 
+              7
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -788,6 +1346,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Armley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-7"
+            >
+              Cell on row 
+              11
+               and column 
+              8
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -796,6 +1363,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Stanningley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-8"
+            >
+              Cell on row 
+              11
+               and column 
+              9
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -804,6 +1380,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Pudsey"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-9"
+            >
+              Cell on row 
+              11
+               and column 
+              10
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -812,6 +1397,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Rothwell-Seacroft"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-11-10"
+            >
+              Cell on row 
+              11
+               and column 
+              11
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -831,6 +1425,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-0"
+            >
+              Cell on row 
+              12
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -839,6 +1442,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-1"
+            >
+              Cell on row 
+              12
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -847,6 +1459,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-2"
+            >
+              Cell on row 
+              12
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -855,6 +1476,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-3"
+            >
+              Cell on row 
+              12
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -863,6 +1493,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-4"
+            >
+              Cell on row 
+              12
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -871,6 +1510,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-5"
+            >
+              Cell on row 
+              12
+               and column 
+              6
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -879,6 +1527,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Gipton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-6"
+            >
+              Cell on row 
+              12
+               and column 
+              7
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -887,6 +1544,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Armley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-7"
+            >
+              Cell on row 
+              12
+               and column 
+              8
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -895,6 +1561,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Stanningley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-8"
+            >
+              Cell on row 
+              12
+               and column 
+              9
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -903,6 +1578,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Pudsey"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-9"
+            >
+              Cell on row 
+              12
+               and column 
+              10
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -911,6 +1595,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Seacroft"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-10"
+            >
+              Cell on row 
+              12
+               and column 
+              11
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
@@ -919,6 +1612,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Dewsbury-Rothwell"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-12-11"
+            >
+              Cell on row 
+              12
+               and column 
+              12
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >
@@ -938,6 +1640,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Briggate"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-0"
+            >
+              Cell on row 
+              13
+               and column 
+              1
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -946,6 +1657,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Chapeltown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-1"
+            >
+              Cell on row 
+              13
+               and column 
+              2
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -954,6 +1674,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Chapel Allerton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-2"
+            >
+              Cell on row 
+              13
+               and column 
+              3
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -962,6 +1691,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Moortown"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-3"
+            >
+              Cell on row 
+              13
+               and column 
+              4
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -970,6 +1708,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Harrogate Road"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-4"
+            >
+              Cell on row 
+              13
+               and column 
+              5
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -978,6 +1725,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Harehills"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-5"
+            >
+              Cell on row 
+              13
+               and column 
+              6
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -986,6 +1742,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Gipton"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-6"
+            >
+              Cell on row 
+              13
+               and column 
+              7
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -994,6 +1759,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Armley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-7"
+            >
+              Cell on row 
+              13
+               and column 
+              8
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -1002,6 +1776,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Stanningley"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-8"
+            >
+              Cell on row 
+              13
+               and column 
+              9
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -1010,6 +1793,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Pudsey"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-9"
+            >
+              Cell on row 
+              13
+               and column 
+              10
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -1018,6 +1810,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Seacroft"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-10"
+            >
+              Cell on row 
+              13
+               and column 
+              11
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -1026,6 +1827,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Rothwell"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-11"
+            >
+              Cell on row 
+              13
+               and column 
+              12
+            </label>
             <input
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
@@ -1034,6 +1844,15 @@ exports[`Price Entry Page should render correctly 1`] = `
               name="Wakefield-Dewsbury"
               type="text"
             />
+            <label
+              className="govuk-visually-hidden"
+              htmlFor="cell-13-12"
+            >
+              Cell on row 
+              13
+               and column 
+              13
+            </label>
             <div
               className="govuk-heading-s fare-triangle-label-right"
             >

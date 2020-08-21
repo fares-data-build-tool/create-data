@@ -123,19 +123,27 @@ const PriceEntry = ({
                                     key={stageNamesArray[rowIndex]}
                                 >
                                     {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
-                                        <input
-                                            className={createClassName(
-                                                faresInformation,
-                                                rowIndex,
-                                                rowStage,
-                                                columnStage,
-                                            )}
-                                            id={`cell-${rowIndex}-${columnIndex}`}
-                                            name={`${rowStage}-${columnStage}`}
-                                            type="text"
-                                            key={stageNamesArray[columnIndex]}
-                                            defaultValue={getDefaultValue(faresInformation, rowStage, columnStage)}
-                                        />
+                                        <>
+                                            <input
+                                                className={createClassName(
+                                                    faresInformation,
+                                                    rowIndex,
+                                                    rowStage,
+                                                    columnStage,
+                                                )}
+                                                id={`cell-${rowIndex}-${columnIndex}`}
+                                                name={`${rowStage}-${columnStage}`}
+                                                type="text"
+                                                key={stageNamesArray[columnIndex]}
+                                                defaultValue={getDefaultValue(faresInformation, rowStage, columnStage)}
+                                            />
+                                            <label
+                                                htmlFor={`cell-${rowIndex}-${columnIndex}`}
+                                                className="govuk-visually-hidden"
+                                            >
+                                                Cell on row {rowIndex} and column {columnIndex + 1}
+                                            </label>
+                                        </>
                                     ))}
                                     <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
                                 </div>
