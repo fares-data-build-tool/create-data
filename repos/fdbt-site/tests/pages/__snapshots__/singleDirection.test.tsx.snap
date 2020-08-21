@@ -55,6 +55,7 @@ exports[`pages direction should render correctly 1`] = `
           errors={Array []}
         >
           <DirectionDropdown
+            dropdownLabel="Journey direction"
             journeyPatterns={
               Array [
                 Object {

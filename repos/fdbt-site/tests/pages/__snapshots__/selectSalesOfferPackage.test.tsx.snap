@@ -120,7 +120,7 @@ exports[`pages serviceList should render an error when an error message is passe
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-0"
+                htmlFor="product-0-checkbox-0"
               >
                 Onboard (cash) - Purchasable on board the bus, with cash, as a paper ticket.
               </label>
@@ -139,7 +139,7 @@ exports[`pages serviceList should render an error when an error message is passe
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-1"
+                htmlFor="product-0-checkbox-1"
               >
                 Onboard (contactless) - Purchasable on board the bus, with a contactless card or device, as a paper ticket.
               </label>
@@ -158,7 +158,7 @@ exports[`pages serviceList should render an error when an error message is passe
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-2"
+                htmlFor="product-0-checkbox-2"
               >
                 Online (smart card) - Purchasable online, with a debit/credit card or direct debit transaction, on a smart card o...
               </label>
@@ -177,7 +177,7 @@ exports[`pages serviceList should render an error when an error message is passe
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-3"
+                htmlFor="product-0-checkbox-3"
               >
                 Mobile App - Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile ap...
               </label>
@@ -310,7 +310,7 @@ exports[`pages serviceList should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-0"
+                htmlFor="product-0-checkbox-0"
               >
                 Onboard (cash) - Purchasable on board the bus, with cash, as a paper ticket.
               </label>
@@ -329,7 +329,7 @@ exports[`pages serviceList should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-1"
+                htmlFor="product-0-checkbox-1"
               >
                 Onboard (contactless) - Purchasable on board the bus, with a contactless card or device, as a paper ticket.
               </label>
@@ -348,7 +348,7 @@ exports[`pages serviceList should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-2"
+                htmlFor="product-0-checkbox-2"
               >
                 Online (smart card) - Purchasable online, with a debit/credit card or direct debit transaction, on a smart card o...
               </label>
@@ -367,7 +367,7 @@ exports[`pages serviceList should render correctly 1`] = `
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-3"
+                htmlFor="product-0-checkbox-3"
               >
                 Mobile App - Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile ap...
               </label>

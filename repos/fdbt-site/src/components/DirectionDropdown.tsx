@@ -4,7 +4,7 @@ import { JourneyPattern } from '../data/auroradb';
 interface DirectionProps {
     selectName: string;
     selectNameID: string;
-    dropdownLabel?: string;
+    dropdownLabel: string;
     journeyPatterns: JourneyPattern[];
     outboundJourney?: string;
     inboundJourney?: string;
@@ -30,7 +30,7 @@ const DirectionDropdown = ({
 
     return (
         <>
-            <label className="govuk-label" htmlFor={selectNameID}>
+            <label className="govuk-label govuk-visually-hidden" htmlFor={selectNameID}>
                 {dropdownLabel}
             </label>
             <select

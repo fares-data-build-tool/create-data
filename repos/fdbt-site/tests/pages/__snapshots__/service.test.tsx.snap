@@ -39,6 +39,12 @@ exports[`pages service should render correctly 1`] = `
            - 
           Adult
         </span>
+        <label
+          className="govuk-visually-hidden"
+          htmlFor="service"
+        >
+          Service list
+        </label>
         <FormElementWrapper
           errorClass="govuk-select--error"
           errorId="service-error"

@@ -96,7 +96,10 @@ const generateCheckbox = (
                     value={JSON.stringify(offer)}
                     defaultChecked={isSelectedOffer}
                 />
-                <label className="govuk-label govuk-checkboxes__label" htmlFor={`checkbox-${index}`}>
+                <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor={`product-${productIndex}-checkbox-${index}`}
+                >
                     {checkboxTitles}
                 </label>
             </div>
