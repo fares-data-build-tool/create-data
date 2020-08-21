@@ -178,3 +178,14 @@ export const getTimeRestrictions = (timeRestrictionData: TimeRestriction): Netex
         },
     },
 });
+
+export const getNetexMode = (mode: string): string => {
+    const modeMap: { [key: string]: string } = {
+        Bus: 'bus',
+        Coach: 'coach',
+        Tram: 'tram',
+        Ferry: 'ferry',
+    };
+
+    return modeMap[mode] ?? 'bus';
+};
