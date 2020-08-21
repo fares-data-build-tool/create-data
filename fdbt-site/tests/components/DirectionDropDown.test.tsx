@@ -10,6 +10,7 @@ describe('DirectionDropdown', () => {
                 journeyPatterns={mockService.journeyPatterns}
                 selectNameID="test-drop-down"
                 selectName="testDropDown"
+                dropdownLabel="test"
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -22,6 +23,7 @@ describe('DirectionDropdown', () => {
                 selectNameID="test-drop-down"
                 selectName="testDropDown"
                 inboundJourney="13003921A#13003655B"
+                dropdownLabel="test"
             />,
         );
         const selector = wrapper.find('.govuk-select');

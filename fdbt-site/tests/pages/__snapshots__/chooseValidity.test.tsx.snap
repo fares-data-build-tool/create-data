@@ -39,6 +39,12 @@ exports[`Choose Validity Page should render correctly 1`] = `
              - 
             Adult
           </p>
+          <label
+            className="govuk-visually-hidden"
+            htmlFor="validity"
+          >
+            Days valid
+          </label>
           <p
             className="govuk-hint"
             id="choose-validity-page-hint"
