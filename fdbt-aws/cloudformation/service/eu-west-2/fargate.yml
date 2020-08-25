@@ -65,10 +65,6 @@ Parameters:
     Type: String
     Default: ""
     Description: ARN for ACM certificate for external domain
-  MonitoringIpWhitelist:
-    Type: CommaDelimitedList
-    Default: ""
-    Description: List of IPs to whitelist for monitoring
 
 Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
@@ -126,45 +122,43 @@ Resources:
             - Name: SESSION_SECRET
               Value: !Ref SessionSecret
 
-  MonitoringTaskDefinitionTemp:
-    Type: Custom::TaskDefinition
+  MonitoringTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
     Properties:
-      ServiceToken: !GetAtt CustomTaskDefinitionFunction.Arn
-      TaskDefinition:
-        family: !Sub ${ProductName}-monitoring-${Stage}
-        cpu: !Ref MonitoringContainerCpu
-        memory: !Ref MonitoringContainerMemory
-        networkMode: awsvpc
-        requiresCompatibilities:
-          - FARGATE
-        executionRoleArn:
-          Fn::ImportValue: !Sub ${Stage}:EcsTaskExecutionRoleArn
-        taskRoleArn:
-          Fn::ImportValue: !Sub ${Stage}:EcsMonitoringTaskRoleArn
-        volumes:
-          - name: efs
-            efsVolumeConfiguration:
-              fileSystemId: !Ref EFSMonitoringFileSystem
-        containerDefinitions:
-          - name: !Sub ${ProductName}-monitoring-${Stage}
-            cpu: !Ref MonitoringContainerCpu
-            memory: !Ref MonitoringContainerMemory
-            image: !Ref MonitoringImage
-            portMappings:
-              - containerPort: !Ref MonitoringContainerPort
-            mountPoints:
-              - sourceVolume: efs
-                containerPath: /var/lib/grafana
-            user: root
-            logConfiguration:
-              logDriver: awslogs
-              options:
-                awslogs-group: !Ref MonitoringLogGroup
-                awslogs-region: !Ref AWS::Region
-                awslogs-stream-prefix: !Ref ProductName
-            environment:
-              - name: GF_SERVER_ROOT_URL
-                value: !Sub https://${MonitoringDomain}
+      Family: !Sub ${ProductName}-monitoring-${Stage}
+      ContainerDefinitions:
+        - Name: !Sub ${ProductName}-monitoring-${Stage}
+          Cpu: !Ref MonitoringContainerCpu
+          Memory: !Ref MonitoringContainerMemory
+          Image: !Ref MonitoringImage
+          PortMappings:
+            - ContainerPort: !Ref MonitoringContainerPort
+          MountPoints:
+            - SourceVolume: efs
+              ContainerPath: /var/lib/grafana
+          User: root
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref MonitoringLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: !Ref ProductName
+          Environment:
+            - Name: GF_SERVER_ROOT_URL
+              Value: !Sub https://${MonitoringDomain}
+      Cpu: !Ref MonitoringContainerCpu
+      ExecutionRoleArn:
+        Fn::ImportValue: !Sub ${Stage}:EcsTaskExecutionRoleArn
+      Memory: !Ref MonitoringContainerMemory
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn:
+        Fn::ImportValue: !Sub ${Stage}:EcsMonitoringTaskRoleArn
+      Volumes:
+        - Name: efs
+          EFSVolumeConfiguration:
+            FilesystemId: !Ref EFSMonitoringFileSystem
 
   SiteService:
     Type: AWS::ECS::Service
@@ -212,7 +206,7 @@ Resources:
           Subnets:
             - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
             - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
-      TaskDefinition: !Ref MonitoringTaskDefinitionTemp
+      TaskDefinition: !Ref MonitoringTaskDefinition
       LoadBalancers:
         - ContainerName: !Sub ${ProductName}-monitoring-${Stage}
           ContainerPort: !Ref MonitoringContainerPort
@@ -299,9 +293,6 @@ Resources:
           HostHeaderConfig:
             Values:
               - !Ref MonitoringDomain
-        - Field: source-ip
-          SourceIpConfig:
-            Values: !Ref MonitoringIpWhitelist
       ListenerArn: !Ref PublicLoadBalancerListener
       Priority: 1
 
@@ -432,87 +423,6 @@ Resources:
           MetricNamespace: "FDBT/Site"
           MetricName: "completeTransactions"
   # Custom Resources
-
-  # This custom task definition is to temporarily address the fact that CloudFormation does not yet support adding EFS as a volume in ECS
-  CustomTaskDefinitionFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code:
-        ZipFile: |
-          const aws = require('aws-sdk')
-          const response = require('cfn-response')
-          const ecs = new aws.ECS({apiVersion: '2014-11-13'})
-
-          exports.handler = function(event, context) {
-            console.log("REQUEST RECEIVED:\n" + JSON.stringify(event))
-
-            if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-              ecs.registerTaskDefinition(event.ResourceProperties.TaskDefinition, function(err, data) {
-                if (err) {
-                  console.error(err);
-                  response.send(event, context, response.FAILED)
-                } else {
-                  console.log(`Created/Updated task definition ${data.taskDefinition.taskDefinitionArn}`)
-                  response.send(event, context, response.SUCCESS, {}, data.taskDefinition.taskDefinitionArn)
-                }
-              })
-            } else if (event.RequestType === 'Delete') {
-              ecs.deregisterTaskDefinition({taskDefinition: event.PhysicalResourceId}, function(err) {
-                if (err) {
-                  if (err.code === 'InvalidParameterException') {
-                    console.log(`Task definition: ${event.PhysicalResourceId} does not exist. Skipping deletion.`)
-                    response.send(event, context, response.SUCCESS)
-                  } else {
-                    console.error(err)
-                    response.send(event, context, response.FAILED)
-                  }
-                } else {
-                  console.log(`Removed task definition ${event.PhysicalResourceId}`)
-                  response.send(event, context, response.SUCCESS)
-                }
-              })
-            } else {
-              console.error(`Unsupported request type: ${event.RequestType}`)
-              response.send(event, context, response.FAILED)
-            }
-          }
-      Handler: index.handler
-      MemorySize: 128
-      Role: !GetAtt CustomTaskDefinitionRole.Arn
-      Runtime: nodejs10.x
-      Timeout: 30
-
-  CustomTaskDefinitionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: "lambda.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Policies:
-        - PolicyName: customresource
-          PolicyDocument:
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "ecs:DeregisterTaskDefinition"
-                  - "ecs:RegisterTaskDefinition"
-                Resource: "*"
-              - Effect: Allow
-                Action:
-                  - "logs:CreateLogGroup"
-                  - "logs:CreateLogStream"
-                  - "logs:PutLogEvents"
-                Resource: "*"
-              - Effect: Allow
-                Action:
-                  - "iam:PassRole"
-                Resource:
-                  - Fn::ImportValue: !Sub ${Stage}:EcsTaskExecutionRoleArn
-                  - Fn::ImportValue: !Sub ${Stage}:EcsMonitoringTaskRoleArn
 
 Outputs:
   LoadbalancerArn:
