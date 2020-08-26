@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
-import { USER_COOKIE } from '../../constants';
+import { USER_COOKIE, INTERNAL_NOC } from '../../constants';
 import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
@@ -57,7 +57,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             error: nocCode === '' ? 'National Operator Code cannot be empty' : '',
         });
 
-        if (nocCode !== '' && nocCode !== 'IWBusCo') {
+        if (nocCode !== '' && nocCode !== INTERNAL_NOC) {
             const servicesForNoc = await getServicesByNocCode(nocCode);
 
             if (servicesForNoc.length === 0) {
