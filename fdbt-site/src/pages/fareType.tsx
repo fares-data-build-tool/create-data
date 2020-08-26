@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
+import { FARE_TYPE_COOKIE, OPERATOR_COOKIE, INTERNAL_NOC } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
@@ -21,9 +21,9 @@ type FareTypeProps = {
     errors: ErrorInfo[];
 };
 
-export const buildUuid = (ctx: NextPageContext): string => {
+export const buildUuid = (noc: string): string => {
     const uuid = uuidv4();
-    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+
     return noc + uuid.substring(0, 8);
 };
 
@@ -111,22 +111,26 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
+    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
 
-    if (!operatorCookie) {
-        throw new Error('Necessary cookies not found to show faretype page');
+    if (!operatorCookie || !noc) {
+        throw new Error('Necessary data not found to show faretype page');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
     const { operator } = operatorInfo;
-    const uuid = buildUuid(ctx);
+
+    const uuid = buildUuid(noc);
     const cookieValue = JSON.stringify({ operator, uuid });
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
 
-    logger.info('', {
-        context: 'pages.fareType',
-        message: 'transaction start',
-    });
+    if (noc !== INTERNAL_NOC) {
+        logger.info('', {
+            context: 'pages.fareType',
+            message: 'transaction start',
+        });
+    }
 
     if (cookies[FARE_TYPE_COOKIE]) {
         const fareTypeCookie = cookies[FARE_TYPE_COOKIE];

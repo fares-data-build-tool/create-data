@@ -3,8 +3,8 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import TwoThirdsLayout from '../layout/Layout';
-import { FEEDBACK_LINK, ID_TOKEN_COOKIE } from '../constants';
-import { getUuidFromCookies, deleteAllCookiesOnServerSide } from '../utils';
+import { FEEDBACK_LINK, ID_TOKEN_COOKIE, INTERNAL_NOC } from '../constants';
+import { getUuidFromCookies, deleteAllCookiesOnServerSide, getAttributeFromIdToken } from '../utils';
 import { CognitoIdToken } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -50,7 +50,11 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const uuid = getUuidFromCookies(ctx);
-    logger.info('', { context: 'pages.thankyou', message: 'transaction complete', uuid });
+    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+
+    if (noc !== INTERNAL_NOC) {
+        logger.info('', { context: 'pages.thankyou', message: 'transaction complete', uuid });
+    }
 
     const cookies = parseCookies(ctx);
     const idToken = cookies[ID_TOKEN_COOKIE];

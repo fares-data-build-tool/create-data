@@ -67,7 +67,7 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
                                             type="password"
                                             aria-describedby="password-hint"
                                             spellCheck="false"
-                                            autoComplete="current-password"
+                                            autoComplete="off"
                                         />
                                     </FormElementWrapper>
                                 </div>
