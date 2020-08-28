@@ -7,7 +7,7 @@ import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_COOKIE } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServicesInfo, CustomAppProps, ErrorInfo } from '../interfaces';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Service List - Fares Data Build Tool';
@@ -105,7 +105,7 @@ const ServiceList = ({
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
     const cookies = parseCookies(ctx);
     const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     if (!nocCode) {
         throw new Error('Necessary cookies not found to show serviceList page');

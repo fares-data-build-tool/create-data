@@ -19,10 +19,10 @@ describe('pages', () => {
 
     describe('buildUUid', () => {
         it('should return a string starting with the NOC and then 8 characters of uuid', () => {
-            const result = buildUuid('ABC');
+            const result = buildUuid('TEST');
 
-            expect(result.substring(0, 3)).toBe('ABC');
-            expect(result.length).toBe(11);
+            expect(result.substring(0, 4)).toBe('TEST');
+            expect(result.length).toBe(12);
         });
     });
 });

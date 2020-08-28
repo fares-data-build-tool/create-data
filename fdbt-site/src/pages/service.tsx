@@ -8,7 +8,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Service - Fares Data Build Tool';
@@ -87,7 +87,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     if (!operatorCookie || !passengerTypeCookie || !nocCode) {
         throw new Error('Could not render the service selection page. Necessary cookies not found.');

@@ -49,10 +49,9 @@ describe('pages', () => {
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
-            const operator = 'TEST';
             const lineName = 'X6A';
 
-            const ctx = getMockContext({ cookies: { operator, serviceLineName: lineName } });
+            const ctx = getMockContext({ cookies: { serviceLineName: lineName } });
 
             const result = await getServerSideProps(ctx);
 
@@ -68,10 +67,9 @@ describe('pages', () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
                 () => mockRawServiceWithDuplicates,
             ));
-            const operator = 'TEST';
             const lineName = 'X6A';
 
-            const ctx = getMockContext({ cookies: { operator, serviceLineName: lineName } });
+            const ctx = getMockContext({ cookies: { serviceLineName: lineName } });
 
             const result = await getServerSideProps(ctx);
 
@@ -90,10 +88,16 @@ describe('pages', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow();
         });
 
-        it('throws an error if the operator or service cookies do not exist', async () => {
-            const ctx = getMockContext({ cookies: { operator: null, serviceLineName: null } });
+        it('throws an error if the service cookie does not exist', async () => {
+            const ctx = getMockContext({ cookies: { serviceLineName: null } });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');
+        });
+
+        it('throws an error if the noc is invalid', async () => {
+            const ctx = getMockContext({ cookies: { operator: null } });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
         });
     });
 });

@@ -112,7 +112,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         if (operatorCookieParsed.errors) {
             const { errors, email } = operatorCookieParsed;
             deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
-            return { props: { errors, email } };
+            return { props: { errors, email: email ?? '' } };
         }
     }
 

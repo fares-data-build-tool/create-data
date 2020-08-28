@@ -94,8 +94,14 @@ describe('pages', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow();
         });
 
-        it('throws an error if the operator or service cookies do not exist', async () => {
-            const ctx = getMockContext({ cookies: { operator: null, serviceLineName: null } });
+        it('throws an error if noc invalid', async () => {
+            const ctx = getMockContext({ cookies: { operator: null } });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
+        });
+
+        it('throws an error if the service cookie does not exist', async () => {
+            const ctx = getMockContext({ cookies: { serviceLineName: null } });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');
         });

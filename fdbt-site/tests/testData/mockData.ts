@@ -86,7 +86,10 @@ export const getMockRequestAndResponse = ({
 
     const {
         operator = {
-            operatorPublicName: 'test',
+            operator: {
+                operatorPublicName: 'test',
+            },
+            noc: 'TEST',
         },
         fareType = 'single',
         inputMethod = 'csv',
@@ -149,9 +152,7 @@ export const getMockRequestAndResponse = ({
     let cookieString = '';
 
     cookieString += operator
-        ? `${OPERATOR_COOKIE}=%7B%22operator%22%3A${encodeURI(
-              JSON.stringify(operator),
-          )}%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
+        ? `${OPERATOR_COOKIE}=${encodeURI(JSON.stringify({ ...operator, uuid: operatorUuid }))};`
         : '';
 
     cookieString += fareType

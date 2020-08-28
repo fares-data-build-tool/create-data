@@ -5,7 +5,7 @@ import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
-import { ErrorInfo, CognitoIdToken } from '../interfaces';
+import { ErrorInfo, CognitoIdToken, NextPageContextWithSession } from '../interfaces';
 
 export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
@@ -121,6 +121,19 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 
 export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');
 
+export const getAndValidateNoc = (ctx: NextPageContext): string => {
+    const idTokenNoc = getNocFromIdToken(ctx);
+    const cookieNoc = getCookieValue(ctx, OPERATOR_COOKIE, 'noc');
+
+    const splitNoc = idTokenNoc?.split('|');
+
+    if (cookieNoc && idTokenNoc && splitNoc?.includes(cookieNoc)) {
+        return cookieNoc;
+    }
+
+    throw new Error('invalid NOC set');
+};
+
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];
     errors.forEach(error => {
@@ -129,4 +142,13 @@ export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] 
         }
     });
     return compactErrors;
+};
+
+export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boolean => {
+    const databaseNocs = getNocFromIdToken(ctx);
+    let nocs = [];
+    if (databaseNocs) {
+        nocs = databaseNocs.split('|');
+    }
+    return nocs?.length > 1;
 };
