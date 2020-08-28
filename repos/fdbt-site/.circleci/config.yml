@@ -163,6 +163,7 @@ workflows:
           cluster-name: "${SITE_ECS_CLUSTER}"
           container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-preprod
+          verify-revision-is-deployed: true
           filters:
             branches:
               only: master
@@ -185,6 +186,7 @@ workflows:
           cluster-name: "${SITE_ECS_CLUSTER}"
           container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-prod
+          verify-revision-is-deployed: true
           filters:
             tags:
               only: /^v.*/
