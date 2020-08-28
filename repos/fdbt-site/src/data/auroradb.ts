@@ -14,6 +14,7 @@ export interface ServiceType {
 
 export interface OperatorNameType {
     operatorPublicName: string;
+    nocCode?: string;
 }
 
 export interface JourneyPattern {
@@ -202,6 +203,30 @@ export const getOperatorNameByNocCode = async (nocCode: string): Promise<Operato
     }
 
     return queryResult[0];
+};
+
+export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promise<OperatorNameType[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator name for given noc',
+    });
+
+    try {
+        const substitution = nocCodes.map(() => '?').join(',');
+        const batchQuery = `
+            SELECT operatorPublicName, nocCode
+            FROM nocTable
+            WHERE nocCode IN (${substitution})
+        `;
+
+        return executeQuery<OperatorNameType[]>(batchQuery, nocCodes);
+    } catch (error) {
+        throw new Error(
+            `Error performing batch get for operator names against noc codes '${JSON.stringify(nocCodes)}': ${
+                error.stack
+            }`,
+        );
+    }
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {

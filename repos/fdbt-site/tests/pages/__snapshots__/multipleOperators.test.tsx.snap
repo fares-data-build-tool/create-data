@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages multipleOperators should render correctly with multiple operator NOC pairs 1`] = `
+<Component
+  description="Multiple Operators page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Multiple Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/multipleOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="multiple-operators-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="multiple-operators-page-heading"
+          >
+            Choose an operator name and National Operator Code
+          </h1>
+        </legend>
+        <label
+          className="govuk-visually-hidden"
+          htmlFor="operators"
+        >
+          Operator and NOC code list
+        </label>
+        <FormElementWrapper
+          errorClass="govuk-select--error"
+          errorId="operator-error"
+          errors={Array []}
+        >
+          <select
+            className="govuk-select"
+            defaultValue=""
+            id="operators"
+            name="operator"
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select One
+            </option>
+            <option
+              className="service-option"
+              key="operator"
+              value="test|testNoc"
+            >
+              test
+               - 
+              testNoc
+            </option>
+            <option
+              className="service-option"
+              key="operator"
+              value="test2|testNoc2"
+            >
+              test2
+               - 
+              testNoc2
+            </option>
+            <option
+              className="service-option"
+              key="operator"
+              value="test3|testNoc3"
+            >
+              test3
+               - 
+              testNoc3
+            </option>
+          </select>
+        </FormElementWrapper>
+        <span
+          className="govuk-hint hint-text"
+          id="traveline-hint"
+        >
+          This data is taken from the NOC Dataset
+        </span>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages multipleOperators should render correctly with one operator NOC pair 1`] = `
+<Component
+  description="Multiple Operators page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Multiple Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/multipleOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="multiple-operators-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="multiple-operators-page-heading"
+          >
+            Choose an operator name and National Operator Code
+          </h1>
+        </legend>
+        <label
+          className="govuk-visually-hidden"
+          htmlFor="operators"
+        >
+          Operator and NOC code list
+        </label>
+        <FormElementWrapper
+          errorClass="govuk-select--error"
+          errorId="operator-error"
+          errors={Array []}
+        >
+          <select
+            className="govuk-select"
+            defaultValue=""
+            id="operators"
+            name="operator"
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select One
+            </option>
+            <option
+              className="service-option"
+              key="operator"
+              value="test|testNoc"
+            >
+              test
+               - 
+              testNoc
+            </option>
+          </select>
+        </FormElementWrapper>
+        <span
+          className="govuk-hint hint-text"
+          id="traveline-hint"
+        >
+          This data is taken from the NOC Dataset
+        </span>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

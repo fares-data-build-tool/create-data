@@ -169,10 +169,20 @@ describe('Matching Page', () => {
             );
         });
 
-        it('throws an error if the operator, service or journey cookies are not set', async () => {
+        it('throws an error if noc invalid', async () => {
             const ctx = getMockContext({
                 cookies: {
                     operator: null,
+                },
+            });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
+        });
+
+        it('throws an error if service cookie not set', async () => {
+            const ctx = getMockContext({
+                cookies: {
+                    serviceLineName: null,
                 },
             });
 

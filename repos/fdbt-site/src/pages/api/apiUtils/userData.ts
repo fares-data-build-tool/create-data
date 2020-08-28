@@ -40,7 +40,7 @@ import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../../../
 import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.';
+import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -214,7 +214,7 @@ export const getPeriodGeoZoneTicketJson = async (
         periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
-    const nocCode = getNocFromIdToken(req, res);
+    const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
     const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
@@ -293,7 +293,7 @@ export const getPeriodMultipleServicesTicketJson = (
         periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
-    const nocCode = getNocFromIdToken(req, res);
+    const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
     const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
@@ -377,7 +377,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         productDetailsAttributeInfo: ProductData | ProductInfo,
     ): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
 
-    const nocCode = getNocFromIdToken(req, res);
+    const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
     const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);

@@ -7,7 +7,7 @@ import { FullColumnLayout } from '../layout/Layout';
 import { MULTIPLE_PRODUCT_COOKIE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 
@@ -205,7 +205,7 @@ const SelectSalesOfferPackage = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: SelectSalesOfferPackageProps }> => {
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     if (!nocCode) {
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');

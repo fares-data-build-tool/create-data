@@ -103,7 +103,7 @@ describe('pages', () => {
                 expect(result.props.salesOfferPackagesList).toEqual(expectedSalesOfferPackageList);
             });
 
-            it('should throw an error when necessary nocCode is missing', async () => {
+            it('should throw an error when necessary nocCode is invalid', async () => {
                 const ctx = getMockContext({
                     cookies: { operator: null },
                     body: null,
@@ -112,9 +112,7 @@ describe('pages', () => {
                     mockEndFn: jest.fn(),
                     isLoggedin: false,
                 });
-                await expect(getServerSideProps(ctx)).rejects.toThrow(
-                    'Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page',
-                );
+                await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
             });
         });
     });
