@@ -39,10 +39,15 @@ def handler(event, context):
         event['Records'][0]['s3']['object']['key'],
         encoding='utf-8'
     )
-    file_dir = '/tmp/' + key.split('/')[-1]
+    file_path = '/tmp/' + key.split('/')[-1]
 
     try:
-        download_from_s3_and_write_to_db(s3_client, bucket, key, file_dir, db_connection, logger)
+        download_from_s3_and_write_to_db(s3_client, bucket, key, file_path, db_connection, logger)
+
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        else:
+            print("File %s does not exist." % file_path)
 
     except Exception as e:
         logger.error(
