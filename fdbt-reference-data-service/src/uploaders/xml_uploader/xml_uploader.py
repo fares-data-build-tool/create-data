@@ -233,12 +233,12 @@ def write_to_database(data_dict, db_connection, logger):
         raise e
 
 
-def download_from_s3_and_write_to_db(s3, bucket, key, file_dir, db_connection, logger):
+def download_from_s3_and_write_to_db(s3, bucket, key, file_path, db_connection, logger):
     xmltodict_namespaces = {'http://www.transxchange.org.uk/': None}
 
-    s3.download_file(bucket, key, file_dir)
-    logger.info("Downloaded S3 file, '{}' to '{}'".format(key, file_dir))
-    tree = eT.parse(file_dir)
+    s3.download_file(bucket, key, file_path)
+    logger.info("Downloaded S3 file, '{}' to '{}'".format(key, file_path))
+    tree = eT.parse(file_path)
     xml_data = tree.getroot()
     xml_string = eT.tostring(xml_data, encoding='utf-8', method='xml')
     data_dict = xmltodict.parse(
