@@ -46,8 +46,9 @@ def handler(event, context):
 
         if os.path.exists(file_path):
             os.remove(file_path)
+            logger.info("Removing File {}".format(file_path))
         else:
-            print("File %s does not exist." % file_path)
+            logger.warn("File {} does not exist.".format(file_path))
 
     except Exception as e:
         logger.error(
