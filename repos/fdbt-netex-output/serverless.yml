@@ -130,6 +130,15 @@ resources:
           - MetricValue: '1'
             MetricNamespace: 'FDBT/Netex-Output'
             MetricName: 'netex-complete-flatfare-${self:provider.stage}'
+    NetexCompleteTotalFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        FilterPattern: 'NeTEx generation complete'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Output'
+            MetricName: 'netex-complete-total-${self:provider.stage}'
     SESEmailsSentFilter:
       Type: 'AWS::Logs::MetricFilter'
       Properties:
