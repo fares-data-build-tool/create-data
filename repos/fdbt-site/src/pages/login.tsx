@@ -67,7 +67,7 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
                                             type="password"
                                             aria-describedby="password-hint"
                                             spellCheck="false"
-                                            autoComplete="current-password"
+                                            autoComplete="off"
                                         />
                                     </FormElementWrapper>
                                 </div>
@@ -112,7 +112,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         if (operatorCookieParsed.errors) {
             const { errors, email } = operatorCookieParsed;
             deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
-            return { props: { errors, email } };
+            return { props: { errors, email: email ?? '' } };
         }
     }
 

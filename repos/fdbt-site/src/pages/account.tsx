@@ -1,10 +1,9 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import { decode } from 'jsonwebtoken';
 import TwoThirdsLayout from '../layout/Layout';
 import { ID_TOKEN_COOKIE } from '../constants';
-import { CognitoIdToken } from '../interfaces';
+import { getNocFromIdToken, getAttributeFromIdToken } from '../utils';
 
 const title = 'Account Details - Fares Data Build Tool';
 const description = 'Account Details page of the Fares Data Build Tool';
@@ -46,7 +45,7 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                 </div>
                 <div className="content-wrapper">
                     <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Operator</p>
-                    <p className="govuk-body content-three-quarters">{nocCode}</p>
+                    <p className="govuk-body content-three-quarters">{nocCode.replace('|', ', ')}</p>
                 </div>
             </div>
             <a
@@ -68,12 +67,13 @@ export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetail
     if (!cookies[ID_TOKEN_COOKIE]) {
         throw new Error('Necessary cookies not found to show account details');
     }
-    const idToken = cookies[ID_TOKEN_COOKIE];
-    const decodedIdToken = decode(idToken) as CognitoIdToken;
-    if (!decodedIdToken.email || !decodedIdToken['custom:noc']) {
+    const noc = getNocFromIdToken(ctx);
+    const email = getAttributeFromIdToken(ctx, 'email');
+
+    if (!email || !noc) {
         throw new Error('Could not extract the user email address and/or noc code from their ID token');
     }
-    return { props: { emailAddress: decodedIdToken.email, nocCode: decodedIdToken['custom:noc'] } };
+    return { props: { emailAddress: email, nocCode: noc } };
 };
 
 export default AccountDetails;

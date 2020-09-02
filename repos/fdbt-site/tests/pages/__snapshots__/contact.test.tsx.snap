@@ -27,7 +27,21 @@ exports[`contact should render correctly 1`] = `
         If you are experiencing technical issues, please contact the Fares Data Build service through the channels below
       </p>
       <span
+        className="govuk-body govuk-!-font-weight-bold"
+      >
+        By phone
+      </span>
+      <p
         className="govuk-body"
+      >
+        Fares Data Build Tool support line:
+        <br />
+        Telephone: 0800 464 3290
+        <br />
+        Monday to Friday, 9:00am to 5:00pm
+      </p>
+      <span
+        className="govuk-body govuk-!-font-weight-bold"
       >
         By email
       </span>

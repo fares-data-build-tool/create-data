@@ -1,11 +1,16 @@
 import React, { ReactElement } from 'react';
-import { NextPage } from 'next';
+import { NextPageContextWithSession, CustomAppProps } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
+import { checkIfMultipleOperators } from '../utils';
 
 const title = 'Fares Data Build Tool';
 const description = 'Fares Data Build Tool is a service that allows you to generate data in NeTEx format';
 
-const Home: NextPage = (): ReactElement => (
+interface HomeProps {
+    multipleOperators: boolean;
+}
+
+const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Fares Data Build Tool</h1>
         <div className="govuk-grid-row">
@@ -18,7 +23,11 @@ const Home: NextPage = (): ReactElement => (
                         For bus operators running commercial bus services in England, and local authorities that need to
                         create or access NeTEx data for the services they operate.
                     </p>
-                    <a href="/fareType" className="govuk-link govuk-!-font-size-19" id="faretype-link">
+                    <a
+                        href={multipleOperators ? '/multipleOperators' : '/fareType'}
+                        className="govuk-link govuk-!-font-size-19"
+                        id="faretype-link"
+                    >
                         Create NeTEx data for your fares
                     </a>
                 </div>
@@ -43,8 +52,8 @@ const Home: NextPage = (): ReactElement => (
     </BaseLayout>
 );
 
-export const getServerSideProps = (): {} => {
-    return { props: {} };
-};
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
+    props: { multipleOperators: checkIfMultipleOperators(ctx) },
+});
 
 export default Home;

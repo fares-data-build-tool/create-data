@@ -126,7 +126,7 @@ describe('pages', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow('No services found for NOC Code: TEST');
         });
 
-        it('throws error if operator cookie does not exist', async () => {
+        it('throws error if noc invalid', async () => {
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
 
@@ -138,9 +138,7 @@ describe('pages', () => {
                 mockEndFn,
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow(
-                'Could not render the service selection page. Necessary cookies not found.',
-            );
+            await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
         });
 
         it('throws error if passengerType cookie does not exist', async () => {

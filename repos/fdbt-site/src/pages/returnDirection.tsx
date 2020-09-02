@@ -9,7 +9,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { getUuidFromCookies, setCookieOnServerSide, getNocFromIdToken } from '../utils';
+import { getUuidFromCookies, setCookieOnServerSide, getAndValidateNoc } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
@@ -90,7 +90,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
     const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     if (!serviceCookie || !fareTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');

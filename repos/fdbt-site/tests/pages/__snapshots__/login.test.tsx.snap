@@ -84,7 +84,7 @@ exports[`pages login should render correctly 1`] = `
               >
                 <input
                   aria-describedby="password-hint"
-                  autoComplete="current-password"
+                  autoComplete="off"
                   className="govuk-input"
                   id="password"
                   name="password"
@@ -251,7 +251,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
               >
                 <input
                   aria-describedby="password-hint"
-                  autoComplete="current-password"
+                  autoComplete="off"
                   className="govuk-input"
                   id="password"
                   name="password"
