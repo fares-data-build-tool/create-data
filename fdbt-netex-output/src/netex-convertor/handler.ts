@@ -64,7 +64,10 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const fileName = generateFileName(s3FileName);
 
             await uploadToS3(generatedNetex, fileName);
-            console.info(`NeTEx generation complete for type ${type}`);
+
+            if (matchingData.nocCode !== 'IWBusCo') {
+                console.info(`NeTEx generation complete for type ${type}`);
+            }
         } else if (type === 'periodGeoZone' || type === 'periodMultipleServices' || type === 'flatFare') {
             const userPeriodTicket: PeriodTicket = s3Data;
             const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
@@ -74,7 +77,10 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const fileName = generateFileName(s3FileName);
 
             await uploadToS3(generatedNetex, fileName);
-            console.info(`NeTEx generation complete for type ${type}`);
+
+            if (userPeriodTicket.nocCode !== 'IWBusCo') {
+                console.info(`NeTEx generation complete for type ${type}`);
+            }
         } else {
             throw new Error(
                 `The JSON object '${decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '))}' in the '${
