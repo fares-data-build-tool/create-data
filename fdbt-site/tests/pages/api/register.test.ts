@@ -8,18 +8,18 @@ import { USER_COOKIE } from '../../../src/constants';
 
 jest.mock('../../../src/data/auroradb.ts');
 
-const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
-    ChallengeName: 'NEW_PASSWORD_REQUIRED',
-    ChallengeParameters: {
-        USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-        userAttributes: JSON.stringify({
-            'custom:noc': 'DCCL',
-        }),
-    },
-    Session: 'session',
-};
-
 describe('register', () => {
+    const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
+        ChallengeName: 'NEW_PASSWORD_REQUIRED',
+        ChallengeParameters: {
+            USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+            userAttributes: JSON.stringify({
+                'custom:noc': 'DCCL',
+            }),
+        },
+        Session: 'session',
+    };
+
     const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
     const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
     const authCompletePasswordSpy = jest.spyOn(auth, 'respondToNewPasswordChallenge');
@@ -397,5 +397,129 @@ describe('register', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
         });
+    });
+});
+
+describe('register pipe split logic', () => {
+    const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
+        ChallengeName: 'NEW_PASSWORD_REQUIRED',
+        ChallengeParameters: {
+            USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+            userAttributes: JSON.stringify({
+                'custom:noc': 'DCCL|TEST|1234',
+            }),
+        },
+        Session: 'session',
+    };
+
+    const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
+    const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
+    const authCompletePasswordSpy = jest.spyOn(auth, 'respondToNewPasswordChallenge');
+    const authUpdateAttributesSpy = jest.spyOn(auth, 'updateUserAttributes');
+    const authSignOutSpy = jest.spyOn(auth, 'globalSignOut');
+    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+
+    beforeEach(() => {
+        authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
+        authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
+        authSignOutSpy.mockImplementation(() => Promise.resolve());
+        authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
+        getServicesByNocCodeSpy.mockImplementation(() =>
+            Promise.resolve([
+                {
+                    lineName: '2AC',
+                    startDate: '01012020',
+                    description: 'linename for service ',
+                    serviceCode: 'NW_05_BLAC_2C_1',
+                },
+            ]),
+        );
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    const writeHeadMock = jest.fn();
+
+    it('should split NOCs into seperate ones if seperated by a pipe, and check if the users matches any', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                email: 'test@test.com',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+                contactable: '',
+            },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await register(req, res);
+
+        expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
+            { Name: 'custom:contactable', Value: 'no' },
+        ]);
+        expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
+        expect(authCompletePasswordSpy).toHaveBeenCalledWith(
+            'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+            'abcdefghi',
+            'session',
+        );
+        expect(authSignOutSpy).toHaveBeenCalled();
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/confirmRegistration',
+        });
+    });
+
+    it('should error if no NOCs match', async () => {
+        authSignInSpy.mockImplementation(() =>
+            Promise.resolve({
+                ChallengeName: 'NEW_PASSWORD_REQUIRED',
+                ChallengeParameters: {
+                    USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+                    userAttributes: JSON.stringify({
+                        'custom:noc': 'FAKE',
+                    }),
+                },
+                Session: 'session',
+            }),
+        );
+
+        const mockUserCookieValue = {
+            inputChecks: [
+                {
+                    inputValue: 'test@test.com',
+                    id: 'email',
+                    error: '',
+                },
+                { inputValue: '', id: 'password', error: '' },
+                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                {
+                    inputValue: '',
+                    id: 'email',
+                    error: 'There was a problem creating your account',
+                },
+            ],
+        };
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                email: 'test@test.com',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+            },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await register(req, res);
+
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 });

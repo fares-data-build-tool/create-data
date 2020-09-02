@@ -58,6 +58,7 @@ export const setDisableAuthCookies = (server: Express): void => {
                         operator: {
                             operatorPublicName: 'Blackpool Transport',
                         },
+                        noc: 'BLAC',
                     }),
                     cookieOptions,
                 );

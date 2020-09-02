@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { getMockContext } from '../testData/mockData';
 import FareType, { buildUuid } from '../../src/pages/fareType';
 
 describe('pages', () => {
@@ -20,17 +19,10 @@ describe('pages', () => {
 
     describe('buildUUid', () => {
         it('should return a string starting with the NOC and then 8 characters of uuid', () => {
-            const ctx = getMockContext({
-                cookies: {
-                    idToken:
-                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQUJDIn0.FagyWmGnj_hoUHQFh4csHw01TMngEPHdHz4X0knj0UY',
-                },
-            });
+            const result = buildUuid('TEST');
 
-            const result = buildUuid(ctx);
-
-            expect(result.substring(0, 3)).toBe('ABC');
-            expect(result.length).toBe(11);
+            expect(result.substring(0, 4)).toBe('TEST');
+            expect(result.length).toBe(12);
         });
     });
 });

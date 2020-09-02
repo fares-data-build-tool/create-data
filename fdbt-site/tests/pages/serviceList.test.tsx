@@ -83,7 +83,7 @@ describe('pages', () => {
                 expect(result.props.buttonText).toEqual('Select All');
             });
 
-            it('should throw an error when necessary cookies missing', async () => {
+            it('should throw an error if noc invalid', async () => {
                 const ctx = getMockContext({
                     cookies: { operator: null },
                     body: null,
@@ -92,9 +92,7 @@ describe('pages', () => {
                     mockEndFn: jest.fn(),
                     isLoggedin: false,
                 });
-                await expect(getServerSideProps(ctx)).rejects.toThrow(
-                    'Necessary cookies not found to show serviceList page',
-                );
+                await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
             });
         });
     });

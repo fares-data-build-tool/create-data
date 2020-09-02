@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
-import { USER_COOKIE } from '../../constants';
+import { USER_COOKIE, INTERNAL_NOC } from '../../constants';
 import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
@@ -56,7 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             error: nocCode === '' ? 'National Operator Code cannot be empty' : '',
         });
 
-        if (nocCode !== '' && nocCode !== 'IWBusCo') {
+        if (nocCode !== '' && nocCode !== INTERNAL_NOC) {
             const servicesForNoc = await getServicesByNocCode(nocCode);
 
             if (servicesForNoc.length === 0) {
@@ -85,7 +85,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters?.userAttributes && Session) {
                 const parameters = JSON.parse(ChallengeParameters.userAttributes);
 
-                if (!parameters['custom:noc'] || parameters['custom:noc'] !== nocCode) {
+                const cognitoNocs = (parameters['custom:noc'] as string | undefined)?.split('|');
+
+                if (!cognitoNocs || !cognitoNocs.includes(nocCode)) {
                     logger.warn('', {
                         context: 'api.register',
                         message: 'NOC does not match',

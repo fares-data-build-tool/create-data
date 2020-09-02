@@ -1,11 +1,16 @@
 import React, { ReactElement } from 'react';
-import { NextPage } from 'next';
 import TwoThirdsLayout from '../layout/Layout';
+import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { checkIfMultipleOperators } from '../utils';
 
 const title = 'Fares Data Build Tool';
 const description = 'Fares Data Build Tool is a service that allows you to generate data in NeTEx format';
 
-const Start: NextPage = (): ReactElement => (
+interface StartProps {
+    multipleOperators: boolean;
+}
+
+const Start = ({ multipleOperators }: StartProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Fares Data Build Tool</h1>
 
@@ -30,7 +35,7 @@ const Start: NextPage = (): ReactElement => (
         </p>
 
         <a
-            href="/fareType"
+            href={multipleOperators ? '/multipleOperators' : '/fareType'}
             role="button"
             draggable="false"
             className="govuk-button govuk-button--start"
@@ -53,8 +58,8 @@ const Start: NextPage = (): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (): {} => {
-    return { props: {} };
-};
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StartProps } => ({
+    props: { multipleOperators: checkIfMultipleOperators(ctx) },
+});
 
 export default Start;

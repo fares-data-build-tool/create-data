@@ -5,7 +5,7 @@ import { BasicService, CustomAppProps, NextPageContextWithSession } from '../int
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import { getSessionAttribute } from '../utils/sessions';
 import { MatchingWithErrors, MatchingInfo } from '../interfaces/matchingInterface';
@@ -58,7 +58,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');

@@ -14,7 +14,7 @@ import {
     setCookieOnResponseObject,
     redirectTo,
     unescapeAndDecodeCookie,
-    getNocFromIdToken,
+    getAndValidateNoc,
 } from './apiUtils';
 import { Product } from '../multipleProductValidity';
 
@@ -55,7 +55,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-        const nocCode = getNocFromIdToken(req, res);
+        const nocCode = getAndValidateNoc(req, res);
 
         if (
             !nocCode ||

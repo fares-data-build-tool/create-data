@@ -108,6 +108,20 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
     getAttributeFromIdToken(req, res, 'custom:noc');
 
+export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): string => {
+    const idTokenNoc = getNocFromIdToken(req, res);
+    const operatorCookie = unescapeAndDecodeCookie(new Cookies(req, res), OPERATOR_COOKIE);
+    const cookieNoc = JSON.parse(operatorCookie).noc;
+
+    const splitNoc = idTokenNoc?.split('|');
+
+    if (cookieNoc && idTokenNoc && splitNoc?.includes(cookieNoc)) {
+        return cookieNoc;
+    }
+
+    throw new Error('invalid noc set');
+};
+
 export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
     if (username) {
         await globalSignOut(username);
@@ -146,4 +160,14 @@ export const validateNewPassword = (
         inputChecks.push({ id: 'new-password', errorMessage: 'Passwords do not match' });
     }
     return inputChecks;
+};
+
+export const checkIfMultipleOperators = (req: NextApiRequest, res: NextApiResponse): boolean => {
+    const idTokenNocs = getNocFromIdToken(req, res);
+    let nocs = [];
+    if (idTokenNocs) {
+        nocs = idTokenNocs.split('|');
+    }
+
+    return nocs.length > 1;
 };

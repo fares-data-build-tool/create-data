@@ -3,6 +3,7 @@ import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
 import logger from '../utils/logger';
 import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
+import { INTERNAL_NOC } from '../constants';
 
 export interface ServiceType {
     lineName: string;
@@ -13,6 +14,7 @@ export interface ServiceType {
 
 export interface OperatorNameType {
     operatorPublicName: string;
+    nocCode?: string;
 }
 
 export interface JourneyPattern {
@@ -130,8 +132,8 @@ export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
-export const replaceIWBusCoNocCode = (nocCode: string): string => {
-    if (nocCode === 'IWBusCo') {
+export const replaceInternalNocCode = (nocCode: string): string => {
+    if (nocCode === INTERNAL_NOC) {
         return 'WBTR';
     }
 
@@ -149,7 +151,7 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
-    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving services for given noc',
@@ -179,7 +181,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
-    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operator name for given noc',
@@ -201,6 +203,30 @@ export const getOperatorNameByNocCode = async (nocCode: string): Promise<Operato
     }
 
     return queryResult[0];
+};
+
+export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promise<OperatorNameType[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator name for given noc',
+    });
+
+    try {
+        const substitution = nocCodes.map(() => '?').join(',');
+        const batchQuery = `
+            SELECT operatorPublicName, nocCode
+            FROM nocTable
+            WHERE nocCode IN (${substitution})
+        `;
+
+        return executeQuery<OperatorNameType[]>(batchQuery, nocCodes);
+    } catch (error) {
+        throw new Error(
+            `Error performing batch get for operator names against noc codes '${JSON.stringify(nocCodes)}': ${
+                error.stack
+            }`,
+        );
+    }
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
@@ -262,7 +288,7 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 };
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
-    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving service info for given noc and line name',
