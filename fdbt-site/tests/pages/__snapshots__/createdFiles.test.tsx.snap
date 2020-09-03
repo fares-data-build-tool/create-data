@@ -60,7 +60,6 @@ exports[`pages createdFiles should render correctly 1`] = `
           >
             National Operator Code: 
           </span>
-           
           TEST
           <br />
           <span
@@ -84,7 +83,6 @@ exports[`pages createdFiles should render correctly 1`] = `
           >
             Sales Offer Package(s): 
           </span>
-           
           Test SOP Name Test SOP Name 2
           <br />
           <span
@@ -153,7 +151,6 @@ exports[`pages createdFiles should render correctly 1`] = `
           >
             National Operator Code: 
           </span>
-           
           TEST2
           <br />
           <span
@@ -177,7 +174,6 @@ exports[`pages createdFiles should render correctly 1`] = `
           >
             Sales Offer Package(s): 
           </span>
-           
           Test SOP Name 2
           <br />
           <span

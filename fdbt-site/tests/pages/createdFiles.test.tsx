@@ -41,14 +41,15 @@ describe('pages', () => {
         let getNetexSignedUrlSpy: jest.SpyInstance;
 
         beforeEach(() => {
+            const currentDate = new Date();
             retrieveNetexForNocsSpy = jest.spyOn(s3, 'retrieveNetexForNocs').mockImplementation(() =>
                 Promise.resolve([
                     {
-                        LastModified: new Date(new Date().setFullYear(2019)),
+                        LastModified: new Date(new Date().setHours(currentDate.getHours() - 3)),
                         Key: 'testKey.xml',
                     },
                     {
-                        LastModified: new Date(new Date().setFullYear(2020)),
+                        LastModified: new Date(new Date().setHours(currentDate.getHours() - 1)),
                         Key: 'testKey2.xml',
                     },
                 ]),

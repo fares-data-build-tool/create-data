@@ -37,6 +37,13 @@ const buildName = (file: PointToPointTicket | PeriodTicket): string => {
     return name;
 };
 
+const dateDiffInDays = (a: Date, b: Date): number => {
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours());
+
+    return Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24));
+};
+
 const enrichNetexFileData = async (
     files: AWS.S3.Object[],
     pageNumber: number,
@@ -83,9 +90,11 @@ const enrichNetexFileData = async (
                     : '',
                 lineName: isPointToPointTicket(matchingData) ? matchingData.lineName : '',
                 zoneName: isGeoZoneTicket(matchingData) ? matchingData.zoneName : '',
-                sopNames: (matchingData.products as BaseProduct[])
-                    .map(product => product.salesOfferPackages.map(sop => sop.name))
-                    .join(', '),
+                sopNames: matchingData.products
+                    ? (matchingData.products as BaseProduct[])
+                          .map(product => product.salesOfferPackages.map(sop => sop.name))
+                          .join(', ')
+                    : '',
                 signedUrl: item.signedUrl,
             };
         })
@@ -98,75 +107,86 @@ const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: Cr
         <span className="govuk-hint" id="fare-type-operator-hint">
             This page will show any NeTEx files created in the last 60 days
         </span>
-        <div className="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
-            {files.map((file, index) => (
-                <div className="govuk-accordion__section" key={file.reference}>
-                    <div className="govuk-accordion__section-header">
-                        <h2 className="govuk-accordion__section-heading">
-                            <span className="govuk-accordion__section-button" id={`accordion-default-heading-${index}`}>
-                                {file.name}
-                            </span>
-                        </h2>
-                    </div>
-                    <div
-                        id={`accordion-default-content-${index}`}
-                        className="govuk-accordion__section-content"
-                        aria-labelledby={`accordion-default-heading-${index}`}
-                    >
-                        <div className="govuk-body">
-                            <span className="govuk-body govuk-!-font-weight-bold">Reference: </span> {file.reference}
-                            <br />
-                            <span className="govuk-body govuk-!-font-weight-bold">National Operator Code: </span>{' '}
-                            {file.noc}
-                            <br />
-                            <span className="govuk-body govuk-!-font-weight-bold">Fare Type: </span>{' '}
-                            {startCase(file.fareType)}
-                            <br />
-                            <span className="govuk-body govuk-!-font-weight-bold">Passenger Type: </span>{' '}
-                            {startCase(file.passengerType)}
-                            <br />
-                            <span className="govuk-body govuk-!-font-weight-bold">Sales Offer Package(s): </span>{' '}
-                            {startCase(file.sopNames)}
-                            <br />
-                            {file.serviceNames && (
-                                <>
-                                    <span className="govuk-body govuk-!-font-weight-bold">Service(s): </span>{' '}
-                                    {file.serviceNames}
-                                    <br />
-                                </>
-                            )}
-                            {file.productNames && (
-                                <>
-                                    <span className="govuk-body govuk-!-font-weight-bold">Product(s): </span>{' '}
-                                    {file.productNames}
-                                    <br />
-                                </>
-                            )}
-                            {file.lineName && (
-                                <>
-                                    <span className="govuk-body govuk-!-font-weight-bold">Line Name: </span>{' '}
-                                    {file.lineName}
-                                    <br />
-                                </>
-                            )}
-                            {file.zoneName && (
-                                <>
-                                    <span className="govuk-body govuk-!-font-weight-bold">Zone Name: </span>{' '}
-                                    {file.zoneName}
-                                    <br />
-                                </>
-                            )}
-                            <span className="govuk-body govuk-!-font-weight-bold">Date of Creation: </span> {file.date}
-                            <br />
-                            <br />
-                            <a href={file.signedUrl} className="govuk-button" download>
-                                Download
-                            </a>
+
+        {files && files.length > 0 ? (
+            <div className="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
+                {files.map((file, index) => (
+                    <div className="govuk-accordion__section" key={file.reference}>
+                        <div className="govuk-accordion__section-header">
+                            <h2 className="govuk-accordion__section-heading">
+                                <span
+                                    className="govuk-accordion__section-button"
+                                    id={`accordion-default-heading-${index}`}
+                                >
+                                    {file.name}
+                                </span>
+                            </h2>
+                        </div>
+                        <div
+                            id={`accordion-default-content-${index}`}
+                            className="govuk-accordion__section-content"
+                            aria-labelledby={`accordion-default-heading-${index}`}
+                        >
+                            <div className="govuk-body">
+                                <span className="govuk-body govuk-!-font-weight-bold">Reference: </span>{' '}
+                                {file.reference}
+                                <br />
+                                <span className="govuk-body govuk-!-font-weight-bold">National Operator Code: </span>
+                                {file.noc}
+                                <br />
+                                <span className="govuk-body govuk-!-font-weight-bold">Fare Type: </span>{' '}
+                                {startCase(file.fareType)}
+                                <br />
+                                <span className="govuk-body govuk-!-font-weight-bold">Passenger Type: </span>{' '}
+                                {startCase(file.passengerType)}
+                                <br />
+                                <span className="govuk-body govuk-!-font-weight-bold">Sales Offer Package(s): </span>
+                                {startCase(file.sopNames)}
+                                <br />
+                                {file.serviceNames && (
+                                    <>
+                                        <span className="govuk-body govuk-!-font-weight-bold">Service(s): </span>{' '}
+                                        {file.serviceNames}
+                                        <br />
+                                    </>
+                                )}
+                                {file.productNames && (
+                                    <>
+                                        <span className="govuk-body govuk-!-font-weight-bold">Product(s): </span>{' '}
+                                        {file.productNames}
+                                        <br />
+                                    </>
+                                )}
+                                {file.lineName && (
+                                    <>
+                                        <span className="govuk-body govuk-!-font-weight-bold">Line Name: </span>{' '}
+                                        {file.lineName}
+                                        <br />
+                                    </>
+                                )}
+                                {file.zoneName && (
+                                    <>
+                                        <span className="govuk-body govuk-!-font-weight-bold">Zone Name: </span>{' '}
+                                        {file.zoneName}
+                                        <br />
+                                    </>
+                                )}
+                                <span className="govuk-body govuk-!-font-weight-bold">Date of Creation: </span>{' '}
+                                {file.date}
+                                <br />
+                                <br />
+                                <a href={file.signedUrl} className="govuk-button" download>
+                                    Download
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+        ) : (
+            <div className="govuk-body">No NeTEx found</div>
+        )}
+
         {numberOfResults > numberPerPage && (
             <Pagination
                 numberPerPage={numberPerPage}
@@ -182,6 +202,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const nocList = getNocFromIdToken(ctx)?.split('|');
 
     let page = 1;
+    const currentDate = new Date();
 
     page = Number.parseInt((ctx.query.page as string) || '1', 10);
 
@@ -194,21 +215,27 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     }
 
     const files = await retrieveNetexForNocs(nocList);
-    const filesToEnrich = files.sort((a, b) => {
-        if (!a.LastModified || !b.LastModified) {
+    const filesToEnrich = files
+        .filter(file => {
+            const diff = file.LastModified ? dateDiffInDays(file.LastModified, currentDate) : 100;
+
+            return diff < 60;
+        })
+        .sort((a, b) => {
+            if (!a.LastModified || !b.LastModified) {
+                return 0;
+            }
+
+            if (a.LastModified < b.LastModified) {
+                return 1;
+            }
+
+            if (a.LastModified > b.LastModified) {
+                return -1;
+            }
+
             return 0;
-        }
-
-        if (a.LastModified < b.LastModified) {
-            return 1;
-        }
-
-        if (a.LastModified > b.LastModified) {
-            return -1;
-        }
-
-        return 0;
-    });
+        });
 
     return {
         props: {
