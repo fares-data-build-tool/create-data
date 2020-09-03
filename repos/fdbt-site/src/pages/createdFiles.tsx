@@ -141,7 +141,7 @@ const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: Cr
                                 {startCase(file.passengerType)}
                                 <br />
                                 <span className="govuk-body govuk-!-font-weight-bold">Sales Offer Package(s): </span>
-                                {startCase(file.sopNames)}
+                                {file.sopNames}
                                 <br />
                                 {file.serviceNames && (
                                     <>

@@ -83,7 +83,7 @@ exports[`pages createdFiles should render correctly 1`] = `
           >
             Sales Offer Package(s): 
           </span>
-          Test SOP Name Test SOP Name 2
+          Test SOP Name, Test SOP Name 2
           <br />
           <span
             className="govuk-body govuk-!-font-weight-bold"
