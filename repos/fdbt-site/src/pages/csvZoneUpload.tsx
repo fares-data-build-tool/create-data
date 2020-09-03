@@ -1,19 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
-import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { FARE_ZONE_ATTRIBUTE } from '../constants';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { getSessionAttribute } from '../utils/sessions';
+import { FareZoneWithErrors, FareZone } from './api/csvZoneUpload';
 
 const title = 'CSV Zone Upload - Fares Data Build Tool';
 const description = 'CSV Zone Upload page of the Fares Data Build Tool';
-
-const errorId = 'csv-upload-error';
 
 const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
@@ -35,20 +32,16 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): Reac
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
-    const cookies = parseCookies(ctx);
-    const csvZoneUploadCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
+export const isFareZoneAttributeWithErrors = (
+    fareZoneAttribute: FareZone | FareZoneWithErrors,
+): fareZoneAttribute is FareZoneWithErrors => (fareZoneAttribute as FareZoneWithErrors).errors !== undefined;
 
-    let csvZoneUpload;
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
+    const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
+    const errors: ErrorInfo[] =
+        fareZoneAttribute && isFareZoneAttributeWithErrors(fareZoneAttribute) ? fareZoneAttribute.errors : [];
 
-    if (csvZoneUploadCookie) {
-        csvZoneUpload = JSON.parse(csvZoneUploadCookie);
-        if (csvZoneUpload.error === undefined) {
-            csvZoneUpload.error = '';
-        }
-    }
-
-    const uploadProps = {
+    return {
         props: {
             csvUploadApiRoute: '/api/csvZoneUpload',
             csvUploadHintText:
@@ -59,16 +52,10 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             csvTemplateDisplayName: 'Download fare zone CSV template',
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
             csvTemplateSize: '600B',
-            errors: !csvZoneUpload?.error ? [] : [{ errorMessage: csvZoneUpload.error, id: errorId }],
+            errors,
             detailSummary: "My CSV won't upload",
         },
     };
-
-    if (csvZoneUpload?.error) {
-        deleteCookieOnServerSide(ctx, CSV_ZONE_UPLOAD_COOKIE);
-    }
-
-    return uploadProps;
 };
 
 export default CsvZoneUpload;

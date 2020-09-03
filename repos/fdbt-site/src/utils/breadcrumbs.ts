@@ -4,12 +4,13 @@ import {
     INPUT_METHOD_COOKIE,
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
 import { getSessionAttribute } from './sessions';
+import { isNumberOfProductsAttribute } from '../pages/howManyProducts';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
@@ -25,8 +26,8 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const inputMethod = getCookieValue(ctx, INPUT_METHOD_COOKIE, 'inputMethod');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
     const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
-    const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
 
+    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
@@ -43,8 +44,14 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const isGeoZone = periodType === 'periodGeoZone';
     const isCircular = isReturn && !outboundJourney;
 
-    const isSingleProduct = singleProductUrls.includes(url) || numberOfProducts === '1';
-    const isMultiProduct = multiProductUrls.includes(url) || (numberOfProducts !== null && numberOfProducts !== '1');
+    const isSingleProduct =
+        singleProductUrls.includes(url) ||
+        (isNumberOfProductsAttribute(numberOfProductsAttribute) &&
+            numberOfProductsAttribute.numberOfProductsInput === '1');
+    const isMultiProduct =
+        multiProductUrls.includes(url) ||
+        (isNumberOfProductsAttribute(numberOfProductsAttribute) &&
+            Number(numberOfProductsAttribute.numberOfProductsInput) > 1);
 
     const isCsvUploadUrl = csvUploadUrls.includes(url);
     const isManualUploadUrl = manualUploadUrls.includes(url);

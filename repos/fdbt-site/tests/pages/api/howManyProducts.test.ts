@@ -1,36 +1,43 @@
-import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { NUMBER_OF_PRODUCTS_COOKIE } from '../../../src/constants';
-import howManyProducts, { isNumberOfProductsInvalid } from '../../../src/pages/api/howManyProducts';
+import * as sessions from '../../../src/utils/sessions';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
+import howManyProducts, {
+    getErrors,
+    NumberOfProductsAttributeWithErrors,
+    NumberOfProductsAttribute,
+} from '../../../src/pages/api/howManyProducts';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import { ErrorInfo } from '../../../src/interfaces';
 
 describe('howManyProducts', () => {
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    describe('isNumberOfProductsInvalid', () => {
-        it('should return an invalid input check when the user enters no data', () => {
-            const mockBody = { numberOfProductsInput: '' };
-            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
-            const mockInputCheck = { error: 'Enter a number', numberOfProductsInput: '' };
-            const inputCheck = isNumberOfProductsInvalid(req);
-            expect(inputCheck).toEqual(mockInputCheck);
+    describe('getErrors', () => {
+        it('should return errors when the user enters no data', () => {
+            const mockUserInputAsNumber = Number('');
+            const mockError: ErrorInfo[] = [
+                { id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10' },
+            ];
+            const errors = getErrors(mockUserInputAsNumber);
+            expect(errors).toEqual(mockError);
         });
 
-        it('should return an invalid input check when the user enters incorrect data', () => {
-            const mockBody = { numberOfProductsInput: '25' };
-            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
-            const mockInputCheck = { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '25' };
-            const inputCheck = isNumberOfProductsInvalid(req);
-            expect(inputCheck).toEqual(mockInputCheck);
+        it('should return errors when the user enters incorrect data', () => {
+            const mockUserInputAsNumber = Number('25');
+            const mockError: ErrorInfo[] = [
+                { id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10' },
+            ];
+            const errors = getErrors(mockUserInputAsNumber);
+            expect(errors).toEqual(mockError);
         });
 
-        it('should return a valid input check when the user enters correct data', () => {
-            const mockBody = { numberOfProductsInput: '6' };
-            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
-            const mockInputCheck = { error: '', numberOfProductsInput: '6' };
-            const inputCheck = isNumberOfProductsInvalid(req);
-            expect(inputCheck).toEqual(mockInputCheck);
+        it('should return no errors when the user enters correct data', () => {
+            const mockUserInputAsNumber = Number('6');
+            const errors = getErrors(mockUserInputAsNumber);
+            expect(errors).toEqual([]);
         });
     });
 
@@ -78,21 +85,27 @@ describe('howManyProducts', () => {
         });
     });
 
-    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    it('should set the NUMBER_OF_PRODUCTS_ATTRIBUTE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
         const mockBody = { numberOfProductsInput: '' };
-        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
-        const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '', error: 'Enter a number' });
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: mockBody,
+        });
+        const attributeValue: NumberOfProductsAttributeWithErrors = {
+            errors: [
+                { id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10', userInput: '' },
+            ],
+        };
         howManyProducts(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(NUMBER_OF_PRODUCTS_COOKIE, mockStringifiedInputCheck, req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, attributeValue);
+        expect(res.writeHead).toHaveBeenCalledWith(302, { Location: '/howManyProducts' });
     });
 
-    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /multipleProducts', () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    it('should set the NUMBER_OF_PRODUCTS_ATTRIBUTE when redirecting to /multipleProducts', () => {
         const mockBody = { numberOfProductsInput: '8' };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
-        const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '8' });
+        const attributeValue: NumberOfProductsAttribute = mockBody;
         howManyProducts(req, res);
-        expect(setCookieSpy).toBeCalledWith(NUMBER_OF_PRODUCTS_COOKIE, mockStringifiedInputCheck, req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, attributeValue);
     });
 });

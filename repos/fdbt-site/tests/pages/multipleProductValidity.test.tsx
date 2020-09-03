@@ -2,6 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import MultiProductValidity, { getServerSideProps } from '../../src/pages/multipleProductValidity';
 import { getMockContext } from '../testData/mockData';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('multipleProductValidity', () => {
@@ -76,7 +77,11 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('should return number of products to display, name of operator and products if they are set in the cookie', () => {
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
+                    },
+                });
                 const result = getServerSideProps(ctx);
 
                 expect(result.props.numberOfProducts).toBe('2');
@@ -91,36 +96,38 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     cookies: {
                         operator: null,
-                        numberOfProductsInput: null,
                         multipleProduct: null,
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Necessary cookies not found to display the multiple product validity page',
+                    'Necessary cookies/session not found to display the multiple product validity page',
                 );
             });
 
             it('returns errors in the props if there are validity errors on the product object', () => {
                 const ctx = getMockContext({
-                    cookies: {
-                        multipleProducts: [
-                            {
-                                productName: 'Best Product',
-                                productNameId: 'multipleProductNameInput0',
-                                productPrice: '2',
-                                productPriceId: 'multipleProductPriceInput0',
-                                productDuration: '3',
-                                productDurationId: 'multipleProductDurationInput0',
-                                productValidity: '',
-                                productValidityError: 'Select one of the two validity options',
-                            },
-                            {
-                                productName: 'Super Product',
-                                productPrice: '3',
-                                productDuration: '4',
-                                productValidity: '24hr',
-                            },
-                        ],
+                    session: {
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                            products: [
+                                {
+                                    productName: 'Best Product',
+                                    productNameId: 'multipleProductNameInput0',
+                                    productPrice: '2',
+                                    productPriceId: 'multipleProductPriceInput0',
+                                    productDuration: '3',
+                                    productDurationId: 'multipleProductDurationInput0',
+                                    productValidity: '',
+                                    productValidityError: 'Select one of the two validity options',
+                                },
+                                {
+                                    productName: 'Super Product',
+                                    productPrice: '3',
+                                    productDuration: '4',
+                                    productValidity: '24hr',
+                                },
+                            ],
+                        },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
                     },
                 });
 

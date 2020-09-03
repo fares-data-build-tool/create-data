@@ -1,33 +1,26 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { NUMBER_OF_PRODUCTS_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from './api/howManyProducts';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'How Many Products - Fares Data Build Tool';
 const description = 'How Many Products entry page of the Fares Data Build Tool';
 
-export interface InputCheck {
-    error?: string;
-    numberOfProductsInput?: string;
-}
-
 interface HowManyProductProps {
-    inputCheck: InputCheck;
     errors: ErrorInfo[];
 }
 
-const HowManyProducts = ({ inputCheck, errors, csrfToken }: HowManyProductProps & CustomAppProps): ReactElement => (
+const HowManyProducts = ({ errors, csrfToken }: HowManyProductProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/howManyProducts" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}>
+                <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
@@ -47,8 +40,8 @@ const HowManyProducts = ({ inputCheck, errors, csrfToken }: HowManyProductProps 
                                 id="number-of-products"
                                 name="numberOfProductsInput"
                                 type="text"
-                                defaultValue={!inputCheck?.error ? inputCheck?.numberOfProductsInput : ''}
-                                aria-describedby={inputCheck?.error ? `numberOfProducts-error` : ''}
+                                defaultValue={errors.length > 0 ? errors[0].userInput : ''}
+                                aria-describedby={errors.length > 0 ? `numberOfProducts-error` : ''}
                             />
                         </FormElementWrapper>
                     </fieldset>
@@ -59,20 +52,24 @@ const HowManyProducts = ({ inputCheck, errors, csrfToken }: HowManyProductProps 
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-    let inputCheck: InputCheck = {};
-    let errors: ErrorInfo[] = [];
+const isNumberOfProductsAttributeWithErrors = (
+    numberOfProductsAttribute: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors,
+): numberOfProductsAttribute is NumberOfProductsAttributeWithErrors =>
+    (numberOfProductsAttribute as NumberOfProductsAttributeWithErrors).errors !== undefined;
 
-    if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
-        const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
-        inputCheck = JSON.parse(numberOfProductsCookie);
-        errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-products-error' }] : [];
-    }
+export const isNumberOfProductsAttribute = (
+    numberOfProductsAttribute: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors,
+): numberOfProductsAttribute is NumberOfProductsAttribute =>
+    !!numberOfProductsAttribute &&
+    (numberOfProductsAttribute as NumberOfProductsAttribute).numberOfProductsInput !== undefined;
 
-    deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
-
-    return { props: { inputCheck, errors } };
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+    const errors: ErrorInfo[] =
+        numberOfProductsAttribute && isNumberOfProductsAttributeWithErrors(numberOfProductsAttribute)
+            ? numberOfProductsAttribute.errors
+            : [];
+    return { props: { errors } };
 };
 
 export default HowManyProducts;

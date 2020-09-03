@@ -31,7 +31,11 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    FARE_ZONE_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
 } from '../../../../src/constants';
+import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
+import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProductValidity';
 
 describe('generateSalesOfferPackages', () => {
     it('should return an array of SalesOfferPackage objects', () => {
@@ -55,9 +59,13 @@ describe('getProductsAndSalesOfferPackages', () => {
             },
         });
         const requestBody: { [key: string]: string } = req.body;
-        const multipleProductCookie =
-            '[{"productName":"DayRider","productPrice":"2.99","productDuration":"1","productValidity":"24hr"},{"productName":"WeekRider","productPrice":"7.99","productDuration":"7","productValidity":"24hr"}]';
-        const result = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
+        const multipleProductAttribute: MultipleProductAttribute = {
+            products: [
+                { productName: 'DayRider', productPrice: '2.99', productDuration: '1', productValidity: '24hr' },
+                { productName: 'WeekRider', productPrice: '7.99', productDuration: '7', productValidity: '24hr' },
+            ],
+        };
+        const result = getProductsAndSalesOfferPackages(requestBody, multipleProductAttribute);
         expect(result).toEqual(expectedProductDetailsArray);
     });
 });
@@ -143,17 +151,10 @@ describe('getPeriodGeoZoneTicketJson', () => {
     });
 
     it('should return a PeriodGeoZoneTicket object', async () => {
+        const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
                 fareType: 'period',
-                multipleProducts: [
-                    {
-                        productName: 'Product A',
-                        productPrice: '1234',
-                        productDuration: '2',
-                        productValidity: '24hr',
-                    },
-                ],
             },
             body: {
                 'Product A':
@@ -161,6 +162,17 @@ describe('getPeriodGeoZoneTicketJson', () => {
             },
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_ZONE_ATTRIBUTE]: mockFareZoneAttribute,
+                [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                    products: [
+                        {
+                            productName: 'Product A',
+                            productPrice: '1234',
+                            productDuration: '2',
+                            productValidity: '24hr',
+                        },
+                    ],
+                },
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
@@ -174,26 +186,6 @@ describe('getPeriodMulipleServicesTicketJson', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
                 fareType: 'period',
-                multipleProducts: [
-                    {
-                        productName: 'Weekly Ticket',
-                        productPrice: '50',
-                        productDuration: '5',
-                        productValidity: '24hr',
-                    },
-                    {
-                        productName: 'Day Ticket',
-                        productPrice: '2.50',
-                        productDuration: '1',
-                        productValidity: '24hr',
-                    },
-                    {
-                        productName: 'Monthly Ticket',
-                        productPrice: '200',
-                        productDuration: '28',
-                        productValidity: 'endOfCalendarDay',
-                    },
-                ],
             },
             body: {
                 'Weekly Ticket':
@@ -205,6 +197,28 @@ describe('getPeriodMulipleServicesTicketJson', () => {
             },
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                    products: [
+                        {
+                            productName: 'Weekly Ticket',
+                            productPrice: '50',
+                            productDuration: '5',
+                            productValidity: '24hr',
+                        },
+                        {
+                            productName: 'Day Ticket',
+                            productPrice: '2.50',
+                            productDuration: '1',
+                            productValidity: '24hr',
+                        },
+                        {
+                            productName: 'Monthly Ticket',
+                            productPrice: '200',
+                            productDuration: '28',
+                            productValidity: 'endOfCalendarDay',
+                        },
+                    ],
+                },
             },
         });
         const result = getPeriodMultipleServicesTicketJson(req, res);
