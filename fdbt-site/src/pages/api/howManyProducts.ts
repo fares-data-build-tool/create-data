@@ -1,49 +1,50 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
-import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { NextApiResponse } from 'next';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
+import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { InputCheck } from '../howManyProducts';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-export const isNumberOfProductsInvalid = (req: NextApiRequest): InputCheck => {
-    const { numberOfProductsInput = '' } = req.body;
-    const inputAsNumber = Number(numberOfProductsInput);
-    let error;
-    if (numberOfProductsInput === '' || Number.isNaN(inputAsNumber)) {
-        error = 'Enter a number';
-    } else if (!Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1) {
-        error = 'Enter a whole number between 1 and 10';
-    } else {
-        error = '';
-    }
-    const inputCheck = { numberOfProductsInput, error };
-    return inputCheck;
+export interface NumberOfProductsAttribute {
+    numberOfProductsInput: string;
+}
+
+export interface NumberOfProductsAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export const getErrors = (inputAsNumber: number): ErrorInfo[] => {
+    const errorMessage =
+        Number.isNaN(inputAsNumber) || !Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1
+            ? 'Enter a whole number between 1 and 10'
+            : '';
+    return errorMessage !== '' ? [{ id: 'how-many-products-error', errorMessage }] : [];
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
 
-        const userInputValidity = isNumberOfProductsInvalid(req);
-        if (userInputValidity.error !== '') {
-            const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
+        const { numberOfProductsInput = '' } = req.body;
+        const numberOfProducts = Number(numberOfProductsInput);
+        const errors = getErrors(numberOfProducts);
+
+        if (errors.length > 0) {
+            errors[0].userInput = numberOfProductsInput;
+            updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, { errors });
             redirectTo(res, '/howManyProducts');
             return;
         }
-        const numberOfProductsCookieValue = JSON.stringify({
-            numberOfProductsInput: userInputValidity.numberOfProductsInput,
-        });
 
-        setCookieOnResponseObject(NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
+        updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, { numberOfProductsInput });
 
-        if (userInputValidity.numberOfProductsInput === '1') {
+        if (numberOfProductsInput === '1') {
             redirectTo(res, '/productDetails');
-            return;
+        } else {
+            redirectTo(res, '/multipleProducts');
         }
-
-        redirectTo(res, '/multipleProducts');
     } catch (error) {
         const message = 'There was a problem inputting the number of products:';
         redirectToError(res, message, 'api.howManyProducts', error);

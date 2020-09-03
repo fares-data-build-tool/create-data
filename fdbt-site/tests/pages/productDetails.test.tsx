@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import ProductDetails, { getServerSideProps } from '../../src/pages/productDetails';
 import { ProductInfo } from '../../src/interfaces';
 import { getMockContext } from '../testData/mockData';
+import { FARE_ZONE_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants';
 
 const mockproductDetails: ProductInfo = {
     productPrice: '',
@@ -36,19 +37,27 @@ describe('pages', () => {
                 expect(result.props.hintText).toBe('Multiple Services');
             });
 
-            it('should throw an error when the CSV_ZONE_UPLOAD_COOKIE and SERVICE_LIST_COOKIE are missing', () => {
+            it('should throw an error when the FARE_ZONE_ATTRIBUTE and SERVICE_LIST_ATTRIBUTE are missing', () => {
                 const ctx = getMockContext({
-                    cookies: { fareZoneName: null, selectedServices: null, passengerType: 'Adult' },
+                    cookies: { passengerType: 'Adult' },
+                    session: {
+                        [SERVICE_LIST_ATTRIBUTE]: null,
+                    },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Failed to retrieve zone or service list cookie info for product details page.',
+                    'Failed to retrieve the necessary cookies and/or session objects.',
                 );
             });
 
             it('should throw an error when the OPERATOR_COOKIE is missing', () => {
-                const ctx = getMockContext({ cookies: { operator: null, selectedServices: null } });
+                const ctx = getMockContext({
+                    cookies: { operator: null },
+                    session: {
+                        [FARE_ZONE_ATTRIBUTE]: 'Green Park Shops',
+                    },
+                });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Failed to retrieve operator cookie info for product details page.',
+                    'Failed to retrieve the necessary cookies and/or session objects.',
                 );
             });
         });

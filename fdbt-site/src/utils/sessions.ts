@@ -1,13 +1,6 @@
+import { FaresInformation } from '../pages/api/priceEntry';
 import {
-    IncomingMessageWithSession,
-    ProductInfo,
-    ProductData,
-    ProductInfoWithErrors,
-    GroupDefinition,
-    TimeRestriction,
-    CompanionInfo,
-} from '../interfaces';
-import {
+    PRICE_ENTRY_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
@@ -21,7 +14,22 @@ import {
     GROUP_DEFINITION_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
-} from '../constants';
+    FARE_ZONE_ATTRIBUTE,
+    CSV_UPLOAD_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    NUMBER_OF_STAGES_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+} from '../constants/index';
+import {
+    IncomingMessageWithSession,
+    ProductInfo,
+    ProductData,
+    ProductInfoWithErrors,
+    GroupDefinition,
+    TimeRestriction,
+    CompanionInfo,
+} from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -37,8 +45,16 @@ import {
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
+import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
+import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
+import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
+import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
+import { MultipleProductAttribute } from '../pages/api/multipleProductValidity';
+import { BaseMultipleProductAttribute, BaseMultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
+import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
 
 type GetSessionAttributeTypes = {
+    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation | undefined;
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
@@ -55,6 +71,16 @@ type GetSessionAttributeTypes = {
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
+    [FARE_ZONE_ATTRIBUTE]: undefined | FareZone | FareZoneWithErrors;
+    [CSV_UPLOAD_ATTRIBUTE]: undefined | CsvUploadAttributeWithErrors;
+    [SERVICE_LIST_ATTRIBUTE]: undefined | ServiceListAttribute | ServiceListAttributeWithErrors;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
+    [MULTIPLE_PRODUCT_ATTRIBUTE]:
+        | undefined
+        | BaseMultipleProductAttribute
+        | BaseMultipleProductAttributeWithErrors
+        | MultipleProductAttribute;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -66,6 +92,7 @@ export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWit
     req?.session?.[attributeName];
 
 type UpdateSessionAttributeTypes = {
+    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation | undefined;
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
     [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
@@ -79,6 +106,15 @@ type UpdateSessionAttributeTypes = {
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
+    [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
+    [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
+    [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
+    [MULTIPLE_PRODUCT_ATTRIBUTE]:
+        | BaseMultipleProductAttribute
+        | BaseMultipleProductAttributeWithErrors
+        | MultipleProductAttribute;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

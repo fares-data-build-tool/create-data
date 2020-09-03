@@ -23,14 +23,6 @@ export type PassengerAttributes = {
     passengerTypeValue: string;
 };
 
-export interface ServicesInfo {
-    lineName: string;
-    startDate: string;
-    serviceCode: string;
-    serviceDescription?: string;
-    checked?: boolean;
-}
-
 export interface BasicService {
     lineName: string;
     nocCode: string;

@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { MULTIPLE_PRODUCT_COOKIE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
+import { Product } from './api/multipleProductValidity';
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
@@ -219,14 +219,13 @@ export const getServerSideProps = async (
         defaultSalesOfferPackageFour,
     );
 
-    const cookies = parseCookies(ctx);
-    const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
+    const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
     let productNames: string[] = [];
 
-    if (multipleProductCookie) {
-        const parsedProductCookie = JSON.parse(multipleProductCookie);
-        productNames = parsedProductCookie.map((product: ProductInfo) => product.productName);
+    if (multipleProductAttribute) {
+        const multiProducts: Product[] = multipleProductAttribute.products;
+        productNames = multiProducts.map((product: ProductInfo) => product.productName);
     }
 
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);

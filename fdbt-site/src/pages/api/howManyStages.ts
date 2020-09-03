@@ -1,10 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils/index';
-import { NUMBER_OF_STAGES_COOKIE } from '../../constants/index';
-
+import { NextApiResponse } from 'next';
+import { redirectToError, redirectTo } from './apiUtils/index';
+import { NUMBER_OF_STAGES_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+const errorId = 'how-many-stages-error';
+
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -22,10 +25,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                     throw new Error('number of fare stages we expect was not received.');
             }
         } else {
-            const cookieValue = JSON.stringify({
-                errorMessage: 'Choose an option regarding how many fare stages you have',
+            updateSessionAttribute(req, NUMBER_OF_STAGES_ATTRIBUTE, {
+                errors: [{ id: errorId, errorMessage: 'Choose an option regarding how many fare stages you have' }],
             });
-            setCookieOnResponseObject(NUMBER_OF_STAGES_COOKIE, cookieValue, req, res);
             redirectTo(res, '/howManyStages');
         }
     } catch (error) {
