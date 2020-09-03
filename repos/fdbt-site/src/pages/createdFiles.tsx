@@ -92,7 +92,7 @@ const enrichNetexFileData = async (
                 zoneName: isGeoZoneTicket(matchingData) ? matchingData.zoneName : '',
                 sopNames: matchingData.products
                     ? (matchingData.products as BaseProduct[])
-                          .map(product => product.salesOfferPackages.map(sop => sop.name))
+                          .map(product => product.salesOfferPackages?.map(sop => sop.name) ?? null)
                           .join(', ')
                     : '',
                 signedUrl: item.signedUrl,
