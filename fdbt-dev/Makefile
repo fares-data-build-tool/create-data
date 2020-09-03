@@ -116,7 +116,8 @@ create-sns-topics:
 	awslocal sns create-topic --name AlertsTopic
 
 add-data-to-buckets:
-	awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/
+	awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/BLAC
+	awslocal s3 sync ./data/netexData/ s3://fdbt-netex-data-dev/BLAC
 
 print-help:
 	@echo "\n\n**************************\n"

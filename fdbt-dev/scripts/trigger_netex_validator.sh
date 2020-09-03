@@ -7,7 +7,7 @@ BUCKET_NAME=fdbt-unvalidated-netex-data-dev
 
 echo "Starting validation of $FILE_NAME..."
 
-EVENT_DATA=$(cat $FDBT_ROOT/fdbt-dev/data/s3Events/putEvent.json | sed s/KEY_HERE/$FILE_NAME/g | sed s/BUCKET_HERE/$BUCKET_NAME/g)
+EVENT_DATA=$(cat $FDBT_ROOT/fdbt-dev/data/s3Events/putEvent.json | sed s:KEY_HERE:$FILE_NAME:g | sed s:BUCKET_HERE:$BUCKET_NAME:g)
 
 cd $FDBT_ROOT/repos/fdbt-netex-output/src/netex-validator
 
