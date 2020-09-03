@@ -175,7 +175,7 @@ export const getNetexSignedUrl = async (key: string): Promise<string> => {
 
         return s3.getSignedUrlPromise('getObject', request);
     } catch (error) {
-        throw new Error(`Failed to get signed url for key: ${key}`);
+        throw new Error(`Failed to get signed url for key: ${key}, ${error.stack}`);
     }
 };
 
@@ -189,8 +189,8 @@ export const getMatchingDataObject = async (
         };
 
         return s3.getObject(request).promise();
-    } catch (err) {
-        throw new Error(`Failed to get matching data for key: ${key}`);
+    } catch (error) {
+        throw new Error(`Failed to get matching data for key: ${key}, ${error.stack}`);
     }
 };
 
@@ -209,6 +209,6 @@ export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Ob
 
         return response.flatMap(item => item.Contents || []);
     } catch (error) {
-        throw new Error('Failed to retrieve NeTEx from NOCs');
+        throw new Error(`Failed to retrieve NeTEx from NOCs, ${error.stack}`);
     }
 };
