@@ -246,3 +246,18 @@ export interface Stop {
     indicator?: string;
     street?: string;
 }
+
+export interface S3NetexFile {
+    name: string;
+    noc: string;
+    reference: string;
+    fareType: string;
+    productNames?: string;
+    passengerType: string;
+    serviceNames?: string;
+    lineName?: string;
+    zoneName?: string;
+    sopNames: string;
+    date: string;
+    signedUrl: string;
+}
