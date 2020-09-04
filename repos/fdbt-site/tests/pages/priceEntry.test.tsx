@@ -2,6 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
 import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
+import { STAGE_NAMES_ATTRIBUTE } from '../../src/constants';
 
 const mockFareStages: string[] = [
     'Briggate',
@@ -26,12 +27,29 @@ describe('Price Entry Page', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    it('throws error if stage names cookie does not exist', () => {
+    it('throws error if stage names session attribute does not exist', () => {
         const ctx = getMockContext({
-            cookies: {
-                stageNames: null,
+            session: {
+                [STAGE_NAMES_ATTRIBUTE]: undefined,
             },
         });
-        expect(() => getServerSideProps(ctx)).toThrowError();
+
+        expect(() => getServerSideProps(ctx)).toThrowError('Necessary stage names not found to show price entry page');
+    });
+
+    it('throws error if no stage names can be found', () => {
+        const ctx = getMockContext({
+            session: {
+                [STAGE_NAMES_ATTRIBUTE]: [],
+            },
+        });
+
+        expect(() => getServerSideProps(ctx)).toThrowError('Necessary stage names not found to show price entry page');
+    });
+
+    it('does not throw an error if stage names can be found', () => {
+        const ctx = getMockContext();
+
+        expect(() => getServerSideProps(ctx)).not.toThrowError();
     });
 });

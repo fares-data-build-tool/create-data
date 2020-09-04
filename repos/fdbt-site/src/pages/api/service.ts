@@ -1,16 +1,20 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import {
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-} from './apiUtils/index';
-import { FARE_TYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
+import { NextApiResponse } from 'next';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils/index';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isFareType } from '../../interfaces/typeGuards';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export interface Service {
+    service: string;
+}
+
+export interface ServiceWithErrors {
+    errors: ErrorInfo[];
+}
+
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -18,8 +22,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const { service } = req.body;
 
         if (!service) {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose a service from the options' });
-            setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+            const errors: ErrorInfo[] = [{ id: 'service-error', errorMessage: 'Choose a service from the options' }];
+
+            updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
             redirectTo(res, '/service');
             return;
         }
@@ -30,14 +35,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('No UUID found');
         }
 
-        const cookieValue = JSON.stringify({ service, uuid });
-        setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+        updateSessionAttribute(req, SERVICE_ATTRIBUTE, { service });
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (fareTypeObject && fareTypeObject.fareType === 'return') {
+        if (fareTypeAttribute && isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return') {
             redirectTo(res, '/returnDirection');
             return;
         }

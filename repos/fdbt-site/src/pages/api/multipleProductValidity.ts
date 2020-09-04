@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { redirectToError, redirectTo } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export interface MultipleProductAttribute {
@@ -50,6 +50,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
+
         const multiProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
         if (!multiProductAttribute) {

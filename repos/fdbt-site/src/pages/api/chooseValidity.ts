@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { DAYS_VALID_COOKIE } from '../../constants/index';
-import { setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils';
+import { NextApiResponse } from 'next';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { DAYS_VALID_ATTRIBUTE } from '../../constants/index';
+import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { ErrorInfo } from '../../interfaces';
 
-export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
+export const isInvalidValidityNumber = (req: NextApiRequestWithSession): boolean => {
     const { validityInput } = req.body;
 
     if (Number.isNaN(validityInput)) {
@@ -22,43 +23,41 @@ export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
     return false;
 };
 
-export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+export const setSession = (req: NextApiRequestWithSession, res: NextApiResponse, error = ''): void => {
     const daysValid = req.body.validityInput;
 
     if (error) {
-        const errorInfo: ErrorInfo = {
-            errorMessage: error,
-            id: 'validity-error',
-        };
-        const cookieValue = JSON.stringify({ daysValid, error: errorInfo });
-        setCookieOnResponseObject(DAYS_VALID_COOKIE, cookieValue, req, res);
+        const errorInfo: ErrorInfo[] = [
+            {
+                errorMessage: error,
+                id: 'validity-error',
+            },
+        ];
+        updateSessionAttribute(req, DAYS_VALID_ATTRIBUTE, { daysValid, errors: errorInfo });
         redirectTo(res, '/chooseValidity');
         return;
     }
-
-    const uuid = getUuidFromCookie(req, res);
-    const cookieValue = JSON.stringify({ daysValid, uuid });
-    setCookieOnResponseObject(DAYS_VALID_COOKIE, cookieValue, req, res);
+    updateSessionAttribute(req, DAYS_VALID_ATTRIBUTE, { daysValid, errors: [] });
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
 
         if (req.body.validityInput === '0') {
-            setCookie(req, res, 'The value of days your product is valid for cannot be 0.');
+            setSession(req, res, 'The value of days your product is valid for cannot be 0.');
             return;
         }
 
         if (!req.body.validityInput) {
-            setCookie(req, res, 'The value of days your product is valid for cannot be empty.');
+            setSession(req, res, 'The value of days your product is valid for cannot be empty.');
             return;
         }
 
         if (isInvalidValidityNumber(req)) {
-            setCookie(
+            setSession(
                 req,
                 res,
                 'The value of days your product is valid for has to be a whole number between 1 and 366.',
@@ -66,7 +65,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        setCookie(req, res);
+        setSession(req, res);
         redirectTo(res, '/periodValidity');
     } catch (error) {
         const message = 'There was a problem inputting the number of days the product is valid for:';

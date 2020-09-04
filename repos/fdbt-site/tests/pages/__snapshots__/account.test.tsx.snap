@@ -40,27 +40,35 @@ exports[`pages account should render correctly 1`] = `
       >
         <span
           className="dot"
+          key="0"
         />
         <span
           className="dot"
+          key="1"
         />
         <span
           className="dot"
+          key="2"
         />
         <span
           className="dot"
+          key="3"
         />
         <span
           className="dot"
+          key="4"
         />
         <span
           className="dot"
+          key="5"
         />
         <span
           className="dot"
+          key="6"
         />
         <span
           className="dot"
+          key="7"
         />
       </span>
       <span

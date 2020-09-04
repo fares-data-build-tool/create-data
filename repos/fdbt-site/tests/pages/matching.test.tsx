@@ -13,6 +13,7 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import Matching, { getServerSideProps } from '../../src/pages/matching';
+import { JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/index';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -76,7 +77,13 @@ describe('Matching Page', () => {
 
     describe('getServerSideProps', () => {
         it('generates the correct list of master stops', async () => {
-            const ctx = getMockContext();
+            const ctx = getMockContext({
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        directionJourneyPattern: '13003921A#13003655B',
+                    },
+                },
+            });
 
             await getServerSideProps(ctx);
 
@@ -105,10 +112,9 @@ describe('Matching Page', () => {
             batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
 
             const ctx = getMockContext({
-                cookies: {
-                    journey: {
-                        startPoint: '13003921A',
-                        endPoint: '13003655B',
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        directionJourneyPattern: '13003921A#13003655B',
                     },
                 },
             });
@@ -123,10 +129,9 @@ describe('Matching Page', () => {
             getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawServiceWithDuplicates));
 
             const ctx = getMockContext({
-                cookies: {
-                    journey: {
-                        startPoint: '13003655B',
-                        endPoint: '13003921A',
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        directionJourneyPattern: '13003655B#13003921A',
                     },
                 },
             });
@@ -156,10 +161,9 @@ describe('Matching Page', () => {
 
         it('throws an error if no stops can be found', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    journey: {
-                        startPoint: '123ZZZ',
-                        endPoint: '13003921A',
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        directionJourneyPattern: '123ZZZ#13003921A',
                     },
                 },
             });
@@ -179,10 +183,10 @@ describe('Matching Page', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
         });
 
-        it('throws an error if service cookie not set', async () => {
+        it('throws an error if service attribute not set', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    serviceLineName: null,
+                session: {
+                    [SERVICE_ATTRIBUTE]: undefined,
                 },
             });
 

@@ -4,23 +4,24 @@ import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
-    PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import {
-    ProductInfo,
     CustomAppProps,
+    ErrorInfo,
     NextPageContextWithSession,
     ProductData,
+    ProductInfo,
     ProductInfoWithErrors,
-    ErrorInfo,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
+import { isPassengerType } from '../interfaces/typeGuards';
 import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
 import { isServiceListAttributeWithErrors } from './serviceList';
 
@@ -41,7 +42,7 @@ export const isProductInfoWithErrors = (
     (productDetailsAttribute as ProductInfoWithErrors)?.errors !== undefined;
 
 export const isProductInfo = (
-    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
+    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors | undefined,
 ): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;
 
 const ProductDetails = ({
@@ -136,21 +137,23 @@ const ProductDetails = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
     const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
     const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     let hintText = '';
 
-    if (!operatorCookie || !passengerTypeCookie || (!fareZoneAttribute && !serviceListAttribute)) {
+    if (!operatorCookie || (!fareZoneAttribute && !serviceListAttribute)) {
         throw new Error('Failed to retrieve the necessary cookies and/or session objects.');
     }
 
+    if (!isPassengerType(passengerTypeAttribute)) {
+        throw new Error('Failed to retrieve passenger type cookie info for product details page.');
+    }
+
     const operatorTypeInfo = JSON.parse(operatorCookie);
-    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
-    const { passengerType } = passengerTypeInfo;
     const { operator } = operatorTypeInfo;
 
     if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
@@ -164,7 +167,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         props: {
             product: productDetailsAttribute && isProductInfo(productDetailsAttribute) ? productDetailsAttribute : null,
             operator: operator.operatorPublicName,
-            passengerType,
+            passengerType: passengerTypeAttribute.passengerType,
             errors:
                 productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)
                     ? productDetailsAttribute.errors

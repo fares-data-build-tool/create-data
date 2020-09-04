@@ -1,4 +1,4 @@
-import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
+import { updateSessionAttribute } from '../../../src/utils/sessions';
 import chooseValidity from '../../../src/pages/api/chooseValidity';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -20,29 +20,26 @@ describe('chooseValidity', () => {
     ];
 
     test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
-        const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: testData,
             uuid: {},
-            mockWriteHeadFn: writeHeadMock,
         });
-        (setCookieOnResponseObject as {}) = jest.fn();
         chooseValidity(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
+        expect(res.writeHead).toBeCalledWith(302, expectedLocation);
     });
 
-    it('should set the validity stages cookie according to the specified number of fare stages', () => {
+    it('should set the validity stages session according to the specified number of fare stages', () => {
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: { validityInput: '6' } });
 
-        const mockSetCookies = jest.fn();
+        const mockSetSession = jest.fn();
 
-        (setCookieOnResponseObject as {}) = jest.fn().mockImplementation(() => {
-            mockSetCookies();
+        (updateSessionAttribute as {}) = jest.fn().mockImplementation(() => {
+            mockSetSession();
         });
 
         chooseValidity(req, res);
 
-        expect(mockSetCookies).toBeCalledTimes(1);
+        expect(mockSetSession).toBeCalledTimes(1);
     });
 });

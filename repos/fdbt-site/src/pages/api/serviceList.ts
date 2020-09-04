@@ -1,11 +1,11 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import { isArray } from 'util';
-import { redirectTo, redirectToError, unescapeAndDecodeCookie } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_COOKIE } from '../../constants';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isFareType } from '../../interfaces/typeGuards';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 
 const errorId = 'service-list-error';
 
@@ -26,12 +26,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (!fareTypeObject || !fareTypeObject.fareType) {
-            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for serviceList API');
+        if (isFareType(fareTypeAttribute) && !fareTypeAttribute.fareType) {
+            throw new Error('Failed to retrieve fare type attribute info for serviceList API');
         }
 
         const refererUrl = req?.headers?.referer;
@@ -72,7 +70,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
-        if (fareTypeObject.fareType === 'flatFare') {
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare') {
             redirectTo(res, '/productDetails');
             return;
         }

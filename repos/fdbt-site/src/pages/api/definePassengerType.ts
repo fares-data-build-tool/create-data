@@ -1,18 +1,23 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
-import { redirectToError, redirectTo, setCookieOnResponseObject, deleteCookieOnResponseObject } from './apiUtils/index';
+import { redirectTo, redirectToError } from './apiUtils/index';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
-    PASSENGER_TYPE_COOKIE,
     GROUP_SIZE_ATTRIBUTE,
-    PASSENGER_TYPE_ERRORS_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { GroupPassengerTypesCollection } from './groupPassengerTypes';
+import { PassengerType } from './passengerType';
+
+export interface DefinePassengerTypeWithErrors extends PassengerType {
+    errors: ErrorInfo[];
+}
 
 export interface FilteredRequestBody {
     minNumber?: string;
@@ -219,8 +224,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (errors.length === 0) {
             if (!group) {
-                const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
-                setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+                updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType, ...filteredReqBody });
             } else {
                 const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
                 const submittedPassengerType = passengerType;
@@ -257,7 +261,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
                     if ((selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length > 0) {
-                        deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
+                        updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(
                             res,
                             `/definePassengerType?groupPassengerType=${
@@ -265,18 +269,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             }`,
                         );
                     } else {
-                        deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
+                        updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(res, '/timeRestrictions');
                     }
                     return;
                 }
             }
-            deleteCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, req, res);
+            updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
             redirectTo(res, '/timeRestrictions');
             return;
         }
-        const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
-        setCookieOnResponseObject(PASSENGER_TYPE_ERRORS_COOKIE, passengerTypeCookieValue, req, res);
+
+        updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, { errors, passengerType });
         if (group) {
             redirectTo(res, `/definePassengerType?groupPassengerType=${passengerType}`);
             return;

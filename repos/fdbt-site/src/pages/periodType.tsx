@@ -1,17 +1,15 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PERIOD_TYPE_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { PERIOD_TYPE_ATTRIBUTE } from '../constants';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
+import { isPeriodTypeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Period Type - Fares Data Build Tool';
 const description = 'Period Type selection page of the Fares Data Build Tool';
-
-const errorId = 'period-type-error';
 
 type PeriodTypeProps = {
     errors: ErrorInfo[];
@@ -29,7 +27,11 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
                                 Select a type of period ticket
                             </h1>
                         </legend>
-                        <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--errors">
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId="period-type-error"
+                            errorClass="govuk-radios--errors"
+                        >
                             <div className="govuk-radios">
                                 <div className="govuk-radios__item">
                                     <input
@@ -88,17 +90,11 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const periodType = getSessionAttribute(ctx.req, PERIOD_TYPE_ATTRIBUTE);
 
-    if (cookies[PERIOD_TYPE_COOKIE]) {
-        const periodTypeCookie = cookies[PERIOD_TYPE_COOKIE];
-        const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
-
-        if (parsedPeriodTypeCookie.errorMessage) {
-            const { errorMessage } = parsedPeriodTypeCookie;
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
+    if (isPeriodTypeWithErrors(periodType)) {
+        return { props: { errors: periodType.errors } };
     }
 
     return { props: {} };

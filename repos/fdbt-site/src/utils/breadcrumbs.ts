@@ -1,15 +1,15 @@
 import {
-    PASSENGER_TYPE_COOKIE,
-    FARE_TYPE_COOKIE,
-    INPUT_METHOD_COOKIE,
-    JOURNEY_COOKIE,
-    PERIOD_TYPE_COOKIE,
+    INPUT_METHOD_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
-import { getCookieValue } from '.';
 import { getSessionAttribute } from './sessions';
+import { isFareType, isPassengerType, inputMethodErrorsExist, isJourney, isPeriodType } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from '../pages/howManyProducts';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
@@ -21,14 +21,14 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
         };
     }
 
-    const fareType = getCookieValue(ctx, FARE_TYPE_COOKIE, 'fareType');
-    const outboundJourney = getCookieValue(ctx, JOURNEY_COOKIE, 'outboundJourney');
-    const inputMethod = getCookieValue(ctx, INPUT_METHOD_COOKIE, 'inputMethod');
-    const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
-    const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
+    const inputMethod = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
+    const periodTypeAttribute = getSessionAttribute(ctx.req, PERIOD_TYPE_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];
@@ -36,13 +36,13 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const multiProductUrls = ['/multipleProducts', '/multipleProductValidity'];
     const salesOfferPackagesUrls = ['/selectSalesOfferPackage', '/salesOfferPackages', '/describeSalesOfferPackage'];
 
-    const isSingle = fareType === 'single';
-    const isReturn = fareType === 'return';
-    const isPeriod = fareType === 'period';
-    const isFlatFare = fareType === 'flatFare';
-    const isMultiService = periodType === 'periodMultipleServices';
-    const isGeoZone = periodType === 'periodGeoZone';
-    const isCircular = isReturn && !outboundJourney;
+    const isSingle = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'single';
+    const isReturn = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return';
+    const isPeriod = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period';
+    const isFlatFare = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare';
+    const isMultiService = isPeriodType(periodTypeAttribute) && periodTypeAttribute.name === 'periodMultipleServices';
+    const isGeoZone = isPeriodType(periodTypeAttribute) && periodTypeAttribute.name === 'periodGeoZone';
+    const isCircular = isReturn && isJourney(journeyAttribute) && !journeyAttribute.outboundJourney;
 
     const isSingleProduct =
         singleProductUrls.includes(url) ||
@@ -56,8 +56,18 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const isCsvUploadUrl = csvUploadUrls.includes(url);
     const isManualUploadUrl = manualUploadUrls.includes(url);
     const isSalesOfferPackageUrl = salesOfferPackagesUrls.includes(url);
-    const isCsvUploadCookie = !isCsvUploadUrl && !isManualUploadUrl && inputMethod === 'csv';
-    const isManualUploadCookie = !isCsvUploadUrl && !isManualUploadUrl && inputMethod === 'manual';
+    const isCsvUploadCookie =
+        (!isCsvUploadUrl &&
+            !isManualUploadUrl &&
+            !inputMethodErrorsExist(inputMethod) &&
+            inputMethod?.inputMethod === 'csv') ||
+        false;
+    const isManualUploadCookie =
+        (!isCsvUploadUrl &&
+            !isManualUploadUrl &&
+            !inputMethodErrorsExist(inputMethod) &&
+            inputMethod?.inputMethod === 'manual') ||
+        false;
     const isCsvUploadJourney = isCsvUploadUrl || isCsvUploadCookie;
     const isManualUploadJourney = isManualUploadUrl || isManualUploadCookie;
 
@@ -191,7 +201,8 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     ];
 
     const getFullBreadcrumbList = (): Breadcrumb[] => {
-        const isNotAnyonePassengerType = passengerType !== 'anyone';
+        const isNotAnyonePassengerType =
+            isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.passengerType !== 'anyone';
         const isTimeRestrictionDefined = timeRestrictionsAttribute?.timeRestrictions || false;
 
         const breadcrumbList: Breadcrumb[] = [

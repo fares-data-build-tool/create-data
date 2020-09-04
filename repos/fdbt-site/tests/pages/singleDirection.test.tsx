@@ -4,6 +4,7 @@ import { mount, shallow } from 'enzyme';
 import SingleDirection, { getServerSideProps } from '../../src/pages/singleDirection';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
+import { SERVICE_ATTRIBUTE } from '../../src/constants';
 
 jest.mock('../../src/data/auroradb.ts');
 
@@ -101,7 +102,11 @@ describe('pages', () => {
         });
 
         it('throws an error if the service cookie does not exist', async () => {
-            const ctx = getMockContext({ cookies: { serviceLineName: null } });
+            const ctx = getMockContext({
+                session: {
+                    [SERVICE_ATTRIBUTE]: undefined,
+                },
+            });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');
         });

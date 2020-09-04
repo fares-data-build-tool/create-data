@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import uniqBy from 'lodash/uniqBy';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { FARE_STAGES_ATTRIBUTE, STAGE_NAMES_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
+import { getSessionAttribute } from '../utils/sessions';
+import { isInputCheck, isFareStage } from '../interfaces/typeGuards';
 
 const title = 'Stage Names - Fares Data Build Tool';
 const description = 'Stage Names entry page of the Fares Data Build Tool';
@@ -90,22 +89,19 @@ const StageNames = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
-    const cookies = parseCookies(ctx);
-    const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const fareStagesAttribute = getSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE);
 
-    if (!fareStagesCookie) {
-        throw new Error('Necessary fare stage cookie not found to show stage names page');
+    if (!isFareStage(fareStagesAttribute)) {
+        throw new Error('Necessary fare stage session not found to show stage names page');
     }
 
-    const fareStagesObject = JSON.parse(fareStagesCookie);
-    const numberOfFareStages = Number(fareStagesObject.fareStages);
+    const numberOfFareStages = Number(fareStagesAttribute.fareStages);
+    const stageNamesInfo = getSessionAttribute(ctx.req, STAGE_NAMES_ATTRIBUTE);
 
     let inputChecks: InputCheck[] = [];
-    if (cookies[STAGE_NAME_VALIDATION_COOKIE]) {
-        const validationCookie = cookies[STAGE_NAME_VALIDATION_COOKIE];
-        inputChecks = JSON.parse(validationCookie);
+    if (stageNamesInfo && stageNamesInfo.length > 0 && isInputCheck(stageNamesInfo)) {
+        inputChecks = stageNamesInfo;
     }
 
     if (inputChecks.length > 0) {

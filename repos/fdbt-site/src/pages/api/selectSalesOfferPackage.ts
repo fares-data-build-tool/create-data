@@ -1,6 +1,5 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { redirectTo, redirectToError, getUuidFromCookie, unescapeAndDecodeCookie } from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import {
     getSingleTicketJson,
     getReturnTicketJson,
@@ -12,14 +11,15 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
-    FARE_TYPE_COOKIE,
-    PERIOD_TYPE_COOKIE,
+    PERIOD_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../constants';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isFareType, isPeriodType } from '../../interfaces/typeGuards';
 
 export interface SelectSalesOfferPackageWithError {
     errorMessage: string;
@@ -32,19 +32,22 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('Session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
         const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-        if (!fareTypeCookie) {
-            throw new Error('Necessary cookies/session not found.');
+        if (!fareTypeAttribute) {
+            throw new Error('No fare type session attribute found.');
         }
-        const fareTypeObject = JSON.parse(fareTypeCookie);
-        const { fareType } = fareTypeObject;
 
         const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
-        if (fareType !== 'single' && fareType !== 'return' && fareType !== 'period' && fareType !== 'flatFare') {
+        if (
+            isFareType(fareTypeAttribute) &&
+            fareTypeAttribute.fareType !== 'single' &&
+            fareTypeAttribute.fareType !== 'return' &&
+            fareTypeAttribute.fareType !== 'period' &&
+            fareTypeAttribute.fareType !== 'flatFare'
+        ) {
             throw new Error('No fare type found to generate user data json.');
         }
 
@@ -72,22 +75,23 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         let userDataJson;
 
+        const fareType = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType;
+
         if (fareType === 'single') {
             userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'period') {
-            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
-            const periodTypeObject = JSON.parse(periodTypeCookie);
-            const { periodTypeName } = periodTypeObject;
+            const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
+            const periodType = isPeriodType(periodTypeAttribute) ? periodTypeAttribute.name : '';
 
-            if (periodTypeName !== 'periodGeoZone' && periodTypeName !== 'periodMultipleServices') {
+            if (periodType !== 'periodGeoZone' && periodType !== 'periodMultipleServices') {
                 throw new Error('No period type found to generate user data json.');
             }
 
-            if (periodTypeName === 'periodGeoZone') {
+            if (periodType === 'periodGeoZone') {
                 userDataJson = await getPeriodGeoZoneTicketJson(req, res);
-            } else if (periodTypeName === 'periodMultipleServices') {
+            } else if (periodType === 'periodMultipleServices') {
                 userDataJson = getPeriodMultipleServicesTicketJson(req, res);
             }
         } else if (fareType === 'flatFare') {

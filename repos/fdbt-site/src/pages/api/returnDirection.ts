@@ -1,10 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { setCookieOnResponseObject, redirectTo, redirectToError, getUuidFromCookie } from './apiUtils/index';
+import { NextApiResponse } from 'next';
+import { getUuidFromCookie, redirectTo, redirectToError } from './apiUtils/index';
 import { isSessionValid } from './apiUtils/validator';
-import { JOURNEY_COOKIE } from '../../constants';
+import { JOURNEY_ATTRIBUTE } from '../../constants';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -19,22 +21,20 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 throw new Error('No UUID found');
             }
 
-            const cookieValue = JSON.stringify({ errorMessages: [], inboundJourney, outboundJourney, uuid });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { inboundJourney, outboundJourney });
             redirectTo(res, '/inputMethod');
         } else {
-            const errorMessages: object[] = [];
+            const errors: ErrorInfo[] = [];
 
             if (!inboundJourney) {
-                errorMessages.push({ errorMessage: 'Choose an option for an inbound journey', id: inboundErrorId });
+                errors.push({ errorMessage: 'Choose an option for an inbound journey', id: inboundErrorId });
             }
 
             if (!outboundJourney) {
-                errorMessages.push({ errorMessage: 'Choose an option for an outbound journey', id: outboundErrorId });
+                errors.push({ errorMessage: 'Choose an option for an outbound journey', id: outboundErrorId });
             }
 
-            const cookieValue = JSON.stringify({ errorMessages, inboundJourney, outboundJourney });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { errors, inboundJourney, outboundJourney });
             redirectTo(res, '/returnDirection');
         }
     } catch (error) {

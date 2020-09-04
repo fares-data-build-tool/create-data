@@ -1,17 +1,18 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
+import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Fares Data Build Tool';
 const description = 'Single Direction selection page of the Fares Data Build Tool';
@@ -69,33 +70,23 @@ const SingleDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: DirectionProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
     const cookies = parseCookies(ctx);
-    const journeyCookie = cookies[JOURNEY_COOKIE];
-    const error: ErrorInfo[] = [];
-    if (journeyCookie) {
-        const journeyInfo = JSON.parse(journeyCookie);
-        if (journeyInfo.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: journeyInfo.errorMessage, id: errorId };
-            error.push(errorInfo);
-        }
-    }
+
+    const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceCookie = cookies[SERVICE_COOKIE];
-    const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
 
-    if (!operatorCookie || !serviceCookie || !fareTypeCookie || !passengerTypeCookie || !nocCode) {
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+
+    if (!operatorCookie || !isService(serviceAttribute) || !isPassengerType(passengerTypeAttribute) || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
-    const serviceInfo = JSON.parse(serviceCookie);
-    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
-    const { passengerType } = passengerTypeInfo;
 
-    const lineName = serviceInfo.service.split('#')[0];
+    const lineName = serviceAttribute.service.split('#')[0];
 
     const rawService: RawService = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const service: Service = {
@@ -116,7 +107,13 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     );
 
     return {
-        props: { operator: operator.operatorPublicName, passengerType, lineName, service, error },
+        props: {
+            operator: operator.operatorPublicName,
+            passengerType: passengerTypeAttribute.passengerType,
+            lineName,
+            service,
+            error: (isJourney(journeyAttribute) && journeyAttribute.errors) || [],
+        },
     };
 };
 
