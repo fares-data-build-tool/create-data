@@ -4,12 +4,12 @@ import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import {
     MultiProduct,
@@ -17,6 +17,7 @@ import {
     BaseMultipleProductAttributeWithErrors,
 } from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
+import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
@@ -82,27 +83,29 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const cookies = parseCookies(ctx);
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
 
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+
     if (
         !cookies[OPERATOR_COOKIE] ||
         !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
-        !cookies[PASSENGER_TYPE_COOKIE]
+        !isPassengerType(passengerTypeAttribute)
     ) {
         throw new Error('Necessary cookies/session not found to show multiple products page');
     }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
-    const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
     const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
     const { operator } = JSON.parse(operatorCookie);
 
     if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
         const { errors } = multiProductAttribute;
+
         return {
             props: {
                 numberOfProductsToDisplay,
                 operator: operator.operatorPublicName,
-                passengerType: passengerTypeInfo.passengerType,
+                passengerType: passengerTypeAttribute.passengerType,
                 errors,
                 userInput: multiProductAttribute.products,
             },
@@ -113,7 +116,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         props: {
             numberOfProductsToDisplay,
             operator: operator.operatorPublicName,
-            passengerType: passengerTypeInfo.passengerType,
+            passengerType: passengerTypeAttribute.passengerType,
             userInput: [],
         },
     };

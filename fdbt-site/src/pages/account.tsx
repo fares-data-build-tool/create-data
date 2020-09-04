@@ -16,7 +16,7 @@ interface AccountDetailsProps {
 const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactElement => {
     const passwordDots: ReactElement[] = [];
     for (let i = 0; i < 8; i += 1) {
-        passwordDots.push(<span className="dot" />);
+        passwordDots.push(<span key={i} className="dot" />);
     }
     return (
         <TwoThirdsLayout title={title} description={description}>

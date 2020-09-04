@@ -1,9 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils/index';
+import { NextApiResponse } from 'next';
+import { redirectTo, redirectToError } from './apiUtils/index';
 import { isSessionValid } from './apiUtils/validator';
-import { INPUT_METHOD_COOKIE } from '../../constants';
+import { INPUT_METHOD_ATTRIBUTE } from '../../constants';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -24,8 +26,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                     throw new Error('Input method we expect was not received.');
             }
         } else {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose an input method from the options' });
-            setCookieOnResponseObject(INPUT_METHOD_COOKIE, cookieValue, req, res);
+            const sessionContent: ErrorInfo = { errorMessage: 'Choose an input method from the options', id: '' };
+            updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, sessionContent);
             redirectTo(res, '/inputMethod');
         }
     } catch (error) {

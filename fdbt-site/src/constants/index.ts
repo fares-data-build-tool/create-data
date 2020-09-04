@@ -2,31 +2,29 @@ import { PassengerAttributes } from '../interfaces/index';
 
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
-export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
+export const FARE_TYPE_ATTRIBUTE = 'fdbt-fare-type';
 
-export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
+export const PASSENGER_TYPE_ATTRIBUTE = 'fdbt-passenger-type';
 
-export const PASSENGER_TYPE_ERRORS_COOKIE = 'fdbt-passenger-type-errors';
+export const DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-passenger-type-errors';
 
-export const SERVICE_COOKIE = 'fdbt-service';
+export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
-export const JOURNEY_COOKIE = 'fdbt-journey';
+export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 
-export const FARE_STAGES_COOKIE = 'fdbt-fare-stages';
-
-export const STAGE_NAME_VALIDATION_COOKIE = 'fdbt-stage-names-validation';
+export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
 
 export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
 
-export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
+export const STAGE_NAMES_ATTRIBUTE = 'fdbt-stage-names';
 
-export const DAYS_VALID_COOKIE = 'fdbt-days-valid';
+export const DAYS_VALID_ATTRIBUTE = 'fdbt-days-valid';
 
 export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
 
-export const PERIOD_TYPE_COOKIE = 'fdbt-period-type';
+export const PERIOD_TYPE_ATTRIBUTE = 'fdbt-period-type';
 
 export const CSV_UPLOAD_ATTRIBUTE = 'fdbt-csv-upload';
 
@@ -36,7 +34,7 @@ export const PERIOD_EXPIRY_ATTRIBUTE = 'fdbt-period-expiry';
 
 export const SERVICE_LIST_ATTRIBUTE = 'fdbt-services';
 
-export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
+export const INPUT_METHOD_ATTRIBUTE = 'fdbt-input-method';
 
 export const NUMBER_OF_STAGES_ATTRIBUTE = 'fdbt-number-stages';
 

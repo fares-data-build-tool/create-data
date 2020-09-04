@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, INBOUND_MATCHING_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
@@ -9,6 +9,7 @@ import { BasicService, CustomAppProps, NextPageContextWithSession } from '../int
 import { getAndValidateNoc } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { InboundMatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
+import { isService, isJourney } from '../interfaces/typeGuards';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Fares Data Build Tool';
@@ -55,19 +56,19 @@ const isMatchingWithErrors = (
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceCookie = cookies[SERVICE_COOKIE];
-    const journeyCookie = cookies[JOURNEY_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
 
-    if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
+    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+    const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
+
+    if (!operatorCookie || !isService(serviceAttribute) || !isJourney(journeyAttribute) || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 
     const operatorObject = JSON.parse(operatorCookie);
-    const serviceObject = JSON.parse(serviceCookie);
-    const journeyObject = JSON.parse(journeyCookie);
-    const lineName = serviceObject.service.split('#')[0];
-    const [selectedStartPoint, selectedEndPoint] = journeyObject.inboundJourney.split('#');
+    const lineName = serviceAttribute.service.split('#')[0];
+    const [selectedStartPoint, selectedEndPoint] =
+        (journeyAttribute && journeyAttribute.inboundJourney && journeyAttribute.inboundJourney.split('#')) || [];
     const service = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);

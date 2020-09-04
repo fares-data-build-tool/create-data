@@ -1,5 +1,6 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import serviceList from '../../../src/pages/api/serviceList';
+import { FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 describe('serviceList', () => {
     const selectAllFalseUrl = '/serviceList?selectAll=false';
@@ -11,7 +12,6 @@ describe('serviceList', () => {
 
     it('redirects back to /serviceList if there are errors', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
             body: {},
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -19,6 +19,7 @@ describe('serviceList', () => {
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
 
         serviceList(req, res);
@@ -31,7 +32,6 @@ describe('serviceList', () => {
     it('should change the query string for select all to true when select all button is selected', () => {
         const selectAllTrueUrl = '/serviceList?selectAll=true';
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
             body: { selectAll: 'Select All' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -39,6 +39,7 @@ describe('serviceList', () => {
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
 
         serviceList(req, res);
@@ -56,7 +57,6 @@ describe('serviceList', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
             body: { ...serviceInfo },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -64,6 +64,7 @@ describe('serviceList', () => {
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
 
         serviceList(req, res);
@@ -81,7 +82,6 @@ describe('serviceList', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'flatFare' },
             body: { ...serviceInfo },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -89,6 +89,7 @@ describe('serviceList', () => {
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
         });
 
         serviceList(req, res);

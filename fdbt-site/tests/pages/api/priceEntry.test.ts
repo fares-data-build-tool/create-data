@@ -1,6 +1,7 @@
 import * as priceEntryApi from '../../../src/pages/api/priceEntry';
 import priceEntry from '../../../src/pages/api/priceEntry';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import { JOURNEY_ATTRIBUTE } from '../../../src/constants';
 
 describe('priceEntry', () => {
     describe('API validation of number of price inputs', () => {
@@ -79,6 +80,11 @@ describe('priceEntry', () => {
                 body: testData,
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        outboundJourney: '13003921A',
+                    },
+                },
             });
             await priceEntry(req, res);
             expect(writeHeadMock).toBeCalledWith(302, expectedLocation);

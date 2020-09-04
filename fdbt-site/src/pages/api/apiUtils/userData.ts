@@ -4,42 +4,43 @@ import { decode } from 'jsonwebtoken';
 import isArray from 'lodash/isArray';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
-    OPERATOR_COOKIE,
-    FARE_TYPE_COOKIE,
+    FARE_TYPE_ATTRIBUTE,
     ID_TOKEN_COOKIE,
-    PASSENGER_TYPE_COOKIE,
-    MATCHING_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
+    MATCHING_ATTRIBUTE,
+    OPERATOR_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
 } from '../../../constants';
 import {
     CognitoIdToken,
+    FlatFareTicket,
     NextApiRequestWithSession,
-    SingleTicket,
-    ReturnTicket,
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
-    FlatFareTicket,
-    Stop,
-    SelectedService,
-    ProductData,
-    ProductInfo,
-    ProductDetails,
     Product,
+    ProductData,
+    ProductDetails,
+    ProductInfo,
+    ReturnTicket,
     SalesOfferPackage,
+    SelectedService,
+    SingleTicket,
+    Stop,
 } from '../../../interfaces';
 import { PeriodExpiryWithErrors } from '../periodValidity';
-import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../../../interfaces/matchingInterface';
+import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
+import { isFareType, isPassengerType, isPeriodType } from '../../../interfaces/typeGuards';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
@@ -113,16 +114,16 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
 
     const cookies = new Cookies(req, res);
-    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
+    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
-        !fareTypeCookie ||
-        !passengerTypeCookie ||
+        !isFareType(fareTypeAttribute) ||
+        !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo)
@@ -130,8 +131,6 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
-    const fareTypeObject = JSON.parse(fareTypeCookie);
-    const passengerTypeObject = JSON.parse(passengerTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
     const requestBody: { [key: string]: string } = req.body;
@@ -142,8 +141,8 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     return {
         ...(timeRestriction && { timeRestriction }),
         ...service,
-        type: fareTypeObject.fareType,
-        ...passengerTypeObject,
+        type: fareTypeAttribute.fareType,
+        ...passengerTypeAttribute,
         fareZones: getFareZones(userFareStages, matchingFareZones),
         email: decodedIdToken.email,
         uuid,
@@ -161,25 +160,23 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         (inboundMatchingAttributeInfo as InboundMatchingInfo)?.inboundUserFareStages !== null;
 
     const cookies = new Cookies(req, res);
-    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
+    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
-        !fareTypeCookie ||
-        !passengerTypeCookie ||
+        !isFareType(fareTypeAttribute) ||
+        !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo)
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
-    const fareTypeObject = JSON.parse(fareTypeCookie);
-    const passengerTypeObject = JSON.parse(passengerTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
 
@@ -191,8 +188,8 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     return {
         ...(timeRestriction && { timeRestriction }),
         ...service,
-        type: fareTypeObject.fareType,
-        ...passengerTypeObject,
+        type: fareTypeAttribute.fareType,
+        ...passengerTypeAttribute,
         outboundFareZones: getFareZones(userFareStages, matchingFareZones),
         inboundFareZones:
             inboundMatchingAttributeInfo && isInboundMatchingInfo(inboundMatchingAttributeInfo)
@@ -222,8 +219,6 @@ export const getPeriodGeoZoneTicketJson = async (
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
-    const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
-    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
     const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
@@ -231,11 +226,13 @@ export const getPeriodGeoZoneTicketJson = async (
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
+    const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
 
     if (
         !nocCode ||
-        !periodTypeCookie ||
-        !passengerTypeCookie ||
+        !isPassengerType(passengerTypeAttribute) ||
+        !isPeriodType(periodTypeAttribute) ||
         !operatorCookie ||
         !idToken ||
         !fareZoneAttribute ||
@@ -245,8 +242,6 @@ export const getPeriodGeoZoneTicketJson = async (
             'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
         );
     }
-    const passengerTypeObject = JSON.parse(passengerTypeCookie);
-    const { periodTypeName } = JSON.parse(periodTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
     const requestBody: { [key: string]: string } = req.body;
@@ -286,8 +281,8 @@ export const getPeriodGeoZoneTicketJson = async (
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: periodTypeName,
-        ...passengerTypeObject,
+        type: periodTypeAttribute.name,
+        ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject?.operator?.operatorPublicName,
@@ -308,8 +303,6 @@ export const getPeriodMultipleServicesTicketJson = (
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
-    const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
-    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -317,11 +310,13 @@ export const getPeriodMultipleServicesTicketJson = (
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
+    const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
 
     if (
         !nocCode ||
-        !periodTypeCookie ||
-        !passengerTypeCookie ||
+        !isPassengerType(passengerTypeAttribute) ||
+        !isPeriodType(periodTypeAttribute) ||
         !operatorCookie ||
         !idToken ||
         !serviceListAttribute ||
@@ -332,8 +327,6 @@ export const getPeriodMultipleServicesTicketJson = (
         );
     }
 
-    const passengerTypeObject = JSON.parse(passengerTypeCookie);
-    const { periodTypeName } = JSON.parse(periodTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
 
@@ -380,8 +373,8 @@ export const getPeriodMultipleServicesTicketJson = (
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: periodTypeName,
-        ...passengerTypeObject,
+        type: periodTypeAttribute.name,
+        ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject?.operator?.operatorPublicName,
@@ -398,19 +391,19 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
-    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
+    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
     const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
         !nocCode ||
-        !fareTypeCookie ||
-        !passengerTypeCookie ||
+        !isFareType(fareTypeAttribute) ||
+        !isPassengerType(passengerTypeAttribute) ||
         !operatorCookie ||
         !idToken ||
         !serviceListAttribute ||
@@ -420,8 +413,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     ) {
         throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
     }
-    const fareTypeObject = JSON.parse(fareTypeCookie);
-    const passengerTypeObject = JSON.parse(passengerTypeCookie);
+
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
 
@@ -450,8 +442,8 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: fareTypeObject.fareType,
-        ...passengerTypeObject,
+        type: fareTypeAttribute.fareType,
+        ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject?.operator?.operatorPublicName,

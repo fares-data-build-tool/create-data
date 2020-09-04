@@ -1,24 +1,28 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import lowerCase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
-import { GROUP_PASSENGER_TYPES_ATTRIBUTE, PASSENGER_TYPE_ERRORS_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import {
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+} from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
-    RadioConditionalInputFieldset,
     createErrorId,
+    RadioConditionalInputFieldset,
 } from '../components/RadioConditionalInput';
 import {
-    ErrorInfo,
+    BaseReactElement,
     CustomAppProps,
+    ErrorInfo,
     GroupDefinition,
     NextPageContextWithSession,
-    BaseReactElement,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getErrorsByIds } from '../utils';
+import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
@@ -257,23 +261,24 @@ export const isGroupDefinitionWithErrors = (
 ): groupDefinition is GroupDefinitionWithErrors => (groupDefinition as GroupDefinitionWithErrors).errors.length > 0;
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePassengerTypeProps } => {
-    const cookies = parseCookies(ctx);
-    const passengerTypeErrorsCookie = cookies[PASSENGER_TYPE_ERRORS_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const passengerTypeErrorsAttribute = getSessionAttribute(ctx.req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
 
-    if (!passengerTypeCookie && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
+    if (!isPassengerType(passengerTypeAttribute) && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
     const errors: ErrorInfo[] =
-        passengerTypeErrorsCookie && JSON.parse(passengerTypeErrorsCookie).errors
-            ? JSON.parse(passengerTypeErrorsCookie).errors
+        passengerTypeErrorsAttribute && isPassengerTypeAttributeWithErrors(passengerTypeErrorsAttribute)
+            ? passengerTypeErrorsAttribute.errors
             : [];
-    const passengerType: string = ctx.query.groupPassengerType
-        ? ctx.query.groupPassengerType
-        : JSON.parse(passengerTypeCookie).passengerType;
+
+    let passengerType = ctx?.query?.groupPassengerType as string;
+
+    if (!passengerType && isPassengerType(passengerTypeAttribute)) {
+        passengerType = passengerTypeAttribute.passengerType;
+    }
 
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;

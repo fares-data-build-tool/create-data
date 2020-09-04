@@ -1,13 +1,12 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
-import { INPUT_METHOD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { INPUT_METHOD_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { inputMethodErrorsExist } from '../interfaces/typeGuards';
 
 const title = 'Input Method - Fares Data Build Tool';
 const description = 'Input Method selection page of the Fares Data Build Tool';
@@ -86,21 +85,10 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppPro
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-
-    if (cookies[INPUT_METHOD_COOKIE]) {
-        const inputMethodCookie = cookies[INPUT_METHOD_COOKIE];
-        const parsedInputMethodCookie = JSON.parse(inputMethodCookie);
-
-        if (parsedInputMethodCookie.errorMessage) {
-            const { errorMessage } = parsedInputMethodCookie;
-            deleteCookieOnServerSide(ctx, INPUT_METHOD_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
-    }
-
-    return { props: {} };
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: InputMethodProps } => {
+    const inputMethodInfo = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
+    updateSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE, undefined);
+    return { props: { errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [] } };
 };
 
 export default InputMethod;

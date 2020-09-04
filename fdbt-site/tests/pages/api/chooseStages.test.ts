@@ -1,7 +1,8 @@
-import { ChooseStagesInputCheck } from '../../../src/pages/chooseStages';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import chooseStages, { isInvalidFareStageNumber } from '../../../src/pages/api/chooseStages';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import { FARE_STAGES_ATTRIBUTE } from '../../../src/constants';
+import * as sessions from '../../../src/utils/sessions';
 
 describe('chooseStages', () => {
     let writeHeadMock: jest.Mock;
@@ -42,7 +43,9 @@ describe('chooseStages', () => {
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
-    it('should set the fare stages cookie according to the specified number of fare stages', () => {
+    it.only('should set the fare stages cookie according to the specified number of fare stages', () => {
+        const setUpdateSessionspy = jest.spyOn(sessions, 'updateSessionAttribute');
+        const mockFareStages = { errors: [], fareStages: '6' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { fareStageInput: '6' },
@@ -50,26 +53,18 @@ describe('chooseStages', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        const mockSetCookies = jest.fn();
-
-        (setCookieOnResponseObject as {}) = jest.fn().mockImplementation(() => {
-            mockSetCookies();
-        });
-
         chooseStages(req, res);
 
-        expect(mockSetCookies).toBeCalledTimes(1);
+        expect(setUpdateSessionspy).toBeCalledWith(req, FARE_STAGES_ATTRIBUTE, mockFareStages);
     });
 });
 
 describe('isInvalidStageNumber', () => {
     it('should return an object with an error if something is incorrect', () => {
-        const result: ChooseStagesInputCheck = isInvalidFareStageNumber('f');
-        expect(result.error).toBeDefined();
+        expect(isInvalidFareStageNumber('f').errors.length).toEqual(1);
     });
 
     it('should return an object with no errors if input is valid', () => {
-        const result: ChooseStagesInputCheck = isInvalidFareStageNumber('8');
-        expect(result.error).toBe('');
+        expect(isInvalidFareStageNumber('8').errors.length).toEqual(0);
     });
 });

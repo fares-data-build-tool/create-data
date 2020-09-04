@@ -1,12 +1,21 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { FARE_STAGES_COOKIE } from '../../constants/index';
-import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { NextApiResponse } from 'next';
+import { FARE_STAGES_ATTRIBUTE } from '../../constants/index';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { ChooseStagesInputCheck } from '../chooseStages';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export const isInvalidFareStageNumber = (fareStageInput: string): ChooseStagesInputCheck => {
+export interface FareStagesAttribute {
+    fareStages: string;
+}
+
+export interface FareStagesAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export const isInvalidFareStageNumber = (fareStageInput: string): FareStagesAttributeWithErrors => {
     const inputAsNumber = Number(fareStageInput);
-    let error = '';
+    const errors: ErrorInfo[] = [];
 
     if (
         fareStageInput === '' ||
@@ -15,13 +24,13 @@ export const isInvalidFareStageNumber = (fareStageInput: string): ChooseStagesIn
         inputAsNumber > 20 ||
         inputAsNumber < 2
     ) {
-        error = 'Enter a whole number between 2 and 20';
+        errors.push({ errorMessage: 'Enter a whole number between 2 and 20', id: 'how-many-stages-error' });
     }
-    const inputCheck = { fareStageInput, error };
-    return inputCheck;
+
+    return { errors };
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -29,15 +38,16 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const { fareStageInput = '' } = req.body;
         const userInputValidity = isInvalidFareStageNumber(fareStageInput);
-        if (userInputValidity.error !== '') {
-            const fareStageInputCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(FARE_STAGES_COOKIE, fareStageInputCookieValue, req, res);
+        if (userInputValidity.errors.length > 0) {
+            updateSessionAttribute(req, FARE_STAGES_ATTRIBUTE, {
+                errors: userInputValidity.errors,
+                fareStages: fareStageInput,
+            });
             redirectTo(res, '/chooseStages');
             return;
         }
 
-        const cookieValue = JSON.stringify({ fareStages: fareStageInput });
-        setCookieOnResponseObject(FARE_STAGES_COOKIE, cookieValue, req, res);
+        updateSessionAttribute(req, FARE_STAGES_ATTRIBUTE, { fareStages: fareStageInput, errors: [] });
         redirectTo(res, '/stageNames');
     } catch (error) {
         const message = 'there was a problem inputting the number of fare stages:';

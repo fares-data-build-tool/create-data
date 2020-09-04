@@ -1,9 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { NextApiResponse } from 'next';
+import { getUuidFromCookie, redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { PERIOD_TYPE_COOKIE } from '../../constants';
+import { PERIOD_TYPE_ATTRIBUTE } from '../../constants';
+import { NextApiRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -12,8 +14,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         if (req.body.periodType) {
             const { periodType } = req.body;
             const uuid = getUuidFromCookie(req, res);
-            const periodTypeObject = { periodTypeName: periodType, uuid };
-            setCookieOnResponseObject(PERIOD_TYPE_COOKIE, JSON.stringify(periodTypeObject), req, res);
+            const periodTypeObject = { name: periodType, uuid };
+            updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, periodTypeObject);
 
             switch (periodType) {
                 case 'periodGeoZone':
@@ -28,10 +30,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                     throw new Error('Type of period we expect was not received.');
             }
         } else {
-            const cookieValue = JSON.stringify({
-                errorMessage: 'Choose an option regarding your period ticket type',
+            updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, {
+                errors: [
+                    { errorMessage: 'Choose an option regarding your period ticket type', id: 'period-type-error' },
+                ],
             });
-            setCookieOnResponseObject(PERIOD_TYPE_COOKIE, cookieValue, req, res);
             redirectTo(res, '/periodType');
         }
     } catch (error) {

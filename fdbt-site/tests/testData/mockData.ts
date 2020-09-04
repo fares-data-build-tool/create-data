@@ -2,26 +2,27 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { RawService, Service } from '../../src/data/auroradb';
-import { UserFareStages } from '../../src/data/s3';
 import {
+    STAGE_NAMES_ATTRIBUTE,
+    DAYS_VALID_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     OPERATOR_COOKIE,
-    FARE_TYPE_COOKIE,
-    INPUT_METHOD_COOKIE,
-    SERVICE_COOKIE,
-    JOURNEY_COOKIE,
-    PASSENGER_TYPE_COOKIE,
-    FARE_STAGES_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
-    DAYS_VALID_COOKIE,
-    PERIOD_TYPE_COOKIE,
     SERVICE_LIST_ATTRIBUTE,
     ID_TOKEN_COOKIE,
     USER_COOKIE,
-    PASSENGER_TYPE_ERRORS_COOKIE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
 } from '../../src/constants/index';
+
+import { RawService, Service } from '../../src/data/auroradb';
+import { UserFareStages } from '../../src/data/s3';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
@@ -90,22 +91,22 @@ export const getMockRequestAndResponse = ({
             },
             noc: 'TEST',
         },
-        fareType = 'single',
-        inputMethod = 'csv',
-        passengerType = { passengerType: 'Adult' },
-        passengerTypeErrors = null,
-        serviceLineName = 'X01',
-        journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
-        fareStages = 6,
         productName = 'Product A',
         productPrice = '1234',
-        daysValid = '2',
-        periodTypeName = 'period',
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
     } = cookieValues;
 
     const defaultSession = {
+        [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+        [SERVICE_ATTRIBUTE]: { service: 'X01#NW_05_BLAC_12A_1' },
+        [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
+        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+        [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
+        [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
+        [PERIOD_TYPE_ATTRIBUTE]: { name: 'period' },
+        [FARE_STAGES_ATTRIBUTE]: { fareStages: 6 },
+        [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
         [SERVICE_LIST_ATTRIBUTE]: {
             selectedServices: [
                 '12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
@@ -144,17 +145,14 @@ export const getMockRequestAndResponse = ({
                 },
             ],
         },
+        [PRODUCT_DETAILS_ATTRIBUTE]: {
+            productName: 'Product A',
+            productPrice: '1234',
+        },
         ...session,
     };
 
-    const {
-        operatorUuid = defaultUuid,
-        fareTypeUuid = defaultUuid,
-        inputMethodUuid = defaultUuid,
-        serviceUuid = defaultUuid,
-        journeyUuid = defaultUuid,
-        daysValidUuid = defaultUuid,
-    } = uuid;
+    const { operatorUuid = defaultUuid } = uuid;
 
     let cookieString = '';
 
@@ -162,41 +160,8 @@ export const getMockRequestAndResponse = ({
         ? `${OPERATOR_COOKIE}=${encodeURI(JSON.stringify({ ...operator, uuid: operatorUuid }))};`
         : '';
 
-    cookieString += fareType
-        ? `${FARE_TYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
-        : '';
-
-    cookieString += inputMethod
-        ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
-        : '';
-
-    cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
-
-    cookieString += passengerTypeErrors
-        ? `${PASSENGER_TYPE_ERRORS_COOKIE}=${encodeURI(JSON.stringify(passengerTypeErrors))};`
-        : '';
-
-    cookieString += serviceLineName
-        ? `${SERVICE_COOKIE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`
-        : '';
-
-    cookieString +=
-        startPoint && endPoint
-            ? `${JOURNEY_COOKIE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22inboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22outboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
-            : '';
-
     cookieString += productName
         ? `${PRODUCT_DETAILS_ATTRIBUTE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
-        : '';
-
-    cookieString += daysValid
-        ? `${DAYS_VALID_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
-        : '';
-
-    cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
-
-    cookieString += periodTypeName
-        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';

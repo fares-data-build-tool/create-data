@@ -1,33 +1,28 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
-import { NextPageContext } from 'next';
-import { deleteCookieOnServerSide } from '../utils';
-import { FARE_STAGES_COOKIE } from '../constants';
+import { FARE_STAGES_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { isFareStageWithErrors } from '../interfaces/typeGuards';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { FareStagesAttribute } from './api/chooseStages';
 
 const title = 'Choose Stages - Fares Data Build Tool';
 const description = 'Choose Stages page of the Fares Data Build Tool';
 
-export interface ChooseStagesInputCheck {
-    error?: string;
-    numberOfStagesInput?: string;
-}
-
 interface ChooseStagesProps {
-    inputCheck: ChooseStagesInputCheck;
+    fareStage: FareStagesAttribute;
     errors: ErrorInfo[];
 }
 
-const ChooseStages = ({ inputCheck, errors, csrfToken }: ChooseStagesProps & CustomAppProps): ReactElement => (
+const ChooseStages = ({ fareStage, errors, csrfToken }: ChooseStagesProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/chooseStages" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}>
+                <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="choose-stages-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="choose-stages-page-heading">
@@ -48,7 +43,7 @@ const ChooseStages = ({ inputCheck, errors, csrfToken }: ChooseStagesProps & Cus
                                 id="fare-stages"
                                 name="fareStageInput"
                                 type="text"
-                                defaultValue={!inputCheck?.error ? inputCheck?.numberOfStagesInput : ''}
+                                defaultValue={errors.length === 0 && fareStage ? fareStage.fareStages : ''}
                                 aria-describedby="fare-stage-hint"
                             />
                         </FormElementWrapper>
@@ -60,20 +55,20 @@ const ChooseStages = ({ inputCheck, errors, csrfToken }: ChooseStagesProps & Cus
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-    let inputCheck: ChooseStagesInputCheck = {};
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     let errors: ErrorInfo[] = [];
 
-    if (cookies[FARE_STAGES_COOKIE]) {
-        const numberOfFareStagesCookie = cookies[FARE_STAGES_COOKIE];
-        inputCheck = JSON.parse(numberOfFareStagesCookie);
-        errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-stages-error' }] : [];
+    const fareStagesAttribute = getSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE);
+
+    if (isFareStageWithErrors(fareStagesAttribute)) {
+        if (isFareStageWithErrors(fareStagesAttribute)) {
+            errors = fareStagesAttribute.errors;
+        }
+
+        updateSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE, undefined);
     }
 
-    deleteCookieOnServerSide(ctx, FARE_STAGES_COOKIE);
-
-    return { props: { inputCheck, errors } };
+    return { props: { fareStages: fareStagesAttribute || '', errors } };
 };
 
 export default ChooseStages;
