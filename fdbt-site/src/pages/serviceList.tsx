@@ -1,39 +1,38 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_COOKIE } from '../constants';
-import { getServicesByNocCode } from '../data/auroradb';
-import { ServicesInfo, CustomAppProps, ErrorInfo } from '../interfaces';
+import { SERVICE_LIST_ATTRIBUTE } from '../constants';
+import { ServiceType, getServicesByNocCode } from '../data/auroradb';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
+import { ServiceListAttribute, ServiceListAttributeWithErrors } from './api/serviceList';
 
-const title = 'Service List - Fares Data Build Tool';
-const description = 'Service List selection page of the Fares Data Build Tool';
-const errorId = 'service-list-error';
+const pageTitle = 'Service List - Fares Data Build Tool';
+const pageDescription = 'Service List selection page of the Fares Data Build Tool';
 
-interface ServiceList {
-    selectedServices: ServicesInfo[];
+export interface ServicesInfo extends ServiceType {
+    checked?: boolean;
 }
 
 export interface ServiceListProps {
-    service: ServiceList;
+    serviceList: ServicesInfo[];
     buttonText: string;
-    error: ErrorInfo[];
+    errors: ErrorInfo[];
 }
 
 const ServiceList = ({
-    service: { selectedServices },
+    serviceList,
     buttonText,
     csrfToken,
-    error,
+    errors,
 }: ServiceListProps & CustomAppProps): ReactElement => (
-    <FullColumnLayout title={title} description={description}>
+    <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
             <>
-                <ErrorSummary errors={error} />
+                <ErrorSummary errors={errors} />
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -42,8 +41,8 @@ const ServiceList = ({
                             </h1>
                         </legend>
                         <span id="radio-error" className="govuk-error-message">
-                            <span className={error.length > 0 ? '' : 'govuk-visually-hidden'}>
-                                {error[0] ? error[0].errorMessage : ''}
+                            <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
+                                {errors[0] ? errors[0].errorMessage : ''}
                             </span>
                         </span>
                     </fieldset>
@@ -61,17 +60,21 @@ const ServiceList = ({
                         <span className="govuk-hint" id="traveline-hint">
                             This data is taken from the Traveline National Dataset.
                         </span>
-                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId={errors[0] ? errors[0].id : ''}
+                            errorClass="govuk-form-group--error"
+                        >
                             <div className="govuk-checkboxes">
-                                {selectedServices.map((service, index) => {
-                                    const { lineName, startDate, serviceCode, serviceDescription, checked } = service;
+                                {serviceList.map((service, index) => {
+                                    const { lineName, startDate, serviceCode, description, checked } = service;
 
-                                    let checkboxTitles = `${lineName} - ${serviceDescription} (Start Date ${startDate})`;
+                                    let checkboxTitles = `${lineName} - ${description} (Start Date ${startDate})`;
 
                                     if (checkboxTitles.length > 110) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
                                     }
-                                    const checkBoxValues = `${serviceDescription}`;
+                                    const checkBoxValues = `${description}`;
 
                                     return (
                                         <div className="govuk-checkboxes__item" key={`checkbox-item-${lineName}`}>
@@ -102,55 +105,38 @@ const ServiceList = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
-    const cookies = parseCookies(ctx);
-    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
+export const isServiceListAttributeWithErrors = (
+    serviceListAttribute: ServiceListAttribute | ServiceListAttributeWithErrors,
+): serviceListAttribute is ServiceListAttributeWithErrors =>
+    (serviceListAttribute as ServiceListAttributeWithErrors).errors !== undefined;
+
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceListProps }> => {
     const nocCode = getAndValidateNoc(ctx);
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     if (!nocCode) {
         throw new Error('Necessary cookies not found to show serviceList page');
     }
 
-    const servicesList = await getServicesByNocCode(nocCode);
+    const services = await getServicesByNocCode(nocCode);
 
     const { selectAll } = ctx.query;
 
-    const buttonText = selectAll === 'true' ? 'Unselect All' : 'Select All';
-
-    const checkedServiceList: ServicesInfo[] = servicesList.map(service => {
+    const serviceList: ServicesInfo[] = services.map(service => {
         return {
             ...service,
-            serviceDescription: service.description,
             checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
         };
     });
 
-    const error: ErrorInfo[] = [];
-
-    if (serviceListCookie) {
-        const cookieContent = JSON.parse(serviceListCookie);
-        if (cookieContent.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: cookieContent.errorMessage, id: errorId };
-            error.push(errorInfo);
-            return {
-                props: {
-                    service: {
-                        selectedServices: checkedServiceList,
-                    },
-                    buttonText,
-                    error,
-                },
-            };
-        }
-    }
-
     return {
         props: {
-            service: {
-                selectedServices: checkedServiceList,
-            },
-            buttonText,
-            error: [],
+            serviceList,
+            buttonText: selectAll === 'true' ? 'Unselect All' : 'Select All',
+            errors:
+                serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
+                    ? serviceListAttribute.errors
+                    : [],
         },
     };
 };

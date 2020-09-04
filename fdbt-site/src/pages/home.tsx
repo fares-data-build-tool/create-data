@@ -30,6 +30,11 @@ const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement =
                     >
                         Create NeTEx data for your fares
                     </a>
+                    <br />
+                    <br />
+                    <a href="/createdFiles" className="govuk-link govuk-!-font-size-19" id="created-link">
+                        Download previously created NeTEx data
+                    </a>
                 </div>
                 <div className="govuk-!-margin-top-9">
                     <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Operator settings</p>

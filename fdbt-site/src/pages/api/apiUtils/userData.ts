@@ -11,12 +11,12 @@ import {
     MATCHING_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    SERVICE_LIST_COOKIE,
+    FARE_ZONE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
-    MULTIPLE_PRODUCT_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
 } from '../../../constants';
 import {
@@ -41,6 +41,9 @@ import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
+import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
+import { isServiceListAttributeWithErrors } from '../../serviceList';
+import { MultipleProductAttribute } from '../multipleProductValidity';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -64,27 +67,29 @@ export const getProductsAndSalesOfferPackages = (
     reqBody: {
         [key: string]: string;
     },
-    multipleProductCookie: string,
+    multipleProductAttribute: MultipleProductAttribute,
 ): ProductDetails[] => {
     const productSOPList: ProductDetails[] = [];
 
     Object.entries(reqBody).forEach(entry => {
         const salesOfferPackageValue = !isArray(entry[1]) ? [entry[1]] : (entry[1] as string[]);
         const salesOfferPackageList = generateSalesOfferPackages(salesOfferPackageValue);
-        const parsedMultipleCookie = JSON.parse(multipleProductCookie);
-        const productDetail = parsedMultipleCookie.find((product: Product) => {
+        const { products } = multipleProductAttribute;
+        const productDetail = products.find((product: Product) => {
             return product.productName === entry[0];
         });
 
-        const productDetailsItem = {
-            productName: productDetail.productName,
-            productPrice: productDetail.productPrice,
-            productDuration: productDetail.productDuration || '',
-            productValidity: productDetail.productValidity || '',
-            salesOfferPackages: salesOfferPackageList,
-        };
+        if (productDetail) {
+            const productDetailsItem = {
+                productName: productDetail.productName,
+                productPrice: productDetail.productPrice,
+                productDuration: productDetail.productDuration || '',
+                productValidity: productDetail.productValidity || '',
+                salesOfferPackages: salesOfferPackageList,
+            };
 
-        productSOPList.push(productDetailsItem);
+            productSOPList.push(productDetailsItem);
+        }
     });
 
     return productSOPList;
@@ -221,13 +226,21 @@ export const getPeriodGeoZoneTicketJson = async (
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
-    const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-    const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
+    const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
 
+    const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !fareZoneCookie) {
+    if (
+        !nocCode ||
+        !periodTypeCookie ||
+        !passengerTypeCookie ||
+        !operatorCookie ||
+        !idToken ||
+        !fareZoneAttribute ||
+        isFareZoneAttributeWithErrors(fareZoneAttribute)
+    ) {
         throw new Error(
             'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
         );
@@ -239,7 +252,6 @@ export const getPeriodGeoZoneTicketJson = async (
     const requestBody: { [key: string]: string } = req.body;
 
     const operatorObject = JSON.parse(operatorCookie);
-    const { fareZoneName } = JSON.parse(fareZoneCookie);
     const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
@@ -249,7 +261,7 @@ export const getPeriodGeoZoneTicketJson = async (
 
     let productDetailsList: ProductDetails[];
 
-    if (!multipleProductCookie) {
+    if (!multipleProductAttribute) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
             throw new Error(
                 'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
@@ -268,7 +280,7 @@ export const getPeriodGeoZoneTicketJson = async (
             salesOfferPackages,
         }));
     } else {
-        productDetailsList = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
+        productDetailsList = getProductsAndSalesOfferPackages(requestBody, multipleProductAttribute);
     }
 
     return {
@@ -279,7 +291,7 @@ export const getPeriodGeoZoneTicketJson = async (
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject?.operator?.operatorPublicName,
-        zoneName: fareZoneName,
+        zoneName: fareZoneAttribute.fareZoneName,
         products: productDetailsList,
         stops: zoneStops,
     };
@@ -300,13 +312,21 @@ export const getPeriodMultipleServicesTicketJson = (
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
-    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-    const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
 
+    const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
+    if (
+        !nocCode ||
+        !periodTypeCookie ||
+        !passengerTypeCookie ||
+        !operatorCookie ||
+        !idToken ||
+        !serviceListAttribute ||
+        isServiceListAttributeWithErrors(serviceListAttribute)
+    ) {
         throw new Error(
             'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
         );
@@ -317,12 +337,10 @@ export const getPeriodMultipleServicesTicketJson = (
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
 
-    const isMultiProducts = multipleProductCookie;
-
     const requestBody: { [key: string]: string } = req.body;
 
     const operatorObject = JSON.parse(operatorCookie);
-    const { selectedServices } = JSON.parse(serviceListCookie);
+    const { selectedServices } = serviceListAttribute;
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
         const service = selectedService.split('#');
         return {
@@ -335,7 +353,7 @@ export const getPeriodMultipleServicesTicketJson = (
 
     let productDetailsList: ProductDetails[];
 
-    if (!isMultiProducts) {
+    if (!multipleProductAttribute) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
             throw new Error(
                 'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
@@ -356,7 +374,7 @@ export const getPeriodMultipleServicesTicketJson = (
             };
         });
     } else {
-        productDetailsList = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
+        productDetailsList = getProductsAndSalesOfferPackages(requestBody, multipleProductAttribute);
     }
 
     return {
@@ -384,8 +402,8 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
-    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
 
+    const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
     const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
@@ -395,7 +413,8 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         !passengerTypeCookie ||
         !operatorCookie ||
         !idToken ||
-        !serviceListCookie ||
+        !serviceListAttribute ||
+        isServiceListAttributeWithErrors(serviceListAttribute) ||
         !productDetailsAttributeInfo ||
         !isProductData(productDetailsAttributeInfo)
     ) {
@@ -409,7 +428,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const requestBody: { [key: string]: string } = req.body;
     const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
     const operatorObject = JSON.parse(operatorCookie);
-    const { selectedServices } = JSON.parse(serviceListCookie);
+    const { selectedServices } = serviceListAttribute;
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
         const service = selectedService.split('#');
         return {

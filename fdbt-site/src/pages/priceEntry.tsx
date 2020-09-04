@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
-import { STAGE_NAMES_COOKIE, PRICE_ENTRY_ERRORS_COOKIE, PRICE_ENTRY_INPUTS_COOKIE } from '../constants';
+import { STAGE_NAMES_COOKIE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
-import { FaresInformation, FaresInput, PriceEntryError } from './api/priceEntry';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { FaresInformation } from './api/priceEntry';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
@@ -25,10 +25,10 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
     }
     const cellName = `${rowStage}-${columnStage}`;
     const defaultInput = fareInformation.inputs.find(input => {
-        return input.k === cellName;
+        return input.locator === cellName;
     });
 
-    return defaultInput?.v || '';
+    return defaultInput?.input || '';
 };
 
 export const createClassName = (
@@ -49,7 +49,7 @@ export const createClassName = (
 
     const name = `${rowStage}-${columnStage}`;
 
-    if (inputs.errorInformation.some(el => el.k === name)) {
+    if (inputs.errorInformation.some(el => el.locator === name)) {
         errorClass = ' govuk-input--error';
     }
 
@@ -57,15 +57,10 @@ export const createClassName = (
 };
 
 export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
-    const errorText = 'Enter a valid price for each stage';
     const filteredErrors: ErrorInfo[] = [];
     errors.forEach(error => {
-        if (!filteredErrors.some(el => el.errorMessage === errorText)) {
-            let updatedErrorMessage = '';
-            if (error.errorMessage === 'A') {
-                updatedErrorMessage = errorText;
-            }
-            filteredErrors.push({ errorMessage: updatedErrorMessage, id: error.id });
+        if (!filteredErrors.some(el => !!el.errorMessage && el.errorMessage !== '')) {
+            filteredErrors.push({ errorMessage: error.errorMessage, id: error.id });
         }
     });
 
@@ -157,11 +152,9 @@ const PriceEntry = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PriceEntryProps } => {
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
-    const priceEntryErrorsCookie = cookies[PRICE_ENTRY_ERRORS_COOKIE];
-    const priceEntryInputsCookie = cookies[PRICE_ENTRY_INPUTS_COOKIE];
 
     if (!stageNamesCookie) {
         throw new Error('Necessary stage names cookies not found to show price entry page');
@@ -173,20 +166,20 @@ export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryPro
         throw new Error('No stages in cookie data');
     }
 
-    if (priceEntryInputsCookie && priceEntryErrorsCookie) {
-        const priceEntryCookieInputContents: FaresInput[] = JSON.parse(priceEntryInputsCookie);
-        const priceEntryCookieErrorContents: PriceEntryError[] = JSON.parse(priceEntryErrorsCookie);
+    const priceEntryInfo = getSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE);
 
-        const errors: ErrorInfo[] = priceEntryCookieErrorContents.map(error => {
-            return { errorMessage: error.v, id: errorId };
+    if (priceEntryInfo) {
+        const errors: ErrorInfo[] = priceEntryInfo.errorInformation.map(error => {
+            return { errorMessage: error.input, id: errorId };
         });
         const filteredErrors = filterErrors(errors);
+        updateSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE, undefined);
         return {
             props: {
                 stageNamesArray,
                 faresInformation: {
-                    inputs: priceEntryCookieInputContents,
-                    errorInformation: priceEntryCookieErrorContents,
+                    inputs: priceEntryInfo.inputs,
+                    errorInformation: priceEntryInfo.errorInformation,
                 },
                 errors: filteredErrors,
             },

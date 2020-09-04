@@ -14,11 +14,12 @@ import {
     getMockRequestAndResponse,
 } from '../../testData/mockData';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
 
 describe('multiple product data sorting methods', () => {
     it('returns error summary info given a list of products', () => {
         const errors = getErrorsForCookie(multipleProducts);
-        expect(errors.errors.length).toBe(3);
+        expect(errors.length).toBe(3);
     });
 
     it('returns true if a product list has errors', () => {
@@ -156,6 +157,11 @@ describe('multipleProduct', () => {
             body: testData,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
+                    numberOfProductsInput: '2',
+                },
+            },
         });
 
         (setCookieOnResponseObject as {}) = jest.fn();

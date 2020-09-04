@@ -44,3 +44,50 @@
     display: flex;
     align-items: flex-end;
 }
+
+.padding {
+    padding-left: 15px;
+}
+
+.pagination {
+    padding: 0;
+}
+.pagination__item {
+    display: inline-block;
+    list-style: none;
+}
+.pagination__link {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        background: #f8f8f8;
+        outline: 3px solid #ffbf47;
+    }
+
+    &.current {
+        color: #0b0c0c;
+        font-weight: 700;
+        border: none;
+        pointer-events: none;
+        cursor: default;
+
+        &:hover,
+        &:focus {
+            color: #0b0c0c;
+            background: none;
+        }
+    }
+}
+
+.pagination__summary {
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 8px 0;
+
+    @media (min-width: 642px) {
+        float: right;
+    }
+}

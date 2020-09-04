@@ -1,19 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
-import { CSV_UPLOAD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { CSV_UPLOAD_ATTRIBUTE } from '../constants';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'CSV Upload - Fares Data Build Tool';
 const description = 'CSV Upload page of the Fares Data Build Tool';
-
-const errorId = 'csv-upload-error';
 
 const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
@@ -37,20 +33,10 @@ const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactEle
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
-    const cookies = parseCookies(ctx);
-    const csvUploadCookie = cookies[CSV_UPLOAD_COOKIE];
-
-    let csvUpload;
-
-    if (csvUploadCookie) {
-        csvUpload = JSON.parse(csvUploadCookie);
-        if (csvUpload.error === undefined) {
-            csvUpload.error = '';
-        }
-    }
-
-    const uploadProps = {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
+    const csvUploadAttribute = getSessionAttribute(ctx.req, CSV_UPLOAD_ATTRIBUTE);
+    const errors: ErrorInfo[] = csvUploadAttribute ? csvUploadAttribute.errors : [];
+    return {
         props: {
             csvUploadApiRoute: '/api/csvUpload',
             csvUploadHintText:
@@ -61,14 +47,10 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             csvTemplateDisplayName: 'Download fares triangle CSV template',
             csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '400B',
-            errors: !csvUpload?.error ? [] : [{ errorMessage: csvUpload.error, id: errorId }],
+            errors,
             detailSummary: "My CSV won't upload",
         },
     };
-
-    deleteCookieOnServerSide(ctx, CSV_UPLOAD_COOKIE);
-
-    return uploadProps;
 };
 
 export default CsvUpload;
