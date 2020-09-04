@@ -14,7 +14,7 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     FARE_TYPE_COOKIE,
     PERIOD_TYPE_COOKIE,
-    MULTIPLE_PRODUCT_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../../constants';
@@ -34,14 +34,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const cookies = new Cookies(req, res);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
+
         if (!fareTypeCookie) {
-            throw new Error('No fare type cookie found.');
+            throw new Error('Necessary cookies/session not found.');
         }
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const { fareType } = fareTypeObject;
 
-        const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-        const parsedCookie = multipleProductCookie && JSON.parse(multipleProductCookie);
+        const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
         if (fareType !== 'single' && fareType !== 'return' && fareType !== 'period' && fareType !== 'flatFare') {
             throw new Error('No fare type found to generate user data json.');
@@ -57,7 +58,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (Object.keys(req.body).length < parsedCookie.length) {
+        if (Object.keys(req.body).length < products.length) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
                 errorMessage: 'Choose at least one sales offer package for each product',
                 selected: req.body,

@@ -1,20 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import isEmpty from 'lodash/isEmpty';
+import { NextApiRequestWithSession } from '../../interfaces/index';
+import { updateSessionAttribute } from '../../utils/sessions';
 import {
+    PRICE_ENTRY_ATTRIBUTE,
     JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,
-    PRICE_ENTRY_INPUTS_COOKIE,
-    PRICE_ENTRY_ERRORS_COOKIE,
     INPUT_METHOD_COOKIE,
 } from '../../constants/index';
+
 import {
     getUuidFromCookie,
     redirectToError,
     redirectTo,
     unescapeAndDecodeCookie,
     setCookieOnResponseObject,
-    deleteCookieOnResponseObject,
 } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './apiUtils/validator';
@@ -44,13 +45,13 @@ export interface FaresInformation {
 }
 
 export interface FaresInput {
-    v: string;
-    k: string;
+    input: string;
+    locator: string;
 }
 
 export interface PriceEntryError {
-    v: string;
-    k: string;
+    input: string;
+    locator: string;
 }
 
 export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
@@ -61,14 +62,14 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
             if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
                 // k and v used to keep cookie size small - key and value
                 errors.push({
-                    v: 'A',
-                    k: priceEntry[0],
+                    input: 'Enter a valid price for each stage',
+                    locator: priceEntry[0],
                 });
             }
         }
         return {
-            v: priceEntry[1] as string,
-            k: priceEntry[0],
+            input: priceEntry[1] as string,
+            locator: priceEntry[0],
         };
     });
     return {
@@ -123,7 +124,7 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
     await putStringInS3(USER_DATA_BUCKET_NAME, `${uuid}.json`, text, 'application/json; charset=utf-8');
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!req.body || isEmpty(req.body)) {
             throw new Error('Body of request not found.');
@@ -133,19 +134,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('session is invalid.');
         }
 
-        const errorCheck = inputsValidityCheck(req);
+        const errorCheck: FaresInformation = inputsValidityCheck(req);
 
         if (errorCheck.errorInformation.length > 0) {
-            // two cookies as if there are too many fare stages, cookie gets too large
-            const inputCookieValue = JSON.stringify(errorCheck.inputs);
-            setCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, inputCookieValue, req, res);
-            const errorCookieValue = JSON.stringify(errorCheck.errorInformation);
-            setCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, errorCookieValue, req, res);
+            updateSessionAttribute(req, PRICE_ENTRY_ATTRIBUTE, errorCheck);
             redirectTo(res, '/priceEntry');
             return;
         }
-        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, req, res);
-        deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, req, res);
 
         const mappedData = faresTriangleDataMapper(req);
         const uuid = getUuidFromCookie(req, res);

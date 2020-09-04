@@ -5,8 +5,8 @@ import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    SERVICE_LIST_COOKIE,
+    FARE_ZONE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import {
@@ -21,6 +21,8 @@ import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
+import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
+import { isServiceListAttributeWithErrors } from './serviceList';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -135,21 +137,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
-    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
 
-    let props = {};
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
+    const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
+    const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
-    if (!operatorCookie) {
-        throw new Error('Failed to retrieve operator cookie info for product details page.');
-    }
+    let hintText = '';
 
-    if (!passengerTypeCookie) {
-        throw new Error('Failed to retrieve passenger type cookie info for product details page.');
-    }
-
-    if (!zoneCookie && !serviceListCookie) {
-        throw new Error('Failed to retrieve zone or service list cookie info for product details page.');
+    if (!operatorCookie || !passengerTypeCookie || (!fareZoneAttribute && !serviceListAttribute)) {
+        throw new Error('Failed to retrieve the necessary cookies and/or session objects.');
     }
 
     const operatorTypeInfo = JSON.parse(operatorCookie);
@@ -157,19 +153,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const { passengerType } = passengerTypeInfo;
     const { operator } = operatorTypeInfo;
 
-    if (zoneCookie) {
-        const { fareZoneName } = JSON.parse(zoneCookie);
-        props = {
-            hintText: fareZoneName,
-        };
-    } else if (serviceListCookie) {
-        const { selectedServices } = JSON.parse(serviceListCookie);
-        props = {
-            hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0],
-        };
+    if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
+        hintText = fareZoneAttribute.fareZoneName;
+    } else if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
+        const { selectedServices } = serviceListAttribute;
+        hintText = selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0];
     }
-
-    const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     return {
         props: {
@@ -180,7 +169,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
                 productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)
                     ? productDetailsAttribute.errors
                     : [],
-            ...props,
+            hintText,
         },
     };
 };

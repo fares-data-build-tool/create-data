@@ -2,22 +2,28 @@ import * as csvUpload from '../../../src/pages/api/csvUpload';
 import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
 import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
+import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import logger from '../../../src/utils/logger';
 import { containsDuplicateFareStages } from '../../../src/pages/api/csvUpload';
+import { ErrorInfo } from '../../../src/interfaces';
+import { CSV_UPLOAD_ATTRIBUTE } from '../../../src/constants';
 
 jest.spyOn(s3, 'putStringInS3');
 
 describe('csvUpload', () => {
     const loggerSpy = jest.spyOn(logger, 'warn');
     const getFormDataSpy = jest.spyOn(fileUpload, 'getFormData');
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     beforeEach(() => {
         jest.resetAllMocks();
     });
 
     it('should return 302 redirect to /csvUpload with an error when the file contains duplicate fare stages', async () => {
-        const cookieRedirectSpy = jest.spyOn(csvUpload, 'setUploadCookieAndRedirect');
+        const mockError: ErrorInfo[] = [
+            { id: 'csv-upload-error', errorMessage: 'Fare stage names cannot be the same' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -45,12 +51,11 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
-
-        expect(cookieRedirectSpy).toBeCalledWith(req, res, 'Fare stage names cannot be the same');
-        cookieRedirectSpy.mockRestore();
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
     });
 
     it('should return 302 redirect to /csvUpload when no file is attached', async () => {
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file is empty' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -78,7 +83,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
-        expect(res.writeHead).toHaveBeenCalledTimes(1);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
         expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             fileName: 'string',
@@ -87,6 +92,9 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error message when a the attached file is too large', async () => {
+        const mockError: ErrorInfo[] = [
+            { id: 'csv-upload-error', errorMessage: 'The selected file must be smaller than 5MB' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -114,6 +122,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
         expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             maxSize: 5242880,
@@ -123,6 +132,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error message when the attached file is not a csv', async () => {
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file must be a CSV' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -150,6 +160,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
         expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             message: 'file not of allowed type',
@@ -231,9 +242,13 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/outboundMatching',
         });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
     });
 
     it('should throw an error if the fares triangle data has non-numerical prices', async () => {
+        const mockError: ErrorInfo[] = [
+            { id: 'csv-upload-error', errorMessage: 'The selected file must use the template' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -261,9 +276,13 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
     });
 
     it('should return 302 redirect to /csvUpload with an error message if the fares triangle data has missing prices', async () => {
+        const mockError: ErrorInfo[] = [
+            { id: 'csv-upload-error', errorMessage: 'The selected file must use the template' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -291,6 +310,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
     });
 
     describe('containsDuplicateFareStages', () => {

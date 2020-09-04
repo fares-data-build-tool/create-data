@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages createdFiles should render correctly 1`] = `
+<Component
+  description="Created Files page for the Fares Data Build Tool"
+  title="Created Files - Fares Data Build Tool"
+>
+  <h1
+    className="govuk-heading-l"
+  >
+    Previously created files
+  </h1>
+  <span
+    className="govuk-hint"
+    id="fare-type-operator-hint"
+  >
+    This page will show any NeTEx files created in the last 60 days
+  </span>
+  <div
+    className="govuk-accordion"
+    data-module="govuk-accordion"
+    id="accordion-default"
+  >
+    <div
+      className="govuk-accordion__section"
+      key="TEST12345"
+    >
+      <div
+        className="govuk-accordion__section-header"
+      >
+        <h2
+          className="govuk-accordion__section-heading"
+        >
+          <span
+            className="govuk-accordion__section-button"
+            id="accordion-default-heading-0"
+          >
+            Test Name
+          </span>
+        </h2>
+      </div>
+      <div
+        aria-labelledby="accordion-default-heading-0"
+        className="govuk-accordion__section-content"
+        id="accordion-default-content-0"
+      >
+        <div
+          className="govuk-body"
+        >
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Reference: 
+          </span>
+           
+          TEST12345
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            National Operator Code: 
+          </span>
+          TEST
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Fare Type: 
+          </span>
+           
+          Single
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Passenger Type: 
+          </span>
+           
+          Adult
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Sales Offer Package(s): 
+          </span>
+          Test SOP Name, Test SOP Name 2
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Line Name: 
+          </span>
+           
+          X01
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Date of Creation: 
+          </span>
+           
+          Tue, 01 Sep 2020 14:46:58 GMT
+          <br />
+          <br />
+          <a
+            className="govuk-button"
+            download={true}
+            href="https://test.example.com/dscsdcd"
+          >
+            Download
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      className="govuk-accordion__section"
+      key="TEST54321"
+    >
+      <div
+        className="govuk-accordion__section-header"
+      >
+        <h2
+          className="govuk-accordion__section-heading"
+        >
+          <span
+            className="govuk-accordion__section-button"
+            id="accordion-default-heading-1"
+          >
+            Test Name 2
+          </span>
+        </h2>
+      </div>
+      <div
+        aria-labelledby="accordion-default-heading-1"
+        className="govuk-accordion__section-content"
+        id="accordion-default-content-1"
+      >
+        <div
+          className="govuk-body"
+        >
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Reference: 
+          </span>
+           
+          TEST54321
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            National Operator Code: 
+          </span>
+          TEST2
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Fare Type: 
+          </span>
+           
+          Flat Fare
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Passenger Type: 
+          </span>
+           
+          Child
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Sales Offer Package(s): 
+          </span>
+          Test SOP Name 2
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Service(s): 
+          </span>
+           
+          1, 56, X02
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Product(s): 
+          </span>
+           
+          Product 1, Product 2
+          <br />
+          <span
+            className="govuk-body govuk-!-font-weight-bold"
+          >
+            Date of Creation: 
+          </span>
+           
+          Wed, 02 Sep 2020 14:46:58 GMT
+          <br />
+          <br />
+          <a
+            className="govuk-button"
+            download={true}
+            href="https://test.example.com/gfnhgddd"
+          >
+            Download
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Pagination
+    currentPage={1}
+    link="/createdFiles"
+    numberOfResults={10}
+    numberPerPage={5}
+  />
+</Component>
+`;

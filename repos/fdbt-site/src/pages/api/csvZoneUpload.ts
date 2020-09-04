@@ -1,12 +1,22 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
-import { CSV_ZONE_UPLOAD_COOKIE } from '../../constants';
+import { FARE_ZONE_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
+
+export interface FareZone {
+    fareZoneName: string;
+}
+
+export interface FareZoneWithErrors {
+    errors: ErrorInfo[];
+}
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -15,9 +25,12 @@ export const config = {
     },
 };
 
-export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
-    const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+export const setFareZoneAttributeAndRedirect = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+    errors: ErrorInfo[],
+): void => {
+    updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, { errors });
     redirectTo(res, '/csvZoneUpload');
 };
 
@@ -54,10 +67,11 @@ export const getAtcoCodesForStops = async (
 
 export const processCsv = async (
     fileContent: string,
-    req: NextApiRequest,
+    req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): Promise<UserFareZone[] | null> => {
     let parsedFileContent: UserFareZone[];
+    const errors: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file must use the template' }];
 
     try {
         parsedFileContent = csvParser(fileContent);
@@ -66,7 +80,7 @@ export const processCsv = async (
             context: 'api.csvZoneUpload',
             message: 'failed to parse fare zone CSV',
         });
-        setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
+        setFareZoneAttributeAndRedirect(req, res, errors);
 
         return null;
     }
@@ -103,8 +117,7 @@ export const processCsv = async (
         }
 
         if (!csvValid) {
-            setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
-
+            setFareZoneAttributeAndRedirect(req, res, errors);
             return null;
         }
 
@@ -123,7 +136,7 @@ export const processCsv = async (
     }
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -132,7 +145,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
 
         if (fileError) {
-            setUploadCookieAndRedirect(req, res, fileError);
+            const errors: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: fileError }];
+            setFareZoneAttributeAndRedirect(req, res, errors);
             return;
         }
 
@@ -147,9 +161,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
-            const cookieValue = JSON.stringify({ fareZoneName, uuid });
-            setCookieOnResponseObject(CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
-
+            updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, { fareZoneName });
             redirectTo(res, '/howManyProducts');
         }
     } catch (error) {

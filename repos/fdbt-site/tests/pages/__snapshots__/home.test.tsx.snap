@@ -34,6 +34,15 @@ exports[`pages home page should render correctly 1`] = `
         >
           Create NeTEx data for your fares
         </a>
+        <br />
+        <br />
+        <a
+          className="govuk-link govuk-!-font-size-19"
+          href="/createdFiles"
+          id="created-link"
+        >
+          Download previously created NeTEx data
+        </a>
       </div>
       <div
         className="govuk-!-margin-top-9"
@@ -110,6 +119,15 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
           id="faretype-link"
         >
           Create NeTEx data for your fares
+        </a>
+        <br />
+        <br />
+        <a
+          className="govuk-link govuk-!-font-size-19"
+          href="/createdFiles"
+          id="created-link"
+        >
+          Download previously created NeTEx data
         </a>
       </div>
       <div
