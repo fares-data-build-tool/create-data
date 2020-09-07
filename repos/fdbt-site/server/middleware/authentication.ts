@@ -2,11 +2,41 @@ import Cookies, { SetOption } from 'cookies';
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
-import { signOutUser, setCookieOnResponseObject } from '../../src/pages/api/apiUtils';
 import { CognitoIdToken } from '../../src/interfaces';
-import { initiateRefreshAuth } from '../../src/data/cognito';
+import { globalSignOut, initiateRefreshAuth } from '../../src/data/cognito';
 import logger from '../../src/utils/logger';
+
+type Req = NextApiRequest | Request;
+type Res = NextApiResponse | Response;
+
+export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
+    const cookies = new Cookies(req, res);
+
+    cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
+};
+
+const setCookieOnResponseObject = (cookieName: string, cookieValue: string, req: Req, res: Res): void => {
+    const cookies = new Cookies(req, res);
+    // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
+    // default. An error will be thrown if you try to send secure cookies over an insecure socket.
+    cookies.set(cookieName, cookieValue, {
+        path: '/',
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV !== 'development',
+    });
+};
+
+const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
+    if (username) {
+        await globalSignOut(username);
+    }
+
+    deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
+};
 
 const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
 

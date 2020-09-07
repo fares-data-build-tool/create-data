@@ -1,5 +1,6 @@
 import { FaresInformation } from '../pages/api/priceEntry';
 import {
+    DAYS_VALID_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -14,14 +15,25 @@ import {
     GROUP_DEFINITION_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    STAGE_NAMES_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     NUMBER_OF_STAGES_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
 } from '../constants/index';
 import {
+    InputMethodInfo,
+    ErrorInfo,
     IncomingMessageWithSession,
     ProductInfo,
     ProductData,
@@ -29,14 +41,18 @@ import {
     GroupDefinition,
     TimeRestriction,
     CompanionInfo,
+    DaysValidInfo,
+    Journey,
+    JourneyWithErrors,
+    PeriodTypeAttribute,
+    PeriodTypeAttributeWithErrors,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
-import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
+import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
-import { MatchingValues } from '../pages/api/outboundMatching';
 import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
 import {
     GroupPassengerTypesCollection,
@@ -45,6 +61,7 @@ import {
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
+import { InputCheck } from '../pages/stageNames';
 import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
@@ -52,81 +69,59 @@ import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
 import { MultipleProductAttribute } from '../pages/api/multipleProductValidity';
 import { BaseMultipleProductAttribute, BaseMultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
 import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
+import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
+import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerType';
+import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
+import { ServiceWithErrors, Service } from '../pages/api/service';
+import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 
-type GetSessionAttributeTypes = {
-    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation | undefined;
-    [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
-    [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
-    [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
-    [INBOUND_MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | InboundMatchingInfo;
-    [PERIOD_EXPIRY_ATTRIBUTE]: undefined | PeriodExpiryWithErrors | ProductData;
-    [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData | ProductInfoWithErrors;
-    [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
-    [GROUP_SIZE_ATTRIBUTE]: undefined | GroupTicketAttribute | GroupTicketAttributeWithErrors;
-    [GROUP_PASSENGER_TYPES_ATTRIBUTE]:
-        | undefined
-        | GroupPassengerTypesCollection
-        | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
-    [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
-    [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
-    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
-    [FARE_ZONE_ATTRIBUTE]: undefined | FareZone | FareZoneWithErrors;
-    [CSV_UPLOAD_ATTRIBUTE]: undefined | CsvUploadAttributeWithErrors;
-    [SERVICE_LIST_ATTRIBUTE]: undefined | ServiceListAttribute | ServiceListAttributeWithErrors;
-    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
-    [MULTIPLE_PRODUCT_ATTRIBUTE]:
-        | undefined
-        | BaseMultipleProductAttribute
-        | BaseMultipleProductAttributeWithErrors
-        | MultipleProductAttribute;
-    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
-};
-
-type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
-    req: IncomingMessageWithSession,
-    attributeName: Key,
-) => GetSessionAttributeTypes[Key];
-
-export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWithSession, attributeName) =>
-    req?.session?.[attributeName];
-
-type UpdateSessionAttributeTypes = {
-    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation | undefined;
-    [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
-    [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
-    [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
-    [MATCHING_ATTRIBUTE]: MatchingInfo | MatchingWithErrors | MatchingValues;
-    [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | PeriodExpiryWithErrors;
-    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
+type SessionAttributeTypes = {
+    [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
+    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo;
+    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
+    [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
+    [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
+    [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
+    [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
+    [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiryWithErrors | ProductData;
+    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData | ProductInfoWithErrors;
+    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
-    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
     [MULTIPLE_PRODUCT_ATTRIBUTE]:
         | BaseMultipleProductAttribute
         | BaseMultipleProductAttributeWithErrors
         | MultipleProductAttribute;
     [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
+    [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
+    [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
+    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
+    [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
+    [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
+    [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
+    [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
 };
 
-type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
-    req: IncomingMessageWithSession,
-    attributeName: Key,
-    attributeValue: UpdateSessionAttributeTypes[Key],
-) => void;
+type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;
 
-export const updateSessionAttribute: UpdateSessionAttribute = (
+export const getSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,
-    attributeName,
-    attributeValue,
+    attributeName: T,
+): SessionAttribute<T> | undefined => req?.session?.[attributeName];
+
+export const updateSessionAttribute = <T extends string>(
+    req: IncomingMessageWithSession,
+    attributeName: T,
+    attributeValue: SessionAttribute<T> | undefined,
 ): void => {
     req.session[attributeName] = attributeValue;
 };

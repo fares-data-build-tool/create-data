@@ -12,7 +12,8 @@ import {
     mockRawServiceWithDuplicates,
     selectedFareStages,
 } from '../testData/mockData';
-import OutboundMatching, { getServerSideProps } from '../../src/pages/inboundMatching';
+import OutboundMatching, { getServerSideProps } from '../../src/pages/outboundMatching';
+import { JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -76,7 +77,13 @@ describe('Inbound OutboundMatching Page', () => {
 
     describe('getServerSideProps', () => {
         it('generates the correct list of master stops', async () => {
-            const ctx = getMockContext();
+            const ctx = getMockContext({
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        outboundJourney: '13003921A#13003655B',
+                    },
+                },
+            });
 
             await getServerSideProps(ctx);
 
@@ -105,10 +112,9 @@ describe('Inbound OutboundMatching Page', () => {
             batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
 
             const ctx = getMockContext({
-                cookies: {
-                    journey: {
-                        startPoint: '13003921A',
-                        endPoint: '13003655B',
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        outboundJourney: '13003921A#13003655B',
                     },
                 },
             });
@@ -123,10 +129,9 @@ describe('Inbound OutboundMatching Page', () => {
             getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawServiceWithDuplicates));
 
             const ctx = getMockContext({
-                cookies: {
-                    journey: {
-                        startPoint: '13003655B',
-                        endPoint: '13003921A',
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        outboundJourney: '13003655B#13003921A',
                     },
                 },
             });
@@ -156,10 +161,10 @@ describe('Inbound OutboundMatching Page', () => {
 
         it('throws an error if no stops can be found', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    journey: {
-                        startPoint: '123ZZZ',
-                        endPoint: '13003921A',
+                session: {
+                    [JOURNEY_ATTRIBUTE]: {
+                        outboundJourney: '123ZZZ#13003921A',
+                        inboundJourney: '123ZZZ#13003921A',
                     },
                 },
             });
@@ -181,8 +186,8 @@ describe('Inbound OutboundMatching Page', () => {
 
         it('throws an error if service cookie not set', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    serviceLineName: null,
+                session: {
+                    [SERVICE_ATTRIBUTE]: undefined,
                 },
             });
 

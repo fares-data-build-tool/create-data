@@ -28,7 +28,6 @@ describe('service', () => {
         (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: { service: 'test' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,

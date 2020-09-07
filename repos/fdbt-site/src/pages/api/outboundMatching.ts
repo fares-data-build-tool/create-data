@@ -3,16 +3,10 @@ import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { UserFareStages } from '../../data/s3';
 import { isSessionValid } from './apiUtils/validator';
 import { MATCHING_ATTRIBUTE } from '../../constants';
-import { MatchingFareZones } from '../../interfaces/matchingInterface';
+import { MatchingFareZones, MatchingInfo } from '../../interfaces/matchingInterface';
 import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, BasicService } from '../../interfaces';
-
-export interface MatchingValues {
-    service: BasicService;
-    userFareStages: UserFareStages;
-    matchingFareZones: MatchingFareZones;
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -45,7 +39,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             matchedFareZones[fareStage.name] = fareStage;
         });
 
-        const matchingValues: MatchingValues = {
+        const matchingValues: MatchingInfo = {
             service,
             userFareStages,
             matchingFareZones: matchedFareZones,

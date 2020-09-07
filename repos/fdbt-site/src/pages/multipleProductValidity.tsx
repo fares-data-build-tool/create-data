@@ -5,7 +5,7 @@ import { FullColumnLayout } from '../layout/Layout';
 import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_COOKIE,
-    PASSENGER_TYPE_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
@@ -13,9 +13,10 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
+import { isPassengerType } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from './howManyProducts';
-import { Product } from './api/multipleProductValidity';
 import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
+import { Product } from './api/multipleProductValidity';
 
 const title = 'Multiple Product Validity - Fares Data Build Tool';
 const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
@@ -84,7 +85,7 @@ const MultipleProductValidity = ({
                                 </div>
                             </div>
                             {multipleProducts.map((product, index) => (
-                                <fieldset className="govuk-fieldset">
+                                <fieldset className="govuk-fieldset" key={product.productNameId}>
                                     <div className="grid-content-wrapper">
                                         <label
                                             className="govuk-label grid-column-content-one-fifth"
@@ -157,28 +158,31 @@ const MultipleProductValidity = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
+
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
         !operatorCookie ||
         !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
         !multipleProductAttribute ||
         isBaseMultipleProductAttributeWithErrors(multipleProductAttribute) ||
-        !passengerTypeCookie
+        !isPassengerType(passengerTypeAttribute)
     ) {
         throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }
     const { operator } = JSON.parse(operatorCookie);
-    const { passengerType } = JSON.parse(passengerTypeCookie);
+
     const multipleProducts: Product[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
 
     const errors: ErrorInfo[] = [];
     const productWithErrors = multipleProducts.find(el => el.productValidityError);
+
     if (productWithErrors) {
         const errorHref = 'multiple-product-validity-radios-error';
+
         const error: ErrorInfo = {
             errorMessage: productWithErrors.productValidityError ?? '',
             id: errorHref,
@@ -187,7 +191,13 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     }
 
     return {
-        props: { operator: operator.operatorPublicName, passengerType, numberOfProducts, multipleProducts, errors },
+        props: {
+            operator: operator.operatorPublicName,
+            passengerType: passengerTypeAttribute.passengerType,
+            numberOfProducts,
+            multipleProducts,
+            errors,
+        },
     };
 };
 

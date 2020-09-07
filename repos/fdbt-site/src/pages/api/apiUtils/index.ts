@@ -3,10 +3,12 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
-import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
-import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
+import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, FARE_TYPE_ATTRIBUTE } from '../../../constants';
+import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
+import { getSessionAttribute } from '../../../utils/sessions';
+import { isFareType } from '../../../interfaces/typeGuards';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -56,13 +58,11 @@ export const redirectToError = (
     redirectTo(res, '/error');
 };
 
-export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    const cookies = new Cookies(req, res);
-    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-    const { fareType } = JSON.parse(fareTypeCookie);
+export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-    if (fareType) {
-        switch (fareType) {
+    if (isFareType(fareTypeAttribute)) {
+        switch (fareTypeAttribute.fareType) {
             case 'period':
                 redirectTo(res, '/periodType');
                 return;
@@ -79,7 +79,7 @@ export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): v
                 throw new Error('Fare Type we expect was not received.');
         }
     } else {
-        throw new Error('Could not extract fareType from the FARE_TYPE_COOKIE.');
+        throw new Error('Could not extract fareType from the fare type attribute.');
     }
 };
 

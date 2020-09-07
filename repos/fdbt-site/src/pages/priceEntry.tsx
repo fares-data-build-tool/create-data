@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
-import { STAGE_NAMES_COOKIE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
+import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { FaresInformation } from './api/priceEntry';
+import { isInputCheck } from '../interfaces/typeGuards';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
@@ -112,13 +112,9 @@ const PriceEntry = ({
                         </div>
                         <div className="fare-triangle">
                             {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div
-                                    id={`row-${rowIndex}`}
-                                    className="fare-triangle-row"
-                                    key={stageNamesArray[rowIndex]}
-                                >
+                                <div id={`row-${rowIndex}`} className="fare-triangle-row" key={rowStage}>
                                     {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
-                                        <>
+                                        <React.Fragment key={columnStage}>
                                             <input
                                                 className={createClassName(
                                                     faresInformation,
@@ -129,7 +125,6 @@ const PriceEntry = ({
                                                 id={`cell-${rowIndex}-${columnIndex}`}
                                                 name={`${rowStage}-${columnStage}`}
                                                 type="text"
-                                                key={stageNamesArray[columnIndex]}
                                                 defaultValue={getDefaultValue(faresInformation, rowStage, columnStage)}
                                             />
                                             <label
@@ -138,7 +133,7 @@ const PriceEntry = ({
                                             >
                                                 Cell on row {rowIndex} and column {columnIndex + 1}
                                             </label>
-                                        </>
+                                        </React.Fragment>
                                     ))}
                                     <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
                                 </div>
@@ -153,14 +148,13 @@ const PriceEntry = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PriceEntryProps } => {
-    const cookies = parseCookies(ctx);
-    const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
+    const stageNamesInfo = getSessionAttribute(ctx.req, STAGE_NAMES_ATTRIBUTE);
 
-    if (!stageNamesCookie) {
-        throw new Error('Necessary stage names cookies not found to show price entry page');
+    if (!stageNamesInfo || stageNamesInfo.length === 0 || isInputCheck(stageNamesInfo)) {
+        throw new Error('Necessary stage names not found to show price entry page');
     }
 
-    const stageNamesArray = JSON.parse(stageNamesCookie);
+    const stageNamesArray: string[] = stageNamesInfo;
 
     if (stageNamesArray.length === 0 && ctx.res) {
         throw new Error('No stages in cookie data');

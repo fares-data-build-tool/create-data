@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_COOKIE } from '../../constants';
-import { redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_ATTRIBUTE } from '../../constants';
+import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, ProductData } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { isProductInfo } from '../productDetails';
 
 export interface PeriodExpiryWithErrors {
     errorMessage: string;
@@ -19,17 +19,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (req.body.periodValid) {
             const { periodValid } = req.body;
 
-            const cookies = new Cookies(req, res);
+            const daysValidInfo = getSessionAttribute(req, DAYS_VALID_ATTRIBUTE);
+            const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
 
-            const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_ATTRIBUTE);
-            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
-
-            if (productDetailsCookie === '' || daysValidCookie === '') {
-                throw new Error('Necessary cookies not found for period validity API');
+            if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
+                throw new Error('Necessary session data not found for period validity API');
             }
 
-            const { productName, productPrice } = JSON.parse(productDetailsCookie);
-            const { daysValid } = JSON.parse(daysValidCookie);
+            const { productName, productPrice } = productDetailsAttribute;
+            const { daysValid } = daysValidInfo;
 
             const periodExpiryAttributeValue: ProductData = {
                 products: [

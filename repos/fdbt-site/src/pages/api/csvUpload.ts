@@ -1,20 +1,14 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import uniq from 'lodash/uniq';
-import {
-    getUuidFromCookie,
-    redirectToError,
-    redirectTo,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-} from './apiUtils';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { CSV_UPLOAD_ATTRIBUTE, JOURNEY_COOKIE, INPUT_METHOD_COOKIE } from '../../constants';
+import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isJourney } from '../../interfaces/typeGuards';
 
 const errorId = 'csv-upload-error';
 
@@ -170,14 +164,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
-            const cookies = new Cookies(req, res);
-            const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
-            const journeyObject = JSON.parse(journeyCookie);
-
-            setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'csv' }), req, res);
+            updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
             updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
 
-            if (journeyObject?.outboundJourney) {
+            const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
+
+            if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');
                 return;
             }

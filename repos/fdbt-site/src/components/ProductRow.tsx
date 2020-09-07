@@ -14,7 +14,7 @@ export const continueButton = (): ReactElement => {
 };
 
 export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (
-    <div className="flex-container">
+    <div className="flex-container" key={index}>
         <div className="govuk-grid-column-one-half">
             <FormGroupWrapper errors={errors} errorId={`multiple-product-name-input-${index}`}>
                 <>
