@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, PASSENGER_TYPES_WITH_GROUP } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { PASSENGER_TYPE_ATTRIBUTE, PASSENGER_TYPES_WITH_GROUP } from '../constants';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import InsetText from '../components/InsetText';
+import { getSessionAttribute } from '../utils/sessions';
+import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';
@@ -67,21 +66,15 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (cookies[PASSENGER_TYPE_COOKIE]) {
-        const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-        const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
+    const errors: ErrorInfo[] =
+        passengerTypeAttribute && isPassengerTypeAttributeWithErrors(passengerTypeAttribute)
+            ? passengerTypeAttribute.errors
+            : [];
 
-        if (parsedPassengerTypeCookie.errorMessage) {
-            const { errorMessage } = parsedPassengerTypeCookie;
-            deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
-    }
-
-    return { props: {} };
+    return { props: { errors } };
 };
 
 export default PassengerType;

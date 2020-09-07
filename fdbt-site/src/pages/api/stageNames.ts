@@ -1,7 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../constants/index';
+import { NextApiResponse } from 'next';
+import { NextApiRequestWithSession } from '../../interfaces/index';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { STAGE_NAMES_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
 export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
@@ -17,7 +19,7 @@ export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: s
     return true;
 };
 
-export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
+export const isStageNameValid = (req: NextApiRequestWithSession): InputCheck[] => {
     const { stageNameInput = [] } = req.body;
     const response: InputCheck[] = [];
     for (let i = 0; i < stageNameInput.length; i += 1) {
@@ -37,23 +39,23 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
     return response;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
 
-        if (!req.body.stageNameInput || req.body.stageNameInput.length === 0) {
+        const stageNames: string[] = req.body.stageNameInput;
+
+        if (!stageNames || stageNames.length === 0) {
             throw new Error('No stage name input received from Stage Names page.');
         }
         const userInputValidity = isStageNameValid(req);
         if (!userInputValidity.some(el => el.error !== '')) {
-            const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
-            setCookieOnResponseObject(STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
+            updateSessionAttribute(req, STAGE_NAMES_ATTRIBUTE, stageNames);
             redirectTo(res, '/priceEntry');
         } else {
-            const validationCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(STAGE_NAME_VALIDATION_COOKIE, validationCookieValue, req, res);
+            updateSessionAttribute(req, STAGE_NAMES_ATTRIBUTE, userInputValidity);
             redirectTo(res, '/stageNames');
         }
     } catch (error) {

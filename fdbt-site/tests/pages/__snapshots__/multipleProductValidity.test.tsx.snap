@@ -102,6 +102,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
         </div>
         <fieldset
           className="govuk-fieldset"
+          key="multiple-product-name-1"
         >
           <div
             className="grid-content-wrapper"
@@ -175,6 +176,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
         </fieldset>
         <fieldset
           className="govuk-fieldset"
+          key="multiple-product-name-2"
         >
           <div
             className="grid-content-wrapper"
@@ -383,6 +385,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
         </div>
         <fieldset
           className="govuk-fieldset"
+          key="multiple-product-name-1"
         >
           <div
             className="grid-content-wrapper"
@@ -456,6 +459,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
         </fieldset>
         <fieldset
           className="govuk-fieldset"
+          key="multiple-product-name-2"
         >
           <div
             className="grid-content-wrapper"

@@ -1,12 +1,11 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
-import Cookies from 'cookies';
-import { redirectToError, redirectTo, redirectOnFareType, unescapeAndDecodeCookie } from './apiUtils/index';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FARE_TYPE_COOKIE } from '../../constants/index';
+import { redirectToError, redirectTo, redirectOnFareType } from './apiUtils/index';
+import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, TimeRestriction } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 interface TimeRestrictionsDefinition extends TimeRestriction {
     timeRestriction?: string;
@@ -179,12 +178,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const { fareType } = JSON.parse(fareTypeCookie);
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (!fareType) {
-            throw new Error('Failed to retrieve the fareType cookie for the defineTimeRestrictions API');
+        if (!fareTypeAttribute) {
+            throw new Error('Failed to retrieve the fareType attribute for the defineTimeRestrictions API');
         }
 
         const filteredReqBody = formatRequestBody(req);

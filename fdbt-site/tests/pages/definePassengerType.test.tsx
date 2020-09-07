@@ -18,7 +18,12 @@ import {
     mockNumberOfPassengerTypeFieldsetWithErrors,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
-import { GROUP_PASSENGER_TYPES_ATTRIBUTE, GROUP_DEFINITION_ATTRIBUTE } from '../../src/constants';
+import {
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
+    GROUP_DEFINITION_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+} from '../../src/constants';
 
 describe('pages', () => {
     const defaultPassengerType = 'child';
@@ -176,8 +181,8 @@ describe('pages', () => {
                 jest.resetAllMocks();
             });
 
-            it('should throw an error if there is no PASSENGER_TYPE_COOKIE and no GROUP_PASSENGER_TYPES_ATTRIBUTE attribute', () => {
-                const ctx = getMockContext({ cookies: { passengerType: null } });
+            it('should throw an error if there is no PASSENGER_TYPE_ATTRIBUTE and no GROUP_PASSENGER_TYPES_ATTRIBUTE attribute', () => {
+                const ctx = getMockContext({ session: { [PASSENGER_TYPE_ATTRIBUTE]: undefined } });
                 expect(() => getServerSideProps(ctx)).toThrow(
                     'Failed to retrieve passenger type details for the define passenger type page',
                 );
@@ -219,11 +224,9 @@ describe('pages', () => {
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-max' },
                 ];
                 const ctx = getMockContext({
-                    cookies: {
-                        passengerType: {
-                            passengerType: 'group',
-                        },
-                        passengerTypeErrors: { errors },
+                    session: {
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+                        [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult', errors },
                     },
                 });
                 const result = getServerSideProps(ctx);
@@ -248,12 +251,6 @@ describe('pages', () => {
                 ];
                 const ctx = getMockContext({
                     url: '/definePassengerType?groupPassengerType=adult',
-                    cookies: {
-                        passengerType: {
-                            passengerType: 'child',
-                        },
-                        passengerTypeErrors: { errors },
-                    },
                     session: {
                         [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
                         [GROUP_DEFINITION_ATTRIBUTE]: {
@@ -267,6 +264,8 @@ describe('pages', () => {
                                 proofDocuments: [],
                             },
                         },
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'child' },
+                        [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { errors, passengerType: 'child' },
                     },
                     query: {
                         groupPassengerType: 'child',

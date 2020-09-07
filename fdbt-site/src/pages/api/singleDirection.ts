@@ -1,9 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { setCookieOnResponseObject, redirectTo, redirectToError, getUuidFromCookie } from './apiUtils/index';
-import { JOURNEY_COOKIE } from '../../constants/index';
+import { NextApiResponse } from 'next';
+import { getUuidFromCookie, redirectTo, redirectToError } from './apiUtils/index';
+import { JOURNEY_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -11,9 +13,16 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const { directionJourneyPattern } = req.body;
 
+        const errors: ErrorInfo[] = [];
+
         if (!directionJourneyPattern) {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose a direction from the options' });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            errors.push({
+                errorMessage: 'Choose a direction from the options',
+                id: 'direction-error',
+            });
+
+            updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { errors });
+
             redirectTo(res, '/singleDirection');
             return;
         }
@@ -24,8 +33,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('No UUID found');
         }
 
-        const cookieValue = JSON.stringify({ directionJourneyPattern, uuid });
-        setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+        updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { directionJourneyPattern });
 
         redirectTo(res, '/inputMethod');
     } catch (error) {

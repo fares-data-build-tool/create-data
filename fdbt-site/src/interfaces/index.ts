@@ -14,6 +14,11 @@ export interface ProductInfo {
     productPrice: string;
 }
 
+export interface DaysValidInfo {
+    daysValid: string;
+    errors: ErrorInfo[];
+}
+
 export interface ProductInfoWithErrors extends ProductInfo {
     errors: ErrorInfo[];
 }
@@ -47,6 +52,10 @@ export interface InputCheck {
     id: string;
     inputValue: string;
     error: string;
+}
+
+export interface InputMethodInfo {
+    inputMethod: string;
 }
 
 /* eslint-disable camelcase */
@@ -239,6 +248,23 @@ export interface Stop {
     street?: string;
 }
 
+export interface Journey extends JourneyWithErrors {
+    directionJourneyPattern?: string;
+    inboundJourney?: string;
+    outboundJourney?: string;
+}
+
+export interface JourneyWithErrors {
+    errors?: ErrorInfo[];
+}
+
+export interface PeriodTypeAttribute {
+    name: string;
+}
+
+export interface PeriodTypeAttributeWithErrors {
+    errors?: ErrorInfo[];
+}
 export interface S3NetexFile {
     name: string;
     noc: string;

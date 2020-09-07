@@ -1,15 +1,15 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
-import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_COOKIE } from '../../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 import {
     isSessionValid,
     removeExcessWhiteSpace,
     checkPriceIsValid,
     checkProductNameIsValid,
 } from './apiUtils/validator';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isFareType } from '../../interfaces/typeGuards';
 
 const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
@@ -28,30 +28,25 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const { fareType } = JSON.parse(fareTypeCookie);
-
-        if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {
-            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for productDetails API');
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        if (
+            !fareTypeAttribute ||
+            (isFareType(fareTypeAttribute) &&
+                fareTypeAttribute.fareType !== 'period' &&
+                fareTypeAttribute.fareType !== 'flatFare')
+        ) {
+            throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
         }
-
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
-
         const productDetails = getProductDetails(productDetailsNameInput, productDetailsPriceInput);
-
         const productNameError = checkProductNameIsValid(productDetails.productName);
-
         if (productNameError) {
             errors.push({
                 errorMessage: productNameError,
                 id: 'product-name-error',
             });
         }
-
         const productPriceError = checkPriceIsValid(productDetails.productPrice);
-
         if (productPriceError) {
             errors.push({
                 errorMessage: productPriceError,
@@ -61,23 +56,20 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (errors.length) {
             const invalidInputs = { ...productDetails, errors };
-
             updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, invalidInputs);
             redirectTo(res, '/productDetails');
             return;
         }
-
-        if (fareType === 'period') {
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period') {
             const periodProduct: Product = {
                 productName: productDetails.productName,
                 productPrice: productDetails.productPrice,
             };
-            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, JSON.stringify(periodProduct), req, res);
+            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, periodProduct);
             redirectTo(res, '/chooseValidity');
 
             return;
         }
-
         const flatFareProduct: ProductData = {
             products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
         };

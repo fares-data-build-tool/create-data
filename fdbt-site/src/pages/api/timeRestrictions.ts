@@ -1,9 +1,8 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
-import { TIME_RESTRICTIONS_ATTRIBUTE, FARE_TYPE_COOKIE } from '../../constants/index';
-import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectToError, redirectOnFareType, redirectTo, unescapeAndDecodeCookie } from './apiUtils/index';
+import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/index';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { redirectToError, redirectOnFareType, redirectTo } from './apiUtils/index';
 import { isSessionValid } from './apiUtils/validator';
 import { timeRestrictionsErrorId } from '../timeRestrictions';
 
@@ -20,11 +19,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const { fareType } = JSON.parse(fareTypeCookie);
-        if (!fareType) {
-            throw new Error('Failed to retrieve the fareType cookie for the timeRestrictions API');
+
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
+        if (!fareTypeAttribute) {
+            throw new Error('Failed to retrieve the fareType attribute for the timeRestrictions API');
         }
         const { timeRestrictions } = req.body;
 

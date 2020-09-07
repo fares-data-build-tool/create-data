@@ -31,6 +31,7 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
 } from '../../../../src/constants';
@@ -84,6 +85,7 @@ describe('getSingleTicketJson', () => {
                     matchingFareZones: mockMatchingFaresZones,
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
             },
         });
         const result = getSingleTicketJson(req, res);
@@ -94,7 +96,6 @@ describe('getSingleTicketJson', () => {
 describe('getReturnTicketJson', () => {
     it('should return a ReturnTicket object for a non circular return journey', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'return' },
             body: {
                 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
                     '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
@@ -110,6 +111,7 @@ describe('getReturnTicketJson', () => {
                     inboundMatchingFareZones: mockMatchingFaresZones,
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
             },
         });
         const result = getReturnTicketJson(req, res);
@@ -129,6 +131,7 @@ describe('getReturnTicketJson', () => {
                     matchingFareZones: mockMatchingFaresZones,
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
             },
         });
         const result = getReturnTicketJson(req, res);
@@ -154,6 +157,14 @@ describe('getPeriodGeoZoneTicketJson', () => {
         const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
+                multipleProducts: [
+                    {
+                        productName: 'Product A',
+                        productPrice: '1234',
+                        productDuration: '2',
+                        productValidity: '24hr',
+                    },
+                ],
                 fareType: 'period',
             },
             body: {
@@ -162,6 +173,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
             },
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [FARE_ZONE_ATTRIBUTE]: mockFareZoneAttribute,
                 [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                     products: [
@@ -185,6 +197,26 @@ describe('getPeriodMulipleServicesTicketJson', () => {
     it('should return a PeriodMultipleServicesTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
+                multipleProducts: [
+                    {
+                        productName: 'Weekly Ticket',
+                        productPrice: '50',
+                        productDuration: '5',
+                        productValidity: '24hr',
+                    },
+                    {
+                        productName: 'Day Ticket',
+                        productPrice: '2.50',
+                        productDuration: '1',
+                        productValidity: '24hr',
+                    },
+                    {
+                        productName: 'Monthly Ticket',
+                        productPrice: '200',
+                        productDuration: '28',
+                        productValidity: 'endOfCalendarDay',
+                    },
+                ],
                 fareType: 'period',
             },
             body: {
@@ -197,6 +229,7 @@ describe('getPeriodMulipleServicesTicketJson', () => {
             },
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                     products: [
                         {
@@ -229,7 +262,6 @@ describe('getPeriodMulipleServicesTicketJson', () => {
 describe('getFlatFareTicketJson', () => {
     it('should return a string a FlatFareTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'flatFare' },
             body: {
                 'Weekly Rider':
                     '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
@@ -243,6 +275,7 @@ describe('getFlatFareTicketJson', () => {
                         },
                     ],
                 },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
             },
         });
         const result = getFlatFareTicketJson(req, res);

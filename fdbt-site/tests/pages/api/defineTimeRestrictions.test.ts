@@ -11,7 +11,7 @@ import {
     mockTimeRestrictionsInputErrors,
     mockTimeRestrictionsRadioAndInputErrors,
 } from '../../testData/mockData';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
 import { ErrorInfo, TimeRestriction } from '../../../src/interfaces';
 
 describe('defineTimeRestrictions', () => {
@@ -144,12 +144,12 @@ describe('defineTimeRestrictions', () => {
         });
     });
 
-    it('should throw an error and redirect to the error page when the FARE_TYPE_COOKIE is missing', async () => {
+    it('should throw an error and redirect to the error page when the FARE_TYPE_ATTRIBUTE is missing', async () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: null },
             body: {},
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: { [FARE_TYPE_ATTRIBUTE]: null },
         });
         await defineTimeRestrictions(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
