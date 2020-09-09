@@ -186,6 +186,11 @@ Resources:
                   - !Sub arn:aws:s3:::fdbt-raw-user-data-${Stage}/*
               - Effect: Allow
                 Action:
+                  - "s3:GetObject"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}/*
+              - Effect: Allow
+                Action:
                   - "s3:ListBucket"
                 Resource:
                   - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}
@@ -221,6 +226,18 @@ Resources:
                   - "dynamodb:UpdateItem"
                 Resource: "*"
           PolicyName: ecs-site-task-policy
+
+  EcsSiteScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
 
   EcsMonitoringTaskRole:
     Type: AWS::IAM::Role
@@ -446,6 +463,10 @@ Outputs:
     Value: !GetAtt EcsSiteTaskRole.Arn
     Export:
       Name: !Sub ${Stage}:EcsSiteTaskRoleArn
+  EcsSiteScalingRoleArn:
+    Value: !GetAtt EcsSiteScalingRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsSiteScalingRoleArn
   EcsMonitoringTaskRoleArn:
     Value: !GetAtt EcsMonitoringTaskRole.Arn
     Export:

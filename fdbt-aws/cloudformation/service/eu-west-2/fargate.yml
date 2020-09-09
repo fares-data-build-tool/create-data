@@ -30,6 +30,18 @@ Parameters:
     Type: Number
     Default: 1
     Description: How many copies of the site service task to run
+  SiteMinCount:
+    Type: Number
+    Default: 1
+    Description: Min number of tasks the site can scale to
+  SiteMaxCount:
+    Type: Number
+    Default: 6
+    Description: Max number of tasks the site can scale to
+  SiteCpuTarget:
+    Type: Number
+    Default: 50
+    Description: CPU usage percentage to track for auto scaling
   MonitoringImage:
     Type: String
     Description: The monitoring docker image
@@ -185,6 +197,31 @@ Resources:
         - ContainerName: !Sub ${ProductName}-site-${Stage}
           ContainerPort: !Ref SiteContainerPort
           TargetGroupArn: !Ref SiteTargetGroup
+
+  SiteAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MinCapacity: !Ref SiteMinCount
+      MaxCapacity: !Ref SiteMaxCount
+      ResourceId:
+        !Join ["/", [service, !Ref ECSCluster, !GetAtt SiteService.Name]]
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      RoleARN:
+        Fn::ImportValue: !Sub ${Stage}:EcsSiteScalingRoleArn
+
+  SiteAutoScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: site-scaling-policy
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref SiteAutoScalingTarget
+      TargetTrackingScalingPolicyConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageCPUUtilization
+        ScaleInCooldown: 60
+        ScaleOutCooldown: 60
+        TargetValue: !Ref SiteCpuTarget
 
   MonitoringService:
     Type: AWS::ECS::Service
