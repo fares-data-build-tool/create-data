@@ -45,7 +45,7 @@ exports[`pages home page should render correctly 1`] = `
         </a>
       </div>
       <div
-        className="govuk-!-margin-top-9"
+        className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
       >
         <p
           className="govuk-body govuk-!-font-weight-bold content-one-quarter"
@@ -131,7 +131,7 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
         </a>
       </div>
       <div
-        className="govuk-!-margin-top-9"
+        className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
       >
         <p
           className="govuk-body govuk-!-font-weight-bold content-one-quarter"
