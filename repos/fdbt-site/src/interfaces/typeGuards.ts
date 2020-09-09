@@ -1,3 +1,4 @@
+import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import {
     PeriodTicket,
     PointToPointTicket,
@@ -10,7 +11,10 @@ import {
     JourneyWithErrors,
     PeriodTypeAttribute,
     PeriodTypeAttributeWithErrors,
-} from '.';
+    SalesOfferPackage,
+    ProductWithSalesOfferPackages,
+} from './index';
+
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
 import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
 import { Service, ServiceWithErrors } from '../pages/api/service';
@@ -46,7 +50,7 @@ export const inputMethodErrorsExist = (
 ): inputMethodAttribute is ErrorInfo => (inputMethodAttribute as ErrorInfo)?.errorMessage !== undefined;
 
 export const isPassengerTypeAttributeWithErrors = (
-    fareTypeAttribute: PassengerType | PassengerTypeWithErrors,
+    fareTypeAttribute: PassengerType | PassengerTypeWithErrors | undefined,
 ): fareTypeAttribute is PassengerTypeWithErrors => (fareTypeAttribute as PassengerTypeWithErrors).errors !== undefined;
 
 export const isPassengerType = (
@@ -99,3 +103,33 @@ export const isFareStage = (
     fareStages: FareStagesAttribute | FareStagesAttributeWithErrors | undefined,
 ): fareStages is FareStagesAttribute =>
     fareStages !== undefined && (fareStages as FareStagesAttribute).fareStages !== undefined;
+
+export const isSalesOfferPackageWithErrors = (
+    salesOfferPackageInfo:
+        | SelectSalesOfferPackageWithError
+        | SalesOfferPackage[]
+        | ProductWithSalesOfferPackages[]
+        | undefined,
+): salesOfferPackageInfo is SelectSalesOfferPackageWithError =>
+    salesOfferPackageInfo !== undefined &&
+    (salesOfferPackageInfo as SelectSalesOfferPackageWithError).errorMessage !== undefined;
+
+export const isProductWithSalesOfferPackages = (
+    salesOfferPackageInfo:
+        | SelectSalesOfferPackageWithError
+        | SalesOfferPackage[]
+        | ProductWithSalesOfferPackages[]
+        | undefined,
+): salesOfferPackageInfo is ProductWithSalesOfferPackages[] =>
+    salesOfferPackageInfo !== undefined &&
+    (salesOfferPackageInfo as ProductWithSalesOfferPackages[])[0].productName !== undefined;
+
+export const isSalesOfferPackages = (
+    salesOfferPackageInfo:
+        | SelectSalesOfferPackageWithError
+        | SalesOfferPackage[]
+        | ProductWithSalesOfferPackages[]
+        | undefined,
+): salesOfferPackageInfo is SalesOfferPackage[] =>
+    salesOfferPackageInfo !== undefined &&
+    (salesOfferPackageInfo as SalesOfferPackage[])[0].ticketFormats !== undefined;

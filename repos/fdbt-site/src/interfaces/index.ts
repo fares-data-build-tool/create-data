@@ -229,6 +229,10 @@ export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
 
+export interface ProductWithSalesOfferPackages extends BaseProduct {
+    productName: string;
+}
+
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
