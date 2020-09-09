@@ -36,7 +36,7 @@ const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement =
                         Download previously created NeTEx data
                     </a>
                 </div>
-                <div className="govuk-!-margin-top-9">
+                <div className="govuk-!-margin-top-7 govuk-!-padding-bottom-7">
                     <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Operator settings</p>
                     <p className="govuk-body">
                         For updating the information we use about your services when creating NeTEx data.
