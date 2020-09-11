@@ -27,38 +27,34 @@ const Confirmation = ({
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/confirmation" method="post" csrfToken={csrfToken}>
             <>
-                <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-one-thirds">
-                        <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
-                        <ConfirmationTable
-                            confirmationElements={[
+                <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
+                <ConfirmationTable
+                    confirmationElements={[
+                        {
+                            header: 'Fare Information',
+                            innerElements: [
+                                { name: 'Faretype', content: startCase(fareType), href: '/fareType' },
                                 {
-                                    header: 'Fare Information',
-                                    innerElements: [
-                                        { name: 'Faretype', content: startCase(fareType), href: '/fareType' },
-                                        {
-                                            name: 'Passenger Type',
-                                            content: startCase(passengerType),
-                                            href: '/passengerType',
-                                        },
-                                        {
-                                            name: 'Time Restrictions',
-                                            content: timeRestrictions,
-                                            href: '/timeRestrictions',
-                                        },
-                                    ],
+                                    name: 'Passenger Type',
+                                    content: startCase(passengerType),
+                                    href: '/passengerType',
                                 },
-                            ]}
-                        />
-                        <h2 className="govuk-heading-m">Now send your fares information</h2>
+                                {
+                                    name: 'Time Restrictions',
+                                    content: timeRestrictions,
+                                    href: '/timeRestrictions',
+                                },
+                            ],
+                        },
+                    ]}
+                />
+                <h2 className="govuk-heading-m">Now send your fares information</h2>
 
-                        <p className="govuk-body">
-                            By submitting this notification you are confirming that, to the best of your knowledge, the
-                            details you are providing are correct.
-                        </p>
-                    </div>
-                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-                </div>
+                <p className="govuk-body">
+                    By submitting this notification you are confirming that, to the best of your knowledge, the details
+                    you are providing are correct.
+                </p>
+                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
     </TwoThirdsLayout>
