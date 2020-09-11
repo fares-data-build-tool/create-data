@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import isArray from 'lodash/isArray';
+import { isSalesOfferPackageWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -231,7 +232,11 @@ export const getServerSideProps = async (
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const errors: ErrorInfo[] = [];
 
-    if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
+    if (
+        salesOfferPackageAttribute &&
+        isSalesOfferPackageWithErrors(salesOfferPackageAttribute) &&
+        salesOfferPackageAttribute.errorMessage
+    ) {
         const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
         errors.push(errorInfo);
         return {

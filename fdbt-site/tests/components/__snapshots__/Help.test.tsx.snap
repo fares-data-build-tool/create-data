@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Help should render the Help component 1`] = `
+<Fragment>
+  <legend
+    className="govuk-fieldset__legend govuk-fieldset__legend--s"
+  >
+    <h1
+      className="govuk-fieldset__heading"
+    >
+      Help and Support
+    </h1>
+  </legend>
+  <p
+    className="govuk-body"
+  >
+    If you are having problems, please contact the Fares Data Build service via the link below:
+    <div>
+      <a
+        className="govuk-link govuk-!-font-size-19"
+        href="/contact"
+      >
+        Contact Us
+      </a>
+    </div>
+  </p>
+</Fragment>
+`;

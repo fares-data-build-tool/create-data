@@ -193,8 +193,9 @@ describe('pages', () => {
                 [
                     'group',
                     {
-                        cookies: { passengerType: 'group' },
+                        cookies: {},
                         session: {
+                            [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
                             [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
                         },
                         query: {
@@ -264,7 +265,7 @@ describe('pages', () => {
                                 proofDocuments: [],
                             },
                         },
-                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'child' },
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
                         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { errors, passengerType: 'child' },
                     },
                     query: {

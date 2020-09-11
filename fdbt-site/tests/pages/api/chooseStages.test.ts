@@ -43,7 +43,7 @@ describe('chooseStages', () => {
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
-    it.only('should set the fare stages cookie according to the specified number of fare stages', () => {
+    it('should set the fare stages cookie according to the specified number of fare stages', () => {
         const setUpdateSessionspy = jest.spyOn(sessions, 'updateSessionAttribute');
         const mockFareStages = { errors: [], fareStages: '6' };
         const { req, res } = getMockRequestAndResponse({

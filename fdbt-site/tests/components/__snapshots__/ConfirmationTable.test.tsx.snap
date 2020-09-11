@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmationTable should render the table with options 1`] = `
+<Fragment>
+  <h2
+    className="govuk-heading-m"
+  >
+    Snapshot test things
+  </h2>
+  <dl
+    className="govuk-summary-list govuk-!-margin-bottom-9"
+  >
+    <div
+      className="govuk-summary-list__row"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Name
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        Bob
+      </dd>
+      <dd
+        className="govuk-summary-list__actions"
+      >
+        <a
+          className="govuk-link"
+          href="/login"
+        >
+          Change
+          <span
+            className="govuk-visually-hidden"
+          >
+            Name
+          </span>
+        </a>
+      </dd>
+    </div>
+    <div
+      className="govuk-summary-list__row"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        House
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        Big
+      </dd>
+      <dd
+        className="govuk-summary-list__actions"
+      >
+        <a
+          className="govuk-link"
+          href="/fareType"
+        >
+          Change
+          <span
+            className="govuk-visually-hidden"
+          >
+            House
+          </span>
+        </a>
+      </dd>
+    </div>
+  </dl>
+  <h2
+    className="govuk-heading-m"
+  >
+    Other Snapshot test things
+  </h2>
+  <dl
+    className="govuk-summary-list govuk-!-margin-bottom-9"
+  >
+    <div
+      className="govuk-summary-list__row"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Age
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        21
+      </dd>
+      <dd
+        className="govuk-summary-list__actions"
+      >
+        <a
+          className="govuk-link"
+          href="/"
+        >
+          Change
+          <span
+            className="govuk-visually-hidden"
+          >
+            Age
+          </span>
+        </a>
+      </dd>
+    </div>
+  </dl>
+</Fragment>
+`;

@@ -2,7 +2,9 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
+import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
     STAGE_NAMES_ATTRIBUTE,
     DAYS_VALID_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
@@ -149,6 +151,7 @@ export const getMockRequestAndResponse = ({
             productName: 'Product A',
             productPrice: '1234',
         },
+        [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         ...session,
     };
 
@@ -1130,35 +1133,18 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
 
 export const expectedProductDetailsArray: ProductDetails[] = [
     {
-        productName: 'DayRider',
+        productName: 'Product',
         productPrice: '2.99',
         productDuration: '1',
         productValidity: '24hr',
-        salesOfferPackages: [
-            {
-                name: 'CashRider - Cash - Ticket Machine',
-                description: 'A Day Rider ticket for an adult that can bought using cash at a ticket machine',
-                purchaseLocations: ['TicketMachine'],
-                paymentMethods: ['Cash'],
-                ticketFormats: ['Paper'],
-            },
-        ],
+        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
     },
     {
-        productName: 'WeekRider',
+        productName: 'Product Two',
         productPrice: '7.99',
         productDuration: '7',
         productValidity: '24hr',
-        salesOfferPackages: [
-            {
-                name: 'CashCardRider - Cash & Card - Bus, Ticket Machine, Shop',
-                description:
-                    'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                paymentMethods: ['Cash', 'Card'],
-                ticketFormats: ['Paper', 'Mobile'],
-            },
-        ],
+        salesOfferPackages: [defaultSalesOfferPackageTwo],
     },
 ];
 
@@ -1180,16 +1166,7 @@ export const expectedMatchingJsonSingle: SingleTicket = {
     timeRestriction: mockTimeRestriction,
     products: [
         {
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     fareZones: [
@@ -1318,16 +1295,7 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     timeRestriction: mockTimeRestriction,
     products: [
         {
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     inboundFareZones: [
@@ -1486,16 +1454,7 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     timeRestriction: mockTimeRestriction,
     products: [
         {
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     inboundFareZones: [],
@@ -1629,16 +1588,7 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
             productPrice: '1234',
             productDuration: '2',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
 };
@@ -1657,16 +1607,7 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
             productPrice: '1234',
             productDuration: '2',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     selectedServices: [
@@ -1707,48 +1648,21 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
             productPrice: '50',
             productDuration: '5',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
 };
@@ -1767,48 +1681,21 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
             productPrice: '50',
             productDuration: '5',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Day Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Day Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Monthly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Monthly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     selectedServices: [
@@ -1844,16 +1731,7 @@ export const expectedFlatFareProductUploadJson: FlatFareTicket = {
         {
             productName: 'Weekly Rider',
             productPrice: '7',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     selectedServices: [
