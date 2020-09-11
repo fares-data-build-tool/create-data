@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
+import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
 import { redirectTo, redirectToError } from './apiUtils/index';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
@@ -194,9 +195,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const { passengerType } = req.body;
 
+        const passengerInfo = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
-        const group = !!groupPassengerTypes && !!groupSize;
+        const group =
+            !!groupPassengerTypes &&
+            !!groupSize &&
+            !isPassengerTypeAttributeWithErrors(passengerInfo) &&
+            passengerInfo?.passengerType === 'group';
 
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');
@@ -206,7 +212,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const filteredReqBody = formatRequestBody(req);
 
-        if (groupPassengerTypes && groupSize) {
+        if (group && !!groupPassengerTypes && !!groupSize) {
             filteredReqBody.maxGroupSize = groupSize.maxGroupSize;
             filteredReqBody.groupPassengerType = passengerType;
         }

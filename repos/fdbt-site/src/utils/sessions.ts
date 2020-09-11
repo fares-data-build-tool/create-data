@@ -46,6 +46,8 @@ import {
     JourneyWithErrors,
     PeriodTypeAttribute,
     PeriodTypeAttributeWithErrors,
+    SalesOfferPackage,
+    ProductWithSalesOfferPackages,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -86,7 +88,11 @@ type SessionAttributeTypes = {
     [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiryWithErrors | ProductData;
     [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData | ProductInfoWithErrors;
     [PRICE_ENTRY_ATTRIBUTE]: FaresInformation;
-    [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
+    [SALES_OFFER_PACKAGES_ATTRIBUTE]:
+        | SelectSalesOfferPackageWithError
+        | SalesOfferPackage[]
+        | ProductWithSalesOfferPackages[]
+        | undefined;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
