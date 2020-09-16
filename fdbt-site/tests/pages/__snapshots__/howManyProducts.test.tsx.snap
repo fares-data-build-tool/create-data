@@ -17,41 +17,36 @@ exports[`pages howManyProducts should render correctly 1`] = `
     <div
       className="govuk-form-group"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={Array []}
-        >
-          <input
-            aria-describedby=""
-            className="govuk-input govuk-input--width-2"
-            defaultValue=""
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={Array []}
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue=""
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -96,49 +91,44 @@ exports[`pages howManyProducts should render correctly when a user is redirected
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Enter a whole number between 1 and 10",
-                "id": "how-many-products-error",
-                "userInput": "0",
-              },
-            ]
-          }
-        >
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2"
-            defaultValue="0"
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "0",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="0"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -183,49 +173,44 @@ exports[`pages howManyProducts should render correctly when a user is redirected
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Enter a whole number between 1 and 10",
-                "id": "how-many-products-error",
-                "userInput": "11",
-              },
-            ]
-          }
-        >
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2"
-            defaultValue="11"
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "11",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="11"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -270,49 +255,44 @@ exports[`pages howManyProducts should render correctly when a user is redirected
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Enter a whole number between 1 and 10",
-                "id": "how-many-products-error",
-                "userInput": "99",
-              },
-            ]
-          }
-        >
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2"
-            defaultValue="99"
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "99",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="99"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -357,49 +337,44 @@ exports[`pages howManyProducts should render correctly when a user is redirected
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Enter a whole number between 1 and 10",
-                "id": "how-many-products-error",
-                "userInput": "4.65",
-              },
-            ]
-          }
-        >
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2"
-            defaultValue="4.65"
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "4.65",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="4.65"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -444,49 +419,44 @@ exports[`pages howManyProducts should render correctly when a user is redirected
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Enter a whole number between 1 and 10",
-                "id": "how-many-products-error",
-                "userInput": "some strange thing a user would type",
-              },
-            ]
-          }
-        >
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2"
-            defaultValue="some strange thing a user would type"
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "some strange thing a user would type",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="some strange thing a user would type"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -531,49 +501,44 @@ exports[`pages howManyProducts should render correctly when a user is redirected
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Enter a whole number between 1 and 10",
-                "id": "how-many-products-error",
-                "userInput": "",
-              },
-            ]
-          }
-        >
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2"
-            defaultValue=""
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue=""
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -618,49 +583,44 @@ exports[`pages howManyProducts should render correctly when a user is redirected
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <fieldset
-        aria-describedby="page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="number-of-products"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="page-heading"
-          >
-            How many period tickets do you have for the selected services?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="number-of-products"
-        >
-          Enter the number of period tickets below. Up to a maximum of 10 at once.
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-products-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Enter a whole number between 1 and 10",
-                "id": "how-many-products-error",
-                "userInput": "       ",
-              },
-            ]
-          }
-        >
-          <input
-            aria-describedby="numberOfProducts-error"
-            className="govuk-input govuk-input--width-2"
-            defaultValue="       "
-            id="number-of-products"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many period tickets do you have for the selected services?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "       ",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="       "
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"

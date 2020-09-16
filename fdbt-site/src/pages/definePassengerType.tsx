@@ -89,7 +89,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['define-passenger-age-range'], errors),
+        radioError: getErrorsByIds(['age-range-required'], errors),
     };
 
     const proofRequiredFieldset: RadioConditionalInputFieldset = {
@@ -126,7 +126,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                         label: 'Identity Document',
                     },
                 ],
-                inputErrors: getErrorsByIds(['proof-required'], errors),
+                inputErrors: getErrorsByIds(['membership-card'], errors),
             },
             {
                 id: 'proof-not-required',
@@ -135,7 +135,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['define-passenger-proof'], errors),
+        radioError: getErrorsByIds(['proof-required'], errors),
     };
 
     fieldsets.push(ageRangeFieldset);
@@ -228,11 +228,9 @@ const DefinePassengerType = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
-                            Provide passenger type details
-                        </h1>
-                    </legend>
+                    <h1 className="govuk-heading-l" id="define-passenger-type-page-heading">
+                        Provide passenger type details
+                    </h1>
                     {group === false ? (
                         <span className="govuk-hint" id="define-passenger-type-hint">
                             Select if the passenger type requires an age range or proof document

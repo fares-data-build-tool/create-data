@@ -37,7 +37,7 @@ describe('pages', () => {
         errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
     };
 
-    describe('serviceList', () => {
+    describe('selectSalesOfferPackage', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage

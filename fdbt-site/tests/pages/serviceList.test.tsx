@@ -96,7 +96,7 @@ describe('pages', () => {
                 }));
                 expect(result.props.errors.length).toBe(0);
                 expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All');
+                expect(result.props.buttonText).toEqual('Select All Services');
             });
 
             it('should return props containing errors when the user has previously selected no checkboxes', async () => {
@@ -114,7 +114,7 @@ describe('pages', () => {
                 }));
                 expect(result.props.errors).toEqual(mockError);
                 expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All');
+                expect(result.props.buttonText).toEqual('Select All Services');
             });
 
             it('should throw an error if noc invalid', async () => {

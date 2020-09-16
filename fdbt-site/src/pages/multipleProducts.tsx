@@ -45,19 +45,13 @@ const MultipleProducts = ({
         <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="multiple-product-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="multiple-product-page-heading">
-                                Enter your product details
-                            </h1>
-                        </legend>
-                        <span className="govuk-hint" id="service-operator-hint">
-                            {operator} - {numberOfProductsToDisplay} Products - {upperFirst(passengerType)}
-                        </span>
-                    </fieldset>
-                    <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
-                </div>
+                <h1 className="govuk-heading-l" id="multiple-product-page-heading">
+                    Enter your product details
+                </h1>
+                <span className="govuk-hint" id="service-operator-hint">
+                    {operator} - {numberOfProductsToDisplay} Products - {upperFirst(passengerType)}
+                </span>
+                <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2</div>
                 <div className="govuk-grid-row">
                     <ProductRow
                         numberOfProductsToDisplay={numberOfProductsToDisplay}

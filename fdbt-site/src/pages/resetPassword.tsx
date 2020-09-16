@@ -34,7 +34,7 @@ const ResetPassword = ({
                         <>
                             <ErrorSummary errors={errors} />
                             <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                                <div className="govuk-fieldset" aria-describedby="reset-password-page-heading">
+                                <fieldset className="govuk-fieldset" aria-describedby="reset-password-page-heading">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                         <h1 className="govuk-fieldset__heading" id="reset-password-page-heading">
                                             Reset your password
@@ -81,7 +81,7 @@ const ResetPassword = ({
                                             />
                                         </FormElementWrapper>
                                     </div>
-                                </div>
+                                </fieldset>
                             </div>
                             <input
                                 type="submit"

@@ -29,7 +29,7 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
                         </legend>
                         <FormElementWrapper
                             errors={errors}
-                            errorId="period-type-error"
+                            errorId="period-type-geo-zone"
                             errorClass="govuk-radios--errors"
                         >
                             <div className="govuk-radios">

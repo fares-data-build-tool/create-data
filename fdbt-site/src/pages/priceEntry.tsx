@@ -11,8 +11,6 @@ import { isInputCheck } from '../interfaces/typeGuards';
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
 
-const errorId = 'fare-triangle-container';
-
 interface PriceEntryProps {
     stageNamesArray: string[];
     faresInformation?: FaresInformation;
@@ -33,13 +31,10 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
 
 export const createClassName = (
     inputs: FaresInformation | undefined,
-    rowIndex: number,
     rowStage: string,
     columnStage: string,
 ): string => {
-    const className = `govuk-input govuk-input--width-4 fare-triangle-input ${
-        rowIndex % 2 === 0 ? 'fare-triangle-input-white' : 'fare-triangle-input-light-grey'
-    }`;
+    const className = 'govuk-input govuk-input--width-4';
 
     if (!inputs) {
         return className;
@@ -94,48 +89,57 @@ const PriceEntry = ({
                                 Enter the prices for all fare stages in pence
                             </h1>
                         </legend>
-                        <span className="govuk-hint" id="price-entry-hint">
-                            Example: £2.40 would be 240
-                        </span>
-                        {errors.length > 0 ? createErrorSpans(errors) : null}
                     </fieldset>
-                    <div className="fare-triangle-container" id={errorId}>
-                        <div className="fare-triangle-column">
+                    <span className="govuk-hint" id="price-entry-hint">
+                        For example, £2.40 would be 240
+                    </span>
+                    {errors.length > 0 ? createErrorSpans(errors) : null}
+
+                    <div className="fare-triangle-container" role="table">
+                        <div className="fare-triangle" role="rowgroup">
                             {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div
-                                    className="govuk-heading-s fare-triangle-label-left"
-                                    key={stageNamesArray[rowIndex]}
-                                >
-                                    <span>{rowIndex > 0 ? rowStage : null}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="fare-triangle">
-                            {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div id={`row-${rowIndex}`} className="fare-triangle-row" key={rowStage}>
-                                    {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
+                                <div id={`row-${rowIndex}`} className="fare-triangle-row" role="row" key={rowStage}>
+                                    <span className="govuk-heading-s fare-triangle-label-left" role="rowheader">
+                                        <span>{rowIndex > 0 ? rowStage : null}</span>
+                                    </span>
+                                    {stageNamesArray.slice(0, rowIndex).map(columnStage => (
                                         <React.Fragment key={columnStage}>
-                                            <input
-                                                className={createClassName(
-                                                    faresInformation,
-                                                    rowIndex,
-                                                    rowStage,
-                                                    columnStage,
-                                                )}
-                                                id={`cell-${rowIndex}-${columnIndex}`}
-                                                name={`${rowStage}-${columnStage}`}
-                                                type="text"
-                                                defaultValue={getDefaultValue(faresInformation, rowStage, columnStage)}
-                                            />
+                                            <span
+                                                role="cell"
+                                                className={`fare-triangle-input ${
+                                                    rowIndex % 2 === 0
+                                                        ? 'fare-triangle-input-white'
+                                                        : 'fare-triangle-input-light-grey'
+                                                }`}
+                                            >
+                                                <input
+                                                    id={`${rowStage}-${columnStage}`}
+                                                    className={createClassName(faresInformation, rowStage, columnStage)}
+                                                    name={`${rowStage}-${columnStage}`}
+                                                    type="text"
+                                                    aria-describedby="price-entry-hint"
+                                                    defaultValue={getDefaultValue(
+                                                        faresInformation,
+                                                        rowStage,
+                                                        columnStage,
+                                                    )}
+                                                />
+                                            </span>
                                             <label
-                                                htmlFor={`cell-${rowIndex}-${columnIndex}`}
+                                                htmlFor={`${rowStage}-${columnStage}`}
                                                 className="govuk-visually-hidden"
                                             >
-                                                Cell on row {rowIndex} and column {columnIndex + 1}
+                                                Input price from {columnStage} to {rowStage} in pence
                                             </label>
                                         </React.Fragment>
                                     ))}
-                                    <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
+                                    <div
+                                        role="columnheader"
+                                        aria-sort="none"
+                                        className="govuk-heading-s fare-triangle-label-right"
+                                    >
+                                        {rowStage}
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -164,7 +168,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
 
     if (priceEntryInfo) {
         const errors: ErrorInfo[] = priceEntryInfo.errorInformation.map(error => {
-            return { errorMessage: error.input, id: errorId };
+            return { errorMessage: error.input, id: priceEntryInfo.errorInformation[0].locator };
         });
         const filteredErrors = filterErrors(errors);
         updateSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE, undefined);

@@ -11,7 +11,7 @@ import { PeriodExpiryWithErrors } from './api/periodValidity';
 const title = 'Period Validity - Fares Data Build Tool';
 const description = 'Period Validity selection page of the Fares Data Build Tool';
 
-const errorId = 'period-validity-error';
+const errorId = 'period-end-calendar';
 
 type PeriodValidityProps = {
     errors: ErrorInfo[];

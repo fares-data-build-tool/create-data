@@ -11,7 +11,7 @@ import { OPERATOR_COOKIE } from '../constants';
 
 const title = 'Multiple Operators - Fares Data Build Tool';
 const description = 'Multiple Operators page of the Fares Data Build Tool';
-const errorId = 'operator-error';
+const errorId = 'operators';
 
 type MultipleOperatorsProps = {
     errors?: ErrorInfo[];
@@ -28,35 +28,30 @@ const MultipleOperators = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="multiple-operators-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="multiple-operators-page-heading">
-                                Choose an operator name and National Operator Code
-                            </h1>
-                        </legend>
-                        <label className="govuk-visually-hidden" htmlFor="operators">
-                            Operator and NOC code list
-                        </label>
-                        <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-select--error">
-                            <select className="govuk-select" id="operators" name="operator" defaultValue="">
-                                <option value="" disabled>
-                                    Select One
+                    <label htmlFor="operators">
+                        <h1 className="govuk-heading-l" id="multiple-operators-page-heading">
+                            Choose an operator name and National Operator Code
+                        </h1>
+                    </label>
+                    <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-select--error">
+                        <select className="govuk-select" id="operators" name="operator" defaultValue="">
+                            <option value="" disabled>
+                                Select One
+                            </option>
+                            {operatorsAndNocs.map((operatorAndNoc: OperatorNameType) => (
+                                <option
+                                    key="operator"
+                                    value={`${operatorAndNoc.operatorPublicName}|${operatorAndNoc.nocCode}`}
+                                    className="service-option"
+                                >
+                                    {operatorAndNoc.operatorPublicName} - {operatorAndNoc.nocCode}
                                 </option>
-                                {operatorsAndNocs.map((operatorAndNoc: OperatorNameType) => (
-                                    <option
-                                        key="operator"
-                                        value={`${operatorAndNoc.operatorPublicName}|${operatorAndNoc.nocCode}`}
-                                        className="service-option"
-                                    >
-                                        {operatorAndNoc.operatorPublicName} - {operatorAndNoc.nocCode}
-                                    </option>
-                                ))}
-                            </select>
-                        </FormElementWrapper>
-                        <span className="govuk-hint hint-text" id="traveline-hint">
-                            This data is taken from the NOC Dataset
-                        </span>
-                    </fieldset>
+                            ))}
+                        </select>
+                    </FormElementWrapper>
+                    <span className="govuk-hint hint-text" id="traveline-hint">
+                        This data is taken from the NOC Dataset
+                    </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

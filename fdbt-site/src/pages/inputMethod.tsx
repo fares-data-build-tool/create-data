@@ -11,7 +11,7 @@ import { inputMethodErrorsExist } from '../interfaces/typeGuards';
 const title = 'Input Method - Fares Data Build Tool';
 const description = 'Input Method selection page of the Fares Data Build Tool';
 
-const errorId = 'input-method-error';
+const errorId = 'csv-upload';
 
 type InputMethodProps = {
     errors: ErrorInfo[];

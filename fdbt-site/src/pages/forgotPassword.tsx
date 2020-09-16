@@ -25,32 +25,25 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
                     <>
                         <ErrorSummary errors={errors} />
                         <div className="govuk-form-group">
-                            <div className="govuk-fieldset" aria-describedby="forgot-password-heading">
-                                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                    <h1 className="govuk-fieldset__heading" id="forgot-password-heading">
-                                        Forgot your Password?
-                                    </h1>
-                                </legend>
-                                <p className="govuk-hint hint-text" id="hint-text">
-                                    Enter your email address to reset your password
-                                </p>
-                                <label className="govuk-label govuk-visually-hidden" htmlFor="email">
-                                    Enter email address
-                                </label>
-                                <div className="govuk-form-group">
-                                    <FormElementWrapper errors={errors} errorId={id} errorClass="govuk-input--error">
-                                        <input
-                                            className="govuk-input"
-                                            id="email"
-                                            name="email"
-                                            type="text"
-                                            aria-describedby="hint-text"
-                                            autoComplete="email"
-                                            spellCheck="false"
-                                            defaultValue={email}
-                                        />
-                                    </FormElementWrapper>
-                                </div>
+                            <h1 className="govuk-heading-l" id="forgot-password-heading">
+                                Forgot your Password?
+                            </h1>
+                            <p className="govuk-hint hint-text">Enter your email address to reset your password</p>
+                            <label className="govuk-label" htmlFor="email">
+                                Email address
+                            </label>
+                            <div className="govuk-form-group">
+                                <FormElementWrapper errors={errors} errorId={id} errorClass="govuk-input--error">
+                                    <input
+                                        className="govuk-input"
+                                        id="email"
+                                        name="email"
+                                        type="text"
+                                        autoComplete="email"
+                                        spellCheck="false"
+                                        defaultValue={email}
+                                    />
+                                </FormElementWrapper>
                             </div>
                         </div>
                         <input
@@ -65,7 +58,7 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
             </div>
             <div className="govuk-grid-column-one-third">
                 <p>
-                    <h1 className="govuk-heading-s">Don&#39;t have an account?</h1>
+                    <h2 className="govuk-heading-s">Don&#39;t have an account?</h2>
                     <a href="/register" className="govuk-link">
                         Request Access
                     </a>

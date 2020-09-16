@@ -41,7 +41,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         const errors: ErrorInfo[] = [
-            { id: 'passenger-type-error', errorMessage: 'Choose a passenger type from the options' },
+            {
+                id: `passenger-type-${PASSENGER_TYPES_WITH_GROUP[0].passengerTypeValue}`,
+                errorMessage: 'Choose a passenger type from the options',
+            },
         ];
 
         updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {

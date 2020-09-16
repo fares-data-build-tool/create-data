@@ -26,11 +26,11 @@ describe('productDetails', () => {
             errors: [
                 {
                     errorMessage: 'Product name cannot have less than 2 characters',
-                    id: 'product-name-error',
+                    id: 'product-details-name',
                 },
                 {
                     errorMessage: 'This field cannot be empty',
-                    id: 'product-price-error',
+                    id: 'product-details-price',
                 },
             ],
         };

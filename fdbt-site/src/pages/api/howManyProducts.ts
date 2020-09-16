@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
@@ -18,7 +18,7 @@ export const getErrors = (inputAsNumber: number): ErrorInfo[] => {
         Number.isNaN(inputAsNumber) || !Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1
             ? 'Enter a whole number between 1 and 10'
             : '';
-    return errorMessage !== '' ? [{ id: 'how-many-products-error', errorMessage }] : [];
+    return errorMessage !== '' ? [{ id: 'number-of-products', errorMessage }] : [];
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -41,6 +41,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, { numberOfProductsInput });
 
         if (numberOfProductsInput === '1') {
+            updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, undefined);
             redirectTo(res, '/productDetails');
         } else {
             redirectTo(res, '/multipleProducts');

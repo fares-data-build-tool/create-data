@@ -30,7 +30,7 @@ export const setSession = (req: NextApiRequestWithSession, res: NextApiResponse,
         const errorInfo: ErrorInfo[] = [
             {
                 errorMessage: error,
-                id: 'validity-error',
+                id: 'validity',
             },
         ];
         updateSessionAttribute(req, DAYS_VALID_ATTRIBUTE, { daysValid, errors: errorInfo });

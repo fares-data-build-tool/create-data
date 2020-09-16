@@ -19,7 +19,7 @@ interface FormGroupWrapperProps {
 const addErrorClasses = (child: ReactElement, errorClass: string, errorId: string): ReactElement =>
     React.cloneElement(child, {
         className: child.props.className ? `${child.props.className} ${errorClass}` : errorClass,
-        'aria-describedby': errorId,
+        'aria-describedby': `${errorId}-error`,
     });
 
 export const FormGroupWrapper = ({ errors, errorId, children }: FormGroupWrapperProps): ReactElement => {
@@ -41,7 +41,8 @@ const FormElementWrapper = ({
     return (
         <div className={addFormGroupError && errorForElement ? 'govuk-form-group--error' : ''}>
             {errorForElement && !hideText && (
-                <span id={errorId} className="govuk-error-message">
+                <span id={`${errorId}-error`} className="govuk-error-message">
+                    <span className="govuk-visually-hidden">Error: </span>
                     {errorForElement.errorMessage}
                 </span>
             )}

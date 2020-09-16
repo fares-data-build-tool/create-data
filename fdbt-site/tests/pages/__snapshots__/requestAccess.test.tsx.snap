@@ -43,11 +43,11 @@ exports[`pages requestAccess should render correctly 1`] = `
       className="govuk-grid-column-one-third"
     >
       <div>
-        <h1
+        <h2
           className="govuk-heading-s"
         >
           Already have an account?
-        </h1>
+        </h2>
         <a
           className="govuk-link"
           href="/login"

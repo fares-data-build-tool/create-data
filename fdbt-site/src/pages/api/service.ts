@@ -22,7 +22,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { service } = req.body;
 
         if (!service) {
-            const errors: ErrorInfo[] = [{ id: 'service-error', errorMessage: 'Choose a service from the options' }];
+            const errors: ErrorInfo[] = [{ id: 'service', errorMessage: 'Choose a service from the options' }];
 
             updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
             redirectTo(res, '/service');

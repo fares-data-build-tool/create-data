@@ -58,7 +58,7 @@ exports[`describeSalesOfferPackage should be able to handle being passed undefin
                 errors={Array []}
               >
                 <input
-                  aria-describedby=""
+                  aria-describedby="describe-sop-hint"
                   className="govuk-input"
                   defaultValue=""
                   id="sop-name"
@@ -82,7 +82,7 @@ exports[`describeSalesOfferPackage should be able to handle being passed undefin
                 errors={Array []}
               >
                 <textarea
-                  aria-describedby=""
+                  aria-describedby="describe-sop-hint"
                   className="govuk-textarea"
                   id="sop-description"
                   name="salesOfferPackageDescription"
@@ -188,7 +188,7 @@ exports[`describeSalesOfferPackage should render the page with errors when error
                 }
               >
                 <input
-                  aria-describedby=""
+                  aria-describedby="describe-sop-hint"
                   className="govuk-input"
                   defaultValue=""
                   id="sop-name"
@@ -219,7 +219,7 @@ exports[`describeSalesOfferPackage should render the page with errors when error
                 }
               >
                 <textarea
-                  aria-describedby=""
+                  aria-describedby="describe-sop-hint"
                   className="govuk-textarea"
                   id="sop-description"
                   name="salesOfferPackageDescription"
@@ -304,7 +304,7 @@ exports[`describeSalesOfferPackage should render the page with no errors when no
                 errors={Array []}
               >
                 <input
-                  aria-describedby=""
+                  aria-describedby="describe-sop-hint"
                   className="govuk-input"
                   defaultValue=""
                   id="sop-name"
@@ -328,7 +328,7 @@ exports[`describeSalesOfferPackage should render the page with no errors when no
                 errors={Array []}
               >
                 <textarea
-                  aria-describedby=""
+                  aria-describedby="describe-sop-hint"
                   className="govuk-textarea"
                   id="sop-description"
                   name="salesOfferPackageDescription"

@@ -11,7 +11,7 @@ import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '
 const title = 'Time Restrictions - Fares Data Build Tool';
 const description = 'Time Restrictions selection page of the Fares Data Build Tool';
 
-export const timeRestrictionsErrorId = 'time-restrictions-error';
+export const timeRestrictionsErrorId = 'time-restrictions-yes';
 
 export interface TimeRestrictionsProps {
     errors: ErrorInfo[];
@@ -33,11 +33,11 @@ const TimeRestrictions = ({ errors, csrfToken }: TimeRestrictionsProps & CustomA
                             <h1 className="govuk-fieldset__heading" id="time-restrictions-page-heading">
                                 Are there time restrictions on your ticket(s)?
                             </h1>
-                            <p className="govuk-hint" id="time-restrictions-page-example">
-                                We need to know if your ticket(s) will have any time restrictions, for example select
-                                yes if your ticket(s) can only be used on a certain day or during a certain time period
-                            </p>
                         </legend>
+                        <div className="govuk-hint" id="time-restrictions-page-example">
+                            We need to know if your ticket(s) will have any time restrictions, for example select yes if
+                            your ticket(s) can only be used on a certain day or during a certain time period
+                        </div>
                         <FormElementWrapper
                             errors={errors}
                             errorId={timeRestrictionsErrorId}

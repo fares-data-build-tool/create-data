@@ -15,7 +15,7 @@ import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
 
-const errorId = 'fare-type-error';
+const errorId = 'fare-type-single';
 
 type FareTypeProps = {
     operator: string;

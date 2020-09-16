@@ -70,7 +70,7 @@ const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps & CustomAppProps):
                                                         ? sopInfo.name
                                                         : ''
                                                 }
-                                                aria-describedby={sopNameError ? `${sopNameError.id}-error` : ''}
+                                                aria-describedby="describe-sop-hint"
                                             />
                                         </FormElementWrapper>
                                     </div>
@@ -88,9 +88,7 @@ const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps & CustomAppProps):
                                                 id="sop-description"
                                                 name="salesOfferPackageDescription"
                                                 rows={4}
-                                                aria-describedby={
-                                                    sopDescriptionError ? `${sopDescriptionError.id}-error` : ''
-                                                }
+                                                aria-describedby="describe-sop-hint"
                                             />
                                         </FormElementWrapper>
                                     </div>

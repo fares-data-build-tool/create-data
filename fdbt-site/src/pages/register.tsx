@@ -38,7 +38,7 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                         <>
                             <ErrorSummary errors={errors} />
                             <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                                <div className="govuk-fieldset" aria-describedby="register-page-heading">
+                                <fieldset className="govuk-fieldset" aria-describedby="register-page-heading">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                         <h1 className="govuk-fieldset__heading" id="register-page-heading">
                                             Create an account
@@ -160,7 +160,7 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                             </label>
                                         </div>
                                     </div>
-                                </div>
+                                </fieldset>
                             </div>
                             <input
                                 type="submit"
@@ -174,8 +174,8 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                     </CsrfForm>
                 </div>
                 <div className="govuk-grid-column-one-thirds">
-                    <h1 className="govuk-heading-m">Already have an account?</h1>
-                    <a href="/signin" className="govuk-link">
+                    <h2 className="govuk-heading-m">Already have an account?</h2>
+                    <a href="/login" className="govuk-link">
                         Sign in
                     </a>
                 </div>

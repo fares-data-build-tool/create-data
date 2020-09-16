@@ -122,15 +122,15 @@ export const formatRequestBody = (req: NextApiRequestWithSession): TimeRestricti
 export const getErrorIdFromValidityError = (errorPath: string): string => {
     switch (errorPath) {
         case 'timeRestriction':
-            return 'define-time-restrictions';
+            return 'time-restriction-required';
         case 'validDaysSelected':
-            return 'define-valid-days';
+            return 'valid-days-required';
         case 'startTime':
             return 'start-time';
         case 'endTime':
             return 'end-time';
         case 'validDays':
-            return 'valid-days-required';
+            return 'monday';
         default:
             throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
@@ -165,7 +165,6 @@ export const runValidationSchema = async (
         errors = validityErrors.inner.map(error => ({
             id: getErrorIdFromValidityError(error.path),
             errorMessage: error.message,
-            userInput: error.value ? String(error.value) : undefined,
         }));
     }
     const errorCollection = collectUniqueErrors(initialErrors, errors);
