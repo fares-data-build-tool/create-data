@@ -102,22 +102,22 @@ wait-for-mysql:
 	./scripts/wait_for_mysql.sh
 
 create-local-buckets:
-	awslocal s3 mb s3://fdbt-raw-user-data-dev
-	awslocal s3 mb s3://fdbt-user-data-dev
-	awslocal s3 mb s3://fdbt-matching-data-dev
-	awslocal s3 mb s3://fdbt-netex-data-dev
-	awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev
+	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-raw-user-data-dev
+	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-user-data-dev
+	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-matching-data-dev
+	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-netex-data-dev
+	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev
 
 create-local-dynamodb-table:
-	awslocal dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name sessions --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST
-	awslocal dynamodb update-time-to-live --table-name sessions --time-to-live-specification "Enabled=true, AttributeName=expires"
+	EDGE_PORT=4569 awslocal dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name sessions --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST
+	EDGE_PORT=4569 awslocal dynamodb update-time-to-live --table-name sessions --time-to-live-specification "Enabled=true, AttributeName=expires"
 
 create-sns-topics:
-	awslocal sns create-topic --name AlertsTopic
+	EDGE_PORT=4575 awslocal sns create-topic --name AlertsTopic
 
 add-data-to-buckets:
-	awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/BLAC
-	awslocal s3 sync ./data/netexData/ s3://fdbt-netex-data-dev/BLAC
+	EDGE_PORT=4572 awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/BLAC
+	EDGE_PORT=4572 awslocal s3 sync ./data/netexData/ s3://fdbt-netex-data-dev/BLAC
 
 print-help:
 	@echo "\n\n**************************\n"
