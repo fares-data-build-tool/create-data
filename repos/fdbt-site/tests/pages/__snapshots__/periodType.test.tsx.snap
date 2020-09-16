@@ -33,7 +33,7 @@ exports[`pages periodtype should render correctly 1`] = `
         </legend>
         <FormElementWrapper
           errorClass="govuk-radios--errors"
-          errorId="period-type-error"
+          errorId="period-type-geo-zone"
           errors={Array []}
         >
           <div
@@ -153,7 +153,7 @@ exports[`pages periodtype should render error messaging when errors are passed 1
         </legend>
         <FormElementWrapper
           errorClass="govuk-radios--errors"
-          errorId="period-type-error"
+          errorId="period-type-geo-zone"
           errors={
             Array [
               Object {

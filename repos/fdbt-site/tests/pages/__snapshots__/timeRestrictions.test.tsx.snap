@@ -44,16 +44,16 @@ exports[`pages timeRestrictions should render correctly with errors 1`] = `
           >
             Are there time restrictions on your ticket(s)?
           </h1>
-          <p
-            className="govuk-hint"
-            id="time-restrictions-page-example"
-          >
-            We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
-          </p>
         </legend>
+        <div
+          className="govuk-hint"
+          id="time-restrictions-page-example"
+        >
+          We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+        </div>
         <FormElementWrapper
           errorClass="govuk-radios--errors"
-          errorId="time-restrictions-error"
+          errorId="time-restrictions-yes"
           errors={
             Array [
               Object {
@@ -144,16 +144,16 @@ exports[`pages timeRestrictions should render correctly with no errors 1`] = `
           >
             Are there time restrictions on your ticket(s)?
           </h1>
-          <p
-            className="govuk-hint"
-            id="time-restrictions-page-example"
-          >
-            We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
-          </p>
         </legend>
+        <div
+          className="govuk-hint"
+          id="time-restrictions-page-example"
+        >
+          We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+        </div>
         <FormElementWrapper
           errorClass="govuk-radios--errors"
-          errorId="time-restrictions-error"
+          errorId="time-restrictions-yes"
           errors={Array []}
         >
           <div

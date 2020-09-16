@@ -24,7 +24,7 @@ export const isInvalidFareStageNumber = (fareStageInput: string): FareStagesAttr
         inputAsNumber > 20 ||
         inputAsNumber < 2
     ) {
-        errors.push({ errorMessage: 'Enter a whole number between 2 and 20', id: 'how-many-stages-error' });
+        errors.push({ errorMessage: 'Enter a whole number between 2 and 20', id: 'fare-stages' });
     }
 
     return { errors };

@@ -39,7 +39,7 @@ exports[`pages periodValidity should render correctly 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="period-validity-error"
+          errorId="period-end-calendar"
           errors={Array []}
         >
           <div
@@ -158,7 +158,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="period-validity-error"
+          errorId="period-end-calendar"
           errors={
             Array [
               Object {

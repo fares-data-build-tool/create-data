@@ -39,14 +39,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
     return {
         props: {
             csvUploadApiRoute: '/api/csvUpload',
+            csvUploadTitle: 'Upload fares triangle as CSV',
             csvUploadHintText:
                 'Upload a fares triangle as a CSV file below. Refer to the documents section to download a help file and a fares triangle template.',
-            guidanceDocDisplayName: 'Download Help File',
+            guidanceDocDisplayName: `Download Help File - File Type PDF - File Size 1.3MB`,
             guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
-            guidanceDocSize: '600KB',
-            csvTemplateDisplayName: 'Download fares triangle CSV template',
+            guidanceDocSize: '1.3MB',
+            csvTemplateDisplayName: 'Download fares triangle CSV template - File Type CSV - File Size 353B',
             csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
-            csvTemplateSize: '400B',
+            csvTemplateSize: '353B',
             errors,
             detailSummary: "My CSV won't upload",
         },

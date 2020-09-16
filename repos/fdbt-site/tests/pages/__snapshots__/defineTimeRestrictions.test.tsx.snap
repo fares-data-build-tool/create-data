@@ -15,16 +15,12 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
       errors={Array []}
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-time-restrictions-page-heading"
-        >
-          Tell us more about the time restrictions
-        </h1>
-      </legend>
+        Tell us more about the time restrictions
+      </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
@@ -166,18 +162,15 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
     Array [
       Object {
         "errorMessage": "Choose one of the options below",
-        "id": "define-valid-days",
-        "userInput": undefined,
+        "id": "valid-days-required",
       },
       Object {
         "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
         "id": "start-time",
-        "userInput": undefined,
       },
       Object {
         "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
         "id": "end-time",
-        "userInput": undefined,
       },
     ]
   }
@@ -193,33 +186,26 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
         Array [
           Object {
             "errorMessage": "Choose one of the options below",
-            "id": "define-valid-days",
-            "userInput": undefined,
+            "id": "valid-days-required",
           },
           Object {
             "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
             "id": "start-time",
-            "userInput": undefined,
           },
           Object {
             "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
             "id": "end-time",
-            "userInput": undefined,
           },
         ]
       }
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-time-restrictions-page-heading"
-        >
-          Tell us more about the time restrictions
-        </h1>
-      </legend>
+        Tell us more about the time restrictions
+      </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
@@ -292,7 +278,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
             "radioError": Array [
               Object {
                 "errorMessage": "Choose one of the options below",
-                "id": "define-valid-days",
+                "id": "valid-days-required",
               },
             ],
             "radios": Array [
@@ -376,17 +362,14 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
       Object {
         "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
         "id": "start-time",
-        "userInput": undefined,
       },
       Object {
         "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
         "id": "end-time",
-        "userInput": undefined,
       },
       Object {
         "errorMessage": "Select at least one day",
-        "id": "valid-days-required",
-        "userInput": undefined,
+        "id": "monday",
       },
     ]
   }
@@ -403,32 +386,25 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
           Object {
             "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
             "id": "start-time",
-            "userInput": undefined,
           },
           Object {
             "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
             "id": "end-time",
-            "userInput": undefined,
           },
           Object {
             "errorMessage": "Select at least one day",
-            "id": "valid-days-required",
-            "userInput": undefined,
+            "id": "monday",
           },
         ]
       }
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-time-restrictions-page-heading"
-        >
-          Tell us more about the time restrictions
-        </h1>
-      </legend>
+        Tell us more about the time restrictions
+      </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
@@ -510,7 +486,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
                 "inputErrors": Array [
                   Object {
                     "errorMessage": "Select at least one day",
-                    "id": "valid-days-required",
+                    "id": "monday",
                   },
                 ],
                 "inputType": "checkbox",
@@ -584,11 +560,11 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
     Array [
       Object {
         "errorMessage": "Choose one of the options below",
-        "id": "define-time-restrictions",
+        "id": "time-restriction-required",
       },
       Object {
         "errorMessage": "Choose one of the options below",
-        "id": "define-valid-days",
+        "id": "valid-days-required",
       },
     ]
   }
@@ -604,26 +580,22 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
         Array [
           Object {
             "errorMessage": "Choose one of the options below",
-            "id": "define-time-restrictions",
+            "id": "time-restriction-required",
           },
           Object {
             "errorMessage": "Choose one of the options below",
-            "id": "define-valid-days",
+            "id": "valid-days-required",
           },
         ]
       }
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-time-restrictions-page-heading"
-        >
-          Tell us more about the time restrictions
-        </h1>
-      </legend>
+        Tell us more about the time restrictions
+      </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
@@ -642,7 +614,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
             "radioError": Array [
               Object {
                 "errorMessage": "Choose one of the options below",
-                "id": "define-time-restrictions",
+                "id": "time-restriction-required",
               },
             ],
             "radios": Array [
@@ -692,7 +664,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
             "radioError": Array [
               Object {
                 "errorMessage": "Choose one of the options below",
-                "id": "define-valid-days",
+                "id": "valid-days-required",
               },
             ],
             "radios": Array [

@@ -19,7 +19,7 @@ describe('howManyProducts', () => {
         it('should return errors when the user enters no data', () => {
             const mockUserInputAsNumber = Number('');
             const mockError: ErrorInfo[] = [
-                { id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10' },
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10' },
             ];
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual(mockError);
@@ -28,7 +28,7 @@ describe('howManyProducts', () => {
         it('should return errors when the user enters incorrect data', () => {
             const mockUserInputAsNumber = Number('25');
             const mockError: ErrorInfo[] = [
-                { id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10' },
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10' },
             ];
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual(mockError);
@@ -93,7 +93,7 @@ describe('howManyProducts', () => {
         });
         const attributeValue: NumberOfProductsAttributeWithErrors = {
             errors: [
-                { id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10', userInput: '' },
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10', userInput: '' },
             ],
         };
         howManyProducts(req, res);

@@ -21,30 +21,24 @@ const HowManyProducts = ({ errors, csrfToken }: HowManyProductProps & CustomAppP
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="page-heading">
-                                How many period tickets do you have for the selected services?
-                            </h1>
-                        </legend>
-                        <label className="govuk-hint" htmlFor="number-of-products">
-                            Enter the number of period tickets below. Up to a maximum of 10 at once.
-                        </label>
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId="how-many-products-error"
-                            errorClass="govuk-input--error"
-                        >
-                            <input
-                                className="govuk-input govuk-input--width-2"
-                                id="number-of-products"
-                                name="numberOfProductsInput"
-                                type="text"
-                                defaultValue={errors.length > 0 ? errors[0].userInput : ''}
-                                aria-describedby={errors.length > 0 ? `numberOfProducts-error` : ''}
-                            />
-                        </FormElementWrapper>
-                    </fieldset>
+                    <label htmlFor="number-of-products">
+                        <h1 className="govuk-heading-l" id="page-heading">
+                            How many period tickets do you have for the selected services?
+                        </h1>
+                    </label>
+                    <div className="govuk-hint" id="number-of-products-hint">
+                        Enter the number of period tickets below. Up to a maximum of 10 at once.
+                    </div>
+                    <FormElementWrapper errors={errors} errorId="number-of-products" errorClass="govuk-input--error">
+                        <input
+                            className="govuk-input govuk-input--width-2"
+                            id="number-of-products"
+                            name="numberOfProductsInput"
+                            aria-describedby="number-of-products-hint"
+                            type="text"
+                            defaultValue={errors.length > 0 ? errors[0].userInput : ''}
+                        />
+                    </FormElementWrapper>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

@@ -53,7 +53,7 @@ exports[`pages groupPassengerTypes should render correctly with GroupPassengerTy
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
-          errorId=""
+          errorId="passenger-type-0"
           errors={
             Array [
               Object {
@@ -248,7 +248,7 @@ exports[`pages groupPassengerTypes should render correctly with group info and n
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
-          errorId=""
+          errorId="passenger-type-0"
           errors={Array []}
         >
           <div
@@ -436,7 +436,7 @@ exports[`pages groupPassengerTypes should render correctly with no GroupPassenge
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
-          errorId=""
+          errorId="passenger-type-0"
           errors={Array []}
         >
           <div

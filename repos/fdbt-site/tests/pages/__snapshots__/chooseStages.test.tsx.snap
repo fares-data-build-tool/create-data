@@ -16,42 +16,36 @@ exports[`pages chooseStages should render correctly 1`] = `
     <div
       className="govuk-form-group"
     >
-      <fieldset
-        aria-describedby="choose-stages-page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="fare-stages"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="choose-stages-page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="choose-stages-page-heading"
-          >
-            How many fare stages does the service have?
-          </h1>
-        </legend>
-        <label
-          className="govuk-hint"
-          htmlFor="fare-stages"
-          id="fare-stage-hint"
-        >
-          Enter the number of fare stages between 2 - 20 (for example 3)
-        </label>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="how-many-stages-error"
-          errors={Array []}
-        >
-          <input
-            aria-describedby="fare-stage-hint"
-            className="govuk-input govuk-input--width-2"
-            defaultValue=""
-            id="fare-stages"
-            name="fareStageInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many fare stages does the service have?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="fare-stage-hint"
+      >
+        Enter the number of fare stages between 2 - 20 (for example 3)
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="fare-stages"
+        errors={Array []}
+      >
+        <input
+          aria-describedby="fare-stage-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue=""
+          id="fare-stages"
+          name="fareStageInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"

@@ -28,34 +28,33 @@ const GroupSize = ({ groupTicketInfo, csrfToken }: GroupSizeProps & CustomAppPro
                 <>
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="group-size-page-heading">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 className="govuk-fieldset__heading" id="group-size-page-heading">
-                                    How many passengers can use this ticket at one time?
-                                </h1>
-                                <p className="govuk-hint" id="group-size-page-example">
-                                    We need to know the size of the group of passengers that can use this ticket at one
-                                    time. Example: Up to 5 passengers at a time.
-                                </p>
-                                <p className="govuk-hint" id="group-size-page-hint">
-                                    You will be able to specify the exact number of passengers for each passenger type
-                                    in the next step.
-                                </p>
-                            </legend>
-                            <FormElementWrapper
-                                errors={errors}
-                                errorId={errors.length > 0 ? errors[0].id : ''}
-                                errorClass="govuk-input--error"
-                            >
-                                <input
-                                    className="govuk-input govuk-input--width-2"
-                                    id="max-group-size"
-                                    name="maxGroupSize"
-                                    type="text"
-                                    defaultValue={groupTicketInfo.maxGroupSize}
-                                />
-                            </FormElementWrapper>
-                        </fieldset>
+                        <label htmlFor="max-group-size">
+                            <h1 className="govuk-heading-l" id="group-size-page-heading">
+                                How many passengers can use this ticket at one time?
+                            </h1>
+                        </label>
+
+                        <p className="govuk-hint" id="group-size-page-example">
+                            We need to know the size of the group of passengers that can use this ticket at one time.
+                            Example: Up to 5 passengers at a time.
+                        </p>
+                        <p className="govuk-hint" id="group-size-page-hint">
+                            You will be able to specify the exact number of passengers for each passenger type in the
+                            next step.
+                        </p>
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId={errors.length > 0 ? errors[0].id : ''}
+                            errorClass="govuk-input--error"
+                        >
+                            <input
+                                className="govuk-input govuk-input--width-2"
+                                id="max-group-size"
+                                name="maxGroupSize"
+                                type="text"
+                                defaultValue={groupTicketInfo.maxGroupSize}
+                            />
+                        </FormElementWrapper>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>

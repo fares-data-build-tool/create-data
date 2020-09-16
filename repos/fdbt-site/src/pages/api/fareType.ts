@@ -27,7 +27,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/passengerType');
         } else {
             const errors: ErrorInfo[] = [
-                { id: 'fare-type-error', errorMessage: 'Choose a fare type from the options' },
+                { id: 'fare-type-single', errorMessage: 'Choose a fare type from the options' },
             ];
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 errors,

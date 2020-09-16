@@ -10,7 +10,7 @@ import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isJourney } from '../../interfaces/typeGuards';
 
-const errorId = 'csv-upload-error';
+const errorId = 'csv-upload';
 
 export interface CsvUploadAttributeWithErrors {
     errors: ErrorInfo[];

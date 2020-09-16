@@ -1,5 +1,26 @@
 @import '../../node_modules/govuk-frontend/govuk/all';
 
+main {
+    border: none;
+    outline: none;
+}
+
+.skip {
+    position: absolute;
+    overflow: hidden;
+    top: -1px;
+    width: 1px;
+    height: 1px;
+
+    &:focus {
+        position: relative;
+        top: auto;
+        width: auto;
+        height: auto;
+        overflow: auto;
+    }
+}
+
 .crownPadding {
     padding-left: 5px;
 }
@@ -180,23 +201,17 @@ svg:not(:root) {
     background-image: url('https://assets.publishing.service.gov.uk/static/images/govuk-crest-2x-c6548884b516041752fc4156a50f084ca387b1e37e4f4668cd109058d924b197.png') !important;
 }
 
-.govuk-header__container {
-    display: flex;
-}
-
 .govuk-header__account-link {
-    flex-shrink: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 220px;
     text-align: right;
-    margin-left: -120px;
-    margin-top: 4px;
-}
 
-.govuk-header__link {
-    padding-right: 5px;
-    align-items: center;
-    justify-content: flex-end;
-    text-align: right;
+    a {
+        margin-right: 6px;
+    }
 }
 
 .govuk-header__signout {
@@ -206,6 +221,10 @@ svg:not(:root) {
     border: none;
     color: #ffffff;
     cursor: pointer;
+
+    @media (max-width: 640px) {
+        font-size: 14px;
+    }
 }
 
 .govuk-header__form {

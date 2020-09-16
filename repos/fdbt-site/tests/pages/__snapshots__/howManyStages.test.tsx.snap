@@ -38,7 +38,7 @@ exports[`pages howManyStages should render correctly 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId=""
+          errorId="less-than-20-fare-stages"
           errors={Array []}
         >
           <div
@@ -145,7 +145,7 @@ exports[`pages howManyStages should render errors correctly 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="how-many-stages-error"
+          errorId="less-than-20-fare-stages"
           errors={
             Array [
               Object {

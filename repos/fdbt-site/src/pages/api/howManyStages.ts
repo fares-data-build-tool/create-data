@@ -5,8 +5,6 @@ import { isSessionValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
 
-const errorId = 'how-many-stages-error';
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
@@ -26,7 +24,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             }
         } else {
             updateSessionAttribute(req, NUMBER_OF_STAGES_ATTRIBUTE, {
-                errors: [{ id: errorId, errorMessage: 'Choose an option regarding how many fare stages you have' }],
+                errors: [
+                    {
+                        id: 'less-than-20-fare-stages',
+                        errorMessage: 'Choose an option regarding how many fare stages you have',
+                    },
+                ],
             });
             redirectTo(res, '/howManyStages');
         }

@@ -23,7 +23,7 @@ exports[`pages login should render correctly 1`] = `
         <div
           className="govuk-form-group "
         >
-          <div
+          <fieldset
             aria-describedby="register-page-heading"
             className="govuk-fieldset"
           >
@@ -57,7 +57,6 @@ exports[`pages login should render correctly 1`] = `
                 errors={Array []}
               >
                 <input
-                  aria-describedby="email-hint"
                   autoComplete="email"
                   className="govuk-input"
                   defaultValue=""
@@ -83,7 +82,6 @@ exports[`pages login should render correctly 1`] = `
                 errors={Array []}
               >
                 <input
-                  aria-describedby="password-hint"
                   autoComplete="off"
                   className="govuk-input"
                   id="password"
@@ -93,7 +91,7 @@ exports[`pages login should render correctly 1`] = `
                 />
               </FormElementWrapper>
             </div>
-          </div>
+          </fieldset>
         </div>
         <input
           className="govuk-button"
@@ -108,11 +106,11 @@ exports[`pages login should render correctly 1`] = `
       className="govuk-grid-column-one-third"
     >
       <div>
-        <h1
+        <h2
           className="govuk-heading-s"
         >
           Forgot your Password?
-        </h1>
+        </h2>
         <a
           className="govuk-link"
           href="/forgotPassword"
@@ -122,11 +120,11 @@ exports[`pages login should render correctly 1`] = `
       </div>
       <br />
       <div>
-        <h1
+        <h2
           className="govuk-heading-s"
         >
           Don't have an account?
-        </h1>
+        </h2>
         <a
           className="govuk-link"
           href="/requestAccess"
@@ -176,7 +174,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
         <div
           className="govuk-form-group govuk-form-group--error"
         >
-          <div
+          <fieldset
             aria-describedby="register-page-heading"
             className="govuk-fieldset"
           >
@@ -217,7 +215,6 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
                 }
               >
                 <input
-                  aria-describedby="email-hint"
                   autoComplete="email"
                   className="govuk-input"
                   defaultValue="test@example.com"
@@ -250,7 +247,6 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
                 }
               >
                 <input
-                  aria-describedby="password-hint"
                   autoComplete="off"
                   className="govuk-input"
                   id="password"
@@ -260,7 +256,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
                 />
               </FormElementWrapper>
             </div>
-          </div>
+          </fieldset>
         </div>
         <input
           className="govuk-button"
@@ -275,11 +271,11 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
       className="govuk-grid-column-one-third"
     >
       <div>
-        <h1
+        <h2
           className="govuk-heading-s"
         >
           Forgot your Password?
-        </h1>
+        </h2>
         <a
           className="govuk-link"
           href="/forgotPassword"
@@ -289,11 +285,11 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
       </div>
       <br />
       <div>
-        <h1
+        <h2
           className="govuk-heading-s"
         >
           Don't have an account?
-        </h1>
+        </h2>
         <a
           className="govuk-link"
           href="/requestAccess"

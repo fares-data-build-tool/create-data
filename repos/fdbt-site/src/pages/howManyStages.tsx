@@ -34,7 +34,7 @@ const HowManyStages = ({ errors, csrfToken }: HowManyStagesProps & CustomAppProp
                         </span>
                         <FormElementWrapper
                             errors={errors}
-                            errorId={errors[0] ? errors[0].id : ''}
+                            errorId="less-than-20-fare-stages"
                             errorClass="govuk-radios--error"
                         >
                             <div className="govuk-radios" id="radio-buttons">

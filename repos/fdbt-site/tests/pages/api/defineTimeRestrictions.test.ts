@@ -85,11 +85,11 @@ describe('defineTimeRestrictions', () => {
 
     describe('getErrorIdFromValidityError', () => {
         it.each([
-            ['define-time-restrictions', 'timeRestriction'],
-            ['define-valid-days', 'validDaysSelected'],
+            ['time-restriction-required', 'timeRestriction'],
+            ['valid-days-required', 'validDaysSelected'],
             ['start-time', 'startTime'],
             ['end-time', 'endTime'],
-            ['valid-days-required', 'validDays'],
+            ['monday', 'validDays'],
         ])('should return the id as %s when the error path is %s', (expectedId, errorPath) => {
             const actualId = getErrorIdFromValidityError(errorPath);
             expect(actualId).toEqual(expectedId);
@@ -106,24 +106,20 @@ describe('defineTimeRestrictions', () => {
                 {
                     id: 'start-time',
                     errorMessage: 'Enter a start or end time in 24 hour format',
-                    userInput: '44',
                 },
                 {
                     id: 'end-time',
                     errorMessage: 'Enter a start or end time in 24 hour format',
-                    userInput: '33',
                 },
             ];
             const currentSchemaErrors = [
                 {
                     id: 'start-time',
                     errorMessage: 'The start time cannot be later than the end time',
-                    userInput: '44',
                 },
                 {
                     id: 'end-time',
                     errorMessage: 'The end time cannot be earlier than the start time',
-                    userInput: '33',
                 },
             ];
             const actualErrors = collectUniqueErrors(initialErrors, currentSchemaErrors);

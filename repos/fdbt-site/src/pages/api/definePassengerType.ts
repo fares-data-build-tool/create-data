@@ -169,15 +169,15 @@ export const formatRequestBody = (req: NextApiRequestWithSession): FilteredReque
 export const getErrorIdFromValidityError = (errorPath: string): string => {
     switch (errorPath) {
         case 'ageRange':
-            return 'define-passenger-age-range';
+            return 'age-range-required';
         case 'proof':
-            return 'define-passenger-proof';
+            return 'proof-required';
         case 'ageRangeMin':
             return 'age-range-min';
         case 'ageRangeMax':
             return 'age-range-max';
         case 'proofDocuments':
-            return 'proof-required';
+            return 'membership-card';
         case 'minNumber':
             return 'min-number-of-passengers';
         case 'maxNumber':
@@ -224,7 +224,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             errors = validityErrors.inner.map(error => ({
                 id: getErrorIdFromValidityError(error.path),
                 errorMessage: error.message,
-                userInput: error.value,
             }));
         }
 

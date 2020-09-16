@@ -32,7 +32,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         } else {
             updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, {
                 errors: [
-                    { errorMessage: 'Choose an option regarding your period ticket type', id: 'period-type-error' },
+                    { errorMessage: 'Choose an option regarding your period ticket type', id: 'period-type-geo-zone' },
                 ],
             });
             redirectTo(res, '/periodType');

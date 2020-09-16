@@ -23,7 +23,7 @@ exports[`pages register should render correctly 1`] = `
         <div
           className="govuk-form-group "
         >
-          <div
+          <fieldset
             aria-describedby="register-page-heading"
             className="govuk-fieldset"
           >
@@ -188,7 +188,7 @@ exports[`pages register should render correctly 1`] = `
                 </label>
               </div>
             </div>
-          </div>
+          </fieldset>
         </div>
         <input
           className="govuk-button"
@@ -207,14 +207,14 @@ exports[`pages register should render correctly 1`] = `
     <div
       className="govuk-grid-column-one-thirds"
     >
-      <h1
+      <h2
         className="govuk-heading-m"
       >
         Already have an account?
-      </h1>
+      </h2>
       <a
         className="govuk-link"
-        href="/signin"
+        href="/login"
       >
         Sign in
       </a>
@@ -260,7 +260,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
         <div
           className="govuk-form-group govuk-form-group--error"
         >
-          <div
+          <fieldset
             aria-describedby="register-page-heading"
             className="govuk-fieldset"
           >
@@ -446,7 +446,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 </label>
               </div>
             </div>
-          </div>
+          </fieldset>
         </div>
         <input
           className="govuk-button"
@@ -465,14 +465,14 @@ exports[`pages register should render error messaging when errors are passed 1`]
     <div
       className="govuk-grid-column-one-thirds"
     >
-      <h1
+      <h2
         className="govuk-heading-m"
       >
         Already have an account?
-      </h1>
+      </h2>
       <a
         className="govuk-link"
-        href="/signin"
+        href="/login"
       >
         Sign in
       </a>
@@ -518,7 +518,7 @@ exports[`pages register should store email if entered correctly but other fields
         <div
           className="govuk-form-group govuk-form-group--error"
         >
-          <div
+          <fieldset
             aria-describedby="register-page-heading"
             className="govuk-fieldset"
           >
@@ -704,7 +704,7 @@ exports[`pages register should store email if entered correctly but other fields
                 </label>
               </div>
             </div>
-          </div>
+          </fieldset>
         </div>
         <input
           className="govuk-button"
@@ -723,14 +723,14 @@ exports[`pages register should store email if entered correctly but other fields
     <div
       className="govuk-grid-column-one-thirds"
     >
-      <h1
+      <h2
         className="govuk-heading-m"
       >
         Already have an account?
-      </h1>
+      </h2>
       <a
         className="govuk-link"
-        href="/signin"
+        href="/login"
       >
         Sign in
       </a>

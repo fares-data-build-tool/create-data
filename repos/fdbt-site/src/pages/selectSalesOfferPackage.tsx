@@ -1,20 +1,24 @@
 import React, { ReactElement } from 'react';
-import isArray from 'lodash/isArray';
-import { isSalesOfferPackageWithErrors } from '../interfaces/typeGuards';
+import { isSalesOfferPackageWithErrors, isFareType } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
-import FormElementWrapper from '../components/FormElementWrapper';
+import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
+import {
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+} from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { Product } from './api/multipleProductValidity';
+import { isProductInfo, isProductData } from './productDetails';
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
-const errorId = 'sales-offer-package-error';
 
 export const defaultSalesOfferPackageOne: SalesOfferPackage = {
     name: 'Onboard (cash)',
@@ -51,7 +55,7 @@ export const defaultSalesOfferPackageFour: SalesOfferPackage = {
 };
 
 export interface SelectSalesOfferPackageProps {
-    selected?: { [key: string]: string };
+    selected?: { [key: string]: string[] };
     productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
     errors: ErrorInfo[];
@@ -60,8 +64,7 @@ export interface SelectSalesOfferPackageProps {
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
     productIndex: number,
-    productName?: string,
-    selected?: { [key: string]: string },
+    selected?: { [key: string]: string[] },
 ): ReactElement[] => {
     return salesOfferPackagesList.map((offer, index) => {
         const { name, description } = offer;
@@ -75,10 +78,8 @@ const generateCheckbox = (
 
         if (selected) {
             Object.entries(selected).forEach(entry => {
-                if (entry[0] === productName) {
-                    const entrySelected = !isArray(entry[1]) ? [entry[1]] : (entry[1] as string[]);
-
-                    entrySelected.forEach(selectedEntry => {
+                if (entry[0] === `product-${productIndex}`) {
+                    entry[1].forEach(selectedEntry => {
                         if (selectedEntry === JSON.stringify(offer)) {
                             isSelectedOffer = true;
                         }
@@ -92,7 +93,7 @@ const generateCheckbox = (
                 <input
                     className="govuk-checkboxes__input"
                     id={`product-${productIndex}-checkbox-${index}`}
-                    name={productName || name}
+                    name={`product-${productIndex}`}
                     type="checkbox"
                     value={JSON.stringify(offer)}
                     defaultChecked={isSelectedOffer}
@@ -111,21 +112,24 @@ const generateCheckbox = (
 const createSalesOffer = (
     salesOfferPackagesList: SalesOfferPackage[],
     productNames: string[],
-    selected?: { [key: string]: string },
-): ReactElement[] => {
-    if (productNames && productNames.length > 0) {
-        return productNames.map((productName, index) => {
-            return (
-                <>
-                    <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">{productName}</p>
-                    {generateCheckbox(salesOfferPackagesList, index, productName, selected)}
-                </>
-            );
-        });
-    }
-
-    return generateCheckbox(salesOfferPackagesList, 0);
-};
+    selected?: { [key: string]: string[] },
+    errors: ErrorInfo[] = [],
+): ReactElement[] =>
+    productNames.map((productName, index) => (
+        <div className="sop-option">
+            <FormGroupWrapper errorId={`product-${index}-checkbox-0`} errors={errors}>
+                <fieldset className="govuk-fieldset">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
+                    <FormElementWrapper errors={errors} errorId={`product-${index}-checkbox-0`} errorClass="">
+                        <div className="govuk-checkboxes">
+                            {generateCheckbox(salesOfferPackagesList, index, selected)}
+                            <input type="hidden" name={`product-${index}`} />
+                        </div>
+                    </FormElementWrapper>
+                </fieldset>
+            </FormGroupWrapper>
+        </div>
+    ));
 
 const SelectSalesOfferPackage = ({
     selected,
@@ -139,63 +143,32 @@ const SelectSalesOfferPackage = ({
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <div className="govuk-form-group">
-                        <fieldset className="govuk-fieldset" aria-describedby="select-sales-offer-package-page-heading">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 className="govuk-fieldset__heading" id="select-sales-offer-package-page-heading">
-                                    How are the tickets sold?
-                                </h1>
-                            </legend>
-                            <span id="radio-error" className="govuk-error-message">
-                                <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
-                                    {errors[0] ? errors[0].errorMessage : ''}
-                                </span>
-                            </span>
-                            <div>
-                                <p className="govuk-body">
-                                    To create NeTEx for your fare it needs to contain the following:
-                                </p>
-                                <ol className="govuk-list govuk-list--number">
-                                    <li>Where a ticket can be bought</li>
-                                    <li>What payment method it can be bought with</li>
-                                    <li>What format the ticket is provided to the passenger in</li>
-                                </ol>
-                                <p className="govuk-body">
-                                    This combination of information is called a <strong>sales offer package</strong>.
-                                    You can choose from one you have already setup or create a new one for these
-                                    products.
-                                </p>
-                                <p className="govuk-body">
-                                    Choose from your previously used sales offer packages or create a new one:
-                                </p>
-                                <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">
-                                    Your sales offer packages
-                                </p>
-                            </div>
-                        </fieldset>
-                        <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
-                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-form-group--error">
-                                <div className="govuk-checkboxes">
-                                    <>{createSalesOffer(salesOfferPackagesList, productNamesList, selected)}</>
-                                </div>
-                            </FormElementWrapper>
-                        </fieldset>
+                    <h1 className="govuk-heading-l" id="select-sales-offer-package-page-heading">
+                        How are the tickets sold?
+                    </h1>
+                    <div>
+                        <p className="govuk-body">To create NeTEx for your fare it needs to contain the following:</p>
+                        <ol className="govuk-list govuk-list--number">
+                            <li>Where a ticket can be bought</li>
+                            <li>What payment method it can be bought with</li>
+                            <li>What format the ticket is provided to the passenger in</li>
+                        </ol>
+                        <p className="govuk-body">
+                            This combination of information is called a <strong>sales offer package</strong>. You can
+                            choose from one you have already setup or create a new one for these products.
+                        </p>
                     </div>
-                    <input
-                        type="submit"
-                        value="Continue"
-                        id="continue-button"
-                        className="govuk-button govuk-!-margin-right-8"
-                    />
+                    {createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href="/salesOfferPackages"
                         role="button"
                         draggable="false"
-                        className="govuk-button govuk-button--secondary"
+                        className="govuk-button govuk-button--secondary create-new-sop-button"
                         data-module="govuk-button"
                         id="create-new-button"
                     >
-                        Create New
+                        Create New Sales Offer Package
                     </a>
                 </>
             </CsrfForm>
@@ -221,30 +194,37 @@ export const getServerSideProps = async (
     );
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const singleProductAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
-    let productNames: string[] = [];
+    let productNames: string[] = ['product'];
 
-    if (multipleProductAttribute) {
-        const multiProducts: Product[] = multipleProductAttribute.products;
-        productNames = multiProducts.map((product: ProductInfo) => product.productName);
+    if (isFareType(fareTypeAttribute)) {
+        if (fareTypeAttribute.fareType === 'period' && multipleProductAttribute) {
+            const multiProducts: Product[] = multipleProductAttribute.products;
+            productNames = multiProducts.map((product: ProductInfo) => product.productName);
+        } else if (singleProductAttribute) {
+            if (fareTypeAttribute.fareType === 'flatFare' && isProductData(singleProductAttribute)) {
+                productNames = [singleProductAttribute.products[0].productName];
+            } else if (fareTypeAttribute.fareType === 'period' && isProductInfo(singleProductAttribute)) {
+                productNames = [singleProductAttribute.productName];
+            }
+        }
     }
 
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-    const errors: ErrorInfo[] = [];
 
     if (
         salesOfferPackageAttribute &&
         isSalesOfferPackageWithErrors(salesOfferPackageAttribute) &&
-        salesOfferPackageAttribute.errorMessage
+        salesOfferPackageAttribute.errors
     ) {
-        const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
-        errors.push(errorInfo);
         return {
             props: {
-                selected: salesOfferPackageAttribute.selected,
+                selected: salesOfferPackageAttribute.selected || '',
                 productNamesList: productNames,
                 salesOfferPackagesList,
-                errors,
+                errors: salesOfferPackageAttribute.errors,
             },
         };
     }
