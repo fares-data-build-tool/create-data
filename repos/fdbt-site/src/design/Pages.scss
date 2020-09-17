@@ -8,27 +8,25 @@
 .fare-triangle-container {
     display: flex;
 
-    .fare-triangle-column {
-        .fare-triangle-label-left {
-            display: flex;
-            height: 40px;
-            margin: 0;
-            flex: 0 0 auto;
-            width: 125px;
-            white-space: nowrap;
+    .fare-triangle-label-left {
+        display: flex;
+        height: 40px;
+        margin: 0;
+        flex: 0 0 auto;
+        width: 125px;
+        white-space: nowrap;
 
-            span {
-                margin: auto 0;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                background: #fff;
-                padding: 6px;
-            }
+        span {
+            margin: auto 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: #fff;
+            padding: 6px;
+        }
 
-            span:hover {
-                overflow: visible;
-                z-index: 1;
-            }
+        span:hover {
+            overflow: visible;
+            z-index: 1;
         }
     }
 
@@ -46,12 +44,16 @@
             align-content: flex-start;
         }
 
-        .fare-triangle-row:not(:last-child) .fare-triangle-input {
+        .fare-triangle-row:not(:last-child) .fare-triangle-input input {
             border-bottom: none;
         }
 
         .fare-triangle-input {
             flex: 0 0 auto;
+
+            input {
+                background: none;
+            }
         }
 
         .fare-triangle-input-white {
@@ -62,7 +64,7 @@
             background-color: govuk-colour('light-grey');
         }
 
-        .fare-triangle-input:not(:nth-child(1)) {
+        .fare-triangle-input:not(:nth-child(2)) input {
             border-left: none;
         }
 
@@ -116,6 +118,22 @@
     .farestage-select-wrapper {
         margin-left: auto;
         width: 20%;
+    }
+
+    .naptan-cell {
+        vertical-align: middle;
+    }
+
+    .stop-cell {
+        vertical-align: middle;
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    .stage-cell {
+        vertical-align: middle;
     }
 }
 
@@ -207,16 +225,6 @@
     .header-text-alignment {
         padding-right: 20px;
     }
-
-    .visually-hidden-label {
-        position: absolute !important;
-        height: 1px;
-        width: 1px;
-        overflow: hidden;
-        clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-        clip: rect(1px, 1px, 1px, 1px);
-        white-space: nowrap; /* added line */
-    }
 }
 
 .stage-name-input-field {
@@ -229,4 +237,20 @@
 
 .input-form {
     margin-top: 40px;
+}
+
+.sop-option {
+    margin-bottom: 20px;
+}
+
+.multiple-product-validity-table {
+    .govuk-table__cell {
+        vertical-align: middle;
+    }
+}
+
+.create-new-sop-button {
+    @media (min-width: 641px) {
+        margin-left: 20px;
+    }
 }

@@ -45,6 +45,10 @@ export const isProductInfo = (
     productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors | undefined,
 ): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;
 
+export const isProductData = (
+    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors | undefined,
+): productDetailsAttribute is ProductData => (productDetailsAttribute as ProductData).products !== undefined;
+
 const ProductDetails = ({
     product,
     operator,
@@ -71,61 +75,62 @@ const ProductDetails = ({
                             <span className="govuk-hint" id="service-operator-hint">
                                 {operator} - {hintText} - {upperFirst(passengerType)}
                             </span>
-                        </fieldset>
-                        <FormGroupWrapper errors={errors} errorId="product-name-error">
-                            <>
-                                <label className="govuk-label" htmlFor="product-details-name">
-                                    Product Name
-                                </label>
-                                <span className="govuk-hint" id="product-name-hint">
-                                    Enter the name of your product
-                                </span>
-                                <FormElementWrapper
-                                    errors={errors}
-                                    errorId="product-name-error"
-                                    errorClass="govuk-input--error"
-                                >
-                                    <input
-                                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                                        id="product-details-name"
-                                        name="productDetailsNameInput"
-                                        type="text"
-                                        maxLength={50}
-                                        defaultValue={productName || ''}
-                                    />
-                                </FormElementWrapper>
-                            </>
-                        </FormGroupWrapper>
-                        <FormGroupWrapper errors={errors} errorId="product-price-error">
-                            <>
-                                <label className="govuk-label" htmlFor="product-details-price">
-                                    Product Price
-                                </label>
-                                <span className="govuk-hint" id="product-price-hint">
-                                    For example, £2.99
-                                </span>
-                                <div className="govuk-currency-input">
-                                    <div className="govuk-currency-input__inner">
-                                        <span className="govuk-currency-input__inner__unit">£</span>
-                                        <FormElementWrapper
-                                            errors={errors}
-                                            errorId="product-price-error"
-                                            errorClass="govuk-input--error"
-                                        >
-                                            <input
-                                                className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
-                                                aria-label="Enter amount in pounds"
-                                                name="productDetailsPriceInput"
-                                                data-non-numeric
-                                                type="text"
-                                                id="product-details-price"
-                                                defaultValue={productPrice || ''}
-                                            />
-                                        </FormElementWrapper>
+                            <FormGroupWrapper errors={errors} errorId="product-details-name">
+                                <>
+                                    <label className="govuk-label" htmlFor="product-details-name">
+                                        Product Name
+                                    </label>
+                                    <span className="govuk-hint" id="product-name-hint">
+                                        Must be between 2 and 50 characters long
+                                    </span>
+                                    <FormElementWrapper
+                                        errors={errors}
+                                        errorId="product-details-name"
+                                        errorClass="govuk-input--error"
+                                    >
+                                        <input
+                                            className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                            id="product-details-name"
+                                            name="productDetailsNameInput"
+                                            type="text"
+                                            aria-describedby="product-name-hint"
+                                            maxLength={50}
+                                            defaultValue={productName || ''}
+                                        />
+                                    </FormElementWrapper>
+                                </>
+                            </FormGroupWrapper>
+                            <FormGroupWrapper errors={errors} errorId="product-details-price">
+                                <>
+                                    <label className="govuk-label" htmlFor="product-details-price">
+                                        Product Price, in pounds
+                                    </label>
+                                    <span className="govuk-hint" id="product-price-hint">
+                                        For example, 2.99
+                                    </span>
+                                    <div className="govuk-currency-input">
+                                        <div className="govuk-currency-input__inner">
+                                            <span className="govuk-currency-input__inner__unit">£</span>
+                                            <FormElementWrapper
+                                                errors={errors}
+                                                errorId="product-details-price"
+                                                errorClass="govuk-input--error"
+                                            >
+                                                <input
+                                                    className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
+                                                    name="productDetailsPriceInput"
+                                                    data-non-numeric
+                                                    type="text"
+                                                    id="product-details-price"
+                                                    aria-describedby="product-price-hint"
+                                                    defaultValue={productPrice || ''}
+                                                />
+                                            </FormElementWrapper>
+                                        </div>
                                     </div>
-                                </div>
-                            </>
-                        </FormGroupWrapper>
+                                </>
+                            </FormGroupWrapper>
+                        </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>

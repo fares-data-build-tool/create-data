@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils';
 import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
-import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
 import {
     isSessionValid,
     removeExcessWhiteSpace,
@@ -43,14 +43,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (productNameError) {
             errors.push({
                 errorMessage: productNameError,
-                id: 'product-name-error',
+                id: 'product-details-name',
             });
         }
         const productPriceError = checkPriceIsValid(productDetails.productPrice);
         if (productPriceError) {
             errors.push({
                 errorMessage: productPriceError,
-                id: 'product-price-error',
+                id: 'product-details-price',
             });
         }
 
@@ -60,6 +60,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/productDetails');
             return;
         }
+
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, undefined);
+
         if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period') {
             const periodProduct: Product = {
                 productName: productDetails.productName,

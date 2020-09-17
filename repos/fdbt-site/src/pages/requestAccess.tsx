@@ -22,7 +22,7 @@ const RequestAccess = (): ReactElement => (
             </div>
             <div className="govuk-grid-column-one-third">
                 <div>
-                    <h1 className="govuk-heading-s">Already have an account?</h1>
+                    <h2 className="govuk-heading-s">Already have an account?</h2>
                     <a href="/login" className="govuk-link">
                         Sign in
                     </a>

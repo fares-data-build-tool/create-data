@@ -33,7 +33,7 @@ exports[`pages csvUpload should render correctly 1`] = `
         </legend>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="input-method-error"
+          errorId="csv-upload"
           errors={Array []}
         >
           <div

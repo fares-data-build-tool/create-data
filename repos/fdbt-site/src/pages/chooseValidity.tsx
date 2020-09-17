@@ -34,31 +34,27 @@ const ChooseValidity = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="choose-validity-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="choose-validity-page-heading">
-                                How many days is your product valid for?
-                            </h1>
-                            <p className="govuk-hint">
-                                Product: {productName} - £{productPrice} - {upperFirst(passengerType)}
-                            </p>
-                            <label className="govuk-visually-hidden" htmlFor="validity">
-                                Days valid
-                            </label>
-                            <p className="govuk-hint" id="choose-validity-page-hint">
-                                Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
-                            </p>
-                        </legend>
-                        <FormElementWrapper errors={errors} errorId="validity-error" errorClass="govuk-input--error">
-                            <input
-                                className="govuk-input govuk-input--width-2"
-                                id="validity"
-                                name="validityInput"
-                                type="text"
-                                defaultValue={daysValid}
-                            />
-                        </FormElementWrapper>
-                    </fieldset>
+                    <label htmlFor="validity">
+                        <h1 className="govuk-heading-l" id="choose-validity-page-heading">
+                            How many days is your product valid for?
+                        </h1>
+                    </label>
+                    <div className="govuk-hint">
+                        Product: {productName} - £{productPrice} - {upperFirst(passengerType)}
+                    </div>
+                    <div className="govuk-hint" id="choose-validity-page-hint">
+                        Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
+                    </div>
+                    <FormElementWrapper errors={errors} errorId="validity" errorClass="govuk-input--error">
+                        <input
+                            className="govuk-input govuk-input--width-2"
+                            id="validity"
+                            name="validityInput"
+                            type="text"
+                            defaultValue={daysValid}
+                            aria-describedby="choose-validity-page-hint"
+                        />
+                    </FormElementWrapper>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

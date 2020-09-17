@@ -4,6 +4,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import {
@@ -17,7 +18,7 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute } from '../../utils/sessions';
-import { isFareType, isPeriodType } from '../../interfaces/typeGuards';
+import { isFareType, isPassengerType, isPeriodType } from '../../interfaces/typeGuards';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -71,7 +72,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (userDataJson) {
             const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
             const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
-            const group = !!sessionGroup && !!groupSize;
+            const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
+
+            const group =
+                !!sessionGroup &&
+                !!groupSize &&
+                isPassengerType(passengerTypeAttribute) &&
+                passengerTypeAttribute.passengerType === 'group';
 
             if (group) {
                 const userDataWithGroupJson = {

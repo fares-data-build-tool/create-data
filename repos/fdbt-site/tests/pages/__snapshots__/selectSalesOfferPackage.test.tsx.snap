@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages serviceList should render an error when an error message is passed through to props 1`] = `
+exports[`pages selectSalesOfferPackage should render an error when an error message is passed through to props 1`] = `
 <Component
   description="Sales Offer Package selection page of the Fares Data Build Tool"
   title="Select Sales Offer Package - Fares Data Build Tool"
@@ -20,193 +20,62 @@ exports[`pages serviceList should render an error when an error message is passe
         ]
       }
     />
-    <div
-      className="govuk-form-group"
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
     >
-      <fieldset
-        aria-describedby="select-sales-offer-package-page-heading"
-        className="govuk-fieldset"
+      How are the tickets sold?
+    </h1>
+    <div>
+      <p
+        className="govuk-body"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="select-sales-offer-package-page-heading"
-          >
-            How are the tickets sold?
-          </h1>
-        </legend>
-        <span
-          className="govuk-error-message"
-          id="radio-error"
-        >
-          <span
-            className=""
-          >
-            Choose at least one service from the options
-          </span>
-        </span>
-        <div>
-          <p
-            className="govuk-body"
-          >
-            To create NeTEx for your fare it needs to contain the following:
-          </p>
-          <ol
-            className="govuk-list govuk-list--number"
-          >
-            <li>
-              Where a ticket can be bought
-            </li>
-            <li>
-              What payment method it can be bought with
-            </li>
-            <li>
-              What format the ticket is provided to the passenger in
-            </li>
-          </ol>
-          <p
-            className="govuk-body"
-          >
-            This combination of information is called a 
-            <strong>
-              sales offer package
-            </strong>
-            . You can choose from one you have already setup or create a new one for these products.
-          </p>
-          <p
-            className="govuk-body"
-          >
-            Choose from your previously used sales offer packages or create a new one:
-          </p>
-          <p
-            className="govuk-body govuk-!-font-weight-bold content-one-quarter"
-          >
-            Your sales offer packages
-          </p>
-        </div>
-      </fieldset>
-      <fieldset
-        aria-describedby="service-list-hint"
-        className="govuk-fieldset"
+        To create NeTEx for your fare it needs to contain the following:
+      </p>
+      <ol
+        className="govuk-list govuk-list--number"
       >
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="sales-offer-package-error"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Choose at least one service from the options",
-                "id": "sales-offer-package-error",
-              },
-            ]
-          }
-        >
-          <div
-            className="govuk-checkboxes"
-          >
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Onboard (cash)"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-0"
-                name="Onboard (cash)"
-                type="checkbox"
-                value="{\\"name\\":\\"Onboard (cash)\\",\\"description\\":\\"Purchasable on board the bus, with cash, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"cash\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-0"
-              >
-                Onboard (cash) - Purchasable on board the bus, with cash, as a paper ticket.
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Onboard (contactless)"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-1"
-                name="Onboard (contactless)"
-                type="checkbox"
-                value="{\\"name\\":\\"Onboard (contactless)\\",\\"description\\":\\"Purchasable on board the bus, with a contactless card or device, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"contactlessPaymentCard\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-1"
-              >
-                Onboard (contactless) - Purchasable on board the bus, with a contactless card or device, as a paper ticket.
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Online (smart card)"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-2"
-                name="Online (smart card)"
-                type="checkbox"
-                value="{\\"name\\":\\"Online (smart card)\\",\\"description\\":\\"Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.\\",\\"purchaseLocations\\":[\\"online\\"],\\"paymentMethods\\":[\\"directDebit\\",\\"creditCard\\",\\"debitCard\\"],\\"ticketFormats\\":[\\"smartCard\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-2"
-              >
-                Online (smart card) - Purchasable online, with a debit/credit card or direct debit transaction, on a smart card o...
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Mobile App"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-3"
-                name="Mobile App"
-                type="checkbox"
-                value="{\\"name\\":\\"Mobile App\\",\\"description\\":\\"Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.\\",\\"purchaseLocations\\":[\\"mobileDevice\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\",\\"mobilePhone\\",\\"directDebit\\"],\\"ticketFormats\\":[\\"mobileApp\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-3"
-              >
-                Mobile App - Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile ap...
-              </label>
-            </div>
-          </div>
-        </FormElementWrapper>
-      </fieldset>
+        <li>
+          Where a ticket can be bought
+        </li>
+        <li>
+          What payment method it can be bought with
+        </li>
+        <li>
+          What format the ticket is provided to the passenger in
+        </li>
+      </ol>
+      <p
+        className="govuk-body"
+      >
+        This combination of information is called a 
+        <strong>
+          sales offer package
+        </strong>
+        . You can choose from one you have already setup or create a new one for these products.
+      </p>
     </div>
     <input
-      className="govuk-button govuk-!-margin-right-8"
+      className="govuk-button"
       id="continue-button"
       type="submit"
       value="Continue"
     />
     <a
-      className="govuk-button govuk-button--secondary"
+      className="govuk-button govuk-button--secondary create-new-sop-button"
       data-module="govuk-button"
       draggable="false"
       href="/salesOfferPackages"
       id="create-new-button"
       role="button"
     >
-      Create New
+      Create New Sales Offer Package
     </a>
   </CsrfForm>
 </Component>
 `;
 
-exports[`pages serviceList should render correctly 1`] = `
+exports[`pages selectSalesOfferPackage should render correctly 1`] = `
 <Component
   description="Sales Offer Package selection page of the Fares Data Build Tool"
   title="Select Sales Offer Package - Fares Data Build Tool"
@@ -219,178 +88,56 @@ exports[`pages serviceList should render correctly 1`] = `
     <ErrorSummary
       errors={Array []}
     />
-    <div
-      className="govuk-form-group"
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
     >
-      <fieldset
-        aria-describedby="select-sales-offer-package-page-heading"
-        className="govuk-fieldset"
+      How are the tickets sold?
+    </h1>
+    <div>
+      <p
+        className="govuk-body"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="select-sales-offer-package-page-heading"
-          >
-            How are the tickets sold?
-          </h1>
-        </legend>
-        <span
-          className="govuk-error-message"
-          id="radio-error"
-        >
-          <span
-            className="govuk-visually-hidden"
-          />
-        </span>
-        <div>
-          <p
-            className="govuk-body"
-          >
-            To create NeTEx for your fare it needs to contain the following:
-          </p>
-          <ol
-            className="govuk-list govuk-list--number"
-          >
-            <li>
-              Where a ticket can be bought
-            </li>
-            <li>
-              What payment method it can be bought with
-            </li>
-            <li>
-              What format the ticket is provided to the passenger in
-            </li>
-          </ol>
-          <p
-            className="govuk-body"
-          >
-            This combination of information is called a 
-            <strong>
-              sales offer package
-            </strong>
-            . You can choose from one you have already setup or create a new one for these products.
-          </p>
-          <p
-            className="govuk-body"
-          >
-            Choose from your previously used sales offer packages or create a new one:
-          </p>
-          <p
-            className="govuk-body govuk-!-font-weight-bold content-one-quarter"
-          >
-            Your sales offer packages
-          </p>
-        </div>
-      </fieldset>
-      <fieldset
-        aria-describedby="service-list-hint"
-        className="govuk-fieldset"
+        To create NeTEx for your fare it needs to contain the following:
+      </p>
+      <ol
+        className="govuk-list govuk-list--number"
       >
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="sales-offer-package-error"
-          errors={Array []}
-        >
-          <div
-            className="govuk-checkboxes"
-          >
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Onboard (cash)"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-0"
-                name="Onboard (cash)"
-                type="checkbox"
-                value="{\\"name\\":\\"Onboard (cash)\\",\\"description\\":\\"Purchasable on board the bus, with cash, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"cash\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-0"
-              >
-                Onboard (cash) - Purchasable on board the bus, with cash, as a paper ticket.
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Onboard (contactless)"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-1"
-                name="Onboard (contactless)"
-                type="checkbox"
-                value="{\\"name\\":\\"Onboard (contactless)\\",\\"description\\":\\"Purchasable on board the bus, with a contactless card or device, as a paper ticket.\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"contactlessPaymentCard\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-1"
-              >
-                Onboard (contactless) - Purchasable on board the bus, with a contactless card or device, as a paper ticket.
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Online (smart card)"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-2"
-                name="Online (smart card)"
-                type="checkbox"
-                value="{\\"name\\":\\"Online (smart card)\\",\\"description\\":\\"Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.\\",\\"purchaseLocations\\":[\\"online\\"],\\"paymentMethods\\":[\\"directDebit\\",\\"creditCard\\",\\"debitCard\\"],\\"ticketFormats\\":[\\"smartCard\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-2"
-              >
-                Online (smart card) - Purchasable online, with a debit/credit card or direct debit transaction, on a smart card o...
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Mobile App"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="product-0-checkbox-3"
-                name="Mobile App"
-                type="checkbox"
-                value="{\\"name\\":\\"Mobile App\\",\\"description\\":\\"Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.\\",\\"purchaseLocations\\":[\\"mobileDevice\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\",\\"mobilePhone\\",\\"directDebit\\"],\\"ticketFormats\\":[\\"mobileApp\\"]}"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="product-0-checkbox-3"
-              >
-                Mobile App - Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile ap...
-              </label>
-            </div>
-          </div>
-        </FormElementWrapper>
-      </fieldset>
+        <li>
+          Where a ticket can be bought
+        </li>
+        <li>
+          What payment method it can be bought with
+        </li>
+        <li>
+          What format the ticket is provided to the passenger in
+        </li>
+      </ol>
+      <p
+        className="govuk-body"
+      >
+        This combination of information is called a 
+        <strong>
+          sales offer package
+        </strong>
+        . You can choose from one you have already setup or create a new one for these products.
+      </p>
     </div>
     <input
-      className="govuk-button govuk-!-margin-right-8"
+      className="govuk-button"
       id="continue-button"
       type="submit"
       value="Continue"
     />
     <a
-      className="govuk-button govuk-button--secondary"
+      className="govuk-button govuk-button--secondary create-new-sop-button"
       data-module="govuk-button"
       draggable="false"
       href="/salesOfferPackages"
       id="create-new-button"
       role="button"
     >
-      Create New
+      Create New Sales Offer Package
     </a>
   </CsrfForm>
 </Component>

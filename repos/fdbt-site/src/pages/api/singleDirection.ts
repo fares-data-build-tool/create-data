@@ -18,7 +18,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!directionJourneyPattern) {
             errors.push({
                 errorMessage: 'Choose a direction from the options',
-                id: 'direction-error',
+                id: 'direction-journey-pattern',
             });
 
             updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { errors });

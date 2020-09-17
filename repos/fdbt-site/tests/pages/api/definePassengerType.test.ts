@@ -155,11 +155,11 @@ describe('definePassengerType', () => {
 
     describe('getErrorIdFromValidityError', () => {
         it.each([
-            ['define-passenger-age-range', 'ageRange'],
-            ['define-passenger-proof', 'proof'],
+            ['age-range-required', 'ageRange'],
+            ['proof-required', 'proof'],
             ['age-range-min', 'ageRangeMin'],
             ['age-range-max', 'ageRangeMax'],
-            ['proof-required', 'proofDocuments'],
+            ['membership-card', 'proofDocuments'],
             ['min-number-of-passengers', 'minNumber'],
             ['max-number-of-passengers', 'maxNumber'],
         ])('should return the id as %s when the error path is %s', (expectedId, errorPath) => {
@@ -227,9 +227,8 @@ describe('definePassengerType', () => {
                     errorMessage: 'Enter a minimum or maximum age',
                 },
                 {
-                    id: 'proof-required',
+                    id: 'membership-card',
                     errorMessage: 'Select at least one proof document',
-                    userInput: '',
                 },
             ],
         ],
@@ -245,12 +244,10 @@ describe('definePassengerType', () => {
                 {
                     id: 'age-range-max',
                     errorMessage: 'Maximum age cannot be less than minimum age',
-                    userInput: 12,
                 },
                 {
                     id: 'age-range-min',
                     errorMessage: 'Minimum age cannot be greater than maximum age',
-                    userInput: 25,
                 },
             ],
         ],

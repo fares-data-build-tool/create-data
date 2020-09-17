@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK, ID_TOKEN_COOKIE, INTERNAL_NOC } from '../constants';
-import { getUuidFromCookies, deleteAllCookiesOnServerSide, getAttributeFromIdToken } from '../utils';
-import { CognitoIdToken } from '../interfaces';
+import { getUuidFromCookies, getAttributeFromIdToken, deleteAllCookiesOnServerSide } from '../utils';
+import { CognitoIdToken, NextPageContextWithSession } from '../interfaces';
 import logger from '../utils/logger';
+import { destroySession } from '../utils/sessions';
 
 const title = 'Thank You - Fares Data Build Tool';
 const description = 'Thank you page for the Fares Data Build Tool';
@@ -48,7 +48,7 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const uuid = getUuidFromCookies(ctx);
     const noc = getAttributeFromIdToken(ctx, 'custom:noc');
 
@@ -63,7 +63,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         throw new Error('Could not extract the user email address from their ID token');
     }
 
-    deleteAllCookiesOnServerSide(ctx);
+    if (ctx.req) {
+        destroySession(ctx.req);
+        deleteAllCookiesOnServerSide(ctx);
+    }
+
     return { props: { uuid, emailAddress: decodedIdToken.email } };
 };
 

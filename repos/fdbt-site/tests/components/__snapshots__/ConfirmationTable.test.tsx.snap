@@ -12,6 +12,7 @@ exports[`ConfirmationTable should render the table with options 1`] = `
   >
     <div
       className="govuk-summary-list__row"
+      key="Name"
     >
       <dt
         className="govuk-summary-list__key"
@@ -41,6 +42,7 @@ exports[`ConfirmationTable should render the table with options 1`] = `
     </div>
     <div
       className="govuk-summary-list__row"
+      key="House"
     >
       <dt
         className="govuk-summary-list__key"
@@ -79,6 +81,7 @@ exports[`ConfirmationTable should render the table with options 1`] = `
   >
     <div
       className="govuk-summary-list__row"
+      key="Age"
     >
       <dt
         className="govuk-summary-list__key"

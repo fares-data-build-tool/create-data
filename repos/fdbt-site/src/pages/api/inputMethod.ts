@@ -26,7 +26,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     throw new Error('Input method we expect was not received.');
             }
         } else {
-            const sessionContent: ErrorInfo = { errorMessage: 'Choose an input method from the options', id: '' };
+            const sessionContent: ErrorInfo = {
+                errorMessage: 'Choose an input method from the options',
+                id: 'csv-upload',
+            };
             updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, sessionContent);
             redirectTo(res, '/inputMethod');
         }

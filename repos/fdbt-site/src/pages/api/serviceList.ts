@@ -7,7 +7,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { isFareType } from '../../interfaces/typeGuards';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 
-const errorId = 'service-list-error';
+const errorId = 'checkbox-0';
 
 export interface ServiceListAttribute {
     selectedServices: string[];
@@ -19,7 +19,7 @@ export interface ServiceListAttributeWithErrors {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';
-    const selectAllText = 'Select All';
+    const selectAllText = 'Select All Services';
 
     try {
         if (!isSessionValid(req, res)) {

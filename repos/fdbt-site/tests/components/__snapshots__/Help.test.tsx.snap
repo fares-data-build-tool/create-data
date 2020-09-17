@@ -1,16 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Help should render the Help component 1`] = `
-<Fragment>
-  <legend
-    className="govuk-fieldset__legend govuk-fieldset__legend--s"
+<div>
+  <h2
+    className="govuk-heading-s"
   >
-    <h1
-      className="govuk-fieldset__heading"
-    >
-      Help and Support
-    </h1>
-  </legend>
+    Help and Support
+  </h2>
   <p
     className="govuk-body"
   >
@@ -24,5 +20,5 @@ exports[`Help should render the Help component 1`] = `
       </a>
     </div>
   </p>
-</Fragment>
+</div>
 `;

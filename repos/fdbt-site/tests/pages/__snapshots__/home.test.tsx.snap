@@ -17,11 +17,11 @@ exports[`pages home page should render correctly 1`] = `
       className="govuk-grid-column-two-thirds"
     >
       <div>
-        <p
-          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        <h2
+          className="govuk-heading-s"
         >
           Create & download fares data
-        </p>
+        </h2>
         <p
           className="govuk-body"
         >
@@ -47,11 +47,11 @@ exports[`pages home page should render correctly 1`] = `
       <div
         className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
       >
-        <p
-          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        <h2
+          className="govuk-heading-s"
         >
           Operator settings
-        </p>
+        </h2>
         <p
           className="govuk-body"
         >
@@ -69,11 +69,11 @@ exports[`pages home page should render correctly 1`] = `
     <div
       className="govuk-grid-column-one-third"
     >
-      <p
-        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+      <h2
+        className="govuk-heading-s"
       >
         Public information
-      </p>
+      </h2>
       <a
         className="govuk-link govuk-!-font-size-19"
         href="/contact"
@@ -103,11 +103,11 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
       className="govuk-grid-column-two-thirds"
     >
       <div>
-        <p
-          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        <h2
+          className="govuk-heading-s"
         >
           Create & download fares data
-        </p>
+        </h2>
         <p
           className="govuk-body"
         >
@@ -133,11 +133,11 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
       <div
         className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
       >
-        <p
-          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        <h2
+          className="govuk-heading-s"
         >
           Operator settings
-        </p>
+        </h2>
         <p
           className="govuk-body"
         >
@@ -155,11 +155,11 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
     <div
       className="govuk-grid-column-one-third"
     >
-      <p
-        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+      <h2
+        className="govuk-heading-s"
       >
         Public information
-      </p>
+      </h2>
       <a
         className="govuk-link govuk-!-font-size-19"
         href="/contact"

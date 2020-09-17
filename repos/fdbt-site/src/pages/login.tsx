@@ -25,7 +25,7 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
                     <>
                         <ErrorSummary errors={errors} />
                         <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                            <div className="govuk-fieldset" aria-describedby="register-page-heading">
+                            <fieldset className="govuk-fieldset" aria-describedby="register-page-heading">
                                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                     <h1 className="govuk-fieldset__heading" id="register-page-heading">
                                         Sign in
@@ -44,7 +44,6 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
                                             id="email"
                                             name="email"
                                             type="text"
-                                            aria-describedby="email-hint"
                                             autoComplete="email"
                                             spellCheck="false"
                                             defaultValue={email || ''}
@@ -65,13 +64,12 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
                                             id="password"
                                             name="password"
                                             type="password"
-                                            aria-describedby="password-hint"
                                             spellCheck="false"
                                             autoComplete="off"
                                         />
                                     </FormElementWrapper>
                                 </div>
-                            </div>
+                            </fieldset>
                         </div>
                         <input
                             type="submit"
@@ -85,14 +83,14 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
             </div>
             <div className="govuk-grid-column-one-third">
                 <div>
-                    <h1 className="govuk-heading-s">Forgot your Password?</h1>
+                    <h2 className="govuk-heading-s">Forgot your Password?</h2>
                     <a href="/forgotPassword" className="govuk-link">
                         Reset your password
                     </a>
                 </div>
                 <br />
                 <div>
-                    <h1 className="govuk-heading-s">Don&apos;t have an account?</h1>
+                    <h2 className="govuk-heading-s">Don&apos;t have an account?</h2>
                     <a href="/requestAccess" className="govuk-link">
                         Request access
                     </a>

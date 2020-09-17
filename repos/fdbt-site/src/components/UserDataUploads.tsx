@@ -10,6 +10,7 @@ import CsrfForm from './CsrfForm';
 export interface UserDataUploadsProps {
     csvUploadApiRoute: string;
     csvUploadHintText: string;
+    csvUploadTitle: string;
     guidanceDocDisplayName: string;
     guidanceDocAttachmentUrl: string;
     guidanceDocSize: string;
@@ -23,6 +24,7 @@ export interface UserDataUploadsProps {
 
 const UserDataUploadComponent = ({
     csvUploadApiRoute,
+    csvUploadTitle,
     csvUploadHintText,
     guidanceDocDisplayName,
     guidanceDocAttachmentUrl,
@@ -41,32 +43,28 @@ const UserDataUploadComponent = ({
             <CsrfForm action={csvUploadApiRoute} method="post" encType="multipart/form-data" csrfToken={csrfToken}>
                 <>
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="csv-upload-hint csv-upload-error">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 className="govuk-fieldset__heading">Select a file to upload</h1>
-                            </legend>
-                            <span className="govuk-hint" id="csv-upload-hint">
-                                {csvUploadHintText}
-                            </span>
-                            <div className="govuk-form-group input-form">
-                                <label className="govuk-label" htmlFor="csv-upload">
-                                    Upload a CSV file
-                                </label>
-                                <FormElementWrapper
-                                    errorId={errors?.[0]?.id}
-                                    errorClass="govuk-file-upload--error"
-                                    errors={errors}
-                                >
-                                    <input
-                                        className="govuk-file-upload"
-                                        id="csv-upload"
-                                        name="csv-upload"
-                                        type="file"
-                                        accept=".csv"
-                                    />
-                                </FormElementWrapper>
-                            </div>
-                        </fieldset>
+                        <label htmlFor="csv-upload">
+                            <h1 className="govuk-heading-l">{csvUploadTitle}</h1>
+                        </label>
+                        <span className="govuk-hint" id="csv-upload-hint">
+                            {csvUploadHintText}
+                        </span>
+                        <div className="govuk-form-group input-form">
+                            <FormElementWrapper
+                                errorId={errors?.[0]?.id}
+                                errorClass="govuk-file-upload--error"
+                                errors={errors}
+                            >
+                                <input
+                                    className="govuk-file-upload"
+                                    id="csv-upload"
+                                    name="csv-upload"
+                                    type="file"
+                                    accept=".csv"
+                                    aria-describedby="csv-upload-hint"
+                                />
+                            </FormElementWrapper>
+                        </div>
                     </div>
                     {detailSummary && detailBody && (
                         <details className="govuk-details" data-module="govuk-details">
@@ -82,9 +80,7 @@ const UserDataUploadComponent = ({
             </CsrfForm>
         </div>
         <div className="govuk-grid-column-one-third">
-            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                <h1 className="govuk-fieldset__heading">Help documents</h1>
-            </legend>
+            <h2 className="govuk-heading-s">Help documents</h2>
             <FileAttachment
                 displayName={guidanceDocDisplayName}
                 attachmentUrl={`${guidanceDocAttachmentUrl}`}

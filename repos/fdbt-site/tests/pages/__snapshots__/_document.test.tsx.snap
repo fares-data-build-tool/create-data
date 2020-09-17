@@ -11,6 +11,12 @@ exports[`_document should render correctly 1`] = `
   <body
     className="govuk-template__body app-body-class js-enabled"
   >
+    <a
+      className="govuk-skip-link"
+      href="#main-content"
+    >
+      Skip to main content
+    </a>
     <Header
       csrfToken=""
       isAuthed={true}
@@ -19,7 +25,18 @@ exports[`_document should render correctly 1`] = `
       className="govuk-width-container app-width-container--wide"
     >
       <Banner />
-      <Main />
+      <main
+        id="main-content"
+        role="main"
+        tabIndex={-1}
+      >
+        <div
+          className="govuk-main-wrapper app-main-class"
+        >
+          <Main />
+        </div>
+      </main>
+      <Help />
     </div>
     <Footer />
     <NextScript

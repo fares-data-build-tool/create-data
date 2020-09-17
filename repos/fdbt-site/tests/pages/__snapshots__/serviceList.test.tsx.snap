@@ -21,40 +21,23 @@ exports[`pages serviceList should render an error when the error flag is set to 
       }
     />
     <div
-      className="govuk-form-group"
+      className="govuk-form-group govuk-form-group--error"
     >
       <fieldset
-        aria-describedby="service-list-page-heading"
         className="govuk-fieldset"
       >
         <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+          className="govuk-fieldset__legend govuk-fieldset__legend--s"
         >
           <h1
-            className="govuk-fieldset__heading"
+            className="govuk-heading-l"
             id="service-list-page-heading"
           >
             Which service(s) is the ticket valid for?
           </h1>
         </legend>
         <span
-          className="govuk-error-message"
-          id="radio-error"
-        >
-          <span
-            className=""
-          >
-            Choose at least one service from the list
-          </span>
-        </span>
-      </fieldset>
-      <fieldset
-        aria-describedby="service-list-hint"
-        className="govuk-fieldset"
-      >
-        <span
-          className="govuk-hint"
-          id="service-list-hint"
+          className="govuk-heading-s"
         >
           Select all services that apply
         </span>
@@ -72,8 +55,9 @@ exports[`pages serviceList should render an error when the error flag is set to 
           This data is taken from the Traveline National Dataset.
         </span>
         <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="service-list-error"
+          addFormGroupError={false}
+          errorClass=""
+          errorId="checkbox-0"
           errors={
             Array [
               Object {
@@ -113,38 +97,23 @@ exports[`pages serviceList should render correctly 1`] = `
       errors={Array []}
     />
     <div
-      className="govuk-form-group"
+      className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="service-list-page-heading"
         className="govuk-fieldset"
       >
         <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+          className="govuk-fieldset__legend govuk-fieldset__legend--s"
         >
           <h1
-            className="govuk-fieldset__heading"
+            className="govuk-heading-l"
             id="service-list-page-heading"
           >
             Which service(s) is the ticket valid for?
           </h1>
         </legend>
         <span
-          className="govuk-error-message"
-          id="radio-error"
-        >
-          <span
-            className="govuk-visually-hidden"
-          />
-        </span>
-      </fieldset>
-      <fieldset
-        aria-describedby="service-list-hint"
-        className="govuk-fieldset"
-      >
-        <span
-          className="govuk-hint"
-          id="service-list-hint"
+          className="govuk-heading-s"
         >
           Select all services that apply
         </span>
@@ -162,8 +131,9 @@ exports[`pages serviceList should render correctly 1`] = `
           This data is taken from the Traveline National Dataset.
         </span>
         <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId=""
+          addFormGroupError={false}
+          errorClass=""
+          errorId="checkbox-0"
           errors={Array []}
         >
           <div

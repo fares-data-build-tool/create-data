@@ -71,7 +71,7 @@ export const processCsv = async (
     res: NextApiResponse,
 ): Promise<UserFareZone[] | null> => {
     let parsedFileContent: UserFareZone[];
-    const errors: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file must use the template' }];
+    const errors: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file must use the template' }];
 
     try {
         parsedFileContent = csvParser(fileContent);
@@ -145,7 +145,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
 
         if (fileError) {
-            const errors: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: fileError }];
+            const errors: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: fileError }];
             setFareZoneAttributeAndRedirect(req, res, errors);
             return;
         }

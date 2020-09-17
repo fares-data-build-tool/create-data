@@ -13,6 +13,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     csvTemplateSize=""
     csvUploadApiRoute=""
     csvUploadHintText=""
+    csvUploadTitle="Upload fare zone as CSV"
     detailBody={
       <React.Fragment>
         <p>

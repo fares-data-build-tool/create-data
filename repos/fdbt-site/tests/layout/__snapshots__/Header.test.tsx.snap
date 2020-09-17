@@ -60,11 +60,6 @@ exports[`Header should render correctly 1`] = `
         className="govuk-header__link"
         href="/account"
       >
-        <img
-          alt="Person icon"
-          className="govuk-header__person-icon"
-          src={Object {}}
-        />
         <span>
            
           My Account

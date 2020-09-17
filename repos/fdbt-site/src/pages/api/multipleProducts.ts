@@ -1,5 +1,9 @@
 import { NextApiResponse } from 'next';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
+import {
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+} from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
 
 import {
@@ -106,10 +110,14 @@ export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProdu
 };
 
 export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduct[] => {
+    const productNames = products.map(product => product.productName);
+
     const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productName } = product;
         const trimmedProductName = removeExcessWhiteSpace(productName);
-        const productNameError = checkProductNameIsValid(trimmedProductName);
+        const duplicateError =
+            productNames.filter(item => item === productName).length > 1 ? 'Product names must be unique' : '';
+        const productNameError = checkProductNameIsValid(trimmedProductName) || duplicateError;
 
         if (productNameError) {
             return {
@@ -147,9 +155,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const productName = String(arrayedRequest[0][1]);
             const productPrice = String(arrayedRequest[1][1]);
             const productDuration = String(arrayedRequest[2][1]);
-            const productNameId = `multiple-product-name-input-${count}`;
-            const productPriceId = `multiple-product-price-input-${count}`;
-            const productDurationId = `multiple-product-duration-input-${count}`;
+            const productNameId = `multiple-product-name-${count}`;
+            const productPriceId = `multiple-product-price-${count}`;
+            const productDurationId = `multiple-product-duration-${count}`;
             const product: MultiProduct = {
                 productName,
                 productNameId,
@@ -175,6 +183,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
+        updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, undefined);
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {

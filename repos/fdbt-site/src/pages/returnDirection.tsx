@@ -3,7 +3,6 @@ import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, RawService, Service } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
-import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -16,8 +15,8 @@ import { isFareType, isJourney, isService } from '../interfaces/typeGuards';
 const title = 'Return Direction - Fares Data Build Tool';
 const description = 'Return Direction selection page of the Fares Data Build Tool';
 
-export const inboundErrorId = 'inbound-error';
-export const outboundErrorId = 'outbound-error';
+export const inboundErrorId = 'inbound-journey';
+export const outboundErrorId = 'outbound-journey';
 
 interface DirectionProps {
     service: Service;
@@ -41,38 +40,28 @@ const ReturnDirection = ({
                     <fieldset className="govuk-fieldset" aria-describedby="return-direction-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="return-direction-page-heading">
-                                Select the inbound and outbound journeys for your service
+                                Select the outbound and inbound journeys for your service
                             </h1>
                         </legend>
                         <div className="govuk-!-margin-top-5">
-                            <FormElementWrapper
+                            <DirectionDropdown
+                                selectName="outboundJourney"
+                                selectNameID="outbound-journey"
+                                dropdownLabel="Outbound Journey"
+                                journeyPatterns={service.journeyPatterns}
+                                outboundJourney={outboundJourney}
                                 errors={errors}
-                                errorId={outboundErrorId}
-                                errorClass="govuk-select--error"
-                            >
-                                <DirectionDropdown
-                                    selectName="outboundJourney"
-                                    selectNameID="outbound-journey"
-                                    dropdownLabel="Outbound Journey"
-                                    journeyPatterns={service.journeyPatterns}
-                                    outboundJourney={outboundJourney}
-                                />
-                            </FormElementWrapper>
+                            />
                         </div>
                         <div className="govuk-!-margin-top-6">
-                            <FormElementWrapper
+                            <DirectionDropdown
+                                selectName="inboundJourney"
+                                selectNameID="inbound-journey"
+                                dropdownLabel="Inbound Journey"
+                                journeyPatterns={service.journeyPatterns}
+                                inboundJourney={inboundJourney}
                                 errors={errors}
-                                errorId={inboundErrorId}
-                                errorClass="govuk-select--error"
-                            >
-                                <DirectionDropdown
-                                    selectName="inboundJourney"
-                                    selectNameID="inbound-journey"
-                                    dropdownLabel="Inbound Journey"
-                                    journeyPatterns={service.journeyPatterns}
-                                    inboundJourney={inboundJourney}
-                                />
-                            </FormElementWrapper>
+                            />
                         </div>
                         <span className="govuk-hint hint-text" id="traveline-hint">
                             This data is taken from the Traveline National Dataset

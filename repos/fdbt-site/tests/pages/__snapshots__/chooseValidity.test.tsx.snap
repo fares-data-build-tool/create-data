@@ -16,56 +16,46 @@ exports[`Choose Validity Page should render correctly 1`] = `
     <div
       className="govuk-form-group "
     >
-      <fieldset
-        aria-describedby="choose-validity-page-heading"
-        className="govuk-fieldset"
+      <label
+        htmlFor="validity"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        <h1
+          className="govuk-heading-l"
+          id="choose-validity-page-heading"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="choose-validity-page-heading"
-          >
-            How many days is your product valid for?
-          </h1>
-          <p
-            className="govuk-hint"
-          >
-            Product: 
-            bus company
-             - £
-            £3.00
-             - 
-            Adult
-          </p>
-          <label
-            className="govuk-visually-hidden"
-            htmlFor="validity"
-          >
-            Days valid
-          </label>
-          <p
-            className="govuk-hint"
-            id="choose-validity-page-hint"
-          >
-            Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
-          </p>
-        </legend>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="validity-error"
-          errors={Array []}
-        >
-          <input
-            className="govuk-input govuk-input--width-2"
-            defaultValue=""
-            id="validity"
-            name="validityInput"
-            type="text"
-          />
-        </FormElementWrapper>
-      </fieldset>
+          How many days is your product valid for?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+      >
+        Product: 
+        bus company
+         - £
+        £3.00
+         - 
+        Adult
+      </div>
+      <div
+        className="govuk-hint"
+        id="choose-validity-page-hint"
+      >
+        Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="validity"
+        errors={Array []}
+      >
+        <input
+          aria-describedby="choose-validity-page-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue=""
+          id="validity"
+          name="validityInput"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"

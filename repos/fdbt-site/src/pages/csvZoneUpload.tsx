@@ -44,14 +44,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
     return {
         props: {
             csvUploadApiRoute: '/api/csvZoneUpload',
+            csvUploadTitle: 'Upload fare zone as CSV',
             csvUploadHintText:
                 'Upload a fare zone as a CSV file below. Refer to the documents section to download a help file and a template.',
-            guidanceDocDisplayName: 'Download Help File',
+            guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 967KB',
             guidanceDocAttachmentUrl: HowToUploadFareZone,
-            guidanceDocSize: '1.0MB',
-            csvTemplateDisplayName: 'Download fare zone CSV template',
+            guidanceDocSize: '967KB',
+            csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
-            csvTemplateSize: '600B',
+            csvTemplateSize: '673B',
             errors,
             detailSummary: "My CSV won't upload",
         },

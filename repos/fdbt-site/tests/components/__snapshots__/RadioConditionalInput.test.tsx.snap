@@ -52,12 +52,12 @@ exports[`RadioConditionalInput should render a set of radio buttons with conditi
             className="govuk-radios__conditional govuk-radios__conditional--hidden"
             id="age-range-required-conditional"
           >
-            <span
-              className="govuk-hint"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
               id="define-passenger-hint"
             >
               Enter a minimum age for this passenger type.
-            </span>
+            </legend>
             <div
               className="govuk-form-group"
               key="age-range-min"

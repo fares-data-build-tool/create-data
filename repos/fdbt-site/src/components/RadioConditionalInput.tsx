@@ -49,9 +49,9 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <span className="govuk-hint" id={radio.hint.id}>
+            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
                 {radio.hint.content}
-            </span>
+            </legend>
             {radio.inputs.map(input => {
                 const errorId = createErrorId(input, radio.inputErrors);
                 return (
@@ -91,9 +91,9 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
         >
             <div className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}>
                 <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
-                    <span className="govuk-hint" id={radio.hint.id}>
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
                         {radio.hint.content}
-                    </span>
+                    </legend>
                     <FormElementWrapper
                         errors={radio.inputErrors}
                         errorId={error ? radio.inputErrors[0].id : ''}

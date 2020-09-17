@@ -54,7 +54,6 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
         if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
             if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
-                // k and v used to keep cookie size small - key and value
                 errors.push({
                     input: 'Enter a valid price for each stage',
                     locator: priceEntry[0],
