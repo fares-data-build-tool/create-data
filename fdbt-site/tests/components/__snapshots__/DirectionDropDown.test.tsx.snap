@@ -3,41 +3,47 @@
 exports[`DirectionDropdown should render the dropdown with options 1`] = `
 <Fragment>
   <label
-    className="govuk-label govuk-visually-hidden"
+    className="govuk-label "
     htmlFor="test-drop-down"
   >
     test
   </label>
-  <select
-    className="govuk-select "
-    defaultValue=""
-    id="test-drop-down"
-    name="testDropDown"
+  <FormElementWrapper
+    errorClass="govuk-select--error"
+    errorId="test-drop-down"
+    errors={Array []}
   >
-    <option
-      disabled={true}
-      value=""
+    <select
+      className="govuk-select "
+      defaultValue=""
+      id="test-drop-down"
+      name="testDropDown"
     >
-      Select One
-    </option>
-    <option
-      className="journey-option"
-      key="13003921A#13003655B#0"
-      value="13003921A#13003655B"
-    >
-      Estate (Hail and Ride) N/B
-       TO 
-      Interchange Stand B
-    </option>
-    <option
-      className="journey-option"
-      key="13003655B#13003921A#1"
-      value="13003655B#13003921A"
-    >
-      Interchange Stand B
-       TO 
-      Estate (Hail and Ride) N/B
-    </option>
-  </select>
+      <option
+        disabled={true}
+        value=""
+      >
+        Select One
+      </option>
+      <option
+        className="journey-option"
+        key="13003921A#13003655B#0"
+        value="13003921A#13003655B"
+      >
+        Estate (Hail and Ride) N/B
+         TO 
+        Interchange Stand B
+      </option>
+      <option
+        className="journey-option"
+        key="13003655B#13003921A#1"
+        value="13003655B#13003921A"
+      >
+        Interchange Stand B
+         TO 
+        Estate (Hail and Ride) N/B
+      </option>
+    </select>
+  </FormElementWrapper>
 </Fragment>
 `;

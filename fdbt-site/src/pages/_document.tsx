@@ -9,12 +9,14 @@ import Banner from '../layout/Banner';
 import { Breadcrumb, DocumentContextWithSession } from '../interfaces';
 import Footer from '../layout/Footer';
 import breadcrumb from '../utils/breadcrumbs';
+import Help from '../components/Help';
 
 interface DocumentProps extends DocumentInitialProps {
     nonce: string;
     isAuthed: boolean;
     csrfToken: string;
     breadcrumbs: Breadcrumb[];
+    url: string;
 }
 
 interface ResponseWithLocals extends ServerResponse {
@@ -39,7 +41,9 @@ class MyDocument extends Document<DocumentProps> {
 
         const breadcrumbs = breadcrumb(ctx).generate();
 
-        return { ...initialProps, nonce, isAuthed: !!idTokenCookie, csrfToken, breadcrumbs };
+        const url = ctx.req?.url ?? '';
+
+        return { ...initialProps, nonce, isAuthed: !!idTokenCookie, csrfToken, breadcrumbs, url };
     }
 
     render(): ReactElement {
@@ -67,14 +71,21 @@ class MyDocument extends Document<DocumentProps> {
                     )}
                 </Head>
                 <body className="govuk-template__body app-body-class js-enabled">
+                    <a href="#main-content" className="govuk-skip-link">
+                        Skip to main content
+                    </a>
                     <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
                     <div className="govuk-width-container app-width-container--wide">
                         <Banner />
                         {this.props.breadcrumbs.length !== 0 && <Breadcrumbs breadcrumbs={this.props.breadcrumbs} />}
-                        <Main />
+                        <main id="main-content" role="main" tabIndex={-1}>
+                            <div className="govuk-main-wrapper app-main-class">
+                                <Main />
+                            </div>
+                        </main>
+                        {this.props.url !== '/contact' ? <Help /> : null}
                     </div>
                     <Footer />
-
                     <NextScript nonce={this.props.nonce} />
                     <script src="/scripts/all.js" nonce={this.props.nonce} />
                     <script nonce={this.props.nonce}>window.GOVUKFrontend.initAll()</script>

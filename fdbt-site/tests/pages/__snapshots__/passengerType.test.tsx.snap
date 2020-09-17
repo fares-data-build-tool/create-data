@@ -39,7 +39,7 @@ exports[`pages operator should render correctly 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="passenger-type-error"
+          errorId="passenger-type-group"
           errors={Array []}
         >
           <div

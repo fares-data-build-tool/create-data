@@ -39,7 +39,7 @@ exports[`pages fareType should render correctly 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-error"
+          errorId="fare-type-single"
           errors={Array []}
         >
           <div
@@ -180,7 +180,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-error"
+          errorId="fare-type-single"
           errors={
             Array [
               Object {

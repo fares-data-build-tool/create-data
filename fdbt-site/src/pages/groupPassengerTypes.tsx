@@ -48,7 +48,7 @@ const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypePro
                             </span>
                             <FormElementWrapper
                                 errors={errors}
-                                errorId={errors[0] ? errors[0].id : ''}
+                                errorId="passenger-type-0"
                                 errorClass="govuk-checkboxes--error"
                             >
                                 <div className="govuk-checkboxes">

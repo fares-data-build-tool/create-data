@@ -23,31 +23,25 @@ const ChooseStages = ({ fareStage, errors, csrfToken }: ChooseStagesProps & Cust
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="choose-stages-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="choose-stages-page-heading">
-                                How many fare stages does the service have?
-                            </h1>
-                        </legend>
+                    <label htmlFor="fare-stages">
+                        <h1 className="govuk-heading-l" id="choose-stages-page-heading">
+                            How many fare stages does the service have?
+                        </h1>
+                    </label>
 
-                        <label className="govuk-hint" htmlFor="fare-stages" id="fare-stage-hint">
-                            Enter the number of fare stages between 2 - 20 (for example 3)
-                        </label>
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId="how-many-stages-error"
-                            errorClass="govuk-input--error"
-                        >
-                            <input
-                                className="govuk-input govuk-input--width-2"
-                                id="fare-stages"
-                                name="fareStageInput"
-                                type="text"
-                                defaultValue={errors.length === 0 && fareStage ? fareStage.fareStages : ''}
-                                aria-describedby="fare-stage-hint"
-                            />
-                        </FormElementWrapper>
-                    </fieldset>
+                    <div className="govuk-hint" id="fare-stage-hint">
+                        Enter the number of fare stages between 2 - 20 (for example 3)
+                    </div>
+                    <FormElementWrapper errors={errors} errorId="fare-stages" errorClass="govuk-input--error">
+                        <input
+                            className="govuk-input govuk-input--width-2"
+                            id="fare-stages"
+                            name="fareStageInput"
+                            type="text"
+                            defaultValue={errors.length === 0 && fareStage ? fareStage.fareStages : ''}
+                            aria-describedby="fare-stage-hint"
+                        />
+                    </FormElementWrapper>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

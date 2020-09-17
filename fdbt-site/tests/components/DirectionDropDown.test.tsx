@@ -11,6 +11,7 @@ describe('DirectionDropdown', () => {
                 selectNameID="test-drop-down"
                 selectName="testDropDown"
                 dropdownLabel="test"
+                errors={[]}
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -24,6 +25,7 @@ describe('DirectionDropdown', () => {
                 selectName="testDropDown"
                 inboundJourney="13003921A#13003655B"
                 dropdownLabel="test"
+                errors={[]}
             />,
         );
         const selector = wrapper.find('.govuk-select');

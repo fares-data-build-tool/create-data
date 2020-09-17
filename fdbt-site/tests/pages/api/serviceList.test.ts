@@ -32,7 +32,7 @@ describe('serviceList', () => {
     it('should change the query string for select all to true when select all button is selected', () => {
         const selectAllTrueUrl = '/serviceList?selectAll=true';
         const { req, res } = getMockRequestAndResponse({
-            body: { selectAll: 'Select All' },
+            body: { selectAll: 'Select All Services' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             mockEndFn: jest.fn(),

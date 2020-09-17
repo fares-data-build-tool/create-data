@@ -56,7 +56,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['define-time-restrictions'], errors),
+        radioError: getErrorsByIds(['time-restriction-required'], errors),
     };
 
     const validDaysFieldset: RadioConditionalInputFieldset = {
@@ -113,7 +113,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         label: 'Sunday',
                     },
                 ],
-                inputErrors: getErrorsByIds(['valid-days-required'], errors),
+                inputErrors: getErrorsByIds(['monday'], errors),
             },
             {
                 id: 'valid-days-not-required',
@@ -122,7 +122,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['define-valid-days'], errors),
+        radioError: getErrorsByIds(['valid-days-required'], errors),
     };
     return [timeRestrictionsFieldset, validDaysFieldset];
 };
@@ -142,11 +142,9 @@ const DefineTimeRestrictions = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="define-time-restrictions-page-heading">
-                            Tell us more about the time restrictions
-                        </h1>
-                    </legend>
+                    <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
+                        Tell us more about the time restrictions
+                    </h1>
                     <span className="govuk-hint" id="define-time-restrictions-hint">
                         The following two questions will provide us with all the information we need for time
                         restrictions

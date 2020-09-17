@@ -1,49 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MatchingList should render the matchinglist with options 1`] = `
-<div>
-  <div
-    className="matching-wrapper"
+<table
+  className="govuk-table"
+>
+  <thead
+    className="govuk-table__head"
   >
-    <div
-      className="govuk-heading-s matching-stop-header"
+    <tr
+      className="govuk-table__row"
     >
-      Stop name
-    </div>
-    <div
-      className="govuk-heading-s naptan-code-header"
-    >
-      Naptan code
-    </div>
-    <div
-      className="govuk-heading-s fare-stage-header"
-    >
-      Fare stage
-    </div>
-  </div>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003305E"
+      <th
+        className="govuk-table__header govuk-!-width-one-half"
+        id="stop-name-header"
+        scope="col"
+      >
+        Stop name
+      </th>
+      <th
+        className="govuk-table__header govuk-!-width-one-quarter"
+        id="naptan-code-header"
+        scope="col"
+      >
+        Naptan code
+      </th>
+      <th
+        className="govuk-table__header govuk-!-width-one-quarter"
+        id="fare-stage-header"
+        scope="col"
+      >
+        Fare stage
+      </th>
+    </tr>
+  </thead>
+  <tbody
+    className="govuk-table__body"
   >
-    <div
-      className="matching-wrapper"
+    <tr
+      className="govuk-table__row"
+      key="13003305E"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-0"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-0"
       >
         New Seaham, S-bound Westlea shops (on B1285 Stockton Road)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-0"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-0"
       >
         durapmja
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-0"
@@ -103,32 +116,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003622B"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003622B"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-1"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-1"
       >
         Deneside, NE-bound The Avenue Shops (on The Avenue)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-1"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-1"
       >
         duratgtm
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-1"
@@ -188,32 +198,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003655B"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003655B"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-2"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-2"
       >
         Seaham, B Interchange Stand B (on South Crescent)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-2"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-2"
       >
         duratjwd
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-2 naptan-code-header naptan-2"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-2"
@@ -273,32 +280,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003635B"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003635B"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-3"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-3"
       >
         Seaham, NE-bound Adolphus Place (on South Terrace)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-3"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-3"
       >
         duratjga
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-3 naptan-code-header naptan-3"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-3"
@@ -358,32 +362,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003618B"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003618B"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-4"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-4"
       >
         Deneside, NE-bound The Avenue - Essex Crescent (on The Avenue)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-4"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-4"
       >
         duratgpt
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-4 naptan-code-header naptan-4"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-4"
@@ -443,32 +444,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003612D"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003612D"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-5"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-5"
       >
         Seaham, SE-bound New Strangford Road (on New Stranford Road)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-5"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-5"
       >
         duratgma
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-5 naptan-code-header naptan-5"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-5"
@@ -528,32 +526,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003611B"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003611B"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-6"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-6"
       >
         Seaham, NE-bound New Tempest Road - York House (on Tempest Road)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-6"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-6"
       >
         duratgjt
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-6 naptan-code-header naptan-6"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-6"
@@ -613,32 +608,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003306B"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003306B"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-7"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-7"
       >
         New Seaham, NE-bound Mount Pleasant (on The Avenue)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-7"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-7"
       >
         durapmjg
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-7 naptan-code-header naptan-7"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-7"
@@ -698,32 +690,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003949C"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003949C"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-8"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-8"
       >
         Seaham, E-bound Viceroy Street (on Viceroy street)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-8"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-8"
       >
         durgawmt
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-8 naptan-code-header naptan-8"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-8"
@@ -783,32 +772,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003609E"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003609E"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-9"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-9"
       >
         Seaham, S-bound Vane Terrace - Castlereagh (on Vane Terrace)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-9"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-9"
       >
         duratgdt
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-9 naptan-code-header naptan-9"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-9"
@@ -868,32 +854,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003921A"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003921A"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-10"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-10"
       >
         New Seaham, N-bound Estate Hail and Ride (on Windermere Road)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-10"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-10"
       >
         durgawjp
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-10 naptan-code-header naptan-10"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-10"
@@ -953,32 +936,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003923B"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003923B"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-11"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-11"
       >
         Deneside, NE-bound Kingston Avenue (on Kingston Avenue)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-11"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-11"
       >
         durawagw
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-11 naptan-code-header naptan-11"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-11"
@@ -1038,32 +1018,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003625C"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003625C"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-12"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-12"
       >
         Deneside, E-bound Park (on The Avenue)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-12"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-12"
       >
         duratgwg
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-12 naptan-code-header naptan-12"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-12"
@@ -1123,32 +1100,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003939H"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003939H"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-13"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-13"
       >
         Deneside, NW-bound Laurel Avenue (on Laurel Avenue)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-13"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-13"
       >
         durawamp
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-13 naptan-code-header naptan-13"
           className="govuk-select farestage-select"
           defaultValue=""
           id="option-13"
@@ -1208,32 +1182,29 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset
-    className="govuk-fieldset"
-    key="13003661E"
-  >
-    <div
-      className="matching-wrapper"
+      </td>
+    </tr>
+    <tr
+      className="govuk-table__row"
+      key="13003661E"
     >
-      <label
-        className="govuk-label matching-stop-name"
-        htmlFor="option-14"
+      <td
+        className="govuk-table__cell stop-cell"
+        id="stop-14"
       >
         Seaham, S-bound Sophia Street (on Sophia Street)
-      </label>
-      <label
-        className="govuk-label naptan-code"
-        htmlFor="option-14"
+      </td>
+      <td
+        className="govuk-table__cell naptan-cell"
+        id="naptan-14"
       >
         durgapwp
-      </label>
-      <div
-        className="farestage-select-wrapper"
+      </td>
+      <td
+        className="govuk-table__cell stage-cell"
       >
         <select
+          aria-labelledby="stop-name-header stop-14 naptan-code-header naptan-14"
           className="govuk-select farestage-select"
           defaultValue="{\\"stop\\":{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"},\\"stage\\":\\"Acomb Green Lane\\"}"
           id="option-14"
@@ -1293,8 +1264,8 @@ exports[`MatchingList should render the matchinglist with options 1`] = `
             Piccadilly (York)
           </option>
         </select>
-      </div>
-    </div>
-  </fieldset>
-</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;

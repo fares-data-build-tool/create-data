@@ -1,15 +1,19 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { SalesOfferPackage, NextApiRequestWithSession, ProductWithSalesOfferPackages } from '../../interfaces/index';
+import {
+    SalesOfferPackage,
+    NextApiRequestWithSession,
+    ErrorInfo,
+    ProductWithSalesOfferPackages,
+} from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
-
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export interface SelectSalesOfferPackageWithError {
-    errorMessage: string;
-    selected: { [key: string]: string };
+    errors: ErrorInfo[];
+    selected: { [key: string]: string[] };
 }
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -18,39 +22,51 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
 
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
+        if (!fareTypeAttribute) {
+            throw new Error('No fare type session attribute found.');
+        }
+
+        const errors: ErrorInfo[] = [];
+
+        const sanitisedBody: { [key: string]: string[] } = {};
+
+        Object.entries(req.body).forEach(item => {
+            if (item[1]) {
+                sanitisedBody[item[0]] = (item[1] as string[]).filter(a => a !== '');
+            } else {
+                errors.push({
+                    errorMessage: 'Choose at least one sales offer package from the options',
+                    id: `${item[0]}-checkbox-0`,
+                });
+            }
+        });
+
+        if (errors.length > 0) {
+            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
+                errors,
+                selected: sanitisedBody,
+            };
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
+            redirectTo(res, `/selectSalesOfferPackage`);
+            return;
+        }
+
         const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
-        if (!req.body || Object.keys(req.body).length === 0) {
-            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
-                errorMessage: 'Choose at least one sales offer package from the options',
-                selected: req.body,
-            };
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
-            redirectTo(res, `/selectSalesOfferPackage`);
-            return;
-        }
-
-        if (Object.keys(req.body).length < products.length) {
-            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
-                errorMessage: 'Choose at least one sales offer package for each product',
-                selected: req.body,
-            };
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
-            redirectTo(res, `/selectSalesOfferPackage`);
-            return;
-        }
         if (products.length === 0) {
-            const salesOfferPackages: SalesOfferPackage[] = Object.entries(req.body).map(sop => {
-                const salesOfferPackage: SalesOfferPackage = JSON.parse(sop[1] as string);
+            const salesOfferPackages: SalesOfferPackage[] = Object.entries(sanitisedBody)[0][1].map(sop => {
+                const salesOfferPackage: SalesOfferPackage = JSON.parse(sop);
                 return salesOfferPackage;
             });
 
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackages);
         } else {
-            const keys: string[] = Object.keys(req.body);
+            const keys: string[] = Object.keys(sanitisedBody);
             const productsAndSalesOfferPackages: ProductWithSalesOfferPackages[] = keys.map(objectKey => {
-                const content: string | string[] = req.body[objectKey];
+                const content: string | string[] = sanitisedBody[objectKey];
                 if (isArray(content)) {
                     const salesOfferPackages: SalesOfferPackage[] = content.map(sop => {
                         const salesOfferPackage: SalesOfferPackage = JSON.parse(sop);

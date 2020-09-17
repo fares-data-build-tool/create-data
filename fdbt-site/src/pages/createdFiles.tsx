@@ -62,6 +62,7 @@ const enrichNetexFileData = async (
         return {
             matchingData: await getMatchingDataObject(file.Key.replace('.xml', '.json')),
             signedUrl,
+            fileSize: file.Size,
         };
     });
 
@@ -96,9 +97,26 @@ const enrichNetexFileData = async (
                           .join(', ')
                     : '',
                 signedUrl: item.signedUrl,
+                fileSize: item.fileSize || 0,
             };
         })
         .filter(isNotEmpty);
+};
+
+const getCleanFileSize = (fileSize: number): string => {
+    if (fileSize < 1024) {
+        return `${fileSize}B`;
+    }
+
+    const sizeInKb = fileSize / 1024;
+
+    if (sizeInKb < 1024) {
+        return `${sizeInKb.toFixed(0)}KB`;
+    }
+
+    const sizeInMb = sizeInKb / 1024;
+
+    return `${sizeInMb.toFixed(1)}MB`;
 };
 
 const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: CreateFilesProps): ReactElement => (
@@ -176,7 +194,7 @@ const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: Cr
                                 <br />
                                 <br />
                                 <a href={file.signedUrl} className="govuk-button" download>
-                                    Download
+                                    Download - File Type XML - File Size {getCleanFileSize(file.fileSize)}
                                 </a>
                             </div>
                         </div>

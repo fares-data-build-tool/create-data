@@ -8,7 +8,6 @@ import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import FormElementWrapper from '../components/FormElementWrapper';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
@@ -16,7 +15,6 @@ import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Fares Data Build Tool';
 const description = 'Single Direction selection page of the Fares Data Build Tool';
-const errorId = 'direction-error';
 
 interface DirectionProps {
     operator: string;
@@ -39,30 +37,27 @@ const SingleDirection = ({
             <>
                 <ErrorSummary errors={error} />
                 <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="single-direction-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="single-direction-page-heading">
-                                Select a journey direction
-                            </h1>
-                        </legend>
-                        <span className="govuk-hint" id="direction-operator-linename-passenger-type-hint">
-                            {operator} - {lineName} - {upperFirst(passengerType)}
-                        </span>
-                        <span className="govuk-hint" id="direction-journey-description-hint">
-                            {`Journey: ${service.serviceDescription}`}
-                        </span>
-                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
-                            <DirectionDropdown
-                                selectName="directionJourneyPattern"
-                                selectNameID="direction-journey-pattern"
-                                journeyPatterns={service.journeyPatterns}
-                                dropdownLabel="Journey direction"
-                            />
-                        </FormElementWrapper>
-                        <span className="govuk-hint hint-text" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset
-                        </span>
-                    </fieldset>
+                    <h1 className="govuk-heading-l" id="single-direction-page-heading">
+                        Select a journey direction
+                    </h1>
+
+                    <span className="govuk-hint" id="direction-operator-linename-passenger-type-hint">
+                        {operator} - {lineName} - {upperFirst(passengerType)}
+                    </span>
+                    <span className="govuk-hint" id="direction-journey-description-hint">
+                        {`Journey: ${service.serviceDescription}`}
+                    </span>
+                    <DirectionDropdown
+                        selectName="directionJourneyPattern"
+                        selectNameID="direction-journey-pattern"
+                        journeyPatterns={service.journeyPatterns}
+                        dropdownLabel="Journey direction"
+                        hideLabel
+                        errors={error}
+                    />
+                    <span className="govuk-hint hint-text" id="traveline-hint">
+                        This data is taken from the Traveline National Dataset
+                    </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

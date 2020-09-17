@@ -50,7 +50,7 @@ describe('pages', () => {
                     errors={[
                         {
                             errorMessage: 'Select one of the two validity options',
-                            id: 'multiple-product-validity-error',
+                            id: 'twenty-four-hours-row-0',
                         },
                     ]}
                     csrfToken=""
@@ -136,7 +136,7 @@ describe('pages', () => {
                 expect(result.props.multipleProducts.length).toBe(2);
                 expect(result.props.errors.length).toBe(1);
                 expect(result.props.errors[0].errorMessage).toBe('Select one of the two validity options');
-                expect(result.props.errors[0].id).toBe('multiple-product-validity-radios-error');
+                expect(result.props.errors[0].id).toBe('twenty-four-hours-row-0');
             });
         });
     });

@@ -5,41 +5,40 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
   description="Sales Offer Packages page for the Fares Data Build Tool"
   title="Sales Offer Packages - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/salesOfferPackages"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={
-        Array [
-          Object {
-            "errorMessage": "error",
-            "id": "",
-          },
-        ]
-      }
-    />
-    <h1
-      className="govuk-heading-xl"
-    >
-      How are the tickets sold - sales offer package
-    </h1>
-    <span
-      className="govuk-hint"
-      id="service-list-hint"
-    >
-      Select all that apply from the lists below
-    </span>
     <div
-      className="govuk-grid-row"
+      className="govuk-grid-column-two-thirds"
     >
-      <div
-        className="govuk-grid-column-two-thirds"
+      <CsrfForm
+        action="/api/salesOfferPackages"
+        csrfToken=""
+        method="post"
       >
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="purchaseLocations"
+        <ErrorSummary
+          errors={
+            Array [
+              Object {
+                "errorMessage": "error",
+                "id": "",
+              },
+            ]
+          }
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          How are the tickets sold - sales offer package
+        </h1>
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select all that apply from the lists below
+        </span>
+        <Component
+          errorId="checkbox-0-on-board"
           errors={
             Array [
               Object {
@@ -49,19 +48,28 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
             ]
           }
         >
-          <div
-            className="govuk-form-group"
+          <fieldset
+            aria-describedby="sop-purchase-locations"
+            className="govuk-fieldset"
           >
-            <fieldset
-              aria-describedby="sop-purchase-locations"
-              className="govuk-fieldset"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-purchase-locations"
             >
-              <p
-                className="govuk-body"
-                id="sop-purchase-locations"
-              >
-                Where can tickets be purchased?
-              </p>
+              Where can tickets be purchased?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-on-board"
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "error",
+                    "id": "",
+                  },
+                ]
+              }
+            >
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-on-board"
@@ -119,12 +127,11 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   Mobile Device
                 </label>
               </div>
-            </fieldset>
-          </div>
-        </FormElementWrapper>
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="paymentMethods"
+            </FormElementWrapper>
+          </fieldset>
+        </Component>
+        <Component
+          errorId="checkbox-0-cash"
           errors={
             Array [
               Object {
@@ -134,19 +141,28 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
             ]
           }
         >
-          <div
-            className="govuk-form-group"
+          <fieldset
+            aria-describedby="sop-payment-methods"
+            className="govuk-fieldset"
           >
-            <fieldset
-              aria-describedby="sop-payment-methods"
-              className="govuk-fieldset"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-payment-methods"
             >
-              <p
-                className="govuk-body"
-                id="sop-payment-methods"
-              >
-                How can tickets be paid for?
-              </p>
+              How can tickets be paid for?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-cash"
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "error",
+                    "id": "",
+                  },
+                ]
+              }
+            >
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-cash"
@@ -223,12 +239,11 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   Mobile Phone
                 </label>
               </div>
-            </fieldset>
-          </div>
-        </FormElementWrapper>
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="ticketFormats"
+            </FormElementWrapper>
+          </fieldset>
+        </Component>
+        <Component
+          errorId="checkbox-0-paper-ticket"
           errors={
             Array [
               Object {
@@ -238,18 +253,28 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
             ]
           }
         >
-          <div
-            className="govuk-form-group"
+          <fieldset
+            aria-describedby="sop-ticket-formats"
+            className="govuk-fieldset"
           >
-            <fieldset
-              aria-describedby="sales-offer-package-ticket-format"
-              className="govuk-fieldset"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-ticket-formats"
             >
-              <p
-                className="govuk-body"
-              >
-                What format do the tickets come in?
-              </p>
+              What format do the tickets come in?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-paper-ticket"
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "error",
+                    "id": "",
+                  },
+                ]
+              }
+            >
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-paper-ticket"
@@ -307,23 +332,23 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   Smart Card
                 </label>
               </div>
-            </fieldset>
-          </div>
-        </FormElementWrapper>
-      </div>
-      <div
-        className="govuk-grid-column-one-third"
-      >
-        <Component />
-      </div>
+            </FormElementWrapper>
+          </fieldset>
+        </Component>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Continue"
+        />
+      </CsrfForm>
     </div>
-    <input
-      className="govuk-button"
-      id="continue-button"
-      type="submit"
-      value="Continue"
-    />
-  </CsrfForm>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <Component />
+    </div>
+  </div>
 </Component>
 `;
 
@@ -332,49 +357,50 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
   description="Sales Offer Packages page for the Fares Data Build Tool"
   title="Sales Offer Packages - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/salesOfferPackages"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
-    <h1
-      className="govuk-heading-xl"
-    >
-      How are the tickets sold - sales offer package
-    </h1>
-    <span
-      className="govuk-hint"
-      id="service-list-hint"
-    >
-      Select all that apply from the lists below
-    </span>
     <div
-      className="govuk-grid-row"
+      className="govuk-grid-column-two-thirds"
     >
-      <div
-        className="govuk-grid-column-two-thirds"
+      <CsrfForm
+        action="/api/salesOfferPackages"
+        csrfToken=""
+        method="post"
       >
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="purchaseLocations"
+        <ErrorSummary
+          errors={Array []}
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          How are the tickets sold - sales offer package
+        </h1>
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select all that apply from the lists below
+        </span>
+        <Component
+          errorId="checkbox-0-on-board"
           errors={Array []}
         >
-          <div
-            className="govuk-form-group"
+          <fieldset
+            aria-describedby="sop-purchase-locations"
+            className="govuk-fieldset"
           >
-            <fieldset
-              aria-describedby="sop-purchase-locations"
-              className="govuk-fieldset"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-purchase-locations"
             >
-              <p
-                className="govuk-body"
-                id="sop-purchase-locations"
-              >
-                Where can tickets be purchased?
-              </p>
+              Where can tickets be purchased?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-on-board"
+              errors={Array []}
+            >
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-on-board"
@@ -432,27 +458,28 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   Mobile Device
                 </label>
               </div>
-            </fieldset>
-          </div>
-        </FormElementWrapper>
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="paymentMethods"
+            </FormElementWrapper>
+          </fieldset>
+        </Component>
+        <Component
+          errorId="checkbox-0-cash"
           errors={Array []}
         >
-          <div
-            className="govuk-form-group"
+          <fieldset
+            aria-describedby="sop-payment-methods"
+            className="govuk-fieldset"
           >
-            <fieldset
-              aria-describedby="sop-payment-methods"
-              className="govuk-fieldset"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-payment-methods"
             >
-              <p
-                className="govuk-body"
-                id="sop-payment-methods"
-              >
-                How can tickets be paid for?
-              </p>
+              How can tickets be paid for?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-cash"
+              errors={Array []}
+            >
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-cash"
@@ -529,26 +556,28 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   Mobile Phone
                 </label>
               </div>
-            </fieldset>
-          </div>
-        </FormElementWrapper>
-        <FormElementWrapper
-          errorClass="govuk-form-group--error"
-          errorId="ticketFormats"
+            </FormElementWrapper>
+          </fieldset>
+        </Component>
+        <Component
+          errorId="checkbox-0-paper-ticket"
           errors={Array []}
         >
-          <div
-            className="govuk-form-group"
+          <fieldset
+            aria-describedby="sop-ticket-formats"
+            className="govuk-fieldset"
           >
-            <fieldset
-              aria-describedby="sales-offer-package-ticket-format"
-              className="govuk-fieldset"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-ticket-formats"
             >
-              <p
-                className="govuk-body"
-              >
-                What format do the tickets come in?
-              </p>
+              What format do the tickets come in?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-paper-ticket"
+              errors={Array []}
+            >
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-paper-ticket"
@@ -606,22 +635,22 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   Smart Card
                 </label>
               </div>
-            </fieldset>
-          </div>
-        </FormElementWrapper>
-      </div>
-      <div
-        className="govuk-grid-column-one-third"
-      >
-        <Component />
-      </div>
+            </FormElementWrapper>
+          </fieldset>
+        </Component>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Continue"
+        />
+      </CsrfForm>
     </div>
-    <input
-      className="govuk-button"
-      id="continue-button"
-      type="submit"
-      value="Continue"
-    />
-  </CsrfForm>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <Component />
+    </div>
+  </div>
 </Component>
 `;

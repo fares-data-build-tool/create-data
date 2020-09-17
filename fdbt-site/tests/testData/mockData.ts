@@ -152,6 +152,8 @@ export const getMockRequestAndResponse = ({
             productPrice: '1234',
         },
         [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        destroy: (): void => {},
         ...session,
     };
 
@@ -1911,6 +1913,33 @@ export const invalidNameProducts: MultiProduct[] = [
     },
 ];
 
+export const duplicateNameProducts: MultiProduct[] = [
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: 'v.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];
+
 export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] = [
     {
         heading: {
@@ -2036,7 +2065,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-age-range',
+                id: 'age-range-required',
             },
         ],
     },
@@ -2081,7 +2110,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-proof',
+                id: 'proof-required',
             },
         ],
     },
@@ -2185,8 +2214,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputErrors: [
                     {
                         errorMessage: 'Select at least one proof document',
-                        id: 'proof-required',
-                        userInput: '',
+                        id: 'membership-card',
                     },
                 ],
             },
@@ -2302,7 +2330,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-proof',
+                id: 'proof-required',
             },
         ],
     },
@@ -2496,7 +2524,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
         ],
         radioError: [
             {
-                id: 'define-time-restrictions',
+                id: 'time-restriction-required',
                 errorMessage: 'Choose one of the options below',
             },
         ],
@@ -2538,7 +2566,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
         ],
         radioError: [
             {
-                id: 'define-valid-days',
+                id: 'valid-days-required',
                 errorMessage: 'Choose one of the options below',
             },
         ],
@@ -2547,11 +2575,11 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
 
 export const mockTimeRestrictionsRadioErrors: ErrorInfo[] = [
     {
-        id: 'define-time-restrictions',
+        id: 'time-restriction-required',
         errorMessage: 'Choose one of the options below',
     },
     {
-        id: 'define-valid-days',
+        id: 'valid-days-required',
         errorMessage: 'Choose one of the options below',
     },
 ];
@@ -2634,7 +2662,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
                 ],
                 inputErrors: [
                     {
-                        id: 'valid-days-required',
+                        id: 'monday',
                         errorMessage: 'Select at least one day',
                     },
                 ],
@@ -2654,17 +2682,14 @@ export const mockTimeRestrictionsInputErrors: ErrorInfo[] = [
     {
         id: 'start-time',
         errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
     {
         id: 'end-time',
         errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
     {
-        id: 'valid-days-required',
+        id: 'monday',
         errorMessage: 'Select at least one day',
-        userInput: undefined,
     },
 ];
 
@@ -2755,7 +2780,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
         ],
         radioError: [
             {
-                id: 'define-valid-days',
+                id: 'valid-days-required',
                 errorMessage: 'Choose one of the options below',
             },
         ],
@@ -2764,19 +2789,16 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
 
 export const mockTimeRestrictionsRadioAndInputErrors: ErrorInfo[] = [
     {
-        id: 'define-valid-days',
+        id: 'valid-days-required',
         errorMessage: 'Choose one of the options below',
-        userInput: undefined,
     },
     {
         id: 'start-time',
         errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
     {
         id: 'end-time',
         errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
 ];
 

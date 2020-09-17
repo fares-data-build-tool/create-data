@@ -112,7 +112,7 @@ export const isSalesOfferPackageWithErrors = (
         | undefined,
 ): salesOfferPackageInfo is SelectSalesOfferPackageWithError =>
     salesOfferPackageInfo !== undefined &&
-    (salesOfferPackageInfo as SelectSalesOfferPackageWithError).errorMessage !== undefined;
+    (salesOfferPackageInfo as SelectSalesOfferPackageWithError).errors !== undefined;
 
 export const isProductWithSalesOfferPackages = (
     salesOfferPackageInfo:

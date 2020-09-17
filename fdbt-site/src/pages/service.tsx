@@ -14,7 +14,7 @@ import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
-const errorId = 'service-error';
+const errorId = 'service';
 
 type ServiceProps = {
     operator: string;
@@ -35,38 +35,34 @@ const Service = ({
             <>
                 <ErrorSummary errors={error} />
                 <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="service-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="service-page-heading">
-                                Select a service
-                            </h1>
-                        </legend>
-                        <span className="govuk-hint" id="service-operator-passenger-type-hint">
-                            {operator} - {upperFirst(passengerType)}
-                        </span>
-                        <label className="govuk-visually-hidden" htmlFor="service">
-                            Service list
-                        </label>
-                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
-                            <select className="govuk-select" id="service" name="service" defaultValue="">
-                                <option value="" disabled>
-                                    Select One
+                    <label htmlFor="service">
+                        <h1 className="govuk-heading-l" id="service-page-heading">
+                            Select a service
+                        </h1>
+                    </label>
+
+                    <span className="govuk-hint" id="service-operator-passenger-type-hint">
+                        {operator} - {upperFirst(passengerType)}
+                    </span>
+                    <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
+                        <select className="govuk-select" id="service" name="service" defaultValue="">
+                            <option value="" disabled>
+                                Select One
+                            </option>
+                            {services.map(service => (
+                                <option
+                                    key={`${service.lineName}#${service.startDate}`}
+                                    value={`${service.lineName}#${service.startDate}`}
+                                    className="service-option"
+                                >
+                                    {service.lineName} - Start date {service.startDate}
                                 </option>
-                                {services.map(service => (
-                                    <option
-                                        key={`${service.lineName}#${service.startDate}`}
-                                        value={`${service.lineName}#${service.startDate}`}
-                                        className="service-option"
-                                    >
-                                        {service.lineName} - Start date {service.startDate}
-                                    </option>
-                                ))}
-                            </select>
-                        </FormElementWrapper>
-                        <span className="govuk-hint hint-text" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset
-                        </span>
-                    </fieldset>
+                            ))}
+                        </select>
+                    </FormElementWrapper>
+                    <span className="govuk-hint hint-text" id="traveline-hint">
+                        This data is taken from the Traveline National Dataset
+                    </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

@@ -107,7 +107,8 @@ exports[`pages createdFiles should render correctly 1`] = `
             download={true}
             href="https://test.example.com/dscsdcd"
           >
-            Download
+            Download - File Type XML - File Size 
+            123B
           </a>
         </div>
       </div>
@@ -206,7 +207,8 @@ exports[`pages createdFiles should render correctly 1`] = `
             download={true}
             href="https://test.example.com/gfnhgddd"
           >
-            Download
+            Download - File Type XML - File Size 
+            456B
           </a>
         </div>
       </div>

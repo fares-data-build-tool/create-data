@@ -8,6 +8,7 @@ describe('pages', () => {
             const tree = shallow(
                 <CsvZoneUpload
                     csvUploadApiRoute=""
+                    csvUploadTitle="Upload fare zone as CSV"
                     csvUploadHintText=""
                     guidanceDocDisplayName=""
                     guidanceDocAttachmentUrl=""

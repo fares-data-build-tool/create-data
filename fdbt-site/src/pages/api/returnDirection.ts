@@ -26,12 +26,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         } else {
             const errors: ErrorInfo[] = [];
 
-            if (!inboundJourney) {
-                errors.push({ errorMessage: 'Choose an option for an inbound journey', id: inboundErrorId });
-            }
-
             if (!outboundJourney) {
                 errors.push({ errorMessage: 'Choose an option for an outbound journey', id: outboundErrorId });
+            }
+
+            if (!inboundJourney) {
+                errors.push({ errorMessage: 'Choose an option for an inbound journey', id: inboundErrorId });
             }
 
             updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { errors, inboundJourney, outboundJourney });

@@ -12,7 +12,6 @@ import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';
 
-const errorId = 'passenger-type-error';
 const insetText = 'More passenger types will become available soon';
 
 type PassengerTypeProps = {
@@ -34,7 +33,11 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                         <span className="govuk-hint" id="passenger-type-hint">
                             Relate the ticket(s) to a passenger type
                         </span>
-                        <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId={`passenger-type-${PASSENGER_TYPES_WITH_GROUP[0].passengerTypeValue}`}
+                            errorClass="govuk-radios--error"
+                        >
                             <div className="govuk-radios">
                                 {PASSENGER_TYPES_WITH_GROUP.map(
                                     (passenger): ReactElement => (

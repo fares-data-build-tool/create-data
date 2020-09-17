@@ -19,8 +19,8 @@ describe('FormElementWrapper', () => {
         it('does nothing', () => {
             const wrapper = shallow(
                 <FormElementWrapper
-                    errors={[{ errorMessage: 'Test error', id: 'input-error-1' }]}
-                    errorId="input-error"
+                    errors={[{ errorMessage: 'Test error', id: 'input-1' }]}
+                    errorId="input"
                     errorClass="input--error"
                 >
                     <input type="text" />
@@ -40,10 +40,10 @@ describe('FormElementWrapper', () => {
             wrapper = shallow(
                 <FormElementWrapper
                     errors={[
-                        { errorMessage: 'Test error', id: 'input-error' },
-                        { errorMessage: 'Test error', id: 'input-error-2' },
+                        { errorMessage: 'Test error', id: 'input' },
+                        { errorMessage: 'Test error', id: 'input-2' },
                     ]}
-                    errorId="input-error"
+                    errorId="input"
                     errorClass="input--error"
                 >
                     <input type="text" />
@@ -55,7 +55,7 @@ describe('FormElementWrapper', () => {
             const errorSpan = wrapper.find('.govuk-error-message');
 
             expect(errorSpan).toHaveLength(1);
-            expect(errorSpan.text()).toBe('Test error');
+            expect(errorSpan.text()).toBe('Error: Test error');
         });
 
         it('adds given class', () => {
@@ -70,10 +70,10 @@ describe('FormElementWrapper', () => {
             const wrapperWithClass = shallow(
                 <FormElementWrapper
                     errors={[
-                        { errorMessage: 'Test error', id: 'input-error' },
-                        { errorMessage: 'Test error', id: 'input-error-2' },
+                        { errorMessage: 'Test error', id: 'input' },
+                        { errorMessage: 'Test error', id: 'input-2' },
                     ]}
-                    errorId="input-error"
+                    errorId="input"
                     errorClass="input--error"
                 >
                     <input type="text" className="existing-class" />
@@ -87,17 +87,17 @@ describe('FormElementWrapper', () => {
             const wrapperWithMultipleMatching = shallow(
                 <FormElementWrapper
                     errors={[
-                        { errorMessage: 'Test error First', id: 'input-error' },
-                        { errorMessage: 'Test error Second', id: 'input-error' },
+                        { errorMessage: 'Test error First', id: 'input' },
+                        { errorMessage: 'Test error Second', id: 'input' },
                     ]}
-                    errorId="input-error"
+                    errorId="input"
                     errorClass="input--error"
                 >
                     <input type="text" className="existing-class" />
                 </FormElementWrapper>,
             );
 
-            expect(wrapperWithMultipleMatching.find('.govuk-error-message').text()).toBe('Test error First');
+            expect(wrapperWithMultipleMatching.find('.govuk-error-message').text()).toBe('Error: Test error First');
         });
     });
 });
