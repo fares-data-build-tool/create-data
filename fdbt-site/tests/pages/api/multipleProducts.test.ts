@@ -12,6 +12,7 @@ import {
     invalidPriceProducts,
     invalidNameProducts,
     getMockRequestAndResponse,
+    duplicateNameProducts,
 } from '../../testData/mockData';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
@@ -55,6 +56,13 @@ describe('multiple product data sorting methods', () => {
         expect(result[1].productNameError).toBe('Product name cannot have less than 2 characters');
         expect(result[2].productNameError).toBe('Product name cannot have less than 2 characters');
         expect(result[3].productNameError).toBe('Product name cannot have more than 50 characters');
+    });
+
+    it('adds name errors to a product with duplicate names', () => {
+        const result = checkProductNamesAreValid(duplicateNameProducts);
+        expect(result[0].productNameError).toBe('Product names must be unique');
+        expect(result[1].productNameError).toBe('Product names must be unique');
+        expect(result[2].productNameError).toBe('Product names must be unique');
     });
 });
 

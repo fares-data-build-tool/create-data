@@ -152,6 +152,8 @@ export const getMockRequestAndResponse = ({
             productPrice: '1234',
         },
         [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        destroy: (): void => {},
         ...session,
     };
 
@@ -1904,6 +1906,33 @@ export const invalidNameProducts: MultiProduct[] = [
         productName:
             'Super Saver Bus Ticket for the cheapest you have ever seen and no other bus service will compare to this one, or your money back',
         productNameId: 'Too Long name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];
+
+export const duplicateNameProducts: MultiProduct[] = [
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: 'v.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
         productPrice: '.',
         productPriceId: '.',
         productDuration: '.',

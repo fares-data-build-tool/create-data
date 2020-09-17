@@ -110,10 +110,14 @@ export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProdu
 };
 
 export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduct[] => {
+    const productNames = products.map(product => product.productName);
+
     const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productName } = product;
         const trimmedProductName = removeExcessWhiteSpace(productName);
-        const productNameError = checkProductNameIsValid(trimmedProductName);
+        const duplicateError =
+            productNames.filter(item => item === productName).length > 1 ? 'Product names must be unique' : '';
+        const productNameError = checkProductNameIsValid(trimmedProductName) || duplicateError;
 
         if (productNameError) {
             return {
