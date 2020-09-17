@@ -63,7 +63,7 @@ export interface SelectSalesOfferPackageProps {
 
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
-    productIndex: number,
+    productName: string,
     selected?: { [key: string]: string[] },
 ): ReactElement[] => {
     return salesOfferPackagesList.map((offer, index) => {
@@ -78,7 +78,7 @@ const generateCheckbox = (
 
         if (selected) {
             Object.entries(selected).forEach(entry => {
-                if (entry[0] === `product-${productIndex}`) {
+                if (entry[0] === productName) {
                     entry[1].forEach(selectedEntry => {
                         if (selectedEntry === JSON.stringify(offer)) {
                             isSelectedOffer = true;
@@ -92,16 +92,13 @@ const generateCheckbox = (
             <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
                 <input
                     className="govuk-checkboxes__input"
-                    id={`product-${productIndex}-checkbox-${index}`}
-                    name={`product-${productIndex}`}
+                    id={`${productName}-checkbox-${index}`}
+                    name={productName}
                     type="checkbox"
                     value={JSON.stringify(offer)}
                     defaultChecked={isSelectedOffer}
                 />
-                <label
-                    className="govuk-label govuk-checkboxes__label"
-                    htmlFor={`product-${productIndex}-checkbox-${index}`}
-                >
+                <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productName}-checkbox-${index}`}>
                     {checkboxTitles}
                 </label>
             </div>
@@ -115,15 +112,15 @@ const createSalesOffer = (
     selected?: { [key: string]: string[] },
     errors: ErrorInfo[] = [],
 ): ReactElement[] =>
-    productNames.map((productName, index) => (
+    productNames.map(productName => (
         <div className="sop-option">
-            <FormGroupWrapper errorId={`product-${index}-checkbox-0`} errors={errors}>
+            <FormGroupWrapper errorId={`${[productName]}-checkbox-0`} errors={errors}>
                 <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
-                    <FormElementWrapper errors={errors} errorId={`product-${index}-checkbox-0`} errorClass="">
+                    <FormElementWrapper errors={errors} errorId={`${productName}-checkbox-0`} errorClass="">
                         <div className="govuk-checkboxes">
-                            {generateCheckbox(salesOfferPackagesList, index, selected)}
-                            <input type="hidden" name={`product-${index}`} />
+                            {generateCheckbox(salesOfferPackagesList, productName, selected)}
+                            <input type="hidden" name={productName} />
                         </div>
                     </FormElementWrapper>
                 </fieldset>
