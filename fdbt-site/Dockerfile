@@ -15,7 +15,7 @@ ENV NODE_ENV production
 WORKDIR /home/node/app
 
 COPY package*.json ./
-RUN npm install --ignore-scripts
+RUN npm install --ignore-scripts && apk add --no-cache clamav
 
 COPY --from=build /tmp/.next ./.next
 COPY --from=build /tmp/dist ./dist
