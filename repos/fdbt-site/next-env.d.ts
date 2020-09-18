@@ -5,6 +5,7 @@
 declare module 'set-cookie';
 declare module 'mock-req';
 declare module 'mock-res';
+declare module 'clamscan';
 
 declare module '*.jpeg' {
     const value: string;
