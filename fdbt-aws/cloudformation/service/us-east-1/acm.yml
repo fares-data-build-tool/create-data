@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for ACM resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+  DomainName:
+    Type: String
+    Description: Domain name for ACM certificate
+
+Resources:
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DomainName: !Ref DomainName
+      SubjectAlternativeNames:
+        - !Sub "*.${DomainName}"
+      ValidationMethod: DNS
+
+Outputs:
+  CertificateArn:
+    Value: !Ref Certificate
+    Export:
+      Name: !Sub ${Stage}:CertificateArn

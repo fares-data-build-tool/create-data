@@ -27,7 +27,6 @@ Parameters:
 
 Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
-  IsNotTest: !Not [!Equals [!Ref Stage, "test"]]
 
 Resources:
   IwIpSet:
@@ -150,24 +149,10 @@ Resources:
             IPSetReferenceStatement:
               Arn: !GetAtt PersonalUserIpSet.Arn
 
-  DefaultAcl:
-    Type: AWS::WAFv2::WebACL
-    Condition: IsNotTest
-    Properties:
-      Name: !Sub ${ProductName}-waf-default-${Stage}
-      Scope: REGIONAL
-      Description: Default ACL with no restrictions
-      DefaultAction:
-        Allow: {}
-      VisibilityConfig:
-        SampledRequestsEnabled: true
-        CloudWatchMetricsEnabled: true
-        MetricName: DefaultAccessMetric
-
   WafAssociation:
-    Type: "AWS::WAFv2::WebACLAssociation"
+    Type: AWS::WAFv2::WebACLAssociation
+    Condition: IsTest
     Properties:
       ResourceArn:
         Fn::ImportValue: !Sub ${Stage}:LoadbalancerArn
-      WebACLArn:
-        !If [IsTest, !GetAtt RestrictAccessAcl.Arn, !GetAtt DefaultAcl.Arn]
+      WebACLArn: !GetAtt RestrictAccessAcl.Arn

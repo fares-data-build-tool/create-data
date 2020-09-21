@@ -466,3 +466,8 @@ Outputs:
     Value: !Ref PublicLoadBalancer
     Export:
       Name: !Sub ${Stage}:LoadbalancerArn
+
+  LoadBalancerDomainName:
+    Value: !GetAtt PublicLoadBalancer.DNSName
+    Export:
+      Name: !Sub ${Stage}:LoadbalancerDomainName
