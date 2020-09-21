@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
+import startCase from 'lodash/startCase';
 import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
@@ -13,7 +14,7 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
         id: string;
         content: string;
     };
-    inputType: string;
+    inputType: 'text' | 'checkbox' | 'textWithUnits';
     inputs: BaseReactElement[];
     inputErrors: ErrorInfo[];
 }
@@ -24,6 +25,7 @@ export interface RadioConditionalInputFieldset {
     heading: {
         id: string;
         content: string;
+        hidden?: boolean;
     };
     radios: RadioButton[];
     radioError: ErrorInfo[];
@@ -124,6 +126,65 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
     );
 };
 
+export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalInputs): ReactElement => {
+    const error = radio.inputErrors.length > 0;
+
+    return (
+        <div
+            className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
+            id={radio.dataAriaControls}
+        >
+            <span className="govuk-hint" id={radio.hint.id}>
+                {radio.hint.content}
+            </span>
+            {radio.inputs.map(input => {
+                const errorId = createErrorId(input, radio.inputErrors);
+                return (
+                    <div
+                        key={input.id}
+                        className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}
+                    >
+                        <label className="govuk-label" htmlFor={input.id}>
+                            {input.label}
+                        </label>
+                        <FormElementWrapper
+                            errors={radio.inputErrors}
+                            errorId={errorId}
+                            errorClass={`${input.id.includes('units') ? 'govuk-select--error' : 'govuk-input--error'}`}
+                        >
+                            {input.id.includes('units') ? (
+                                <select
+                                    className="govuk-select"
+                                    id={input.id}
+                                    name={input.name}
+                                    defaultValue={input.defaultValue || ''}
+                                >
+                                    <option value="" disabled>
+                                        Select a {input.name}
+                                    </option>
+                                    {input.options?.map(unit => (
+                                        <option key={`${unit}-option`} value={unit}>
+                                            {startCase(`${unit}s`)}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <input
+                                    className="govuk-input govuk-!-width-one-third"
+                                    id={input.id}
+                                    name={input.name}
+                                    type="text"
+                                    defaultValue={input.defaultValue || ''}
+                                />
+                            )}
+                        </FormElementWrapper>
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
+
 const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLabel: ReactElement): ReactElement => {
     const baseRadioInput = (
         <input
@@ -147,13 +208,19 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
         />
     );
 
+    const inputTypeMap = {
+        checkbox: renderConditionalCheckbox,
+        text: renderConditionalTextInput,
+        textWithUnits: renderConditionalTextWithUnitsInput,
+    };
+
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
             </div>
-            {radio.inputType === 'checkbox' ? renderConditionalCheckbox(radio) : renderConditionalTextInput(radio)}
+            {inputTypeMap[radio.inputType](radio)}
         </div>
     );
 };
@@ -190,7 +257,10 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
         <div className={`govuk-form-group ${radioError ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>
                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-                    <h2 className="govuk-fieldset__heading" id={fieldset.heading.id}>
+                    <h2
+                        className={`govuk-fieldset__heading${fieldset.heading.hidden ? ' govuk-visually-hidden' : ''}`}
+                        id={fieldset.heading.id}
+                    >
                         {fieldset.heading.content}
                     </h2>
                 </legend>

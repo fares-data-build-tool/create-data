@@ -7,6 +7,8 @@ export interface BaseReactElement {
     id: string;
     name: string;
     label: string;
+    defaultValue?: string;
+    options?: string[];
 }
 
 export interface ProductInfo {
@@ -183,6 +185,12 @@ export interface SingleTicket extends BasePointToPointTicket {
 export interface ReturnTicket extends BasePointToPointTicket {
     inboundFareZones: FareZone[];
     outboundFareZones: FareZone[];
+    returnPeriodValidity?: ReturnPeriodValidity;
+}
+
+export interface ReturnPeriodValidity {
+    amount: string;
+    typeOfDuration: string;
 }
 
 export interface FareZone {

@@ -1,12 +1,13 @@
 import { NextApiResponse } from 'next';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { BasicService, NextApiRequestWithSession } from '../../interfaces';
 import { UserFareStages } from '../../data/s3';
 import { isSessionValid } from './apiUtils/validator';
-import { MATCHING_ATTRIBUTE } from '../../constants';
+import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { MatchingWithErrors, MatchingInfo } from '../../interfaces/matchingInterface';
+import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -16,6 +17,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
+        }
+
+        const fareTypeInfo = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
+        if (!fareTypeInfo || !isFareType(fareTypeInfo)) {
+            throw new Error('Could not extract a fare type from the session');
         }
 
         const service: BasicService = JSON.parse(req.body.service);
@@ -37,6 +44,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
         const matchingAttributeValue: MatchingInfo = { service, userFareStages, matchingFareZones };
         updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeValue);
+
+        if (fareTypeInfo.fareType === 'return') {
+            redirectTo(res, '/returnValidity');
+            return;
+        }
 
         redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {
