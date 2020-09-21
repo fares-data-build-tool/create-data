@@ -273,6 +273,8 @@ describe('csvZoneUpload', () => {
         });
 
         it('should return 302 redirect to /csvZoneUpload with an error message when file contains a virus', async () => {
+            process.env.ENABLE_VIRUS_SCAN = '1';
+
             const file = {
                 'csv-upload': {
                     size: 999,

@@ -19,7 +19,7 @@ The site runs middleware to require an auth session against AWS Cognito, if you 
 
 - If NODE_ENV is not 'development', you will need to set the environment variable `ALLOW_DISABLE_AUTH` to be `'1'`. If on the development env, you do not need to set this.
 - Hit the homepage with the query string `?disableAuth=true` appended to the URL
-- You should now be able to navbigate the site without authenticating
+- You should now be able to navigate the site without authenticating
 
 ## Running ClamAV virus scanning tool locally
 

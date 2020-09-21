@@ -341,6 +341,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error message if the file contains a virus', async () => {
+        process.env.ENABLE_VIRUS_SCAN = '1';
         const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file contains a virus' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
