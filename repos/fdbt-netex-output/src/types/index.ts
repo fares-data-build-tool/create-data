@@ -1,3 +1,5 @@
+import { NetexObject } from '../netex-convertor/sharedHelpers';
+
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
 
 export interface Operator {
@@ -94,7 +96,15 @@ export interface SingleTicket extends BasePointToPointTicket {
 export interface ReturnTicket extends BasePointToPointTicket {
     inboundFareZones: FareZone[];
     outboundFareZones: FareZone[];
+    returnPeriodValidity?: ReturnPeriodValidity;
 }
+
+export interface ReturnPeriodValidity {
+    amount: string;
+    typeOfDuration: TypeOfDuration;
+}
+
+type TypeOfDuration = 'day' | 'week' | 'month' | 'year';
 
 export interface FareZone {
     name: string;
@@ -203,7 +213,7 @@ export interface FareStructureElement {
     Name: object;
     Description?: object;
     TypeOfFareStructureElementRef?: object;
-    GenericParameterAssignment: object;
+    GenericParameterAssignment: NetexObject;
     timeIntervals?: object;
 }
 

@@ -11,6 +11,7 @@ import {
     SalesOfferPackage,
     BaseProduct,
     NetexSalesOfferPackage,
+    FareStructureElement,
 } from '../../types';
 import { NetexObject, getProfileRef, isGroupTicket, isValidTimeRestriction } from '../sharedHelpers';
 
@@ -378,4 +379,74 @@ export const getFareTables = (matchingData: PointToPointTicket): NetexObject[] =
             },
         };
     });
+};
+
+export const getConditionsOfTravelFareStructureElement = (matchingData: ReturnTicket): FareStructureElement => {
+    let usagePeriodValidity = {};
+
+    if (matchingData.returnPeriodValidity) {
+        const years =
+            matchingData.returnPeriodValidity.typeOfDuration === 'year'
+                ? `${matchingData.returnPeriodValidity.amount}`
+                : '0';
+        const months =
+            matchingData.returnPeriodValidity.typeOfDuration === 'month'
+                ? `${matchingData.returnPeriodValidity.amount}`
+                : '0';
+        let days = '0';
+
+        if (matchingData.returnPeriodValidity.typeOfDuration === 'week') {
+            days = String(Number(matchingData.returnPeriodValidity.amount) * 7);
+        } else if (matchingData.returnPeriodValidity.typeOfDuration === 'day') {
+            days = matchingData.returnPeriodValidity.amount;
+        }
+
+        usagePeriodValidity = {
+            UsageValidityPeriod: {
+                version: '1.0',
+                id: `op:Trip@back@frequency`,
+                UsageTrigger: { $t: 'startOutboundRide' },
+                UsageEnd: {
+                    $t: 'standardDuration',
+                },
+                StandardDuration: {
+                    $t: `P${years}Y${months}M${days}D`,
+                },
+                ActivationMeans: { $t: 'noneRequired' },
+            },
+        };
+    }
+    return {
+        id: 'Tariff@return@conditions_of_travel',
+        version: '1.0',
+        Name: { $t: 'Conditions of travel' },
+        GenericParameterAssignment: {
+            version: '1.0',
+            order: '1',
+            id: 'Tariff@return@conditions_of_travel',
+            TypeOfAccessRightAssignmentRef: {
+                version: 'fxc:v1.0',
+                ref: 'fxc:condition_of_use',
+            },
+            LimitationGroupingType: { $t: 'AND' },
+            limitations: {
+                RoundTrip: {
+                    version: '1.0',
+                    id: 'Tariff@return@condition@direction',
+                    Name: { $t: 'return Trip' },
+                    TripType: { $t: 'return' },
+                },
+                FrequencyOfUse: {
+                    version: '1.0',
+                    id: 'Tariff@return@oneTrip',
+                    Name: { $t: 'One trip no transfers' },
+                },
+                Interchanging: {
+                    version: '1.0',
+                    id: 'Tariff@return@NoTransfers',
+                },
+                ...usagePeriodValidity,
+            },
+        },
+    };
 };
