@@ -33,7 +33,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const sanitisedBody: { [key: string]: string[] } = {};
 
         Object.entries(req.body).forEach(item => {
-            if (item[1]) {
+            if (item[1] && isArray(item[1])) {
                 sanitisedBody[item[0]] = (item[1] as string[]).filter(a => a !== '');
             } else {
                 errors.push({

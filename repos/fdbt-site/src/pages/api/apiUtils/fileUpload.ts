@@ -126,7 +126,7 @@ export const processFileUpload = async (req: NextApiRequest, inputName: string):
 
     const fileData = formData.files[inputName];
 
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.ENABLE_VIRUS_SCAN === '1') {
         if (await containsViruses(fileData.path)) {
             return {
                 fileContents: '',
