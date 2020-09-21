@@ -17,7 +17,6 @@ const getS3Client = (): AWS.S3 => {
 };
 
 const s3 = getS3Client();
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const fetchDataFromS3 = async (event: S3Event): Promise<any> => {
     try {
