@@ -1,5 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`RadioConditionalInput should hide the radio button heading when the fieldset has a hidden flag set 1`] = `
+<div
+  className="govuk-form-group "
+>
+  <fieldset
+    aria-describedby="define-passenger-age-range"
+    className="govuk-fieldset"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--m"
+    >
+      <h2
+        className="govuk-fieldset__heading govuk-visually-hidden"
+        id="define-passenger-age-range"
+      >
+        Does the passenger type have an age range?
+      </h2>
+    </legend>
+    <FormElementWrapper
+      errorClass="govuk-radios--error"
+      errorId=""
+      errors={Array []}
+    >
+      <div
+        className="govuk-radios govuk-radios--conditional"
+        data-module="govuk-radios"
+      >
+        <div
+          className="govuk-radios__item"
+          key="age-range-required"
+        >
+          <input
+            className="govuk-radios__input"
+            id="age-range-required"
+            name="ageRange"
+            type="radio"
+            value="Yes"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="age-range-required"
+          >
+            Yes
+          </label>
+        </div>
+        <div
+          className="govuk-radios__item"
+          key="age-range-not-required"
+        >
+          <input
+            className="govuk-radios__input"
+            id="age-range-not-required"
+            name="ageRange"
+            type="radio"
+            value="No"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="age-range-not-required"
+          >
+            No
+          </label>
+        </div>
+      </div>
+    </FormElementWrapper>
+  </fieldset>
+  <br />
+  <br />
+</div>
+`;
+
 exports[`RadioConditionalInput should render a set of radio buttons with conditional inputs when given a fieldset referencing inputs 1`] = `
 <div
   className="govuk-form-group "
