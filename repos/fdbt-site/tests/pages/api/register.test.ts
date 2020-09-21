@@ -1,6 +1,6 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import register, { validatePassword } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
-import register from '../../../src/pages/api/register';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
@@ -55,8 +55,8 @@ describe('register', () => {
             'empty email',
             {
                 email: '',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
@@ -78,7 +78,7 @@ describe('register', () => {
             {
                 email: 'test@test.com',
                 password: 'abchi',
-                confirmPassword: 'abcdefghi',
+                confirmPassword: 'abchi',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
@@ -100,7 +100,7 @@ describe('register', () => {
             {
                 email: 'test@test.com',
                 password: '',
-                confirmPassword: 'abcdefghi',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: '',
@@ -121,8 +121,8 @@ describe('register', () => {
             'passwords fields do not match',
             {
                 email: 'test@test.com',
-                password: 'abcdefghidddd',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosa',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: '',
@@ -143,8 +143,8 @@ describe('register', () => {
             'empty NOC field',
             {
                 email: 'test@test.com',
-                password: 'abcdefghidddd',
-                confirmPassword: 'abcdefghidddd',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: '',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
@@ -182,8 +182,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'abcd',
                 regKey: 'abcdefg',
             },
@@ -223,8 +223,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
@@ -237,7 +237,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -272,8 +272,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
@@ -321,8 +321,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
@@ -340,8 +340,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: 'yes',
@@ -358,7 +358,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -372,8 +372,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: '',
@@ -390,12 +390,31 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
+        });
+    });
+
+    describe('validate password', () => {
+        it('returns an error message for a poor password', () => {
+            expect(validatePassword('Password', 'Password')).toBe(
+                'Your password is too weak. Try adding another word or two. Uncommon words are better. Avoid repeating characters. An example of a strong password is one with three or more uncommon words, one after another.',
+            );
+        });
+        it('returns an empty string for a strong password', () => {
+            expect(validatePassword('chromosoneTelepathyDinosaur', 'chromosoneTelepathyDinosaur')).toBe('');
+        });
+        it('returns an error message for a password which is too short', () => {
+            expect(validatePassword('sdfsf', 'sdfsf')).toBe('Password cannot be empty or less than 8 characters');
+        });
+        it('returns an error message for a password which does not match the confirm password', () => {
+            expect(validatePassword('chromosoneHotdogDinosaur', 'chromosoneTelepathyDinosaur')).toBe(
+                'Passwords do not match',
+            );
         });
     });
 });
@@ -447,8 +466,8 @@ describe('register pipe split logic', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: '',
@@ -465,7 +484,7 @@ describe('register pipe split logic', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -509,8 +528,8 @@ describe('register pipe split logic', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import zxcvbn from 'zxcvbn';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { USER_COOKIE, INTERNAL_NOC } from '../../constants';
 import { InputCheck } from '../../interfaces';
@@ -6,13 +7,16 @@ import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
 
-const validatePassword = (password: string, confirmPassword: string): string => {
+export const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';
 
     if (password.length < 8) {
         passwordErrorMessage = 'Password cannot be empty or less than 8 characters';
     } else if (confirmPassword !== password) {
         passwordErrorMessage = 'Passwords do not match';
+    } else if (zxcvbn(password).score < 3) {
+        passwordErrorMessage =
+            'Your password is too weak. Try adding another word or two. Uncommon words are better. Avoid repeating characters. An example of a strong password is one with three or more uncommon words, one after another.';
     }
 
     return passwordErrorMessage;
