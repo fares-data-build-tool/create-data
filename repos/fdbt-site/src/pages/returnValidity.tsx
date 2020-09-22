@@ -79,15 +79,17 @@ const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & C
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${fieldset.radioError.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="return-validity-page-heading">
-                            {fieldset.heading.content}
-                        </h1>
-                    </legend>
-                    <span className="govuk-hint" id="return-validity-hint">
-                        Select no if the return journey is only valid on the same day as the outbound journey
-                    </span>
-                    <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
+                    <fieldset className="govuk-fieldset" aria-describedby="return-validity-page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading" id="return-validity-page-heading">
+                                {fieldset.heading.content}
+                            </h1>
+                        </legend>
+                        <span className="govuk-hint" id="return-validity-hint">
+                            Select no if the return journey is only valid on the same day as the outbound journey
+                        </span>
+                        <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
+                    </fieldset>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

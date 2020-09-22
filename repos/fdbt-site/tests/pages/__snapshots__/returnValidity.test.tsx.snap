@@ -17,76 +17,81 @@ exports[`pages returnValidity should render the page correctly 1`] = `
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="return-validity-hint"
-      >
-        Select no if the return journey is only valid on the same day as the outbound journey
-      </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is the return part of this ticket valid for more than one day?",
-              "hidden": true,
-              "id": "define-return-validity",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
                 },
-                "id": "return-validity-defined",
-                "inputErrors": Array [],
-                "inputType": "textWithUnits",
-                "inputs": Array [
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-amount",
-                    "label": "Amount",
-                    "name": "amount",
-                  },
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-units",
-                    "label": "Duration",
-                    "name": "duration",
-                    "options": Array [
-                      "day",
-                      "week",
-                      "month",
-                      "year",
-                    ],
-                  },
-                ],
-                "label": "Yes",
-                "name": "validity",
-                "value": "Yes",
-              },
-              Object {
-                "id": "return-validity-not-defined",
-                "label": "No",
-                "name": "validity",
-                "value": "No",
-              },
-            ],
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
           }
-        }
-        key="define-return-validity"
-      />
+          key="define-return-validity"
+        />
+      </fieldset>
     </div>
     <input
       className="govuk-button"
@@ -137,85 +142,90 @@ exports[`pages returnValidity should render the page with errors when both text 
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="return-validity-hint"
-      >
-        Select no if the return journey is only valid on the same day as the outbound journey
-      </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is the return part of this ticket valid for more than one day?",
-              "hidden": true,
-              "id": "define-return-validity",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [
+                    Object {
+                      "errorMessage": "Enter a whole number greater than zero",
+                      "id": "return-validity-amount",
+                    },
+                    Object {
+                      "errorMessage": "Choose one of the options from the dropdown list",
+                      "id": "return-validity-units",
+                    },
+                  ],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
                 },
-                "id": "return-validity-defined",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Enter a whole number greater than zero",
-                    "id": "return-validity-amount",
-                  },
-                  Object {
-                    "errorMessage": "Choose one of the options from the dropdown list",
-                    "id": "return-validity-units",
-                  },
-                ],
-                "inputType": "textWithUnits",
-                "inputs": Array [
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-amount",
-                    "label": "Amount",
-                    "name": "amount",
-                  },
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-units",
-                    "label": "Duration",
-                    "name": "duration",
-                    "options": Array [
-                      "day",
-                      "week",
-                      "month",
-                      "year",
-                    ],
-                  },
-                ],
-                "label": "Yes",
-                "name": "validity",
-                "value": "Yes",
-              },
-              Object {
-                "id": "return-validity-not-defined",
-                "label": "No",
-                "name": "validity",
-                "value": "No",
-              },
-            ],
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
           }
-        }
-        key="define-return-validity"
-      />
+          key="define-return-validity"
+        />
+      </fieldset>
     </div>
     <input
       className="govuk-button"
@@ -258,81 +268,86 @@ exports[`pages returnValidity should render the page with errors when only dropd
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="return-validity-hint"
-      >
-        Select no if the return journey is only valid on the same day as the outbound journey
-      </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is the return part of this ticket valid for more than one day?",
-              "hidden": true,
-              "id": "define-return-validity",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [
+                    Object {
+                      "errorMessage": "Choose one of the options from the dropdown list",
+                      "id": "return-validity-units",
+                    },
+                  ],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
                 },
-                "id": "return-validity-defined",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Choose one of the options from the dropdown list",
-                    "id": "return-validity-units",
-                  },
-                ],
-                "inputType": "textWithUnits",
-                "inputs": Array [
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-amount",
-                    "label": "Amount",
-                    "name": "amount",
-                  },
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-units",
-                    "label": "Duration",
-                    "name": "duration",
-                    "options": Array [
-                      "day",
-                      "week",
-                      "month",
-                      "year",
-                    ],
-                  },
-                ],
-                "label": "Yes",
-                "name": "validity",
-                "value": "Yes",
-              },
-              Object {
-                "id": "return-validity-not-defined",
-                "label": "No",
-                "name": "validity",
-                "value": "No",
-              },
-            ],
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
           }
-        }
-        key="define-return-validity"
-      />
+          key="define-return-validity"
+        />
+      </fieldset>
     </div>
     <input
       className="govuk-button"
@@ -375,81 +390,86 @@ exports[`pages returnValidity should render the page with errors when only text 
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="return-validity-hint"
-      >
-        Select no if the return journey is only valid on the same day as the outbound journey
-      </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is the return part of this ticket valid for more than one day?",
-              "hidden": true,
-              "id": "define-return-validity",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [
+                    Object {
+                      "errorMessage": "Enter a whole number greater than zero",
+                      "id": "return-validity-amount",
+                    },
+                  ],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
                 },
-                "id": "return-validity-defined",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Enter a whole number greater than zero",
-                    "id": "return-validity-amount",
-                  },
-                ],
-                "inputType": "textWithUnits",
-                "inputs": Array [
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-amount",
-                    "label": "Amount",
-                    "name": "amount",
-                  },
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-units",
-                    "label": "Duration",
-                    "name": "duration",
-                    "options": Array [
-                      "day",
-                      "week",
-                      "month",
-                      "year",
-                    ],
-                  },
-                ],
-                "label": "Yes",
-                "name": "validity",
-                "value": "Yes",
-              },
-              Object {
-                "id": "return-validity-not-defined",
-                "label": "No",
-                "name": "validity",
-                "value": "No",
-              },
-            ],
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
           }
-        }
-        key="define-return-validity"
-      />
+          key="define-return-validity"
+        />
+      </fieldset>
     </div>
     <input
       className="govuk-button"
@@ -492,81 +512,86 @@ exports[`pages returnValidity should render the page with errors when radio erro
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="return-validity-hint"
-      >
-        Select no if the return journey is only valid on the same day as the outbound journey
-      </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is the return part of this ticket valid for more than one day?",
-              "hidden": true,
-              "id": "define-return-validity",
-            },
-            "radioError": Array [
-              Object {
-                "errorMessage": "Choose one of the options below",
-                "id": "return-validity-defined",
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
               },
-            ],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
+              "radioError": Array [
+                Object {
+                  "errorMessage": "Choose one of the options below",
+                  "id": "return-validity-defined",
                 },
-                "id": "return-validity-defined",
-                "inputErrors": Array [],
-                "inputType": "textWithUnits",
-                "inputs": Array [
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-amount",
-                    "label": "Amount",
-                    "name": "amount",
+              ],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
                   },
-                  Object {
-                    "defaultValue": "",
-                    "id": "return-validity-units",
-                    "label": "Duration",
-                    "name": "duration",
-                    "options": Array [
-                      "day",
-                      "week",
-                      "month",
-                      "year",
-                    ],
-                  },
-                ],
-                "label": "Yes",
-                "name": "validity",
-                "value": "Yes",
-              },
-              Object {
-                "id": "return-validity-not-defined",
-                "label": "No",
-                "name": "validity",
-                "value": "No",
-              },
-            ],
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
+                },
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
           }
-        }
-        key="define-return-validity"
-      />
+          key="define-return-validity"
+        />
+      </fieldset>
     </div>
     <input
       className="govuk-button"

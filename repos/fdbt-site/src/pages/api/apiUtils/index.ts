@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import zxcvbn from 'zxcvbn';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
@@ -147,19 +148,34 @@ export const getSelectedStages = (req: NextApiRequest): string[] => {
     return selectObjectsArray;
 };
 
-export const validateNewPassword = (
+export const validatePassword = (
     password: string,
     confirmPassword: string,
-    inputChecks: ErrorInfo[],
-): ErrorInfo[] => {
+    errorId: string,
+    isUpdate?: boolean,
+): ErrorInfo | null => {
     let passwordError = '';
+
     if (password.length < 8) {
-        passwordError = password.length === 0 ? 'Enter a new password' : 'Password must be at least 8 characters long';
-        inputChecks.push({ id: 'new-password', errorMessage: passwordError });
-    } else if (password !== confirmPassword) {
-        inputChecks.push({ id: 'new-password', errorMessage: 'Passwords do not match' });
+        passwordError =
+            password.length === 0
+                ? `Enter a ${isUpdate ? 'new ' : ''}password`
+                : 'Password must be at least 8 characters long';
+
+        return { id: errorId, errorMessage: passwordError };
     }
-    return inputChecks;
+    if (password !== confirmPassword) {
+        return { id: errorId, errorMessage: 'Passwords do not match' };
+    }
+    if (zxcvbn(password).score < 3) {
+        return {
+            id: errorId,
+            errorMessage:
+                'Your password is too weak. Try adding another word or two. Uncommon words are better. Avoid repeating characters. An example of a strong password is one with three or more uncommon words, one after another.',
+        };
+    }
+
+    return null;
 };
 
 export const checkIfMultipleOperators = (req: NextApiRequest, res: NextApiResponse): boolean => {

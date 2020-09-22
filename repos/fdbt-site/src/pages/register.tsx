@@ -5,7 +5,7 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { ErrorInfo, InputCheck, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
@@ -13,20 +13,19 @@ const title = 'Create Account - Fares data build tool';
 const description = 'Create Account page of the Fares data build tool';
 
 interface RegisterProps {
-    inputChecks: InputCheck[];
     errors: ErrorInfo[];
     regKey: string;
 }
 
-const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & CustomAppProps): ReactElement => {
+const Register = ({ errors, regKey, csrfToken }: RegisterProps & CustomAppProps): ReactElement => {
     let email = '';
     let nocCode = '';
 
-    inputChecks?.forEach((input: InputCheck) => {
+    errors?.forEach((input: ErrorInfo) => {
         if (input.id === 'email') {
-            email = input.inputValue;
+            email = input.userInput ?? '';
         } else if (input.id === 'nocCode') {
-            nocCode = input.inputValue;
+            nocCode = input.userInput ?? '';
         }
     });
 
@@ -200,14 +199,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const userCookieParsed = JSON.parse(userCookie);
         const { inputChecks } = userCookieParsed;
 
-        inputChecks.map((check: InputCheck) => {
-            if (check.error) {
-                errors.push({ id: check.id, errorMessage: check.error });
-            }
-            return errors;
-        });
-
-        return { props: { inputChecks, errors, regKey: key } };
+        return { props: { errors: inputChecks, regKey: key } };
     }
 
     return { props: { errors, regKey: key } };
