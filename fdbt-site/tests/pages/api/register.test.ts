@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import register, { validatePassword } from '../../../src/pages/api/register';
+import register from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -64,12 +64,11 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: '',
+                        userInput: '',
                         id: 'email',
-                        error: 'Enter an email address in the correct format, like name@example.com',
+                        errorMessage: 'Enter an email address in the correct format, like name@example.com',
                     },
-                    { inputValue: '', id: 'password', error: '' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -86,12 +85,16 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage: 'Password must be at least 8 characters long',
+                    },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -108,12 +111,16 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage: 'Enter a password',
+                    },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -130,12 +137,12 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: 'Passwords do not match' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    { userInput: '', id: 'password', errorMessage: 'Passwords do not match' },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -152,12 +159,11 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: '' },
-                    { inputValue: '', id: 'noc-code', error: 'National Operator Code cannot be empty' },
+                    { userInput: '', id: 'noc-code', errorMessage: 'National Operator Code cannot be empty' },
                 ],
             },
         ],
@@ -194,16 +200,15 @@ describe('register', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'abcd', id: 'noc-code', error: '' },
+                { userInput: 'abcd', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
@@ -254,16 +259,15 @@ describe('register', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
@@ -303,16 +307,15 @@ describe('register', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
@@ -396,25 +399,6 @@ describe('register', () => {
         expect(authSignOutSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
-        });
-    });
-
-    describe('validate password', () => {
-        it('returns an error message for a poor password', () => {
-            expect(validatePassword('Password', 'Password')).toBe(
-                'Your password is too weak. Try adding another word or two. Uncommon words are better. Avoid repeating characters. An example of a strong password is one with three or more uncommon words, one after another.',
-            );
-        });
-        it('returns an empty string for a strong password', () => {
-            expect(validatePassword('chromosoneTelepathyDinosaur', 'chromosoneTelepathyDinosaur')).toBe('');
-        });
-        it('returns an error message for a password which is too short', () => {
-            expect(validatePassword('sdfsf', 'sdfsf')).toBe('Password cannot be empty or less than 8 characters');
-        });
-        it('returns an error message for a password which does not match the confirm password', () => {
-            expect(validatePassword('chromosoneHotdogDinosaur', 'chromosoneTelepathyDinosaur')).toBe(
-                'Passwords do not match',
-            );
         });
     });
 });
@@ -510,16 +494,15 @@ describe('register pipe split logic', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
