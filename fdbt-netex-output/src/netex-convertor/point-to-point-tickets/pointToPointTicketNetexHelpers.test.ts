@@ -1,8 +1,17 @@
 import * as netexHelpers from './pointToPointTicketNetexHelpers';
 import { FareZone, PointToPointTicket, User } from '../../types';
-import { singleTicket, returnNonCircularTicket, returnCircularTicket } from '../../test-data/matchingData';
+import {
+    singleTicket,
+    returnNonCircularTicket,
+    returnCircularTicket,
+    returnNonCircularTicketWithReturnValidity,
+} from '../../test-data/matchingData';
 import { NetexObject, getUserProfile } from '../sharedHelpers';
-import { buildSalesOfferPackage, buildSalesOfferPackages } from './pointToPointTicketNetexHelpers';
+import {
+    buildSalesOfferPackage,
+    buildSalesOfferPackages,
+    getConditionsOfTravelFareStructureElement,
+} from './pointToPointTicketNetexHelpers';
 
 describe('Netex Helpers', () => {
     let fareZones: FareZone[];
@@ -528,6 +537,33 @@ describe('Netex Helpers', () => {
                 expect(actualSalesOfferPackages.length).toEqual(ticket.products[0].salesOfferPackages.length);
             },
         );
+    });
+
+    describe('updatePriceFareFrame', () => {
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
+        it('creates conditions of travel fare frame with usage validity period if user provides a return validity', () => {
+            const matchingDataWithReturnValidity = returnNonCircularTicketWithReturnValidity;
+            const result = getConditionsOfTravelFareStructureElement(matchingDataWithReturnValidity);
+            expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toStrictEqual({
+                version: '1.0',
+                id: `op:Trip@back@frequency`,
+                UsageTrigger: { $t: 'startOutboundRide' },
+                UsageEnd: {
+                    $t: 'standardDuration',
+                },
+                StandardDuration: {
+                    $t: 'P0Y1M0D',
+                },
+                ActivationMeans: { $t: 'noneRequired' },
+            });
+        });
+
+        it('does not create conditions of travel fare frame with usage validity period if user does not provide a return validity', () => {
+            const matchingDataWithoutReturnValidity = returnNonCircularTicket;
+            const result = getConditionsOfTravelFareStructureElement(matchingDataWithoutReturnValidity);
+            expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toBeUndefined();
+        });
+        /* eslint-enable @typescript-eslint/no-non-null-assertion */
     });
 
     describe('getFareTable', () => {

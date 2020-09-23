@@ -440,6 +440,347 @@ export const returnNonCircularTicket: ReturnTicket = {
     passengerType: 'anyone',
 };
 
+export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
+    products: [
+        {
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+        },
+    ],
+    lineName: '16',
+    nocCode: 'PBLT',
+    operatorShortName: 'Rotala Preston Bus',
+    serviceDescription: 'PRESTON - PRESTON via New Hall Lane',
+    type: 'return',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
+    inboundFareZones: [
+        {
+            name: 'Shott Drive',
+            stops: [
+                {
+                    stopName: 'Tudor Avenue',
+                    naptanCode: 'lanagjtm',
+                    atcoCode: '25001163',
+                    localityCode: 'N0078526',
+                    localityName: 'Farringdon Park',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'Tudor Avenue',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['The Stag pub', 'Frederick Drive', 'Red Lane'] },
+                { price: '1.70', fareZones: ['Rail Station', 'Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'The Stag pub',
+            stops: [
+                {
+                    stopName: 'Ripon Terrace',
+                    naptanCode: 'landtatj',
+                    atcoCode: '2500IMG1409',
+                    localityCode: 'N0078526',
+                    localityName: 'Farringdon Park',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Frederick Drive', 'Red Lane'] },
+                { price: '1.70', fareZones: ['Rail Station', 'Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'Frederick Drive',
+            stops: [
+                {
+                    stopName: 'Hesketh Arms',
+                    naptanCode: 'lanatwgp',
+                    atcoCode: '250020161',
+                    localityCode: 'N0078526',
+                    localityName: 'Farringdon Park',
+                    parentLocalityName: 'Preston',
+                    indicator: 'opp',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Red Lane', 'Rail Station', 'Redtree Street'] },
+                { price: '1.70', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'Red Lane',
+            stops: [
+                {
+                    stopName: 'Acregate Lane',
+                    naptanCode: 'lanapmjm',
+                    atcoCode: '250015489',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'opp',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Rail Station', 'Redtree Street'] },
+                { price: '1.70', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'Rail Station',
+            stops: [
+                {
+                    stopName: 'Waldon Street',
+                    naptanCode: 'landpwdt',
+                    atcoCode: '2500IMG1324',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] }],
+        },
+        {
+            name: 'Redtree Street',
+            stops: [
+                {
+                    stopName: 'Skeffington Road',
+                    naptanCode: 'landgpjw',
+                    atcoCode: '2500DCL3135',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'opp',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] }],
+        },
+        {
+            name: 'Park Lane',
+            stops: [
+                {
+                    stopName: 'Centenary Mill',
+                    naptanCode: 'landgpjt',
+                    atcoCode: '2500DCL3133',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'opp',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Daws Bank/Plough Ave'] }],
+        },
+        {
+            name: 'Daws Bank/Plough Ave',
+            stops: [
+                {
+                    stopName: "St Mary's Street",
+                    naptanCode: 'landgpjp',
+                    atcoCode: '2500DCL3131',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'opp',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [],
+        },
+    ],
+    outboundFareZones: [
+        {
+            name: 'Shott Drive',
+            stops: [
+                {
+                    stopName: 'Bus Station',
+                    naptanCode: 'langmptd',
+                    atcoCode: '2500JB20',
+                    localityCode: 'N0078525',
+                    localityName: 'Preston City Centre',
+                    parentLocalityName: 'Preston',
+                    indicator: 'Stand 37',
+                    street: 'LORDS WALK',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['The Stag pub', 'Frederick Drive', 'Red Lane'] },
+                { price: '1.70', fareZones: ['Rail Station', 'Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'The Stag pub',
+            stops: [
+                {
+                    stopName: 'Lancaster Road',
+                    naptanCode: 'landgpag',
+                    atcoCode: '2500DCL3103',
+                    localityCode: 'N0078525',
+                    localityName: 'Preston City Centre',
+                    parentLocalityName: 'Preston',
+                    indicator: 'Stand L',
+                    street: 'Lancaster Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Frederick Drive', 'Red Lane'] },
+                { price: '1.70', fareZones: ['Rail Station', 'Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'Frederick Drive',
+            stops: [
+                {
+                    stopName: 'Church Street',
+                    naptanCode: 'landptjm',
+                    atcoCode: '2500IMG1284',
+                    localityCode: 'N0078525',
+                    localityName: 'Preston City Centre',
+                    parentLocalityName: 'Preston',
+                    indicator: 'Stand I',
+                    street: 'Church Street',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Red Lane', 'Rail Station', 'Redtree Street'] },
+                { price: '1.70', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'Red Lane',
+            stops: [
+                {
+                    stopName: 'London Road',
+                    naptanCode: 'lanapapd',
+                    atcoCode: '250014831',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Rail Station', 'Redtree Street'] },
+                { price: '1.70', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] },
+            ],
+        },
+        {
+            name: 'Rail Station',
+            stops: [
+                {
+                    stopName: 'Centenary Mill',
+                    naptanCode: 'landpwdm',
+                    atcoCode: '2500IMG1320',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] }],
+        },
+        {
+            name: 'Redtree Street',
+            stops: [
+                {
+                    stopName: 'Skeffington Road',
+                    naptanCode: 'lanagpdp',
+                    atcoCode: '25001182',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] }],
+        },
+        {
+            name: 'Park Lane',
+            stops: [
+                {
+                    stopName: 'Acregate Lane',
+                    naptanCode: 'lanagjdt',
+                    atcoCode: '25001154',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Daws Bank/Plough Ave'] }],
+        },
+        {
+            name: 'Daws Bank/Plough Ave',
+            stops: [
+                {
+                    stopName: 'Ribbleton Park',
+                    naptanCode: 'lanamgpt',
+                    atcoCode: '250014008',
+                    localityCode: 'E0016129',
+                    localityName: 'Fishwick',
+                    parentLocalityName: 'Preston',
+                    indicator: 'by',
+                    street: 'New Hall Lane',
+                    qualifierName: '',
+                },
+            ],
+            prices: [],
+        },
+    ],
+    passengerType: 'anyone',
+    returnPeriodValidity: {
+        amount: '1',
+        typeOfDuration: 'month',
+    },
+};
+
 export const returnCircularTicket: ReturnTicket = {
     products: [
         {

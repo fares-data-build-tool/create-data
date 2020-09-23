@@ -10,6 +10,7 @@ import {
     buildSalesOfferPackages,
     getFareTables,
     getAvailabilityElement,
+    getConditionsOfTravelFareStructureElement,
 } from './pointToPointTicketNetexHelpers';
 import {
     convertJsonToXml,
@@ -202,22 +203,9 @@ const pointToPointTicketNetexGenerator = (
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.id =
                 'Tariff@return@eligibility';
 
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].id =
-                'Tariff@return@conditions_of_travel';
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.id =
-                'Tariff@return@conditions_of_travel';
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.RoundTrip.id =
-                'Tariff@return@condition@direction';
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.RoundTrip.Name.$t =
-                'return Trip';
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.RoundTrip.TripType.$t =
-                'return';
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.FrequencyOfUse.id =
-                'Tariff@return@oneTrip';
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.FrequencyOfUse.Name.$t =
-                'One trip no transfers';
-            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2].GenericParameterAssignment.limitations.Interchanging.id =
-                'Tariff@return@NoTransfers';
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2] = getConditionsOfTravelFareStructureElement(
+                matchingData,
+            );
         }
 
         if (isGroupTicket(matchingData)) {
