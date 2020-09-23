@@ -7,7 +7,7 @@ import {
 } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
-import { MATCHING_ATTRIBUTE } from '../../../src/constants';
+import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 const selections = {
     option0:
@@ -30,7 +30,7 @@ describe('Matching API', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates matching info, updates the MATCHING_ATTRIBUTE and then redirects to selectSalesOfferPackage page if all is valid', () => {
+    it('generates matching info, updates the MATCHING_ATTRIBUTE and redirects to /selectSalesOfferPackage if all is valid, when fare type is anything but return', () => {
         const mockMatchingInfo: MatchingInfo = {
             service: expect.any(Object),
             userFareStages: expect.any(Object),
@@ -42,13 +42,37 @@ describe('Matching API', () => {
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-
             mockWriteHeadFn: writeHeadMock,
         });
         matching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingInfo);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/selectSalesOfferPackage' });
+    });
+
+    it('generates matching info, updates the MATCHING_ATTRIBUTE and redirects to /returnValidity if all is valid, when fare type is return', () => {
+        const mockMatchingInfo: MatchingInfo = {
+            service: expect.any(Object),
+            userFareStages: expect.any(Object),
+            matchingFareZones: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                ...selections,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: {
+                    fareType: 'return',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        matching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingInfo);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/returnValidity' });
     });
 
     it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to matching page when there are unassigned fare stages', () => {

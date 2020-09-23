@@ -35,7 +35,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
         const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
-        redirectTo(res, '/selectSalesOfferPackage');
+        redirectTo(res, '/returnValidity');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';
         redirectToError(res, message, 'api.inboundMatching', error);

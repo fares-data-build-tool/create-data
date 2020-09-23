@@ -2802,6 +2802,236 @@ export const mockTimeRestrictionsRadioAndInputErrors: ErrorInfo[] = [
     },
 ];
 
+export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'define-return-validity',
+        content: 'Is the return part of this ticket valid for more than one day?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'return-validity-defined',
+            name: 'validity',
+            value: 'Yes',
+            dataAriaControls: 'return-validity-defined-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'define-return-validity-hint',
+                content: 'Enter an amount and select a duration from the dropdown',
+            },
+            inputType: 'textWithUnits',
+            inputs: [
+                {
+                    id: 'return-validity-amount',
+                    name: 'amount',
+                    label: 'Amount',
+                    defaultValue: '',
+                },
+                {
+                    id: 'return-validity-units',
+                    name: 'duration',
+                    label: 'Duration',
+                    options: ['day', 'week', 'month', 'year'],
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+        {
+            id: 'return-validity-not-defined',
+            name: 'validity',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'define-return-validity',
+        content: 'Is the return part of this ticket valid for more than one day?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'return-validity-defined',
+            name: 'validity',
+            value: 'Yes',
+            dataAriaControls: 'return-validity-defined-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'define-return-validity-hint',
+                content: 'Enter an amount and select a duration from the dropdown',
+            },
+            inputType: 'textWithUnits',
+            inputs: [
+                {
+                    id: 'return-validity-amount',
+                    name: 'amount',
+                    label: 'Amount',
+                    defaultValue: '',
+                },
+                {
+                    id: 'return-validity-units',
+                    name: 'duration',
+                    label: 'Duration',
+                    options: ['day', 'week', 'month', 'year'],
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [{ errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' }],
+        },
+        {
+            id: 'return-validity-not-defined',
+            name: 'validity',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'define-return-validity',
+        content: 'Is the return part of this ticket valid for more than one day?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'return-validity-defined',
+            name: 'validity',
+            value: 'Yes',
+            dataAriaControls: 'return-validity-defined-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'define-return-validity-hint',
+                content: 'Enter an amount and select a duration from the dropdown',
+            },
+            inputType: 'textWithUnits',
+            inputs: [
+                {
+                    id: 'return-validity-amount',
+                    name: 'amount',
+                    label: 'Amount',
+                    defaultValue: '',
+                },
+                {
+                    id: 'return-validity-units',
+                    name: 'duration',
+                    label: 'Duration',
+                    options: ['day', 'week', 'month', 'year'],
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                { errorMessage: 'Choose one of the options from the dropdown list', id: 'return-validity-units' },
+            ],
+        },
+        {
+            id: 'return-validity-not-defined',
+            name: 'validity',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'define-return-validity',
+        content: 'Is the return part of this ticket valid for more than one day?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'return-validity-defined',
+            name: 'validity',
+            value: 'Yes',
+            dataAriaControls: 'return-validity-defined-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'define-return-validity-hint',
+                content: 'Enter an amount and select a duration from the dropdown',
+            },
+            inputType: 'textWithUnits',
+            inputs: [
+                {
+                    id: 'return-validity-amount',
+                    name: 'amount',
+                    label: 'Amount',
+                    defaultValue: '',
+                },
+                {
+                    id: 'return-validity-units',
+                    name: 'duration',
+                    label: 'Duration',
+                    options: ['day', 'week', 'month', 'year'],
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                { errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' },
+                { errorMessage: 'Choose one of the options from the dropdown list', id: 'return-validity-units' },
+            ],
+        },
+        {
+            id: 'return-validity-not-defined',
+            name: 'validity',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'define-return-validity',
+        content: 'Is the return part of this ticket valid for more than one day?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'return-validity-defined',
+            name: 'validity',
+            value: 'Yes',
+            dataAriaControls: 'return-validity-defined-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'define-return-validity-hint',
+                content: 'Enter an amount and select a duration from the dropdown',
+            },
+            inputType: 'textWithUnits',
+            inputs: [
+                {
+                    id: 'return-validity-amount',
+                    name: 'amount',
+                    label: 'Amount',
+                    defaultValue: '',
+                },
+                {
+                    id: 'return-validity-units',
+                    name: 'duration',
+                    label: 'Duration',
+                    options: ['day', 'week', 'month', 'year'],
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+        {
+            id: 'return-validity-not-defined',
+            name: 'validity',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [{ errorMessage: 'Choose one of the options below', id: 'return-validity-defined' }],
+};
+
 export const mockBreadCrumbList: Breadcrumb[] = [
     { name: 'Home', link: '/', show: true },
     { name: 'Select Fare Type', link: '/fareType', show: true },

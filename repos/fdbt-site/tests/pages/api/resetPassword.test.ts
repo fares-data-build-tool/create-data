@@ -78,8 +78,8 @@ describe('resetPassword', () => {
             cookieValues: {},
             body: {
                 username: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'jhtgyuiop1',
+                confirmPassword: 'jhtgyuiop1',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
@@ -109,8 +109,8 @@ describe('resetPassword', () => {
             cookieValues: {},
             body: {
                 username: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'jhtgyuiop1',
+                confirmPassword: 'jhtgyuiop1',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
@@ -143,8 +143,8 @@ describe('resetPassword', () => {
             cookieValues: {},
             body: {
                 username: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'jhtgyuiop1',
+                confirmPassword: 'jhtgyuiop1',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },

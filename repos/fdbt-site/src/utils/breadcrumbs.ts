@@ -132,6 +132,11 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
             link: '/inboundMatching',
             show: isReturn && !isCircular,
         },
+        {
+            name: 'Ticket validity',
+            link: '/returnValidity',
+            show: isReturn,
+        },
     ];
 
     const getPeriodAndFlatFareBreadcrumbs = (): Breadcrumb[] => [

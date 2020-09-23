@@ -5,7 +5,7 @@ import {
     redirectToError,
     setCookieOnResponseObject,
     getAttributeFromIdToken,
-    validateNewPassword,
+    validatePassword,
 } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
@@ -24,15 +24,18 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (!username) {
             throw new Error('Could not retrieve email from ID_TOKEN_COOKIE');
         }
-        let inputChecks: ErrorInfo[] = [];
+        const inputChecks: ErrorInfo[] = [];
+
+        const newPasswordValidityError = validatePassword(newPassword, confirmNewPassword, 'new-password', true);
 
         if (!oldPassword) {
             inputChecks.push({ id: 'old-password', errorMessage: 'Enter your current password' });
-            inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
-            setCookieAndRedirect(req, res, inputChecks);
-            return;
         }
-        inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
+
+        if (newPasswordValidityError) {
+            inputChecks.push(newPasswordValidityError);
+        }
+
         if (inputChecks.some(el => el.errorMessage !== '')) {
             setCookieAndRedirect(req, res, inputChecks);
             return;

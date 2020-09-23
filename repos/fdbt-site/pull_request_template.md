@@ -24,7 +24,6 @@
 # Checklist:
 
 -   [ ] Able to run pr locally
--   [ ] Lighthouse performed (Accessibility 90+ minimum)
 -   [ ] Followed acceptance criteria
 -   [ ] My code follows the style guidelines of this project
 -   [ ] I have performed a self-review of my own code
