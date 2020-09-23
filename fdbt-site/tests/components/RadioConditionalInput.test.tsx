@@ -91,7 +91,7 @@ describe('RadioConditionalInput', () => {
                 inputErrors,
             };
             const textInputElements: ReactElement = renderConditionalTextInput(mockRadio);
-            const ageRangeMinTextInput = textInputElements.props.children[1][0];
+            const ageRangeMinTextInput = textInputElements.props.children.props.children[1][0];
             const ageRangeMinFormElementWrapper = ageRangeMinTextInput.props.children[1];
 
             expect(textInputElements.props.className).toBe('govuk-radios__conditional');
@@ -124,7 +124,7 @@ describe('RadioConditionalInput', () => {
                 inputErrors: [],
             };
             const textInputElements: ReactElement = renderConditionalTextWithUnitsInput(mockRadio);
-            const inputFormGroup = textInputElements.props.children[1][0];
+            const inputFormGroup = textInputElements.props.children.props.children[1][0];
             const inputFormElementWrapper = inputFormGroup.props.children[1];
             expect(inputFormElementWrapper.props.children.type).toEqual('input');
         });
@@ -157,8 +157,8 @@ describe('RadioConditionalInput', () => {
                 inputErrors: [],
             };
             const textInputElements: ReactElement = renderConditionalTextWithUnitsInput(mockRadio);
-            const textInputFormGroup = textInputElements.props.children[1][0];
-            const selectInputFormGroup = textInputElements.props.children[1][1];
+            const textInputFormGroup = textInputElements.props.children.props.children[1][0];
+            const selectInputFormGroup = textInputElements.props.children.props.children[1][1];
             const textInputFormElementWrapper = textInputFormGroup.props.children[1];
             const selectInputFormElementWrapper = selectInputFormGroup.props.children[1];
 
@@ -204,8 +204,8 @@ describe('RadioConditionalInput', () => {
                 inputErrors,
             };
             const textInputElements: ReactElement = renderConditionalTextWithUnitsInput(mockRadio);
-            const textInputFormGroup = textInputElements.props.children[1][0];
-            const selectInputFormGroup = textInputElements.props.children[1][1];
+            const textInputFormGroup = textInputElements.props.children.props.children[1][0];
+            const selectInputFormGroup = textInputElements.props.children.props.children[1][1];
             const textInputFormElementWrapper = textInputFormGroup.props.children[1];
             const selectInputFormElementWrapper = selectInputFormGroup.props.children[1];
 
