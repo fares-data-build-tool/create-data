@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, setCookieOnResponseObject, validateNewPassword } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, validatePassword } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { ErrorInfo } from '../../interfaces';
 import { confirmForgotPassword } from '../../data/cognito';
@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     try {
         const { username, password, confirmPassword, regKey, expiry } = req.body;
 
-        let inputChecks: ErrorInfo[] = [];
+        const inputChecks: ErrorInfo[] = [];
 
         if (!username || !regKey) {
             inputChecks.push({
@@ -24,7 +24,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             });
         }
 
-        inputChecks = validateNewPassword(password, confirmPassword, inputChecks);
+        const passwordValidityError = validatePassword(password, confirmPassword, 'new-password', true);
+
+        if (passwordValidityError) {
+            inputChecks.push(passwordValidityError);
+        }
 
         if (inputChecks.some(el => el.errorMessage !== '')) {
             setErrorsCookie(inputChecks, regKey, username, expiry);

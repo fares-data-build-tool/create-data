@@ -5,12 +5,11 @@ import {
     redirectOnFareType,
     checkEmailValid,
     getAttributeFromIdToken,
-    validateNewPassword,
+    validatePassword,
     getSelectedStages,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
-import { ErrorInfo } from '../../../../src/interfaces';
 import { FARE_TYPE_ATTRIBUTE } from '../../../../src/constants';
 
 describe('apiUtils', () => {
@@ -173,26 +172,32 @@ describe('apiUtils', () => {
         });
     });
 
-    describe('validateNewPassword', () => {
-        const noPasswordError = { id: 'new-password', errorMessage: 'Enter a new password' };
-        const passwordLengthError = { id: 'new-password', errorMessage: 'Password must be at least 8 characters long' };
-        const passwordMatchError = { id: 'new-password', errorMessage: 'Passwords do not match' };
+    describe('validatePassword', () => {
+        const noPasswordError = { id: 'test', errorMessage: 'Enter a new password' };
+        const passwordLengthError = { id: 'test', errorMessage: 'Password must be at least 8 characters long' };
+        const passwordMatchError = { id: 'test', errorMessage: 'Passwords do not match' };
+        const weakPasswordError = {
+            id: 'test',
+            errorMessage:
+                'Your password is too weak. Try adding another word or two. Uncommon words are better. Avoid repeating characters. An example of a strong password is one with three or more uncommon words, one after another.',
+        };
+
         it.each([
-            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', []],
-            ['a no password error', 'no input is provided', '', '', [noPasswordError]],
-            ['a no password error', 'no new password is provided', '', 'iLoveBuses', [noPasswordError]],
-            ['a password length error', 'new password is too short', 'bus', 'iLoveBuses', [passwordLengthError]],
+            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', null],
+            ['a no password error', 'no input is provided', '', '', noPasswordError],
+            ['a no password error', 'no new password is provided', '', 'iLoveBuses', noPasswordError],
+            ['a password length error', 'new password is too short', 'bus', 'iLoveBuses', passwordLengthError],
             [
                 'a password match error',
                 'the two passwords do not match',
                 'iHateBuses',
                 'iLoveBuses',
-                [passwordMatchError],
+                passwordMatchError,
             ],
-            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', []],
+            ['a weak password error', 'weak password provided', 'Password', 'Password', weakPasswordError],
+            ['a weak password error', 'weak password provided', 'password123', 'password123', weakPasswordError],
         ])('should return %s when %s', (_errors, _case, newPassword, confirmNewPassword, expectedResult) => {
-            const inputChecks: ErrorInfo[] = [];
-            const res = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
+            const res = validatePassword(newPassword, confirmNewPassword, 'test', true);
             expect(res).toEqual(expectedResult);
         });
     });

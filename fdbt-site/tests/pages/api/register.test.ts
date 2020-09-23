@@ -1,6 +1,6 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import * as auth from '../../../src/data/cognito';
 import register from '../../../src/pages/api/register';
+import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
@@ -55,8 +55,8 @@ describe('register', () => {
             'empty email',
             {
                 email: '',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
@@ -64,12 +64,11 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: '',
+                        userInput: '',
                         id: 'email',
-                        error: 'Enter an email address in the correct format, like name@example.com',
+                        errorMessage: 'Enter an email address in the correct format, like name@example.com',
                     },
-                    { inputValue: '', id: 'password', error: '' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -78,7 +77,7 @@ describe('register', () => {
             {
                 email: 'test@test.com',
                 password: 'abchi',
-                confirmPassword: 'abcdefghi',
+                confirmPassword: 'abchi',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
@@ -86,12 +85,16 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage: 'Password must be at least 8 characters long',
+                    },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -100,7 +103,7 @@ describe('register', () => {
             {
                 email: 'test@test.com',
                 password: '',
-                confirmPassword: 'abcdefghi',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: '',
@@ -108,12 +111,16 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage: 'Enter a password',
+                    },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -121,8 +128,8 @@ describe('register', () => {
             'passwords fields do not match',
             {
                 email: 'test@test.com',
-                password: 'abcdefghidddd',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosa',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: '',
@@ -130,12 +137,12 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: 'Passwords do not match' },
-                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                    { userInput: '', id: 'password', errorMessage: 'Passwords do not match' },
+                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -143,8 +150,8 @@ describe('register', () => {
             'empty NOC field',
             {
                 email: 'test@test.com',
-                password: 'abcdefghidddd',
-                confirmPassword: 'abcdefghidddd',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: '',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
@@ -152,12 +159,11 @@ describe('register', () => {
             {
                 inputChecks: [
                     {
-                        inputValue: 'test@test.com',
+                        userInput: 'test@test.com',
                         id: 'email',
-                        error: '',
+                        errorMessage: '',
                     },
-                    { inputValue: '', id: 'password', error: '' },
-                    { inputValue: '', id: 'noc-code', error: 'National Operator Code cannot be empty' },
+                    { userInput: '', id: 'noc-code', errorMessage: 'National Operator Code cannot be empty' },
                 ],
             },
         ],
@@ -182,8 +188,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'abcd',
                 regKey: 'abcdefg',
             },
@@ -194,16 +200,15 @@ describe('register', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'abcd', id: 'noc-code', error: '' },
+                { userInput: 'abcd', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
@@ -223,8 +228,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
@@ -237,7 +242,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -254,16 +259,15 @@ describe('register', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
@@ -272,8 +276,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
@@ -303,16 +307,15 @@ describe('register', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
@@ -321,8 +324,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
@@ -340,8 +343,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: 'yes',
@@ -358,7 +361,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -372,8 +375,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: '',
@@ -390,7 +393,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -447,8 +450,8 @@ describe('register pipe split logic', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: '',
@@ -465,7 +468,7 @@ describe('register pipe split logic', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'abcdefghi',
+            'chromosoneTelepathyDinosaur',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -491,16 +494,15 @@ describe('register pipe split logic', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: 'test@test.com',
+                    userInput: 'test@test.com',
                     id: 'email',
-                    error: '',
+                    errorMessage: '',
                 },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'noc-code', error: '' },
+                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 {
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 },
             ],
         };
@@ -509,8 +511,8 @@ describe('register pipe split logic', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'abcdefghi',
-                confirmPassword: 'abcdefghi',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },

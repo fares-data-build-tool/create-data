@@ -46,7 +46,7 @@ describe('Inbound Matching API', () => {
         inboundMatching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingInfo);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/selectSalesOfferPackage' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/returnValidity' });
     });
 
     it('correctly generates matching error info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {

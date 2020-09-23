@@ -1,0 +1,604 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages returnValidity should render the page correctly 1`] = `
+<Component
+  description="Return Validity page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Return Validity - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/returnValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
+                },
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
+          }
+          key="define-return-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages returnValidity should render the page with errors when both text and dropdown input errors are present 1`] = `
+<Component
+  description="Return Validity page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number greater than zero",
+        "id": "return-validity-amount",
+      },
+      Object {
+        "errorMessage": "Choose one of the options from the dropdown list",
+        "id": "return-validity-units",
+      },
+    ]
+  }
+  title="Return Validity - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/returnValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number greater than zero",
+            "id": "return-validity-amount",
+          },
+          Object {
+            "errorMessage": "Choose one of the options from the dropdown list",
+            "id": "return-validity-units",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [
+                    Object {
+                      "errorMessage": "Enter a whole number greater than zero",
+                      "id": "return-validity-amount",
+                    },
+                    Object {
+                      "errorMessage": "Choose one of the options from the dropdown list",
+                      "id": "return-validity-units",
+                    },
+                  ],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
+                },
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
+          }
+          key="define-return-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages returnValidity should render the page with errors when only dropdown input errors are present 1`] = `
+<Component
+  description="Return Validity page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose one of the options from the dropdown list",
+        "id": "return-validity-units",
+      },
+    ]
+  }
+  title="Return Validity - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/returnValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one of the options from the dropdown list",
+            "id": "return-validity-units",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [
+                    Object {
+                      "errorMessage": "Choose one of the options from the dropdown list",
+                      "id": "return-validity-units",
+                    },
+                  ],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
+                },
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
+          }
+          key="define-return-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages returnValidity should render the page with errors when only text input errors are present 1`] = `
+<Component
+  description="Return Validity page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number greater than zero",
+        "id": "return-validity-amount",
+      },
+    ]
+  }
+  title="Return Validity - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/returnValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number greater than zero",
+            "id": "return-validity-amount",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [
+                    Object {
+                      "errorMessage": "Enter a whole number greater than zero",
+                      "id": "return-validity-amount",
+                    },
+                  ],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
+                },
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
+          }
+          key="define-return-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages returnValidity should render the page with errors when radio errors are present 1`] = `
+<Component
+  description="Return Validity page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose one of the options below",
+        "id": "return-validity-defined",
+      },
+    ]
+  }
+  title="Return Validity - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/returnValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one of the options below",
+            "id": "return-validity-defined",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="return-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-validity-page-heading"
+          >
+            Is the return part of this ticket valid for more than one day?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="return-validity-hint"
+        >
+          Select no if the return journey is only valid on the same day as the outbound journey
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is the return part of this ticket valid for more than one day?",
+                "hidden": true,
+                "id": "define-return-validity",
+              },
+              "radioError": Array [
+                Object {
+                  "errorMessage": "Choose one of the options below",
+                  "id": "return-validity-defined",
+                },
+              ],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "return-validity-defined-conditional",
+                  "hint": Object {
+                    "content": "Enter an amount and select a duration from the dropdown",
+                    "id": "define-return-validity-hint",
+                  },
+                  "id": "return-validity-defined",
+                  "inputErrors": Array [],
+                  "inputType": "textWithUnits",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-amount",
+                      "label": "Amount",
+                      "name": "amount",
+                    },
+                    Object {
+                      "defaultValue": "",
+                      "id": "return-validity-units",
+                      "label": "Duration",
+                      "name": "duration",
+                      "options": Array [
+                        "day",
+                        "week",
+                        "month",
+                        "year",
+                      ],
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "validity",
+                  "value": "Yes",
+                },
+                Object {
+                  "id": "return-validity-not-defined",
+                  "label": "No",
+                  "name": "validity",
+                  "value": "No",
+                },
+              ],
+            }
+          }
+          key="define-return-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

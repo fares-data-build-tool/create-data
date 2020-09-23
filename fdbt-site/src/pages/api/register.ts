@@ -1,25 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid, validatePassword } from './apiUtils';
 import { USER_COOKIE, INTERNAL_NOC } from '../../constants';
-import { InputCheck } from '../../interfaces';
+import { ErrorInfo } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
 
-const validatePassword = (password: string, confirmPassword: string): string => {
-    let passwordErrorMessage = '';
-
-    if (password.length < 8) {
-        passwordErrorMessage = 'Password cannot be empty or less than 8 characters';
-    } else if (confirmPassword !== password) {
-        passwordErrorMessage = 'Passwords do not match';
-    }
-
-    return passwordErrorMessage;
-};
-
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookie = (inputChecks: InputCheck[], regKey: string): void => {
+    const setErrorsCookie = (inputChecks: ErrorInfo[], regKey: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
         setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
         redirectTo(res, `/register?key=${regKey}`);
@@ -34,26 +22,26 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             contactable = 'no';
         }
 
-        const inputChecks: InputCheck[] = [];
+        const inputChecks: ErrorInfo[] = [];
 
         const emailValid = checkEmailValid(email);
 
         inputChecks.push({
-            inputValue: !emailValid ? '' : email,
+            userInput: !emailValid ? '' : email,
             id: 'email',
-            error: !emailValid ? 'Enter an email address in the correct format, like name@example.com' : '',
+            errorMessage: !emailValid ? 'Enter an email address in the correct format, like name@example.com' : '',
         });
 
-        inputChecks.push({
-            inputValue: '',
-            id: 'password',
-            error: validatePassword(password, confirmPassword),
-        });
+        const passwordValidityError = validatePassword(password, confirmPassword, 'password');
+
+        if (passwordValidityError) {
+            inputChecks.push({ userInput: '', ...passwordValidityError });
+        }
 
         inputChecks.push({
-            inputValue: nocCode,
+            userInput: nocCode,
             id: 'noc-code',
-            error: nocCode === '' ? 'National Operator Code cannot be empty' : '',
+            errorMessage: nocCode === '' ? 'National Operator Code cannot be empty' : '',
         });
 
         if (nocCode !== '' && nocCode !== INTERNAL_NOC) {
@@ -67,14 +55,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 });
 
                 inputChecks.push({
-                    inputValue: '',
+                    userInput: '',
                     id: 'email',
-                    error: 'There was a problem creating your account',
+                    errorMessage: 'There was a problem creating your account',
                 });
             }
         }
 
-        if (inputChecks.some(el => el.error !== '')) {
+        if (inputChecks.some(el => el.errorMessage !== '')) {
             setErrorsCookie(inputChecks, regKey);
             return;
         }
@@ -119,9 +107,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             });
 
             inputChecks.push({
-                inputValue: '',
+                userInput: '',
                 id: 'email',
-                error: 'There was a problem creating your account',
+                errorMessage: 'There was a problem creating your account',
             });
 
             setErrorsCookie(inputChecks, regKey);

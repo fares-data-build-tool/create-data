@@ -76,6 +76,8 @@ export const TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-time-restrictions';
 
 export const TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE = 'fdbt-time-restrictions-definition';
 
+export const RETURN_VALIDITY_ATTRIBUTE = 'fdbt-return-validity';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',

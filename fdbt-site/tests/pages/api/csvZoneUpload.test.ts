@@ -4,12 +4,15 @@ import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
 import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
+import * as sessions from '../../../src/utils/sessions';
 import * as dynamo from '../../../src/data/auroradb';
+import { FARE_ZONE_ATTRIBUTE } from '../../../src/constants';
 
 const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
 
 describe('csvZoneUpload', () => {
     const writeHeadMock = jest.fn();
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const { req, res } = getMockRequestAndResponse({
         cookieValues: {},
         body: null,
@@ -50,6 +53,10 @@ describe('csvZoneUpload', () => {
                     files: file,
                     fileContents: csv,
                 });
+
+            jest.spyOn(fileUpload, 'containsViruses')
+                .mockImplementation()
+                .mockResolvedValue(false);
 
             jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
@@ -94,10 +101,17 @@ describe('csvZoneUpload', () => {
                 fileContents: csvData.testCsv,
             });
 
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
         await csvZoneUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/howManyProducts',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
+            fareZoneName: 'Town Centre',
         });
     });
 
@@ -121,6 +135,10 @@ describe('csvZoneUpload', () => {
                 files: file,
                 fileContents: csvData.testCsvWithEmptyCells,
             });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
 
         jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes').mockImplementation(() => {
             throw new Error(dynamoError);
@@ -154,10 +172,23 @@ describe('csvZoneUpload', () => {
                     fileContents: '',
                 });
 
+            jest.spyOn(fileUpload, 'containsViruses')
+                .mockImplementation()
+                .mockResolvedValue(false);
+
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/csvZoneUpload',
+            });
+
+            expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
+                errors: [
+                    {
+                        errorMessage: 'Select a CSV file to upload',
+                        id: 'csv-upload',
+                    },
+                ],
             });
         });
 
@@ -181,10 +212,23 @@ describe('csvZoneUpload', () => {
                     fileContents: csvData.testCsv,
                 });
 
+            jest.spyOn(fileUpload, 'containsViruses')
+                .mockImplementation()
+                .mockResolvedValue(false);
+
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/csvZoneUpload',
+            });
+
+            expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
+                errors: [
+                    {
+                        errorMessage: 'The selected file must be smaller than 5MB',
+                        id: 'csv-upload',
+                    },
+                ],
             });
         });
 
@@ -208,10 +252,65 @@ describe('csvZoneUpload', () => {
                     fileContents: csvData.testCsv,
                 });
 
+            jest.spyOn(fileUpload, 'containsViruses')
+                .mockImplementation()
+                .mockResolvedValue(false);
+
             await csvZoneUpload.default(req, res);
 
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/csvZoneUpload',
+            });
+
+            expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
+                errors: [
+                    {
+                        errorMessage: 'The selected file must be a CSV',
+                        id: 'csv-upload',
+                    },
+                ],
+            });
+        });
+
+        it('should return 302 redirect to /csvZoneUpload with an error message when file contains a virus', async () => {
+            process.env.ENABLE_VIRUS_SCAN = '1';
+
+            const file = {
+                'csv-upload': {
+                    size: 999,
+                    path: 'string',
+                    name: 'string',
+                    type: 'text/pdf',
+                    toJSON(): string {
+                        return '';
+                    },
+                },
+            };
+
+            jest.spyOn(fileUpload, 'getFormData')
+                .mockImplementation()
+                .mockResolvedValue({
+                    files: file,
+                    fileContents: 'i am a virus',
+                });
+
+            jest.spyOn(fileUpload, 'containsViruses')
+                .mockImplementation()
+                .mockResolvedValue(true);
+
+            await csvZoneUpload.default(req, res);
+
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/csvZoneUpload',
+            });
+
+            expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
+                errors: [
+                    {
+                        errorMessage: 'The selected file contains a virus',
+                        id: 'csv-upload',
+                    },
+                ],
             });
         });
     });

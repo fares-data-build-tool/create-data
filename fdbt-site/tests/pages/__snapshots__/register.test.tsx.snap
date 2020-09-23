@@ -490,6 +490,11 @@ exports[`pages register should store email if entered correctly but other fields
         "errorMessage": "Enter valid nocCode",
         "id": "nocCode",
       },
+      Object {
+        "errorMessage": "",
+        "id": "email",
+        "userInput": "test@tfn.com",
+      },
     ]
   }
   title="Create Account - Fares data build tool"
@@ -511,6 +516,11 @@ exports[`pages register should store email if entered correctly but other fields
               Object {
                 "errorMessage": "Enter valid nocCode",
                 "id": "nocCode",
+              },
+              Object {
+                "errorMessage": "",
+                "id": "email",
+                "userInput": "test@tfn.com",
               },
             ]
           }
@@ -556,6 +566,11 @@ exports[`pages register should store email if entered correctly but other fields
                       "errorMessage": "Enter valid nocCode",
                       "id": "nocCode",
                     },
+                    Object {
+                      "errorMessage": "",
+                      "id": "email",
+                      "userInput": "test@tfn.com",
+                    },
                   ]
                 }
               >
@@ -594,6 +609,11 @@ exports[`pages register should store email if entered correctly but other fields
                     Object {
                       "errorMessage": "Enter valid nocCode",
                       "id": "nocCode",
+                    },
+                    Object {
+                      "errorMessage": "",
+                      "id": "email",
+                      "userInput": "test@tfn.com",
                     },
                   ]
                 }
@@ -647,6 +667,11 @@ exports[`pages register should store email if entered correctly but other fields
                     Object {
                       "errorMessage": "Enter valid nocCode",
                       "id": "nocCode",
+                    },
+                    Object {
+                      "errorMessage": "",
+                      "id": "email",
+                      "userInput": "test@tfn.com",
                     },
                   ]
                 }
