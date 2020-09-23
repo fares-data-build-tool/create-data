@@ -1,0 +1,186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages productDateInformation it should render errors correctly when radio errors are passed to the page 1`] = `
+<Component
+  description="Product Date Information page of the Fares Data Build Tool"
+  title="Product Date Information - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/productDateInformation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one of the options below",
+            "id": "start-date",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <h1
+        className="govuk-heading-l"
+        id="product-date-information-heading"
+      >
+        Is there a start or end date for your product?
+      </h1>
+      <RadioConditionalInput
+        dates={
+          Object {
+            "endDateDay": "",
+            "endDateMonth": "",
+            "endDateYear": "",
+            "startDateDay": "",
+            "startDateMonth": "",
+            "startDateYear": "",
+          }
+        }
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is there a start or end date for your product?",
+              "hidden": true,
+              "id": "product-dates-information",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "product-dates-required-conditional",
+                "hint": Object {
+                  "content": "Enter a start and/or end date",
+                  "id": "product-dates-required-restriction-hint",
+                },
+                "id": "product-dates-required",
+                "inputErrors": Array [],
+                "inputType": "date",
+                "inputs": Array [
+                  Object {
+                    "id": "start-date",
+                    "label": "Start Date",
+                    "name": "startDate",
+                  },
+                  Object {
+                    "id": "end-date",
+                    "label": "End Date",
+                    "name": "endDate",
+                  },
+                ],
+                "label": "Yes",
+                "name": "productDates",
+                "value": "Yes",
+              },
+              Object {
+                "id": "product-dates-information-not-required",
+                "label": "No",
+                "name": "productDates",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="product-dates-information"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages productDateInformation it should render the product date information page 1`] = `
+<Component
+  description="Product Date Information page of the Fares Data Build Tool"
+  title="Product Date Information - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/productDateInformation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <h1
+        className="govuk-heading-l"
+        id="product-date-information-heading"
+      >
+        Is there a start or end date for your product?
+      </h1>
+      <RadioConditionalInput
+        dates={
+          Object {
+            "endDateDay": "",
+            "endDateMonth": "",
+            "endDateYear": "",
+            "startDateDay": "",
+            "startDateMonth": "",
+            "startDateYear": "",
+          }
+        }
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is there a start or end date for your product?",
+              "hidden": true,
+              "id": "product-dates-information",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "product-dates-required-conditional",
+                "hint": Object {
+                  "content": "Enter a start and/or end date",
+                  "id": "product-dates-required-restriction-hint",
+                },
+                "id": "product-dates-required",
+                "inputErrors": Array [],
+                "inputType": "date",
+                "inputs": Array [
+                  Object {
+                    "id": "start-date",
+                    "label": "Start Date",
+                    "name": "startDate",
+                  },
+                  Object {
+                    "id": "end-date",
+                    "label": "End Date",
+                    "name": "endDate",
+                  },
+                ],
+                "label": "Yes",
+                "name": "productDates",
+                "value": "Yes",
+              },
+              Object {
+                "id": "product-dates-information-not-required",
+                "label": "No",
+                "name": "productDates",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="product-dates-information"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

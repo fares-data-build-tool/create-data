@@ -20,6 +20,7 @@ import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerTy
 import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
+import { ProductDate, ProductDatesWithErrors } from '../pages/api/productDateInformation';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -133,3 +134,15 @@ export const isSalesOfferPackages = (
 ): salesOfferPackageInfo is SalesOfferPackage[] =>
     salesOfferPackageInfo !== undefined &&
     (salesOfferPackageInfo as SalesOfferPackage[])[0].ticketFormats !== undefined;
+
+export const isProductDateAttributeWithErrors = (
+    productDates: ProductDate | ProductDatesWithErrors | undefined,
+): productDates is ProductDatesWithErrors =>
+    productDates !== undefined && (productDates as ProductDatesWithErrors).errors !== undefined;
+
+export const isProductDateAttribute = (
+    productDates: ProductDate | ProductDatesWithErrors | undefined,
+): productDates is ProductDate =>
+    productDates !== undefined &&
+    (productDates as ProductDate).startDate !== undefined &&
+    (productDates as ProductDate).endDate !== undefined;

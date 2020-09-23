@@ -123,35 +123,40 @@ exports[`RadioConditionalInput should render a set of radio buttons with conditi
             className="govuk-radios__conditional govuk-radios__conditional--hidden"
             id="age-range-required-conditional"
           >
-            <legend
-              className="govuk-fieldset__legend govuk-fieldset__legend--s"
-              id="define-passenger-hint"
+            <fieldset
+              aria-describedby="define-passenger-hint"
+              className="govuk-fieldset"
             >
-              Enter a minimum age for this passenger type.
-            </legend>
-            <div
-              className="govuk-form-group"
-              key="age-range-min"
-            >
-              <label
-                className="govuk-label"
-                htmlFor="age-range-min"
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
+                id="define-passenger-hint"
               >
-                Minimum age (if applicable)
-              </label>
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId=""
-                errors={Array []}
+                Enter a minimum age for this passenger type.
+              </legend>
+              <div
+                className="govuk-form-group"
+                key="age-range-min"
               >
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  id="age-range-min"
-                  name="ageRangeMin"
-                  type="text"
-                />
-              </FormElementWrapper>
-            </div>
+                <label
+                  className="govuk-label"
+                  htmlFor="age-range-min"
+                >
+                  Minimum age (if applicable)
+                </label>
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId=""
+                  errors={Array []}
+                >
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    id="age-range-min"
+                    name="ageRangeMin"
+                    type="text"
+                  />
+                </FormElementWrapper>
+              </div>
+            </fieldset>
           </div>
         </div>
         <div
