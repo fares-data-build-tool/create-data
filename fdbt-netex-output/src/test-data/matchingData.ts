@@ -787,6 +787,10 @@ export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
         amount: '1',
         typeOfDuration: 'month',
     },
+    ticketPeriod: {
+        startDate: '2010-12-17T09:30:46.0Z',
+        endDate: '2030-12-17T09:30:46.0Z',
+    },
 };
 
 export const returnCircularTicket: ReturnTicket = {
