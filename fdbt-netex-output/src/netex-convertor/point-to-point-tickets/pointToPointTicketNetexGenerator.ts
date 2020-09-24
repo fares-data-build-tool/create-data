@@ -151,7 +151,8 @@ const pointToPointTicketNetexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${operatorPublicNameLineNameFormat} - ${matchingData.type} fares`;
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
-                FromDate: { $t: currentDate.toISOString() },
+                FromDate: { $t: matchingData.ticketPeriod.startDate },
+                ToDate: { $t: matchingData.ticketPeriod.endDate },
             },
         };
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;

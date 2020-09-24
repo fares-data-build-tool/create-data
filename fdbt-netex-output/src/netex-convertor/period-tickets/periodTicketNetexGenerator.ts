@@ -152,7 +152,8 @@ const periodTicketNetexGenerator = (userPeriodTicket: PeriodTicket, operatorData
         priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${placeHolderGroupOfProductsName}`;
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
-                FromDate: { $t: currentDate.toISOString() },
+                FromDate: { $t: userPeriodTicket.ticketPeriod.startDate },
+                ToDate: { $t: userPeriodTicket.ticketPeriod.endDate },
             },
         };
         priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${placeHolderGroupOfProductsName} - Tariff`;
