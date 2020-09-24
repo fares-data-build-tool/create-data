@@ -78,32 +78,22 @@ export const validateFile = (fileData: formidable.File, fileContents: string): s
 
 export const containsViruses = async (pathToFileToScan: string): Promise<boolean> => {
     const ClamScan = new NodeClam().init({
-        remove_infected: false, // If true, removes infected files
-        quarantine_infected: false, // False: Don't quarantine, Path: Moves files to this place.
-        scan_log: null, // Path to a writeable log file to write scan results into
-        debug_mode: false, // Whether or not to log info/debug/error msgs to the console
-        file_list: null, // path to file containing list of files to scan (for scan_files method)
-        scan_recursively: true, // If true, deep scan folders recursively
-        clamscan: {
-            path: '/usr/local/bin/clamscan', // Path to clamscan binary on your server
-            db: null, // Path to a custom virus definition database
-            scan_archives: true, // If true, scan archives (ex. zip, rar, tar, dmg, iso, etc...)
-            active: true, // If true, this module will consider using the clamscan binary
-        },
+        remove_infected: false,
+        quarantine_infected: false,
+        scan_log: null,
+        debug_mode: false,
+        file_list: null,
+        scan_recursively: true,
         clamdscan: {
-            socket: false, // Socket file for connecting via TCP
-            host: false, // IP of host to connect to TCP interface
-            port: false, // Port of host to use when connecting via TCP interface
-            timeout: 60000, // Timeout for scanning files
-            local_fallback: false, // Do no fail over to binary-method of scanning
-            path: process.env.NODE_ENV === 'development' ? 'usr/local/bin/clamdscan' : 'usr/bin/clamdscan', // Path to the clamdscan binary on your server
-            config_file: null, // Specify config file if it's in an unusual place
-            multiscan: true, // Scan using all available cores! Yay!
-            reload_db: false, // If true, will re-load the DB on every call (slow)
-            active: true, // If true, this module will consider using the clamdscan binary
-            bypass_test: false, // Check to see if socket is available when applicable
+            timeout: 60000,
+            local_fallback: false,
+            path: process.env.NODE_ENV === 'development' ? '/usr/local/bin/clamdscan' : '/usr/bin/clamdscan',
+            multiscan: true,
+            reload_db: false,
+            active: true,
+            bypass_test: false,
         },
-        preference: 'clamdscan', // If clamdscan is found and active, it will be used by default
+        preference: 'clamdscan',
     });
 
     const clamscan = await ClamScan;
