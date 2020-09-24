@@ -86,7 +86,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             });
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, productsAndSalesOfferPackages);
         }
-        redirectTo(res, '/confirmation');
+        redirectTo(res, '/productDateInformation');
         return;
     } catch (error) {
         const message =

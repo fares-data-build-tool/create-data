@@ -7,6 +7,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
 } from '../../../../src/constants/index';
 import {
     defaultSalesOfferPackageOne,
@@ -76,6 +77,10 @@ describe('getSingleTicketJson', () => {
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
             },
         });
         const result = getSingleTicketJson(req, res);
@@ -98,6 +103,10 @@ describe('getReturnTicketJson', () => {
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
             },
         });
         const result = getReturnTicketJson(req, res);
@@ -114,6 +123,10 @@ describe('getReturnTicketJson', () => {
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
             },
         });
         const result = getReturnTicketJson(req, res);
@@ -159,6 +172,10 @@ describe('getPeriodGeoZoneTicketJson', () => {
                         salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                     },
                 ],
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
@@ -210,6 +227,10 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                         salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                     },
                 ],
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
             },
         });
         const result = getPeriodMultipleServicesTicketJson(req, res);
@@ -230,6 +251,10 @@ describe('getFlatFareTicketJson', () => {
                     ],
                 },
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
             },
         });
         const result = getFlatFareTicketJson(req, res);
