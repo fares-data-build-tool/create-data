@@ -23,7 +23,7 @@ The site runs middleware to require an auth session against AWS Cognito, if you 
 
 ## Running ClamAV virus scanning tool locally
 
-There are two pages on the fdbt site which accept file uploads. Upon file upload, the site will run the ClamAV virus scanning tool (see https://www.npmjs.com/package/clamscan for more info) to validate that the uploaded file does no contain any viruses. When running the site locally, the ClamAV virus scanning tool will NOT run by default. If virus scanning is enabled, there are a couple of steps required to get set up and allow the tool to run. The below steps detail how to get ClamAV set up on MacOS:
+There are two pages on the fdbt site which accept file uploads. Upon file upload, the site will run the ClamAV virus scanning tool (see [https://www.npmjs.com/package/clamscan](https://www.npmjs.com/package/clamscan) for more info) to validate that the uploaded file does no contain any viruses. When running the site locally, the ClamAV virus scanning tool will NOT run by default. If virus scanning is enabled, there are a couple of steps required to get set up and allow the tool to run. The below steps detail how to get ClamAV set up on MacOS:
 
 - The easiest way to get the ClamAV package is by running 'brew install clamav'
 - You will then need to create a 'freshclam.conf' file. This file will allow you to obtain a copy of the ClamAV databases. The file should be added to '/usr/local/etc/clamav/freshclam.conf' and should contain the following:

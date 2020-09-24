@@ -241,6 +241,11 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
                 link: '/defineTimeRestrictions',
                 show: isTimeRestrictionDefined,
             },
+            {
+                name: 'Product Date Information',
+                link: '/productDateInformation',
+                show: true,
+            },
         ];
 
         if (isSingle || isReturn) {

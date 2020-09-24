@@ -3,6 +3,7 @@ import camelCase from 'lodash/camelCase';
 import startCase from 'lodash/startCase';
 import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
+import { ProductDateInformation } from '../pages/api/productDateInformation';
 
 export interface RadioWithoutConditionals extends BaseReactElement {
     value: string;
@@ -14,7 +15,7 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
         id: string;
         content: string;
     };
-    inputType: 'text' | 'checkbox' | 'textWithUnits';
+    inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits';
     inputs: BaseReactElement[];
     inputErrors: ErrorInfo[];
 }
@@ -33,6 +34,7 @@ export interface RadioConditionalInputFieldset {
 
 export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
+    dates?: ProductDateInformation;
 }
 
 export const createErrorId = (input: BaseReactElement, inputErrors: ErrorInfo[]): string => {
@@ -51,34 +53,36 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                {radio.hint.content}
-            </legend>
-            {radio.inputs.map(input => {
-                const errorId = createErrorId(input, radio.inputErrors);
-                return (
-                    <div
-                        key={input.id}
-                        className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}
-                    >
-                        <label className="govuk-label" htmlFor={input.id}>
-                            {input.label}
-                        </label>
-                        <FormElementWrapper
-                            errors={radio.inputErrors}
-                            errorId={errorId}
-                            errorClass="govuk-input--error"
+            <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
+                    {radio.hint.content}
+                </legend>
+                {radio.inputs.map(input => {
+                    const errorId = createErrorId(input, radio.inputErrors);
+                    return (
+                        <div
+                            key={input.id}
+                            className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}
                         >
-                            <input
-                                className="govuk-input govuk-!-width-one-third"
-                                id={input.id}
-                                name={input.name}
-                                type="text"
-                            />
-                        </FormElementWrapper>
-                    </div>
-                );
-            })}
+                            <label className="govuk-label" htmlFor={input.id}>
+                                {input.label}
+                            </label>
+                            <FormElementWrapper
+                                errors={radio.inputErrors}
+                                errorId={errorId}
+                                errorClass="govuk-input--error"
+                            >
+                                <input
+                                    className="govuk-input govuk-!-width-one-third"
+                                    id={input.id}
+                                    name={input.name}
+                                    type="text"
+                                />
+                            </FormElementWrapper>
+                        </div>
+                    );
+                })}
+            </fieldset>
         </div>
     );
 };
@@ -134,58 +138,168 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <span className="govuk-hint" id={radio.hint.id}>
-                {radio.hint.content}
-            </span>
-            {radio.inputs.map(input => {
-                const errorId = createErrorId(input, radio.inputErrors);
-                return (
-                    <div
-                        key={input.id}
-                        className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}
-                    >
-                        <label className="govuk-label" htmlFor={input.id}>
-                            {input.label}
-                        </label>
-                        <FormElementWrapper
-                            errors={radio.inputErrors}
-                            errorId={errorId}
-                            errorClass={`${input.id.includes('units') ? 'govuk-select--error' : 'govuk-input--error'}`}
+            <fieldset className="govuk-fieldset" role="group" aria-describedby={radio.hint.id}>
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
+                    {radio.hint.content}
+                </legend>
+                {radio.inputs.map(input => {
+                    const errorId = createErrorId(input, radio.inputErrors);
+                    return (
+                        <div
+                            key={input.id}
+                            className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}
                         >
-                            {input.id.includes('units') ? (
-                                <select
-                                    className="govuk-select"
-                                    id={input.id}
-                                    name={input.name}
-                                    defaultValue={input.defaultValue || ''}
-                                >
-                                    <option value="" disabled>
-                                        Select a {input.name}
-                                    </option>
-                                    {input.options?.map(unit => (
-                                        <option key={`${unit}-option`} value={unit}>
-                                            {startCase(`${unit}s`)}
+                            <label className="govuk-label" htmlFor={input.id}>
+                                {input.label}
+                            </label>
+                            <FormElementWrapper
+                                errors={radio.inputErrors}
+                                errorId={errorId}
+                                errorClass={`${
+                                    input.id.includes('units') ? 'govuk-select--error' : 'govuk-input--error'
+                                }`}
+                            >
+                                {input.id.includes('units') ? (
+                                    <select
+                                        className="govuk-select"
+                                        id={input.id}
+                                        name={input.name}
+                                        defaultValue={input.defaultValue || ''}
+                                    >
+                                        <option value="" disabled>
+                                            Select a {input.name}
                                         </option>
-                                    ))}
-                                </select>
-                            ) : (
-                                <input
-                                    className="govuk-input govuk-!-width-one-third"
-                                    id={input.id}
-                                    name={input.name}
-                                    type="text"
-                                    defaultValue={input.defaultValue || ''}
-                                />
-                            )}
-                        </FormElementWrapper>
-                    </div>
-                );
-            })}
+                                        {input.options?.map(unit => (
+                                            <option key={`${unit}-option`} value={unit}>
+                                                {startCase(`${unit}s`)}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <input
+                                        className="govuk-input govuk-!-width-one-third"
+                                        id={input.id}
+                                        name={input.name}
+                                        type="text"
+                                        defaultValue={input.defaultValue || ''}
+                                    />
+                                )}
+                            </FormElementWrapper>
+                        </div>
+                    );
+                })}
+            </fieldset>
         </div>
     );
 };
 
-const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLabel: ReactElement): ReactElement => {
+const renderConditionalDateInputs = (
+    radio: RadioWithConditionalInputs,
+    dates: ProductDateInformation,
+): ReactElement => {
+    const error = radio.inputErrors.length > 0;
+
+    return (
+        <div
+            className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
+            id={radio.dataAriaControls}
+        >
+            <fieldset className="govuk-fieldset" role="group" aria-describedby={radio.hint.id}>
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
+                    {radio.hint.content}
+                </legend>
+                {radio.inputs.map(input => {
+                    const inputGroupError = radio.inputErrors.find(({ id }) => {
+                        return id.includes(input.id);
+                    });
+
+                    const dayValue = input.name === 'startDate' ? dates.startDateDay : dates.endDateDay;
+                    const monthValue = input.name === 'startDate' ? dates.startDateMonth : dates.endDateMonth;
+                    const yearValue = input.name === 'startDate' ? dates.startDateYear : dates.endDateYear;
+
+                    return (
+                        <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>
+                            <div className="govuk-date-input" id={input.id}>
+                                {inputGroupError ? (
+                                    <span id={input.id} className="govuk-error-message">
+                                        {inputGroupError.errorMessage}
+                                    </span>
+                                ) : null}
+
+                                <label className="govuk-label" htmlFor={input.id}>
+                                    {input.label}
+                                </label>
+                                <div className="govuk-date-input__item">
+                                    <div className="govuk-form-group">
+                                        <label
+                                            className="govuk-label govuk-date-input__label"
+                                            htmlFor={`${input.id}-day`}
+                                        >
+                                            Day
+                                        </label>
+                                        <input
+                                            className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                                                inputGroupError ? 'govuk-input--error' : ''
+                                            }`}
+                                            id={`${input.id}-day`}
+                                            name={`${input.name}Day`}
+                                            type="text"
+                                            defaultValue={dayValue}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="govuk-date-input__item">
+                                    <div className="govuk-form-group">
+                                        <label
+                                            className="govuk-label govuk-date-input__label"
+                                            htmlFor={`${input.id}-month`}
+                                        >
+                                            Month
+                                        </label>
+                                        <input
+                                            className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                                                inputGroupError ? 'govuk-input--error' : ''
+                                            }`}
+                                            id={`${input.id}-month`}
+                                            name={`${input.name}Month`}
+                                            type="text"
+                                            defaultValue={monthValue}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="govuk-date-input__item">
+                                    <div className="govuk-form-group">
+                                        <label
+                                            className="govuk-label govuk-date-input__label"
+                                            htmlFor={`${input.id}-year`}
+                                        >
+                                            Year
+                                        </label>
+                                        <input
+                                            className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
+                                                inputGroupError ? 'govuk-input--error' : ''
+                                            }`}
+                                            id={`${input.id}-year`}
+                                            name={`${input.name}Year`}
+                                            type="text"
+                                            defaultValue={yearValue}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </fieldset>
+        </div>
+    );
+};
+
+const renderConditionalRadioButton = (
+    radio: RadioWithConditionalInputs,
+    radioLabel: ReactElement,
+    dates?: ProductDateInformation,
+): ReactElement => {
     const baseRadioInput = (
         <input
             className="govuk-radios__input"
@@ -220,7 +334,19 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
             </div>
-            {inputTypeMap[radio.inputType](radio)}
+            {radio.inputType === 'date'
+                ? renderConditionalDateInputs(
+                      radio,
+                      dates || {
+                          startDateDay: '',
+                          startDateMonth: '',
+                          startDateYear: '',
+                          endDateDay: '',
+                          endDateMonth: '',
+                          endDateYear: '',
+                      },
+                  )
+                : inputTypeMap[radio.inputType](radio)}
         </div>
     );
 };
@@ -231,7 +357,7 @@ const isRadioWithConditionalInputs = (
     return (radioButton as RadioWithConditionalInputs).hint !== undefined;
 };
 
-const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
+const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformation): ReactElement => {
     const radioButtonLabel: ReactElement = (
         <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
             {radio.label}
@@ -239,7 +365,7 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     );
 
     if (isRadioWithConditionalInputs(radio)) {
-        return renderConditionalRadioButton(radio, radioButtonLabel);
+        return renderConditionalRadioButton(radio, radioButtonLabel, dates);
     }
 
     return (
@@ -250,7 +376,7 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     );
 };
 
-const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactElement => {
+const RadioConditionalInput = ({ fieldset, dates }: RadioConditionalInputProps): ReactElement => {
     const radioError = fieldset.radioError.length > 0;
 
     return (
@@ -270,7 +396,7 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => renderRadioButtonSet(radio))}
+                        {fieldset.radios.map(radio => renderRadioButtonSet(radio, dates))}
                     </div>
                 </FormElementWrapper>
             </fieldset>
