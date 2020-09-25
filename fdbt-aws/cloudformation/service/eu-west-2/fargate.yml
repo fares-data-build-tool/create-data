@@ -24,7 +24,7 @@ Parameters:
     Description: How much CPU to give the site container. 1024 is 1 CPU
   SiteContainerMemory:
     Type: Number
-    Default: 512
+    Default: 2048
     Description: How much memory in MiB to give the site container
   SiteDesiredCount:
     Type: Number
@@ -81,6 +81,7 @@ Parameters:
 Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
   IsProd: !Equals [!Ref Stage, "prod"]
+  IsNotProd: !Not [!Equals [!Ref Stage, "prod"]]
 
 Resources:
   # ECS Resources
@@ -133,6 +134,8 @@ Resources:
               Value: !If [IsTest, "1", "0"]
             - Name: SESSION_SECRET
               Value: !Ref SessionSecret
+            - Name: ENABLE_VIRUS_SCAN
+              Value: "1"
 
   MonitoringTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -209,6 +212,46 @@ Resources:
       ServiceNamespace: ecs
       RoleARN:
         Fn::ImportValue: !Sub ${Stage}:EcsSiteScalingRoleArn
+      ScheduledActions:
+        Fn::If:
+          - IsNotProd
+          - - Schedule: "cron(0 18 * * ? *)"
+              ScheduledActionName: SiteScaleIn
+              ScalableTargetAction:
+                MaxCapacity: 0
+                MinCapacity: 0
+            - Schedule: "cron(0 7 * * ? *)"
+              ScheduledActionName: SiteScaleOut
+              ScalableTargetAction:
+                MaxCapacity: !Ref SiteMaxCount
+                MinCapacity: !Ref SiteMinCount
+          - !Ref AWS::NoValue
+
+  MonitoringAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MinCapacity: 1
+      MaxCapacity: 1
+      ResourceId:
+        !Join ["/", [service, !Ref ECSCluster, !GetAtt MonitoringService.Name]]
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      RoleARN:
+        Fn::ImportValue: !Sub ${Stage}:EcsSiteScalingRoleArn
+      ScheduledActions:
+        Fn::If:
+          - IsNotProd
+          - - Schedule: "cron(0 19 * * ? *)"
+              ScheduledActionName: MonitoringScaleIn
+              ScalableTargetAction:
+                MaxCapacity: 0
+                MinCapacity: 0
+            - Schedule: "cron(0 7 * * ? *)"
+              ScheduledActionName: MonitoringScaleOut
+              ScalableTargetAction:
+                MaxCapacity: 1
+                MinCapacity: 1
+          - !Ref AWS::NoValue
 
   SiteAutoScalingPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
