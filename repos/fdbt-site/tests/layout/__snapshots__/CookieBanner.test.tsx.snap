@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CookieBanner should render correctly 1`] = `
+<div
+  aria-label="cookie banner"
+  className="cookie-banner"
+  id="global-cookie-message"
+  role="region"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <div
+          className="cookie-banner__message"
+        >
+          <h2
+            className="govuk-heading-m"
+          >
+            Tell us whether you accept cookies
+          </h2>
+          <p
+            className="govuk-body"
+          >
+            We use
+             
+            <a
+              className="govuk-link"
+              href="/cookieDetails"
+            >
+              cookies to collect information
+            </a>
+             
+            about how you use the Fares Data Build Tool. We use this information to make the website work as well as possible and to improve the service.
+          </p>
+        </div>
+        <div
+          className="cookie-banner__button"
+        >
+          <a
+            className="govuk-button cookie-banner__button--inline"
+            href="/cookies"
+            id="set-cookie-preferences-link"
+            role="button"
+          >
+            Set cookie preferences
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

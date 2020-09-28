@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`_document should render correctly 1`] = `
+exports[`_document should not show the cookie banner when the showCookieBanner attribute is false 1`] = `
 <Html
   className="govuk-template app-html-class flexbox no-flexboxtweener"
   lang="en"
@@ -24,7 +24,63 @@ exports[`_document should render correctly 1`] = `
     <div
       className="govuk-width-container app-width-container--wide"
     >
-      <Banner />
+      <PhaseBanner />
+      <main
+        id="main-content"
+        role="main"
+        tabIndex={-1}
+      >
+        <div
+          className="govuk-main-wrapper app-main-class"
+        >
+          <Main />
+        </div>
+      </main>
+      <Help />
+    </div>
+    <Footer />
+    <NextScript
+      nonce=""
+    />
+    <script
+      nonce=""
+      src="/scripts/all.js"
+    />
+    <script
+      nonce=""
+    >
+      window.GOVUKFrontend.initAll()
+    </script>
+  </body>
+</Html>
+`;
+
+exports[`_document should render correctly 1`] = `
+<Html
+  className="govuk-template app-html-class flexbox no-flexboxtweener"
+  lang="en"
+>
+  <Head
+    nonce=""
+  />
+  <body
+    className="govuk-template__body app-body-class js-enabled"
+  >
+    <a
+      className="govuk-skip-link"
+      href="#main-content"
+    >
+      Skip to main content
+    </a>
+    <CookieBanner />
+    <Header
+      csrfToken=""
+      isAuthed={true}
+    />
+    <div
+      className="govuk-width-container app-width-container--wide"
+    >
+      <PhaseBanner />
       <main
         id="main-content"
         role="main"
