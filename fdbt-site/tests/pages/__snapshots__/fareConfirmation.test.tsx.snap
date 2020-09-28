@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages fareConfirmation should render correctly 1`] = `
+<Component
+  description="Fare Confirmation page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Fare Confirmation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/fareConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your fares information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "Single",
+            "href": "fareType",
+            "name": "Fare Type",
+          },
+          Object {
+            "content": "Adult",
+            "href": "passengerType",
+            "name": "Passenger Type",
+          },
+          Object {
+            "content": "Minimum Age: 18 Maximum Age: 100",
+            "href": "definePassengerType",
+            "name": "Passenger Information - Age Range",
+          },
+          Object {
+            "content": "Membership card",
+            "href": "definePassengerType",
+            "name": "Passenger Information - Proof Documents",
+          },
+          Object {
+            "content": "0900",
+            "href": "defineTimeRestrictions",
+            "name": "Time Restrictions - Start Time",
+          },
+          Object {
+            "content": "1600",
+            "href": "defineTimeRestrictions",
+            "name": "Time Restrictions - End Time",
+          },
+          Object {
+            "content": "Monday, Tuesday, Wednesday",
+            "href": "defineTimeRestrictions",
+            "name": "Time Restrictions - Valid Days",
+          },
+        ]
+      }
+      header="Fare Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

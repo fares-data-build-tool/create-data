@@ -167,7 +167,12 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    ticketPeriod: TicketPeriod;
+    ticketPeriod: ProductDate;
+}
+
+export interface ProductDate {
+    startDate?: string;
+    endDate?: string;
 }
 
 export interface TicketPeriod {

@@ -2996,14 +2996,14 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
             label: 'Yes',
             hint: {
                 id: 'define-return-validity-hint',
-                content: 'Enter an amount and select a duration from the dropdown',
+                content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
             inputs: [
                 {
                     id: 'return-validity-amount',
                     name: 'amount',
-                    label: 'Amount',
+                    label: 'Number',
                     defaultValue: '',
                 },
                 {
@@ -3041,14 +3041,14 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
             label: 'Yes',
             hint: {
                 id: 'define-return-validity-hint',
-                content: 'Enter an amount and select a duration from the dropdown',
+                content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
             inputs: [
                 {
                     id: 'return-validity-amount',
                     name: 'amount',
-                    label: 'Amount',
+                    label: 'Number',
                     defaultValue: '',
                 },
                 {
@@ -3086,14 +3086,14 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
             label: 'Yes',
             hint: {
                 id: 'define-return-validity-hint',
-                content: 'Enter an amount and select a duration from the dropdown',
+                content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
             inputs: [
                 {
                     id: 'return-validity-amount',
                     name: 'amount',
-                    label: 'Amount',
+                    label: 'Number',
                     defaultValue: '',
                 },
                 {
@@ -3133,14 +3133,14 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
             label: 'Yes',
             hint: {
                 id: 'define-return-validity-hint',
-                content: 'Enter an amount and select a duration from the dropdown',
+                content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
             inputs: [
                 {
                     id: 'return-validity-amount',
                     name: 'amount',
-                    label: 'Amount',
+                    label: 'Number',
                     defaultValue: '',
                 },
                 {
@@ -3181,14 +3181,14 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
             label: 'Yes',
             hint: {
                 id: 'define-return-validity-hint',
-                content: 'Enter an amount and select a duration from the dropdown',
+                content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
             inputs: [
                 {
                     id: 'return-validity-amount',
                     name: 'amount',
-                    label: 'Amount',
+                    label: 'Number',
                     defaultValue: '',
                 },
                 {

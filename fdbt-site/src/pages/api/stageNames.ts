@@ -53,7 +53,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const userInputValidity = isStageNameValid(req);
         if (!userInputValidity.some(el => el.error !== '')) {
             updateSessionAttribute(req, STAGE_NAMES_ATTRIBUTE, stageNames);
-            redirectTo(res, '/priceEntry');
+            redirectTo(res, '/stageNamesConfirmation');
         } else {
             updateSessionAttribute(req, STAGE_NAMES_ATTRIBUTE, userInputValidity);
             redirectTo(res, '/stageNames');

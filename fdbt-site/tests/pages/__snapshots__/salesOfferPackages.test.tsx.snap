@@ -86,7 +86,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-0-on-board"
                 >
-                  On Board
+                  OnBoard
                 </label>
               </div>
               <div
@@ -124,7 +124,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-2-mobile-device"
                 >
-                  Mobile Device
+                  MobileDevice
                 </label>
               </div>
             </FormElementWrapper>
@@ -198,7 +198,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-1-debit-card"
                 >
-                  Debit Card
+                  DebitCard
                 </label>
               </div>
               <div
@@ -217,7 +217,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-2-credit-card"
                 >
-                  Credit Card
+                  CreditCard
                 </label>
               </div>
               <div
@@ -236,7 +236,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-3-mobile-phone"
                 >
-                  Mobile Phone
+                  MobilePhone
                 </label>
               </div>
             </FormElementWrapper>
@@ -291,7 +291,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-0-paper-ticket"
                 >
-                  Paper Ticket
+                  PaperTicket
                 </label>
               </div>
               <div
@@ -310,7 +310,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-1-mobile-app"
                 >
-                  Mobile App
+                  MobileApp
                 </label>
               </div>
               <div
@@ -329,7 +329,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-2-smart-card"
                 >
-                  Smart Card
+                  SmartCard
                 </label>
               </div>
             </FormElementWrapper>
@@ -417,7 +417,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-0-on-board"
                 >
-                  On Board
+                  OnBoard
                 </label>
               </div>
               <div
@@ -455,7 +455,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-2-mobile-device"
                 >
-                  Mobile Device
+                  MobileDevice
                 </label>
               </div>
             </FormElementWrapper>
@@ -515,7 +515,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-1-debit-card"
                 >
-                  Debit Card
+                  DebitCard
                 </label>
               </div>
               <div
@@ -534,7 +534,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-2-credit-card"
                 >
-                  Credit Card
+                  CreditCard
                 </label>
               </div>
               <div
@@ -553,7 +553,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-3-mobile-phone"
                 >
-                  Mobile Phone
+                  MobilePhone
                 </label>
               </div>
             </FormElementWrapper>
@@ -594,7 +594,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-0-paper-ticket"
                 >
-                  Paper Ticket
+                  PaperTicket
                 </label>
               </div>
               <div
@@ -613,7 +613,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-1-mobile-app"
                 >
-                  Mobile App
+                  MobileApp
                 </label>
               </div>
               <div
@@ -632,7 +632,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-2-smart-card"
                 >
-                  Smart Card
+                  SmartCard
                 </label>
               </div>
             </FormElementWrapper>

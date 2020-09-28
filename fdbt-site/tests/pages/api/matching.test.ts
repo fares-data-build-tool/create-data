@@ -47,7 +47,7 @@ describe('Matching API', () => {
         matching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingInfo);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/selectSalesOfferPackage' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
     });
 
     it('generates matching info, updates the MATCHING_ATTRIBUTE and redirects to /returnValidity if all is valid, when fare type is return', () => {

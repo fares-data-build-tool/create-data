@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
-import { redirectToError, redirectTo, redirectOnFareType } from './apiUtils/index';
+import { redirectToError, redirectTo } from './apiUtils/index';
 import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, TimeRestriction } from '../../interfaces';
@@ -213,7 +213,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
-        redirectOnFareType(req, res);
+        redirectTo(res, '/fareConfirmation');
+        return;
     } catch (error) {
         const message = 'There was a problem in the defineTimeRestrictions API.';
         redirectToError(res, message, 'api.defineTimeRestrictions', error);
