@@ -37,6 +37,10 @@ Parameters:
     Type: String
     Default: fdbt
 
+  LatestAmiId:
+    Type: "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
+    Default: "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+
 Resources:
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
@@ -147,7 +151,7 @@ Resources:
       LaunchTemplateData:
         IamInstanceProfile:
           Arn: !GetAtt BastionInstanceProfile.Arn
-        ImageId: ami-0cb790308f7591fa6
+        ImageId: !Ref LatestAmiId
         InstanceType: t3.micro
         SecurityGroupIds:
           - Fn::ImportValue: !Sub ${Stage}:BastionSecurityGroup
