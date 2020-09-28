@@ -14,7 +14,13 @@ import { isFareType } from '../../../interfaces/typeGuards';
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
 
-export const setCookieOnResponseObject = (cookieName: string, cookieValue: string, req: Req, res: Res): void => {
+export const setCookieOnResponseObject = (
+    cookieName: string,
+    cookieValue: string,
+    req: Req,
+    res: Res,
+    lifetime?: number,
+): void => {
     const cookies = new Cookies(req, res);
     // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
     // default. An error will be thrown if you try to send secure cookies over an insecure socket.
@@ -22,6 +28,7 @@ export const setCookieOnResponseObject = (cookieName: string, cookieValue: strin
         path: '/',
         sameSite: 'strict',
         secure: process.env.NODE_ENV !== 'development',
+        maxAge: lifetime,
     });
 };
 

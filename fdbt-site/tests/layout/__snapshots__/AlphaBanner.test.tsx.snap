@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Banner should render correctly 1`] = `
+exports[`PhaseBanner should render correctly 1`] = `
 <div
   className="govuk-phase-banner"
 >
