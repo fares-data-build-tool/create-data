@@ -1,11 +1,14 @@
+import moment from 'moment';
 import { NextApiResponse } from 'next';
 import {
+    PRODUCT_DATE_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/index';
+
 import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import {
     getSingleTicketJson,
@@ -17,7 +20,7 @@ import {
 } from './apiUtils/userData';
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { getSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType, isPassengerType, isPeriodType } from '../../interfaces/typeGuards';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -30,6 +33,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (!fareTypeAttribute) {
             throw new Error('No fare type session attribute found.');
+        }
+
+        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+        if (!productDating) {
+            updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
+                startDate: moment().toISOString(),
+                endDate: moment()
+                    .add(100, 'y')
+                    .toISOString(),
+            });
         }
 
         if (
@@ -99,6 +112,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         return;
     } catch (error) {
         const message = 'There was a problem processing the information needed for the user data to be put in s3:';
-        redirectToError(res, message, 'api.selectSalesOfferPackage', error);
+        redirectToError(res, message, 'api.salesConfirmation', error);
     }
 };

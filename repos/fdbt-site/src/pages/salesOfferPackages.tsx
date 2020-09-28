@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import startCase from 'lodash/startCase';
 import kebabCase from 'lodash/kebabCase';
 import upperCase from 'lodash/upperCase';
+import upperFirst from 'lodash/upperFirst';
 import { BaseLayout } from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -92,7 +92,7 @@ const SalesOfferPackages = ({
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${purchaseLocationId}`}
                                                         >
-                                                            {startCase(purchaseLocations)}
+                                                            {upperFirst(purchaseLocations)}
                                                         </label>
                                                     </div>
                                                 );
@@ -138,7 +138,7 @@ const SalesOfferPackages = ({
                                                         >
                                                             {paymentMethods === 'sms'
                                                                 ? upperCase(paymentMethods)
-                                                                : startCase(paymentMethods)}
+                                                                : upperFirst(paymentMethods)}
                                                         </label>
                                                     </div>
                                                 );
@@ -182,7 +182,7 @@ const SalesOfferPackages = ({
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${ticketFormatId}`}
                                                         >
-                                                            {startCase(ticketFormats)}
+                                                            {upperFirst(ticketFormats)}
                                                         </label>
                                                     </div>
                                                 );

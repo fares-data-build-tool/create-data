@@ -37,14 +37,14 @@ export const getFieldset = (errors: ErrorInfo[], amount: string, duration: strin
             label: 'Yes',
             hint: {
                 id: 'define-return-validity-hint',
-                content: 'Enter an amount and select a duration from the dropdown',
+                content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
             inputs: [
                 {
                     id: 'return-validity-amount',
                     name: 'amount',
-                    label: 'Amount',
+                    label: 'Number',
                     defaultValue: amount,
                 },
                 {

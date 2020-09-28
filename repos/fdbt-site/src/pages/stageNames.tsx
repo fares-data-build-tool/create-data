@@ -22,36 +22,57 @@ type StageNameProps = {
     numberOfFareStages: number;
     inputChecks: InputCheck[];
     errors: ErrorInfo[];
+    defaults: string[];
 };
 
-export const renderInputField = (index: number, inputCheck: InputCheck, errors: ErrorInfo[] = []): ReactElement => (
-    <div
-        className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}
-        key={`fare-stage-name-${index + 1}`}
-    >
-        <label className="govuk-label" htmlFor={`fare-stage-name-${index + 1}`}>
-            Fare Stage {index + 1}
-        </label>
-        <FormElementWrapper errors={errors} errorClass="govuk-input--error" errorId={`fare-stage-name-${index + 1}`}>
-            <input
-                className="govuk-input govuk-input--width-30 stage-name-input-field"
-                id={`fare-stage-name-${index + 1}`}
-                name="stageNameInput"
-                type="text"
-                defaultValue={!inputCheck?.error ? inputCheck?.input : ''}
-            />
-        </FormElementWrapper>
-    </div>
-);
+export const renderInputField = (
+    index: number,
+    inputCheck: InputCheck,
+    errors: ErrorInfo[] = [],
+    defaultInput: string,
+): ReactElement => {
+    let inputToRender = '';
+
+    if (defaultInput) {
+        inputToRender = defaultInput;
+    } else if (defaultInput === '') {
+        inputToRender = !inputCheck?.error ? inputCheck?.input : '';
+    }
+    return (
+        <div
+            className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}
+            key={`fare-stage-name-${index + 1}`}
+        >
+            <label className="govuk-label" htmlFor={`fare-stage-name-${index + 1}`}>
+                Fare Stage {index + 1}
+            </label>
+            <FormElementWrapper
+                errors={errors}
+                errorClass="govuk-input--error"
+                errorId={`fare-stage-name-${index + 1}`}
+            >
+                <input
+                    className="govuk-input govuk-input--width-30 stage-name-input-field"
+                    id={`fare-stage-name-${index + 1}`}
+                    name="stageNameInput"
+                    type="text"
+                    defaultValue={inputToRender}
+                />
+            </FormElementWrapper>
+        </div>
+    );
+};
 
 export const renderInputFields = (
     numberOfFareStages: number,
     inputChecks: InputCheck[],
     errors: ErrorInfo[],
+    defaults: string[],
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfFareStages; i += 1) {
-        elements.push(renderInputField(i, inputChecks[i], errors));
+        const defaultValue = defaults.length > 0 ? defaults[i] : '';
+        elements.push(renderInputField(i, inputChecks[i], errors, defaultValue));
     }
 
     return elements;
@@ -64,6 +85,7 @@ const StageNames = ({
     inputChecks,
     csrfToken,
     errors = [],
+    defaults,
 }: StageNameProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/stageNames" method="post" csrfToken={csrfToken}>
@@ -76,7 +98,7 @@ const StageNames = ({
                         </h1>
                     </legend>
                     <div className="govuk-hint">Fare stage names are limited to 30 characters</div>
-                    <div>{renderInputFields(numberOfFareStages, inputChecks, errors)}</div>
+                    <div>{renderInputFields(numberOfFareStages, inputChecks, errors, defaults)}</div>
                 </fieldset>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
@@ -84,7 +106,7 @@ const StageNames = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StageNameProps } => {
     const fareStagesAttribute = getSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE);
 
     if (!isFareStage(fareStagesAttribute)) {
@@ -106,10 +128,17 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
                 errors.push({ errorMessage: inputCheck.error, id: inputCheck.id });
             }
         });
-        return { props: { numberOfFareStages, inputChecks, errors } };
+        return { props: { numberOfFareStages, inputChecks, errors, defaults: [] } };
     }
 
-    return { props: { numberOfFareStages, inputChecks, errors: [] } };
+    return {
+        props: {
+            numberOfFareStages,
+            inputChecks,
+            errors: [],
+            defaults: !isInputCheck(stageNamesInfo) && stageNamesInfo ? stageNamesInfo : [],
+        },
+    };
 };
 
 export default StageNames;

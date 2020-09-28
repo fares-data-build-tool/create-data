@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages stageNamesConfirmation should render correctly 1`] = `
+<Component
+  description="Stage Names Confirmation page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Stage Names Confirmation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/stageNamesConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your Fare Stage Names before moving on
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "leeds",
+            "href": "stageNames",
+            "name": "Fare Stage 1",
+          },
+          Object {
+            "content": "manchester",
+            "href": "stageNames",
+            "name": "Fare Stage 2",
+          },
+          Object {
+            "content": "bolton",
+            "href": "stageNames",
+            "name": "Fare Stage 3",
+          },
+        ]
+      }
+      header="Fare Stage Names"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

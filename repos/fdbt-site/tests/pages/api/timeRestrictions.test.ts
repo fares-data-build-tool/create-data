@@ -1,5 +1,4 @@
 import { timeRestrictionsErrorId } from '../../../src/pages/timeRestrictions';
-import * as utils from '../../../src/pages/api/apiUtils/index';
 import timeRestrictions from '../../../src/pages/api/timeRestrictions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';
@@ -56,19 +55,6 @@ describe('timeRestrictions', () => {
             expect(res.writeHead).toBeCalledWith(302, {
                 Location: '/error',
             });
-        });
-
-        it('should redirect on fare type when no is selected for time restrictions', () => {
-            const redirectOnFareType = jest.spyOn(utils, 'redirectOnFareType');
-            const { req, res } = getMockRequestAndResponse({
-                cookieValues: { operator: null },
-                body: {
-                    timeRestrictions: 'no',
-                },
-                uuid: {},
-            });
-            timeRestrictions(req, res);
-            expect(redirectOnFareType).toBeCalled();
         });
 
         it('should 302 redirect to /defineTimeRestrictions when yes is selected for time restrictions', () => {

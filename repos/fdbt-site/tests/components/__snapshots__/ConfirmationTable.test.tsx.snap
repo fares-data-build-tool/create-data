@@ -2,13 +2,28 @@
 
 exports[`ConfirmationTable should render the table with options 1`] = `
 <Fragment>
-  <h2
-    className="govuk-heading-m"
+  <div
+    className="govuk-warning-text"
   >
-    Snapshot test things
-  </h2>
+    <span
+      aria-hidden="true"
+      className="govuk-warning-text__icon"
+    >
+      !
+    </span>
+    <strong
+      className="govuk-warning-text__text"
+    >
+      <span
+        className="govuk-warning-text__assistive"
+      >
+        Warning
+      </span>
+      You will not be shown these answers again, ensure they are correct
+    </strong>
+  </div>
   <dl
-    className="govuk-summary-list govuk-!-margin-bottom-9"
+    className="govuk-summary-list"
   >
     <div
       className="govuk-summary-list__row"
@@ -31,7 +46,7 @@ exports[`ConfirmationTable should render the table with options 1`] = `
           className="govuk-link"
           href="/login"
         >
-          Change
+          change
           <span
             className="govuk-visually-hidden"
           >
@@ -40,6 +55,10 @@ exports[`ConfirmationTable should render the table with options 1`] = `
         </a>
       </dd>
     </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+  >
     <div
       className="govuk-summary-list__row"
       key="House"
@@ -61,50 +80,11 @@ exports[`ConfirmationTable should render the table with options 1`] = `
           className="govuk-link"
           href="/fareType"
         >
-          Change
+          change
           <span
             className="govuk-visually-hidden"
           >
             House
-          </span>
-        </a>
-      </dd>
-    </div>
-  </dl>
-  <h2
-    className="govuk-heading-m"
-  >
-    Other Snapshot test things
-  </h2>
-  <dl
-    className="govuk-summary-list govuk-!-margin-bottom-9"
-  >
-    <div
-      className="govuk-summary-list__row"
-      key="Age"
-    >
-      <dt
-        className="govuk-summary-list__key"
-      >
-        Age
-      </dt>
-      <dd
-        className="govuk-summary-list__value"
-      >
-        21
-      </dd>
-      <dd
-        className="govuk-summary-list__actions"
-      >
-        <a
-          className="govuk-link"
-          href="/"
-        >
-          Change
-          <span
-            className="govuk-visually-hidden"
-          >
-            Age
           </span>
         </a>
       </dd>
