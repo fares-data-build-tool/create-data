@@ -51,6 +51,7 @@ describe('pages', () => {
                                 ],
                             },
                         ],
+                        nonCircularMatchedFareStages: [],
                         validity: { amount: '2', typeOfDuration: 'days' },
                     }}
                     csrfToken=""
@@ -163,6 +164,7 @@ describe('pages', () => {
                         stops: ['at Liverpool station', 'outside Liverpool train station', 'near Liverpool green park'],
                     },
                 ],
+                nonCircularMatchedFareStages: [],
                 validity: { amount: '2', typeOfDuration: 'days' },
             });
             expect(result).toStrictEqual([
