@@ -61,6 +61,7 @@ export interface ReturnTicketProps {
     circular: boolean;
     inboundMatchedFareStages: MatchedFareStages[];
     outboundMatchedFareStages: MatchedFareStages[];
+    nonCircularMatchedFareStages: MatchedFareStages[];
     validity?: ReturnPeriodValidity;
 }
 export interface PeriodTicketProps {
@@ -112,22 +113,23 @@ export const buildFareTypeProps = (
         const { inboundJourney } = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE) as Journey;
         const outBoundJourney = (getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE) as Journey).outboundJourney;
         const circular = !(!outBoundJourney && !inboundJourney);
-        const outboundMatchingFareZones = (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo)
-            .matchingFareZones;
-        const outboundMatchedFareStages = buildMatchedFareStages(outboundMatchingFareZones);
-        const { inboundMatchingFareZones } = getSessionAttribute(
-            ctx.req,
-            INBOUND_MATCHING_ATTRIBUTE,
-        ) as InboundMatchingInfo;
-        const inboundMatchedFareStages = buildMatchedFareStages(inboundMatchingFareZones);
         const validity = getSessionAttribute(ctx.req, RETURN_VALIDITY_ATTRIBUTE) as ReturnPeriodValidity;
         if (circular) {
+            const outboundMatchingFareZones = (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo)
+                .matchingFareZones;
+            const outboundMatchedFareStages = buildMatchedFareStages(outboundMatchingFareZones);
+            const { inboundMatchingFareZones } = getSessionAttribute(
+                ctx.req,
+                INBOUND_MATCHING_ATTRIBUTE,
+            ) as InboundMatchingInfo;
+            const inboundMatchedFareStages = buildMatchedFareStages(inboundMatchingFareZones);
             if (validity) {
                 return {
                     service,
                     circular,
                     inboundMatchedFareStages,
                     outboundMatchedFareStages,
+                    nonCircularMatchedFareStages: [],
                     validity,
                 };
             }
@@ -136,22 +138,30 @@ export const buildFareTypeProps = (
                 circular,
                 inboundMatchedFareStages,
                 outboundMatchedFareStages,
+                nonCircularMatchedFareStages: [],
             };
         }
+
+        const matchedFareStages: MatchedFareStages[] = buildMatchedFareStages(
+            (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo).matchingFareZones,
+        );
+
         if (validity) {
             return {
                 service,
                 circular,
-                inboundMatchedFareStages,
-                outboundMatchedFareStages,
+                inboundMatchedFareStages: [],
+                outboundMatchedFareStages: [],
+                nonCircularMatchedFareStages: matchedFareStages,
                 validity,
             };
         }
         return {
             service,
             circular,
-            inboundMatchedFareStages,
-            outboundMatchedFareStages,
+            inboundMatchedFareStages: [],
+            outboundMatchedFareStages: [],
+            nonCircularMatchedFareStages: matchedFareStages,
         };
     }
     if (fareType === 'period') {
@@ -240,7 +250,16 @@ export const buildTicketConfirmationElements = (
                     href: 'inboundMatching',
                 });
             });
+        } else {
+            fareTypeProps.nonCircularMatchedFareStages.forEach(fareStage => {
+                confirmationElements.push({
+                    name: `Fare Stage - ${fareStage.fareStage}`,
+                    content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
+                    href: 'matching',
+                });
+            });
         }
+
         if (fareTypeProps.validity) {
             confirmationElements.push({
                 name: 'Return Validity',
