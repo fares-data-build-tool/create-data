@@ -101,7 +101,7 @@ describe('productDetails', () => {
             mockPeriodProductDetails,
         );
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackage',
+            Location: '/ticketConfirmation',
         });
     });
 

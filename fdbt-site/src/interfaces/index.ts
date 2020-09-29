@@ -21,6 +21,11 @@ export interface DaysValidInfo {
     errors: ErrorInfo[];
 }
 
+export interface CookiePolicy {
+    essential: boolean;
+    usage: boolean;
+}
+
 export interface ProductInfoWithErrors extends ProductInfo {
     errors: ErrorInfo[];
 }

@@ -230,21 +230,21 @@ describe('pages', () => {
             });
             expect(result).toStrictEqual([
                 { content: 'You uploaded a Fare Zone CSV file', href: 'csvZoneUpload', name: 'Zone' },
-                { content: 'Price - 30', href: 'multipleProducts', name: 'Product - Super ticket' },
+                { content: 'Price - £30', href: 'multipleProducts', name: 'Product - Super ticket' },
                 {
                     content: 'Duration - 2',
                     href: "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
                     name: 'Product - Super ticket',
                 },
                 { content: 'Validity - 24hr', href: 'periodValidity', name: 'Product - Super ticket' },
-                { content: 'Price - 10', href: 'multipleProducts', name: 'Product - Best ticket' },
+                { content: 'Price - £10', href: 'multipleProducts', name: 'Product - Best ticket' },
                 {
                     content: 'Duration - 22',
                     href: "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
                     name: 'Product - Best ticket',
                 },
                 { content: 'Validity - 24hr', href: 'periodValidity', name: 'Product - Best ticket' },
-                { content: 'Price - 3', href: 'multipleProducts', name: 'Product - Normal ticket' },
+                { content: 'Price - £3', href: 'multipleProducts', name: 'Product - Normal ticket' },
                 {
                     content: 'Duration - 23',
                     href: "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
@@ -261,7 +261,7 @@ describe('pages', () => {
             });
             expect(result).toStrictEqual([
                 { content: '2A, 7F, 200', href: 'serviceList', name: 'Services' },
-                { content: 'Price - 60', href: 'productDetails', name: 'Product - Flat fare ticket' },
+                { content: 'Price - £60', href: 'productDetails', name: 'Product - Flat fare ticket' },
             ]);
         });
     });
