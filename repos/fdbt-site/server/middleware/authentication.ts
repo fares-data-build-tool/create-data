@@ -1,10 +1,18 @@
-import Cookies, { SetOption } from 'cookies';
+import Cookies from 'cookies';
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
-import { CognitoIdToken } from '../../src/interfaces';
+import {
+    ID_TOKEN_COOKIE,
+    REFRESH_TOKEN_COOKIE,
+    DISABLE_AUTH_COOKIE,
+    OPERATOR_COOKIE,
+    COOKIE_PREFERENCES_COOKIE,
+    COOKIES_POLICY_COOKIE,
+    oneYearInMilliseconds,
+} from '../../src/constants';
+import { CognitoIdToken, CookiePolicy } from '../../src/interfaces';
 import { globalSignOut, initiateRefreshAuth } from '../../src/data/cognito';
 import logger from '../../src/utils/logger';
 
@@ -17,7 +25,13 @@ export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: 
     cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
 };
 
-const setCookieOnResponseObject = (cookieName: string, cookieValue: string, req: Req, res: Res): void => {
+const setCookieOnResponseObject = (
+    cookieName: string,
+    cookieValue: string,
+    req: Req,
+    res: Res,
+    lifetime?: number,
+): void => {
     const cookies = new Cookies(req, res);
     // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
     // default. An error will be thrown if you try to send secure cookies over an insecure socket.
@@ -25,6 +39,8 @@ const setCookieOnResponseObject = (cookieName: string, cookieValue: string, req:
         path: '/',
         sameSite: 'strict',
         secure: process.env.NODE_ENV !== 'development',
+        maxAge: lifetime,
+        httpOnly: true,
     });
 };
 
@@ -68,21 +84,25 @@ export const setDisableAuthCookies = (server: Express): void => {
             const cookies = new Cookies(req, res);
             const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
 
-            const cookieOptions: SetOption = {
-                path: '/',
-                httpOnly: true,
-                sameSite: 'strict',
-                secure: !isDevelopment,
-            };
-
             if (!disableAuthCookie || disableAuthCookie === 'false') {
-                cookies.set(DISABLE_AUTH_COOKIE, 'true', cookieOptions);
-                cookies.set(
+                const cookiePolicy: CookiePolicy = { essential: true, usage: true };
+
+                setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInMilliseconds);
+                setCookieOnResponseObject(
+                    COOKIES_POLICY_COOKIE,
+                    JSON.stringify(cookiePolicy),
+                    req,
+                    res,
+                    oneYearInMilliseconds,
+                );
+                setCookieOnResponseObject(DISABLE_AUTH_COOKIE, 'true', req, res);
+                setCookieOnResponseObject(
                     ID_TOKEN_COOKIE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
-                    cookieOptions,
+                    req,
+                    res,
                 );
-                cookies.set(
+                setCookieOnResponseObject(
                     OPERATOR_COOKIE,
                     JSON.stringify({
                         operator: {
@@ -90,7 +110,8 @@ export const setDisableAuthCookies = (server: Express): void => {
                         },
                         noc: 'BLAC',
                     }),
-                    cookieOptions,
+                    req,
+                    res,
                 );
             }
         }

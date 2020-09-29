@@ -25,7 +25,7 @@ exports[`pages ticketConfirmation should render correctly for flat fare tickets 
             "name": "Services",
           },
           Object {
-            "content": "Price - 60",
+            "content": "Price - £60",
             "href": "productDetails",
             "name": "Product - Flat fare ticket",
           },
@@ -68,7 +68,7 @@ exports[`pages ticketConfirmation should render correctly for period tickets 1`]
             "name": "Zone",
           },
           Object {
-            "content": "Price - 30",
+            "content": "Price - £30",
             "href": "multipleProducts",
             "name": "Product - Super ticket",
           },
@@ -83,7 +83,7 @@ exports[`pages ticketConfirmation should render correctly for period tickets 1`]
             "name": "Product - Super ticket",
           },
           Object {
-            "content": "Price - 10",
+            "content": "Price - £10",
             "href": "multipleProducts",
             "name": "Product - Best ticket",
           },
@@ -98,7 +98,7 @@ exports[`pages ticketConfirmation should render correctly for period tickets 1`]
             "name": "Product - Best ticket",
           },
           Object {
-            "content": "Price - 3",
+            "content": "Price - £3",
             "href": "multipleProducts",
             "name": "Product - Normal ticket",
           },

@@ -151,8 +151,8 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: '2020-12-12T01:01:00.000Z',
-            endDate: '2020-12-15T23:59:00.000Z',
+            startDate: expect.any(String),
+            endDate: expect.any(String),
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -160,7 +160,7 @@ describe('productDataInformation', () => {
         });
     });
 
-    it('it should set the start and end date when entered correctly and redirect to confirmation page', async () => {
+    it('it should not set the start and end date when not entered and redirect to confirmation page', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -181,6 +181,97 @@ describe('productDataInformation', () => {
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/salesConfirmation',
+        });
+    });
+
+    it('it should only set the end date when end date only entered and redirect to confirmation page', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                startDateDay: '',
+                startDateMonth: '',
+                startDateYear: '',
+                endDateDay: '04',
+                endDateMonth: '11',
+                endDateYear: '2020',
+                productDates: 'Yes',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await productDateInformation(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
+            endDate: expect.any(String),
+        });
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/salesConfirmation',
+        });
+    });
+
+    it('it should only set the start date when start date only entered and redirect to confirmation page', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                startDateDay: '06',
+                startDateMonth: '08',
+                startDateYear: '2021',
+                endDateDay: '',
+                endDateMonth: '',
+                endDateYear: '',
+                productDates: 'Yes',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await productDateInformation(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
+            startDate: expect.any(String),
+        });
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/salesConfirmation',
+        });
+    });
+
+    it('it should not allow an end date to be set before today if there is no start date provided', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                startDateDay: '',
+                startDateMonth: '',
+                startDateYear: '',
+                endDateDay: '01',
+                endDateMonth: '01',
+                endDateYear: '2020',
+                productDates: 'Yes',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await productDateInformation(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
+            errors: [
+                {
+                    id: 'end-date-day',
+                    errorMessage: 'End date cannot be before today',
+                },
+            ],
+            dates: {
+                startDateDay: '',
+                startDateMonth: '',
+                startDateYear: '',
+                endDateDay: '01',
+                endDateMonth: '01',
+                endDateYear: '2020',
+            },
+        });
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/productDateInformation',
         });
     });
 });

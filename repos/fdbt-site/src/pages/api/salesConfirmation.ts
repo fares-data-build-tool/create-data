@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { NextApiResponse } from 'next';
+import { isFareType, isPassengerType, isPeriodType } from '../../interfaces/typeGuards';
 import {
     PRODUCT_DATE_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
@@ -19,9 +20,8 @@ import {
     putUserDataInS3,
 } from './apiUtils/userData';
 import { isSessionValid } from './apiUtils/validator';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, ProductDate } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType, isPassengerType, isPeriodType } from '../../interfaces/typeGuards';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -35,15 +35,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('No fare type session attribute found.');
         }
 
-        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
-        if (!productDating) {
-            updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
-                startDate: moment().toISOString(),
-                endDate: moment()
-                    .add(100, 'y')
-                    .toISOString(),
-            });
-        }
+        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as ProductDate | undefined;
+
+        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
+            startDate: productDating && productDating.startDate ? productDating.startDate : moment().toISOString(),
+            endDate:
+                productDating && productDating.endDate
+                    ? productDating.endDate
+                    : moment()
+                          .add(100, 'y')
+                          .toISOString(),
+        });
 
         if (
             isFareType(fareTypeAttribute) &&

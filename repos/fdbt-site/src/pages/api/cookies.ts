@@ -1,14 +1,12 @@
 import { NextApiResponse } from 'next';
-import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, COOKIE_SETTINGS_SAVED_COOKIE } from '../../constants';
-import { NextApiRequestWithSession } from '../../interfaces';
+import {
+    COOKIES_POLICY_COOKIE,
+    COOKIE_PREFERENCES_COOKIE,
+    COOKIE_SETTINGS_SAVED_COOKIE,
+    oneYearInMilliseconds,
+} from '../../constants';
+import { NextApiRequestWithSession, CookiePolicy } from '../../interfaces';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
-
-export interface CookiePolicy {
-    essential: boolean;
-    usage: boolean;
-}
-
-export const oneYearInMilliseconds = 31556952000;
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

@@ -77,7 +77,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
         };
         updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, flatFareProduct);
-        redirectTo(res, '/selectSalesOfferPackage');
+        redirectTo(res, '/ticketConfirmation');
         return;
     } catch (error) {
         const message = 'There was a problem processing the product details.';

@@ -289,7 +289,7 @@ export const buildTicketConfirmationElements = (
             confirmationElements.push(
                 {
                     name: `Product - ${product.productName}`,
-                    content: `Price - ${product.productPrice}`,
+                    content: `Price - £${product.productPrice}`,
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails',
                 },
                 {
@@ -314,7 +314,7 @@ export const buildTicketConfirmationElements = (
             },
             {
                 name: `Product - ${fareTypeProps.productName}`,
-                content: `Price - ${fareTypeProps.productPrice}`,
+                content: `Price - £${fareTypeProps.productPrice}`,
                 href: 'productDetails',
             },
         );

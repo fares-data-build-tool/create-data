@@ -1,7 +1,13 @@
-import cookies, { CookiePolicy, oneYearInMilliseconds } from '../../../src/pages/api/cookies';
+import cookies from '../../../src/pages/api/cookies';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, COOKIE_SETTINGS_SAVED_COOKIE } from '../../../src/constants';
+import {
+    COOKIES_POLICY_COOKIE,
+    COOKIE_PREFERENCES_COOKIE,
+    COOKIE_SETTINGS_SAVED_COOKIE,
+    oneYearInMilliseconds,
+} from '../../../src/constants';
+import { CookiePolicy } from '../../../src/interfaces';
 
 describe('cookies', () => {
     const writeHeadMock = jest.fn();

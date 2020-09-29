@@ -94,6 +94,8 @@ export const PRODUCT_DATE_ATTRIBUTE = 'fdbt-product-date-attribute';
 
 // Other
 
+export const oneYearInMilliseconds = 31556952000;
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',

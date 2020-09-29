@@ -92,16 +92,34 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            try {
-                await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
-            } catch (validationErrors) {
-                const validityErrors: yup.ValidationError = validationErrors;
-                errors = validityErrors.inner.map(error => ({
-                    id: 'end-date-day',
-                    errorMessage: error.message,
-                }));
+            if (!startDate && endDate) {
+                try {
+                    await combinedDateSchema.validate({ startDate: moment(), endDate }, { abortEarly: false });
+                } catch (validationErrors) {
+                    errors.push({
+                        id: 'end-date-day',
+                        errorMessage: 'End date cannot be before today',
+                    });
 
-                if (errors.length > 0) {
+                    updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
+                        errors,
+                        dates: dateInput,
+                    });
+                    redirectTo(res, '/productDateInformation');
+                    return;
+                }
+            }
+
+            if (startDate && endDate) {
+                try {
+                    await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
+                } catch (validationErrors) {
+                    const validityErrors: yup.ValidationError = validationErrors;
+                    errors = validityErrors.inner.map(error => ({
+                        id: 'end-date-day',
+                        errorMessage: error.message,
+                    }));
+
                     updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
                         errors,
                         dates: dateInput,

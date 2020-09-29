@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Cookies, { CookiePreferencesProps, getServerSideProps } from '../../src/pages/cookies';
 import { getMockContext } from '../testData/mockData';
-import { CookiePolicy } from '../../src/pages/api/cookies';
+import { CookiePolicy } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('cookies', () => {
