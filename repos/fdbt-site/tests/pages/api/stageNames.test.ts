@@ -77,7 +77,7 @@ describe('stageNames', () => {
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody, uuid: {}, mockWriteHeadFn });
         stageNames(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
-            Location: '/priceEntry',
+            Location: '/stageNamesConfirmation',
         });
     });
 

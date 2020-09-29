@@ -40,7 +40,36 @@ describe('_document', () => {
     };
 
     it('should render correctly', () => {
-        const tree = shallow(<MyDocument {...props} nonce="" isAuthed csrfToken="" breadcrumbs={[]} url="" />);
+        const tree = shallow(
+            <MyDocument
+                {...props}
+                nonce=""
+                isAuthed
+                csrfToken=""
+                breadcrumbs={[]}
+                url=""
+                showCookieBanner
+                allowTracking
+            />,
+        );
+
+        expect(tree).toMatchSnapshot();
+    });
+
+    it('should not show the cookie banner when the showCookieBanner attribute is false', () => {
+        const tree = shallow(
+            <MyDocument
+                {...props}
+                nonce=""
+                isAuthed
+                csrfToken=""
+                breadcrumbs={[]}
+                url=""
+                showCookieBanner={false}
+                allowTracking
+            />,
+        );
+
         expect(tree).toMatchSnapshot();
     });
 });

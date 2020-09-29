@@ -1,3 +1,9 @@
+import {
+    SingleTicketProps,
+    ReturnTicketProps,
+    PeriodTicketProps,
+    FlatFareTicketProps,
+} from '../pages/ticketConfirmation';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import {
     PeriodTicket,
@@ -13,6 +19,7 @@ import {
     PeriodTypeAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
+    ProductDate,
 } from './index';
 
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
@@ -20,7 +27,7 @@ import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerTy
 import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
-import { ProductDate, ProductDatesWithErrors } from '../pages/api/productDateInformation';
+import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -135,6 +142,21 @@ export const isSalesOfferPackages = (
     salesOfferPackageInfo !== undefined &&
     (salesOfferPackageInfo as SalesOfferPackage[])[0].ticketFormats !== undefined;
 
+export const isSingleTicketProps = (
+    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
+): props is SingleTicketProps => (props as SingleTicketProps).journeyDirection !== undefined;
+
+export const isReturnTicketProps = (
+    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
+): props is ReturnTicketProps => (props as ReturnTicketProps).circular !== undefined;
+
+export const isPeriodTicketProps = (
+    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
+): props is PeriodTicketProps => (props as PeriodTicketProps).zone !== undefined;
+
+export const isFlatFareTicketProps = (
+    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
+): props is FlatFareTicketProps => (props as FlatFareTicketProps).productName !== undefined;
 export const isProductDateAttributeWithErrors = (
     productDates: ProductDate | ProductDatesWithErrors | undefined,
 ): productDates is ProductDatesWithErrors =>

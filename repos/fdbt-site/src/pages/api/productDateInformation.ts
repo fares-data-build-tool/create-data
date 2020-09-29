@@ -6,11 +6,6 @@ import { PRODUCT_DATE_ATTRIBUTE } from '../../constants';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 
-export interface ProductDate {
-    startDate: string;
-    endDate: string;
-}
-
 export interface ProductDatesWithErrors {
     errors: ErrorInfo[];
     dates: ProductDateInformation;
@@ -61,9 +56,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/productDateInformation');
             return;
         }
-
-        let startDate = moment();
-        let endDate = moment().add(100, 'y');
+        let startDate;
+        let endDate;
 
         if (productDates === 'Yes') {
             const isStartDateEmpty = isDatesFieldEmpty(startDateDay, startDateMonth, startDateYear);
@@ -84,11 +78,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 endDate = moment([endDateYear, endDateMonth - 1, endDateDay, '23', '59']);
             }
 
-            if (!startDate.isValid() && !isStartDateEmpty) {
+            if (startDate && !startDate.isValid() && !isStartDateEmpty) {
                 errors.push({ errorMessage: 'Start date must be a real date', id: 'start-date-day' });
             }
 
-            if (!endDate.isValid() && !isEndDateEmpty) {
+            if (endDate && !endDate.isValid() && !isEndDateEmpty) {
                 errors.push({ errorMessage: 'End date must be a real date', id: 'end-date-day' });
             }
 
@@ -98,16 +92,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            try {
-                await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
-            } catch (validationErrors) {
-                const validityErrors: yup.ValidationError = validationErrors;
-                errors = validityErrors.inner.map(error => ({
-                    id: 'end-date-day',
-                    errorMessage: error.message,
-                }));
+            if (!startDate && endDate) {
+                try {
+                    await combinedDateSchema.validate({ startDate: moment(), endDate }, { abortEarly: false });
+                } catch (validationErrors) {
+                    errors.push({
+                        id: 'end-date-day',
+                        errorMessage: 'End date cannot be before today',
+                    });
 
-                if (errors.length > 0) {
                     updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
                         errors,
                         dates: dateInput,
@@ -117,22 +110,49 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
             }
 
-            updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
-                startDate: startDate.toISOString(),
-                endDate: endDate.toISOString(),
-            });
+            if (startDate && endDate) {
+                try {
+                    await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
+                } catch (validationErrors) {
+                    const validityErrors: yup.ValidationError = validationErrors;
+                    errors = validityErrors.inner.map(error => ({
+                        id: 'end-date-day',
+                        errorMessage: error.message,
+                    }));
 
-            redirectTo(res, '/confirmation');
+                    updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
+                        errors,
+                        dates: dateInput,
+                    });
+                    redirectTo(res, '/productDateInformation');
+                    return;
+                }
+            }
+
+            let dateInfo;
+
+            if (startDate && endDate) {
+                dateInfo = {
+                    startDate: startDate.add(1, 'hours').toISOString(),
+                    endDate: endDate.toISOString(),
+                };
+            } else if (!startDate && endDate) {
+                dateInfo = {
+                    endDate: endDate.toISOString(),
+                };
+            } else if (startDate && !endDate) {
+                dateInfo = {
+                    startDate: startDate.add(1, 'hours').toISOString(),
+                };
+            }
+
+            updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, dateInfo);
+
+            redirectTo(res, '/salesConfirmation');
             return;
         }
-
-        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: moment().toISOString(),
-            endDate: moment()
-                .add(100, 'y')
-                .toISOString(),
-        });
-        redirectTo(res, '/confirmation');
+        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, undefined);
+        redirectTo(res, '/salesConfirmation');
     } catch (error) {
         const message = 'There was a problem in the productDateInformation API.';
         redirectToError(res, message, 'api.productDateInformation', error);

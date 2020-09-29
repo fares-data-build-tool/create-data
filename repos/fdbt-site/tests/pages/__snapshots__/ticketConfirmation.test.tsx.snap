@@ -1,0 +1,263 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages ticketConfirmation should render correctly for flat fare tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Ticket Confirmation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "2A, 7F, 200",
+            "href": "serviceList",
+            "name": "Services",
+          },
+          Object {
+            "content": "Price - £60",
+            "href": "productDetails",
+            "name": "Product - Flat fare ticket",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketConfirmation should render correctly for period tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Ticket Confirmation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "You uploaded a Fare Zone CSV file",
+            "href": "csvZoneUpload",
+            "name": "Zone",
+          },
+          Object {
+            "content": "Price - £30",
+            "href": "multipleProducts",
+            "name": "Product - Super ticket",
+          },
+          Object {
+            "content": "Duration - 2",
+            "href": "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
+            "name": "Product - Super ticket",
+          },
+          Object {
+            "content": "Validity - 24hr",
+            "href": "periodValidity",
+            "name": "Product - Super ticket",
+          },
+          Object {
+            "content": "Price - £10",
+            "href": "multipleProducts",
+            "name": "Product - Best ticket",
+          },
+          Object {
+            "content": "Duration - 22",
+            "href": "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
+            "name": "Product - Best ticket",
+          },
+          Object {
+            "content": "Validity - 24hr",
+            "href": "periodValidity",
+            "name": "Product - Best ticket",
+          },
+          Object {
+            "content": "Price - £3",
+            "href": "multipleProducts",
+            "name": "Product - Normal ticket",
+          },
+          Object {
+            "content": "Duration - 23",
+            "href": "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
+            "name": "Product - Normal ticket",
+          },
+          Object {
+            "content": "Validity - 24hr",
+            "href": "periodValidity",
+            "name": "Product - Normal ticket",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketConfirmation should render correctly for return tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Ticket Confirmation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "2B",
+            "href": "service",
+            "name": "Service",
+          },
+          Object {
+            "content": "Stops - At station, Outside station, Near park",
+            "href": "outboundMatching",
+            "name": "Outbound Fare Stage - Another Bus station",
+          },
+          Object {
+            "content": "Stops - At church, Outside corner shop, Near pub",
+            "href": "outboundMatching",
+            "name": "Outbound Fare Stage - Smally Church",
+          },
+          Object {
+            "content": "Stops - At Liverpool station, Outside Liverpool train station, Near Liverpool green park",
+            "href": "outboundMatching",
+            "name": "Outbound Fare Stage - Liverpool",
+          },
+          Object {
+            "content": "Stops - At station, Outside station, Near park",
+            "href": "inboundMatching",
+            "name": "Inbound Fare Stage - Bus station",
+          },
+          Object {
+            "content": "Stops - At church, Outside corner shop, Near pub",
+            "href": "inboundMatching",
+            "name": "Inbound Fare Stage - Longly Church",
+          },
+          Object {
+            "content": "Stops - At london station, Outside train station, Near green park",
+            "href": "inboundMatching",
+            "name": "Inbound Fare Stage - London",
+          },
+          Object {
+            "content": "2 days",
+            "href": "returnValidity",
+            "name": "Return Validity",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketConfirmation should render correctly for single tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Ticket Confirmation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "3A",
+            "href": "service",
+            "name": "Service",
+          },
+          Object {
+            "content": "To London",
+            "href": "singleDirection",
+            "name": "Journey Direction",
+          },
+          Object {
+            "content": "You submitted or created a fare triangle",
+            "href": "inputMethod",
+            "name": "Fare Triangle",
+          },
+          Object {
+            "content": "Stops - At station, Outside station, Near park",
+            "href": "matching",
+            "name": "Fare Stage - Bus station",
+          },
+          Object {
+            "content": "Stops - At church, Outside corner shop, Near pub",
+            "href": "matching",
+            "name": "Fare Stage - Longly Church",
+          },
+          Object {
+            "content": "Stops - At london station, Outside train station, Near green park",
+            "href": "matching",
+            "name": "Fare Stage - London",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

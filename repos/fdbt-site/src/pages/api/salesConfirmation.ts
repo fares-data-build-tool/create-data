@@ -1,11 +1,15 @@
+import moment from 'moment';
 import { NextApiResponse } from 'next';
+import { isFareType, isPassengerType, isPeriodType } from '../../interfaces/typeGuards';
 import {
+    PRODUCT_DATE_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/index';
+
 import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import {
     getSingleTicketJson,
@@ -16,9 +20,8 @@ import {
     putUserDataInS3,
 } from './apiUtils/userData';
 import { isSessionValid } from './apiUtils/validator';
-import { NextApiRequestWithSession } from '../../interfaces';
-import { getSessionAttribute } from '../../utils/sessions';
-import { isFareType, isPassengerType, isPeriodType } from '../../interfaces/typeGuards';
+import { NextApiRequestWithSession, ProductDate } from '../../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -31,6 +34,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (!fareTypeAttribute) {
             throw new Error('No fare type session attribute found.');
         }
+
+        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as ProductDate | undefined;
+
+        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
+            startDate: productDating && productDating.startDate ? productDating.startDate : moment().toISOString(),
+            endDate:
+                productDating && productDating.endDate
+                    ? productDating.endDate
+                    : moment()
+                          .add(100, 'y')
+                          .toISOString(),
+        });
 
         if (
             isFareType(fareTypeAttribute) &&
@@ -99,6 +114,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         return;
     } catch (error) {
         const message = 'There was a problem processing the information needed for the user data to be put in s3:';
-        redirectToError(res, message, 'api.selectSalesOfferPackage', error);
+        redirectToError(res, message, 'api.salesConfirmation', error);
     }
 };

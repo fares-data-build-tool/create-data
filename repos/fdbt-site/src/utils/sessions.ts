@@ -51,6 +51,7 @@ import {
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
+    ProductDate,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -79,7 +80,7 @@ import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerTy
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { ProductDate, ProductDatesWithErrors } from '../pages/api/productDateInformation';
+import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 
 type SessionAttributeTypes = {

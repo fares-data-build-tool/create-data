@@ -12,6 +12,8 @@ import { ProductDateInformation } from './api/productDateInformation';
 
 const title = 'Product Date Information - Fares Data Build Tool';
 const description = 'Product Date Information page of the Fares Data Build Tool';
+const productDatingHintText =
+    'If not supplied, your start date will default to today and your end date will default to 100 years from today';
 
 export interface ProductDateInformationProps {
     errors: ErrorInfo[];
@@ -82,6 +84,9 @@ const ProductDateInfo = ({
                         <h1 className="govuk-heading-l" id="product-date-information-heading">
                             {fieldsets.heading.content}
                         </h1>
+                        <span className="govuk-hint" id="product-dating-hint">
+                            {productDatingHintText}
+                        </span>
                         <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />

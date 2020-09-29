@@ -42,7 +42,7 @@ exports[`pages returnValidity should render the page correctly 1`] = `
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
                 "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
+                  "content": "Enter a number and select a duration from the dropdown",
                   "id": "define-return-validity-hint",
                 },
                 "id": "return-validity-defined",
@@ -52,7 +52,7 @@ exports[`pages returnValidity should render the page correctly 1`] = `
                   Object {
                     "defaultValue": "",
                     "id": "return-validity-amount",
-                    "label": "Amount",
+                    "label": "Number",
                     "name": "amount",
                   },
                   Object {
@@ -158,7 +158,7 @@ exports[`pages returnValidity should render the page with errors when both text 
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
                 "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
+                  "content": "Enter a number and select a duration from the dropdown",
                   "id": "define-return-validity-hint",
                 },
                 "id": "return-validity-defined",
@@ -177,7 +177,7 @@ exports[`pages returnValidity should render the page with errors when both text 
                   Object {
                     "defaultValue": "",
                     "id": "return-validity-amount",
-                    "label": "Amount",
+                    "label": "Number",
                     "name": "amount",
                   },
                   Object {
@@ -275,7 +275,7 @@ exports[`pages returnValidity should render the page with errors when only dropd
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
                 "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
+                  "content": "Enter a number and select a duration from the dropdown",
                   "id": "define-return-validity-hint",
                 },
                 "id": "return-validity-defined",
@@ -290,7 +290,7 @@ exports[`pages returnValidity should render the page with errors when only dropd
                   Object {
                     "defaultValue": "",
                     "id": "return-validity-amount",
-                    "label": "Amount",
+                    "label": "Number",
                     "name": "amount",
                   },
                   Object {
@@ -388,7 +388,7 @@ exports[`pages returnValidity should render the page with errors when only text 
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
                 "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
+                  "content": "Enter a number and select a duration from the dropdown",
                   "id": "define-return-validity-hint",
                 },
                 "id": "return-validity-defined",
@@ -403,7 +403,7 @@ exports[`pages returnValidity should render the page with errors when only text 
                   Object {
                     "defaultValue": "",
                     "id": "return-validity-amount",
-                    "label": "Amount",
+                    "label": "Number",
                     "name": "amount",
                   },
                   Object {
@@ -506,7 +506,7 @@ exports[`pages returnValidity should render the page with errors when radio erro
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
                 "hint": Object {
-                  "content": "Enter an amount and select a duration from the dropdown",
+                  "content": "Enter a number and select a duration from the dropdown",
                   "id": "define-return-validity-hint",
                 },
                 "id": "return-validity-defined",
@@ -516,7 +516,7 @@ exports[`pages returnValidity should render the page with errors when radio erro
                   Object {
                     "defaultValue": "",
                     "id": "return-validity-amount",
-                    "label": "Amount",
+                    "label": "Number",
                     "name": "amount",
                   },
                   Object {

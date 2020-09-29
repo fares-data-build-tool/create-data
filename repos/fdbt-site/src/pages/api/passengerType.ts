@@ -7,6 +7,11 @@ import { updateSessionAttribute } from '../../utils/sessions';
 
 export interface PassengerType {
     passengerType: string;
+    ageRange?: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string;
+    proofDocuments?: string[];
 }
 
 export interface PassengerTypeWithErrors {
