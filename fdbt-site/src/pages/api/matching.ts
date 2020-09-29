@@ -50,7 +50,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        redirectTo(res, '/selectSalesOfferPackage');
+        redirectTo(res, '/ticketConfirmation');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';
         redirectToError(res, message, 'api.matching', error);

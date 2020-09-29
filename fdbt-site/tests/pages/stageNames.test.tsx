@@ -14,14 +14,14 @@ describe('pages', () => {
                 { error: '', input: 'cd', id: 'fare-stage-name-3' },
                 { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-4' },
             ];
-            const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck, []);
+            const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck, [], []);
             expect(renderElements).toHaveLength(4);
         });
 
         it('should return a <div> element containing <label> and <input> elements with error tags and no default value when there is an inputCheck object containing errors', () => {
             const mockNumberOfFareStages = 2;
             const mockInputCheck: InputCheck[] = [];
-            const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck, []);
+            const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck, [], []);
             expect(renderElements).toHaveLength(2);
         });
     });
@@ -37,6 +37,7 @@ describe('pages', () => {
                     csrfToken=""
                     pageProps={[]}
                     errors={[]}
+                    defaults={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -58,6 +59,7 @@ describe('pages', () => {
                     csrfToken=""
                     pageProps={[]}
                     errors={[]}
+                    defaults={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -77,6 +79,7 @@ describe('pages', () => {
                     csrfToken=""
                     pageProps={[]}
                     errors={[]}
+                    defaults={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -87,6 +90,7 @@ describe('pages', () => {
             const result = getServerSideProps(ctx);
             expect(result).toEqual({
                 props: {
+                    defaults: ['Stage name one', 'Stage name two', 'Stage name three'],
                     errors: [],
                     numberOfFareStages: 6,
                     inputChecks: [],

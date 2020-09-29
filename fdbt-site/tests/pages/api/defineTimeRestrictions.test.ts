@@ -153,7 +153,7 @@ describe('defineTimeRestrictions', () => {
         });
     });
 
-    it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect depending on fare type when no errors are found', async () => {
+    it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect to fare confirmation when no errors are found', async () => {
         const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
         const mockReqBody = {
             timeRestriction: 'Yes',
@@ -180,7 +180,7 @@ describe('defineTimeRestrictions', () => {
             mockAttributeValue,
         );
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/service',
+            Location: '/fareConfirmation',
         });
     });
 

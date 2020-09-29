@@ -29,6 +29,12 @@ exports[`pages productDateInformation it should render errors correctly when rad
       >
         Is there a start or end date for your product?
       </h1>
+      <span
+        className="govuk-hint"
+        id="product-dating-hint"
+      >
+        If not supplied, your start date will default to today and your end date will default to 100 years from today
+      </span>
       <RadioConditionalInput
         dates={
           Object {
@@ -118,6 +124,12 @@ exports[`pages productDateInformation it should render the product date informat
       >
         Is there a start or end date for your product?
       </h1>
+      <span
+        className="govuk-hint"
+        id="product-dating-hint"
+      >
+        If not supplied, your start date will default to today and your end date will default to 100 years from today
+      </span>
       <RadioConditionalInput
         dates={
           Object {

@@ -28,9 +28,17 @@ const unauthenticatedGetRoutes = [
     '/error',
     '/contact',
     '/requestAccess',
+    '/cookies',
 ];
 
-const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword', '/api/resetPassword'];
+const unauthenticatedPostRoutes = [
+    '/api/login',
+    '/api/register',
+    '/api/forgotPassword',
+    '/api/resetPassword',
+    '/api/cookies',
+    '/api/cookieDetails',
+];
 
 const setStaticRoutes = (server: Express): void => {
     const rootPath = process.env.NODE_ENV === 'development' ? `${__dirname}/..` : `${__dirname}/../..`;

@@ -21,6 +21,11 @@ export interface DaysValidInfo {
     errors: ErrorInfo[];
 }
 
+export interface CookiePolicy {
+    essential: boolean;
+    usage: boolean;
+}
+
 export interface ProductInfoWithErrors extends ProductInfo {
     errors: ErrorInfo[];
 }
@@ -167,7 +172,12 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    ticketPeriod: TicketPeriod;
+    ticketPeriod: ProductDate;
+}
+
+export interface ProductDate {
+    startDate?: string;
+    endDate?: string;
 }
 
 export interface TicketPeriod {

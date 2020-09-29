@@ -98,7 +98,7 @@ describe('returnValidity', () => {
         await returnValidity(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, mockPassengerTypeDetails);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackage',
+            Location: '/ticketConfirmation',
         });
     });
 
@@ -113,7 +113,7 @@ describe('returnValidity', () => {
         await returnValidity(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackage',
+            Location: '/ticketConfirmation',
         });
     });
 

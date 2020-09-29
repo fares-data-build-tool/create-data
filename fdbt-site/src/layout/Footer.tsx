@@ -13,7 +13,7 @@ const Footer: FC = () => (
                             </a>
                         </li>
                         <li className="govuk-footer__inline-list-item">
-                            <a className="govuk-footer__link" href="https://www.gov.uk/help/cookies">
+                            <a className="govuk-footer__link" href="/cookies">
                                 Cookies
                             </a>
                         </li>

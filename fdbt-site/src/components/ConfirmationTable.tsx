@@ -2,40 +2,46 @@ import React, { ReactElement } from 'react';
 
 interface ConfirmationTableProps {
     confirmationElements: ConfirmationElement[];
-}
-
-interface ConfirmationElement {
     header: string;
-    innerElements: InnerElement[];
 }
 
-interface InnerElement {
+export interface ConfirmationElement {
     name: string;
     content: string;
     href: string;
 }
 
-const ConfirmationTable = ({ confirmationElements }: ConfirmationTableProps): ReactElement => {
+const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTableProps): ReactElement => {
     const builtElements = confirmationElements.map(element => (
-        <React.Fragment key={element.header}>
-            <h2 className="govuk-heading-m">{element.header}</h2>
-            <dl className="govuk-summary-list govuk-!-margin-bottom-9">
-                {element.innerElements.map(innerElement => (
-                    <div className="govuk-summary-list__row" key={innerElement.name}>
-                        <dt className="govuk-summary-list__key">{innerElement.name}</dt>
-                        <dd className="govuk-summary-list__value">{innerElement.content}</dd>
-                        <dd className="govuk-summary-list__actions">
-                            <a className="govuk-link" href={innerElement.href}>
-                                Change<span className="govuk-visually-hidden">{innerElement.name}</span>
-                            </a>
-                        </dd>
-                    </div>
-                ))}
+        <React.Fragment key={header}>
+            <dl className="govuk-summary-list">
+                <div className="govuk-summary-list__row" key={element.name}>
+                    <dt className="govuk-summary-list__key">{element.name}</dt>
+                    <dd className="govuk-summary-list__value">{element.content}</dd>
+                    <dd className="govuk-summary-list__actions">
+                        <a className="govuk-link" href={element.href}>
+                            change<span className="govuk-visually-hidden">{element.name}</span>
+                        </a>
+                    </dd>
+                </div>
             </dl>
         </React.Fragment>
     ));
 
-    return <>{builtElements}</>;
+    return (
+        <>
+            <div className="govuk-warning-text">
+                <span className="govuk-warning-text__icon" aria-hidden="true">
+                    !
+                </span>
+                <strong className="govuk-warning-text__text">
+                    <span className="govuk-warning-text__assistive">Warning</span>
+                    You will not be shown these answers again, ensure they are correct
+                </strong>
+            </div>
+            {builtElements}
+        </>
+    );
 };
 
 export default ConfirmationTable;
