@@ -62,3 +62,66 @@ Resources:
                 - !Sub arn:aws:iam::${TestAccountId}:root
                 - !Sub arn:aws:iam::${PreProdAccountId}:root
                 - !Sub arn:aws:iam::${ProdAccountId}:root
+
+  AuditTrailsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: tfn-audit-trails
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - ExpirationInDays: 90
+            Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  AuditTrailsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref AuditTrailsBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - "s3:PutObject"
+            Effect: "Allow"
+            Resource:
+              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${TestAccountId}/*"
+              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${PreProdAccountId}/*"
+              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${ProdAccountId}/*"
+              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${AWS::AccountId}/*"
+            Principal:
+              Service: "cloudtrail.amazonaws.com"
+            Condition:
+              StringEquals: { "s3:x-amz-acl": "bucket-owner-full-control" }
+          - Action:
+              - "s3:GetBucketAcl"
+            Resource: "arn:aws:s3:::tfn-audit-trails"
+            Effect: "Allow"
+            Principal:
+              Service: "cloudtrail.amazonaws.com"
+
+  AthenaQueryResultsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tfn-athena-query-results
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - ExpirationInDays: 30
+            Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256

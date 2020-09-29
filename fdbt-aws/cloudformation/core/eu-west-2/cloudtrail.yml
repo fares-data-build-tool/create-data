@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for CloudTrail resources
+
+Resources:
+  Trail:
+    Type: AWS::CloudTrail::Trail
+    Properties:
+      EnableLogFileValidation: true
+      IncludeGlobalServiceEvents: true
+      IsLogging: true
+      IsMultiRegionTrail: true
+      S3BucketName: tfn-audit-trails
+      TrailName: fdbt-audit-trail-core
