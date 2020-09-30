@@ -19,23 +19,23 @@ describe('howManyProducts', () => {
         it('should return errors when the user enters no data', () => {
             const mockUserInputAsNumber = Number('');
             const mockError: ErrorInfo[] = [
-                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10' },
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 5' },
             ];
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual(mockError);
         });
 
         it('should return errors when the user enters incorrect data', () => {
-            const mockUserInputAsNumber = Number('25');
+            const mockUserInputAsNumber = Number('10');
             const mockError: ErrorInfo[] = [
-                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10' },
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 5' },
             ];
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual(mockError);
         });
 
         it('should return no errors when the user enters correct data', () => {
-            const mockUserInputAsNumber = Number('6');
+            const mockUserInputAsNumber = Number('5');
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual([]);
         });
@@ -92,9 +92,7 @@ describe('howManyProducts', () => {
             body: mockBody,
         });
         const attributeValue: NumberOfProductsAttributeWithErrors = {
-            errors: [
-                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10', userInput: '' },
-            ],
+            errors: [{ id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 5', userInput: '' }],
         };
         howManyProducts(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, attributeValue);
@@ -102,7 +100,7 @@ describe('howManyProducts', () => {
     });
 
     it('should set the NUMBER_OF_PRODUCTS_ATTRIBUTE when redirecting to /multipleProducts', () => {
-        const mockBody = { numberOfProductsInput: '8' };
+        const mockBody = { numberOfProductsInput: '4' };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const attributeValue: NumberOfProductsAttribute = mockBody;
         howManyProducts(req, res);
