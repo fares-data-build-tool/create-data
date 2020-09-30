@@ -9,7 +9,7 @@ import {
     DAYS_VALID_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
-    PERIOD_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     OPERATOR_COOKIE,
@@ -110,7 +110,7 @@ export const getMockRequestAndResponse = ({
         [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
         [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
-        [PERIOD_TYPE_ATTRIBUTE]: { name: 'period' },
+        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZone' },
         [FARE_STAGES_ATTRIBUTE]: { fareStages: 6 },
         [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
         [SERVICE_LIST_ATTRIBUTE]: {
@@ -1594,81 +1594,13 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     ],
 };
 
-export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket = {
+export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket = {
     operatorName: 'test',
-    type: 'period',
+    type: 'periodGeoZone',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     zoneName: 'Green Lane Shops',
-    stops: zoneStops,
-    passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
-    ticketPeriod: {
-        startDate: '2020-12-17T09:30:46.0Z',
-        endDate: '2020-12-18T09:30:46.0Z',
-    },
-    products: [
-        {
-            productName: 'Product A',
-            productPrice: '1234',
-            productDuration: '2',
-            productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
-        },
-    ],
-};
-
-export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
-    operatorName: 'test',
-    type: 'period',
-    nocCode: 'TEST',
-    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    email: 'test@example.com',
-    passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
-    ticketPeriod: {
-        startDate: '2020-12-17T09:30:46.0Z',
-        endDate: '2020-12-18T09:30:46.0Z',
-    },
-    products: [
-        {
-            productName: 'Product A',
-            productPrice: '1234',
-            productDuration: '2',
-            productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
-        },
-    ],
-    selectedServices: [
-        {
-            lineName: '12A',
-            serviceCode: 'NW_05_BLAC_12A_1',
-            startDate: '13/05/2020',
-            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
-        },
-        {
-            lineName: '6',
-            serviceCode: 'NW_05_BLAC_6_1',
-            startDate: '08/05/2020',
-            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
-        },
-        {
-            lineName: '101',
-            serviceCode: 'NW_05_BLAC_101_1',
-            startDate: '06/05/2020',
-            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
-        },
-    ],
-};
-
-export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket = {
-    operatorName: 'test',
-    type: 'period',
-    nocCode: 'TEST',
-    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    email: 'test@example.com',
-    zoneName: 'fare zone 1',
     stops: zoneStops,
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
@@ -1703,7 +1635,7 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
 
 export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
     operatorName: 'test',
-    type: 'period',
+    type: 'periodMultipleServices',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',

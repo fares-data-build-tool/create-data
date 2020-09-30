@@ -15,8 +15,8 @@ import {
     ErrorInfo,
     Journey,
     JourneyWithErrors,
-    PeriodTypeAttribute,
-    PeriodTypeAttributeWithErrors,
+    TicketRepresentationAttribute,
+    TicketRepresentationAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ProductDate,
@@ -89,23 +89,23 @@ export const isJourney = (journey: Journey | JourneyWithErrors | undefined): jou
     );
 };
 
-export const isPeriodTypeWithErrors = (
-    periodType: PeriodTypeAttribute | PeriodTypeAttributeWithErrors | undefined,
-): periodType is PeriodTypeAttributeWithErrors =>
-    periodType !== undefined && (periodType as PeriodTypeAttributeWithErrors).errors !== undefined;
+export const isTicketRepresentationWithErrors = (
+    ticketType: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors | undefined,
+): ticketType is TicketRepresentationAttributeWithErrors =>
+    ticketType !== undefined && (ticketType as TicketRepresentationAttributeWithErrors).errors !== undefined;
 
-export const isPeriodType = (
-    periodType: PeriodTypeAttribute | PeriodTypeAttributeWithErrors | undefined,
-): periodType is PeriodTypeAttribute =>
-    periodType !== undefined && (periodType as PeriodTypeAttribute).name !== undefined;
+export const isTicketRepresentation = (
+    ticketType: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors | undefined,
+): ticketType is TicketRepresentationAttribute =>
+    ticketType !== undefined && (ticketType as TicketRepresentationAttribute).name !== undefined;
 
 export const isInputCheck = (stageNamesInfo: string[] | InputCheck[] | undefined): stageNamesInfo is InputCheck[] =>
     stageNamesInfo !== undefined && (stageNamesInfo[0] as InputCheck).error !== undefined;
 
 export const isFareStageWithErrors = (
-    periodType: FareStagesAttribute | FareStagesAttributeWithErrors | undefined,
-): periodType is FareStagesAttributeWithErrors =>
-    periodType !== undefined && (periodType as FareStagesAttributeWithErrors).errors !== undefined;
+    fareStages: FareStagesAttribute | FareStagesAttributeWithErrors | undefined,
+): fareStages is FareStagesAttributeWithErrors =>
+    fareStages !== undefined && (fareStages as FareStagesAttributeWithErrors).errors !== undefined;
 
 export const isFareStage = (
     fareStages: FareStagesAttribute | FareStagesAttributeWithErrors | undefined,

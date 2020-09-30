@@ -28,7 +28,7 @@ import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
-    PERIOD_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
@@ -46,8 +46,8 @@ import {
     DaysValidInfo,
     Journey,
     JourneyWithErrors,
-    PeriodTypeAttribute,
-    PeriodTypeAttributeWithErrors,
+    TicketRepresentationAttribute,
+    TicketRepresentationAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
@@ -119,7 +119,7 @@ type SessionAttributeTypes = {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
-    [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
+    [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
