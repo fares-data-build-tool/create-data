@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages howManyProducts should render correctly 1`] = `
+exports[`pages howManyProducts should render correctly for multi op 1`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={Array []}
@@ -31,7 +31,7 @@ exports[`pages howManyProducts should render correctly 1`] = `
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -58,7 +58,639 @@ exports[`pages howManyProducts should render correctly 1`] = `
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 1`] = `
+exports[`pages howManyProducts should render correctly for non multi op 1`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={Array []}
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={Array []}
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue=""
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 1`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number between 1 and 10",
+        "id": "how-many-products-error",
+        "userInput": "0",
+      },
+    ]
+  }
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 10",
+            "id": "how-many-products-error",
+            "userInput": "0",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "0",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="0"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 2`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number between 1 and 10",
+        "id": "how-many-products-error",
+        "userInput": "11",
+      },
+    ]
+  }
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 10",
+            "id": "how-many-products-error",
+            "userInput": "11",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "11",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="11"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 3`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number between 1 and 10",
+        "id": "how-many-products-error",
+        "userInput": "99",
+      },
+    ]
+  }
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 10",
+            "id": "how-many-products-error",
+            "userInput": "99",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "99",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="99"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 4`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number between 1 and 10",
+        "id": "how-many-products-error",
+        "userInput": "4.65",
+      },
+    ]
+  }
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 10",
+            "id": "how-many-products-error",
+            "userInput": "4.65",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "4.65",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="4.65"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 5`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number between 1 and 10",
+        "id": "how-many-products-error",
+        "userInput": "some strange thing a user would type",
+      },
+    ]
+  }
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 10",
+            "id": "how-many-products-error",
+            "userInput": "some strange thing a user would type",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "some strange thing a user would type",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="some strange thing a user would type"
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 6`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number between 1 and 10",
+        "id": "how-many-products-error",
+        "userInput": "",
+      },
+    ]
+  }
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 10",
+            "id": "how-many-products-error",
+            "userInput": "",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue=""
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 7`] = `
+<Component
+  description="How Many Products entry page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a whole number between 1 and 10",
+        "id": "how-many-products-error",
+        "userInput": "       ",
+      },
+    ]
+  }
+  title="How Many Products - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 1 and 10",
+            "id": "how-many-products-error",
+            "userInput": "       ",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "how-many-products-error",
+              "userInput": "       ",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue="       "
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 1`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -105,7 +737,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -140,7 +772,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 2`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 2`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -187,7 +819,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -222,7 +854,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 3`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 3`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -269,7 +901,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -304,7 +936,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 4`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 4`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -351,7 +983,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -386,7 +1018,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 5`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 5`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -433,7 +1065,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -468,7 +1100,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 6`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 6`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -515,7 +1147,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -550,7 +1182,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 7`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 7`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -597,7 +1229,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 10 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
