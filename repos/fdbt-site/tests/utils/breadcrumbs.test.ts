@@ -3,7 +3,7 @@ import {
     TIME_RESTRICTIONS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    PERIOD_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../src/constants/index';
 import breadcrumb from '../../src/utils/breadcrumbs';
 import {
@@ -63,7 +63,7 @@ describe('breadcrumbs', () => {
             session: {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Senior' },
-                [PERIOD_TYPE_ATTRIBUTE]: { name: 'periodGeoZone' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZone' },
             },
         });
         const result = breadcrumb(ctx).generate();
@@ -88,7 +88,7 @@ describe('breadcrumbs', () => {
             session: {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
-                [PERIOD_TYPE_ATTRIBUTE]: { name: 'periodMultipleServices' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
             },
         });
         const result = breadcrumb(ctx).generate();
@@ -107,7 +107,7 @@ describe('breadcrumbs', () => {
                 [TIME_RESTRICTIONS_ATTRIBUTE]: { timeRestrictions: true },
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
-                [PERIOD_TYPE_ATTRIBUTE]: { name: 'periodMultipleServices' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
             },
         });
         const result = breadcrumb(ctx).generate();

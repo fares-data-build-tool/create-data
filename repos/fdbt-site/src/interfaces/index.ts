@@ -286,12 +286,12 @@ export interface JourneyWithErrors {
     errors?: ErrorInfo[];
 }
 
-export interface PeriodTypeAttribute {
+export interface TicketRepresentationAttribute {
     name: string;
 }
 
-export interface PeriodTypeAttributeWithErrors {
-    errors?: ErrorInfo[];
+export interface TicketRepresentationAttributeWithErrors {
+    errors: ErrorInfo[];
 }
 export interface S3NetexFile {
     name: string;
