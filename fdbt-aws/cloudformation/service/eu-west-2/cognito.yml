@@ -87,6 +87,11 @@ Resources:
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     Properties:
+      AccessTokenValidity: 20
+      IdTokenValidity: 20
+      TokenValidityUnits:
+        IdToken: minutes
+        AccessToken: minutes
       ClientName: !Sub fdbt-site-client-${Stage}
       UserPoolId: !Ref UserPool
       ExplicitAuthFlows:
