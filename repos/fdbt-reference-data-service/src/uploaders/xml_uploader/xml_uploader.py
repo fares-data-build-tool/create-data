@@ -171,7 +171,7 @@ def insert_into_tnds_journey_pattern_link_table(cursor, links, journey_pattern_i
     cursor.executemany(query, values)
 
 
-def insert_into_tnds_operator_service_table(cursor, operator, service, line):
+def insert_into_tnds_operator_service_table(cursor, operator, service, line, region_code):
     (
         noc_code,
         start_date,
@@ -180,8 +180,8 @@ def insert_into_tnds_operator_service_table(cursor, operator, service, line):
         service_code
     ) = extract_data_for_tnds_operator_service_table(operator, service)
 
-    query = """INSERT INTO tndsOperatorService (nocCode, lineName, startDate, operatorShortName, serviceDescription, serviceCode) 
-        VALUES (%s, %s, %s, %s, %s, %s)"""
+    query = """INSERT INTO tndsOperatorService (nocCode, lineName, startDate, operatorShortName, serviceDescription, serviceCode, regionCode)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
     cursor.execute(
         query,
@@ -192,6 +192,7 @@ def insert_into_tnds_operator_service_table(cursor, operator, service, line):
             operator_short_name,
             service_description,
             service_code,
+            region_code
         ]
     )
     operator_service_id = cursor.lastrowid
@@ -199,7 +200,7 @@ def insert_into_tnds_operator_service_table(cursor, operator, service, line):
     return operator_service_id
 
 
-def write_to_database(data_dict, db_connection, logger):
+def write_to_database(data_dict, region_code, db_connection, logger):
     try:
         operators = get_operators(data_dict)
 
@@ -218,7 +219,7 @@ def write_to_database(data_dict, db_connection, logger):
 
                     for line in lines:
                         operator_service_id = insert_into_tnds_operator_service_table(
-                            cursor, operator, service, line)
+                            cursor, operator, service, line, region_code)
                         iterate_through_journey_patterns_and_run_insert_queries(
                             cursor, data_dict, operator_service_id, service
                         )
@@ -244,10 +245,11 @@ def download_from_s3_and_write_to_db(s3, bucket, key, file_path, db_connection, 
     data_dict = xmltodict.parse(
         xml_string, process_namespaces=True, namespaces=xmltodict_namespaces
     )
+    region_code = key.split('/')[0]
 
     logger.info("Starting write to database...")
 
-    write_to_database(data_dict, db_connection, logger)
+    write_to_database(data_dict, region_code, db_connection, logger)
 
     logger.info(
         "SUCCESS! Succesfully wrote contents of '{}' from '{}' bucket to database.".format(
