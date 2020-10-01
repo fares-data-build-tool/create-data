@@ -15,11 +15,14 @@ class TestDatabaseInsertQuerying:
     @patch('xml_uploader.xml_uploader.insert_into_tnds_journey_pattern_table')
     def test_insert_methods_are_called_correct_number_of_times(self, mock_jp_insert, mock_jpl_insert):
         service = mock_data_dict['TransXChange']['Services']['Service']
-        mock_journey_patterns = collect_journey_patterns(mock_data_dict, service)
-        mock_jp_insert.side_effect = [9, 27, 13, 1, 11, 5, 28, 12, 10, 6, 13, 27, 4]
+        mock_journey_patterns = collect_journey_patterns(
+            mock_data_dict, service)
+        mock_jp_insert.side_effect = [
+            9, 27, 13, 1, 11, 5, 28, 12, 10, 6, 13, 27, 4]
         mock_cursor = MagicMock()
         mock_op_service_id = 12
-        iterate_through_journey_patterns_and_run_insert_queries(mock_cursor, mock_data_dict, mock_op_service_id, service)
+        iterate_through_journey_patterns_and_run_insert_queries(
+            mock_cursor, mock_data_dict, mock_op_service_id, service)
 
         assert mock_jp_insert.call_count == len(mock_journey_patterns)
         assert mock_jpl_insert.call_count == len(mock_journey_patterns)
@@ -62,5 +65,7 @@ class TestMainFunctionality:
         s3.put_object(Bucket=mock_bucket, Key=mock_key,
                       Body=open(mock_file_dir, 'rb'))
 
-        download_from_s3_and_write_to_db(s3, mock_bucket, mock_key, mock_file_dir, db_connection, logger)
-        db_patch.assert_called_once_with(mock_data_dict, db_connection, logger)
+        download_from_s3_and_write_to_db(
+            s3, mock_bucket, mock_key, mock_file_dir, db_connection, logger)
+        db_patch.assert_called_once_with(
+            mock_data_dict, mock_key, db_connection, logger)
