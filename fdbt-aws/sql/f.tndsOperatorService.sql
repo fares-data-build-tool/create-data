@@ -10,6 +10,7 @@ CREATE TABLE tndsOperatorService(
     `operatorShortName` varchar(255) DEFAULT NULL,
     `serviceDescription` varchar(255) DEFAULT NULL,
     `serviceCode` varchar(255) DEFAULT NULL,
+    `regionCode` varchar(10) DEFAULT NULL,
     INDEX idx_nocCode (nocCode),
     INDEX idx_lineName (lineName),
     INDEX idx_startDate (startDate),
