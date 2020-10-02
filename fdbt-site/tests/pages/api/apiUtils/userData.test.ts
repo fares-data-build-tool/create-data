@@ -8,6 +8,7 @@ import {
     FARE_ZONE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../../src/constants/index';
 import {
     defaultSalesOfferPackageOne,
@@ -29,7 +30,7 @@ import {
     mockMatchingFaresZones,
     expectedMatchingJsonReturnNonCircular,
     mockOutBoundMatchingFaresZones,
-    expectedSingleProductUploadJsonWithZoneUpload,
+    expectedMultiProductUploadJsonWithZoneUpload,
     zoneStops,
     expectedFlatFareProductUploadJson,
     expectedMatchingJsonReturnCircular,
@@ -159,16 +160,39 @@ describe('getPeriodGeoZoneTicketJson', () => {
                 [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                     products: [
                         {
-                            productName: 'Product A',
-                            productPrice: '1234',
-                            productDuration: '2',
+                            productName: 'Weekly Ticket',
+                            productPrice: '50',
+                            productDuration: '5',
                             productValidity: '24hr',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Day Ticket',
+                            productPrice: '2.50',
+                            productDuration: '1',
+                            productValidity: '24hr',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Monthly Ticket',
+                            productPrice: '200',
+                            productDuration: '28',
+                            productValidity: 'endOfCalendarDay',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                         },
                     ],
                 },
                 [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                     {
-                        productName: 'Product A',
+                        productName: 'Weekly Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                    {
+                        productName: 'Day Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                    {
+                        productName: 'Monthly Ticket',
                         salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                     },
                 ],
@@ -180,7 +204,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
         const result = await getPeriodGeoZoneTicketJson(req, res);
-        expect(result).toEqual(expectedSingleProductUploadJsonWithZoneUpload);
+        expect(result).toEqual(expectedMultiProductUploadJsonWithZoneUpload);
     });
 });
 
@@ -191,6 +215,7 @@ describe('getPeriodMulipleServicesTicketJson', () => {
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
                 [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                     products: [
                         {

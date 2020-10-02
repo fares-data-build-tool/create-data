@@ -1,19 +1,19 @@
-import periodType from '../../../src/pages/api/periodType';
+import ticketRepresentation from '../../../src/pages/api/ticketRepresentation';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-describe('periodType', () => {
+describe('ticketRepresentation', () => {
     const writeHeadMock = jest.fn();
 
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /periodType when no input method is selected', () => {
+    it('should return 302 redirect to /ticketRepresentation when no input method is selected', () => {
         const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
-        periodType(req, res);
+        ticketRepresentation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodType',
+            Location: '/ticketRepresentation',
         });
     });
 
@@ -25,7 +25,7 @@ describe('periodType', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        periodType(req, res);
+        ticketRepresentation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
@@ -35,12 +35,12 @@ describe('periodType', () => {
     it('should return 302 redirect to /csvZoneUpload when the user selects a geo zone', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: { periodType: 'periodGeoZone' },
+            body: { ticketType: 'geoZone' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
-        periodType(req, res);
+        ticketRepresentation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/csvZoneUpload',
@@ -50,12 +50,12 @@ describe('periodType', () => {
     it('should return 302 redirect to /serviceList (with selectAll=false) when the user selects the service selection option', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: { periodType: 'periodMultipleServices' },
+            body: { ticketType: 'multipleServices' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
-        periodType(req, res);
+        ticketRepresentation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/serviceList?selectAll=false',

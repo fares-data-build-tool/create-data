@@ -1,6 +1,6 @@
 import {
     INPUT_METHOD_ATTRIBUTE,
-    PERIOD_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -9,7 +9,13 @@ import {
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute } from './sessions';
-import { isFareType, isPassengerType, inputMethodErrorsExist, isJourney, isPeriodType } from '../interfaces/typeGuards';
+import {
+    isFareType,
+    isPassengerType,
+    inputMethodErrorsExist,
+    isJourney,
+    isTicketRepresentation,
+} from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from '../pages/howManyProducts';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
@@ -28,7 +34,7 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
-    const periodTypeAttribute = getSessionAttribute(ctx.req, PERIOD_TYPE_ATTRIBUTE);
+    const ticketRepresentation = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];
@@ -40,8 +46,9 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const isReturn = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return';
     const isPeriod = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period';
     const isFlatFare = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare';
-    const isMultiService = isPeriodType(periodTypeAttribute) && periodTypeAttribute.name === 'periodMultipleServices';
-    const isGeoZone = isPeriodType(periodTypeAttribute) && periodTypeAttribute.name === 'periodGeoZone';
+    const isMultiService =
+        isTicketRepresentation(ticketRepresentation) && ticketRepresentation.name === 'multipleServices';
+    const isGeoZone = isTicketRepresentation(ticketRepresentation) && ticketRepresentation.name === 'geoZone';
     const isCircular = isReturn && isJourney(journeyAttribute) && !journeyAttribute.outboundJourney;
 
     const isSingleProduct =
