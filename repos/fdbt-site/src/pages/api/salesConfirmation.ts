@@ -1,9 +1,9 @@
 import moment from 'moment';
 import { NextApiResponse } from 'next';
-import { isFareType, isPassengerType, isPeriodType } from '../../interfaces/typeGuards';
+import { isFareType, isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
 import {
     PRODUCT_DATE_ATTRIBUTE,
-    PERIOD_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -68,16 +68,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'period') {
-            const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
-            const periodType = isPeriodType(periodTypeAttribute) ? periodTypeAttribute.name : '';
+            const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+            const periodType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
 
-            if (periodType !== 'periodGeoZone' && periodType !== 'periodMultipleServices') {
+            if (periodType !== 'geoZone' && periodType !== 'multipleServices') {
                 throw new Error('No period type found to generate user data json.');
             }
 
-            if (periodType === 'periodGeoZone') {
+            if (periodType === 'geoZone') {
                 userDataJson = await getPeriodGeoZoneTicketJson(req, res);
-            } else if (periodType === 'periodMultipleServices') {
+            } else if (periodType === 'multipleServices') {
                 userDataJson = getPeriodMultipleServicesTicketJson(req, res);
             }
         } else if (fareType === 'flatFare') {

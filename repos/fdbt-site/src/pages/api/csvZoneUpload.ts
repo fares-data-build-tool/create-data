@@ -1,14 +1,16 @@
 import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
+import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/index';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
-import { FARE_ZONE_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+
+import { FareType } from './fareType';
 
 export interface FareZone {
     fareZoneName: string;
@@ -162,7 +164,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, { fareZoneName });
+            const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+            if (fareType === 'multiOp') {
+                redirectTo(res, '/searchOperators');
+                return;
+            }
             redirectTo(res, '/howManyProducts');
+            return;
         }
     } catch (error) {
         const message = 'There was a problem uploading the CSV:';

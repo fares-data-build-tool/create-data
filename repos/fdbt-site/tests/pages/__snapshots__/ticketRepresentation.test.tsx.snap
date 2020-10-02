@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages ticketRepresentation should render correctly when the fare type is a multi operator ticket 1`] = `
+<Component
+  description="Ticket Representation selection page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Ticket Representation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/ticketRepresentation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="ticket-representation-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="ticket-representation-page-heading"
+          >
+            Select a type of multi-operator ticket
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="geo-zone"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="geo-zone"
+                name="ticketType"
+                type="radio"
+                value="geoZone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="geo-zone"
+              >
+                A ticket within a geographical zone
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="set-of-services"
+                name="ticketType"
+                type="radio"
+                value="multipleServices"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="set-of-services"
+              >
+                A ticket for a set of services
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketRepresentation should render correctly when the fare type is a period ticket 1`] = `
+<Component
+  description="Ticket Representation selection page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Ticket Representation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/ticketRepresentation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="ticket-representation-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="ticket-representation-page-heading"
+          >
+            Select a type of period ticket
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="geo-zone"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="geo-zone"
+                name="ticketType"
+                type="radio"
+                value="geoZone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="geo-zone"
+              >
+                A ticket within a geographical zone
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="set-of-services"
+                name="ticketType"
+                type="radio"
+                value="multipleServices"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="set-of-services"
+              >
+                A ticket for a set of services
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketRepresentation should render error messaging when errors are passed 1`] = `
+<Component
+  description="Ticket Representation selection page of the Fares Data Build Tool"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose a type of ticket representation",
+        "id": "geo-zone",
+      },
+    ]
+  }
+  title="Ticket Representation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/ticketRepresentation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose a type of ticket representation",
+            "id": "geo-zone",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="ticket-representation-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="ticket-representation-page-heading"
+          >
+            Select a type of period ticket
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="geo-zone"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Choose a type of ticket representation",
+                "id": "geo-zone",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input govuk-input--error "
+                id="geo-zone"
+                name="ticketType"
+                type="radio"
+                value="geoZone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="geo-zone"
+              >
+                A ticket within a geographical zone
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input govuk-input--error "
+                id="set-of-services"
+                name="ticketType"
+                type="radio"
+                value="multipleServices"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="set-of-services"
+              >
+                A ticket for a set of services
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

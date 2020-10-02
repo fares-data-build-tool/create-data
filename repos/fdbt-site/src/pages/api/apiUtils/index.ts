@@ -72,7 +72,7 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
     if (isFareType(fareTypeAttribute)) {
         switch (fareTypeAttribute.fareType) {
             case 'period':
-                redirectTo(res, '/periodType');
+                redirectTo(res, '/ticketRepresentation');
                 return;
             case 'single':
                 redirectTo(res, '/service');

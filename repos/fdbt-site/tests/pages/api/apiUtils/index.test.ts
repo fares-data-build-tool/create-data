@@ -109,7 +109,7 @@ describe('apiUtils', () => {
             });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
-                Location: '/periodType',
+                Location: '/ticketRepresentation',
             });
         });
 

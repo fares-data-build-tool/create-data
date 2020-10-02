@@ -6,7 +6,7 @@ import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';
 import * as dynamo from '../../../src/data/auroradb';
-import { FARE_ZONE_ATTRIBUTE } from '../../../src/constants';
+import { FARE_ZONE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
 
@@ -111,6 +111,50 @@ describe('csvZoneUpload', () => {
             Location: '/howManyProducts',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
+            fareZoneName: 'Town Centre',
+        });
+    });
+
+    it('should return 302 redirect to /searchOperators if fareType is multiOp, and when valid file is processed and put in S3', async () => {
+        const multiOpReq = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOp' },
+            },
+        }).req;
+
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        jest.spyOn(fileUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                files: file,
+                fileContents: csvData.testCsv,
+            });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
+        await csvZoneUpload.default(multiOpReq, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/searchOperators',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(multiOpReq, FARE_ZONE_ATTRIBUTE, {
             fareZoneName: 'Town Centre',
         });
     });
