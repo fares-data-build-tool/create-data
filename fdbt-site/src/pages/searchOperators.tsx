@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
+import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
-import { SEARCH_OPERATOR_ATTRIBUTE } from '../constants';
+import { SEARCH_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
 import { isSearchOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSearchOperators, OperatorNameType } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
@@ -126,15 +127,11 @@ const SearchOperators = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SearchOperatorProps }> => {
     const nocCode = getAndValidateNoc(ctx);
 
-    if (!nocCode) {
-        throw new Error('Necessary cookies not found to show operators page');
-    }
-
     const searchOperatorsAttribute = getSessionAttribute(ctx.req, SEARCH_OPERATOR_ATTRIBUTE);
 
     const { searchOperator } = ctx.query;
 
-    if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute) && searchOperatorsAttribute.errors.length > 0) {
+    if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute)) {
         const { errors } = searchOperatorsAttribute;
         return {
             props: {
@@ -168,13 +165,22 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         const errors: ErrorInfo[] = [];
 
         operators = await getSearchOperators(searchText, nocCode);
-        if (operators.length === 0) {
+        const cookies = parseCookies(ctx);
+        // structure of the operator cookie is very strange here
+        const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
+        const filteredOperators: OperatorNameType[] = [];
+        operators.forEach(operator => {
+            if (operator.operatorPublicName !== operatorName) {
+                filteredOperators.push(operator);
+            }
+        });
+        if (filteredOperators.length === 0) {
             errors.push({
                 errorMessage: `No operators found for: ${searchText} . Try another search term.`,
                 id: 'searchText',
             });
         }
-        return { props: { errors, searchText, operators } };
+        return { props: { errors, searchText, operators: filteredOperators } };
     }
 
     return { props: { errors: [], searchText, operators: [] } };
