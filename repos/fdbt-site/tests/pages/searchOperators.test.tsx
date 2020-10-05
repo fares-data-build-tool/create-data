@@ -75,6 +75,7 @@ describe('pages', () => {
             expect(result.props.operators.length).toBe(0);
         });
 
+        // below test needs addressing as unsure what it's proving
         it('should throw an error if noc invalid', async () => {
             const ctx = getMockContext({
                 cookies: { operator: null },
@@ -86,5 +87,37 @@ describe('pages', () => {
             });
             await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
         });
+
+        // we need many more tests around this area, as there are none that show it works or how it deals with different requests.
+
+        // it('should remove the users operator from the returned results', async () => {
+        //     const ctx = getMockContext({
+        //         cookies: { operator: { operator: { operatorPublicName: 'Blackpool Transport' }, noc: 'TEST' } },
+        //         body: null,
+        //         uuid: {},
+        //         mockWriteHeadFn: jest.fn(),
+        //         mockEndFn: jest.fn(),
+        //         isLoggedin: true,
+        //         query: '/searchOperators?searchOperator=Black',
+        //     });
+        //     const forgotPasswordSubmitSpy = jest.spyOn(aurora, 'getSearchOperators');
+        //     forgotPasswordSubmitSpy.mockImplementation().mockResolvedValue([
+        //         {
+        //             operatorPublicName: 'Blackburn Transport',
+        //             nocCode: 'BLACKB',
+        //         },
+        //         {
+        //             operatorPublicName: 'Blackpool Transport',
+        //             nocCode: 'TEST',
+        //         },
+        //         {
+        //             operatorPublicName: 'Blackwell Transport',
+        //             nocCode: 'BLACKW',
+        //         },
+        //     ]);
+        //     await expect(getServerSideProps(ctx)).resolves.toBe({
+        //         props: { errors: [], operators: [], searchText: '' },
+        //     });
+        // });
     });
 });
