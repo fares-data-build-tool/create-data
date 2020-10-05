@@ -25,7 +25,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/searchOperators');
         }
         // below session attribute arguably shouldnt be set, and if it is, doesnt need an empty array inside it.
-        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors: [] });
+        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, undefined);
         redirectTo(res, `/searchOperators?searchOperator=${refinedSearch}`);
     } catch (err) {
         const message = 'There was a problem in the search operators api.';

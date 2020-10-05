@@ -48,16 +48,9 @@ describe('searchOperators', () => {
             },
         });
 
-        const expectedSessionAttributeCall: SearchOperatorsWithErrors = {
-            errors: [],
-        };
         searchOperators(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            SEARCH_OPERATOR_ATTRIBUTE,
-            expectedSessionAttributeCall,
-        );
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SEARCH_OPERATOR_ATTRIBUTE, undefined);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/searchOperators?searchOperator=manchester',
