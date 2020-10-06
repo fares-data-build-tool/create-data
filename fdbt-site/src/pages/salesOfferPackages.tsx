@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import kebabCase from 'lodash/kebabCase';
-import upperCase from 'lodash/upperCase';
-import upperFirst from 'lodash/upperFirst';
+import startCase from 'lodash/startCase';
 import { BaseLayout } from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -92,7 +91,7 @@ const SalesOfferPackages = ({
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${purchaseLocationId}`}
                                                         >
-                                                            {upperFirst(purchaseLocations)}
+                                                            {startCase(purchaseLocations)}
                                                         </label>
                                                     </div>
                                                 );
@@ -136,9 +135,7 @@ const SalesOfferPackages = ({
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${paymentMethodId}`}
                                                         >
-                                                            {paymentMethods === 'sms'
-                                                                ? upperCase(paymentMethods)
-                                                                : upperFirst(paymentMethods)}
+                                                            {startCase(paymentMethods)}
                                                         </label>
                                                     </div>
                                                 );
@@ -182,7 +179,7 @@ const SalesOfferPackages = ({
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${ticketFormatId}`}
                                                         >
-                                                            {upperFirst(ticketFormats)}
+                                                            {startCase(ticketFormats)}
                                                         </label>
                                                     </div>
                                                 );

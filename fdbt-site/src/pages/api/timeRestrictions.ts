@@ -1,6 +1,10 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
-import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/index';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    TIME_RESTRICTIONS_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+} from '../../constants/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { isSessionValid } from './apiUtils/validator';
@@ -31,6 +35,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, TIME_RESTRICTIONS_ATTRIBUTE, {
                 timeRestrictions: false,
             });
+            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, undefined);
             redirectTo(res, '/fareConfirmation');
             return;
         }

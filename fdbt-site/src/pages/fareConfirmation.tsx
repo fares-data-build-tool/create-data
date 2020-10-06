@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import upperFirst from 'lodash/upperFirst';
+import startCase from 'lodash/startCase';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
 import { CustomAppProps, NextPageContextWithSession, TimeRestriction } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
@@ -26,12 +26,12 @@ export const buildFareConfirmationElements = (
     const confirmationElements: ConfirmationElement[] = [
         {
             name: 'Fare Type',
-            content: upperFirst(fareType),
+            content: startCase(fareType),
             href: 'fareType',
         },
         {
             name: 'Passenger Type',
-            content: upperFirst(passengerType.passengerType),
+            content: startCase(passengerType.passengerType),
             href: 'passengerType',
         },
     ];
@@ -53,7 +53,7 @@ export const buildFareConfirmationElements = (
     if (passengerType.proof && passengerType.proofDocuments) {
         confirmationElements.push({
             name: 'Passenger Information - Proof Documents',
-            content: passengerType.proofDocuments.map(proofDoc => upperFirst(proofDoc)).join(', '),
+            content: passengerType.proofDocuments.map(proofDoc => startCase(proofDoc)).join(', '),
             href: 'definePassengerType',
         });
     } else {
@@ -95,7 +95,7 @@ export const buildFareConfirmationElements = (
     if (timeRestrictions.validDays) {
         confirmationElements.push({
             name: 'Time Restrictions - Valid Days',
-            content: timeRestrictions.validDays.map(stop => upperFirst(stop)).join(', '),
+            content: timeRestrictions.validDays.map(stop => startCase(stop)).join(', '),
             href: 'defineTimeRestrictions',
         });
     } else {

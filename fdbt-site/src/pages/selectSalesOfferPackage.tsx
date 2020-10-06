@@ -16,6 +16,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { Product } from './api/multipleProductValidity';
 import { isProductInfo, isProductData } from './productDetails';
+import { removeAllWhiteSpace } from './api/apiUtils/validator';
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
@@ -70,9 +71,11 @@ const generateCheckbox = (
         const { name, description } = offer;
         let checkboxTitles = `${name} - ${description}`;
 
-        if (checkboxTitles.length > 110) {
+        if (checkboxTitles.length > 200) {
             checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
         }
+
+        const productNameIds = removeAllWhiteSpace(productName);
 
         let isSelectedOffer = false;
 
@@ -92,13 +95,13 @@ const generateCheckbox = (
             <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
                 <input
                     className="govuk-checkboxes__input"
-                    id={`${productName}-checkbox-${index}`}
+                    id={`${productNameIds}-checkbox-${index}`}
                     name={productName}
                     type="checkbox"
                     value={JSON.stringify(offer)}
                     defaultChecked={isSelectedOffer}
                 />
-                <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productName}-checkbox-${index}`}>
+                <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productNameIds}-checkbox-${index}`}>
                     {checkboxTitles}
                 </label>
             </div>
@@ -114,10 +117,14 @@ const createSalesOffer = (
 ): ReactElement[] =>
     productNames.map(productName => (
         <div className="sop-option">
-            <FormGroupWrapper errorId={`${[productName]}-checkbox-0`} errors={errors}>
+            <FormGroupWrapper errorId={`${[removeAllWhiteSpace(productName)]}-checkbox-0`} errors={errors}>
                 <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
-                    <FormElementWrapper errors={errors} errorId={`${productName}-checkbox-0`} errorClass="">
+                    <FormElementWrapper
+                        errors={errors}
+                        errorId={`${removeAllWhiteSpace(productName)}-checkbox-0`}
+                        errorClass=""
+                    >
                         <div className="govuk-checkboxes">
                             {generateCheckbox(salesOfferPackagesList, productName, selected)}
                             <input type="hidden" name={productName} />
