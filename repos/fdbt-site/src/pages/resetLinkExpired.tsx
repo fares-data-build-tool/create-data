@@ -10,7 +10,7 @@ const description = 'Reset Password Link Expired page for the Fares Data Build T
 const ResetLinkExpired: NextPage = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-l">Reset Password Link Expired</h1>
-        <p className="govuk-body-l">Your password link has expired.</p>
+        <p className="govuk-body-l">Your reset password link has expired, click the button below to try again.</p>
         <a
             href="/forgotPassword"
             role="button"
@@ -19,7 +19,7 @@ const ResetLinkExpired: NextPage = (): ReactElement => (
             data-module="govuk-button"
             id="forgot-password-button"
         >
-            Forgotten Password
+            Reset your password
         </a>
     </TwoThirdsLayout>
 );

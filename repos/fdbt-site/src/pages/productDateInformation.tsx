@@ -36,8 +36,8 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 dataAriaControls: 'product-dates-required-conditional',
                 label: 'Yes',
                 hint: {
-                    id: 'product-dates-required-restriction-hint',
-                    content: 'Enter a start and/or end date',
+                    id: '',
+                    content: '',
                 },
                 inputType: 'date',
                 inputs: [
@@ -81,13 +81,15 @@ const ProductDateInfo = ({
                             fieldsets.radioError.length > 0 ? 'govuk-form-group--error' : ''
                         }`}
                     >
-                        <h1 className="govuk-heading-l" id="product-date-information-heading">
-                            {fieldsets.heading.content}
-                        </h1>
-                        <span className="govuk-hint" id="product-dating-hint">
-                            {productDatingHintText}
-                        </span>
-                        <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
+                        <fieldset className="govuk-fieldset" aria-describedby="product-date-information-heading">
+                            <legend className="govuk-heading-l" id="product-date-information-heading">
+                                {fieldsets.heading.content}
+                            </legend>
+                            <span className="govuk-hint" id="product-dating-hint">
+                                {productDatingHintText}
+                            </span>
+                            <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
+                        </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>

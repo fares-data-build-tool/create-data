@@ -14,7 +14,6 @@ exports[`pages stageNames should render correctly when a user first visits the p
       errors={Array []}
     />
     <fieldset
-      aria-describedby="stage-names-input"
       className="govuk-fieldset"
     >
       <legend
@@ -202,7 +201,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       errors={Array []}
     />
     <fieldset
-      aria-describedby="stage-names-input"
       className="govuk-fieldset"
     >
       <legend
@@ -371,7 +369,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       errors={Array []}
     />
     <fieldset
-      aria-describedby="stage-names-input"
       className="govuk-fieldset"
     >
       <legend

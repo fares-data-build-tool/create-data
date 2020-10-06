@@ -204,93 +204,89 @@ const renderConditionalDateInputs = (
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <fieldset className="govuk-fieldset" role="group" aria-describedby={radio.hint.id}>
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                    {radio.hint.content}
-                </legend>
-                {radio.inputs.map(input => {
-                    const inputGroupError = radio.inputErrors.find(({ id }) => {
-                        return id.includes(input.id);
-                    });
+            {radio.inputs.map(input => {
+                const inputGroupError = radio.inputErrors.find(({ id }) => {
+                    return id.includes(input.id);
+                });
 
-                    const dayValue = input.name === 'startDate' ? dates.startDateDay : dates.endDateDay;
-                    const monthValue = input.name === 'startDate' ? dates.startDateMonth : dates.endDateMonth;
-                    const yearValue = input.name === 'startDate' ? dates.startDateYear : dates.endDateYear;
+                const dayValue = input.name === 'startDate' ? dates.startDateDay : dates.endDateDay;
+                const monthValue = input.name === 'startDate' ? dates.startDateMonth : dates.endDateMonth;
+                const yearValue = input.name === 'startDate' ? dates.startDateYear : dates.endDateYear;
 
-                    return (
-                        <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>
-                            <div className="govuk-date-input" id={input.id}>
-                                {inputGroupError ? (
-                                    <span id={input.id} className="govuk-error-message">
-                                        {inputGroupError.errorMessage}
-                                    </span>
-                                ) : null}
-
-                                <label className="govuk-label" htmlFor={input.id}>
-                                    {input.label}
-                                </label>
-                                <div className="govuk-date-input__item">
-                                    <div className="govuk-form-group">
-                                        <label
-                                            className="govuk-label govuk-date-input__label"
-                                            htmlFor={`${input.id}-day`}
-                                        >
-                                            Day
-                                        </label>
-                                        <input
-                                            className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
-                                                inputGroupError ? 'govuk-input--error' : ''
-                                            }`}
-                                            id={`${input.id}-day`}
-                                            name={`${input.name}Day`}
-                                            type="text"
-                                            defaultValue={dayValue}
-                                        />
+                return (
+                    <div className="govuk-form-group">
+                        <fieldset className="govuk-fieldset" role="group">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{input.label}</legend>
+                            <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>
+                                <div className="govuk-date-input" id={input.id}>
+                                    {inputGroupError ? (
+                                        <span id={input.id} className="govuk-error-message">
+                                            {inputGroupError.errorMessage}
+                                        </span>
+                                    ) : null}
+                                    <div className="govuk-date-input__item">
+                                        <div className="govuk-form-group">
+                                            <label
+                                                className="govuk-label govuk-date-input__label"
+                                                htmlFor={`${input.id}-day`}
+                                            >
+                                                Day
+                                            </label>
+                                            <input
+                                                className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                                                    inputGroupError ? 'govuk-input--error' : ''
+                                                }`}
+                                                id={`${input.id}-day`}
+                                                name={`${input.name}Day`}
+                                                type="text"
+                                                defaultValue={dayValue}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="govuk-date-input__item">
-                                    <div className="govuk-form-group">
-                                        <label
-                                            className="govuk-label govuk-date-input__label"
-                                            htmlFor={`${input.id}-month`}
-                                        >
-                                            Month
-                                        </label>
-                                        <input
-                                            className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
-                                                inputGroupError ? 'govuk-input--error' : ''
-                                            }`}
-                                            id={`${input.id}-month`}
-                                            name={`${input.name}Month`}
-                                            type="text"
-                                            defaultValue={monthValue}
-                                        />
+                                    <div className="govuk-date-input__item">
+                                        <div className="govuk-form-group">
+                                            <label
+                                                className="govuk-label govuk-date-input__label"
+                                                htmlFor={`${input.id}-month`}
+                                            >
+                                                Month
+                                            </label>
+                                            <input
+                                                className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                                                    inputGroupError ? 'govuk-input--error' : ''
+                                                }`}
+                                                id={`${input.id}-month`}
+                                                name={`${input.name}Month`}
+                                                type="text"
+                                                defaultValue={monthValue}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="govuk-date-input__item">
-                                    <div className="govuk-form-group">
-                                        <label
-                                            className="govuk-label govuk-date-input__label"
-                                            htmlFor={`${input.id}-year`}
-                                        >
-                                            Year
-                                        </label>
-                                        <input
-                                            className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
-                                                inputGroupError ? 'govuk-input--error' : ''
-                                            }`}
-                                            id={`${input.id}-year`}
-                                            name={`${input.name}Year`}
-                                            type="text"
-                                            defaultValue={yearValue}
-                                        />
+                                    <div className="govuk-date-input__item">
+                                        <div className="govuk-form-group">
+                                            <label
+                                                className="govuk-label govuk-date-input__label"
+                                                htmlFor={`${input.id}-year`}
+                                            >
+                                                Year
+                                            </label>
+                                            <input
+                                                className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
+                                                    inputGroupError ? 'govuk-input--error' : ''
+                                                }`}
+                                                id={`${input.id}-year`}
+                                                name={`${input.name}Year`}
+                                                type="text"
+                                                defaultValue={yearValue}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </fieldset>
+                        </fieldset>
+                    </div>
+                );
+            })}
         </div>
     );
 };

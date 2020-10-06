@@ -1,0 +1,257 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages searchOperator should render an error when errors are passed through 1`] = `
+<Component
+  description="Search Operators page for the Fares Data Build Tool"
+  title="Search Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/searchOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Search requires a minimum of three characters",
+            "id": "searchText",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <h1
+          className="govuk-label-wrapper"
+        >
+          <label
+            className="govuk-label govuk-label--l"
+            htmlFor="event-name"
+          >
+            Search for the operators that the ticket covers
+          </label>
+        </h1>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="searchText"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Search requires a minimum of three characters",
+                "id": "searchText",
+              },
+            ]
+          }
+        >
+          <label
+            className="govuk-label  govuk-!-margin-top-5"
+            htmlFor="searchText"
+          >
+            Operator name
+          </label>
+          <input
+            className="govuk-input govuk-!-width-three-quarters"
+            id="searchText"
+            name="searchText"
+            type="text"
+          />
+          <input
+            className="govuk-button govuk-!-margin-left-5"
+            id="search-button"
+            type="submit"
+            value="Search"
+          />
+        </FormElementWrapper>
+      </div>
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages searchOperator should render the page correctly with search results 1`] = `
+<Component
+  description="Search Operators page for the Fares Data Build Tool"
+  title="Search Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/searchOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <h1
+          className="govuk-label-wrapper"
+        >
+          <label
+            className="govuk-label govuk-label--l"
+            htmlFor="event-name"
+          >
+            Search for the operators that the ticket covers
+          </label>
+        </h1>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="searchText"
+          errors={Array []}
+        >
+          <label
+            className="govuk-label  govuk-!-margin-top-5"
+            htmlFor="searchText"
+          >
+            Operator name
+          </label>
+          <input
+            className="govuk-input govuk-!-width-three-quarters"
+            id="searchText"
+            name="searchText"
+            type="text"
+          />
+          <input
+            className="govuk-button govuk-!-margin-left-5"
+            id="search-button"
+            type="submit"
+            value="Search"
+          />
+        </FormElementWrapper>
+        <FormElementWrapper
+          addFormGroupError={false}
+          errorClass=""
+          errorId="checkbox-0"
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+          >
+            <h2
+              className="govuk-body govuk-heading-l"
+            >
+              Your search for 
+              <strong />
+               returned
+              <strong>
+                 
+                1
+                 result(s)
+              </strong>
+            </h2>
+            <p
+              className="govuk-hint"
+              id="operator-hint-text"
+            >
+              Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+            </p>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-Blackpool"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="checkbox-0"
+                name="Blackpool"
+                type="checkbox"
+                value="BLAC#Blackpool"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-0"
+              >
+                Blackpool
+              </label>
+            </div>
+          </div>
+          <div
+            className="govuk-!-margin-top-7"
+          >
+            <input
+              className="govuk-button govuk-button--secondary"
+              id="add-operator-button"
+              type="submit"
+              value="Add Operator(s)"
+            />
+          </div>
+          <div>
+            <input
+              className="govuk-button"
+              id="continue-button"
+              type="submit"
+              value="Continue"
+            />
+          </div>
+        </FormElementWrapper>
+      </div>
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages searchOperator should render the page correctly without search results 1`] = `
+<Component
+  description="Search Operators page for the Fares Data Build Tool"
+  title="Search Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/searchOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <div
+        className="govuk-form-group"
+      >
+        <h1
+          className="govuk-label-wrapper"
+        >
+          <label
+            className="govuk-label govuk-label--l"
+            htmlFor="event-name"
+          >
+            Search for the operators that the ticket covers
+          </label>
+        </h1>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="searchText"
+          errors={Array []}
+        >
+          <label
+            className="govuk-label  govuk-!-margin-top-5"
+            htmlFor="searchText"
+          >
+            Operator name
+          </label>
+          <input
+            className="govuk-input govuk-!-width-three-quarters"
+            id="searchText"
+            name="searchText"
+            type="text"
+          />
+          <input
+            className="govuk-button govuk-!-margin-left-5"
+            id="search-button"
+            type="submit"
+            value="Search"
+          />
+        </FormElementWrapper>
+      </div>
+    </div>
+  </CsrfForm>
+</Component>
+`;

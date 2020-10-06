@@ -38,6 +38,7 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                             className="govuk-button"
                             data-module="govuk-button"
                             id="change-password-button"
+                            aria-label="change password"
                         >
                             Change
                         </a>
