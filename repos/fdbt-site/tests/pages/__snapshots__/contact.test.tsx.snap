@@ -26,11 +26,11 @@ exports[`contact should render correctly 1`] = `
       >
         If you are experiencing technical issues, please contact the Fares Data Build service through the channels below
       </p>
-      <span
-        className="govuk-body govuk-!-font-weight-bold"
+      <h3
+        className="govuk-heading-s"
       >
         By phone
-      </span>
+      </h3>
       <p
         className="govuk-body"
       >
@@ -40,11 +40,11 @@ exports[`contact should render correctly 1`] = `
         <br />
         Monday to Friday, 9:00am to 5:00pm
       </p>
-      <span
-        className="govuk-body govuk-!-font-weight-bold"
+      <h3
+        className="govuk-heading-s"
       >
         By email
-      </span>
+      </h3>
       <p
         className="govuk-body"
       >
