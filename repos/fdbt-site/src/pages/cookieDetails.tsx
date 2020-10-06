@@ -13,7 +13,7 @@ const Contact = (): ReactElement => {
                 about how you browse the site. Find out more about the cookies we use, what they’re for and when they
                 expire.
             </p>
-            <h1 className="govuk-heading-m">Tracking</h1>
+            <h2 className="govuk-heading-m">Tracking</h2>
             <p className="govuk-body">
                 We use Google Analytics software (Universal Analytics) to collect anonymised information about how you
                 use Fares Data Build Tool. We do this to help make sure the site is meeting the needs of its users and
