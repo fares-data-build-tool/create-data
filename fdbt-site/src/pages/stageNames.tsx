@@ -91,7 +91,7 @@ const StageNames = ({
         <CsrfForm action="/api/stageNames" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <fieldset className="govuk-fieldset" aria-describedby="stage-names-input">
+                <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 className="govuk-fieldset__heading">
                             Enter the names of the fare stages in order from first to last

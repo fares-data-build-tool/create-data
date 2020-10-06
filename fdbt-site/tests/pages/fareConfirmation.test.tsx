@@ -55,7 +55,7 @@ describe('pages', () => {
                     name: 'Passenger Information - Age Range',
                 },
                 {
-                    content: 'Membership card',
+                    content: 'Membership Card',
                     href: 'definePassengerType',
                     name: 'Passenger Information - Proof Documents',
                 },

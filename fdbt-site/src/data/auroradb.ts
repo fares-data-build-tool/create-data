@@ -409,3 +409,23 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
     }
 };
+
+export const getSearchOperators = async (searchText: string, nocCode: string): Promise<OperatorNameType[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operators for given search text and noc',
+        noc: nocCode,
+        search: searchText,
+    });
+
+    const searchQuery = `SELECT nocCode, operatorPublicName FROM nocTable WHERE nocCode IN (
+                             SELECT DISTINCT nocCode FROM tndsOperatorService WHERE regionCode IN (
+                                SELECT DISTINCT regionCode FROM tndsOperatorService WHERE nocCode = ?)
+                        ) AND operatorPublicName LIKE ?`;
+
+    try {
+        return await executeQuery<OperatorNameType[]>(searchQuery, [nocCode, `%${searchText}%`]);
+    } catch (error) {
+        throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
+    }
+};

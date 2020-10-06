@@ -28,7 +28,10 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
                             <h1 className="govuk-heading-l" id="forgot-password-heading">
                                 Forgot your Password?
                             </h1>
-                            <p className="govuk-hint hint-text">Enter your email address to reset your password</p>
+                            <p className="govuk-hint hint-text">
+                                Enter your email address to reset your password. The link you will be emailed will only
+                                be usable for one hour.
+                            </p>
                             <label className="govuk-label" htmlFor="email">
                                 Email address
                             </label>

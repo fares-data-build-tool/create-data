@@ -13,7 +13,7 @@ exports[`passwordUpdated should render correctly 1`] = `
   <p
     className="govuk-body-l"
   >
-    Your password link has expired.
+    Your reset password link has expired, click the button below to try again.
   </p>
   <a
     className="govuk-button"
@@ -23,7 +23,7 @@ exports[`passwordUpdated should render correctly 1`] = `
     id="forgot-password-button"
     role="button"
   >
-    Forgotten Password
+    Reset your password
   </a>
 </Component>
 `;

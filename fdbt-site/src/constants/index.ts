@@ -92,6 +92,8 @@ export const RETURN_VALIDITY_ATTRIBUTE = 'fdbt-return-validity';
 
 export const PRODUCT_DATE_ATTRIBUTE = 'fdbt-product-date-attribute';
 
+export const SEARCH_OPERATOR_ATTRIBUTE = 'fdbt-search-operator-attribute';
+
 // Other
 
 export const oneYearInMilliseconds = 31556952000;
