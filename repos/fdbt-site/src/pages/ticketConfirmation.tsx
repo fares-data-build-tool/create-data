@@ -295,12 +295,12 @@ export const buildTicketConfirmationElements = (
                 {
                     name: `Product - ${product.productName}`,
                     content: `Duration - ${product.productDuration}`,
-                    href: `fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'`,
+                    href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
                 },
                 {
                     name: `Product - ${product.productName}`,
                     content: `Validity - ${product.productValidity}`,
-                    href: 'periodValidity',
+                    href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
                 },
             );
         });

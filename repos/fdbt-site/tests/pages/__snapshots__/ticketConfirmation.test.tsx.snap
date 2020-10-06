@@ -74,12 +74,12 @@ exports[`pages ticketConfirmation should render correctly for period tickets 1`]
           },
           Object {
             "content": "Duration - 2",
-            "href": "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
+            "href": "multipleProducts",
             "name": "Product - Super ticket",
           },
           Object {
             "content": "Validity - 24hr",
-            "href": "periodValidity",
+            "href": "multipleProductValidity",
             "name": "Product - Super ticket",
           },
           Object {
@@ -89,12 +89,12 @@ exports[`pages ticketConfirmation should render correctly for period tickets 1`]
           },
           Object {
             "content": "Duration - 22",
-            "href": "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
+            "href": "multipleProducts",
             "name": "Product - Best ticket",
           },
           Object {
             "content": "Validity - 24hr",
-            "href": "periodValidity",
+            "href": "multipleProductValidity",
             "name": "Product - Best ticket",
           },
           Object {
@@ -104,12 +104,12 @@ exports[`pages ticketConfirmation should render correctly for period tickets 1`]
           },
           Object {
             "content": "Duration - 23",
-            "href": "fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails'",
+            "href": "multipleProducts",
             "name": "Product - Normal ticket",
           },
           Object {
             "content": "Validity - 24hr",
-            "href": "periodValidity",
+            "href": "multipleProductValidity",
             "name": "Product - Normal ticket",
           },
         ]

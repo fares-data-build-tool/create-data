@@ -38,15 +38,15 @@ export const buildFareConfirmationElements = (
     if (passengerType.ageRange && (passengerType.ageRangeMin || passengerType.ageRangeMax)) {
         confirmationElements.push({
             name: 'Passenger Information - Age Range',
-            content: `Minimum Age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : '-'} Maximum Age: ${
-                passengerType.ageRangeMax ? passengerType.ageRangeMax : '-'
-            }`,
+            content: `Minimum Age: ${
+                passengerType.ageRangeMin ? passengerType.ageRangeMin : 'No details entered'
+            } Maximum Age: ${passengerType.ageRangeMax ? passengerType.ageRangeMax : 'No details entered'}`,
             href: 'definePassengerType',
         });
     } else {
         confirmationElements.push({
             name: 'Passenger Information - Age Range',
-            content: '-',
+            content: 'No details entered',
             href: 'definePassengerType',
         });
     }
@@ -59,7 +59,7 @@ export const buildFareConfirmationElements = (
     } else {
         confirmationElements.push({
             name: 'Passenger Information - Proof Documents',
-            content: '-',
+            content: 'No details entered',
             href: 'definePassengerType',
         });
     }
@@ -73,7 +73,7 @@ export const buildFareConfirmationElements = (
     } else {
         confirmationElements.push({
             name: 'Time Restrictions - Start Time',
-            content: '-',
+            content: 'No details entered',
             href: 'defineTimeRestrictions',
         });
     }
@@ -87,7 +87,7 @@ export const buildFareConfirmationElements = (
     } else {
         confirmationElements.push({
             name: 'Time Restrictions - End Time',
-            content: '-',
+            content: 'No details entered',
             href: 'defineTimeRestrictions',
         });
     }
@@ -101,7 +101,7 @@ export const buildFareConfirmationElements = (
     } else {
         confirmationElements.push({
             name: 'Time Restrictions - Valid Days',
-            content: '-',
+            content: 'No details entered',
             href: 'defineTimeRestrictions',
         });
     }
