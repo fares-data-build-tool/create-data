@@ -79,6 +79,8 @@ INSERT INTO `tndsOperatorService` (id,nocCode,lineName,startDate,serviceCode,ope
 	(3944,'MCTR','905','2019-09-01','NW_04_MCTR_905_1','Manchester Community Tra','Canon Slade School - Lostock', 'NW'),
 	(4045,'MCTR','906','2019-09-01','NW_04_MCTR_906_1','Manchester Community Tra','Harwood - Thornleigh College', 'NW'),
 	(4137,'MCTR','96','2020-04-06','NW_04_MCTR_96_1','Manchester Community Tra','Manchester - Higher Broughton - Simister', 'NW'),
+	(4139,'MCTR2','96','2020-04-06','NW_04_MCTR_96_1','Manchester Community Tra','Manchester - Higher Broughton - Simister', 'NW'),
+	(4140,'MCTR3','96','2020-04-06','NW_04_MCTR_96_1','Manchester Community Tra','Manchester - Higher Broughton - Simister', 'NW'),
 	(10304,'NWBT','64','2020-03-28','NW_05_NWBT_64_1','Boomerang Travel Ltd T/A','BURNLEY - CLITHEROE via Sycamore Avenue, Lowerhouse, Slade Lane, Whalley', 'NW'),
 	(10774,'NWBT','910','2019-09-03','NW_05_NWBT_910_1','Boomerang Travel Ltd T/A','COLNE - NELSON - ACCRNGTON ST CHRISTOPHERS', 'NW'),
 	(10926,'NWBT','15','2020-03-28','NW_05_NWBT_15_1','Boomerang Travel Ltd T/A','BURNLEY - BURNLEY via Rose Hill Road, Moorland Road', 'NW'),

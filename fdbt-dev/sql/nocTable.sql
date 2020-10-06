@@ -9,6 +9,8 @@ INSERT INTO `nocTable` (nocCode,operatorPublicName,vosaPsvLicenseName,opId,pubNm
 ,('ERDG','East Riding Of Yorkshire Council','East Riding Of Yorkshire Council',136225,94088,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('HCTY','Connexions Buses','Harrogate Coach Travel Ltd',136580,94286,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('MCTR','Manchester Community Transport','Manchester Community Transport Limited',137055,94717,NULL,NULL,NULL,NULL,NULL,NULL)
+,('MCTR2','Manchester Community Transport 2','Manchester Community Transport 2 Limited',137056,94718,NULL,NULL,NULL,NULL,NULL,NULL)
+,('MCTR3','Manchester Community Transport 3','Manchester Community Transport 3 Limited',137057,94719,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('NWBT','Pilkingtonbus','Boomerang Travel Ltd',135752,94554,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('PBLT','Preston Bus','Preston Bus Ltd',137430,95086,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('TLCT','TLC Travel Ltd','T L C Travel Ltd',137812,95662,NULL,NULL,NULL,NULL,NULL,NULL)
