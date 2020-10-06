@@ -67,7 +67,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        redirectTo(res, '/selectSalesOfferPackage');
+        redirectTo(res, '/ticketConfirmation');
     } catch (error) {
         const message = 'There was a problem collecting the user defined products:';
         redirectToError(res, message, 'api.multipleProductValidity', error);

@@ -74,7 +74,7 @@ describe('multipleProductValidity', () => {
         multipleProductValidity(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackage',
+            Location: '/ticketConfirmation',
         });
     });
 

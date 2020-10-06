@@ -75,6 +75,7 @@ exports[`pages account should render correctly 1`] = `
         className="change-password"
       >
         <a
+          aria-label="change password"
           className="govuk-button"
           data-module="govuk-button"
           draggable="false"
