@@ -23,74 +23,79 @@ exports[`pages productDateInformation it should render errors correctly when rad
     <div
       className="govuk-form-group "
     >
-      <h1
-        className="govuk-heading-l"
-        id="product-date-information-heading"
+      <fieldset
+        aria-describedby="product-date-information-heading"
+        className="govuk-fieldset"
       >
-        Is there a start or end date for your product?
-      </h1>
-      <span
-        className="govuk-hint"
-        id="product-dating-hint"
-      >
-        If not supplied, your start date will default to today and your end date will default to 100 years from today
-      </span>
-      <RadioConditionalInput
-        dates={
-          Object {
-            "endDateDay": "",
-            "endDateMonth": "",
-            "endDateYear": "",
-            "startDateDay": "",
-            "startDateMonth": "",
-            "startDateYear": "",
+        <legend
+          className="govuk-heading-l"
+          id="product-date-information-heading"
+        >
+          Is there a start or end date for your product?
+        </legend>
+        <span
+          className="govuk-hint"
+          id="product-dating-hint"
+        >
+          If not supplied, your start date will default to today and your end date will default to 100 years from today
+        </span>
+        <RadioConditionalInput
+          dates={
+            Object {
+              "endDateDay": "",
+              "endDateMonth": "",
+              "endDateYear": "",
+              "startDateDay": "",
+              "startDateMonth": "",
+              "startDateYear": "",
+            }
           }
-        }
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is there a start or end date for your product?",
-              "hidden": true,
-              "id": "product-dates-information",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "product-dates-required-conditional",
-                "hint": Object {
-                  "content": "Enter a start and/or end date",
-                  "id": "product-dates-required-restriction-hint",
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is there a start or end date for your product?",
+                "hidden": true,
+                "id": "product-dates-information",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "product-dates-required-conditional",
+                  "hint": Object {
+                    "content": "",
+                    "id": "",
+                  },
+                  "id": "product-dates-required",
+                  "inputErrors": Array [],
+                  "inputType": "date",
+                  "inputs": Array [
+                    Object {
+                      "id": "start-date",
+                      "label": "Start Date",
+                      "name": "startDate",
+                    },
+                    Object {
+                      "id": "end-date",
+                      "label": "End Date",
+                      "name": "endDate",
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "productDates",
+                  "value": "Yes",
                 },
-                "id": "product-dates-required",
-                "inputErrors": Array [],
-                "inputType": "date",
-                "inputs": Array [
-                  Object {
-                    "id": "start-date",
-                    "label": "Start Date",
-                    "name": "startDate",
-                  },
-                  Object {
-                    "id": "end-date",
-                    "label": "End Date",
-                    "name": "endDate",
-                  },
-                ],
-                "label": "Yes",
-                "name": "productDates",
-                "value": "Yes",
-              },
-              Object {
-                "id": "product-dates-information-not-required",
-                "label": "No",
-                "name": "productDates",
-                "value": "No",
-              },
-            ],
+                Object {
+                  "id": "product-dates-information-not-required",
+                  "label": "No",
+                  "name": "productDates",
+                  "value": "No",
+                },
+              ],
+            }
           }
-        }
-        key="product-dates-information"
-      />
+          key="product-dates-information"
+        />
+      </fieldset>
     </div>
     <input
       className="govuk-button"
@@ -118,74 +123,79 @@ exports[`pages productDateInformation it should render the product date informat
     <div
       className="govuk-form-group "
     >
-      <h1
-        className="govuk-heading-l"
-        id="product-date-information-heading"
+      <fieldset
+        aria-describedby="product-date-information-heading"
+        className="govuk-fieldset"
       >
-        Is there a start or end date for your product?
-      </h1>
-      <span
-        className="govuk-hint"
-        id="product-dating-hint"
-      >
-        If not supplied, your start date will default to today and your end date will default to 100 years from today
-      </span>
-      <RadioConditionalInput
-        dates={
-          Object {
-            "endDateDay": "",
-            "endDateMonth": "",
-            "endDateYear": "",
-            "startDateDay": "",
-            "startDateMonth": "",
-            "startDateYear": "",
+        <legend
+          className="govuk-heading-l"
+          id="product-date-information-heading"
+        >
+          Is there a start or end date for your product?
+        </legend>
+        <span
+          className="govuk-hint"
+          id="product-dating-hint"
+        >
+          If not supplied, your start date will default to today and your end date will default to 100 years from today
+        </span>
+        <RadioConditionalInput
+          dates={
+            Object {
+              "endDateDay": "",
+              "endDateMonth": "",
+              "endDateYear": "",
+              "startDateDay": "",
+              "startDateMonth": "",
+              "startDateYear": "",
+            }
           }
-        }
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is there a start or end date for your product?",
-              "hidden": true,
-              "id": "product-dates-information",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "product-dates-required-conditional",
-                "hint": Object {
-                  "content": "Enter a start and/or end date",
-                  "id": "product-dates-required-restriction-hint",
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Is there a start or end date for your product?",
+                "hidden": true,
+                "id": "product-dates-information",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "product-dates-required-conditional",
+                  "hint": Object {
+                    "content": "",
+                    "id": "",
+                  },
+                  "id": "product-dates-required",
+                  "inputErrors": Array [],
+                  "inputType": "date",
+                  "inputs": Array [
+                    Object {
+                      "id": "start-date",
+                      "label": "Start Date",
+                      "name": "startDate",
+                    },
+                    Object {
+                      "id": "end-date",
+                      "label": "End Date",
+                      "name": "endDate",
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "productDates",
+                  "value": "Yes",
                 },
-                "id": "product-dates-required",
-                "inputErrors": Array [],
-                "inputType": "date",
-                "inputs": Array [
-                  Object {
-                    "id": "start-date",
-                    "label": "Start Date",
-                    "name": "startDate",
-                  },
-                  Object {
-                    "id": "end-date",
-                    "label": "End Date",
-                    "name": "endDate",
-                  },
-                ],
-                "label": "Yes",
-                "name": "productDates",
-                "value": "Yes",
-              },
-              Object {
-                "id": "product-dates-information-not-required",
-                "label": "No",
-                "name": "productDates",
-                "value": "No",
-              },
-            ],
+                Object {
+                  "id": "product-dates-information-not-required",
+                  "label": "No",
+                  "name": "productDates",
+                  "value": "No",
+                },
+              ],
+            }
           }
-        }
-        key="product-dates-information"
-      />
+          key="product-dates-information"
+        />
+      </fieldset>
     </div>
     <input
       className="govuk-button"

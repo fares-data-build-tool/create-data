@@ -7,7 +7,7 @@ import {
     ProductWithSalesOfferPackages,
 } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
+import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
@@ -38,7 +38,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             } else {
                 errors.push({
                     errorMessage: 'Choose at least one sales offer package from the options',
-                    id: `${item[0]}-checkbox-0`,
+                    id: `${removeAllWhiteSpace(item[0])}-checkbox-0`,
                 });
             }
         });

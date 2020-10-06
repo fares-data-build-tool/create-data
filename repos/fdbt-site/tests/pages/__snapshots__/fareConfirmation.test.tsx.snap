@@ -35,7 +35,7 @@ exports[`pages fareConfirmation should render correctly 1`] = `
             "name": "Passenger Information - Age Range",
           },
           Object {
-            "content": "Membership card",
+            "content": "Membership Card",
             "href": "definePassengerType",
             "name": "Passenger Information - Proof Documents",
           },

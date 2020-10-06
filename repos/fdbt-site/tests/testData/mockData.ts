@@ -1933,8 +1933,8 @@ export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset 
             dataAriaControls: 'product-dates-required-conditional',
             label: 'Yes',
             hint: {
-                id: 'product-dates-required-restriction-hint',
-                content: 'Enter a start and/or end date',
+                id: '',
+                content: '',
             },
             inputType: 'date',
             inputs: [
@@ -1975,8 +1975,8 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
             dataAriaControls: 'product-dates-required-conditional',
             label: 'Yes',
             hint: {
-                id: 'product-dates-required-restriction-hint',
-                content: 'Enter a start and/or end date',
+                id: '',
+                content: '',
             },
             inputType: 'date',
             inputs: [
@@ -2026,8 +2026,8 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
             dataAriaControls: 'product-dates-required-conditional',
             label: 'Yes',
             hint: {
-                id: 'product-dates-required-restriction-hint',
-                content: 'Enter a start and/or end date',
+                id: '',
+                content: '',
             },
             inputType: 'date',
             inputs: [
