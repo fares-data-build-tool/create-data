@@ -15,7 +15,7 @@ const Contact = (): ReactElement => {
                         If you are experiencing technical issues, please contact the Fares Data Build service through
                         the channels below
                     </p>
-                    <span className="govuk-body govuk-!-font-weight-bold">By phone</span>
+                    <h3 className="govuk-heading-s">By phone</h3>
                     <p className="govuk-body">
                         Fares Data Build Tool support line:
                         <br />
@@ -23,7 +23,7 @@ const Contact = (): ReactElement => {
                         <br />
                         Monday to Friday, 9:00am to 5:00pm
                     </p>
-                    <span className="govuk-body govuk-!-font-weight-bold">By email</span>
+                    <h3 className="govuk-heading-s">By email</h3>
                     <p className="govuk-body">
                         If you have any suggestions, comments or criticisms, please send an email to:&nbsp;
                         <a href="mailto:fdbt-support@infinityworks.com">fdbt-support@infinityworks.com</a>
