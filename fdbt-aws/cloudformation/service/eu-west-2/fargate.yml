@@ -427,11 +427,13 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub ${ProductName}-site-${Stage}
+      RetentionInDays: 60
 
   MonitoringLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub ${ProductName}-monitoring-${Stage}
+      RetentionInDays: 60
 
   2xxResponsesLogGroupMetric:
     Type: AWS::Logs::MetricFilter

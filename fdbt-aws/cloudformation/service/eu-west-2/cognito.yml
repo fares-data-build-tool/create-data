@@ -36,6 +36,12 @@ Resources:
         Fn::ImportValue: !Sub ${Stage}:CognitoCustomTriggersLambdaRoleArn
       Runtime: python3.8
 
+  CognitoEmailTriggerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/cognito-email-trigger-${Stage}
+      RetentionInDays: 60
+
   CognitoTriggerLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:

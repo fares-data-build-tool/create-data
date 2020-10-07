@@ -49,6 +49,12 @@ Resources:
       Protocol: lambda
       TopicArn: !Ref SlackAlertsTopic
 
+  SlackAlertsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/slack-alert-${Stage}
+      RetentionInDays: 60
+
 Outputs:
   SlackAlertsTopicArn:
     Value: !Ref SlackAlertsTopic
