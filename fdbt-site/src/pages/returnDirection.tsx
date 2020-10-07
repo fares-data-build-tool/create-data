@@ -97,6 +97,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error(`No service info could be retrieved for nocCode: ${nocCode} and lineName: ${lineName}`);
     }
 
+    // Remove journeys with duplicate start and end points for display purposes
+    service.journeyPatterns = service.journeyPatterns.filter(
+        (pattern, index, self) =>
+            self.findIndex(
+                item => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
+            ) === index,
+    );
+
     // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
     if (
         service.journeyPatterns.length === 1 &&
@@ -105,18 +113,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     ) {
         if (ctx.res) {
             const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
-            updateSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE, { directionJourneyPattern: journeyPatternCookie });
+            updateSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE, {
+                directionJourneyPattern: journeyPatternCookie,
+            });
             redirectTo(ctx.res, '/inputMethod');
         }
     }
-
-    // Remove journeys with duplicate start and end points for display purposes
-    service.journeyPatterns = service.journeyPatterns.filter(
-        (pattern, index, self) =>
-            self.findIndex(
-                item => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
-            ) === index,
-    );
 
     if (journeyAttribute && isJourney(journeyAttribute)) {
         const { outboundJourney = '', inboundJourney = '', errors = [] } = journeyAttribute;
@@ -131,7 +133,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         };
     }
 
-    return { props: { service, errors: [] } };
+    return {
+        props: {
+            service,
+            errors: [],
+        },
+    };
 };
 
 export default ReturnDirection;

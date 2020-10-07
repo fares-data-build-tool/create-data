@@ -125,7 +125,6 @@ describe('pages', () => {
             });
             expect(result).toStrictEqual([
                 { content: '3A', href: 'service', name: 'Service' },
-                { content: 'To London', href: 'singleDirection', name: 'Journey Direction' },
                 { content: 'You submitted or created a fare triangle', href: 'inputMethod', name: 'Fare Triangle' },
                 {
                     content: 'Stops - At station, Outside station, Near park',
