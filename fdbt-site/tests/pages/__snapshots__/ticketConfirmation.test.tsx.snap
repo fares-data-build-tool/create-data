@@ -224,11 +224,6 @@ exports[`pages ticketConfirmation should render correctly for single tickets 1`]
             "name": "Service",
           },
           Object {
-            "content": "To London",
-            "href": "singleDirection",
-            "name": "Journey Direction",
-          },
-          Object {
             "content": "You submitted or created a fare triangle",
             "href": "inputMethod",
             "name": "Fare Triangle",
