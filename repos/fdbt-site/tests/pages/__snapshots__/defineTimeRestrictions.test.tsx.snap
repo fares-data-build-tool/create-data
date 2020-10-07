@@ -33,7 +33,7 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start time or an end time to this ticket?",
+              "content": "Is there a start and end time to this ticket?",
               "id": "define-time-restrictions",
             },
             "radioError": Array [],
@@ -41,7 +41,7 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
               Object {
                 "dataAriaControls": "time-restriction-required-conditional",
                 "hint": Object {
-                  "content": "Enter a time in 24 hour format. Example 0900 or 2300",
+                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
                   "id": "define-time-restriction-hint",
                 },
                 "id": "time-restriction-required",
@@ -50,12 +50,12 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
                 "inputs": Array [
                   Object {
                     "id": "start-time",
-                    "label": "Start Time (required)",
+                    "label": "Start Time",
                     "name": "startTime",
                   },
                   Object {
                     "id": "end-time",
-                    "label": "End Time (required)",
+                    "label": "End Time",
                     "name": "endTime",
                   },
                 ],
@@ -218,7 +218,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start time or an end time to this ticket?",
+              "content": "Is there a start and end time to this ticket?",
               "id": "define-time-restrictions",
             },
             "radioError": Array [],
@@ -226,7 +226,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
               Object {
                 "dataAriaControls": "time-restriction-required-conditional",
                 "hint": Object {
-                  "content": "Enter a time in 24 hour format. Example 0900 or 2300",
+                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
                   "id": "define-time-restriction-hint",
                 },
                 "id": "time-restriction-required",
@@ -244,12 +244,12 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
                 "inputs": Array [
                   Object {
                     "id": "start-time",
-                    "label": "Start Time (required)",
+                    "label": "Start Time",
                     "name": "startTime",
                   },
                   Object {
                     "id": "end-time",
-                    "label": "End Time (required)",
+                    "label": "End Time",
                     "name": "endTime",
                   },
                 ],
@@ -417,7 +417,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start time or an end time to this ticket?",
+              "content": "Is there a start and end time to this ticket?",
               "id": "define-time-restrictions",
             },
             "radioError": Array [],
@@ -425,7 +425,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
               Object {
                 "dataAriaControls": "time-restriction-required-conditional",
                 "hint": Object {
-                  "content": "Enter a time in 24 hour format. Example 0900 or 2300",
+                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
                   "id": "define-time-restriction-hint",
                 },
                 "id": "time-restriction-required",
@@ -443,12 +443,12 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
                 "inputs": Array [
                   Object {
                     "id": "start-time",
-                    "label": "Start Time (required)",
+                    "label": "Start Time",
                     "name": "startTime",
                   },
                   Object {
                     "id": "end-time",
-                    "label": "End Time (required)",
+                    "label": "End Time",
                     "name": "endTime",
                   },
                 ],
@@ -608,7 +608,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start time or an end time to this ticket?",
+              "content": "Is there a start and end time to this ticket?",
               "id": "define-time-restrictions",
             },
             "radioError": Array [
@@ -621,7 +621,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
               Object {
                 "dataAriaControls": "time-restriction-required-conditional",
                 "hint": Object {
-                  "content": "Enter a time in 24 hour format. Example 0900 or 2300",
+                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
                   "id": "define-time-restriction-hint",
                 },
                 "id": "time-restriction-required",
@@ -630,12 +630,12 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
                 "inputs": Array [
                   Object {
                     "id": "start-time",
-                    "label": "Start Time (required)",
+                    "label": "Start Time",
                     "name": "startTime",
                   },
                   Object {
                     "id": "end-time",
-                    "label": "End Time (required)",
+                    "label": "End Time",
                     "name": "endTime",
                   },
                 ],

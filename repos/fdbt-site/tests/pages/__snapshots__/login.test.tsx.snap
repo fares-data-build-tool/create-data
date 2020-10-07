@@ -126,6 +126,7 @@ exports[`pages login should render correctly 1`] = `
           Don't have an account?
         </h2>
         <a
+          aria-label="Don't have an account? – Request access"
           className="govuk-link"
           href="/requestAccess"
         >
@@ -291,6 +292,7 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
           Don't have an account?
         </h2>
         <a
+          aria-label="Don't have an account? – Request access"
           className="govuk-link"
           href="/requestAccess"
         >

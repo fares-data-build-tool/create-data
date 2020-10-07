@@ -211,11 +211,6 @@ export const buildTicketConfirmationElements = (
                 href: 'service',
             },
             {
-                name: 'Journey Direction',
-                content: upperFirst(fareTypeProps.journeyDirection),
-                href: 'singleDirection',
-            },
-            {
                 name: 'Fare Triangle',
                 content: 'You submitted or created a fare triangle',
                 href: 'inputMethod',
