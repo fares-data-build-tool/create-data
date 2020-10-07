@@ -37,7 +37,7 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
         <p className="govuk-body">You will be contacted should there be a problem with your upload.</p>
         <p className="govuk-body">
             If you would like to provide feedback on this service, please click{' '}
-            <a href={FEEDBACK_LINK} className="govuk-link">
+            <a href={FEEDBACK_LINK} className="govuk-link" aria-label="Provide feedback on this service">
                 here
             </a>
         </p>

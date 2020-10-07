@@ -2526,7 +2526,7 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
     {
         heading: {
             id: 'define-time-restrictions',
-            content: 'Is there a start time or an end time to this ticket?',
+            content: 'Is there a start and end time to this ticket?',
         },
         radios: [
             {
@@ -2537,19 +2537,19 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
                 label: 'Yes',
                 hint: {
                     id: 'define-time-restriction-hint',
-                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
                 },
                 inputType: 'text',
                 inputs: [
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (required)',
+                        label: 'Start Time',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (required)',
+                        label: 'End Time',
                     },
                 ],
                 inputErrors: [],
@@ -2606,7 +2606,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
     {
         heading: {
             id: 'define-time-restrictions',
-            content: 'Is there a start time or an end time to this ticket?',
+            content: 'Is there a start and end time to this ticket?',
         },
         radios: [
             {
@@ -2617,19 +2617,19 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
                 label: 'Yes',
                 hint: {
                     id: 'define-time-restriction-hint',
-                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
                 },
                 inputType: 'text',
                 inputs: [
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (required)',
+                        label: 'Start Time',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (required)',
+                        label: 'End Time',
                     },
                 ],
                 inputErrors: [],
@@ -2707,7 +2707,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
     {
         heading: {
             id: 'define-time-restrictions',
-            content: 'Is there a start time or an end time to this ticket?',
+            content: 'Is there a start and end time to this ticket?',
         },
         radios: [
             {
@@ -2718,19 +2718,19 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
                 label: 'Yes',
                 hint: {
                     id: 'define-time-restriction-hint',
-                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
                 },
                 inputType: 'text',
                 inputs: [
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (required)',
+                        label: 'Start Time',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (required)',
+                        label: 'End Time',
                     },
                 ],
                 inputErrors: [
@@ -2816,7 +2816,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
     {
         heading: {
             id: 'define-time-restrictions',
-            content: 'Is there a start time or an end time to this ticket?',
+            content: 'Is there a start and end time to this ticket?',
         },
         radios: [
             {
@@ -2827,19 +2827,19 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
                 label: 'Yes',
                 hint: {
                     id: 'define-time-restriction-hint',
-                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
                 },
                 inputType: 'text',
                 inputs: [
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (required)',
+                        label: 'Start Time',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (required)',
+                        label: 'End Time',
                     },
                 ],
                 inputErrors: [

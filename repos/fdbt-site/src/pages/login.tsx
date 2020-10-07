@@ -91,7 +91,11 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
                 <br />
                 <div>
                     <h2 className="govuk-heading-s">Don&apos;t have an account?</h2>
-                    <a href="/requestAccess" className="govuk-link">
+                    <a
+                        href="/requestAccess"
+                        className="govuk-link"
+                        aria-label="Don't have an account? – Request access"
+                    >
                         Request access
                     </a>
                 </div>
