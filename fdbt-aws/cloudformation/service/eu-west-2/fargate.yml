@@ -151,7 +151,7 @@ Resources:
           MountPoints:
             - SourceVolume: efs
               ContainerPath: /var/lib/grafana
-          User: root
+              ReadOnly: false
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -161,9 +161,11 @@ Resources:
           Environment:
             - Name: GF_SERVER_ROOT_URL
               Value: !Sub https://${MonitoringDomain}
+          Secrets:
+            - Name: GF_SECURITY_ADMIN_PASSWORD
+              ValueFrom: !Ref MonitoringPasswordSecret
       Cpu: !Ref MonitoringContainerCpu
-      ExecutionRoleArn:
-        Fn::ImportValue: !Sub ${Stage}:EcsTaskExecutionRoleArn
+      ExecutionRoleArn: !GetAtt MonitoringTaskExecutionRole.Arn
       Memory: !Ref MonitoringContainerMemory
       NetworkMode: awsvpc
       RequiresCompatibilities:
@@ -174,6 +176,9 @@ Resources:
         - Name: efs
           EFSVolumeConfiguration:
             FilesystemId: !Ref EFSMonitoringFileSystem
+            TransitEncryption: ENABLED
+            AuthorizationConfig:
+              AccessPointId: !Ref EFSMonitoringAccessPoint
 
   SiteService:
     Type: AWS::ECS::Service
@@ -200,6 +205,32 @@ Resources:
         - ContainerName: !Sub ${ProductName}-site-${Stage}
           ContainerPort: !Ref SiteContainerPort
           TargetGroupArn: !Ref SiteTargetGroup
+
+  MonitoringService:
+    Type: AWS::ECS::Service
+    DependsOn: PublicLoadBalancerListener
+    Properties:
+      ServiceName: !Sub ${ProductName}-monitoring-${Stage}
+      Cluster: !Ref ECSCluster
+      LaunchType: FARGATE
+      PlatformVersion: "1.4.0"
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 75
+      DesiredCount: !Ref MonitoringDesiredCount
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::ImportValue: !Sub ${Stage}:FargateMonitoringContainerSecurityGroup
+          Subnets:
+            - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
+            - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
+      TaskDefinition: !Ref MonitoringTaskDefinition
+      LoadBalancers:
+        - ContainerName: !Sub ${ProductName}-monitoring-${Stage}
+          ContainerPort: !Ref MonitoringContainerPort
+          TargetGroupArn: !Ref MonitoringTargetGroup
 
   SiteAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
@@ -265,32 +296,6 @@ Resources:
         ScaleInCooldown: 60
         ScaleOutCooldown: 60
         TargetValue: !Ref SiteCpuTarget
-
-  MonitoringService:
-    Type: AWS::ECS::Service
-    DependsOn: PublicLoadBalancerListener
-    Properties:
-      ServiceName: !Sub ${ProductName}-monitoring-${Stage}
-      Cluster: !Ref ECSCluster
-      LaunchType: FARGATE
-      PlatformVersion: "1.4.0"
-      DeploymentConfiguration:
-        MaximumPercent: 200
-        MinimumHealthyPercent: 75
-      DesiredCount: !Ref MonitoringDesiredCount
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: DISABLED
-          SecurityGroups:
-            - Fn::ImportValue: !Sub ${Stage}:FargateMonitoringContainerSecurityGroup
-          Subnets:
-            - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
-            - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
-      TaskDefinition: !Ref MonitoringTaskDefinition
-      LoadBalancers:
-        - ContainerName: !Sub ${ProductName}-monitoring-${Stage}
-          ContainerPort: !Ref MonitoringContainerPort
-          TargetGroupArn: !Ref MonitoringTargetGroup
 
   # ALB Resources
 
@@ -421,6 +426,20 @@ Resources:
       SubnetId:
         Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
 
+  EFSMonitoringAccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId: !Ref EFSMonitoringFileSystem
+      PosixUser:
+        Gid: "1000"
+        Uid: "1000"
+      RootDirectory:
+        CreationInfo:
+          OwnerUid: "1000"
+          OwnerGid: "1000"
+          Permissions: "755"
+        Path: "/var/lib/grafana"
+
   # CloudWatch Resources
 
   SiteLogGroup:
@@ -504,7 +523,42 @@ Resources:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
           MetricName: "completeTransactions"
-  # Custom Resources
+
+  # Secrets
+
+  MonitoringPasswordSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Password for Grafana admin user
+      GenerateSecretString: {}
+
+  # IAM
+
+  SecretsManagerPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - "secretsmanager:GetSecretValue"
+              - "secretsmanager:DescribeSecret"
+            Resource: !Ref MonitoringPasswordSecret
+
+  MonitoringTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - !Ref SecretsManagerPolicy
 
 Outputs:
   LoadbalancerArn:
