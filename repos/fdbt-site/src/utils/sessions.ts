@@ -83,7 +83,7 @@ import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
-import { SearchOperatorsWithErrors } from '../pages/api/searchOperators';
+import { SearchOperators } from '../pages/api/searchOperators';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -125,7 +125,7 @@ type SessionAttributeTypes = {
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
-    [SEARCH_OPERATOR_ATTRIBUTE]: SearchOperatorsWithErrors;
+    [SEARCH_OPERATOR_ATTRIBUTE]: SearchOperators;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;
