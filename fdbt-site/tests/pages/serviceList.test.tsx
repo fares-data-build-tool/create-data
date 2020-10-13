@@ -74,6 +74,21 @@ describe('pages', () => {
                     errors={[]}
                     csrfToken=""
                     pageProps={[]}
+                    multiOp={false}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for multiOp', () => {
+            const tree = shallow(
+                <ServiceList
+                    serviceList={mockServiceList}
+                    buttonText="Select All"
+                    errors={[]}
+                    csrfToken=""
+                    pageProps={[]}
+                    multiOp
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -81,7 +96,14 @@ describe('pages', () => {
 
         it('should render an error when the error flag is set to true', () => {
             const tree = shallow(
-                <ServiceList serviceList={[]} errors={mockError} buttonText="Select All" csrfToken="" pageProps={[]} />,
+                <ServiceList
+                    serviceList={[]}
+                    errors={mockError}
+                    buttonText="Select All"
+                    csrfToken=""
+                    pageProps={[]}
+                    multiOp={false}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });

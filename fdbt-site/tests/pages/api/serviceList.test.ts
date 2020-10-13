@@ -74,6 +74,31 @@ describe('serviceList', () => {
         });
     });
 
+    it('redirects to /searchOperators if input is valid and the user is entering details for a multi-operator ticket', () => {
+        const serviceInfo = {
+            '64': 'Leeds-Bradford#12/02/12',
+            '45': 'gggggg#02/03/91',
+            '47': 'hhhhhh#23/04/20',
+        };
+
+        const { req, res } = getMockRequestAndResponse({
+            body: { ...serviceInfo },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            mockEndFn: jest.fn(),
+            requestHeaders: {
+                referer: `http://localhost:5000${selectAllFalseUrl}`,
+            },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOp' } },
+        });
+
+        serviceList(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/searchOperators',
+        });
+    });
+
     it('redirects to /productDetails if input is valid and the user is entering details for a flat fare ticket', () => {
         const serviceInfo = {
             '64': 'Leeds-Bradford#12/02/12',
