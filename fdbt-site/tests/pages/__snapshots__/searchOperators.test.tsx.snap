@@ -162,7 +162,7 @@ exports[`pages searchOperator should render the page correctly with search resul
                 id="checkbox-0"
                 name="Blackpool"
                 type="checkbox"
-                value="BLAC#Blackpool"
+                value="BLAC"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
@@ -178,6 +178,7 @@ exports[`pages searchOperator should render the page correctly with search resul
             <input
               className="govuk-button govuk-button--secondary"
               id="add-operator-button"
+              name="addOperator"
               type="submit"
               value="Add Operator(s)"
             />
@@ -186,6 +187,7 @@ exports[`pages searchOperator should render the page correctly with search resul
             <input
               className="govuk-button"
               id="continue-button"
+              name="continue"
               type="submit"
               value="Continue"
             />

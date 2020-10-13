@@ -7,10 +7,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
 import { SEARCH_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { isSearchOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSearchOperators, OperatorNameType } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
-import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 
 const title = 'Search Operators - Fares Data Build Tool';
 const description = 'Search Operators page for the Fares Data Build Tool';
@@ -19,6 +17,24 @@ type SearchOperatorProps = {
     errors: ErrorInfo[];
     searchText: string;
     operators: OperatorNameType[];
+    selectedOperators: OperatorNameType[];
+};
+
+const fetchSearchData = async (
+    searchText: string,
+    nocCode: string,
+    operatorName: string,
+): Promise<OperatorNameType[]> => {
+    const operators = await getSearchOperators(searchText, nocCode);
+
+    const filteredOperators: OperatorNameType[] = [];
+    operators.forEach(operator => {
+        if (operator.operatorPublicName !== operatorName) {
+            filteredOperators.push(operator);
+        }
+    });
+
+    return operators;
 };
 
 const SearchOperators = ({
@@ -26,16 +42,27 @@ const SearchOperators = ({
     csrfToken,
     operators,
     searchText,
+    selectedOperators,
 }: SearchOperatorProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
+
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <div className="govuk-form-group">
+                        {selectedOperators && selectedOperators.length > 0 ? (
+                            <div className="govuk-inset-text">
+                                {selectedOperators.map(operator => {
+                                    return <p className="govuk-body">{operator.operatorPublicName}</p>;
+                                })}
+                            </div>
+                        ) : null}
                         <h1 className="govuk-label-wrapper">
                             <label className="govuk-label govuk-label--l" htmlFor="event-name">
-                                Search for the operators that the ticket covers
+                                {selectedOperators && selectedOperators.length > 0
+                                    ? 'Confirm your selected operators'
+                                    : 'Search for the operators that the ticket covers'}
                             </label>
                         </h1>
                         <FormElementWrapper errors={errors} errorId="searchText" errorClass="govuk-input--error">
@@ -86,7 +113,7 @@ const SearchOperators = ({
                                                         id={`checkbox-${index}`}
                                                         name={operatorPublicName}
                                                         type="checkbox"
-                                                        value={`${nocCode}#${operatorPublicName}`}
+                                                        value={`${nocCode}`}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
@@ -101,6 +128,7 @@ const SearchOperators = ({
                                     <div className="govuk-!-margin-top-7">
                                         <input
                                             type="submit"
+                                            name="addOperator"
                                             value="Add Operator(s)"
                                             id="add-operator-button"
                                             className="govuk-button govuk-button--secondary"
@@ -109,6 +137,7 @@ const SearchOperators = ({
                                     <div>
                                         <input
                                             type="submit"
+                                            name="continue"
                                             value="Continue"
                                             id="continue-button"
                                             className="govuk-button"
@@ -129,22 +158,32 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const searchOperatorsAttribute = getSessionAttribute(ctx.req, SEARCH_OPERATOR_ATTRIBUTE);
 
-    const { searchOperator } = ctx.query;
-
-    if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute)) {
-        const { errors } = searchOperatorsAttribute;
+    if (!searchOperatorsAttribute) {
         return {
             props: {
-                errors,
+                errors: [],
                 searchText: '',
                 operators: [],
+                selectedOperators: [],
             },
         };
     }
 
-    const searchText = searchOperator && searchOperator !== '' ? removeExcessWhiteSpace(searchOperator.toString()) : '';
+    const cookies = parseCookies(ctx);
+    // structure of the operator cookie is very strange here
+    const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
 
-    let operators: OperatorNameType[];
+    const { searchOperator } = ctx.query;
+
+    const searchText = searchOperator && searchOperator !== '' ? searchOperator.toString() : '';
+
+    const selectedOperatorsList = searchOperatorsAttribute?.selectedOperators;
+
+    let filteredOperators: OperatorNameType[] = [];
+
+    if (searchText !== '') {
+        filteredOperators = await fetchSearchData(searchText, nocCode, operatorName);
+    }
 
     if (searchText !== '' && searchText.length < 3) {
         return {
@@ -156,7 +195,19 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     },
                 ],
                 searchText,
+                operators: filteredOperators || [],
+                selectedOperators: selectedOperatorsList,
+            },
+        };
+    }
+
+    if (searchOperatorsAttribute.errors.length > 0) {
+        return {
+            props: {
+                errors: searchOperatorsAttribute.errors,
+                searchText: searchText || '',
                 operators: [],
+                selectedOperators: searchOperatorsAttribute.selectedOperators,
             },
         };
     }
@@ -164,26 +215,25 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (searchText !== '') {
         const errors: ErrorInfo[] = [];
 
-        operators = await getSearchOperators(searchText, nocCode);
-        const cookies = parseCookies(ctx);
-        // structure of the operator cookie is very strange here
-        const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
-        const filteredOperators: OperatorNameType[] = [];
-        operators.forEach(operator => {
-            if (operator.operatorPublicName !== operatorName) {
-                filteredOperators.push(operator);
-            }
-        });
         if (filteredOperators.length === 0) {
             errors.push({
                 errorMessage: `No operators found for: ${searchText} . Try another search term.`,
                 id: 'searchText',
             });
         }
-        return { props: { errors, searchText, operators: filteredOperators } };
+        return {
+            props: { errors, searchText, operators: filteredOperators, selectedOperators: selectedOperatorsList || [] },
+        };
     }
 
-    return { props: { errors: [], searchText, operators: [] } };
+    return {
+        props: {
+            errors: searchOperatorsAttribute.errors,
+            searchText,
+            operators: [],
+            selectedOperators: selectedOperatorsList || [],
+        },
+    };
 };
 
 export default SearchOperators;
