@@ -74,6 +74,11 @@ generate-return-circular-group:
 
 generate-validate-return-circular-group: generate-return-circular-group validate-latest-file
 
+generate-multi-op-geo-zone:
+	./scripts/trigger_netex_convertor.sh multiOpGeoZone
+
+generate-validate-multi-op-geo-zone: generate-multi-op-geo-zone validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 
