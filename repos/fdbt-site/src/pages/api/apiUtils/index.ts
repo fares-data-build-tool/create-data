@@ -83,6 +83,9 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
             case 'flatFare':
                 redirectTo(res, '/serviceList');
                 return;
+            case 'multiOperator':
+                redirectTo(res, '/ticketRepresentation');
+                return;
             default:
                 throw new Error('Fare Type we expect was not received.');
         }

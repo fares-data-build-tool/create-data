@@ -115,14 +115,14 @@ describe('csvZoneUpload', () => {
         });
     });
 
-    it('should return 302 redirect to /searchOperators if fareType is multiOp, and when valid file is processed and put in S3', async () => {
-        const multiOpReq = getMockRequestAndResponse({
+    it('should return 302 redirect to /searchOperators if fareType is multiOperator, and when valid file is processed and put in S3', async () => {
+        const multiOperatorReq = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
-                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOp' },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
             },
         }).req;
 
@@ -149,12 +149,12 @@ describe('csvZoneUpload', () => {
             .mockImplementation()
             .mockResolvedValue(false);
 
-        await csvZoneUpload.default(multiOpReq, res);
+        await csvZoneUpload.default(multiOperatorReq, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/searchOperators',
         });
-        expect(updateSessionAttributeSpy).toBeCalledWith(multiOpReq, FARE_ZONE_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toBeCalledWith(multiOperatorReq, FARE_ZONE_ATTRIBUTE, {
             fareZoneName: 'Town Centre',
         });
     });

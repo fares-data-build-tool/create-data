@@ -14,10 +14,10 @@ const description = 'How Many Products entry page of the Fares Data Build Tool';
 
 interface HowManyProductProps {
     errors: ErrorInfo[];
-    multiOp: boolean;
+    multiOperator: boolean;
 }
 
-const HowManyProducts = ({ errors, multiOp, csrfToken }: HowManyProductProps & CustomAppProps): ReactElement => (
+const HowManyProducts = ({ errors, multiOperator, csrfToken }: HowManyProductProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/howManyProducts" method="post" csrfToken={csrfToken}>
             <>
@@ -25,13 +25,13 @@ const HowManyProducts = ({ errors, multiOp, csrfToken }: HowManyProductProps & C
                 <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
                     <label htmlFor="number-of-products">
                         <h1 className="govuk-heading-l" id="page-heading">
-                            {multiOp
+                            {multiOperator
                                 ? `How many multi operator tickets do you have for the selected operator(s) and/or service(s)?`
                                 : `How many period tickets do you have for the selected services?`}
                         </h1>
                     </label>
                     <div className="govuk-hint" id="number-of-products-hint">
-                        {multiOp
+                        {multiOperator
                             ? `Enter the number of multi operator tickets below. Up to a maximum of 5 at once.`
                             : `Enter the number of period tickets below. Up to a maximum of 5 at once.`}
                     </div>
@@ -70,7 +70,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
         numberOfProductsAttribute && isNumberOfProductsAttributeWithErrors(numberOfProductsAttribute)
             ? numberOfProductsAttribute.errors
             : [];
-    return { props: { errors, multiOp: fareType === 'multiOp' } };
+    return { props: { errors, multiOperator: fareType === 'multiOperator' } };
 };
 
 export default HowManyProducts;

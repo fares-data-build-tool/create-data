@@ -100,7 +100,7 @@ describe('apiUtils', () => {
             });
         });
 
-        it('should return 302 redirect to /periodType when the period ticket option is selected', () => {
+        it('should return 302 redirect to /ticketRepresentation when the period ticket option is selected', () => {
             const { req, res } = getMockRequestAndResponse({
                 body: {},
                 uuid: {},
@@ -123,6 +123,19 @@ describe('apiUtils', () => {
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/serviceList',
+            });
+        });
+
+        it('should return 302 redirect to /ticketRepresentation when the multi operator ticket option is selected', () => {
+            const { req, res } = getMockRequestAndResponse({
+                body: {},
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+                session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' } },
+            });
+            redirectOnFareType(req, res);
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/ticketRepresentation',
             });
         });
 

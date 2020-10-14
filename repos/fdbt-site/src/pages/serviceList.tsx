@@ -22,7 +22,7 @@ export interface ServiceListProps {
     serviceList: ServicesInfo[];
     buttonText: string;
     errors: ErrorInfo[];
-    multiOp: boolean;
+    multiOperator: boolean;
 }
 
 const ServiceList = ({
@@ -30,7 +30,7 @@ const ServiceList = ({
     buttonText,
     csrfToken,
     errors,
-    multiOp,
+    multiOperator,
 }: ServiceListProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
@@ -40,12 +40,12 @@ const ServiceList = ({
                     <fieldset className="govuk-fieldset">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                             <h1 className="govuk-heading-l" id="service-list-page-heading">
-                                Which {multiOp ? 'of your ' : ''}services is the ticket valid for?
+                                Which {multiOperator ? 'of your ' : ''}services is the ticket valid for?
                             </h1>
                         </legend>
 
                         <span className="govuk-heading-s">
-                            Select all {multiOp ? 'of your ' : ''}services that apply
+                            Select all {multiOperator ? 'of your ' : ''}services that apply
                         </span>
 
                         <input
@@ -129,7 +129,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     });
 
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
-    const multiOp = fareType === 'multiOp';
+    const multiOperator = fareType === 'multiOperator';
 
     return {
         props: {
@@ -139,7 +139,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
                     ? serviceListAttribute.errors
                     : [],
-            multiOp,
+            multiOperator,
         },
     };
 };

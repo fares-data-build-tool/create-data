@@ -25,7 +25,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
     return {
         heading: {
             id: 'product-dates-information',
-            content: 'Is there a start or end date for your product?',
+            content: 'Is there a start or end date for your product(s)?',
             hidden: true,
         },
         radios: [

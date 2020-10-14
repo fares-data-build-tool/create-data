@@ -42,7 +42,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeValue);
 
-            redirectTo(res, '/selectSalesOfferPackage');
+            redirectTo(res, '/ticketConfirmation');
         } else {
             const periodExpiryAttributeError: PeriodExpiryWithErrors = {
                 errorMessage: 'Choose an option regarding your period ticket validity',
