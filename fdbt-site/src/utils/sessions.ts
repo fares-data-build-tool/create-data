@@ -32,7 +32,7 @@ import {
     FARE_STAGES_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
-    SEARCH_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../constants/index';
 import {
     InputMethodInfo,
@@ -83,7 +83,7 @@ import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
-import { SearchOperators } from '../pages/api/searchOperators';
+import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -125,7 +125,7 @@ type SessionAttributeTypes = {
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
-    [SEARCH_OPERATOR_ATTRIBUTE]: SearchOperators;
+    [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

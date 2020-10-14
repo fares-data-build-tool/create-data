@@ -17,6 +17,11 @@ export interface OperatorNameType {
     nocCode?: string;
 }
 
+export interface Operator {
+    operatorPublicName: string;
+    nocCode: string;
+}
+
 export interface JourneyPattern {
     startPoint: {
         Id: string;
@@ -410,7 +415,7 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     }
 };
 
-export const getSearchOperators = async (searchText: string, nocCode: string): Promise<OperatorNameType[]> => {
+export const getSearchOperators = async (searchText: string, nocCode: string): Promise<Operator[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operators for given search text and noc',
@@ -424,7 +429,7 @@ export const getSearchOperators = async (searchText: string, nocCode: string): P
                         ) AND operatorPublicName LIKE ?`;
 
     try {
-        return await executeQuery<OperatorNameType[]>(searchQuery, [nocCode, `%${searchText}%`]);
+        return await executeQuery<Operator[]>(searchQuery, [nocCode, `%${searchText}%`]);
     } catch (error) {
         throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
     }
