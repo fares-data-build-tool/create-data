@@ -4,7 +4,7 @@ import pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPo
 import periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
 import * as db from './data/auroradb';
 import * as s3 from './data/s3';
-import { PointToPointTicket, PeriodTicket } from '../types';
+import { PointToPointTicket, PeriodTicket, Operator } from '../types';
 
 const xsl = `
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -56,9 +56,9 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
         if (type === 'single' || type === 'return') {
             const matchingData: PointToPointTicket = s3Data;
-            const operatorData = await db.getOperatorDataByNocCode(matchingData.nocCode);
+            const operatorData = await db.getOperatorDataByNocCode([matchingData.nocCode]);
 
-            const netexGen = pointToPointTicketNetexGenerator(matchingData, operatorData);
+            const netexGen = pointToPointTicketNetexGenerator(matchingData, operatorData[0]);
             const generatedNetex = await netexGen.generate();
 
             const fileName = generateFileName(s3FileName);
@@ -68,9 +68,25 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             if (matchingData.nocCode !== 'IWBusCo') {
                 console.info(`NeTEx generation complete for type ${type}`);
             }
-        } else if (type === 'periodGeoZone' || type === 'periodMultipleServices' || type === 'flatFare') {
+        } else if (
+            type === 'periodGeoZone' ||
+            type === 'periodMultipleServices' ||
+            type === 'flatFare' ||
+            type === 'multiOperator'
+        ) {
             const userPeriodTicket: PeriodTicket = s3Data;
-            const operatorData = await db.getOperatorDataByNocCode(userPeriodTicket.nocCode);
+            let operatorData: Operator[] = [];
+            if (
+                type === 'multiOperator' &&
+                userPeriodTicket.additionalNocs &&
+                userPeriodTicket.additionalNocs.length > 0
+            ) {
+                const nocs: string[] = [...userPeriodTicket.additionalNocs];
+                nocs.push(userPeriodTicket.nocCode);
+                operatorData = await db.getOperatorDataByNocCode(nocs);
+            } else {
+                operatorData = await db.getOperatorDataByNocCode([userPeriodTicket.nocCode]);
+            }
             const netexGen = periodTicketNetexGenerator(userPeriodTicket, operatorData);
             const generatedNetex = await netexGen.generate();
 
