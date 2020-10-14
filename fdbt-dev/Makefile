@@ -85,8 +85,14 @@ validate-netex:
 validate-latest-file:
 	./scripts/validate_latest_netex.sh
 
+copy-latest-netex:
+	EDGE_PORT=4572 awslocal s3 cp s3://fdbt-unvalidated-netex-data-dev/$(EDGE_PORT=4572 awslocal s3 ls s3://fdbt-unvalidated-netex-data-dev --recursive | sort | tail -n 1 | awk '{print $NF}') .
+
 generate-validate-all: add-data-to-buckets
 	./scripts/generate_validate_all_netex.sh
+
+generate-validate-all-parallel: add-data-to-buckets
+	./scripts/generate_validate_all_netex_parallel.sh
 
 generate-netex-emailer:
 	./scripts/trigger_netex_emailer.sh $(file)
