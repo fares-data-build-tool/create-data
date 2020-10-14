@@ -1005,7 +1005,7 @@ export const returnCircularTicket: ReturnTicket = {
 };
 
 export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
-    operatorName: 'Blackpool Transport',
+    operatorName: 'Test Buses',
     type: 'periodGeoZone',
     nocCode: 'BLAC',
     email: 'test@example.com',
@@ -1318,7 +1318,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
 };
 
 export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
-    operatorName: 'Lancashire County Council',
+    operatorName: 'Test Buses',
     type: 'periodMultipleServices',
     email: 'test@example.com',
     uuid: 'BLACadge12d',
@@ -1578,7 +1578,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
 };
 
 export const flatFareTicket: FlatFareTicket = {
-    operatorName: "Warrington's Own Buses",
+    operatorName: 'Test Buses',
     nocCode: 'WBTR',
     type: 'flatFare',
     email: 'test@example.com',
@@ -2089,7 +2089,7 @@ export const flatFareTicket: FlatFareTicket = {
 };
 
 export const periodGeoZoneTicketWithNoType = {
-    operatorName: 'IW Bus',
+    operatorName: 'Test Buses',
     zoneName: 'Test Town Centre',
     stops: [
         {

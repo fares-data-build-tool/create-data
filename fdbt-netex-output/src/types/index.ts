@@ -3,6 +3,7 @@ import { NetexObject } from '../netex-convertor/sharedHelpers';
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
 
 export interface Operator {
+    nocCode: string;
     website: string;
     ttrteEnq: string;
     operatorPublicName: string;
@@ -58,6 +59,7 @@ export interface BaseTicket {
     uuid: string;
     timeRestriction?: TimeRestriction;
     ticketPeriod: TicketPeriod;
+    additionalNocs?: string[];
 }
 
 export interface TicketPeriod {
@@ -190,7 +192,8 @@ export interface Line {
     Url: object;
     PublicCode: object;
     PrivateCode: object;
-    OperatorRef: object;
+    OperatorRef?: object;
+    GroupOfOperatorsRef?: object;
     LineType: object;
 }
 
@@ -263,4 +266,62 @@ export interface NetexSalesOfferPackage {
     id: string;
     distributionAssignments: { DistributionAssignment: DistributionAssignment[] };
     salesOfferPackageElements: { SalesOfferPackageElement: SalesOfferPackageElement[] };
+}
+
+export interface NetexOrganisationOperator {
+    version: string;
+    id: string;
+    PublicCode: {
+        $t: string;
+    };
+    Name: {
+        $t: string;
+    };
+    ShortName: {
+        $t: string;
+    };
+    TradingName: {
+        $t: string;
+    };
+    ContactDetails: {
+        Phone: {
+            $t: string;
+        };
+        Url: {
+            $t: string;
+        };
+    };
+    Address: {
+        Street: {
+            $t: string;
+        };
+    };
+    PrimaryMode: {
+        $t: string;
+    };
+}
+
+export interface GroupMember {
+    version: string;
+    ref: string;
+    $t: string;
+}
+
+export interface GroupOfOperators {
+    GroupOfOperators: {
+        version: string;
+        id: string;
+        Name: {
+            $t: string;
+        };
+        members: {
+            OperatorRef: GroupMember[];
+        };
+    };
+}
+
+export interface OperatorRef {
+    version: string;
+    ref: string;
+    $t: string;
 }
