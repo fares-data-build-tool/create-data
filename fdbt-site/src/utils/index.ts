@@ -61,6 +61,7 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
         COOKIES_POLICY_COOKIE,
         COOKIE_PREFERENCES_COOKIE,
         COOKIE_SETTINGS_SAVED_COOKIE,
+        '_csrf',
     ];
 
     Object.keys(cookies).forEach(cookie => {
