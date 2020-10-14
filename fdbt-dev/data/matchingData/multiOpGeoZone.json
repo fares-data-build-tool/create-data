@@ -1,7 +1,7 @@
 {
   "operatorName": "Blackpool Transport",
   "additionalNocs": ["WBTR","DCCL","HCTY"],
-  "type": "multiOp",
+  "type": "multiOperator",
   "nocCode": "BLAC",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
