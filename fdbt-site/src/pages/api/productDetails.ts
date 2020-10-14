@@ -33,7 +33,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             !fareTypeAttribute ||
             (isFareType(fareTypeAttribute) &&
                 fareTypeAttribute.fareType !== 'period' &&
-                fareTypeAttribute.fareType !== 'flatFare')
+                fareTypeAttribute.fareType !== 'flatFare' &&
+                fareTypeAttribute.fareType !== 'multiOperator')
         ) {
             throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
         }
@@ -63,14 +64,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, undefined);
 
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period') {
+        if (
+            isFareType(fareTypeAttribute) &&
+            (fareTypeAttribute.fareType === 'period' || fareTypeAttribute.fareType === 'multiOperator')
+        ) {
             const periodProduct: Product = {
                 productName: productDetails.productName,
                 productPrice: productDetails.productPrice,
             };
             updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, periodProduct);
             redirectTo(res, '/chooseValidity');
-
             return;
         }
         const flatFareProduct: ProductData = {

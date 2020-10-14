@@ -210,7 +210,7 @@ describe('pages', () => {
                     {
                         productName: 'Super ticket',
                         productPrice: '30',
-                        productDuration: '2',
+                        productDuration: '1',
                         productValidity: '24hr',
                     },
                     {
@@ -231,25 +231,25 @@ describe('pages', () => {
                 { content: 'You uploaded a Fare Zone CSV file', href: 'csvZoneUpload', name: 'Zone' },
                 { content: 'Price - £30', href: 'multipleProducts', name: 'Product - Super ticket' },
                 {
-                    content: 'Duration - 2',
+                    content: 'Duration - 1 day',
                     href: 'multipleProducts',
                     name: 'Product - Super ticket',
                 },
-                { content: 'Validity - 24hr', href: 'multipleProductValidity', name: 'Product - Super ticket' },
+                { content: 'Validity - 24 Hr', href: 'multipleProductValidity', name: 'Product - Super ticket' },
                 { content: 'Price - £10', href: 'multipleProducts', name: 'Product - Best ticket' },
                 {
-                    content: 'Duration - 22',
+                    content: 'Duration - 22 days',
                     href: 'multipleProducts',
                     name: 'Product - Best ticket',
                 },
-                { content: 'Validity - 24hr', href: 'multipleProductValidity', name: 'Product - Best ticket' },
+                { content: 'Validity - 24 Hr', href: 'multipleProductValidity', name: 'Product - Best ticket' },
                 { content: 'Price - £3', href: 'multipleProducts', name: 'Product - Normal ticket' },
                 {
-                    content: 'Duration - 23',
+                    content: 'Duration - 23 days',
                     href: 'multipleProducts',
                     name: 'Product - Normal ticket',
                 },
-                { content: 'Validity - 24hr', href: 'multipleProductValidity', name: 'Product - Normal ticket' },
+                { content: 'Validity - 24 Hr', href: 'multipleProductValidity', name: 'Product - Normal ticket' },
             ]);
         });
         it('builds confirmation elements for flat fare tickets', () => {

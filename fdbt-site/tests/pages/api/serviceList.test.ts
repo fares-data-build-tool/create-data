@@ -89,7 +89,7 @@ describe('serviceList', () => {
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOp' } },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' } },
         });
 
         serviceList(req, res);

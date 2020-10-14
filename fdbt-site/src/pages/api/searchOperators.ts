@@ -56,8 +56,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             continueButtonClick,
         } = req.body;
 
-        const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
-        let selectedOperators = multiOpAttribute ? multiOpAttribute.selectedOperators : [];
+        const multiOperatorAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
+        let selectedOperators = multiOperatorAttribute ? multiOperatorAttribute.selectedOperators : [];
 
         if (removeOperators) {
             if (!operatorsToRemove) {

@@ -74,7 +74,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/productDetails');
             return;
         }
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'multiOp') {
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'multiOperator') {
             redirectTo(res, '/searchOperators');
             return;
         }

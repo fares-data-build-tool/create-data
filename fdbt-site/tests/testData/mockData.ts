@@ -1922,7 +1922,7 @@ export const mockProductRadioErrors: ErrorInfo[] = [
 export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset = {
     heading: {
         id: 'product-dates-information',
-        content: 'Is there a start or end date for your product?',
+        content: 'Is there a start or end date for your product(s)?',
         hidden: true,
     },
     radios: [
@@ -1964,7 +1964,7 @@ export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset 
 export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'product-dates-information',
-        content: 'Is there a start or end date for your product?',
+        content: 'Is there a start or end date for your product(s)?',
         hidden: true,
     },
     radios: [
@@ -2015,7 +2015,7 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
 export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'product-dates-information',
-        content: 'Is there a start or end date for your product?',
+        content: 'Is there a start or end date for your product(s)?',
         hidden: true,
     },
     radios: [

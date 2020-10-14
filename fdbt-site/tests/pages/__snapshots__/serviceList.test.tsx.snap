@@ -214,7 +214,7 @@ exports[`pages serviceList should render correctly 1`] = `
 </Component>
 `;
 
-exports[`pages serviceList should render correctly for multiOp 1`] = `
+exports[`pages serviceList should render correctly for multiOperator 1`] = `
 <Component
   description="Service List selection page of the Fares Data Build Tool"
   title="Service List - Fares Data Build Tool"
