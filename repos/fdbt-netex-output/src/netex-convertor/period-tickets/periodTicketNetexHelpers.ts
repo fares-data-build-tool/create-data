@@ -5,7 +5,7 @@ import {
     Stop,
     PeriodTicket,
     PeriodMultipleServicesTicket,
-    PeriodGeoZoneTicket,
+    GeoZoneTicket,
     ScheduledStopPoint,
     TopographicProjectionRef,
     Line,
@@ -28,8 +28,8 @@ import {
     getCleanWebsite,
 } from '../sharedHelpers';
 
-export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
-    (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
+export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is GeoZoneTicket =>
+    (ticket as GeoZoneTicket).zoneName !== undefined;
 
 export const isMultiServiceTicket = (ticket: PeriodTicket): ticket is PeriodMultipleServicesTicket =>
     (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
@@ -76,7 +76,7 @@ export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): 
         : [];
 
 export const getGeoZoneFareTable = (
-    userPeriodTicket: PeriodGeoZoneTicket,
+    userPeriodTicket: GeoZoneTicket,
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {

@@ -1006,7 +1006,7 @@ export const returnCircularTicket: ReturnTicket = {
 
 export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
     operatorName: 'Test Buses',
-    type: 'periodGeoZone',
+    type: 'period',
     nocCode: 'BLAC',
     email: 'test@example.com',
     uuid: 'BLACadge12d',
@@ -1319,7 +1319,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
 
 export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
     operatorName: 'Test Buses',
-    type: 'periodMultipleServices',
+    type: 'period',
     email: 'test@example.com',
     uuid: 'BLACadge12d',
     nocCode: 'PBLT',
