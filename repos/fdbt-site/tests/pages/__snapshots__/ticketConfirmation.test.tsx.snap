@@ -43,7 +43,7 @@ exports[`pages ticketConfirmation should render correctly for flat fare tickets 
 </Component>
 `;
 
-exports[`pages ticketConfirmation should render correctly for period tickets 1`] = `
+exports[`pages ticketConfirmation should render correctly for period and multiOperator tickets 1`] = `
 <Component
   description="Ticket Confirmation page of the Fares Data Build Tool"
   errors={Array []}

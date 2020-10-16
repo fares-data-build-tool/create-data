@@ -4,7 +4,7 @@ import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../constants';
-import { isProductDateAttributeWithErrors } from '../interfaces/typeGuards';
+import { isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { getErrorsByIds } from '../utils';
@@ -102,7 +102,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const productDateAttribute = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
-        productDateAttribute && isProductDateAttributeWithErrors(productDateAttribute)
+        productDateAttribute && isTicketPeriodAttributeWithErrors(productDateAttribute)
             ? productDateAttribute.errors
             : [];
 
@@ -113,7 +113,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
             errors,
             fieldsets,
             dates:
-                productDateAttribute && isProductDateAttributeWithErrors(productDateAttribute)
+                productDateAttribute && isTicketPeriodAttributeWithErrors(productDateAttribute)
                     ? productDateAttribute.dates
                     : {
                           startDateDay: '',

@@ -140,6 +140,9 @@ describe('searchOperators', () => {
     });
 
     it("should redirect with errors when the user tries to add to the selected operators and clicks the 'Continue' button", () => {
+        const mockSelectedOperators: Operator[] = [
+            { nocCode: 'MCTR', operatorPublicName: 'Manchester Community Transport' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             requestHeaders: { referer: 'host/searchOperators?searchOperator=warr' },
             body: {
@@ -149,13 +152,13 @@ describe('searchOperators', () => {
             },
             session: {
                 [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: [{ nocCode: 'MCTR', operatorPublicName: 'Manchester Community Transport' }],
+                    selectedOperators: mockSelectedOperators,
                 },
             },
         });
 
         const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-            selectedOperators: [{ nocCode: 'MCTR', operatorPublicName: 'Manchester Community Transport' }],
+            selectedOperators: mockSelectedOperators,
             errors: [
                 { errorMessage: "Click the 'Add Operator(s)' button to add operators", id: 'add-operator-checkbox-0' },
             ],
@@ -248,6 +251,7 @@ describe('searchOperators', () => {
     });
 
     it("should redirect with errors when the user tries to remove selected operators and clicks the 'Continue' button", () => {
+        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }];
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
@@ -256,13 +260,13 @@ describe('searchOperators', () => {
             },
             session: {
                 [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }],
+                    selectedOperators: mockSelectedOperators,
                 },
             },
         });
 
         const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-            selectedOperators: [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }],
+            selectedOperators: mockSelectedOperators,
             errors: [
                 {
                     errorMessage: "Click the 'Remove Operator(s)' button to remove operators",
@@ -284,6 +288,7 @@ describe('searchOperators', () => {
     });
 
     it("should redirect with errors when the user clicks the 'Remove Operator' button without making a selection", () => {
+        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }];
         const { req, res } = getMockRequestAndResponse({
             body: {
                 removeOperators: 'Remove Operators',
@@ -291,13 +296,13 @@ describe('searchOperators', () => {
             },
             session: {
                 [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }],
+                    selectedOperators: mockSelectedOperators,
                 },
             },
         });
 
         const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-            selectedOperators: [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }],
+            selectedOperators: mockSelectedOperators,
             errors: [{ errorMessage: 'Select at least one operator to remove', id: 'remove-operator-checkbox-0' }],
         };
 
@@ -319,6 +324,20 @@ describe('searchOperators', () => {
     ])(
         'should redirect to %s when the user has successfully selected operators for a %s multi op ticket',
         (redirect, ticketType) => {
+            const mockSelectedOperators: Operator[] = [
+                {
+                    nocCode: 'MCTR',
+                    operatorPublicName: 'Manchester Community Transport',
+                },
+                {
+                    nocCode: 'MCTR2',
+                    operatorPublicName: 'Manchester Community Transport 2',
+                },
+                {
+                    nocCode: 'MCTR3',
+                    operatorPublicName: 'Manchester Community Transport 3',
+                },
+            ];
             const { req, res } = getMockRequestAndResponse({
                 body: {
                     continueButtonClick: 'Continue',
@@ -326,20 +345,7 @@ describe('searchOperators', () => {
                 },
                 session: {
                     [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                        selectedOperators: [
-                            {
-                                nocCode: 'MCTR',
-                                operatorPublicName: 'Manchester Community Transport',
-                            },
-                            {
-                                nocCode: 'MCTR2',
-                                operatorPublicName: 'Manchester Community Transport 2',
-                            },
-                            {
-                                nocCode: 'MCTR3',
-                                operatorPublicName: 'Manchester Community Transport 3',
-                            },
-                        ],
+                        selectedOperators: mockSelectedOperators,
                     },
                     [TICKET_REPRESENTATION_ATTRIBUTE]: {
                         name: ticketType,
@@ -348,20 +354,7 @@ describe('searchOperators', () => {
             });
 
             const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
-                selectedOperators: [
-                    {
-                        nocCode: 'MCTR',
-                        operatorPublicName: 'Manchester Community Transport',
-                    },
-                    {
-                        nocCode: 'MCTR2',
-                        operatorPublicName: 'Manchester Community Transport 2',
-                    },
-                    {
-                        nocCode: 'MCTR3',
-                        operatorPublicName: 'Manchester Community Transport 3',
-                    },
-                ],
+                selectedOperators: mockSelectedOperators,
             };
 
             searchOperators(req, res);

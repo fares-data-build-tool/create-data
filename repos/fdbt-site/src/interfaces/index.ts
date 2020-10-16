@@ -161,7 +161,6 @@ export interface TimeRestriction {
 }
 
 export interface BaseTicket {
-    timeRestriction?: TimeRestriction;
     nocCode: string;
     type: string;
     passengerType: string;
@@ -172,17 +171,13 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    ticketPeriod: ProductDate;
-}
-
-export interface ProductDate {
-    startDate?: string;
-    endDate?: string;
+    timeRestriction?: TimeRestriction;
+    ticketPeriod: TicketPeriod;
 }
 
 export interface TicketPeriod {
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
@@ -231,6 +226,12 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     zoneName: string;
     stops: Stop[];
 }
+
+export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
+    additionalNocs: string[];
+}
+
+export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
