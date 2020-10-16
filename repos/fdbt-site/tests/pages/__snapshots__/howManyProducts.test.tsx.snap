@@ -116,7 +116,7 @@ exports[`pages howManyProducts should render correctly for non multi op 1`] = `
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 1`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 1`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -198,7 +198,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 2`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 2`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -280,7 +280,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 3`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 3`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -362,7 +362,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 4`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 4`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -444,7 +444,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 5`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 5`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -526,7 +526,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 6`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 6`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -608,7 +608,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp) 7`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 7`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -690,7 +690,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 1`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 1`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -772,7 +772,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 2`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 2`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -854,7 +854,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 3`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 3`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -936,7 +936,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 4`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 4`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -1018,7 +1018,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 5`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 5`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -1100,7 +1100,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 6`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 6`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={
@@ -1182,7 +1182,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 </Component>
 `;
 
-exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp) 7`] = `
+exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 7`] = `
 <Component
   description="How Many Products entry page of the Fares Data Build Tool"
   errors={

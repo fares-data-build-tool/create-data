@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import CreatedFiles, { getServerSideProps } from '../../src/pages/createdFiles';
 import { S3NetexFile } from '../../src/interfaces';
 import * as s3 from '../../src/data/s3';
-import { getMockContext, expectedMatchingJsonSingle } from '../testData/mockData';
+import { getMockContext, expectedSingleTicket } from '../testData/mockData';
 
 jest.mock('../../src/data/s3.ts');
 
@@ -61,7 +61,7 @@ describe('pages', () => {
 
             getMatchingDataObjectSpy = jest.spyOn(s3, 'getMatchingDataObject').mockImplementation(() =>
                 Promise.resolve({
-                    Body: JSON.stringify(expectedMatchingJsonSingle),
+                    Body: JSON.stringify(expectedSingleTicket),
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } as any),
             );

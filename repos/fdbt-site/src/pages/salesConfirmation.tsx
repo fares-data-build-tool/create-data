@@ -7,13 +7,13 @@ import {
     NextPageContextWithSession,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
-    ProductDate,
+    TicketPeriod,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
-import { isProductWithSalesOfferPackages, isProductDateAttributeWithErrors } from '../interfaces/typeGuards';
+import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Sales Confirmation - Fares Data Build Tool';
 const description = 'Sales Confirmation page of the Fares Data Build Tool';
@@ -24,7 +24,7 @@ type SalesConfirmationProps = {
 };
 
 interface TicketDating {
-    productDates: ProductDate;
+    productDates: TicketPeriod;
     startDefault: boolean;
     endDefault: boolean;
 }
@@ -108,7 +108,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     if (
         !salesOfferPackageInfo ||
         !isArray(salesOfferPackageInfo) ||
-        isProductDateAttributeWithErrors(ticketDatingInfo)
+        isTicketPeriodAttributeWithErrors(ticketDatingInfo)
     ) {
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }

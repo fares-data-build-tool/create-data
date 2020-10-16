@@ -32,7 +32,7 @@ import {
     FARE_STAGES_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
-    SEARCH_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../constants/index';
 import {
     InputMethodInfo,
@@ -52,7 +52,7 @@ import {
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
-    ProductDate,
+    TicketPeriod,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -81,9 +81,9 @@ import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerTy
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
+import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
-import { SearchOperatorsWithErrors } from '../pages/api/searchOperators';
+import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -124,8 +124,8 @@ type SessionAttributeTypes = {
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
-    [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
-    [SEARCH_OPERATOR_ATTRIBUTE]: SearchOperatorsWithErrors;
+    [PRODUCT_DATE_ATTRIBUTE]: TicketPeriod | TicketPeriodWithErrors;
+    [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

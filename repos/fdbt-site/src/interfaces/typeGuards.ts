@@ -10,7 +10,7 @@ import {
     PointToPointTicket,
     PeriodMultipleServicesTicket,
     FlatFareTicket,
-    PeriodGeoZoneTicket,
+    GeoZoneTicket,
     InputMethodInfo,
     ErrorInfo,
     Journey,
@@ -19,7 +19,7 @@ import {
     TicketRepresentationAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
-    ProductDate,
+    TicketPeriod,
 } from './index';
 
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
@@ -27,8 +27,8 @@ import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerTy
 import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
-import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
-import { SearchOperatorsWithErrors } from '../pages/api/searchOperators';
+import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
+import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -43,8 +43,8 @@ export const isMultipleServicesTicket = (
 export const isPointToPointTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PointToPointTicket =>
     (ticket as PointToPointTicket).lineName !== undefined;
 
-export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PeriodGeoZoneTicket =>
-    (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
+export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is GeoZoneTicket =>
+    (ticket as GeoZoneTicket).zoneName !== undefined;
 
 export const isFareTypeAttributeWithErrors = (
     fareTypeAttribute: FareType | FareTypeWithErrors,
@@ -158,18 +158,20 @@ export const isPeriodTicketProps = (
 export const isFlatFareTicketProps = (
     props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
 ): props is FlatFareTicketProps => (props as FlatFareTicketProps).productName !== undefined;
-export const isProductDateAttributeWithErrors = (
-    productDates: ProductDate | ProductDatesWithErrors | undefined,
-): productDates is ProductDatesWithErrors =>
-    productDates !== undefined && (productDates as ProductDatesWithErrors).errors !== undefined;
 
-export const isProductDateAttribute = (
-    productDates: ProductDate | ProductDatesWithErrors | undefined,
-): productDates is ProductDate =>
+export const isTicketPeriodAttributeWithErrors = (
+    productDates: TicketPeriod | TicketPeriodWithErrors | undefined,
+): productDates is TicketPeriodWithErrors =>
+    productDates !== undefined && (productDates as TicketPeriodWithErrors).errors !== undefined;
+
+export const isTicketPeriodAttribute = (
+    productDates: TicketPeriod | TicketPeriodWithErrors | undefined,
+): productDates is TicketPeriod =>
     productDates !== undefined &&
-    (productDates as ProductDate).startDate !== undefined &&
-    (productDates as ProductDate).endDate !== undefined;
+    (productDates as TicketPeriod).startDate !== undefined &&
+    (productDates as TicketPeriod).endDate !== undefined;
 
-export const isSearchOperatorAttributeWithErrors = (
-    searchOperator: SearchOperatorsWithErrors | undefined,
-): searchOperator is SearchOperatorsWithErrors => searchOperator !== undefined && searchOperator.errors !== undefined;
+export const isMultipleOperatorAttributeWithErrors = (
+    searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,
+): searchOperator is MultipleOperatorsAttributeWithErrors =>
+    searchOperator !== undefined && (searchOperator as MultipleOperatorsAttributeWithErrors).errors !== undefined;

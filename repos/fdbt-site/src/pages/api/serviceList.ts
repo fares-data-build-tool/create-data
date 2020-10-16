@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { isArray } from 'util';
+import isArray from 'lodash/isArray';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
@@ -72,6 +72,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare') {
             redirectTo(res, '/productDetails');
+            return;
+        }
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'multiOperator') {
+            redirectTo(res, '/searchOperators');
             return;
         }
 

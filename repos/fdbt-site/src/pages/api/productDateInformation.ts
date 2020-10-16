@@ -6,7 +6,7 @@ import { PRODUCT_DATE_ATTRIBUTE } from '../../constants';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 
-export interface ProductDatesWithErrors {
+export interface TicketPeriodWithErrors {
     errors: ErrorInfo[];
     dates: ProductDateInformation;
 }

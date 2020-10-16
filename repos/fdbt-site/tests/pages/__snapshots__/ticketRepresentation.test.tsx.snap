@@ -61,6 +61,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             >
               <input
                 className="govuk-radios__input  "
+                disabled={true}
                 id="set-of-services"
                 name="ticketType"
                 type="radio"
@@ -148,6 +149,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             >
               <input
                 className="govuk-radios__input  "
+                disabled={false}
                 id="set-of-services"
                 name="ticketType"
                 type="radio"
@@ -256,6 +258,7 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
             >
               <input
                 className="govuk-radios__input govuk-input--error "
+                disabled={false}
                 id="set-of-services"
                 name="ticketType"
                 type="radio"

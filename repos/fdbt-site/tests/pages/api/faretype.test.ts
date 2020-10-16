@@ -20,6 +20,20 @@ describe('fareType', () => {
         });
     });
 
+    it('should add the fareType to the session', () => {
+        const writeHeadMock = jest.fn();
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { fareType: 'single' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        fareType(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/passengerType',
+        });
+    });
+
     it('should return 302 redirect to /error when session is not valid', () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({

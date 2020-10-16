@@ -10,7 +10,9 @@ describe('pages', () => {
         });
 
         it('should render correctly when the fare type is a multi operator ticket', () => {
-            const tree = shallow(<TicketRepresentation fareType="multiOp" errors={[]} csrfToken="" pageProps={[]} />);
+            const tree = shallow(
+                <TicketRepresentation fareType="multiOperator" errors={[]} csrfToken="" pageProps={[]} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 

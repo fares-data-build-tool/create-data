@@ -2,13 +2,14 @@ import React, { ReactElement } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_ATTRIBUTE } from '../constants';
+import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants';
 import { ServiceType, getServicesByNocCode } from '../data/auroradb';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from './api/serviceList';
+import { FareType } from './api/fareType';
 
 const pageTitle = 'Service List - Fares Data Build Tool';
 const pageDescription = 'Service List selection page of the Fares Data Build Tool';
@@ -21,6 +22,7 @@ export interface ServiceListProps {
     serviceList: ServicesInfo[];
     buttonText: string;
     errors: ErrorInfo[];
+    multiOperator: boolean;
 }
 
 const ServiceList = ({
@@ -28,6 +30,7 @@ const ServiceList = ({
     buttonText,
     csrfToken,
     errors,
+    multiOperator,
 }: ServiceListProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
@@ -37,11 +40,13 @@ const ServiceList = ({
                     <fieldset className="govuk-fieldset">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                             <h1 className="govuk-heading-l" id="service-list-page-heading">
-                                Which service(s) is the ticket valid for?
+                                Which {multiOperator ? 'of your ' : ''}services is the ticket valid for?
                             </h1>
                         </legend>
 
-                        <span className="govuk-heading-s">Select all services that apply</span>
+                        <span className="govuk-heading-s">
+                            Select all {multiOperator ? 'of your ' : ''}services that apply
+                        </span>
 
                         <input
                             type="submit"
@@ -123,6 +128,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         };
     });
 
+    const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
+    const multiOperator = fareType === 'multiOperator';
+
     return {
         props: {
             serviceList,
@@ -131,6 +139,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
                     ? serviceListAttribute.errors
                     : [],
+            multiOperator,
         },
     };
 };
