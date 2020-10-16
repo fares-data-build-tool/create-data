@@ -48,21 +48,23 @@ const replaceIWBusCoNocCode = (nocCode: string): string => {
     return nocCode;
 };
 
-export const getOperatorDataByNocCode = async (nocCode: string): Promise<Operator> => {
+export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Operator[]> => {
     try {
-        const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-        const queryInput =
-            'SELECT nocTable.opId, nocTable.vosaPsvLicenseName, nocTable.operatorPublicName,' +
-            ' nocPublicName.website, nocPublicName.ttrteEnq, nocPublicName.fareEnq, nocPublicName.complEnq, nocLine.mode' +
-            ' FROM nocTable JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId' +
-            ' JOIN nocLine ON nocTable.nocCode = nocLine.nocCode WHERE nocTable.nocCode = ?';
+        const cleansedNocs: string[] = nocCodes.map(noc => replaceIWBusCoNocCode(noc));
+        const substitution = cleansedNocs.map(() => '?').join(',');
 
-        const queryResult = await executeQuery<Operator[]>(queryInput, [nocCodeParameter]);
+        const queryInput = `
+            SELECT DISTINCT nocTable.nocCode, nocTable.opId, nocTable.vosaPsvLicenseName, nocTable.operatorPublicName,
+            nocPublicName.website, nocPublicName.ttrteEnq, nocPublicName.fareEnq, nocPublicName.complEnq, nocLine.mode FROM nocTable
+            JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId
+            JOIN nocLine ON nocTable.nocCode = nocLine.nocCode
+            WHERE nocTable.nocCode IN (${substitution})
+        `;
 
-        const operatorData = queryResult[0];
+        const operatorData = await executeQuery<Operator[]>(queryInput, cleansedNocs);
 
         if (!operatorData) {
-            throw new Error(`No operator data found for nocCode: ${nocCodeParameter}`);
+            throw new Error(`No operator data found for nocCodes: ${cleansedNocs.join(',')}`);
         }
 
         return operatorData;

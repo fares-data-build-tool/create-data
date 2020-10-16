@@ -3,6 +3,7 @@ import { NetexObject } from '../netex-convertor/sharedHelpers';
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
 
 export interface Operator {
+    nocCode: string;
     website: string;
     ttrteEnq: string;
     operatorPublicName: string;
@@ -123,7 +124,7 @@ export interface FareZonePrices {
     fareZones: string[];
 }
 
-export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
+export type PeriodTicket = GeoZoneTicket | MultipleServicesTicket;
 
 export interface BasePeriodTicket extends BaseTicket {
     operatorName: string;
@@ -135,9 +136,34 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     stops: Stop[];
 }
 
+export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
+    additionalNocs: string[];
+}
+
+export const isMultiOperatorGeoZoneTicket = (
+    userPeriodTicket: PeriodTicket,
+): userPeriodTicket is MultiOperatorGeoZoneTicket =>
+    (userPeriodTicket as MultiOperatorGeoZoneTicket).additionalNocs.length > 0;
+
+export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
+
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
 }
+
+export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
+    additionalOperators: {
+        nocCode: string;
+        selectedServices: SelectedService[];
+    }[];
+}
+
+export const isMultiOperatorMultipleServicesTicket = (
+    userPeriodTicket: PeriodTicket,
+): userPeriodTicket is MultiOperatorMultipleServicesTicket =>
+    (userPeriodTicket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0;
+
+export type MultipleServicesTicket = PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket;
 
 export interface FlatFareTicket extends BaseTicket {
     operatorName: string;
@@ -190,7 +216,8 @@ export interface Line {
     Url: object;
     PublicCode: object;
     PrivateCode: object;
-    OperatorRef: object;
+    OperatorRef?: object;
+    GroupOfOperatorsRef?: object;
     LineType: object;
 }
 
@@ -263,4 +290,62 @@ export interface NetexSalesOfferPackage {
     id: string;
     distributionAssignments: { DistributionAssignment: DistributionAssignment[] };
     salesOfferPackageElements: { SalesOfferPackageElement: SalesOfferPackageElement[] };
+}
+
+export interface NetexOrganisationOperator {
+    version: string;
+    id: string;
+    PublicCode: {
+        $t: string;
+    };
+    Name: {
+        $t: string;
+    };
+    ShortName: {
+        $t: string;
+    };
+    TradingName: {
+        $t: string;
+    };
+    ContactDetails: {
+        Phone: {
+            $t: string;
+        };
+        Url: {
+            $t: string;
+        };
+    };
+    Address: {
+        Street: {
+            $t: string;
+        };
+    };
+    PrimaryMode: {
+        $t: string;
+    };
+}
+
+export interface GroupMember {
+    version: string;
+    ref: string;
+    $t: string;
+}
+
+export interface GroupOfOperators {
+    GroupOfOperators: {
+        version: string;
+        id: string;
+        Name: {
+            $t: string;
+        };
+        members: {
+            OperatorRef: GroupMember[];
+        };
+    };
+}
+
+export interface OperatorRef {
+    version: string;
+    ref: string;
+    $t: string;
 }

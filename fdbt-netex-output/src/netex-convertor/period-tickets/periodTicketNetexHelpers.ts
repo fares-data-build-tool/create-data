@@ -1,10 +1,11 @@
 import {
+    GroupOfOperators,
+    NetexOrganisationOperator,
     NetexSalesOfferPackage,
     Stop,
-    Operator,
     PeriodTicket,
     PeriodMultipleServicesTicket,
-    PeriodGeoZoneTicket,
+    GeoZoneTicket,
     ScheduledStopPoint,
     TopographicProjectionRef,
     Line,
@@ -14,20 +15,21 @@ import {
     SalesOfferPackageElement,
     User,
     GroupCompanion,
+    Operator,
 } from '../../types/index';
-
 import {
-    getCleanWebsite,
+    getNetexMode,
     NetexObject,
     isGroupTicket,
     getUserProfile,
     getGroupElement,
     getProfileRef,
     isValidTimeRestriction,
+    getCleanWebsite,
 } from '../sharedHelpers';
 
-export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is PeriodGeoZoneTicket =>
-    (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
+export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is GeoZoneTicket =>
+    (ticket as GeoZoneTicket).zoneName !== undefined;
 
 export const isMultiServiceTicket = (ticket: PeriodTicket): ticket is PeriodMultipleServicesTicket =>
     (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
@@ -46,20 +48,24 @@ export const getTopographicProjectionRefList = (stops: Stop[]): TopographicProje
         $t: `${stop.street}, ${stop.localityName}, ${stop.parentLocalityName}`,
     }));
 
-export const getLinesList = (userPeriodTicket: PeriodMultipleServicesTicket, operatorData: Operator): Line[] =>
-    userPeriodTicket.selectedServices
+export const getLinesList = (userPeriodTicket: PeriodMultipleServicesTicket, website: string): Line[] => {
+    return userPeriodTicket.selectedServices
         ? userPeriodTicket.selectedServices.map(service => ({
               version: '1.0',
               id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
               Name: { $t: `Line ${service.lineName}` },
               Description: { $t: service.serviceDescription },
-              Url: { $t: getCleanWebsite(operatorData.website) },
+              Url: { $t: website },
               PublicCode: { $t: service.lineName },
               PrivateCode: { type: 'noc', $t: `${userPeriodTicket.nocCode}_${service.lineName}` },
-              OperatorRef: { version: '1.0', ref: `noc:${userPeriodTicket.nocCode}` },
+              [userPeriodTicket.type === 'multiOperator' ? 'GroupOfOperatorsRef' : 'OperatorRef']: {
+                  version: '1.0',
+                  ref: `noc:${userPeriodTicket.nocCode}`,
+              },
               LineType: { $t: 'local' },
           }))
         : [];
+};
 
 export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): LineRef[] =>
     userPeriodTicket.selectedServices
@@ -70,7 +76,7 @@ export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): 
         : [];
 
 export const getGeoZoneFareTable = (
-    userPeriodTicket: PeriodGeoZoneTicket,
+    userPeriodTicket: GeoZoneTicket,
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {
@@ -748,4 +754,61 @@ export const getFareStructuresElements = (
     }
 
     return fareStructureElements;
+};
+
+export const getOrganisations = (operatorData: Operator[]): NetexOrganisationOperator[] =>
+    operatorData.map(operator => ({
+        version: '1.0',
+        id: `noc:${operator.nocCode}`,
+        PublicCode: {
+            $t: operator.nocCode,
+        },
+        Name: {
+            $t: operator.operatorPublicName,
+        },
+        ShortName: {
+            $t: operator.operatorPublicName,
+        },
+        TradingName: {
+            $t: operator.vosaPsvLicenseName,
+        },
+        ContactDetails: {
+            Phone: {
+                $t: operator.fareEnq,
+            },
+            Url: {
+                $t: getCleanWebsite(operator.website),
+            },
+        },
+        Address: {
+            Street: {
+                $t: operator.complEnq,
+            },
+        },
+        PrimaryMode: {
+            $t: getNetexMode(operator.mode),
+        },
+    }));
+
+export const getGroupOfOperators = (operatorData: Operator[]): GroupOfOperators => {
+    const group: GroupOfOperators = {
+        GroupOfOperators: {
+            version: '1.0',
+            id: 'operators@bus',
+            Name: {
+                $t: 'Bus Operators',
+            },
+            members: {
+                OperatorRef: [],
+            },
+        },
+    };
+    const members = operatorData.map(operator => ({
+        version: '1.0',
+        ref: `noc:${operator.nocCode}`,
+        $t: operator.operatorPublicName,
+    }));
+
+    group.GroupOfOperators.members.OperatorRef = members;
+    return group;
 };
