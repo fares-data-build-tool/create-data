@@ -30,7 +30,9 @@ const TicketRepresentation = ({
                     <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
-                                {`Select a type of ${fareType === 'multiOp' ? 'multi-operator' : 'period'} ticket`}
+                                {`Select a type of ${
+                                    fareType === 'multiOperator' ? 'multi-operator' : 'period'
+                                } ticket`}
                             </h1>
                         </legend>
                         <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
@@ -58,6 +60,7 @@ const TicketRepresentation = ({
                                         name="ticketType"
                                         type="radio"
                                         value="multipleServices"
+                                        disabled={fareType === 'multiOperator'}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="set-of-services">
                                         A ticket for a set of services

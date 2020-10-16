@@ -34,28 +34,30 @@ describe('pages', () => {
         ];
 
         it('should render correctly for non multi op', () => {
-            const wrapper = shallow(<HowManyProducts multiOp errors={[]} csrfToken="" pageProps={[]} />);
+            const wrapper = shallow(<HowManyProducts multiOperator errors={[]} csrfToken="" pageProps={[]} />);
             expect(wrapper).toMatchSnapshot();
         });
 
         it('should render correctly for multi op', () => {
-            const wrapper = shallow(<HowManyProducts multiOp={false} errors={[]} csrfToken="" pageProps={[]} />);
+            const wrapper = shallow(<HowManyProducts multiOperator={false} errors={[]} csrfToken="" pageProps={[]} />);
             expect(wrapper).toMatchSnapshot();
         });
 
         test.each(errorCases)(
-            'should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOp)',
+            'should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator)',
             mockError => {
                 const tree = shallow(
-                    <HowManyProducts multiOp={false} errors={[mockError]} csrfToken="" pageProps={[]} />,
+                    <HowManyProducts multiOperator={false} errors={[mockError]} csrfToken="" pageProps={[]} />,
                 );
                 expect(tree).toMatchSnapshot();
             },
         );
         test.each(errorCases)(
-            'should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOp)',
+            'should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator)',
             mockError => {
-                const tree = shallow(<HowManyProducts multiOp errors={[mockError]} csrfToken="" pageProps={[]} />);
+                const tree = shallow(
+                    <HowManyProducts multiOperator errors={[mockError]} csrfToken="" pageProps={[]} />,
+                );
                 expect(tree).toMatchSnapshot();
             },
         );

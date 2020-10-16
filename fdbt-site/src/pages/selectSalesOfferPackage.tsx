@@ -204,13 +204,19 @@ export const getServerSideProps = async (
     let productNames: string[] = ['product'];
 
     if (isFareType(fareTypeAttribute)) {
-        if (fareTypeAttribute.fareType === 'period' && multipleProductAttribute) {
+        if (
+            (fareTypeAttribute.fareType === 'period' || fareTypeAttribute.fareType === 'multiOperator') &&
+            multipleProductAttribute
+        ) {
             const multiProducts: Product[] = multipleProductAttribute.products;
             productNames = multiProducts.map((product: ProductInfo) => product.productName);
         } else if (singleProductAttribute) {
             if (fareTypeAttribute.fareType === 'flatFare' && isProductData(singleProductAttribute)) {
                 productNames = [singleProductAttribute.products[0].productName];
-            } else if (fareTypeAttribute.fareType === 'period' && isProductInfo(singleProductAttribute)) {
+            } else if (
+                (fareTypeAttribute.fareType === 'period' || fareTypeAttribute.fareType === 'multiOperator') &&
+                isProductInfo(singleProductAttribute)
+            ) {
                 productNames = [singleProductAttribute.productName];
             }
         }

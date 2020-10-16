@@ -1,6 +1,292 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages searchOperator should render an error when errors are passed through 1`] = `
+exports[`pages searchOperator should render a selection error when the user tries to add operators without selecting any search results 1`] = `
+<Component
+  description="Search Operators page for the Fares Data Build Tool"
+  title="Search Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/searchOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
+          >
+            Search for the operators that the ticket covers
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
+        >
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          name="search"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search-results"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend"
+        >
+          <h2
+            className="govuk-body-l govuk-!-margin-bottom-0"
+            id="operator-search-results"
+          >
+            Your search for '
+            <strong>
+              blac
+            </strong>
+            ' returned
+            <strong>
+               
+              1
+               result
+            </strong>
+          </h2>
+        </legend>
+        <FormElementWrapper
+          errorClass=""
+          errorId="add-operator-checkbox-0"
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+          >
+            <p
+              className="govuk-hint"
+              id="operator-hint-text"
+            >
+              Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+            </p>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-Blackpool"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="add-operator-checkbox-0"
+                name="operatorsToAdd"
+                type="checkbox"
+                value="BLAC#Blackpool"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="add-operator-checkbox-0"
+              >
+                Blackpool
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+        <div
+          className="govuk-!-margin-top-7"
+        >
+          <input
+            className="govuk-button govuk-button--secondary"
+            id="add-operator-button"
+            name="addOperators"
+            type="submit"
+            value="Add Operator(s)"
+          />
+        </div>
+      </fieldset>
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages searchOperator should render a selection error when the user tries to remove selected operators without making a selection 1`] = `
+<Component
+  description="Search Operators page for the Fares Data Build Tool"
+  title="Search Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/searchOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="selected-operators"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="selected-operators"
+          >
+            Here's what you have added
+          </h1>
+        </legend>
+        <div
+          className="govuk-inset-text"
+        >
+          <FormElementWrapper
+            errorClass=""
+            errorId="remove-operator-checkbox-0"
+            errors={Array []}
+          >
+            <div
+              className="govuk-checkboxes"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="WBTR"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-0"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="WBTR#Warrington's Own Buses"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-0"
+                >
+                  Warrington's Own Buses
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="BLAC"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-1"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="BLAC#Blackpool Transport"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-1"
+                >
+                  Blackpool Transport
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="IWBusCo"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-2"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="IWBusCo#IW Bus Co"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-2"
+                >
+                  IW Bus Co
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+          <input
+            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
+            id="remove-operators-button"
+            name="removeOperators"
+            type="submit"
+            value="Remove Operators"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
+          >
+            Search for more operators that the ticket covers
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
+        >
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          name="search"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
+    </div>
+    <div>
+      <input
+        className="govuk-button"
+        id="continue-button"
+        name="continueButtonClick"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages searchOperator should render an input error when the user makes an unsucessful search 1`] = `
 <Component
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
@@ -15,7 +301,7 @@ exports[`pages searchOperator should render an error when errors are passed thro
         Array [
           Object {
             "errorMessage": "Search requires a minimum of three characters",
-            "id": "searchText",
+            "id": "search-input",
           },
         ]
       }
@@ -23,57 +309,57 @@ exports[`pages searchOperator should render an error when errors are passed thro
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-label-wrapper"
+        <legend
+          className="govuk-fieldset__legend--l"
         >
-          <label
-            className="govuk-label govuk-label--l"
-            htmlFor="event-name"
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
           >
             Search for the operators that the ticket covers
-          </label>
-        </h1>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="searchText"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Search requires a minimum of three characters",
-                "id": "searchText",
-              },
-            ]
-          }
+          </h1>
+        </legend>
+        <span
+          className="govuk-error-message"
+          id="search-input-error"
         >
-          <label
-            className="govuk-label  govuk-!-margin-top-5"
-            htmlFor="searchText"
+          <span
+            className="govuk-visually-hidden"
           >
-            Operator name
-          </label>
-          <input
-            className="govuk-input govuk-!-width-three-quarters"
-            id="searchText"
-            name="searchText"
-            type="text"
-          />
-          <input
-            className="govuk-button govuk-!-margin-left-5"
-            id="search-button"
-            type="submit"
-            value="Search"
-          />
-        </FormElementWrapper>
-      </div>
+            Error: 
+          </span>
+          Search requires a minimum of three characters
+        </span>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
+        >
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters govuk-input--error"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          name="search"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
     </div>
   </CsrfForm>
 </Component>
 `;
 
-exports[`pages searchOperator should render the page correctly with search results 1`] = `
+exports[`pages searchOperator should render just the search input when the user first visits the page 1`] = `
 <Component
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
@@ -89,64 +375,288 @@ exports[`pages searchOperator should render the page correctly with search resul
     <div
       className="govuk-form-group "
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-label-wrapper"
+        <legend
+          className="govuk-fieldset__legend--l"
         >
-          <label
-            className="govuk-label govuk-label--l"
-            htmlFor="event-name"
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
           >
             Search for the operators that the ticket covers
-          </label>
-        </h1>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="searchText"
-          errors={Array []}
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
         >
-          <label
-            className="govuk-label  govuk-!-margin-top-5"
-            htmlFor="searchText"
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          name="search"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages searchOperator should render the search input and a list of selected operators when search results have been selected 1`] = `
+<Component
+  description="Search Operators page for the Fares Data Build Tool"
+  title="Search Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/searchOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="selected-operators"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="selected-operators"
           >
-            Operator name
-          </label>
+            Here's what you have added
+          </h1>
+        </legend>
+        <div
+          className="govuk-inset-text"
+        >
+          <FormElementWrapper
+            errorClass=""
+            errorId="remove-operator-checkbox-0"
+            errors={Array []}
+          >
+            <div
+              className="govuk-checkboxes"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="WBTR"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-0"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="WBTR#Warrington's Own Buses"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-0"
+                >
+                  Warrington's Own Buses
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="BLAC"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-1"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="BLAC#Blackpool Transport"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-1"
+                >
+                  Blackpool Transport
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="IWBusCo"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-2"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="IWBusCo#IW Bus Co"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-2"
+                >
+                  IW Bus Co
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
           <input
-            className="govuk-input govuk-!-width-three-quarters"
-            id="searchText"
-            name="searchText"
-            type="text"
-          />
-          <input
-            className="govuk-button govuk-!-margin-left-5"
-            id="search-button"
+            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
+            id="remove-operators-button"
+            name="removeOperators"
             type="submit"
-            value="Search"
+            value="Remove Operators"
           />
-        </FormElementWrapper>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
+          >
+            Search for more operators that the ticket covers
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
+        >
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          name="search"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
+    </div>
+    <div>
+      <input
+        className="govuk-button"
+        id="continue-button"
+        name="continueButtonClick"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages searchOperator should render the search input and search results when there is a successful search 1`] = `
+<Component
+  description="Search Operators page for the Fares Data Build Tool"
+  title="Search Operators - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/searchOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
+          >
+            Search for the operators that the ticket covers
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
+        >
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          name="search"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search-results"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend"
+        >
+          <h2
+            className="govuk-body-l govuk-!-margin-bottom-0"
+            id="operator-search-results"
+          >
+            Your search for '
+            <strong>
+              blac
+            </strong>
+            ' returned
+            <strong>
+               
+              1
+               result
+            </strong>
+          </h2>
+        </legend>
         <FormElementWrapper
-          addFormGroupError={false}
           errorClass=""
-          errorId="checkbox-0"
+          errorId="add-operator-checkbox-0"
           errors={Array []}
         >
           <div
             className="govuk-checkboxes"
           >
-            <h2
-              className="govuk-body govuk-heading-l"
-            >
-              Your search for 
-              <strong />
-               returned
-              <strong>
-                 
-                1
-                 result(s)
-              </strong>
-            </h2>
             <p
               className="govuk-hint"
               id="operator-hint-text"
@@ -159,45 +669,38 @@ exports[`pages searchOperator should render the page correctly with search resul
             >
               <input
                 className="govuk-checkboxes__input"
-                id="checkbox-0"
-                name="Blackpool"
+                id="add-operator-checkbox-0"
+                name="operatorsToAdd"
                 type="checkbox"
                 value="BLAC#Blackpool"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-0"
+                htmlFor="add-operator-checkbox-0"
               >
                 Blackpool
               </label>
             </div>
           </div>
-          <div
-            className="govuk-!-margin-top-7"
-          >
-            <input
-              className="govuk-button govuk-button--secondary"
-              id="add-operator-button"
-              type="submit"
-              value="Add Operator(s)"
-            />
-          </div>
-          <div>
-            <input
-              className="govuk-button"
-              id="continue-button"
-              type="submit"
-              value="Continue"
-            />
-          </div>
         </FormElementWrapper>
-      </div>
+        <div
+          className="govuk-!-margin-top-7"
+        >
+          <input
+            className="govuk-button govuk-button--secondary"
+            id="add-operator-button"
+            name="addOperators"
+            type="submit"
+            value="Add Operator(s)"
+          />
+        </div>
+      </fieldset>
     </div>
   </CsrfForm>
 </Component>
 `;
 
-exports[`pages searchOperator should render the page correctly without search results 1`] = `
+exports[`pages searchOperator should render the search input, search results and a list of selected operators when an additional search is made 1`] = `
 <Component
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
@@ -213,44 +716,216 @@ exports[`pages searchOperator should render the page correctly without search re
     <div
       className="govuk-form-group "
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="selected-operators"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-label-wrapper"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          <label
-            className="govuk-label govuk-label--l"
-            htmlFor="event-name"
+          <h1
+            className="govuk-fieldset__heading"
+            id="selected-operators"
           >
-            Search for the operators that the ticket covers
-          </label>
-        </h1>
+            Here's what you have added
+          </h1>
+        </legend>
+        <div
+          className="govuk-inset-text"
+        >
+          <FormElementWrapper
+            errorClass=""
+            errorId="remove-operator-checkbox-0"
+            errors={Array []}
+          >
+            <div
+              className="govuk-checkboxes"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="WBTR"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-0"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="WBTR#Warrington's Own Buses"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-0"
+                >
+                  Warrington's Own Buses
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="BLAC"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-1"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="BLAC#Blackpool Transport"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-1"
+                >
+                  Blackpool Transport
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="IWBusCo"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="remove-operator-checkbox-2"
+                  name="operatorsToRemove"
+                  type="checkbox"
+                  value="IWBusCo#IW Bus Co"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="remove-operator-checkbox-2"
+                >
+                  IW Bus Co
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+          <input
+            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
+            id="remove-operators-button"
+            name="removeOperators"
+            type="submit"
+            value="Remove Operators"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
+          >
+            Search for more operators that the ticket covers
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
+        >
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          name="search"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search-results"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend"
+        >
+          <h2
+            className="govuk-body-l govuk-!-margin-bottom-0"
+            id="operator-search-results"
+          >
+            Your search for '
+            <strong>
+              warri
+            </strong>
+            ' returned
+            <strong>
+               
+              1
+               result
+            </strong>
+          </h2>
+        </legend>
         <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="searchText"
+          errorClass=""
+          errorId="add-operator-checkbox-0"
           errors={Array []}
         >
-          <label
-            className="govuk-label  govuk-!-margin-top-5"
-            htmlFor="searchText"
+          <div
+            className="govuk-checkboxes"
           >
-            Operator name
-          </label>
-          <input
-            className="govuk-input govuk-!-width-three-quarters"
-            id="searchText"
-            name="searchText"
-            type="text"
-          />
-          <input
-            className="govuk-button govuk-!-margin-left-5"
-            id="search-button"
-            type="submit"
-            value="Search"
-          />
+            <p
+              className="govuk-hint"
+              id="operator-hint-text"
+            >
+              Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+            </p>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-Warrington's Own Buses"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                id="add-operator-checkbox-0"
+                name="operatorsToAdd"
+                type="checkbox"
+                value="WBTR#Warrington's Own Buses"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="add-operator-checkbox-0"
+              >
+                Warrington's Own Buses
+              </label>
+            </div>
+          </div>
         </FormElementWrapper>
-      </div>
+        <div
+          className="govuk-!-margin-top-7"
+        >
+          <input
+            className="govuk-button govuk-button--secondary"
+            id="add-operator-button"
+            name="addOperators"
+            type="submit"
+            value="Add Operator(s)"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <div>
+      <input
+        className="govuk-button"
+        id="continue-button"
+        name="continueButtonClick"
+        type="submit"
+        value="Continue"
+      />
     </div>
   </CsrfForm>
 </Component>

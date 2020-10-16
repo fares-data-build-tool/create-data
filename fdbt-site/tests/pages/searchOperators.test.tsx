@@ -1,47 +1,40 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
-import { getSearchOperators, OperatorNameType } from '../../src/data/auroradb';
-import SearchOperators, { getServerSideProps } from '../../src/pages/searchOperators';
-import { SEARCH_OPERATOR_ATTRIBUTE } from '../../src/constants';
-
-jest.mock('../../src/data/auroradb');
+import * as aurora from '../../src/data/auroradb';
+import { Operator } from '../../src/data/auroradb';
+import SearchOperators, { getServerSideProps, SearchOperatorProps } from '../../src/pages/searchOperators';
+import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants';
+import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('searchOperator', () => {
-        const mockOperators: OperatorNameType[] = [
+        const mockOperators: Operator[] = [
             {
-                nocCode: 'BLAC',
-                operatorPublicName: 'Blackpool',
+                operatorPublicName: "Warrington's Own Buses",
+                nocCode: 'WBTR',
             },
             {
+                operatorPublicName: 'Blackpool Transport',
                 nocCode: 'BLAC',
-                operatorPublicName: 'Blackpool operator',
+            },
+            {
+                operatorPublicName: 'IW Bus Co',
+                nocCode: 'IWBusCo',
             },
         ];
-
-        beforeEach(() => {
-            (getSearchOperators as jest.Mock).mockImplementation(() => mockOperators);
-        });
 
         afterEach(() => {
             jest.resetAllMocks();
         });
 
-        it('should render the page correctly without search results', () => {
-            const tree = shallow(
-                <SearchOperators errors={[]} searchText="" operators={[]} csrfToken="" pageProps={[]} />,
-            );
-
-            expect(tree).toMatchSnapshot();
-        });
-
-        it('should render the page correctly with search results', () => {
+        it('should render just the search input when the user first visits the page', () => {
             const tree = shallow(
                 <SearchOperators
                     errors={[]}
                     searchText=""
-                    operators={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    searchResults={[]}
+                    selectedOperators={[]}
                     csrfToken=""
                     pageProps={[]}
                 />,
@@ -50,12 +43,13 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        it('should render an error when errors are passed through', () => {
+        it('should render the search input and search results when there is a successful search', () => {
             const tree = shallow(
                 <SearchOperators
-                    errors={[{ errorMessage: 'Search requires a minimum of three characters', id: 'searchText' }]}
-                    searchText=""
-                    operators={[]}
+                    errors={[]}
+                    searchText="blac"
+                    searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    selectedOperators={[]}
                     csrfToken=""
                     pageProps={[]}
                 />,
@@ -63,61 +57,164 @@ describe('pages', () => {
 
             expect(tree).toMatchSnapshot();
         });
-    });
 
-    describe('getServerSideProps', () => {
-        it('should return expected props to the page when the page is first visited by the user', async () => {
-            (getSearchOperators as jest.Mock).mockImplementation(() => []);
-            const ctx = getMockContext({ session: { [SEARCH_OPERATOR_ATTRIBUTE]: { errors: [] } } });
-            const result = await getServerSideProps(ctx);
+        it('should render an input error when the user makes an unsucessful search', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[{ errorMessage: 'Search requires a minimum of three characters', id: 'search-input' }]}
+                    searchText=""
+                    searchResults={[]}
+                    selectedOperators={[]}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
 
-            expect(result.props.errors.length).toBe(0);
-            expect(result.props.operators.length).toBe(0);
+            expect(tree).toMatchSnapshot();
         });
 
-        // below test needs addressing as unsure what it's proving
-        it('should throw an error if noc invalid', async () => {
-            const ctx = getMockContext({
-                cookies: { operator: null },
-                body: null,
-                uuid: {},
-                mockWriteHeadFn: jest.fn(),
-                mockEndFn: jest.fn(),
-                isLoggedin: false,
+        it('should render a selection error when the user tries to add operators without selecting any search results', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[]}
+                    searchText="blac"
+                    searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    selectedOperators={[]}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render the search input and a list of selected operators when search results have been selected', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[]}
+                    searchText=""
+                    searchResults={[]}
+                    selectedOperators={mockOperators}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render a selection error when the user tries to remove selected operators without making a selection', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[]}
+                    searchText=""
+                    searchResults={[]}
+                    selectedOperators={mockOperators}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render the search input, search results and a list of selected operators when an additional search is made', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[]}
+                    searchText="warri"
+                    searchResults={[mockOperators[0]]}
+                    selectedOperators={mockOperators}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        describe('getServerSideProps', () => {
+            const searchOperatorSpy = jest.spyOn(aurora, 'getSearchOperators');
+
+            it('should return base props when the page is first visited by the user', async () => {
+                const mockProps: { props: SearchOperatorProps } = {
+                    props: {
+                        errors: [],
+                        searchText: '',
+                        searchResults: [],
+                        selectedOperators: [],
+                    },
+                };
+                const ctx = getMockContext();
+                const result = await getServerSideProps(ctx);
+
+                expect(result).toEqual(mockProps);
             });
-            await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
+
+            it('should return base props with errors when the the MULTIPLE_OPERATOR_ATTRIBUTE contains errors', async () => {
+                const mockErrors: ErrorInfo[] = [
+                    {
+                        errorMessage: 'Search requires a minimum of three characters',
+                        id: 'search-input',
+                    },
+                ];
+                const mockProps: { props: SearchOperatorProps } = {
+                    props: {
+                        errors: mockErrors,
+                        searchText: '',
+                        searchResults: [],
+                        selectedOperators: [],
+                    },
+                };
+                const ctx = getMockContext({ session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: { errors: mockErrors } } });
+                const result = await getServerSideProps(ctx);
+
+                expect(result).toEqual(mockProps);
+            });
+
+            it('should return base props with errors when the url query string contains an invalid search term', async () => {
+                searchOperatorSpy.mockImplementation().mockResolvedValue([]);
+                const mockErrors: ErrorInfo[] = [
+                    {
+                        errorMessage: "No operators found for 'asda'. Try another search term.",
+                        id: 'search-input',
+                    },
+                ];
+                const mockProps: { props: SearchOperatorProps } = {
+                    props: {
+                        errors: mockErrors,
+                        searchText: 'asda',
+                        searchResults: [],
+                        selectedOperators: [],
+                    },
+                };
+                const ctx = getMockContext({
+                    session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: undefined },
+                    query: { searchOperator: 'asda' },
+                });
+                const result = await getServerSideProps(ctx);
+
+                expect(result).toEqual(mockProps);
+            });
+
+            it('should return props containing search results when the url query string contains a valid search term', async () => {
+                searchOperatorSpy.mockImplementation().mockResolvedValue(mockOperators);
+                const mockProps: { props: SearchOperatorProps } = {
+                    props: {
+                        errors: [],
+                        searchText: 'blac',
+                        searchResults: mockOperators,
+                        selectedOperators: [],
+                    },
+                };
+                const ctx = getMockContext({
+                    session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: undefined },
+                    query: { searchOperator: 'blac' },
+                });
+                const result = await getServerSideProps(ctx);
+
+                expect(result).toEqual(mockProps);
+            });
         });
-
-        // we need many more tests around this area, as there are none that show it works or how it deals with different requests.
-
-        // it('should remove the users operator from the returned results', async () => {
-        //     const ctx = getMockContext({
-        //         cookies: { operator: { operator: { operatorPublicName: 'Blackpool Transport' }, noc: 'TEST' } },
-        //         body: null,
-        //         uuid: {},
-        //         mockWriteHeadFn: jest.fn(),
-        //         mockEndFn: jest.fn(),
-        //         isLoggedin: true,
-        //         query: '/searchOperators?searchOperator=Black',
-        //     });
-        //     const forgotPasswordSubmitSpy = jest.spyOn(aurora, 'getSearchOperators');
-        //     forgotPasswordSubmitSpy.mockImplementation().mockResolvedValue([
-        //         {
-        //             operatorPublicName: 'Blackburn Transport',
-        //             nocCode: 'BLACKB',
-        //         },
-        //         {
-        //             operatorPublicName: 'Blackpool Transport',
-        //             nocCode: 'TEST',
-        //         },
-        //         {
-        //             operatorPublicName: 'Blackwell Transport',
-        //             nocCode: 'BLACKW',
-        //         },
-        //     ]);
-        //     await expect(getServerSideProps(ctx)).resolves.toBe({
-        //         props: { errors: [], operators: [], searchText: '' },
-        //     });
-        // });
     });
 });

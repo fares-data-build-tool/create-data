@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
+import isArray from 'lodash/isArray';
+import startCase from 'lodash/startCase';
 import {
     CustomAppProps,
     NextPageContextWithSession,
     Product,
     Journey,
-    ProductInfo,
     ProductData,
     ReturnPeriodValidity,
 } from '../interfaces';
@@ -24,6 +25,7 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
 } from '../constants';
 import {
     isFareTypeAttributeWithErrors,
@@ -68,7 +70,7 @@ export interface PeriodTicketProps {
     services: string[];
     zone: boolean;
     numberOfProducts: number;
-    products: Product[];
+    products: Product[] | Product;
 }
 export interface FlatFareTicketProps {
     services: string[];
@@ -164,17 +166,17 @@ export const buildFareTypeProps = (
             nonCircularMatchedFareStages: matchedFareStages,
         };
     }
-    if (fareType === 'period') {
+    if (fareType === 'period' || fareType === 'multiOperator') {
         const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
         const services = serviceInformation ? serviceInformation.selectedServices : [];
-        const zone = services.length > 0;
+        const zone = services.length === 0;
         const numberOfProducts = Number(
             (getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute)
                 .numberOfProductsInput,
         );
-        let products: Product[] = [];
+        let products;
         if (!numberOfProducts || numberOfProducts === 1) {
-            products.push(getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE) as ProductInfo);
+            [products] = (getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE) as ProductData).products;
         } else {
             products = (getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute).products;
         }
@@ -277,28 +279,52 @@ export const buildTicketConfirmationElements = (
                 href: 'serviceList',
             });
         }
-        fareTypeProps.products.forEach(product => {
-            if (!product.productDuration || !product.productValidity) {
-                throw new Error('User has no product duration and/or validity information.');
-            }
+        if (isArray(fareTypeProps.products)) {
+            fareTypeProps.products.forEach(product => {
+                if (!product.productDuration || !product.productValidity) {
+                    throw new Error('User has no product duration and/or validity information.');
+                }
+                confirmationElements.push(
+                    {
+                        name: `Product - ${product.productName}`,
+                        content: `Price - £${product.productPrice}`,
+                        href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails',
+                    },
+                    {
+                        name: `Product - ${product.productName}`,
+                        content: `Duration - ${product.productDuration} ${
+                            product.productDuration === '1' ? 'day' : 'days'
+                        }`,
+                        href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
+                    },
+                    {
+                        name: `Product - ${product.productName}`,
+                        content: `Validity - ${startCase(product.productValidity)}`,
+                        href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
+                    },
+                );
+            });
+        } else {
             confirmationElements.push(
                 {
-                    name: `Product - ${product.productName}`,
-                    content: `Price - £${product.productPrice}`,
+                    name: `Product - ${fareTypeProps.products.productName}`,
+                    content: `Price - £${fareTypeProps.products.productPrice}`,
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'productDetails',
                 },
                 {
-                    name: `Product - ${product.productName}`,
-                    content: `Duration - ${product.productDuration}`,
+                    name: `Product - ${fareTypeProps.products.productName}`,
+                    content: `Duration - ${fareTypeProps.products.productDuration} ${
+                        fareTypeProps.products.productDuration === '1' ? 'day' : 'days'
+                    }`,
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
                 },
                 {
-                    name: `Product - ${product.productName}`,
-                    content: `Validity - ${product.productValidity}`,
+                    name: `Product - ${fareTypeProps.products.productName}`,
+                    content: `Validity - ${startCase(fareTypeProps.products.productValidity)}`,
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
                 },
             );
-        });
+        }
     }
     if (isFlatFareTicketProps(fareTypeProps)) {
         confirmationElements.push(

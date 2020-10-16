@@ -113,6 +113,23 @@ exports[`pages fareType should render correctly 1`] = `
                 Flat Fare Ticket - Single Journey
               </label>
             </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="fare-type-multi-operator"
+                name="fareType"
+                type="radio"
+                value="multiOperator"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="fare-type-multi-operator"
+              >
+                Multi-operator - A ticket that covers more than one operator
+              </label>
+            </div>
           </div>
         </FormElementWrapper>
       </fieldset>
@@ -259,6 +276,23 @@ exports[`pages fareType should render error messaging when errors are passed to 
                 htmlFor="fare-type-flat-fare"
               >
                 Flat Fare Ticket - Single Journey
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                id="fare-type-multi-operator"
+                name="fareType"
+                type="radio"
+                value="multiOperator"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="fare-type-multi-operator"
+              >
+                Multi-operator - A ticket that covers more than one operator
               </label>
             </div>
           </div>

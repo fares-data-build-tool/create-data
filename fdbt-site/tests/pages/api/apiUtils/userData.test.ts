@@ -9,6 +9,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../../../../src/constants/index';
 import {
     defaultSalesOfferPackageOne,
@@ -17,32 +18,34 @@ import {
 import {
     getSingleTicketJson,
     getReturnTicketJson,
-    getPeriodGeoZoneTicketJson,
+    getGeoZoneTicketJson,
     getPeriodMultipleServicesTicketJson,
     getFlatFareTicketJson,
     getProductsAndSalesOfferPackages,
 } from '../../../../src/pages/api/apiUtils/userData';
 import {
     getMockRequestAndResponse,
-    expectedMatchingJsonSingle,
+    expectedSingleTicket,
     userFareStages,
     service,
     mockMatchingFaresZones,
-    expectedMatchingJsonReturnNonCircular,
+    expectedNonCircularReturnTicket,
     mockOutBoundMatchingFaresZones,
-    expectedMultiProductUploadJsonWithZoneUpload,
+    expectedPeriodGeoZoneTicketWithMultipleProducts,
     zoneStops,
-    expectedFlatFareProductUploadJson,
-    expectedMatchingJsonReturnCircular,
+    expectedFlatFareTicket,
+    expectedCircularReturnTicket,
     expectedProductDetailsArray,
-    expectedMultiProductUploadJsonWithSelectedServices,
+    expectedPeriodMultipleServicesTicketWithMultipleProducts,
     mockTimeRestriction,
+    expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
 
 import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
 import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProductValidity';
+import { Operator } from '../../../../src/data/auroradb';
 
 describe('getProductsAndSalesOfferPackages', () => {
     it('should return an array of ProductDetails objects', () => {
@@ -85,7 +88,7 @@ describe('getSingleTicketJson', () => {
             },
         });
         const result = getSingleTicketJson(req, res);
-        expect(result).toEqual(expectedMatchingJsonSingle);
+        expect(result).toEqual(expectedSingleTicket);
     });
 });
 
@@ -111,7 +114,7 @@ describe('getReturnTicketJson', () => {
             },
         });
         const result = getReturnTicketJson(req, res);
-        expect(result).toEqual(expectedMatchingJsonReturnNonCircular);
+        expect(result).toEqual(expectedNonCircularReturnTicket);
     });
     it('should return a ReturnTicket object for a circular journey', () => {
         const { req, res } = getMockRequestAndResponse({
@@ -131,14 +134,29 @@ describe('getReturnTicketJson', () => {
             },
         });
         const result = getReturnTicketJson(req, res);
-        expect(result).toEqual(expectedMatchingJsonReturnCircular);
+        expect(result).toEqual(expectedCircularReturnTicket);
     });
 });
 
-describe('getPeriodGeoZoneTicketJson', () => {
+describe('getGeoZoneTicketJson', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
+
+    const mockMultiOpSelectedOperators: Operator[] = [
+        {
+            nocCode: 'MCTR',
+            operatorPublicName: 'Manchester Community Transport',
+        },
+        {
+            nocCode: 'WBTR',
+            operatorPublicName: "Warrington's Own Buses",
+        },
+        {
+            nocCode: 'BLAC',
+            operatorPublicName: 'Blackpool Transport',
+        },
+    ];
 
     const atcoCodes: string[] = ['13003305E', '13003622B', '13003655B'];
     let batchGetStopsByAtcoCodeSpy: jest.SpyInstance;
@@ -149,13 +167,16 @@ describe('getPeriodGeoZoneTicketJson', () => {
         batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
     });
 
-    it('should return a PeriodGeoZoneTicket object', async () => {
+    it.each([
+        ['period', expectedPeriodGeoZoneTicketWithMultipleProducts],
+        ['multiOperator', expectedMultiOperatorGeoZoneTicketWithMultipleProducts],
+    ])('should return a %s geoZoneTicket object', async (fareType, expectedJson) => {
         const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
-                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                [FARE_TYPE_ATTRIBUTE]: { fareType },
                 [FARE_ZONE_ATTRIBUTE]: mockFareZoneAttribute,
                 [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                     products: [
@@ -200,11 +221,14 @@ describe('getPeriodGeoZoneTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                ...(fareType === 'multiOperator' && {
+                    [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
+                }),
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
-        const result = await getPeriodGeoZoneTicketJson(req, res);
-        expect(result).toEqual(expectedMultiProductUploadJsonWithZoneUpload);
+        const result = await getGeoZoneTicketJson(req, res);
+        expect(result).toEqual(expectedJson);
     });
 });
 
@@ -259,7 +283,7 @@ describe('getPeriodMulipleServicesTicketJson', () => {
             },
         });
         const result = getPeriodMultipleServicesTicketJson(req, res);
-        expect(result).toEqual(expectedMultiProductUploadJsonWithSelectedServices);
+        expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
     });
 });
 
@@ -283,6 +307,6 @@ describe('getFlatFareTicketJson', () => {
             },
         });
         const result = getFlatFareTicketJson(req, res);
-        expect(result).toEqual(expectedFlatFareProductUploadJson);
+        expect(result).toEqual(expectedFlatFareTicket);
     });
 });
