@@ -1,6 +1,6 @@
 {
   "operatorName": "Blackpool Transport",
-  "type": "periodMultipleServices",
+  "type": "period",
   "nocCode": "BLAC",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
