@@ -27,16 +27,19 @@ const periodTicketNetexGeneratorSpy = jest.spyOn(periodTicketNetexGenerator, 'de
 describe('netexConvertorHandler', () => {
     beforeEach(() => {
         jest.spyOn(db, 'getOperatorDataByNocCode').mockImplementation(() =>
-            Promise.resolve({
-                website: 'www.unittest.com',
-                ttrteEnq: 'aaaaaa',
-                operatorPublicName: 'Test Buses',
-                opId: '7Z',
-                vosaPsvLicenseName: 'CCD',
-                fareEnq: 'SSSS',
-                complEnq: '334',
-                mode: 'test',
-            }),
+            Promise.resolve([
+                {
+                    nocCode: 'aaa',
+                    website: 'www.unittest.com',
+                    ttrteEnq: 'aaaaaa',
+                    operatorPublicName: 'Test Buses',
+                    opId: '7Z',
+                    vosaPsvLicenseName: 'CCD',
+                    fareEnq: 'SSSS',
+                    complEnq: '334',
+                    mode: 'test',
+                },
+            ]),
         );
     });
 

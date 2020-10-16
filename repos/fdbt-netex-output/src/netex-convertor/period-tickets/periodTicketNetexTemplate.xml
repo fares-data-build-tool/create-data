@@ -207,6 +207,7 @@
 							</validityConditions>
 							<Name></Name>
 							<Description></Description>
+							<GroupOfOperatorsRef version="1.0" ref=""/>
 							<OperatorRef version="1.0" ref=""></OperatorRef>
 							<TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal" />
 							<!--- ====Fare Structure======= -->
