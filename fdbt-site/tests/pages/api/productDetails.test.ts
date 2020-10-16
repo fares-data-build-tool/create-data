@@ -43,34 +43,37 @@ describe('productDetails', () => {
         });
     });
 
-    it('should correctly set PRODUCT_DETAILS_ATTRIBUTE cookie and redirect to chooseValidity when the user input is valid for a period ticket', () => {
-        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+    it.each([['period'], ['multiOperator']])(
+        'should correctly set PRODUCT_DETAILS_ATTRIBUTE cookie and redirect to chooseValidity when the user input is valid for a %s ticket',
+        fareType => {
+            const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                productDetailsNameInput: 'ProductA',
-                productDetailsPriceInput: '121',
-                uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
-            },
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
-        });
+            const { req, res } = getMockRequestAndResponse({
+                body: {
+                    productDetailsNameInput: 'ProductA',
+                    productDetailsPriceInput: '121',
+                    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
+                },
+                session: { [FARE_TYPE_ATTRIBUTE]: { fareType } },
+            });
 
-        const mockPeriodProductDetails: Product = {
-            productName: 'ProductA',
-            productPrice: '121',
-        };
+            const mockPeriodProductDetails: Product = {
+                productName: 'ProductA',
+                productPrice: '121',
+            };
 
-        productDetails(req, res);
+            productDetails(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            PRODUCT_DETAILS_ATTRIBUTE,
-            mockPeriodProductDetails,
-        );
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/chooseValidity',
-        });
-    });
+            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+                req,
+                PRODUCT_DETAILS_ATTRIBUTE,
+                mockPeriodProductDetails,
+            );
+            expect(res.writeHead).toBeCalledWith(302, {
+                Location: '/chooseValidity',
+            });
+        },
+    );
 
     it('should correctly set PRODUCT_DETAILS_ATTRIBUTE and redirect to selectSalesOfferPackage when the user input is valid for a flat fare ticket', () => {
         const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

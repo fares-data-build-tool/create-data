@@ -60,7 +60,7 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
-        it('should render correctly for period tickets', () => {
+        it('should render correctly for period and multiOperator tickets', () => {
             const tree = shallow(
                 <TicketConfirmation
                     fareTypeProps={{
@@ -123,7 +123,7 @@ describe('pages', () => {
                     },
                 ],
             });
-            expect(result).toStrictEqual([
+            const expectedResult = [
                 { content: '3A', href: 'service', name: 'Service' },
                 { content: 'You submitted or created a fare triangle', href: 'inputMethod', name: 'Fare Triangle' },
                 {
@@ -141,7 +141,8 @@ describe('pages', () => {
                     href: 'matching',
                     name: 'Fare Stage - London',
                 },
-            ]);
+            ];
+            expect(result).toStrictEqual(expectedResult);
         });
         it('builds confirmation elements for return tickets', () => {
             const result = buildTicketConfirmationElements({
@@ -166,7 +167,7 @@ describe('pages', () => {
                 nonCircularMatchedFareStages: [],
                 validity: { amount: '2', typeOfDuration: 'days' },
             });
-            expect(result).toStrictEqual([
+            const expectedResult = [
                 { content: '2B', href: 'service', name: 'Service' },
                 {
                     content: 'Stops - At station, Outside station, Near park',
@@ -199,9 +200,10 @@ describe('pages', () => {
                     name: 'Inbound Fare Stage - London',
                 },
                 { content: '2 days', href: 'returnValidity', name: 'Return Validity' },
-            ]);
+            ];
+            expect(result).toStrictEqual(expectedResult);
         });
-        it('builds confirmation elements for period tickets', () => {
+        it('builds confirmation elements for period and multiOperator tickets', () => {
             const result = buildTicketConfirmationElements({
                 services: ['2A', '7F', '200'],
                 zone: true,
@@ -227,7 +229,7 @@ describe('pages', () => {
                     },
                 ],
             });
-            expect(result).toStrictEqual([
+            const expectedResult = [
                 { content: 'You uploaded a Fare Zone CSV file', href: 'csvZoneUpload', name: 'Zone' },
                 { content: 'Price - £30', href: 'multipleProducts', name: 'Product - Super ticket' },
                 {
@@ -250,7 +252,8 @@ describe('pages', () => {
                     name: 'Product - Normal ticket',
                 },
                 { content: 'Validity - 24 Hr', href: 'multipleProductValidity', name: 'Product - Normal ticket' },
-            ]);
+            ];
+            expect(result).toStrictEqual(expectedResult);
         });
         it('builds confirmation elements for flat fare tickets', () => {
             const result = buildTicketConfirmationElements({
@@ -258,10 +261,11 @@ describe('pages', () => {
                 productName: 'Flat fare ticket',
                 productPrice: '60',
             });
-            expect(result).toStrictEqual([
+            const expectedResult = [
                 { content: '2A, 7F, 200', href: 'serviceList', name: 'Services' },
                 { content: 'Price - £60', href: 'productDetails', name: 'Product - Flat fare ticket' },
-            ]);
+            ];
+            expect(result).toStrictEqual(expectedResult);
         });
     });
 });
