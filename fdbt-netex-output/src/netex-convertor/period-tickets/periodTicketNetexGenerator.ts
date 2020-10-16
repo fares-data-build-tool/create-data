@@ -1,4 +1,4 @@
-import { Operator, PeriodTicket } from '../../types';
+import { isMultiOperatorGeoZoneTicket, Operator, PeriodTicket } from '../../types';
 import {
     getScheduledStopPointsList,
     getTopographicProjectionRefList,
@@ -113,7 +113,7 @@ const periodTicketNetexGenerator = (
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = baseOperatorInfo.operatorPublicName;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = website;
 
-        if (userPeriodTicket.type === 'multiOperator' && userPeriodTicket.additionalNocs) {
+        if (userPeriodTicket.type === 'multiOperator' && isMultiOperatorGeoZoneTicket(userPeriodTicket)) {
             const nocs = [...userPeriodTicket.additionalNocs];
             nocs.push(userPeriodTicket.nocCode);
 

@@ -1,4 +1,4 @@
-import { PeriodMultipleServicesTicket, PeriodGeoZoneTicket, PeriodTicket } from '../../types/index';
+import { PeriodMultipleServicesTicket, GeoZoneTicket, PeriodTicket } from '../../types/index';
 
 import * as netexHelpers from './periodTicketNetexHelpers';
 import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../../test-data/matchingData';
@@ -8,7 +8,7 @@ import * as db from '../data/auroradb';
 
 describe('periodTicketNetexHelpers', () => {
     const { stops } = periodGeoZoneTicket;
-    const geoUserPeriodTicket: PeriodGeoZoneTicket = periodGeoZoneTicket;
+    const geoUserPeriodTicket: GeoZoneTicket = periodGeoZoneTicket;
     const opData = operatorData;
     const placeHolderText = `${geoUserPeriodTicket.nocCode}_products`;
     const opString = expect.stringContaining('op:');
@@ -518,7 +518,6 @@ describe('periodTicketNetexHelpers', () => {
         });
         it('returns a group of operators object with a populated members array', () => {
             const result = getGroupOfOperators(multiOperatorList);
-            console.log(result);
             expect(result).toStrictEqual({
                 GroupOfOperators: {
                     Name: { $t: 'Bus Operators' },
