@@ -202,12 +202,18 @@ svg:not(:root) {
 }
 
 .govuk-header__account-link {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 220px;
-    text-align: right;
+    @media (min-width: 401px) {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 220px;
+        text-align: right;
+    }
+
+    @media (max-width: 400px) {
+        margin: 10px 0 20px;
+    }
 
     a {
         margin-right: 6px;
