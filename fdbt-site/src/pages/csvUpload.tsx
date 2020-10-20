@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
@@ -14,6 +13,7 @@ const description = 'CSV Upload page of the Fares Data Build Tool';
 const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
         <UserDataUploadComponent
+            // eslint-disable-next-line react/jsx-props-no-spreading
             {...uploadProps}
             detailBody={
                 <>
@@ -41,7 +41,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvUploadApiRoute: '/api/csvUpload',
             csvUploadTitle: 'Upload fares triangle as CSV',
             csvUploadHintText:
-                'Upload a fares triangle as a CSV file below. Refer to the documents section to download a help file and a fares triangle template.',
+                'Upload a fares triangle as a CSV file. Refer to the help documents section to download a help file or a fares triangle template.',
             guidanceDocDisplayName: `Download Help File - File Type PDF - File Size 1.3MB`,
             guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
             guidanceDocSize: '1.3MB',
