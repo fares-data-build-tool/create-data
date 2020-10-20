@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
@@ -15,6 +14,7 @@ const description = 'CSV Zone Upload page of the Fares Data Build Tool';
 const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
         <UserDataUploadComponent
+            // eslint-disable-next-line react/jsx-props-no-spreading
             {...uploadProps}
             detailBody={
                 <>
@@ -46,7 +46,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvUploadApiRoute: '/api/csvZoneUpload',
             csvUploadTitle: 'Upload fare zone as CSV',
             csvUploadHintText:
-                'Upload a fare zone as a CSV file below. Refer to the documents section to download a help file and a template.',
+                'Upload a fare zone as a CSV file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
             guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 967KB',
             guidanceDocAttachmentUrl: HowToUploadFareZone,
             guidanceDocSize: '967KB',

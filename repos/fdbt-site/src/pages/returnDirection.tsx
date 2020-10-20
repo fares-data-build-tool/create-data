@@ -63,8 +63,13 @@ const ReturnDirection = ({
                                 errors={errors}
                             />
                         </div>
-                        <span className="govuk-hint hint-text" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset
+                        <span className="govuk-hint hint-text" id="traveline-main-hint">
+                            This data is taken from the Traveline National Dataset (TNDS) and should include all of your
+                            registered routes for this service
+                        </span>
+                        <span className="govuk-hint hint-text" id="traveline-sub-hint">
+                            If you have route variations within your fares triangle, you are only required to upload one
+                            complete triangle that includes all of the potential stops
                         </span>
                     </fieldset>
                 </div>
