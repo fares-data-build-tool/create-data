@@ -3,12 +3,10 @@ import React, { ReactElement } from 'react';
 import { ServerResponse } from 'http';
 import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
-import Breadcrumbs from '../components/Breadcrumbs';
 import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, ID_TOKEN_COOKIE } from '../constants';
 import PhaseBanner from '../layout/PhaseBanner';
-import { Breadcrumb, DocumentContextWithSession } from '../interfaces';
+import { DocumentContextWithSession } from '../interfaces';
 import Footer from '../layout/Footer';
-import breadcrumb from '../utils/breadcrumbs';
 import Help from '../components/Help';
 import CookieBanner from '../layout/CookieBanner';
 
@@ -16,7 +14,6 @@ interface DocumentProps extends DocumentInitialProps {
     nonce: string;
     isAuthed: boolean;
     csrfToken: string;
-    breadcrumbs: Breadcrumb[];
     url: string;
     showCookieBanner: boolean;
     allowTracking: boolean;
@@ -39,8 +36,6 @@ class MyDocument extends Document<DocumentProps> {
             ctx.res?.setHeader('X-Robots-Tag', 'none, noindex, nofollow, noimageindex, noarchive');
         }
 
-        const breadcrumbs = breadcrumb(ctx).generate();
-
         const url = ctx.req?.url ?? '';
 
         const cookies = parseCookies(ctx);
@@ -57,7 +52,6 @@ class MyDocument extends Document<DocumentProps> {
             nonce,
             isAuthed: !!idTokenCookie,
             csrfToken,
-            breadcrumbs,
             url,
             showCookieBanner,
             allowTracking,
@@ -97,7 +91,6 @@ class MyDocument extends Document<DocumentProps> {
                     <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
                     <div className="govuk-width-container app-width-container--wide">
                         <PhaseBanner />
-                        {this.props.breadcrumbs.length !== 0 && <Breadcrumbs breadcrumbs={this.props.breadcrumbs} />}
                         <main id="main-content" role="main" tabIndex={-1}>
                             <div className="govuk-main-wrapper app-main-class">
                                 <Main />
