@@ -309,3 +309,13 @@ export interface S3NetexFile {
     signedUrl: string;
     fileSize: number;
 }
+
+export interface MultiOperatorInfo {
+    nocCode: string;
+    services: string[];
+}
+
+export interface MultiOperatorInfoWithErrors {
+    multiOperatorInfo: MultiOperatorInfo[];
+    errors: ErrorInfo[];
+}

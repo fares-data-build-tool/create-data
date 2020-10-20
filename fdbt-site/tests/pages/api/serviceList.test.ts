@@ -51,9 +51,9 @@ describe('serviceList', () => {
 
     it('redirects to /howManyProducts if input is valid and the user is entering details for a period ticket', () => {
         const serviceInfo = {
-            '64': 'Leeds-Bradford#12/02/12',
-            '45': 'gggggg#02/03/91',
-            '47': 'hhhhhh#23/04/20',
+            '237#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
+            '391#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
+            '232#NW_04_MCTR_232_1#06/04/2020': 'Ashton - Hurst Cross - Broadoak Circular',
         };
 
         const { req, res } = getMockRequestAndResponse({

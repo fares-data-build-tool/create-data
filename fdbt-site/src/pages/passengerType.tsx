@@ -31,7 +31,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="passenger-type-hint">
-                            Relate the ticket(s) to a passenger type
+                            Specific details of your fare type, including age range, can be entered in the next section
                         </span>
                         <FormElementWrapper
                             errors={errors}
