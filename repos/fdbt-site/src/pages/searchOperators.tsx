@@ -7,11 +7,11 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSearchOperators, Operator } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
+import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Search Operators - Fares Data Build Tool';
 const description = 'Search Operators page for the Fares Data Build Tool';

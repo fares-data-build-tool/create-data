@@ -169,9 +169,15 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
         </div>
         <span
           className="govuk-hint hint-text"
-          id="traveline-hint"
+          id="traveline-main-hint"
         >
-          This data is taken from the Traveline National Dataset
+          This data is taken from the Traveline National Dataset (TNDS) and should include all of your registered routes for this service
+        </span>
+        <span
+          className="govuk-hint hint-text"
+          id="traveline-sub-hint"
+        >
+          If you have route variations within your fares triangle, you are only required to upload one complete triangle that includes all of the potential stops
         </span>
       </fieldset>
     </div>

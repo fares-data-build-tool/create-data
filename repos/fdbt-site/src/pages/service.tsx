@@ -61,7 +61,8 @@ const Service = ({
                         </select>
                     </FormElementWrapper>
                     <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the Traveline National Dataset
+                        This data is taken from the Traveline National Dataset (TNDS). If any of your services are not
+                        listed, contact your local transport authority for further advice.
                     </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
