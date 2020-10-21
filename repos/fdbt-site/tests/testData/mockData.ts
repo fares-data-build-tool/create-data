@@ -45,6 +45,7 @@ import {
     ProductDetails,
     TimeRestriction,
     MultiOperatorGeoZoneTicket,
+    MultiOperatorMultipleServicesTicket,
 } from '../../src/interfaces';
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -1727,6 +1728,134 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
             serviceCode: 'NW_05_BLAC_101_1',
             startDate: '06/05/2020',
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
+};
+
+export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators: MultiOperatorMultipleServicesTicket = {
+    operatorName: 'test',
+    type: 'multiOperator',
+    nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28',
+            productValidity: 'endOfCalendarDay',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+    ],
+    selectedServices: [
+        {
+            lineName: '12A',
+            serviceCode: 'NW_05_BLAC_12A_1',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            serviceCode: 'NW_05_BLAC_6_1',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            serviceCode: 'NW_05_BLAC_101_1',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
+    additionalOperators: [
+        {
+            nocCode: 'WBTR',
+            selectedServices: [
+                {
+                    lineName: '237',
+                    serviceCode: '11-237-_-y08-1',
+                    serviceDescription: 'Ashton Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineName: '391',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineName: '232',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+        {
+            nocCode: 'BLAC',
+            selectedServices: [
+                {
+                    lineName: '343',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineName: '444',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineName: '543',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+        {
+            nocCode: 'LEDS',
+            selectedServices: [
+                {
+                    lineName: '342',
+                    serviceCode: '11-237-_-y08-1',
+                    serviceDescription: 'Another Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineName: '221',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineName: '247',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
         },
     ],
 };

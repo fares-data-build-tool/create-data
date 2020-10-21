@@ -107,6 +107,8 @@ exports[`pages searchOperator should render a selection error when the user trie
                 htmlFor="add-operator-checkbox-0"
               >
                 Blackpool
+                 - 
+                BLAC
               </label>
             </div>
           </div>
@@ -185,6 +187,8 @@ exports[`pages searchOperator should render a selection error when the user trie
                   htmlFor="remove-operator-checkbox-0"
                 >
                   Warrington's Own Buses
+                   - 
+                  WBTR
                 </label>
               </div>
               <div
@@ -203,6 +207,8 @@ exports[`pages searchOperator should render a selection error when the user trie
                   htmlFor="remove-operator-checkbox-1"
                 >
                   Blackpool Transport
+                   - 
+                  BLAC
                 </label>
               </div>
               <div
@@ -221,6 +227,8 @@ exports[`pages searchOperator should render a selection error when the user trie
                   htmlFor="remove-operator-checkbox-2"
                 >
                   IW Bus Co
+                   - 
+                  IWBusCo
                 </label>
               </div>
             </div>
@@ -471,6 +479,8 @@ exports[`pages searchOperator should render the search input and a list of selec
                   htmlFor="remove-operator-checkbox-0"
                 >
                   Warrington's Own Buses
+                   - 
+                  WBTR
                 </label>
               </div>
               <div
@@ -489,6 +499,8 @@ exports[`pages searchOperator should render the search input and a list of selec
                   htmlFor="remove-operator-checkbox-1"
                 >
                   Blackpool Transport
+                   - 
+                  BLAC
                 </label>
               </div>
               <div
@@ -507,6 +519,8 @@ exports[`pages searchOperator should render the search input and a list of selec
                   htmlFor="remove-operator-checkbox-2"
                 >
                   IW Bus Co
+                   - 
+                  IWBusCo
                 </label>
               </div>
             </div>
@@ -679,6 +693,8 @@ exports[`pages searchOperator should render the search input and search results 
                 htmlFor="add-operator-checkbox-0"
               >
                 Blackpool
+                 - 
+                BLAC
               </label>
             </div>
           </div>
@@ -757,6 +773,8 @@ exports[`pages searchOperator should render the search input, search results and
                   htmlFor="remove-operator-checkbox-0"
                 >
                   Warrington's Own Buses
+                   - 
+                  WBTR
                 </label>
               </div>
               <div
@@ -775,6 +793,8 @@ exports[`pages searchOperator should render the search input, search results and
                   htmlFor="remove-operator-checkbox-1"
                 >
                   Blackpool Transport
+                   - 
+                  BLAC
                 </label>
               </div>
               <div
@@ -793,6 +813,8 @@ exports[`pages searchOperator should render the search input, search results and
                   htmlFor="remove-operator-checkbox-2"
                 >
                   IW Bus Co
+                   - 
+                  IWBusCo
                 </label>
               </div>
             </div>
@@ -901,6 +923,8 @@ exports[`pages searchOperator should render the search input, search results and
                 htmlFor="add-operator-checkbox-0"
               >
                 Warrington's Own Buses
+                 - 
+                WBTR
               </label>
             </div>
           </div>

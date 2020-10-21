@@ -15,7 +15,7 @@ import {
     getSingleTicketJson,
     getReturnTicketJson,
     getGeoZoneTicketJson,
-    getPeriodMultipleServicesTicketJson,
+    getMultipleServicesTicketJson,
     getFlatFareTicketJson,
     putUserDataInS3,
 } from './apiUtils/userData';
@@ -79,7 +79,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (ticketType === 'geoZone') {
                 userDataJson = await getGeoZoneTicketJson(req, res);
             } else if (ticketType === 'multipleServices') {
-                userDataJson = getPeriodMultipleServicesTicketJson(req, res);
+                userDataJson = getMultipleServicesTicketJson(req, res);
             }
         } else if (fareType === 'flatFare') {
             userDataJson = getFlatFareTicketJson(req, res);
