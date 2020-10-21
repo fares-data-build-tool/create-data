@@ -79,6 +79,11 @@ generate-multi-op-geo-zone:
 
 generate-validate-multi-op-geo-zone: generate-multi-op-geo-zone validate-latest-file
 
+generate-multi-op-multi-service:
+	./scripts/trigger_netex_convertor.sh multiOpMultiServices
+
+generate-validate-multi-op-multi-service: generate-multi-op-multi-service validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 
