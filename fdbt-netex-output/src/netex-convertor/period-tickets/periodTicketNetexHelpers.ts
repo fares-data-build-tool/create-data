@@ -1,4 +1,7 @@
+import { getOperatorDataByNocCode } from '../data/auroradb';
 import {
+    MultiOperatorMultipleServicesTicket,
+    isMultiOperatorMultipleServicesTicket,
     GroupOfOperators,
     NetexOrganisationOperator,
     NetexSalesOfferPackage,
@@ -48,23 +51,58 @@ export const getTopographicProjectionRefList = (stops: Stop[]): TopographicProje
         $t: `${stop.street}, ${stop.localityName}, ${stop.parentLocalityName}`,
     }));
 
-export const getLinesList = (userPeriodTicket: PeriodMultipleServicesTicket, website: string): Line[] => {
-    return userPeriodTicket.selectedServices
-        ? userPeriodTicket.selectedServices.map(service => ({
-              version: '1.0',
-              id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
-              Name: { $t: `Line ${service.lineName}` },
-              Description: { $t: service.serviceDescription },
-              Url: { $t: website },
-              PublicCode: { $t: service.lineName },
-              PrivateCode: { type: 'noc', $t: `${userPeriodTicket.nocCode}_${service.lineName}` },
-              [userPeriodTicket.type === 'multiOperator' ? 'GroupOfOperatorsRef' : 'OperatorRef']: {
+export const getLinesList = async (
+    userPeriodTicket: PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket,
+    website: string,
+): Promise<Line[]> => {
+    let linesList: Line[] = [];
+    if (isMultiOperatorMultipleServicesTicket(userPeriodTicket)) {
+        const multiOperatorLines: Line[][] = await Promise.all(
+            userPeriodTicket.additionalOperators.map(
+                async (operator): Promise<Line[]> => {
+                    const individualWebsite = getCleanWebsite(
+                        (await getOperatorDataByNocCode([operator.nocCode]))[0].website,
+                    );
+                    const websiteToUse = !individualWebsite ? 'n/a' : individualWebsite;
+
+                    return operator.selectedServices.map(service => ({
+                        version: '1.0',
+                        id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
+                        Name: { $t: `Line ${service.lineName}` },
+                        Description: { $t: service.serviceDescription },
+                        Url: { $t: websiteToUse },
+                        PublicCode: { $t: service.lineName },
+                        PrivateCode: { type: 'noc', $t: `${operator.nocCode}_${service.lineName}` },
+                        OperatorRef: {
+                            version: '1.0',
+                            ref: `noc:${operator.nocCode}`,
+                        },
+                        LineType: { $t: 'local' },
+                    }));
+                },
+            ),
+        );
+        linesList = linesList.concat(multiOperatorLines.flat());
+    }
+    linesList = linesList.concat(
+        userPeriodTicket.selectedServices
+            ? userPeriodTicket.selectedServices.map(service => ({
                   version: '1.0',
-                  ref: `noc:${userPeriodTicket.nocCode}`,
-              },
-              LineType: { $t: 'local' },
-          }))
-        : [];
+                  id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
+                  Name: { $t: `Line ${service.lineName}` },
+                  Description: { $t: service.serviceDescription },
+                  Url: { $t: website },
+                  PublicCode: { $t: service.lineName },
+                  PrivateCode: { type: 'noc', $t: `${userPeriodTicket.nocCode}_${service.lineName}` },
+                  OperatorRef: {
+                      version: '1.0',
+                      ref: `noc:${userPeriodTicket.nocCode}`,
+                  },
+                  LineType: { $t: 'local' },
+              }))
+            : [],
+    );
+    return linesList;
 };
 
 export const getLineRefList = (userPeriodTicket: PeriodMultipleServicesTicket): LineRef[] =>

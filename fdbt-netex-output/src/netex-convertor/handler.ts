@@ -1,10 +1,16 @@
 import { S3Event } from 'aws-lambda';
 import libxslt from 'libxslt';
+import {
+    isMultiOperatorMultipleServicesTicket,
+    PointToPointTicket,
+    PeriodTicket,
+    Operator,
+    isMultiOperatorGeoZoneTicket,
+} from '../types/index';
 import pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';
 import periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
 import * as db from './data/auroradb';
 import * as s3 from './data/s3';
-import { PointToPointTicket, PeriodTicket, Operator, isMultiOperatorGeoZoneTicket } from '../types';
 
 const xsl = `
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -73,6 +79,12 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             let operatorData: Operator[] = [];
             if (type === 'multiOperator' && isMultiOperatorGeoZoneTicket(userPeriodTicket)) {
                 const nocs: string[] = [...userPeriodTicket.additionalNocs];
+                nocs.push(userPeriodTicket.nocCode);
+                operatorData = await db.getOperatorDataByNocCode(nocs);
+            } else if (type === 'multiOperator' && isMultiOperatorMultipleServicesTicket(userPeriodTicket)) {
+                const nocs: string[] = userPeriodTicket.additionalOperators.map(
+                    additionalOperator => additionalOperator.nocCode,
+                );
                 nocs.push(userPeriodTicket.nocCode);
                 operatorData = await db.getOperatorDataByNocCode(nocs);
             } else {
