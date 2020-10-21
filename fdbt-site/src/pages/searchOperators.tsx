@@ -58,7 +58,7 @@ export const showSelectedOperators = (selectedOperators: Operator[], errors: Err
                                         className="govuk-label govuk-checkboxes__label"
                                         htmlFor={`remove-operator-checkbox-${index}`}
                                     >
-                                        {operator.operatorPublicName}
+                                        {operator.operatorPublicName} - {operator.nocCode}
                                     </label>
                                 </div>
                             ))}
@@ -174,7 +174,7 @@ export const showSearchResults = (searchText: string, searchResults: Operator[],
                                             className="govuk-label govuk-checkboxes__label"
                                             htmlFor={`add-operator-checkbox-${index}`}
                                         >
-                                            {operatorPublicName}
+                                            {operatorPublicName} - {nocCode}
                                         </label>
                                     </div>
                                 );
