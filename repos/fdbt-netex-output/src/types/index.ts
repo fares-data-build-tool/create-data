@@ -143,6 +143,7 @@ export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
 export const isMultiOperatorGeoZoneTicket = (
     userPeriodTicket: PeriodTicket,
 ): userPeriodTicket is MultiOperatorGeoZoneTicket =>
+    (userPeriodTicket as MultiOperatorGeoZoneTicket).additionalNocs &&
     (userPeriodTicket as MultiOperatorGeoZoneTicket).additionalNocs.length > 0;
 
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
@@ -161,6 +162,7 @@ export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServi
 export const isMultiOperatorMultipleServicesTicket = (
     userPeriodTicket: PeriodTicket,
 ): userPeriodTicket is MultiOperatorMultipleServicesTicket =>
+    (userPeriodTicket as MultiOperatorMultipleServicesTicket).additionalOperators &&
     (userPeriodTicket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0;
 
 export type MultipleServicesTicket = PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket;
@@ -216,8 +218,7 @@ export interface Line {
     Url: object;
     PublicCode: object;
     PrivateCode: object;
-    OperatorRef?: object;
-    GroupOfOperatorsRef?: object;
+    OperatorRef: object;
     LineType: object;
 }
 
