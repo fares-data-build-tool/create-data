@@ -237,6 +237,13 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
 }
 
+export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
+    additionalOperators: {
+        nocCode: string;
+        selectedServices: SelectedService[];
+    }[];
+}
+
 export interface FlatFareTicket extends BaseTicket {
     operatorName: string;
     products: FlatFareProductDetails[];

@@ -3,6 +3,26 @@ import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import isArray from 'lodash/isArray';
 import {
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    ID_TOKEN_COOKIE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    MATCHING_ATTRIBUTE,
+    OPERATOR_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    FARE_ZONE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    MATCHING_DATA_BUCKET_NAME,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+} from '../../../constants/index';
+import {
     isProductWithSalesOfferPackages,
     isSalesOfferPackageWithErrors,
     isSalesOfferPackages,
@@ -28,28 +48,11 @@ import {
     SalesOfferPackage,
     BaseTicket,
     BasePeriodTicket,
+    MultiOperatorMultipleServicesTicket,
+    MultiOperatorInfo,
 } from '../../../interfaces/index';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
-import {
-    FARE_TYPE_ATTRIBUTE,
-    ID_TOKEN_COOKIE,
-    INBOUND_MATCHING_ATTRIBUTE,
-    MATCHING_ATTRIBUTE,
-    OPERATOR_COOKIE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    PERIOD_EXPIRY_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    FARE_ZONE_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    MATCHING_DATA_BUCKET_NAME,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    RETURN_VALIDITY_ATTRIBUTE,
-    PRODUCT_DATE_ATTRIBUTE,
-    MULTIPLE_OPERATOR_ATTRIBUTE,
-} from '../../../constants';
 
 import { PeriodExpiryWithErrors } from '../periodValidity';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
@@ -327,10 +330,10 @@ export const getGeoZoneTicketJson = async (
     };
 };
 
-export const getPeriodMultipleServicesTicketJson = (
+export const getMultipleServicesTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): PeriodMultipleServicesTicket => {
+): PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket => {
     const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'multiple services');
 
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
@@ -351,6 +354,32 @@ export const getPeriodMultipleServicesTicketJson = (
             serviceDescription: service[3],
         };
     });
+
+    if (basePeriodTicketAttributes.type === 'multiOperator') {
+        const multipleOperatorsServices = getSessionAttribute(
+            req,
+            MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+        ) as MultiOperatorInfo[];
+        const additionalOperatorsInfo = {
+            additionalOperators: multipleOperatorsServices.map(operator => ({
+                nocCode: operator.nocCode,
+                selectedServices: operator.services.map((selectedService: string) => {
+                    const service = selectedService.split('#');
+                    return {
+                        lineName: service[0],
+                        serviceCode: service[1],
+                        startDate: service[2],
+                        serviceDescription: service[3],
+                    };
+                }),
+            })),
+        };
+        return {
+            ...basePeriodTicketAttributes,
+            selectedServices: formattedServiceInfo,
+            additionalOperators: additionalOperatorsInfo.additionalOperators,
+        };
+    }
 
     return {
         ...basePeriodTicketAttributes,

@@ -1,4 +1,5 @@
 import {
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
@@ -11,6 +12,7 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../../../../src/constants/index';
+
 import {
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageTwo,
@@ -19,7 +21,7 @@ import {
     getSingleTicketJson,
     getReturnTicketJson,
     getGeoZoneTicketJson,
-    getPeriodMultipleServicesTicketJson,
+    getMultipleServicesTicketJson,
     getFlatFareTicketJson,
     getProductsAndSalesOfferPackages,
 } from '../../../../src/pages/api/apiUtils/userData';
@@ -39,6 +41,7 @@ import {
     expectedPeriodMultipleServicesTicketWithMultipleProducts,
     mockTimeRestriction,
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
@@ -282,8 +285,87 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                 },
             },
         });
-        const result = getPeriodMultipleServicesTicketJson(req, res);
+        const result = getMultipleServicesTicketJson(req, res);
         expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+    });
+
+    it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            session: {
+                [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
+                [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                    products: [
+                        {
+                            productName: 'Weekly Ticket',
+                            productPrice: '50',
+                            productDuration: '5',
+                            productValidity: '24hr',
+                        },
+                        {
+                            productName: 'Day Ticket',
+                            productPrice: '2.50',
+                            productDuration: '1',
+                            productValidity: '24hr',
+                        },
+                        {
+                            productName: 'Monthly Ticket',
+                            productPrice: '200',
+                            productDuration: '28',
+                            productValidity: 'endOfCalendarDay',
+                        },
+                    ],
+                },
+                [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                    {
+                        productName: 'Weekly Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                    {
+                        productName: 'Day Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                    {
+                        productName: 'Monthly Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                ],
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
+                [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
+                    {
+                        nocCode: 'WBTR',
+                        services: [
+                            '237#11-237-_-y08-1#07/04/2020#Ashton Under Lyne - Glossop',
+                            '391#NW_01_MCT_391_1#23/04/2019#Macclesfield - Bollington - Poynton - Stockport',
+                            '232#NW_04_MCTR_232_1#06/04/2020#Ashton - Hurst Cross - Broadoak Circular',
+                        ],
+                    },
+                    {
+                        nocCode: 'BLAC',
+                        services: [
+                            '343#11-444-_-y08-1#07/04/2020#Test Under Lyne - Glossop',
+                            '444#NW_01_MCT_391_1#23/04/2019#Macclesfield - Bollington - Poynton - Stockport',
+                            '543#NW_04_MCTR_232_1#06/04/2020#Ashton - Hurst Cross - Broadoak Circular',
+                        ],
+                    },
+                    {
+                        nocCode: 'LEDS',
+                        services: [
+                            '342#11-237-_-y08-1#07/04/2020#Another Test Under Lyne - Glossop',
+                            '221#NW_01_MCT_391_1#23/04/2019#Macclesfield - Bollington - Poynton - Stockport',
+                            '247#NW_04_MCTR_232_1#06/04/2020#Ashton - Hurst Cross - Broadoak Circular',
+                        ],
+                    },
+                ],
+            },
+        });
+        const result = getMultipleServicesTicketJson(req, res);
+        expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators);
     });
 });
 

@@ -5,126 +5,156 @@ exports[`pages searchOperator should render a selection error when the user trie
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/searchOperators"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="operator-search"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="operator-search"
-          >
-            Search for the operators that the ticket covers
-          </h1>
-        </legend>
-        <label
-          className="govuk-label"
-          htmlFor="search-input"
-        >
-          Operator name
-        </label>
-        <input
-          className="govuk-input govuk-!-width-three-quarters"
-          id="search-input"
-          name="searchText"
-          type="text"
-        />
-        <input
-          className="govuk-button govuk-!-margin-left-5"
-          id="search-button"
-          name="search"
-          type="submit"
-          value="Search"
-        />
-      </fieldset>
-    </div>
-    <div
-      className="govuk-form-group "
-    >
-      <fieldset
-        aria-describedby="operator-search-results"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend"
-        >
-          <h2
-            className="govuk-body-l govuk-!-margin-bottom-0"
-            id="operator-search-results"
-          >
-            Your search for '
-            <strong>
-              blac
-            </strong>
-            ' returned
-            <strong>
-               
-              1
-               result
-            </strong>
-          </h2>
-        </legend>
-        <FormElementWrapper
-          errorClass=""
-          errorId="add-operator-checkbox-0"
+        <ErrorSummary
           errors={Array []}
+        />
+        <div
+          className="govuk-form-group "
         >
-          <div
-            className="govuk-checkboxes"
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
           >
-            <p
-              className="govuk-hint"
-              id="operator-hint-text"
+            <legend
+              className="govuk-fieldset__legend--l"
             >
-              Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
-            </p>
+              <h1
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for the operators that the ticket covers
+              </h1>
+            </legend>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters"
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+        <div
+          className="govuk-form-group "
+        >
+          <fieldset
+            aria-describedby="operator-search-results"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend"
+            >
+              <h2
+                className="govuk-body-l govuk-!-margin-bottom-0"
+                id="operator-search-results"
+              >
+                Your search for '
+                <strong>
+                  blac
+                </strong>
+                ' returned
+                <strong>
+                   
+                  1
+                   result
+                </strong>
+              </h2>
+            </legend>
+            <FormElementWrapper
+              errorClass=""
+              errorId="add-operator-checkbox-0"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes"
+              >
+                <p
+                  className="govuk-hint"
+                  id="traveline-hint-text"
+                >
+                  Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+                </p>
+                <p
+                  className="govuk-hint"
+                  id="noc-hint-text"
+                >
+                  You will see that all operator names are followed by a series of characters. These characters are the operator's National Operator Code (NOC).
+                </p>
+                <div
+                  className="govuk-checkboxes__item"
+                  key="checkbox-item-Blackpool"
+                >
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="add-operator-checkbox-0"
+                    name="operatorsToAdd"
+                    type="checkbox"
+                    value="BLAC#Blackpool"
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="add-operator-checkbox-0"
+                  >
+                    Blackpool
+                     - 
+                    BLAC
+                  </label>
+                </div>
+              </div>
+            </FormElementWrapper>
             <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Blackpool"
+              className="govuk-!-margin-top-7"
             >
               <input
-                className="govuk-checkboxes__input"
-                id="add-operator-checkbox-0"
-                name="operatorsToAdd"
-                type="checkbox"
-                value="BLAC#Blackpool"
+                className="govuk-button govuk-button--secondary"
+                id="add-operator-button"
+                name="addOperators"
+                type="submit"
+                value="Add Operator(s)"
               />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="add-operator-checkbox-0"
-              >
-                Blackpool
-              </label>
             </div>
-          </div>
-        </FormElementWrapper>
-        <div
-          className="govuk-!-margin-top-7"
-        >
-          <input
-            className="govuk-button govuk-button--secondary"
-            id="add-operator-button"
-            name="addOperators"
-            type="submit"
-            value="Add Operator(s)"
-          />
+          </fieldset>
         </div>
-      </fieldset>
+      </CsrfForm>
     </div>
-  </CsrfForm>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h3
+        className="govuk-heading-s"
+      >
+        What is a National Operator Code (NOC)?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No two operators can have the same NOC.
+      </p>
+    </div>
+  </div>
 </Component>
 `;
 
@@ -133,156 +163,184 @@ exports[`pages searchOperator should render a selection error when the user trie
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/searchOperators"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="selected-operators"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="selected-operators"
-          >
-            Here's what you have added
-          </h1>
-        </legend>
+        <ErrorSummary
+          errors={Array []}
+        />
         <div
-          className="govuk-inset-text"
+          className="govuk-form-group "
         >
-          <FormElementWrapper
-            errorClass=""
-            errorId="remove-operator-checkbox-0"
-            errors={Array []}
+          <fieldset
+            aria-describedby="selected-operators"
+            className="govuk-fieldset"
           >
-            <div
-              className="govuk-checkboxes"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
-              <div
-                className="govuk-checkboxes__item"
-                key="WBTR"
+              <h1
+                className="govuk-fieldset__heading"
+                id="selected-operators"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-0"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="WBTR#Warrington's Own Buses"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-0"
-                >
-                  Warrington's Own Buses
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="BLAC"
+                Here's what you have added
+              </h1>
+            </legend>
+            <div
+              className="govuk-inset-text"
+            >
+              <FormElementWrapper
+                errorClass=""
+                errorId="remove-operator-checkbox-0"
+                errors={Array []}
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-1"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="BLAC#Blackpool Transport"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-1"
+                <div
+                  className="govuk-checkboxes"
                 >
-                  Blackpool Transport
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="IWBusCo"
-              >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-2"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="IWBusCo#IW Bus Co"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-2"
-                >
-                  IW Bus Co
-                </label>
-              </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="WBTR"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-0"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="WBTR#Warrington's Own Buses"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-0"
+                    >
+                      Warrington's Own Buses
+                       - 
+                      WBTR
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="BLAC"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-1"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="BLAC#Blackpool Transport"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-1"
+                    >
+                      Blackpool Transport
+                       - 
+                      BLAC
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="IWBusCo"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-2"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="IWBusCo#IW Bus Co"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-2"
+                    >
+                      IW Bus Co
+                       - 
+                      IWBusCo
+                    </label>
+                  </div>
+                </div>
+              </FormElementWrapper>
+              <input
+                className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
+                id="remove-operators-button"
+                name="removeOperators"
+                type="submit"
+                value="Remove Operators"
+              />
             </div>
-          </FormElementWrapper>
+          </fieldset>
+        </div>
+        <div
+          className="govuk-form-group "
+        >
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend--m"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for more operators that the ticket covers
+              </h1>
+            </legend>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters"
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+        <div>
           <input
-            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
-            id="remove-operators-button"
-            name="removeOperators"
+            className="govuk-button"
+            id="continue-button"
+            name="continueButtonClick"
             type="submit"
-            value="Remove Operators"
+            value="Continue"
           />
         </div>
-      </fieldset>
+      </CsrfForm>
     </div>
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-one-third"
     >
-      <fieldset
-        aria-describedby="operator-search"
-        className="govuk-fieldset"
+      <h3
+        className="govuk-heading-s"
       >
-        <legend
-          className="govuk-fieldset__legend--m"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="operator-search"
-          >
-            Search for more operators that the ticket covers
-          </h1>
-        </legend>
-        <label
-          className="govuk-label"
-          htmlFor="search-input"
-        >
-          Operator name
-        </label>
-        <input
-          className="govuk-input govuk-!-width-three-quarters"
-          id="search-input"
-          name="searchText"
-          type="text"
-        />
-        <input
-          className="govuk-button govuk-!-margin-left-5"
-          id="search-button"
-          name="search"
-          type="submit"
-          value="Search"
-        />
-      </fieldset>
+        What is a National Operator Code (NOC)?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No two operators can have the same NOC.
+      </p>
     </div>
-    <div>
-      <input
-        className="govuk-button"
-        id="continue-button"
-        name="continueButtonClick"
-        type="submit"
-        value="Continue"
-      />
-    </div>
-  </CsrfForm>
+  </div>
 </Component>
 `;
 
@@ -291,71 +349,93 @@ exports[`pages searchOperator should render an input error when the user makes a
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/searchOperators"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={
-        Array [
-          Object {
-            "errorMessage": "Search requires a minimum of three characters",
-            "id": "search-input",
-          },
-        ]
-      }
-    />
     <div
-      className="govuk-form-group govuk-form-group--error"
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="operator-search"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="operator-search"
-          >
-            Search for the operators that the ticket covers
-          </h1>
-        </legend>
-        <span
-          className="govuk-error-message"
-          id="search-input-error"
-        >
-          <span
-            className="govuk-visually-hidden"
-          >
-            Error: 
-          </span>
-          Search requires a minimum of three characters
-        </span>
-        <label
-          className="govuk-label"
-          htmlFor="search-input"
-        >
-          Operator name
-        </label>
-        <input
-          className="govuk-input govuk-!-width-three-quarters govuk-input--error"
-          id="search-input"
-          name="searchText"
-          type="text"
+        <ErrorSummary
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Search requires a minimum of three characters",
+                "id": "search-input",
+              },
+            ]
+          }
         />
-        <input
-          className="govuk-button govuk-!-margin-left-5"
-          id="search-button"
-          name="search"
-          type="submit"
-          value="Search"
-        />
-      </fieldset>
+        <div
+          className="govuk-form-group govuk-form-group--error"
+        >
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend--l"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for the operators that the ticket covers
+              </h1>
+            </legend>
+            <span
+              className="govuk-error-message"
+              id="search-input-error"
+            >
+              <span
+                className="govuk-visually-hidden"
+              >
+                Error: 
+              </span>
+              Search requires a minimum of three characters
+            </span>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters govuk-input--error"
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+      </CsrfForm>
     </div>
-  </CsrfForm>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h3
+        className="govuk-heading-s"
+      >
+        What is a National Operator Code (NOC)?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No two operators can have the same NOC.
+      </p>
+    </div>
+  </div>
 </Component>
 `;
 
@@ -364,53 +444,75 @@ exports[`pages searchOperator should render just the search input when the user 
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/searchOperators"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="operator-search"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend--l"
+        <ErrorSummary
+          errors={Array []}
+        />
+        <div
+          className="govuk-form-group "
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="operator-search"
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
           >
-            Search for the operators that the ticket covers
-          </h1>
-        </legend>
-        <label
-          className="govuk-label"
-          htmlFor="search-input"
-        >
-          Operator name
-        </label>
-        <input
-          className="govuk-input govuk-!-width-three-quarters"
-          id="search-input"
-          name="searchText"
-          type="text"
-        />
-        <input
-          className="govuk-button govuk-!-margin-left-5"
-          id="search-button"
-          name="search"
-          type="submit"
-          value="Search"
-        />
-      </fieldset>
+            <legend
+              className="govuk-fieldset__legend--l"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for the operators that the ticket covers
+              </h1>
+            </legend>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters"
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+      </CsrfForm>
     </div>
-  </CsrfForm>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h3
+        className="govuk-heading-s"
+      >
+        What is a National Operator Code (NOC)?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No two operators can have the same NOC.
+      </p>
+    </div>
+  </div>
 </Component>
 `;
 
@@ -419,156 +521,184 @@ exports[`pages searchOperator should render the search input and a list of selec
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/searchOperators"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="selected-operators"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="selected-operators"
-          >
-            Here's what you have added
-          </h1>
-        </legend>
+        <ErrorSummary
+          errors={Array []}
+        />
         <div
-          className="govuk-inset-text"
+          className="govuk-form-group "
         >
-          <FormElementWrapper
-            errorClass=""
-            errorId="remove-operator-checkbox-0"
-            errors={Array []}
+          <fieldset
+            aria-describedby="selected-operators"
+            className="govuk-fieldset"
           >
-            <div
-              className="govuk-checkboxes"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
-              <div
-                className="govuk-checkboxes__item"
-                key="WBTR"
+              <h1
+                className="govuk-fieldset__heading"
+                id="selected-operators"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-0"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="WBTR#Warrington's Own Buses"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-0"
-                >
-                  Warrington's Own Buses
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="BLAC"
+                Here's what you have added
+              </h1>
+            </legend>
+            <div
+              className="govuk-inset-text"
+            >
+              <FormElementWrapper
+                errorClass=""
+                errorId="remove-operator-checkbox-0"
+                errors={Array []}
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-1"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="BLAC#Blackpool Transport"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-1"
+                <div
+                  className="govuk-checkboxes"
                 >
-                  Blackpool Transport
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="IWBusCo"
-              >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-2"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="IWBusCo#IW Bus Co"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-2"
-                >
-                  IW Bus Co
-                </label>
-              </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="WBTR"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-0"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="WBTR#Warrington's Own Buses"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-0"
+                    >
+                      Warrington's Own Buses
+                       - 
+                      WBTR
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="BLAC"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-1"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="BLAC#Blackpool Transport"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-1"
+                    >
+                      Blackpool Transport
+                       - 
+                      BLAC
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="IWBusCo"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-2"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="IWBusCo#IW Bus Co"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-2"
+                    >
+                      IW Bus Co
+                       - 
+                      IWBusCo
+                    </label>
+                  </div>
+                </div>
+              </FormElementWrapper>
+              <input
+                className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
+                id="remove-operators-button"
+                name="removeOperators"
+                type="submit"
+                value="Remove Operators"
+              />
             </div>
-          </FormElementWrapper>
+          </fieldset>
+        </div>
+        <div
+          className="govuk-form-group "
+        >
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend--m"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for more operators that the ticket covers
+              </h1>
+            </legend>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters"
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+        <div>
           <input
-            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
-            id="remove-operators-button"
-            name="removeOperators"
+            className="govuk-button"
+            id="continue-button"
+            name="continueButtonClick"
             type="submit"
-            value="Remove Operators"
+            value="Continue"
           />
         </div>
-      </fieldset>
+      </CsrfForm>
     </div>
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-one-third"
     >
-      <fieldset
-        aria-describedby="operator-search"
-        className="govuk-fieldset"
+      <h3
+        className="govuk-heading-s"
       >
-        <legend
-          className="govuk-fieldset__legend--m"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="operator-search"
-          >
-            Search for more operators that the ticket covers
-          </h1>
-        </legend>
-        <label
-          className="govuk-label"
-          htmlFor="search-input"
-        >
-          Operator name
-        </label>
-        <input
-          className="govuk-input govuk-!-width-three-quarters"
-          id="search-input"
-          name="searchText"
-          type="text"
-        />
-        <input
-          className="govuk-button govuk-!-margin-left-5"
-          id="search-button"
-          name="search"
-          type="submit"
-          value="Search"
-        />
-      </fieldset>
+        What is a National Operator Code (NOC)?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No two operators can have the same NOC.
+      </p>
     </div>
-    <div>
-      <input
-        className="govuk-button"
-        id="continue-button"
-        name="continueButtonClick"
-        type="submit"
-        value="Continue"
-      />
-    </div>
-  </CsrfForm>
+  </div>
 </Component>
 `;
 
@@ -577,126 +707,156 @@ exports[`pages searchOperator should render the search input and search results 
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/searchOperators"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="operator-search"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="operator-search"
-          >
-            Search for the operators that the ticket covers
-          </h1>
-        </legend>
-        <label
-          className="govuk-label"
-          htmlFor="search-input"
-        >
-          Operator name
-        </label>
-        <input
-          className="govuk-input govuk-!-width-three-quarters"
-          id="search-input"
-          name="searchText"
-          type="text"
-        />
-        <input
-          className="govuk-button govuk-!-margin-left-5"
-          id="search-button"
-          name="search"
-          type="submit"
-          value="Search"
-        />
-      </fieldset>
-    </div>
-    <div
-      className="govuk-form-group "
-    >
-      <fieldset
-        aria-describedby="operator-search-results"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend"
-        >
-          <h2
-            className="govuk-body-l govuk-!-margin-bottom-0"
-            id="operator-search-results"
-          >
-            Your search for '
-            <strong>
-              blac
-            </strong>
-            ' returned
-            <strong>
-               
-              1
-               result
-            </strong>
-          </h2>
-        </legend>
-        <FormElementWrapper
-          errorClass=""
-          errorId="add-operator-checkbox-0"
+        <ErrorSummary
           errors={Array []}
+        />
+        <div
+          className="govuk-form-group "
         >
-          <div
-            className="govuk-checkboxes"
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
           >
-            <p
-              className="govuk-hint"
-              id="operator-hint-text"
+            <legend
+              className="govuk-fieldset__legend--l"
             >
-              Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
-            </p>
+              <h1
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for the operators that the ticket covers
+              </h1>
+            </legend>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters"
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+        <div
+          className="govuk-form-group "
+        >
+          <fieldset
+            aria-describedby="operator-search-results"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend"
+            >
+              <h2
+                className="govuk-body-l govuk-!-margin-bottom-0"
+                id="operator-search-results"
+              >
+                Your search for '
+                <strong>
+                  blac
+                </strong>
+                ' returned
+                <strong>
+                   
+                  1
+                   result
+                </strong>
+              </h2>
+            </legend>
+            <FormElementWrapper
+              errorClass=""
+              errorId="add-operator-checkbox-0"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes"
+              >
+                <p
+                  className="govuk-hint"
+                  id="traveline-hint-text"
+                >
+                  Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+                </p>
+                <p
+                  className="govuk-hint"
+                  id="noc-hint-text"
+                >
+                  You will see that all operator names are followed by a series of characters. These characters are the operator's National Operator Code (NOC).
+                </p>
+                <div
+                  className="govuk-checkboxes__item"
+                  key="checkbox-item-Blackpool"
+                >
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="add-operator-checkbox-0"
+                    name="operatorsToAdd"
+                    type="checkbox"
+                    value="BLAC#Blackpool"
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="add-operator-checkbox-0"
+                  >
+                    Blackpool
+                     - 
+                    BLAC
+                  </label>
+                </div>
+              </div>
+            </FormElementWrapper>
             <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Blackpool"
+              className="govuk-!-margin-top-7"
             >
               <input
-                className="govuk-checkboxes__input"
-                id="add-operator-checkbox-0"
-                name="operatorsToAdd"
-                type="checkbox"
-                value="BLAC#Blackpool"
+                className="govuk-button govuk-button--secondary"
+                id="add-operator-button"
+                name="addOperators"
+                type="submit"
+                value="Add Operator(s)"
               />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="add-operator-checkbox-0"
-              >
-                Blackpool
-              </label>
             </div>
-          </div>
-        </FormElementWrapper>
-        <div
-          className="govuk-!-margin-top-7"
-        >
-          <input
-            className="govuk-button govuk-button--secondary"
-            id="add-operator-button"
-            name="addOperators"
-            type="submit"
-            value="Add Operator(s)"
-          />
+          </fieldset>
         </div>
-      </fieldset>
+      </CsrfForm>
     </div>
-  </CsrfForm>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h3
+        className="govuk-heading-s"
+      >
+        What is a National Operator Code (NOC)?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No two operators can have the same NOC.
+      </p>
+    </div>
+  </div>
 </Component>
 `;
 
@@ -705,228 +865,264 @@ exports[`pages searchOperator should render the search input, search results and
   description="Search Operators page for the Fares Data Build Tool"
   title="Search Operators - Fares Data Build Tool"
 >
-  <CsrfForm
-    action="/api/searchOperators"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="selected-operators"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="selected-operators"
-          >
-            Here's what you have added
-          </h1>
-        </legend>
-        <div
-          className="govuk-inset-text"
-        >
-          <FormElementWrapper
-            errorClass=""
-            errorId="remove-operator-checkbox-0"
-            errors={Array []}
-          >
-            <div
-              className="govuk-checkboxes"
-            >
-              <div
-                className="govuk-checkboxes__item"
-                key="WBTR"
-              >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-0"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="WBTR#Warrington's Own Buses"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-0"
-                >
-                  Warrington's Own Buses
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="BLAC"
-              >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-1"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="BLAC#Blackpool Transport"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-1"
-                >
-                  Blackpool Transport
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="IWBusCo"
-              >
-                <input
-                  className="govuk-checkboxes__input"
-                  id="remove-operator-checkbox-2"
-                  name="operatorsToRemove"
-                  type="checkbox"
-                  value="IWBusCo#IW Bus Co"
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="remove-operator-checkbox-2"
-                >
-                  IW Bus Co
-                </label>
-              </div>
-            </div>
-          </FormElementWrapper>
-          <input
-            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
-            id="remove-operators-button"
-            name="removeOperators"
-            type="submit"
-            value="Remove Operators"
-          />
-        </div>
-      </fieldset>
-    </div>
-    <div
-      className="govuk-form-group "
-    >
-      <fieldset
-        aria-describedby="operator-search"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend--m"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="operator-search"
-          >
-            Search for more operators that the ticket covers
-          </h1>
-        </legend>
-        <label
-          className="govuk-label"
-          htmlFor="search-input"
-        >
-          Operator name
-        </label>
-        <input
-          className="govuk-input govuk-!-width-three-quarters"
-          id="search-input"
-          name="searchText"
-          type="text"
-        />
-        <input
-          className="govuk-button govuk-!-margin-left-5"
-          id="search-button"
-          name="search"
-          type="submit"
-          value="Search"
-        />
-      </fieldset>
-    </div>
-    <div
-      className="govuk-form-group "
-    >
-      <fieldset
-        aria-describedby="operator-search-results"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend"
-        >
-          <h2
-            className="govuk-body-l govuk-!-margin-bottom-0"
-            id="operator-search-results"
-          >
-            Your search for '
-            <strong>
-              warri
-            </strong>
-            ' returned
-            <strong>
-               
-              1
-               result
-            </strong>
-          </h2>
-        </legend>
-        <FormElementWrapper
-          errorClass=""
-          errorId="add-operator-checkbox-0"
+        <ErrorSummary
           errors={Array []}
+        />
+        <div
+          className="govuk-form-group "
         >
-          <div
-            className="govuk-checkboxes"
+          <fieldset
+            aria-describedby="selected-operators"
+            className="govuk-fieldset"
           >
-            <p
-              className="govuk-hint"
-              id="operator-hint-text"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
-              Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
-            </p>
+              <h1
+                className="govuk-fieldset__heading"
+                id="selected-operators"
+              >
+                Here's what you have added
+              </h1>
+            </legend>
             <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Warrington's Own Buses"
+              className="govuk-inset-text"
+            >
+              <FormElementWrapper
+                errorClass=""
+                errorId="remove-operator-checkbox-0"
+                errors={Array []}
+              >
+                <div
+                  className="govuk-checkboxes"
+                >
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="WBTR"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-0"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="WBTR#Warrington's Own Buses"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-0"
+                    >
+                      Warrington's Own Buses
+                       - 
+                      WBTR
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="BLAC"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-1"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="BLAC#Blackpool Transport"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-1"
+                    >
+                      Blackpool Transport
+                       - 
+                      BLAC
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item"
+                    key="IWBusCo"
+                  >
+                    <input
+                      className="govuk-checkboxes__input"
+                      id="remove-operator-checkbox-2"
+                      name="operatorsToRemove"
+                      type="checkbox"
+                      value="IWBusCo#IW Bus Co"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="remove-operator-checkbox-2"
+                    >
+                      IW Bus Co
+                       - 
+                      IWBusCo
+                    </label>
+                  </div>
+                </div>
+              </FormElementWrapper>
+              <input
+                className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
+                id="remove-operators-button"
+                name="removeOperators"
+                type="submit"
+                value="Remove Operators"
+              />
+            </div>
+          </fieldset>
+        </div>
+        <div
+          className="govuk-form-group "
+        >
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend--m"
+            >
+              <h1
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for more operators that the ticket covers
+              </h1>
+            </legend>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters"
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+        <div
+          className="govuk-form-group "
+        >
+          <fieldset
+            aria-describedby="operator-search-results"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend"
+            >
+              <h2
+                className="govuk-body-l govuk-!-margin-bottom-0"
+                id="operator-search-results"
+              >
+                Your search for '
+                <strong>
+                  warri
+                </strong>
+                ' returned
+                <strong>
+                   
+                  1
+                   result
+                </strong>
+              </h2>
+            </legend>
+            <FormElementWrapper
+              errorClass=""
+              errorId="add-operator-checkbox-0"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes"
+              >
+                <p
+                  className="govuk-hint"
+                  id="traveline-hint-text"
+                >
+                  Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+                </p>
+                <p
+                  className="govuk-hint"
+                  id="noc-hint-text"
+                >
+                  You will see that all operator names are followed by a series of characters. These characters are the operator's National Operator Code (NOC).
+                </p>
+                <div
+                  className="govuk-checkboxes__item"
+                  key="checkbox-item-Warrington's Own Buses"
+                >
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="add-operator-checkbox-0"
+                    name="operatorsToAdd"
+                    type="checkbox"
+                    value="WBTR#Warrington's Own Buses"
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="add-operator-checkbox-0"
+                  >
+                    Warrington's Own Buses
+                     - 
+                    WBTR
+                  </label>
+                </div>
+              </div>
+            </FormElementWrapper>
+            <div
+              className="govuk-!-margin-top-7"
             >
               <input
-                className="govuk-checkboxes__input"
-                id="add-operator-checkbox-0"
-                name="operatorsToAdd"
-                type="checkbox"
-                value="WBTR#Warrington's Own Buses"
+                className="govuk-button govuk-button--secondary"
+                id="add-operator-button"
+                name="addOperators"
+                type="submit"
+                value="Add Operator(s)"
               />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="add-operator-checkbox-0"
-              >
-                Warrington's Own Buses
-              </label>
             </div>
-          </div>
-        </FormElementWrapper>
-        <div
-          className="govuk-!-margin-top-7"
-        >
+          </fieldset>
+        </div>
+        <div>
           <input
-            className="govuk-button govuk-button--secondary"
-            id="add-operator-button"
-            name="addOperators"
+            className="govuk-button"
+            id="continue-button"
+            name="continueButtonClick"
             type="submit"
-            value="Add Operator(s)"
+            value="Continue"
           />
         </div>
-      </fieldset>
+      </CsrfForm>
     </div>
-    <div>
-      <input
-        className="govuk-button"
-        id="continue-button"
-        name="continueButtonClick"
-        type="submit"
-        value="Continue"
-      />
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h3
+        className="govuk-heading-s"
+      >
+        What is a National Operator Code (NOC)?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No two operators can have the same NOC.
+      </p>
     </div>
-  </CsrfForm>
+  </div>
 </Component>
 `;

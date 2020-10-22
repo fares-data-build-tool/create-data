@@ -95,17 +95,16 @@ const PriceEntry = ({
                     </span>
                     {errors.length > 0 ? createErrorSpans(errors) : null}
 
-                    <div className="fare-triangle-container" role="table">
-                        <div className="fare-triangle" role="rowgroup">
+                    <div className="fare-triangle-container">
+                        <div className="fare-triangle">
                             {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div id={`row-${rowIndex}`} className="fare-triangle-row" role="row" key={rowStage}>
-                                    <span className="govuk-heading-s fare-triangle-label-left" role="rowheader">
+                                <div id={`row-${rowIndex}`} className="fare-triangle-row" key={rowStage}>
+                                    <span className="govuk-heading-s fare-triangle-label-left">
                                         <span>{rowIndex > 0 ? rowStage : null}</span>
                                     </span>
                                     {stageNamesArray.slice(0, rowIndex).map(columnStage => (
                                         <React.Fragment key={columnStage}>
                                             <span
-                                                role="cell"
                                                 className={`fare-triangle-input ${
                                                     rowIndex % 2 === 0
                                                         ? 'fare-triangle-input-white'
@@ -133,11 +132,7 @@ const PriceEntry = ({
                                             </label>
                                         </React.Fragment>
                                     ))}
-                                    <div
-                                        role="columnheader"
-                                        aria-sort="none"
-                                        className="govuk-heading-s fare-triangle-label-right"
-                                    >
+                                    <div aria-sort="none" className="govuk-heading-s fare-triangle-label-right">
                                         {rowStage}
                                     </div>
                                 </div>
