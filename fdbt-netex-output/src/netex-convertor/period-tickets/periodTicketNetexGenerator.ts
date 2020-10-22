@@ -28,6 +28,7 @@ import {
     getTimeRestrictions,
     isValidTimeRestriction,
     getNetexMode,
+    replaceIWBusCoNocCode,
 } from '../sharedHelpers';
 
 const periodTicketNetexGenerator = (
@@ -41,7 +42,7 @@ const periodTicketNetexGenerator = (
         throw new Error('Could not find base operator');
     }
     const opIdNocFormat = `noc:${baseOperatorInfo.opId}`;
-    const nocCodeNocFormat = `noc:${userPeriodTicket.nocCode}`;
+    const nocCodeNocFormat = `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`;
     const currentDate = new Date(Date.now());
     const website = getCleanWebsite(baseOperatorInfo.website);
     const placeHolderGroupOfProductsName = `${userPeriodTicket.nocCode}_products`;

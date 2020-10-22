@@ -1,6 +1,7 @@
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
 import { Operator, Service } from '../../types';
+import { replaceIWBusCoNocCode } from '../sharedHelpers';
 
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
@@ -38,14 +39,6 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
     }
     const [rows] = await connectionPool.execute(query, values);
     return JSON.parse(JSON.stringify(rows));
-};
-
-const replaceIWBusCoNocCode = (nocCode: string): string => {
-    if (nocCode === 'IWBusCo') {
-        return 'WBTR';
-    }
-
-    return nocCode;
 };
 
 export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Operator[]> => {

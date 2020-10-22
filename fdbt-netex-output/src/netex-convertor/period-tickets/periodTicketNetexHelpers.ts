@@ -29,6 +29,7 @@ import {
     getProfileRef,
     isValidTimeRestriction,
     getCleanWebsite,
+    replaceIWBusCoNocCode,
 } from '../sharedHelpers';
 
 export const isGeoZoneTicket = (ticket: PeriodTicket): ticket is GeoZoneTicket =>
@@ -103,7 +104,7 @@ export const getLinesList = (
                   PrivateCode: { type: 'noc', $t: `${userPeriodTicket.nocCode}_${service.lineName}` },
                   OperatorRef: {
                       version: '1.0',
-                      ref: `noc:${userPeriodTicket.nocCode}`,
+                      ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
                   },
                   LineType: { $t: 'local' },
               }))
