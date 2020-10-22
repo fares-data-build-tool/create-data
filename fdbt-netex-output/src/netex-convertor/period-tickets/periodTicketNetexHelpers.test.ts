@@ -136,7 +136,7 @@ describe('periodTicketNetexHelpers', () => {
     });
 
     describe('getLinesList', () => {
-        it('returns a list of NeTEx lines given periodMultipleServicesTicket matching data', async () => {
+        it('returns a list of NeTEx lines given periodMultipleServicesTicket matching data', () => {
             const expectedLineSchema = {
                 version: '1.0',
                 id: expect.stringContaining('op:'),
@@ -150,7 +150,11 @@ describe('periodTicketNetexHelpers', () => {
             };
             const expectedLength = periodMultipleServicesTicket.selectedServices.length;
 
-            const linesList = await netexHelpers.getLinesList(periodMultipleServicesTicket, opData.website);
+            const linesList = netexHelpers.getLinesList(
+                periodMultipleServicesTicket,
+                opData.website,
+                multiOperatorList,
+            );
 
             expect(linesList).toHaveLength(expectedLength);
             linesList.forEach(line => {
