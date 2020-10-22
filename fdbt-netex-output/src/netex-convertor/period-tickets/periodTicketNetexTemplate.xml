@@ -211,13 +211,6 @@
 							<OperatorRef version="1.0" ref=""></OperatorRef>
 							<TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal" />
 							<!--- ====Fare Structure======= -->
-							<geographicalIntervals>
-								<GeographicalInterval version="1.0" id="">
-									<Name>Travel in one zone</Name>
-									<NumberOfUnits>1</NumberOfUnits>
-									<IntervalType>tariffZone</IntervalType>
-								</GeographicalInterval>
-							</geographicalIntervals>
 							<timeIntervals></timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
 							<qualityStructureFactors></qualityStructureFactors>
