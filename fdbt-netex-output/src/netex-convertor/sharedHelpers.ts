@@ -189,3 +189,11 @@ export const getNetexMode = (mode: string): string => {
 
     return modeMap[mode] ?? 'bus';
 };
+
+export const replaceIWBusCoNocCode = (nocCode: string): string => {
+    if (nocCode === 'IWBusCo') {
+        return 'WBTR';
+    }
+
+    return nocCode;
+};
