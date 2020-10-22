@@ -3,8 +3,8 @@ import TwoThirdsLayout from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import { checkIfMultipleOperators } from '../utils';
 
-const title = 'Fares Data Build Tool';
-const description = 'Fares Data Build Tool is a service that allows you to generate data in NeTEx format';
+const title = 'Create Fares Data';
+const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
 interface StartProps {
     multipleOperators: boolean;
@@ -12,7 +12,7 @@ interface StartProps {
 
 const Start = ({ multipleOperators }: StartProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
-        <h1 className="govuk-heading-xl">Fares Data Build Tool</h1>
+        <h1 className="govuk-heading-xl">Create Fares Data</h1>
 
         <p className="govuk-body">
             This service is for creating or accessing NeTEx data for public transport services, excluding rail, in

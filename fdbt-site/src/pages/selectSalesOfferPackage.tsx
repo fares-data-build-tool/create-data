@@ -18,8 +18,8 @@ import { Product } from './api/multipleProductValidity';
 import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
 
-const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
-const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
+const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
+const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
 
 export const defaultSalesOfferPackageOne: SalesOfferPackage = {
     name: 'Onboard (cash)',

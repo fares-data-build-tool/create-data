@@ -1,23 +1,23 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 
-const title = 'Cookie details - Fares Data Build Tool';
-const description = 'Cookie details page for the Fares Data Build Tool';
+const title = 'Cookie details - Create Fares Data Service';
+const description = 'Cookie details page for the Create Fares Data Service';
 
 const Contact = (): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description}>
-            <h1 className="govuk-heading-xl">Details about cookies on the Fares Data Build Tool</h1>
+            <h1 className="govuk-heading-xl">Details about cookies on the Create Fares Data Service</h1>
             <p className="govuk-body">
-                Fares Data Build Tool puts small files (known as ‘cookies’) onto your computer to collect information
-                about how you browse the site. Find out more about the cookies we use, what they’re for and when they
-                expire.
+                The Create Fares Data Service puts small files (known as ‘cookies’) onto your computer to collect
+                information about how you browse the site. Find out more about the cookies we use, what they’re for and
+                when they expire.
             </p>
             <h2 className="govuk-heading-m">Tracking</h2>
             <p className="govuk-body">
                 We use Google Analytics software (Universal Analytics) to collect anonymised information about how you
-                use Fares Data Build Tool. We do this to help make sure the site is meeting the needs of its users and
-                to help us make improvements to the site and to government digital services.
+                use the Create Fares Data Service. We do this to help make sure the site is meeting the needs of its
+                users and to help us make improvements to the site and to government digital services.
             </p>
             <p className="govuk-body">We do not allow Google to use or share the data about how you use this site.</p>
             <ul className="govuk-list govuk-list--bullet govuk-body">
@@ -44,16 +44,16 @@ const Contact = (): ReactElement => {
                     <tr className="govuk-table__row">
                         <td className="govuk-table__cell">_ga</td>
                         <td className="govuk-table__cell">
-                            These help us count how many people visit Fares Data Build Tool by tracking if you’ve
-                            visited before
+                            These help us count how many people visit the Create Fares Data Service by tracking if
+                            you’ve visited before
                         </td>
                         <td className="govuk-table__cell">2 years</td>
                     </tr>
                     <tr className="govuk-table__row">
                         <td className="govuk-table__cell">_gid</td>
                         <td className="govuk-table__cell">
-                            These help us count how many people visit Fares Data Build Tool by tracking if you’ve
-                            visited before
+                            These help us count how many people visit the Create Fares Data Service by tracking if
+                            you’ve visited before
                         </td>
                         <td className="govuk-table__cell">24 hours</td>
                     </tr>
@@ -69,7 +69,7 @@ const Contact = (): ReactElement => {
             <h2 className="govuk-heading-m">Strictly necessary cookies</h2>
             <h3 className="govuk-heading-s">Progress through the tool</h3>
             <p className="govuk-body">
-                When you use the Fares Data Build Tool we will set the following cookies as you progress through the
+                When you use the Create Fares Data Service we will set the following cookies as you progress through the
                 forms.
             </p>
             <table className="govuk-table cookie-detail-table">

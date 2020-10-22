@@ -8,8 +8,8 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { inputMethodErrorsExist } from '../interfaces/typeGuards';
 
-const title = 'Input Method - Fares Data Build Tool';
-const description = 'Input Method selection page of the Fares Data Build Tool';
+const title = 'Input Method - Create Fares Data Service';
+const description = 'Input Method selection page of the Create Fares Data Service';
 
 const errorId = 'csv-upload';
 

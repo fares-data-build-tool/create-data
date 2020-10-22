@@ -50,7 +50,7 @@ exports[`Header should render correctly 1`] = `
         href="/home"
         id="title-link"
       >
-        Fares Data Build Tool
+        Create fares data
       </a>
     </div>
     <div

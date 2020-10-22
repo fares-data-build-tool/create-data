@@ -9,8 +9,8 @@ import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { deleteCookieOnServerSide } from '../utils/index';
 import CsrfForm from '../components/CsrfForm';
 
-const title = 'Login - Fares data build tool';
-const description = 'Login page of the Fares data build tool';
+const title = 'Login - Create Fares Data Service';
+const description = 'Login page of the Create Fares Data Service';
 
 interface LoginProps {
     errors: ErrorInfo[];
@@ -32,7 +32,7 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
                                     </h1>
                                 </legend>
                                 <p className="govuk-hint hint-text">
-                                    Enter Fares Data Build Tool account details to sign in
+                                    Enter Create Fares Data account details to sign in
                                 </p>
                                 <div className="govuk-form-group">
                                     <label className="govuk-label" htmlFor="email">

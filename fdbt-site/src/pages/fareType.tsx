@@ -12,8 +12,8 @@ import logger from '../utils/logger';
 import { getSessionAttribute } from '../utils/sessions';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
-const title = 'Fare Type - Fares Data Build Tool';
-const description = 'Fare Type selection page of the Fares Data Build Tool';
+const title = 'Fare Type - Create Fares Data Service ';
+const description = 'Fare Type selection page of the Create Fares Data Service';
 
 const errorId = 'fare-type-single';
 

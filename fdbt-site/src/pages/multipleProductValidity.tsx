@@ -18,8 +18,8 @@ import { isNumberOfProductsAttribute } from './howManyProducts';
 import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
 import { Product } from './api/multipleProductValidity';
 
-const title = 'Multiple Product Validity - Fares Data Build Tool';
-const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
+const title = 'Multiple Product Validity - Create Fares Data Service';
+const description = 'Multiple Product Validity selection page of the Create Fares Data Service';
 
 const errorId = 'twenty-four-hours-row-0';
 

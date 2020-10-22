@@ -2,8 +2,8 @@
 
 exports[`pages cookies should display a confirmation box when the user saves their preferences 1`] = `
 <Component
-  description="Cookies Preferences page of the Fares Data Build Tool"
-  title="Cookies on the Fares Data Build Tool"
+  description="Cookies Preferences page of the Create Fares Data Service"
+  title="Cookies - Create Fares Data Service"
 >
   <div
     className="cookie-settings__confirmation"
@@ -34,7 +34,7 @@ exports[`pages cookies should display a confirmation box when the user saves the
     <h1
       className="govuk-heading-l"
     >
-      Cookies on the Fares Data Build Tool
+      Cookies on the Create Fares Data Service
     </h1>
   </div>
   <p
@@ -45,7 +45,7 @@ exports[`pages cookies should display a confirmation box when the user saves the
   <p
     className="govuk-body"
   >
-    We use cookies to store information about how you use the Fares Data Build Tool website, such as the pages you visit.
+    We use cookies to store information about how you use the Create Fares Data website, such as the pages you visit.
   </p>
   <h2
     className="govuk-heading-m govuk-!-margin-bottom-3"
@@ -102,7 +102,7 @@ exports[`pages cookies should display a confirmation box when the user saves the
                 how you got to the site
               </li>
               <li>
-                the pages you visit on the Fares Data Build Tool, and how long you spend on each page
+                the pages you visit on the Create Fares Data Service, and how long you spend on each page
               </li>
               <li>
                 what you click on while you're visiting the site
@@ -191,8 +191,8 @@ exports[`pages cookies should display a confirmation box when the user saves the
 
 exports[`pages cookies should render correctly with the tracking cookie selection radio defaulted to 'off' 1`] = `
 <Component
-  description="Cookies Preferences page of the Fares Data Build Tool"
-  title="Cookies on the Fares Data Build Tool"
+  description="Cookies Preferences page of the Create Fares Data Service"
+  title="Cookies - Create Fares Data Service"
 >
   <div
     className="govuk-!-margin-bottom-8"
@@ -200,7 +200,7 @@ exports[`pages cookies should render correctly with the tracking cookie selectio
     <h1
       className="govuk-heading-l"
     >
-      Cookies on the Fares Data Build Tool
+      Cookies on the Create Fares Data Service
     </h1>
   </div>
   <p
@@ -211,7 +211,7 @@ exports[`pages cookies should render correctly with the tracking cookie selectio
   <p
     className="govuk-body"
   >
-    We use cookies to store information about how you use the Fares Data Build Tool website, such as the pages you visit.
+    We use cookies to store information about how you use the Create Fares Data website, such as the pages you visit.
   </p>
   <h2
     className="govuk-heading-m govuk-!-margin-bottom-3"
@@ -268,7 +268,7 @@ exports[`pages cookies should render correctly with the tracking cookie selectio
                 how you got to the site
               </li>
               <li>
-                the pages you visit on the Fares Data Build Tool, and how long you spend on each page
+                the pages you visit on the Create Fares Data Service, and how long you spend on each page
               </li>
               <li>
                 what you click on while you're visiting the site
@@ -357,8 +357,8 @@ exports[`pages cookies should render correctly with the tracking cookie selectio
 
 exports[`pages cookies should set the tracking cookie selection radio to 'on' when the user has just saved this as their preference 1`] = `
 <Component
-  description="Cookies Preferences page of the Fares Data Build Tool"
-  title="Cookies on the Fares Data Build Tool"
+  description="Cookies Preferences page of the Create Fares Data Service"
+  title="Cookies - Create Fares Data Service"
 >
   <div
     className="cookie-settings__confirmation"
@@ -389,7 +389,7 @@ exports[`pages cookies should set the tracking cookie selection radio to 'on' wh
     <h1
       className="govuk-heading-l"
     >
-      Cookies on the Fares Data Build Tool
+      Cookies on the Create Fares Data Service
     </h1>
   </div>
   <p
@@ -400,7 +400,7 @@ exports[`pages cookies should set the tracking cookie selection radio to 'on' wh
   <p
     className="govuk-body"
   >
-    We use cookies to store information about how you use the Fares Data Build Tool website, such as the pages you visit.
+    We use cookies to store information about how you use the Create Fares Data website, such as the pages you visit.
   </p>
   <h2
     className="govuk-heading-m govuk-!-margin-bottom-3"
@@ -457,7 +457,7 @@ exports[`pages cookies should set the tracking cookie selection radio to 'on' wh
                 how you got to the site
               </li>
               <li>
-                the pages you visit on the Fares Data Build Tool, and how long you spend on each page
+                the pages you visit on the Create Fares Data Service, and how long you spend on each page
               </li>
               <li>
                 what you click on while you're visiting the site

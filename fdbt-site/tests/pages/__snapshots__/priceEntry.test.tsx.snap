@@ -2,8 +2,8 @@
 
 exports[`Price Entry Page should render correctly 1`] = `
 <Component
-  description="Price Entry page of the Fares Data Build Tool"
-  title="Price Entry Fares Triangle - Fares Data Build Tool"
+  description="Price Entry page of the Create Fares Data Service"
+  title="Price Entry - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/priceEntry"

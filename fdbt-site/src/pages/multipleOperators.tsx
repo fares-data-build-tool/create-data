@@ -9,8 +9,8 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import { batchGetOperatorNamesByNocCode, OperatorNameType } from '../data/auroradb';
 import { OPERATOR_COOKIE } from '../constants';
 
-const title = 'Multiple Operators - Fares Data Build Tool';
-const description = 'Multiple Operators page of the Fares Data Build Tool';
+const title = 'Multiple Operators - Create Fares Data Service';
+const description = 'Multiple Operators page of the Create Fares Data Service';
 const errorId = 'operators';
 
 type MultipleOperatorsProps = {

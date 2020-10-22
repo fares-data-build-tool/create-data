@@ -2,8 +2,8 @@
 
 exports[`pages serviceList should render an error when the error flag is set to true 1`] = `
 <Component
-  description="Service List selection page of the Fares Data Build Tool"
-  title="Service List - Fares Data Build Tool"
+  description="Service List selection page of the Create Fares Data Service"
+  title="Service List - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/serviceList"
@@ -87,8 +87,8 @@ exports[`pages serviceList should render an error when the error flag is set to 
 
 exports[`pages serviceList should render correctly 1`] = `
 <Component
-  description="Service List selection page of the Fares Data Build Tool"
-  title="Service List - Fares Data Build Tool"
+  description="Service List selection page of the Create Fares Data Service"
+  title="Service List - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/serviceList"
@@ -216,8 +216,8 @@ exports[`pages serviceList should render correctly 1`] = `
 
 exports[`pages serviceList should render correctly for multiOperator 1`] = `
 <Component
-  description="Service List selection page of the Fares Data Build Tool"
-  title="Service List - Fares Data Build Tool"
+  description="Service List selection page of the Create Fares Data Service"
+  title="Service List - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/serviceList"

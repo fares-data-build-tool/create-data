@@ -2,7 +2,7 @@
 
 exports[`pages groupPassengerTypes should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
 <Component
-  description="Group Passengers selection page of the Fares Data Build Tool"
+  description="Group Passengers selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -11,7 +11,7 @@ exports[`pages groupPassengerTypes should render correctly with GroupPassengerTy
       },
     ]
   }
-  title="Define Group Passengers - Fares Data Build Tool"
+  title="Define Group Passengers - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/groupPassengerTypes"
@@ -211,9 +211,9 @@ exports[`pages groupPassengerTypes should render correctly with GroupPassengerTy
 
 exports[`pages groupPassengerTypes should render correctly with group info and no errors 1`] = `
 <Component
-  description="Group Passengers selection page of the Fares Data Build Tool"
+  description="Group Passengers selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Define Group Passengers - Fares Data Build Tool"
+  title="Define Group Passengers - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/groupPassengerTypes"
@@ -399,9 +399,9 @@ exports[`pages groupPassengerTypes should render correctly with group info and n
 
 exports[`pages groupPassengerTypes should render correctly with no GroupPassengerTypes 1`] = `
 <Component
-  description="Group Passengers selection page of the Fares Data Build Tool"
+  description="Group Passengers selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Define Group Passengers - Fares Data Build Tool"
+  title="Define Group Passengers - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/groupPassengerTypes"

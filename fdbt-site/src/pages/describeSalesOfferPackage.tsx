@@ -10,8 +10,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 import { SalesOfferPackageInfo } from './api/salesOfferPackages';
 
-const title = 'Sales Offer Package Description - Fares Data Build Tool';
-const description = 'Sales Offer Package Description page of the Fares Data Build Tool';
+const title = 'Sales Offer Package Description - Create Fares Data Service';
+const description = 'Sales Offer Package Description page of the Create Fares Data Service';
 
 interface DescribeSopProps {
     sopInfo: SalesOfferPackageInfo | SalesOfferPackageWithErrors | undefined;

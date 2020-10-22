@@ -10,8 +10,8 @@ import RadioConditionalInput, { RadioConditionalInputFieldset } from '../compone
 import { getErrorsByIds } from '../utils';
 import { ProductDateInformation } from './api/productDateInformation';
 
-const title = 'Product Date Information - Fares Data Build Tool';
-const description = 'Product Date Information page of the Fares Data Build Tool';
+const title = 'Product Date Information - Create Fares Data Service';
+const description = 'Product Date Information page of the Create Fares Data Service';
 const productDatingHintText =
     'If not supplied, your start date will default to today and your end date will default to 100 years from today';
 

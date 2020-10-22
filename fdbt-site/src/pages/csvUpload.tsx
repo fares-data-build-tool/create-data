@@ -7,8 +7,8 @@ import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Tria
 import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'CSV Upload - Fares Data Build Tool';
-const description = 'CSV Upload page of the Fares Data Build Tool';
+const title = 'CSV Upload - Create Fares Data Service';
+const description = 'CSV Upload page of the Create Fares Data Service';
 
 const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>

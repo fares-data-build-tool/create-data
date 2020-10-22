@@ -2,8 +2,8 @@
 
 exports[`pages salesOfferPackage should render an error when errors are passed through 1`] = `
 <Component
-  description="Sales Offer Packages page for the Fares Data Build Tool"
-  title="Sales Offer Packages - Fares Data Build Tool"
+  description="Sales Offer Packages page for the Create Fares Data Service"
+  title="Sales Offer Packages - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -354,8 +354,8 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
 
 exports[`pages salesOfferPackage should render correctly 1`] = `
 <Component
-  description="Sales Offer Packages page for the Fares Data Build Tool"
-  title="Sales Offer Packages - Fares Data Build Tool"
+  description="Sales Offer Packages page for the Create Fares Data Service"
+  title="Sales Offer Packages - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"

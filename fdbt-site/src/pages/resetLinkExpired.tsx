@@ -4,8 +4,8 @@ import { deleteCookieOnServerSide } from '../utils';
 import TwoThirdsLayout from '../layout/Layout';
 import { USER_COOKIE } from '../constants';
 
-const title = 'Reset Password Link Expired - Fares Data Build Tool';
-const description = 'Reset Password Link Expired page for the Fares Data Build Tool';
+const title = 'Reset Password Link Expired - Create Fares Data Service';
+const description = 'Reset Password Link Expired page for the Create Fares Data Service';
 
 const ResetLinkExpired: NextPage = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>

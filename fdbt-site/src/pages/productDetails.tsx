@@ -25,8 +25,8 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
 import { isServiceListAttributeWithErrors } from './serviceList';
 
-const title = 'Product Details - Fares Data Build Tool';
-const description = 'Product Details entry page of the Fares Data Build Tool';
+const title = 'Product Details - Create Fares Data Service';
+const description = 'Product Details entry page of the Create Fares Data Service';
 
 type ProductDetailsProps = {
     product: ProductInfo | null;

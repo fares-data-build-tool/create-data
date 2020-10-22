@@ -9,8 +9,8 @@ import { NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from '
 import { getSessionAttribute } from '../utils/sessions';
 import { FareType } from './api/fareType';
 
-const title = 'How Many Products - Fares Data Build Tool';
-const description = 'How Many Products entry page of the Fares Data Build Tool';
+const title = 'How Many Products - Create Fares Data Service';
+const description = 'How Many Products entry page of the Create Fares Data Service';
 
 interface HowManyProductProps {
     errors: ErrorInfo[];

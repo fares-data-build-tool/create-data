@@ -9,8 +9,8 @@ import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
-const title = 'Create Account - Fares data build tool';
-const description = 'Create Account page of the Fares data build tool';
+const title = 'Register - Create Fares Data Service';
+const description = 'Register page of the Create Fares Data Service';
 
 interface RegisterProps {
     errors: ErrorInfo[];

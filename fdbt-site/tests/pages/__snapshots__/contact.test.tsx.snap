@@ -2,8 +2,8 @@
 
 exports[`contact should render correctly 1`] = `
 <Component
-  description="Contact page for the Fares Data Build Tool"
-  title="Contact - Fares Data Build Tool"
+  description="Contact page for the Create Fares Data Service"
+  title="Contact - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -14,7 +14,7 @@ exports[`contact should render correctly 1`] = `
       <h1
         className="govuk-heading-l"
       >
-        Contact the Fares Data Build Tool team
+        Contact the Create Fares Data Service team
       </h1>
       <h2
         className="govuk-heading-m"
@@ -24,7 +24,7 @@ exports[`contact should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        If you are experiencing technical issues, please contact the Fares Data Build service through the channels below
+        If you are experiencing technical issues, please contact the Create Fares Data team through the channels below
       </p>
       <h3
         className="govuk-heading-s"
@@ -34,7 +34,7 @@ exports[`contact should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        Fares Data Build Tool support line:
+        Create Fares Data Service support line:
         <br />
         Telephone: 0800 464 3290
         <br />
@@ -62,12 +62,12 @@ exports[`contact should render correctly 1`] = `
       <h2
         className="govuk-heading-m"
       >
-        Fares Data Build Tool
+        Create Fares Data Service
       </h2>
       <p
         className="govuk-body"
       >
-        The Fares Data Build tool enables local bus operators in England to generate higher quality fares information in an open data format
+        The Create Fares Data Service enables local bus operators in England to generate higher quality fares information in an open data format
       </p>
     </div>
   </div>
