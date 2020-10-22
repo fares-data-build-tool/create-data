@@ -12,8 +12,8 @@ import { isMatchingWithErrors } from './matching';
 import { isJourney, isService } from '../interfaces/typeGuards';
 
 const heading = 'Outbound - Match stops to fare stages';
-const title = 'Outbound Matching - Fares Data Build Tool';
-const description = 'Outbound Matching page of the Fares Data Build Tool';
+const title = 'Outbound Matching - Create Fares Data Service';
+const description = 'Outbound Matching page of the Create Fares Data Service';
 const hintText = 'Select a fare stage for each stop on the outbound journey.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/outboundMatching';

@@ -9,8 +9,8 @@ import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
-const title = 'Passenger Type - Fares Data Build Tool';
-const description = 'Passenger Type selection page of the Fares Data Build Tool';
+const title = 'Passenger Type - Create Fares Data Service';
+const description = 'Passenger Type selection page of the Create Fares Data Service';
 
 const insetText = 'More passenger types will become available soon';
 

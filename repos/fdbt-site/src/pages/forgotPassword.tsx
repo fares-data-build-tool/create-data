@@ -8,8 +8,8 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 
-const title = 'Forgot Password - Fares data build tool';
-const description = 'Forgot Password page of the Fares data build tool';
+const title = 'Forgot Password - Create Fares Data Service';
+const description = 'Forgot Password page of the Create Fares Data Service';
 const id = 'email';
 
 interface ForgotEmailProps {

@@ -8,8 +8,8 @@ import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interf
 import { FaresInformation } from './api/priceEntry';
 import { isInputCheck } from '../interfaces/typeGuards';
 
-const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
-const description = 'Price Entry page of the Fares Data Build Tool';
+const title = 'Price Entry - Create Fares Data Service';
+const description = 'Price Entry page of the Create Fares Data Service';
 
 interface PriceEntryProps {
     stageNamesArray: string[];

@@ -2,8 +2,8 @@
 
 exports[`pages chooseStages should render correctly 1`] = `
 <Component
-  description="Choose Stages page of the Fares Data Build Tool"
-  title="Choose Stages - Fares Data Build Tool"
+  description="Choose Stages page of the Create Fares Data Service"
+  title="Choose Stages - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/chooseStages"

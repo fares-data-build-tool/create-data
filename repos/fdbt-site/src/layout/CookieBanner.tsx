@@ -12,7 +12,7 @@ const CookieBanner: FC = () => (
                             <a className="govuk-link" href="/cookieDetails">
                                 cookies to collect information
                             </a>{' '}
-                            about how you use the Fares Data Build Tool. We use this information to make the website
+                            about how you use the Create Fares Data Service. We use this information to make the website
                             work as well as possible and to improve the service.
                         </p>
                     </div>

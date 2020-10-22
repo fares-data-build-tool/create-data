@@ -24,8 +24,8 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import { getErrorsByIds } from '../utils';
 import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
-const title = 'Define Passenger Type - Fares Data Build Tool';
-const description = 'Define Passenger Type page of the Fares Data Build Tool';
+const title = 'Define Passenger Type - Create Fares Data Service';
+const description = 'Define Passenger Type page of the Create Fares Data Service';
 
 export interface GroupDefinitionWithErrors extends GroupDefinition {
     errors: ErrorInfo[];

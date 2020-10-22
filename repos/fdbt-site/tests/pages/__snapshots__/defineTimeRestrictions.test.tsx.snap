@@ -2,9 +2,9 @@
 
 exports[`pages defineTimeRestrictions should render correctly when no errors are passed 1`] = `
 <Component
-  description="Define Time Restrictions page of the Fares Data Build Tool"
+  description="Define Time Restrictions page of the Create Fares Data Service"
   errors={Array []}
-  title="Define Time Restrictions - Fares Data Build Tool"
+  title="Define Time Restrictions - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/defineTimeRestrictions"
@@ -157,7 +157,7 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
 
 exports[`pages defineTimeRestrictions should render errors correctly when both radio and input errors are passed to the page 1`] = `
 <Component
-  description="Define Time Restrictions page of the Fares Data Build Tool"
+  description="Define Time Restrictions page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -174,7 +174,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
       },
     ]
   }
-  title="Define Time Restrictions - Fares Data Build Tool"
+  title="Define Time Restrictions - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/defineTimeRestrictions"
@@ -356,7 +356,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
 
 exports[`pages defineTimeRestrictions should render errors correctly when input errors are passed to the page 1`] = `
 <Component
-  description="Define Time Restrictions page of the Fares Data Build Tool"
+  description="Define Time Restrictions page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -373,7 +373,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
       },
     ]
   }
-  title="Define Time Restrictions - Fares Data Build Tool"
+  title="Define Time Restrictions - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/defineTimeRestrictions"
@@ -555,7 +555,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
 
 exports[`pages defineTimeRestrictions should render errors correctly when radio errors are passed to the page 1`] = `
 <Component
-  description="Define Time Restrictions page of the Fares Data Build Tool"
+  description="Define Time Restrictions page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -568,7 +568,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
       },
     ]
   }
-  title="Define Time Restrictions - Fares Data Build Tool"
+  title="Define Time Restrictions - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/defineTimeRestrictions"

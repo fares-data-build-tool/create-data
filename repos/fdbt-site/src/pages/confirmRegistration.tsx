@@ -4,8 +4,8 @@ import TwoThirdsLayout from '../layout/Layout';
 import { deleteCookieOnServerSide } from '../utils';
 import { USER_COOKIE } from '../constants';
 
-const title = 'Registration Successful - Fares Data Build Tool';
-const description = 'Confirm Registration page for the Fares Data Build Tool';
+const title = 'Registration Successful - Create Fares Data Service';
+const description = 'Confirm Registration page for the Create Fares Data Service';
 
 const ConfirmRegistration: NextPage = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>

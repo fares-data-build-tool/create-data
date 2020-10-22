@@ -15,8 +15,8 @@ import {
 import Pagination from '../components/Pagination';
 import { CREATED_FILES_NUM_PER_PAGE } from '../constants';
 
-const title = 'Created Files - Fares Data Build Tool';
-const description = 'Created Files page for the Fares Data Build Tool';
+const title = 'Created Files - Create Fares Data Service';
+const description = 'Created Files page for the Create Fares Data Service';
 
 interface CreateFilesProps {
     files: S3NetexFile[];

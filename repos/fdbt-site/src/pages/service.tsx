@@ -12,8 +12,8 @@ import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'Service - Fares Data Build Tool';
-const description = 'Service selection page of the Fares Data Build Tool';
+const title = 'Service - Create Fares Data Service';
+const description = 'Service selection page of the Create Fares Data Service';
 const errorId = 'service';
 
 type ServiceProps = {

@@ -8,8 +8,8 @@ import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interf
 import { getSessionAttribute } from '../utils/sessions';
 import { FareZoneWithErrors, FareZone } from './api/csvZoneUpload';
 
-const title = 'CSV Zone Upload - Fares Data Build Tool';
-const description = 'CSV Zone Upload page of the Fares Data Build Tool';
+const title = 'CSV Zone Upload - Create Fares Data Service';
+const description = 'CSV Zone Upload page of the Create Fares Data Service';
 
 const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>

@@ -5,8 +5,8 @@ import TwoThirdsLayout from '../layout/Layout';
 import { ID_TOKEN_COOKIE } from '../constants';
 import { getNocFromIdToken, getAttributeFromIdToken } from '../utils';
 
-const title = 'Account Details - Fares Data Build Tool';
-const description = 'Account Details page of the Fares Data Build Tool';
+const title = 'Account Details - Create Fares Data Service';
+const description = 'Account Details page of the Create Fares Data Service';
 
 interface AccountDetailsProps {
     emailAddress: string;

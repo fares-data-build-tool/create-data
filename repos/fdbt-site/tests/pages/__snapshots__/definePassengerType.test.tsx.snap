@@ -2,9 +2,9 @@
 
 exports[`pages definePassengerType should render correctly when on the group ticket user journey 1`] = `
 <Component
-  description="Define Passenger Type page of the Fares Data Build Tool"
+  description="Define Passenger Type page of the Create Fares Data Service"
   errors={Array []}
-  title="Define Passenger Type - Fares Data Build Tool"
+  title="Define Passenger Type - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/definePassengerType"
@@ -205,9 +205,9 @@ exports[`pages definePassengerType should render correctly when on the group tic
 
 exports[`pages definePassengerType should render correctly when on the non-group ticket user journey 1`] = `
 <Component
-  description="Define Passenger Type page of the Fares Data Build Tool"
+  description="Define Passenger Type page of the Create Fares Data Service"
   errors={Array []}
-  title="Define Passenger Type - Fares Data Build Tool"
+  title="Define Passenger Type - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/definePassengerType"
@@ -345,7 +345,7 @@ exports[`pages definePassengerType should render correctly when on the non-group
 
 exports[`pages definePassengerType should render errors correctly when input errors are passed to the page 1`] = `
 <Component
-  description="Define Passenger Type page of the Fares Data Build Tool"
+  description="Define Passenger Type page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -362,7 +362,7 @@ exports[`pages definePassengerType should render errors correctly when input err
       },
     ]
   }
-  title="Define Passenger Type - Fares Data Build Tool"
+  title="Define Passenger Type - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/definePassengerType"
@@ -529,7 +529,7 @@ exports[`pages definePassengerType should render errors correctly when input err
 
 exports[`pages definePassengerType should render errors correctly when radio errors are passed to the page 1`] = `
 <Component
-  description="Define Passenger Type page of the Fares Data Build Tool"
+  description="Define Passenger Type page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -542,7 +542,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
       },
     ]
   }
-  title="Define Passenger Type - Fares Data Build Tool"
+  title="Define Passenger Type - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/definePassengerType"

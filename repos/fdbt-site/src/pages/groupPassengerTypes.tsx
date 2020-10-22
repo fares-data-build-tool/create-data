@@ -9,8 +9,8 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { GroupPassengerTypesCollectionWithErrors, GroupPassengerTypesCollection } from './api/groupPassengerTypes';
 
-const title = 'Define Group Passengers - Fares Data Build Tool';
-const description = 'Group Passengers selection page of the Fares Data Build Tool';
+const title = 'Define Group Passengers - Create Fares Data Service';
+const description = 'Group Passengers selection page of the Create Fares Data Service';
 
 export type PassengerAttributes = {
     passengerTypeDisplay: string;

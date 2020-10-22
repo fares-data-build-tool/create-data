@@ -6,8 +6,8 @@ import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import { TwoThirdsLayout } from '../layout/Layout';
 
-const title = 'Cookies on the Fares Data Build Tool';
-const description = 'Cookies Preferences page of the Fares Data Build Tool';
+const title = 'Cookies - Create Fares Data Service';
+const description = 'Cookies Preferences page of the Create Fares Data Service';
 
 export interface CookiePreferencesProps {
     settingsSaved: boolean;
@@ -30,14 +30,14 @@ const Cookies = ({
             </div>
         ) : null}
         <div className="govuk-!-margin-bottom-8">
-            <h1 className="govuk-heading-l">Cookies on the Fares Data Build Tool</h1>
+            <h1 className="govuk-heading-l">Cookies on the Create Fares Data Service</h1>
         </div>
         <p className="govuk-body">
             Cookies are files saved on your phone, tablet or computer when you visit a website.
         </p>
         <p className="govuk-body">
-            We use cookies to store information about how you use the Fares Data Build Tool website, such as the pages
-            you visit.
+            We use cookies to store information about how you use the Create Fares Data website, such as the pages you
+            visit.
         </p>
         <h2 className="govuk-heading-m govuk-!-margin-bottom-3">Cookie Settings</h2>
         <div className="cookie-settings__form-wrapper">
@@ -63,8 +63,8 @@ const Cookies = ({
                                 <ul className="govuk-list govuk-list--bullet govuk-hint">
                                     <li>how you got to the site</li>
                                     <li>
-                                        the pages you visit on the Fares Data Build Tool, and how long you spend on each
-                                        page
+                                        the pages you visit on the Create Fares Data Service, and how long you spend on
+                                        each page
                                     </li>
                                     <li>what you click on while you&apos;re visiting the site</li>
                                 </ul>

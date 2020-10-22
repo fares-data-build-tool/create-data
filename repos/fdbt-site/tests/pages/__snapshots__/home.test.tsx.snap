@@ -2,13 +2,13 @@
 
 exports[`pages home page should render correctly 1`] = `
 <Component
-  description="Fares Data Build Tool is a service that allows you to generate data in NeTEx format"
-  title="Fares Data Build Tool"
+  description="Create Fares Data is a service that allows you to generate data in NeTEx format"
+  title="Create Fares Data"
 >
   <h1
     className="govuk-heading-xl"
   >
-    Fares Data Build Tool
+    Create Fares Data
   </h1>
   <div
     className="govuk-grid-row"
@@ -88,13 +88,13 @@ exports[`pages home page should render correctly 1`] = `
 
 exports[`pages home page should render correctly with no multiple operators 1`] = `
 <Component
-  description="Fares Data Build Tool is a service that allows you to generate data in NeTEx format"
-  title="Fares Data Build Tool"
+  description="Create Fares Data is a service that allows you to generate data in NeTEx format"
+  title="Create Fares Data"
 >
   <h1
     className="govuk-heading-xl"
   >
-    Fares Data Build Tool
+    Create Fares Data
   </h1>
   <div
     className="govuk-grid-row"

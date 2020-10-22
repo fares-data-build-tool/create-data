@@ -2,9 +2,9 @@
 
 exports[`pages multipleProduct should render correctly 1`] = `
 <Component
-  description="Multiple Product entry page of the Fares Data Build Tool"
+  description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
-  title="Multiple Product - Fares Data Build Tool"
+  title="Multiple Product - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/multipleProducts"

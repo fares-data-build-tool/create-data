@@ -12,8 +12,8 @@ import { InboundMatchingInfo, MatchingWithErrors } from '../interfaces/matchingI
 import { isService, isJourney } from '../interfaces/typeGuards';
 
 const heading = 'Inbound - Match stops to fare stages';
-const title = 'Inbound Matching - Fares Data Build Tool';
-const description = 'Inbound Matching page of the Fares Data Build Tool';
+const title = 'Inbound Matching - Create Fares Data Service';
+const description = 'Inbound Matching page of the Create Fares Data Service';
 const hintText = 'Select a fare stage for each stop on the inbound journey.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/inboundMatching';

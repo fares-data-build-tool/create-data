@@ -2,9 +2,9 @@
 
 exports[`pages csvUpload should render correctly 1`] = `
 <Component
-  description="Input Method selection page of the Fares Data Build Tool"
+  description="Input Method selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Input Method - Fares Data Build Tool"
+  title="Input Method - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/inputMethod"

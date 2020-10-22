@@ -2,9 +2,9 @@
 
 exports[`pages stageNamesConfirmation should render correctly 1`] = `
 <Component
-  description="Stage Names Confirmation page of the Fares Data Build Tool"
+  description="Stage Names Confirmation page of the Create Fares Data Service"
   errors={Array []}
-  title="Stage Names Confirmation - Fares Data Build Tool"
+  title="Stage Names Confirmation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/stageNamesConfirmation"

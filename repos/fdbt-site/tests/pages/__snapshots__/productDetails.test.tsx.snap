@@ -2,8 +2,8 @@
 
 exports[`pages productDetails should render correctly 1`] = `
 <Component
-  description="Product Details entry page of the Fares Data Build Tool"
-  title="Product Details - Fares Data Build Tool"
+  description="Product Details entry page of the Create Fares Data Service"
+  title="Product Details - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/productDetails"

@@ -2,8 +2,8 @@
 
 exports[`pages fareType should render correctly 1`] = `
 <Component
-  description="Reset Email Confirmation page of the Fares data build tool"
-  title="Reset Email Confirmation - Fares data build tool"
+  description="Reset Email Confirmation page of the Create Fares Data Service"
+  title="Reset Email Confirmation - Create Fares Data Service"
 >
   <h1
     className="govuk-heading-l"

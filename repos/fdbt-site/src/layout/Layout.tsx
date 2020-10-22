@@ -20,8 +20,8 @@ export const BaseLayout: FC<LayoutProps> = ({
     <div>
         <Head>
             <link rel="shortcut icon" href={favicon} />
-            <title>{buildTitle(errors, title || 'Fares Data Build Tool')}</title>
-            <meta name="description" content={description || 'Fares Data Build Tool'} />
+            <title>{buildTitle(errors, title || 'Create Fares Data')}</title>
+            <meta name="description" content={description || 'Create Fares Data'} />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta charSet="utf-8" />
         </Head>

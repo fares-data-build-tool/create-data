@@ -2,8 +2,8 @@
 
 exports[`Choose Validity Page should render correctly 1`] = `
 <Component
-  description="Choose Validity page of the Fares Data Build Tool"
-  title="Choose Validity - Fares Data Build Tool"
+  description="Choose Validity page of the Create Fares Data Service"
+  title="Choose Validity - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/chooseValidity"

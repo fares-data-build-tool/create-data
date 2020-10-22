@@ -2,9 +2,9 @@
 
 exports[`pages howManyStages should render correctly 1`] = `
 <Component
-  description="How Many Stages selection page of the Fares Data Build Tool"
+  description="How Many Stages selection page of the Create Fares Data Service"
   errors={Array []}
-  title="How Many Stages - Fares Data Build Tool"
+  title="How Many Stages - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyStages"
@@ -95,7 +95,7 @@ exports[`pages howManyStages should render correctly 1`] = `
 
 exports[`pages howManyStages should render errors correctly 1`] = `
 <Component
-  description="How Many Stages selection page of the Fares Data Build Tool"
+  description="How Many Stages selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -104,7 +104,7 @@ exports[`pages howManyStages should render errors correctly 1`] = `
       },
     ]
   }
-  title="How Many Stages - Fares Data Build Tool"
+  title="How Many Stages - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyStages"
