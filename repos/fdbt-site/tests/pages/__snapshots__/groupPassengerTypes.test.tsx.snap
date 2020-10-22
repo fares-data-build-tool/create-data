@@ -49,7 +49,7 @@ exports[`pages groupPassengerTypes should render correctly with GroupPassengerTy
           className="govuk-hint"
           id="passenger-type-hint"
         >
-          Relate the ticket(s) to a passenger type
+          Select the passenger types included in your group ticket. Select the ‘Anyone’ option if your group contains more than two of the below choices.
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
@@ -244,7 +244,7 @@ exports[`pages groupPassengerTypes should render correctly with group info and n
           className="govuk-hint"
           id="passenger-type-hint"
         >
-          Relate the ticket(s) to a passenger type
+          Select the passenger types included in your group ticket. Select the ‘Anyone’ option if your group contains more than two of the below choices.
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
@@ -432,7 +432,7 @@ exports[`pages groupPassengerTypes should render correctly with no GroupPassenge
           className="govuk-hint"
           id="passenger-type-hint"
         >
-          Relate the ticket(s) to a passenger type
+          Select the passenger types included in your group ticket. Select the ‘Anyone’ option if your group contains more than two of the below choices.
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
