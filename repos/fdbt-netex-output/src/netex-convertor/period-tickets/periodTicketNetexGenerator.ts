@@ -1,4 +1,10 @@
-import { isMultiOperatorGeoZoneTicket, Operator, PeriodTicket } from '../../types';
+import {
+    isMultiOperatorMultipleServicesTicket,
+    isMultiOperatorGeoZoneTicket,
+    Operator,
+    PeriodTicket,
+} from '../../types/index';
+
 import {
     getScheduledStopPointsList,
     getTopographicProjectionRefList,
@@ -119,6 +125,16 @@ const periodTicketNetexGenerator = (
 
             resourceFrameToUpdate.organisations.Operator = getOrganisations(operatorData);
             resourceFrameToUpdate.groupsOfOperators = getGroupOfOperators(operatorData);
+        } else if (
+            userPeriodTicket.type === 'multiOperator' &&
+            isMultiOperatorMultipleServicesTicket(userPeriodTicket)
+        ) {
+            const nocs: string[] = userPeriodTicket.additionalOperators.map(
+                additionalOperator => additionalOperator.nocCode,
+            );
+            nocs.push(userPeriodTicket.nocCode);
+            resourceFrameToUpdate.organisations.Operator = getOrganisations(operatorData);
+            resourceFrameToUpdate.groupsOfOperators = getGroupOfOperators(operatorData);
         } else {
             resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
             resourceFrameToUpdate.organisations.Operator.PublicCode.$t = userPeriodTicket.nocCode;
@@ -134,12 +150,12 @@ const periodTicketNetexGenerator = (
         return resourceFrameToUpdate;
     };
 
-    const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
+    const updateServiceFrame = async (serviceFrame: NetexObject): Promise<NetexObject | null> => {
         if (isMultiServiceTicket(userPeriodTicket)) {
             const serviceFrameToUpdate = { ...serviceFrame };
             serviceFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:ServiceFrame_UK_PI_NETWORK:${placeHolderGroupOfProductsName}:op`;
 
-            serviceFrameToUpdate.lines.Line = getLinesList(userPeriodTicket, website);
+            serviceFrameToUpdate.lines.Line = await getLinesList(userPeriodTicket, website);
 
             return serviceFrameToUpdate;
         }
@@ -275,7 +291,7 @@ const periodTicketNetexGenerator = (
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
         netexFrames.ResourceFrame = updateResourceFrame(netexFrames.ResourceFrame);
 
-        netexFrames.ServiceFrame = updateServiceFrame(netexFrames.ServiceFrame);
+        netexFrames.ServiceFrame = await updateServiceFrame(netexFrames.ServiceFrame);
 
         // Multi Service does not need a Network Frame
         if (isGeoZoneTicket(userPeriodTicket)) {
