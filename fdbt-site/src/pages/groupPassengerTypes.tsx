@@ -44,7 +44,8 @@ const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypePro
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="passenger-type-hint">
-                                Relate the ticket(s) to a passenger type
+                                Select the passenger types included in your group ticket. Select the ‘Anyone’ option if
+                                your group contains more than two of the below choices.
                             </span>
                             <FormElementWrapper
                                 errors={errors}
