@@ -12,7 +12,7 @@ interface HomeProps {
 
 const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description}>
-        <h1 className="govuk-heading-xl">Create Fares Data</h1>
+        <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
                 <div>

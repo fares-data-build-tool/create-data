@@ -8,7 +8,7 @@ exports[`pages home page should render correctly 1`] = `
   <h1
     className="govuk-heading-xl"
   >
-    Create Fares Data
+    Create fares data
   </h1>
   <div
     className="govuk-grid-row"
@@ -94,7 +94,7 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
   <h1
     className="govuk-heading-xl"
   >
-    Create Fares Data
+    Create fares data
   </h1>
   <div
     className="govuk-grid-row"

@@ -12,7 +12,7 @@ interface StartProps {
 
 const Start = ({ multipleOperators }: StartProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
-        <h1 className="govuk-heading-xl">Create Fares Data</h1>
+        <h1 className="govuk-heading-xl">Create fares data</h1>
 
         <p className="govuk-body">
             This service is for creating or accessing NeTEx data for public transport services, excluding rail, in
