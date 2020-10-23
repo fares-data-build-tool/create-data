@@ -24,14 +24,14 @@ exports[`pages howManyProducts should render correctly for multi op 1`] = `
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many period tickets do you have for the selected services?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -82,14 +82,14 @@ exports[`pages howManyProducts should render correctly for non multi op 1`] = `
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many period tickets do you have for this geographic zone?
         </h1>
       </label>
       <div
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -156,7 +156,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -238,7 +238,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -320,7 +320,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -402,7 +402,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -484,7 +484,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -566,7 +566,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -648,7 +648,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
