@@ -2,9 +2,9 @@
 
 exports[`describeSalesOfferPackage should be able to handle being passed undefined props 1`] = `
 <Component
-  description="Sales Offer Package Description page of the Fares Data Build Tool"
+  description="Sales Offer Package Description page of the Create Fares Data Service"
   errors={Array []}
-  title="Sales Offer Package Description - Fares Data Build Tool"
+  title="Sales Offer Package Description - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -111,7 +111,7 @@ exports[`describeSalesOfferPackage should be able to handle being passed undefin
 
 exports[`describeSalesOfferPackage should render the page with errors when errors are present 1`] = `
 <Component
-  description="Sales Offer Package Description page of the Fares Data Build Tool"
+  description="Sales Offer Package Description page of the Create Fares Data Service"
   errors={
     Array [
       ObjectContaining {
@@ -120,7 +120,7 @@ exports[`describeSalesOfferPackage should render the page with errors when error
       },
     ]
   }
-  title="Sales Offer Package Description - Fares Data Build Tool"
+  title="Sales Offer Package Description - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -248,9 +248,9 @@ exports[`describeSalesOfferPackage should render the page with errors when error
 
 exports[`describeSalesOfferPackage should render the page with no errors when no errors are present 1`] = `
 <Component
-  description="Sales Offer Package Description page of the Fares Data Build Tool"
+  description="Sales Offer Package Description page of the Create Fares Data Service"
   errors={Array []}
-  title="Sales Offer Package Description - Fares Data Build Tool"
+  title="Sales Offer Package Description - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"

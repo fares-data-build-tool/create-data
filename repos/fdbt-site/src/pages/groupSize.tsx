@@ -8,8 +8,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { GROUP_SIZE_ATTRIBUTE } from '../constants';
 import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from './api/groupSize';
 
-const title = 'Group Size - Fares Data Build Tool';
-const description = 'Group Size entry page of the Fares Data Build Tool';
+const title = 'Group Size - Create Fares Data Service';
+const description = 'Group Size entry page of the Create Fares Data Service';
 
 export interface GroupSizeProps {
     groupTicketInfo: GroupTicketAttribute | GroupTicketAttributeWithErrors;

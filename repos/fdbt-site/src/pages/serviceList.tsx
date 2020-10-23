@@ -11,8 +11,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from './api/serviceList';
 import { FareType } from './api/fareType';
 
-const pageTitle = 'Service List - Fares Data Build Tool';
-const pageDescription = 'Service List selection page of the Fares Data Build Tool';
+const pageTitle = 'Service List - Create Fares Data Service';
+const pageDescription = 'Service List selection page of the Create Fares Data Service';
 
 export interface ServicesInfo extends ServiceType {
     checked?: boolean;

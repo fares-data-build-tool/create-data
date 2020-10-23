@@ -22,8 +22,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
 
-const title = 'Multiple Product - Fares Data Build Tool';
-const description = 'Multiple Product entry page of the Fares Data Build Tool';
+const title = 'Multiple Product - Create Fares Data Service';
+const description = 'Multiple Product entry page of the Create Fares Data Service';
 
 export interface MultipleProductProps {
     numberOfProductsToDisplay: string;

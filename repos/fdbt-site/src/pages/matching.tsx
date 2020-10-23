@@ -11,8 +11,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { MatchingWithErrors, MatchingInfo } from '../interfaces/matchingInterface';
 import { isService, isJourney } from '../interfaces/typeGuards';
 
-const title = 'Matching - Fares Data Build Tool';
-const description = 'Matching page of the Fares Data Build Tool';
+const title = 'Matching - Create Fares Data Service';
+const description = 'Matching page of the Create Fares Data Service';
 const heading = 'Match stops to fares stages';
 const hintText = 'Select a fare stage for each stop.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';

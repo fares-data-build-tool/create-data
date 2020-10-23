@@ -2,8 +2,8 @@
 
 exports[`pages account should render correctly 1`] = `
 <Component
-  description="Account Details page of the Fares Data Build Tool"
-  title="Account Details - Fares Data Build Tool"
+  description="Account Details page of the Create Fares Data Service"
+  title="Account Details - Create Fares Data Service"
 >
   <div
     className="account-details-page"

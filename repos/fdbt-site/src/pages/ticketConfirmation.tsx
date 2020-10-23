@@ -40,8 +40,8 @@ import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
 
-const title = 'Ticket Confirmation - Fares Data Build Tool';
-const description = 'Ticket Confirmation page of the Fares Data Build Tool';
+const title = 'Ticket Confirmation - Create Fares Data Service';
+const description = 'Ticket Confirmation page of the Create Fares Data Service';
 
 export type TicketConfirmationProps = {
     fareTypeProps: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps;

@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 
-const title = 'Request Access - Fares data build tool';
-const description = 'Request Access page of the Fares data build tool';
+const title = 'Request Access - Create Fares Data Service';
+const description = 'Request Access page of the Create Fares Data Service';
 
 const RequestAccess = (): ReactElement => (
     <BaseLayout title={title} description={description} errors={[]}>
@@ -11,11 +11,11 @@ const RequestAccess = (): ReactElement => (
                 <h1 className="govuk-heading-l" id="request-access-page-heading">
                     Request Access
                 </h1>
-                <p className="govuk-body">The Fares Data Build Tool is not open to public registration.</p>
+                <p className="govuk-body">The Create fares data service is not open to public registration.</p>
                 <p className="govuk-body">
                     Please contact{' '}
                     <a className="govuk-link" id="access_link" href="/contact">
-                        Fares Data Build Support
+                        Create fares data support
                     </a>{' '}
                     to register.
                 </p>

@@ -9,8 +9,8 @@ import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
 import { TimeRestrictionsDefinitionWithErrors } from './api/defineTimeRestrictions';
 import { getErrorsByIds } from '../utils';
 
-const title = 'Define Time Restrictions - Fares Data Build Tool';
-const description = 'Define Time Restrictions page of the Fares Data Build Tool';
+const title = 'Define Time Restrictions - Create Fares Data Service';
+const description = 'Define Time Restrictions page of the Create Fares Data Service';
 
 export interface DefineTimeRestrictionsProps {
     errors: ErrorInfo[];

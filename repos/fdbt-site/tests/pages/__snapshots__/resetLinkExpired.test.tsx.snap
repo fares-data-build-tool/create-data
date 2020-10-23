@@ -2,8 +2,8 @@
 
 exports[`passwordUpdated should render correctly 1`] = `
 <Component
-  description="Reset Password Link Expired page for the Fares Data Build Tool"
-  title="Reset Password Link Expired - Fares Data Build Tool"
+  description="Reset Password Link Expired page for the Create Fares Data Service"
+  title="Reset Password Link Expired - Create Fares Data Service"
 >
   <h1
     className="govuk-heading-l"

@@ -9,8 +9,8 @@ import { isFareStageWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { FareStagesAttribute } from './api/chooseStages';
 
-const title = 'Choose Stages - Fares Data Build Tool';
-const description = 'Choose Stages page of the Fares Data Build Tool';
+const title = 'Choose Stages - Create Fares Data Service';
+const description = 'Choose Stages page of the Create Fares Data Service';
 
 interface ChooseStagesProps {
     fareStage: FareStagesAttribute;

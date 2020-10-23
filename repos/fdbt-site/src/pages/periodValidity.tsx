@@ -8,8 +8,8 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { PeriodExpiryWithErrors } from './api/periodValidity';
 
-const title = 'Period Validity - Fares Data Build Tool';
-const description = 'Period Validity selection page of the Fares Data Build Tool';
+const title = 'Period Validity - Create Fares Data Service';
+const description = 'Period Validity selection page of the Create Fares Data Service';
 
 const errorId = 'period-end-calendar';
 

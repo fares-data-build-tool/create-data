@@ -13,8 +13,8 @@ import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 
-const title = 'Search Operators - Fares Data Build Tool';
-const description = 'Search Operators page for the Fares Data Build Tool';
+const title = 'Search Operators - Create Fares Data Service';
+const description = 'Search Operators page for the Create Fares Data Service';
 
 export const searchInputId = 'search-input';
 export const addOperatorsErrorId = 'add-operator-checkbox-0';

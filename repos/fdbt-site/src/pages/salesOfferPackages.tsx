@@ -11,8 +11,8 @@ import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementW
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from './api/salesOfferPackages';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 
-const title = 'Sales Offer Packages - Fares Data Build Tool';
-const description = 'Sales Offer Packages page for the Fares Data Build Tool';
+const title = 'Sales Offer Packages - Create Fares Data Service';
+const description = 'Sales Offer Packages page for the Create Fares Data Service';
 
 export const purchaseLocationsList = {
     id: 'checkbox-0-on-board',

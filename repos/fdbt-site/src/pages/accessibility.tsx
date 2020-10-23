@@ -1,19 +1,19 @@
 import React, { ReactElement } from 'react';
 import { TwoThirdsLayout } from '../layout/Layout';
 
-const title = 'Accessibility - Fares Data Build Tool';
-const description = 'Accessibility page for the Fares Data Build Tool';
+const title = 'Accessibility - Create Fares Data Service';
+const description = 'Accessibility page for the Create Fares Data Service';
 
 const Accessibility = (): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description}>
-            <h1 className="govuk-heading-l">Accessibility statement for the Fares Data Build Tool</h1>
+            <h1 className="govuk-heading-l">Accessibility statement for the Create Fares Data Service</h1>
             <p className="govuk-body">
                 This service is part of the wider GOV.UK website. There’s a separate accessibility statement for the
                 main GOV.UK website.
             </p>
             <p className="govuk-body">
-                This page only contains information about the Fares Data Build Tool service, available at&nbsp;
+                This page only contains information about the Create Fares Data Service, available at&nbsp;
                 <a href="https://fares-data.dft.gov.uk">https://fares-data.dft.gov.uk</a>.
             </p>
             <h2 className="govuk-heading-m">Using this service</h2>

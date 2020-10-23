@@ -2,9 +2,9 @@
 
 exports[`pages csvzoneupload should render correctly 1`] = `
 <Component
-  description="CSV Zone Upload page of the Fares Data Build Tool"
+  description="CSV Zone Upload page of the Create Fares Data Service"
   errors={Array []}
-  title="CSV Zone Upload - Fares Data Build Tool"
+  title="CSV Zone Upload - Create Fares Data Service"
 >
   <UserDataUploadComponent
     csrfToken=""

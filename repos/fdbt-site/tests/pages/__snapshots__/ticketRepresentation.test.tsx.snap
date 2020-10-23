@@ -2,9 +2,9 @@
 
 exports[`pages ticketRepresentation should render correctly when the fare type is a multi operator ticket 1`] = `
 <Component
-  description="Ticket Representation selection page of the Fares Data Build Tool"
+  description="Ticket Representation selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Ticket Representation - Fares Data Build Tool"
+  title="Ticket Representation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/ticketRepresentation"
@@ -89,9 +89,9 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
 
 exports[`pages ticketRepresentation should render correctly when the fare type is a period ticket 1`] = `
 <Component
-  description="Ticket Representation selection page of the Fares Data Build Tool"
+  description="Ticket Representation selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Ticket Representation - Fares Data Build Tool"
+  title="Ticket Representation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/ticketRepresentation"
@@ -176,7 +176,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
 
 exports[`pages ticketRepresentation should render error messaging when errors are passed 1`] = `
 <Component
-  description="Ticket Representation selection page of the Fares Data Build Tool"
+  description="Ticket Representation selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -185,7 +185,7 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
       },
     ]
   }
-  title="Ticket Representation - Fares Data Build Tool"
+  title="Ticket Representation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/ticketRepresentation"

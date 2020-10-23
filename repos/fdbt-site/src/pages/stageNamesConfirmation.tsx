@@ -7,8 +7,8 @@ import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import { isInputCheck } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'Stage Names Confirmation - Fares Data Build Tool';
-const description = 'Stage Names Confirmation page of the Fares Data Build Tool';
+const title = 'Stage Names Confirmation - Create Fares Data Service';
+const description = 'Stage Names Confirmation page of the Create Fares Data Service';
 
 interface StageNamesConfirmationProps {
     fareStageNames: string[];

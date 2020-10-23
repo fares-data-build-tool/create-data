@@ -9,8 +9,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import { PassengerType } from './api/passengerType';
 
-const title = 'Fare Confirmation - Fares Data Build Tool';
-const description = 'Fare Confirmation page of the Fares Data Build Tool';
+const title = 'Fare Confirmation - Create Fares Data Service';
+const description = 'Fare Confirmation page of the Create Fares Data Service';
 
 type FareConfirmationProps = {
     fareType: string;

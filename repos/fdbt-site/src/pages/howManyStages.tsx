@@ -7,8 +7,8 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'How Many Stages - Fares Data Build Tool';
-const description = 'How Many Stages selection page of the Fares Data Build Tool';
+const title = 'How Many Stages - Create Fares Data Service';
+const description = 'How Many Stages selection page of the Create Fares Data Service';
 
 export interface NumberOfStagesAttributeWithError {
     errors: ErrorInfo[];

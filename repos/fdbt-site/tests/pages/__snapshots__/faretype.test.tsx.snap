@@ -2,9 +2,9 @@
 
 exports[`pages fareType should render correctly 1`] = `
 <Component
-  description="Fare Type selection page of the Fares Data Build Tool"
+  description="Fare Type selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Fare Type - Fares Data Build Tool"
+  title="Fare Type - Create Fares Data Service "
 >
   <CsrfForm
     action="/api/fareType"
@@ -146,7 +146,7 @@ exports[`pages fareType should render correctly 1`] = `
 
 exports[`pages fareType should render error messaging when errors are passed to the page 1`] = `
 <Component
-  description="Fare Type selection page of the Fares Data Build Tool"
+  description="Fare Type selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -155,7 +155,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
       },
     ]
   }
-  title="Fare Type - Fares Data Build Tool"
+  title="Fare Type - Create Fares Data Service "
 >
   <CsrfForm
     action="/api/fareType"

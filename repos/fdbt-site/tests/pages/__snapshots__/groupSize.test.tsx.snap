@@ -2,8 +2,8 @@
 
 exports[`pages groupSize should render correctly 1`] = `
 <Component
-  description="Group Size entry page of the Fares Data Build Tool"
-  title="Group Size - Fares Data Build Tool"
+  description="Group Size entry page of the Create Fares Data Service"
+  title="Group Size - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/groupSize"
@@ -64,8 +64,8 @@ exports[`pages groupSize should render correctly 1`] = `
 
 exports[`pages groupSize should render error messaging when errors are passed 1`] = `
 <Component
-  description="Group Size entry page of the Fares Data Build Tool"
-  title="Group Size - Fares Data Build Tool"
+  description="Group Size entry page of the Create Fares Data Service"
+  title="Group Size - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/groupSize"

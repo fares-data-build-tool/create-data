@@ -4,7 +4,7 @@ exports[`Matching Page should render correctly 1`] = `
 <MatchingBase
   apiEndpoint="/api/matching"
   csrfToken=""
-  description="Matching page of the Fares Data Build Tool"
+  description="Matching page of the Create Fares Data Service"
   error={false}
   heading="Match stops to fares stages"
   hintText="Select a fare stage for each stop."
@@ -175,7 +175,7 @@ exports[`Matching Page should render correctly 1`] = `
       },
     ]
   }
-  title="Matching - Fares Data Build Tool"
+  title="Matching - Create Fares Data Service"
   travelineHintText="This data has been taken from the Traveline National Dataset and NaPTAN database."
   userFareStages={
     Object {

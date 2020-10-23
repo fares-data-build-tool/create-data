@@ -2,8 +2,8 @@
 
 exports[`pages searchOperator should render a selection error when the user tries to add operators without selecting any search results 1`] = `
 <Component
-  description="Search Operators page for the Fares Data Build Tool"
-  title="Search Operators - Fares Data Build Tool"
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -160,8 +160,8 @@ exports[`pages searchOperator should render a selection error when the user trie
 
 exports[`pages searchOperator should render a selection error when the user tries to remove selected operators without making a selection 1`] = `
 <Component
-  description="Search Operators page for the Fares Data Build Tool"
-  title="Search Operators - Fares Data Build Tool"
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -346,8 +346,8 @@ exports[`pages searchOperator should render a selection error when the user trie
 
 exports[`pages searchOperator should render an input error when the user makes an unsucessful search 1`] = `
 <Component
-  description="Search Operators page for the Fares Data Build Tool"
-  title="Search Operators - Fares Data Build Tool"
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -441,8 +441,8 @@ exports[`pages searchOperator should render an input error when the user makes a
 
 exports[`pages searchOperator should render just the search input when the user first visits the page 1`] = `
 <Component
-  description="Search Operators page for the Fares Data Build Tool"
-  title="Search Operators - Fares Data Build Tool"
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -518,8 +518,8 @@ exports[`pages searchOperator should render just the search input when the user 
 
 exports[`pages searchOperator should render the search input and a list of selected operators when search results have been selected 1`] = `
 <Component
-  description="Search Operators page for the Fares Data Build Tool"
-  title="Search Operators - Fares Data Build Tool"
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -704,8 +704,8 @@ exports[`pages searchOperator should render the search input and a list of selec
 
 exports[`pages searchOperator should render the search input and search results when there is a successful search 1`] = `
 <Component
-  description="Search Operators page for the Fares Data Build Tool"
-  title="Search Operators - Fares Data Build Tool"
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -862,8 +862,8 @@ exports[`pages searchOperator should render the search input and search results 
 
 exports[`pages searchOperator should render the search input, search results and a list of selected operators when an additional search is made 1`] = `
 <Component
-  description="Search Operators page for the Fares Data Build Tool"
-  title="Search Operators - Fares Data Build Tool"
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
