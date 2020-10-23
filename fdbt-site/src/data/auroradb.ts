@@ -168,6 +168,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
             SELECT lineName, startDate, serviceDescription AS description, serviceCode
             FROM tndsOperatorService
             WHERE nocCode = ?
+            ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
         const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter]);
