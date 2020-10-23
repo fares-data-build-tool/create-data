@@ -2,9 +2,9 @@
 
 exports[`pages ticketConfirmation should render correctly for flat fare tickets 1`] = `
 <Component
-  description="Ticket Confirmation page of the Fares Data Build Tool"
+  description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
-  title="Ticket Confirmation - Fares Data Build Tool"
+  title="Ticket Confirmation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/ticketConfirmation"
@@ -45,9 +45,9 @@ exports[`pages ticketConfirmation should render correctly for flat fare tickets 
 
 exports[`pages ticketConfirmation should render correctly for period and multiOperator tickets 1`] = `
 <Component
-  description="Ticket Confirmation page of the Fares Data Build Tool"
+  description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
-  title="Ticket Confirmation - Fares Data Build Tool"
+  title="Ticket Confirmation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/ticketConfirmation"
@@ -128,9 +128,9 @@ exports[`pages ticketConfirmation should render correctly for period and multiOp
 
 exports[`pages ticketConfirmation should render correctly for return tickets 1`] = `
 <Component
-  description="Ticket Confirmation page of the Fares Data Build Tool"
+  description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
-  title="Ticket Confirmation - Fares Data Build Tool"
+  title="Ticket Confirmation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/ticketConfirmation"
@@ -201,9 +201,9 @@ exports[`pages ticketConfirmation should render correctly for return tickets 1`]
 
 exports[`pages ticketConfirmation should render correctly for single tickets 1`] = `
 <Component
-  description="Ticket Confirmation page of the Fares Data Build Tool"
+  description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
-  title="Ticket Confirmation - Fares Data Build Tool"
+  title="Ticket Confirmation - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/ticketConfirmation"

@@ -2,8 +2,8 @@
 
 exports[`pages createdFiles should render correctly 1`] = `
 <Component
-  description="Created Files page for the Fares Data Build Tool"
-  title="Created Files - Fares Data Build Tool"
+  description="Created Files page for the Create Fares Data Service"
+  title="Created Files - Create Fares Data Service"
 >
   <h1
     className="govuk-heading-l"

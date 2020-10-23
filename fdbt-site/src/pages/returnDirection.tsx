@@ -12,8 +12,8 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { isFareType, isJourney, isService } from '../interfaces/typeGuards';
 
-const title = 'Return Direction - Fares Data Build Tool';
-const description = 'Return Direction selection page of the Fares Data Build Tool';
+const title = 'Return Direction - Create Fares Data Service';
+const description = 'Return Direction selection page of the Create Fares Data Service';
 
 export const inboundErrorId = 'inbound-journey';
 export const outboundErrorId = 'outbound-journey';

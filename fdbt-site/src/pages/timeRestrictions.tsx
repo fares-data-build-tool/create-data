@@ -8,8 +8,8 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from './api/timeRestrictions';
 
-const title = 'Time Restrictions - Fares Data Build Tool';
-const description = 'Time Restrictions selection page of the Fares Data Build Tool';
+const title = 'Time Restrictions - Create Fares Data Service';
+const description = 'Time Restrictions selection page of the Create Fares Data Service';
 
 export const timeRestrictionsErrorId = 'time-restrictions-yes';
 

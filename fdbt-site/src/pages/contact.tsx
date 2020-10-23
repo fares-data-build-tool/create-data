@@ -1,23 +1,23 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 
-const title = 'Contact - Fares Data Build Tool';
-const description = 'Contact page for the Fares Data Build Tool';
+const title = 'Contact - Create Fares Data Service';
+const description = 'Contact page for the Create Fares Data Service';
 
 const Contact = (): ReactElement => {
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
-                    <h1 className="govuk-heading-l">Contact the Fares Data Build Tool team</h1>
+                    <h1 className="govuk-heading-l">Contact the Create Fares Data Service team</h1>
                     <h2 className="govuk-heading-m">Feedback and support</h2>
                     <p className="govuk-body">
-                        If you are experiencing technical issues, please contact the Fares Data Build service through
-                        the channels below
+                        If you are experiencing technical issues, please contact the Create Fares Data team through the
+                        channels below
                     </p>
                     <h3 className="govuk-heading-s">By phone</h3>
                     <p className="govuk-body">
-                        Fares Data Build Tool support line:
+                        Create Fares Data Service support line:
                         <br />
                         Telephone: 0800 464 3290
                         <br />
@@ -30,9 +30,9 @@ const Contact = (): ReactElement => {
                     </p>
                 </div>
                 <div className="govuk-grid-column-one-third">
-                    <h2 className="govuk-heading-m">Fares Data Build Tool</h2>
+                    <h2 className="govuk-heading-m">Create Fares Data Service</h2>
                     <p className="govuk-body">
-                        The Fares Data Build tool enables local bus operators in England to generate higher quality
+                        The Create Fares Data Service enables local bus operators in England to generate higher quality
                         fares information in an open data format
                     </p>
                 </div>

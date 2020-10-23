@@ -8,8 +8,8 @@ import { CognitoIdToken, NextPageContextWithSession } from '../interfaces';
 import logger from '../utils/logger';
 import { destroySession } from '../utils/sessions';
 
-const title = 'Thank You - Fares Data Build Tool';
-const description = 'Thank you page for the Fares Data Build Tool';
+const title = 'Thank You - Create Fares Data Service';
+const description = 'Thank you page for the Create Fares Data Service';
 
 type ThankYouProps = {
     uuid: string;

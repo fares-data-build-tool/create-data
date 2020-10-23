@@ -2,7 +2,7 @@
 
 exports[`pages timeRestrictions should render correctly with errors 1`] = `
 <Component
-  description="Time Restrictions selection page of the Fares Data Build Tool"
+  description="Time Restrictions selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -11,7 +11,7 @@ exports[`pages timeRestrictions should render correctly with errors 1`] = `
       },
     ]
   }
-  title="Time Restrictions - Fares Data Build Tool"
+  title="Time Restrictions - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/timeRestrictions"
@@ -116,9 +116,9 @@ exports[`pages timeRestrictions should render correctly with errors 1`] = `
 
 exports[`pages timeRestrictions should render correctly with no errors 1`] = `
 <Component
-  description="Time Restrictions selection page of the Fares Data Build Tool"
+  description="Time Restrictions selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Time Restrictions - Fares Data Build Tool"
+  title="Time Restrictions - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/timeRestrictions"

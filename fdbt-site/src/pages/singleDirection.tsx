@@ -13,8 +13,8 @@ import CsrfForm from '../components/CsrfForm';
 import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'Single Direction - Fares Data Build Tool';
-const description = 'Single Direction selection page of the Fares Data Build Tool';
+const title = 'Single Direction - Create Fares Data Service';
+const description = 'Single Direction selection page of the Create Fares Data Service';
 
 interface DirectionProps {
     operator: string;

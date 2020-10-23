@@ -15,8 +15,8 @@ import ConfirmationTable, { ConfirmationElement } from '../components/Confirmati
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 
-const title = 'Sales Confirmation - Fares Data Build Tool';
-const description = 'Sales Confirmation page of the Fares Data Build Tool';
+const title = 'Sales Confirmation - Create Fares Data Service';
+const description = 'Sales Confirmation page of the Create Fares Data Service';
 
 type SalesConfirmationProps = {
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[];

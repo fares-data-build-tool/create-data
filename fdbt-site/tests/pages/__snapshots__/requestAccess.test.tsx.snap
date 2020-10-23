@@ -2,9 +2,9 @@
 
 exports[`pages requestAccess should render correctly 1`] = `
 <Component
-  description="Request Access page of the Fares data build tool"
+  description="Request Access page of the Create Fares Data Service"
   errors={Array []}
-  title="Request Access - Fares data build tool"
+  title="Request Access - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -21,7 +21,7 @@ exports[`pages requestAccess should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        The Fares Data Build Tool is not open to public registration.
+        The Create fares data service is not open to public registration.
       </p>
       <p
         className="govuk-body"
@@ -33,7 +33,7 @@ exports[`pages requestAccess should render correctly 1`] = `
           href="/contact"
           id="access_link"
         >
-          Fares Data Build Support
+          Create fares data support
         </a>
          
         to register.

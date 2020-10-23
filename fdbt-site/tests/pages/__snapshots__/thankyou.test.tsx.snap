@@ -2,8 +2,8 @@
 
 exports[`pages thankyou should render correctly 1`] = `
 <Component
-  description="Thank you page for the Fares Data Build Tool"
-  title="Thank You - Fares Data Build Tool"
+  description="Thank you page for the Create Fares Data Service"
+  title="Thank You - Create Fares Data Service"
 >
   <div
     className="govuk-panel govuk-panel--confirmation"

@@ -5,8 +5,8 @@ import TwoThirdsLayout from '../layout/Layout';
 import { deleteCookieOnServerSide } from '../utils';
 import { USER_COOKIE } from '../constants';
 
-const title = 'Password Updated - Fares Data Build Tool';
-const description = 'Password Updated page of the Fares Data Build Tool';
+const title = 'Password Updated - Create Fares Data Service';
+const description = 'Password Updated page of the Create Fares Data Service';
 
 interface PasswordUpdatedProps {
     redirectTo: string;

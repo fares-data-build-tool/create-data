@@ -2,9 +2,9 @@
 
 exports[`pages howManyProducts should render correctly for multi op 1`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={Array []}
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -24,65 +24,7 @@ exports[`pages howManyProducts should render correctly for multi op 1`] = `
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many period tickets do you have for the selected services?
-        </h1>
-      </label>
-      <div
-        className="govuk-hint"
-        id="number-of-products-hint"
-      >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
-      </div>
-      <FormElementWrapper
-        errorClass="govuk-input--error"
-        errorId="number-of-products"
-        errors={Array []}
-      >
-        <input
-          aria-describedby="number-of-products-hint"
-          className="govuk-input govuk-input--width-2"
-          defaultValue=""
-          id="number-of-products"
-          name="numberOfProductsInput"
-          type="text"
-        />
-      </FormElementWrapper>
-    </div>
-    <input
-      className="govuk-button"
-      id="continue-button"
-      type="submit"
-      value="Continue"
-    />
-  </CsrfForm>
-</Component>
-`;
-
-exports[`pages howManyProducts should render correctly for non multi op 1`] = `
-<Component
-  description="How Many Products entry page of the Fares Data Build Tool"
-  errors={Array []}
-  title="How Many Products - Fares Data Build Tool"
->
-  <CsrfForm
-    action="/api/howManyProducts"
-    csrfToken=""
-    method="post"
-  >
-    <ErrorSummary
-      errors={Array []}
-    />
-    <div
-      className="govuk-form-group"
-    >
-      <label
-        htmlFor="number-of-products"
-      >
-        <h1
-          className="govuk-heading-l"
-          id="page-heading"
-        >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -116,9 +58,67 @@ exports[`pages howManyProducts should render correctly for non multi op 1`] = `
 </Component>
 `;
 
+exports[`pages howManyProducts should render correctly for non multi op 1`] = `
+<Component
+  description="How Many Products entry page of the Create Fares Data Service"
+  errors={Array []}
+  title="How Many Products - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/howManyProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <label
+        htmlFor="number-of-products"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="page-heading"
+        >
+          How many period tickets do you have for this geographic zone?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="number-of-products-hint"
+      >
+        Enter the number of period tickets below. Up to a maximum of 5 at once.
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="number-of-products"
+        errors={Array []}
+      >
+        <input
+          aria-describedby="number-of-products-hint"
+          className="govuk-input govuk-input--width-2"
+          defaultValue=""
+          id="number-of-products"
+          name="numberOfProductsInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 1`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -128,7 +128,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -156,7 +156,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -200,7 +200,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 2`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -210,7 +210,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -238,7 +238,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -282,7 +282,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 3`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -292,7 +292,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -320,7 +320,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -364,7 +364,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 4`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -374,7 +374,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -402,7 +402,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -446,7 +446,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 5`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -456,7 +456,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -484,7 +484,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -528,7 +528,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 6`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -538,7 +538,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -566,7 +566,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -610,7 +610,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (multiOperator) 7`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -620,7 +620,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -648,7 +648,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operator(s) and/or service(s)?
+          How many multi operator tickets do you have for the selected operators and/or selected services?
         </h1>
       </label>
       <div
@@ -692,7 +692,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 1`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -702,7 +702,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -774,7 +774,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 2`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -784,7 +784,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -856,7 +856,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 3`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -866,7 +866,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -938,7 +938,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 4`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -948,7 +948,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -1020,7 +1020,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 5`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -1030,7 +1030,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -1102,7 +1102,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 6`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -1112,7 +1112,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"
@@ -1184,7 +1184,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
 
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered (non-multiOperator) 7`] = `
 <Component
-  description="How Many Products entry page of the Fares Data Build Tool"
+  description="How Many Products entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -1194,7 +1194,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
       },
     ]
   }
-  title="How Many Products - Fares Data Build Tool"
+  title="How Many Products - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/howManyProducts"

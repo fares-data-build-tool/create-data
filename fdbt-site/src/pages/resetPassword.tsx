@@ -9,8 +9,8 @@ import { CustomAppProps, ErrorInfo } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
-const title = 'Reset Password - Fares data build tool';
-const description = 'Reset Password page of the Fares data build tool';
+const title = 'Reset Password - Create Fares Data Service';
+const description = 'Reset Password page of the Create Fares Data Service';
 
 interface ResetPasswordProps {
     errors: ErrorInfo[];

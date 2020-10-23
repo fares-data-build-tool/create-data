@@ -2,9 +2,9 @@
 
 exports[`pages multipleOperators should render correctly with multiple operator NOC pairs 1`] = `
 <Component
-  description="Multiple Operators page of the Fares Data Build Tool"
+  description="Multiple Operators page of the Create Fares Data Service"
   errors={Array []}
-  title="Multiple Operators - Fares Data Build Tool"
+  title="Multiple Operators - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/multipleOperators"
@@ -92,9 +92,9 @@ exports[`pages multipleOperators should render correctly with multiple operator 
 
 exports[`pages multipleOperators should render correctly with one operator NOC pair 1`] = `
 <Component
-  description="Multiple Operators page of the Fares Data Build Tool"
+  description="Multiple Operators page of the Create Fares Data Service"
   errors={Array []}
-  title="Multiple Operators - Fares Data Build Tool"
+  title="Multiple Operators - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/multipleOperators"

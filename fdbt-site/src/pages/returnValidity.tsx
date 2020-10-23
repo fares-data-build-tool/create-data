@@ -14,8 +14,8 @@ export interface ReturnPeriodValidityWithErrors {
     errors: ErrorInfo[];
 }
 
-const title = 'Return Validity - Fares Data Build Tool';
-const description = 'Return Validity page of the Fares Data Build Tool';
+const title = 'Return Validity - Create Fares Data Service';
+const description = 'Return Validity page of the Create Fares Data Service';
 
 export interface ReturnValidityProps {
     errors: ErrorInfo[];

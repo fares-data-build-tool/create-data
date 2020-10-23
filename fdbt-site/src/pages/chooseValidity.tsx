@@ -10,8 +10,8 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductInfo } from './productDetails';
 
-const title = 'Choose Validity - Fares Data Build Tool';
-const description = 'Choose Validity page of the Fares Data Build Tool';
+const title = 'Choose Validity - Create Fares Data Service';
+const description = 'Choose Validity page of the Create Fares Data Service';
 
 interface ValidityProps {
     productName: string;

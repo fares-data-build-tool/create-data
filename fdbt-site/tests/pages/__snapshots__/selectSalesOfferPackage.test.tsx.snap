@@ -2,8 +2,8 @@
 
 exports[`pages selectSalesOfferPackage should render an error when an error message is passed through to props 1`] = `
 <Component
-  description="Sales Offer Package selection page of the Fares Data Build Tool"
-  title="Select Sales Offer Package - Fares Data Build Tool"
+  description="Sales Offer Package selection page of the Create Fares Data Service"
+  title="Select Sales Offer Package - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/selectSalesOfferPackage"
@@ -77,8 +77,8 @@ exports[`pages selectSalesOfferPackage should render an error when an error mess
 
 exports[`pages selectSalesOfferPackage should render correctly 1`] = `
 <Component
-  description="Sales Offer Package selection page of the Fares Data Build Tool"
-  title="Select Sales Offer Package - Fares Data Build Tool"
+  description="Sales Offer Package selection page of the Create Fares Data Service"
+  title="Select Sales Offer Package - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/selectSalesOfferPackage"

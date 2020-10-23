@@ -8,8 +8,8 @@ import { USER_COOKIE } from '../constants';
 import { CustomAppProps, ErrorInfo } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 
-const title = 'Change Password - Fares data build tool';
-const description = 'Change Password page of the Fares data build tool';
+const title = 'Change Password - Create Fares Data Service';
+const description = 'Change Password page of the Create Fares Data Service';
 
 interface ChangePasswordProps {
     errors: ErrorInfo[];

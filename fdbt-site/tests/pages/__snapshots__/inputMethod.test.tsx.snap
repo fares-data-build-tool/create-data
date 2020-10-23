@@ -2,107 +2,129 @@
 
 exports[`pages inputMethod should render correctly 1`] = `
 <Component
-  description="Input Method selection page of the Fares Data Build Tool"
+  description="Input Method selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Input Method - Fares Data Build Tool"
+  title="Input Method - Create Fares Data Service"
 >
-  <CsrfForm
-    action="/api/inputMethod"
-    csrfToken=""
-    method="post"
+  <div
+    className="govuk-grid-row"
   >
-    <ErrorSummary
-      errors={Array []}
-    />
     <div
-      className="govuk-form-group "
+      className="govuk-grid-column-two-thirds"
     >
-      <fieldset
-        aria-describedby="input-method-heading"
-        className="govuk-fieldset"
+      <CsrfForm
+        action="/api/inputMethod"
+        csrfToken=""
+        method="post"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="input-method-heading"
-          >
-            Select an input method
-          </h1>
-        </legend>
-        <FormElementWrapper
-          errorClass="govuk-radios--error"
-          errorId="csv-upload"
+        <ErrorSummary
           errors={Array []}
+        />
+        <div
+          className="govuk-form-group "
         >
-          <div
-            className="govuk-radios"
-            id="radio-buttons"
+          <fieldset
+            aria-describedby="input-method-heading"
+            className="govuk-fieldset"
           >
-            <div
-              className="govuk-radios__item"
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
-              <input
-                className="govuk-radios__input  "
-                id="csv-upload"
-                name="inputMethod"
-                type="radio"
-                value="csv"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="csv-upload"
+              <h1
+                className="govuk-fieldset__heading"
+                id="input-method-heading"
               >
-                Upload (.csv)
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
+                Select an input method
+              </h1>
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-radios--error"
+              errorId="csv-upload"
+              errors={Array []}
             >
-              <input
-                className="govuk-radios__input  "
-                id="manual-entry"
-                name="inputMethod"
-                type="radio"
-                value="manual"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="manual-entry"
+              <div
+                className="govuk-radios"
+                id="radio-buttons"
               >
-                Manual Fares Triangle input
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                aria-disabled="true"
-                className="govuk-radios__input  "
-                disabled={true}
-                id="interactive-map"
-                name="inputMethod"
-                type="radio"
-                value="interactiveMap"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="interactive-map"
-              >
-                Interactive Map (not yet available)
-              </label>
-            </div>
-          </div>
-        </FormElementWrapper>
-      </fieldset>
+                <div
+                  className="govuk-radios__item"
+                >
+                  <input
+                    className="govuk-radios__input  "
+                    id="csv-upload"
+                    name="inputMethod"
+                    type="radio"
+                    value="csv"
+                  />
+                  <label
+                    className="govuk-label govuk-radios__label"
+                    htmlFor="csv-upload"
+                  >
+                    Upload (.csv)
+                  </label>
+                </div>
+                <div
+                  className="govuk-radios__item"
+                >
+                  <input
+                    className="govuk-radios__input  "
+                    id="manual-entry"
+                    name="inputMethod"
+                    type="radio"
+                    value="manual"
+                  />
+                  <label
+                    className="govuk-label govuk-radios__label"
+                    htmlFor="manual-entry"
+                  >
+                    Manual Fares Triangle input
+                  </label>
+                </div>
+                <div
+                  className="govuk-radios__item"
+                >
+                  <input
+                    aria-disabled="true"
+                    className="govuk-radios__input  "
+                    disabled={true}
+                    id="interactive-map"
+                    name="inputMethod"
+                    type="radio"
+                    value="interactiveMap"
+                  />
+                  <label
+                    className="govuk-label govuk-radios__label"
+                    htmlFor="interactive-map"
+                  >
+                    Interactive Map (not yet available)
+                  </label>
+                </div>
+              </div>
+            </FormElementWrapper>
+          </fieldset>
+        </div>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Continue"
+        />
+      </CsrfForm>
     </div>
-    <input
-      className="govuk-button"
-      id="continue-button"
-      type="submit"
-      value="Continue"
-    />
-  </CsrfForm>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h3
+        className="govuk-heading-s"
+      >
+        What is a CSV?
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        CSV stands for Comma Separated Values. A CSV file is a popular format for publishing data on the web. They are plain text files which means they can contain numbers and letters only. Most spreadsheet software (Microsoft Excel, Google Sheets etc.) will have a '.csv' option when saving your data. This is the easiest way to turn your spreadsheet into a CSV file.
+      </p>
+    </div>
+  </div>
 </Component>
 `;

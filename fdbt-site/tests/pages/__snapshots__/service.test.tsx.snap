@@ -2,9 +2,9 @@
 
 exports[`pages service should render correctly 1`] = `
 <Component
-  description="Service selection page of the Fares Data Build Tool"
+  description="Service selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Service - Fares Data Build Tool"
+  title="Service - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/service"

@@ -10,8 +10,8 @@ import { CustomAppProps, ErrorInfo, NextPageContextWithSession, MultiOperatorInf
 import CsrfForm from '../components/CsrfForm';
 import { MultipleOperatorsAttribute } from './api/searchOperators';
 
-const pageTitle = 'Multiple Operators Service List - Fares Data Build Tool';
-const pageDescription = 'Multiple Operators Service List selection page of the Fares Data Build Tool';
+const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
+const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';
 
 export interface ServicesInfo extends ServiceType {
     checked?: boolean;

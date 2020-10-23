@@ -4,8 +4,8 @@ import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 
-const title = 'Reset Email Confirmation - Fares data build tool';
-const description = 'Reset Email Confirmation page of the Fares data build tool';
+const title = 'Reset Email Confirmation - Create Fares Data Service';
+const description = 'Reset Email Confirmation page of the Create Fares Data Service';
 
 interface ResetConfirmationProps {
     email: string;

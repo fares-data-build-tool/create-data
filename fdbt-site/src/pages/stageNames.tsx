@@ -9,8 +9,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { isInputCheck, isFareStage } from '../interfaces/typeGuards';
 
-const title = 'Stage Names - Fares Data Build Tool';
-const description = 'Stage Names entry page of the Fares Data Build Tool';
+const title = 'Stage Names - Create Fares Data Service';
+const description = 'Stage Names entry page of the Create Fares Data Service';
 
 export interface InputCheck {
     error: string;

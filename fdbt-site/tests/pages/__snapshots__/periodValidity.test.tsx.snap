@@ -2,9 +2,9 @@
 
 exports[`pages periodValidity should render correctly 1`] = `
 <Component
-  description="Period Validity selection page of the Fares Data Build Tool"
+  description="Period Validity selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Period Validity - Fares Data Build Tool"
+  title="Period Validity - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/periodValidity"
@@ -107,7 +107,7 @@ exports[`pages periodValidity should render correctly 1`] = `
 
 exports[`pages periodValidity should render error messaging when errors are passed 1`] = `
 <Component
-  description="Period Validity selection page of the Fares Data Build Tool"
+  description="Period Validity selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -116,7 +116,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
       },
     ]
   }
-  title="Period Validity - Fares Data Build Tool"
+  title="Period Validity - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/periodValidity"

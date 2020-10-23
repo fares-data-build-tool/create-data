@@ -9,8 +9,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
 import { FareType } from './api/fareType';
 
-const title = 'Ticket Representation - Fares Data Build Tool';
-const description = 'Ticket Representation selection page of the Fares Data Build Tool';
+const title = 'Ticket Representation - Create Fares Data Service';
+const description = 'Ticket Representation selection page of the Create Fares Data Service';
 
 type TicketRepresentationProps = {
     fareType: string;
