@@ -38,7 +38,7 @@ const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
                     id="title-link"
                     className="govuk-header__link govuk-header__link--service-name"
                 >
-                    Create fares data
+                    Create Fares Data service
                 </a>
             </div>
 
