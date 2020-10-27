@@ -16,6 +16,8 @@ import {
     getMockContext,
     mockNumberOfPassengerTypeFieldset,
     mockNumberOfPassengerTypeFieldsetWithErrors,
+    mockAdultServerSideProps,
+    mockAdultDefinePassengerTypeFieldsetsWithRadioAndInputErrors,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
 import {
@@ -217,27 +219,35 @@ describe('pages', () => {
                     );
                 },
             );
+            it('should not render the proof fieldset if user type is adult', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'adult' },
+                    },
+                });
+
+                const result = getServerSideProps(ctx);
+                expect(result.props.fieldsets).toEqual(mockAdultServerSideProps);
+            });
             it('should return props containing errors and valid fieldsets when radio and input errors are present on a non-group ticket user journey', () => {
                 const errors: ErrorInfo[] = [
-                    { errorMessage: 'Choose one of the options below', id: 'proof-required' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-min' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-max' },
                 ];
                 const ctx = getMockContext({
                     session: {
-                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
-                        [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult', errors },
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'adult' },
+                        [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'adult', errors },
                     },
                 });
                 const result = getServerSideProps(ctx);
                 expect(result.props.group).toEqual(false);
                 expect(result.props.errors).toEqual(errors);
-                expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors);
+                expect(result.props.fieldsets).toEqual(mockAdultDefinePassengerTypeFieldsetsWithRadioAndInputErrors);
             });
 
             it('should return props containing errors and valid fieldsets when radio and all input errors are present on a group ticket user journey', () => {
                 const errors: ErrorInfo[] = [
-                    { errorMessage: 'Choose one of the options below', id: 'proof-required' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-min' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-max' },
                     {

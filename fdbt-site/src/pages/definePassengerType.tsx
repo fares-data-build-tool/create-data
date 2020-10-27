@@ -304,20 +304,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         };
     }
 
-    fieldsets = getFieldsets(errors, passengerType);
-
-    let passengerTypeToRender = '';
-
     if (!passengerType) {
         if (isPassengerTypeAttributeWithErrors(passengerTypeAttribute)) {
             throw new Error('Incorrect passenger type found');
         }
-        passengerTypeToRender = passengerTypeAttribute.passengerType;
-    } else {
-        passengerTypeToRender = passengerType;
+        passengerType = passengerTypeAttribute.passengerType;
     }
 
-    return { props: { group, errors, fieldsets, passengerType: passengerTypeToRender } };
+    fieldsets = getFieldsets(errors, passengerType);
+
+    return { props: { group, errors, fieldsets, passengerType } };
 };
 
 export default DefinePassengerType;

@@ -36,42 +36,51 @@ export const showSelectedOperators = (selectedOperators: Operator[], errors: Err
     });
     return (
         <div className={`govuk-form-group ${removeOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-            <fieldset className="govuk-fieldset" aria-describedby="selected-operators">
+            <fieldset className="govuk-fieldset">
                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 className="govuk-fieldset__heading" id="selected-operators">
                         Here&apos;s what you have added
                     </h1>
                 </legend>
-                <div className="govuk-inset-text">
-                    <FormElementWrapper errors={removeOperatorsErrors} errorId={removeOperatorsErrorId} errorClass="">
-                        <div className="govuk-checkboxes">
-                            {selectedOperators.map((operator, index) => (
-                                <div key={operator.nocCode} className="govuk-checkboxes__item">
-                                    <input
-                                        className="govuk-checkboxes__input"
-                                        id={`remove-operator-checkbox-${index}`}
-                                        name="operatorsToRemove"
-                                        value={`${operator.nocCode}#${operator.operatorPublicName}`}
-                                        type="checkbox"
-                                    />
-                                    <label
-                                        className="govuk-label govuk-checkboxes__label"
-                                        htmlFor={`remove-operator-checkbox-${index}`}
-                                    >
-                                        {operator.operatorPublicName} - {operator.nocCode}
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
-                    </FormElementWrapper>
-                    <input
-                        type="submit"
-                        name="removeOperators"
-                        value={selectedOperators.length > 1 ? 'Remove Operators' : 'Remove Operator'}
-                        id="remove-operators-button"
-                        className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
-                    />
-                </div>
+                <fieldset className="govuk-fieldset">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h2 className="govuk-fieldset__heading govuk-visually-hidden">Remove selected operators</h2>
+                    </legend>
+                    <div className="govuk-inset-text">
+                        <FormElementWrapper
+                            errors={removeOperatorsErrors}
+                            errorId={removeOperatorsErrorId}
+                            errorClass=""
+                        >
+                            <div className="govuk-checkboxes">
+                                {selectedOperators.map((operator, index) => (
+                                    <div key={operator.nocCode} className="govuk-checkboxes__item">
+                                        <input
+                                            className="govuk-checkboxes__input"
+                                            id={`remove-operator-checkbox-${index}`}
+                                            name="operatorsToRemove"
+                                            value={`${operator.nocCode}#${operator.operatorPublicName}`}
+                                            type="checkbox"
+                                        />
+                                        <label
+                                            className="govuk-label govuk-checkboxes__label"
+                                            htmlFor={`remove-operator-checkbox-${index}`}
+                                        >
+                                            {operator.operatorPublicName} - {operator.nocCode}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        </FormElementWrapper>
+                        <input
+                            type="submit"
+                            name="removeOperators"
+                            value={selectedOperators.length > 1 ? 'Remove Operators' : 'Remove Operator'}
+                            id="remove-operators-button"
+                            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
+                        />
+                    </div>
+                </fieldset>
             </fieldset>
         </div>
     );
@@ -100,9 +109,9 @@ export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): R
         <div className={`govuk-form-group ${searchInputErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby={fieldsetProps.heading.id}>
                 <legend className={fieldsetProps.legend.className}>
-                    <h1 className={fieldsetProps.heading.className} id={fieldsetProps.heading.id}>
+                    <h2 className={fieldsetProps.heading.className} id={fieldsetProps.heading.id}>
                         {fieldsetProps.heading.content}
-                    </h1>
+                    </h2>
                 </legend>
                 {searchInputErrors.length > 0 ? (
                     <span id={`${searchInputId}-error`} className="govuk-error-message">
@@ -213,25 +222,33 @@ const SearchOperators = ({
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
+                    <ErrorSummary errors={errors} />
+                    {selectedOperatorsToDisplay ? (
+                        <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
+                            {showSelectedOperators(selectedOperators, errors)}
+                        </CsrfForm>
+                    ) : null}
                     <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                        <>
-                            <ErrorSummary errors={errors} />
-                            {selectedOperatorsToDisplay ? showSelectedOperators(selectedOperators, errors) : null}
-                            {renderSearchBox(selectedOperatorsToDisplay, errors)}
-                            {searchResultsToDisplay ? showSearchResults(searchText, searchResults, errors) : null}
-                            {selectedOperatorsToDisplay ? (
-                                <div>
-                                    <input
-                                        type="submit"
-                                        value="Continue"
-                                        name="continueButtonClick"
-                                        id="continue-button"
-                                        className="govuk-button"
-                                    />
-                                </div>
-                            ) : null}
-                        </>
+                        {renderSearchBox(selectedOperatorsToDisplay, errors)}
                     </CsrfForm>
+                    {searchResultsToDisplay ? (
+                        <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
+                            {showSearchResults(searchText, searchResults, errors)}
+                        </CsrfForm>
+                    ) : null}
+                    {selectedOperatorsToDisplay ? (
+                        <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
+                            <div>
+                                <input
+                                    type="submit"
+                                    value="Confirm operators and continue"
+                                    name="continueButtonClick"
+                                    id="continue-button"
+                                    className="govuk-button"
+                                />
+                            </div>
+                        </CsrfForm>
+                    ) : null}
                 </div>
                 <div className="govuk-grid-column-one-third">
                     <h3 className="govuk-heading-s">What is a National Operator Code (NOC)?</h3>
