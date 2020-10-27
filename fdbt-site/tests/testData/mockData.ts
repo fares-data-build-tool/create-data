@@ -2528,6 +2528,33 @@ export const mockPassengerTypeInputErrors: ErrorInfo[] = [
     },
 ];
 
+export const mockAdultServerSideProps: RadioConditionalInputFieldset[] = [
+    {
+        heading: { content: 'Do adult passengers have an age range?', id: 'define-passenger-age-range' },
+        radioError: [],
+        radios: [
+            {
+                dataAriaControls: 'age-range-required-conditional',
+                hint: {
+                    content: 'Enter a minimum and/or maximum age for this passenger type.',
+                    id: 'define-passenger-age-range-hint',
+                },
+                id: 'age-range-required',
+                inputErrors: [],
+                inputType: 'text',
+                inputs: [
+                    { id: 'age-range-min', label: 'Minimum Age (if applicable)', name: 'ageRangeMin' },
+                    { id: 'age-range-max', label: 'Maximum Age (if applicable)', name: 'ageRangeMax' },
+                ],
+                label: 'Yes',
+                name: 'ageRange',
+                value: 'Yes',
+            },
+            { id: 'age-range-not-required', label: 'No', name: 'ageRange', value: 'No' },
+        ],
+    },
+];
+
 export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioConditionalInputFieldset[] = [
     {
         heading: {
@@ -2616,12 +2643,59 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
             },
             { id: 'proof-not-required', name: 'proof', value: 'No', label: 'No' },
         ],
-        radioError: [
+        radioError: [],
+    },
+];
+
+export const mockAdultDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-passenger-age-range',
+            content: expect.any(String),
+        },
+        radios: [
             {
-                errorMessage: 'Choose one of the options below',
-                id: 'proof-required',
+                id: 'age-range-required',
+                name: 'ageRange',
+                value: 'Yes',
+                dataAriaControls: 'age-range-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-age-range-hint',
+                    content: 'Enter a minimum and/or maximum age for this passenger type.',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'age-range-min',
+                        name: 'ageRangeMin',
+                        label: 'Minimum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        errorMessage: 'Enter a minimum or maximum age',
+                        id: 'age-range-min',
+                    },
+                    {
+                        errorMessage: 'Enter a minimum or maximum age',
+                        id: 'age-range-max',
+                    },
+                ],
+            },
+            {
+                id: 'age-range-not-required',
+                name: 'ageRange',
+                value: 'No',
+                label: 'No',
             },
         ],
+        radioError: [],
     },
 ];
 
