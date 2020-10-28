@@ -145,8 +145,8 @@ functions:
 
   TndsUnzipper:
     handler: tnds-ftp-retriever/unzipper.lambda_handler
-    timeout: 300
-    memorySize: 512
+    timeout: 600
+    memorySize: 1024
     environment:
       BUCKET_NAME: fdbt-xml-ref-data-${self:provider.stage}
     events:
@@ -154,7 +154,7 @@ functions:
         event: s3:ObjectCreated:*
     alarms:
       - name: functionDuration
-        threshold: 250000
+        threshold: 400000
         treatMissingData: notBreaching
       - name: functionThrottles
         treatMissingData: notBreaching
