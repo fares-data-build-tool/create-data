@@ -46,8 +46,8 @@ export const uploadNetexToS3 = async (netex: string, fileName: string): Promise<
             .putObject({
                 Bucket: process.env.UNVALIDATED_NETEX_BUCKET as string,
                 Key: fileName,
-                ContentType: 'application/xml; charset=utf-8',
-                Body: netex,
+                ContentType: 'application/xml',
+                Body: Buffer.from(netex, 'binary'),
             })
             .promise();
     } catch (err) {
