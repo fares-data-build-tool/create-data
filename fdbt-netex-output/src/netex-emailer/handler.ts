@@ -19,6 +19,7 @@ export interface MatchingData {
     products?: ProductList[];
     type: string;
     passengerType: string;
+    lineName?: string;
 }
 
 export const createMailTransporter = (): Mail => {
@@ -52,7 +53,7 @@ export const setMailOptions = (
     pathToNetex: string,
     matchingData: MatchingData,
 ): Mail.Options => {
-    const { email, uuid, passengerType, type, selectedServices, products } = matchingData;
+    const { email, uuid, passengerType, type, selectedServices, products, lineName } = matchingData;
 
     return {
         from: 'fdbt@transportforthenorth.com',
@@ -66,8 +67,9 @@ export const setMailOptions = (
                 .tz('Europe/London')
                 .format('DD-MM-YYYY, HH:mm'),
             type,
-            selectedServices,
-            products,
+            lineName || 'N/A',
+            selectedServices || [],
+            products || [],
         ),
         attachments: [
             {
