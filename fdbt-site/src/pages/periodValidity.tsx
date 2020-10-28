@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession, ProductData } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ProductData } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { PeriodExpiryWithErrors } from './api/periodValidity';
+import { getCsrfToken } from '../utils';
 
 const title = 'Period Validity - Create Fares Data Service';
 const description = 'Period Validity selection page of the Create Fares Data Service';
@@ -14,7 +15,8 @@ const description = 'Period Validity selection page of the Create Fares Data Ser
 const errorId = 'period-end-calendar';
 
 type PeriodValidityProps = {
-    errors: ErrorInfo[];
+    errors?: ErrorInfo[];
+    csrfToken: string;
 };
 
 const isPeriodExpiryWithErrors = (
@@ -22,7 +24,7 @@ const isPeriodExpiryWithErrors = (
 ): periodExpiryAttribute is PeriodExpiryWithErrors =>
     (periodExpiryAttribute as PeriodExpiryWithErrors)?.errorMessage !== undefined;
 
-const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & CustomAppProps): ReactElement => {
+const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/periodValidity" method="post" csrfToken={csrfToken}>
@@ -96,14 +98,15 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & Custom
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PeriodValidityProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
     if (periodExpiryAttribute && isPeriodExpiryWithErrors(periodExpiryAttribute)) {
         const { errorMessage } = periodExpiryAttribute;
-        return { props: { errors: [{ errorMessage, id: errorId }] } };
+        return { props: { errors: [{ errorMessage, id: errorId }], csrfToken } };
     }
-    return { props: {} };
+    return { props: { csrfToken } };
 };
 
 export default PeriodValidity;

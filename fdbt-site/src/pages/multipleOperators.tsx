@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { getNocFromIdToken } from '../utils';
+import { getCsrfToken, getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { batchGetOperatorNamesByNocCode, OperatorNameType } from '../data/auroradb';
@@ -16,13 +16,10 @@ const errorId = 'operators';
 type MultipleOperatorsProps = {
     errors?: ErrorInfo[];
     operatorsAndNocs: OperatorNameType[];
+    csrfToken: string;
 };
 
-const MultipleOperators = ({
-    operatorsAndNocs,
-    errors = [],
-    csrfToken,
-}: MultipleOperatorsProps & CustomAppProps): ReactElement => (
+const MultipleOperators = ({ operatorsAndNocs, errors = [], csrfToken }: MultipleOperatorsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/multipleOperators" method="post" csrfToken={csrfToken}>
             <>
@@ -64,6 +61,7 @@ export const getServerSideProps = async (
 ): Promise<{
     props: MultipleOperatorsProps;
 }> => {
+    const csrfToken = getCsrfToken(ctx);
     const idTokenNoc = getNocFromIdToken(ctx);
     let splitNocs: string[] = [];
     if (idTokenNoc) {
@@ -82,12 +80,13 @@ export const getServerSideProps = async (
                 props: {
                     operatorsAndNocs: operatorInfo,
                     errors: [{ errorMessage: operatorObject.errorMessage, id: errorId }],
+                    csrfToken,
                 },
             };
         }
     }
 
-    return { props: { operatorsAndNocs: operatorInfo } };
+    return { props: { operatorsAndNocs: operatorInfo, csrfToken } };
 };
 
 export default MultipleOperators;

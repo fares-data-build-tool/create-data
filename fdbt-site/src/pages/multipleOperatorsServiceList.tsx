@@ -6,9 +6,10 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { ServiceType, getServicesByNocCode } from '../data/auroradb';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession, MultiOperatorInfo } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, MultiOperatorInfo } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { MultipleOperatorsAttribute } from './api/searchOperators';
+import { getCsrfToken } from '../utils';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
 const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';
@@ -23,6 +24,7 @@ export interface MultipleOperatorsServiceListProps {
     errors: ErrorInfo[];
     operatorName: string;
     nocCode: string;
+    csrfToken: string;
 }
 
 const MultipleOperatorsServiceList = ({
@@ -32,7 +34,7 @@ const MultipleOperatorsServiceList = ({
     errors,
     operatorName,
     nocCode,
-}: MultipleOperatorsServiceListProps & CustomAppProps): ReactElement => (
+}: MultipleOperatorsServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/multipleOperatorsServiceList" method="post" csrfToken={csrfToken}>
             <>
@@ -106,6 +108,7 @@ const MultipleOperatorsServiceList = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: MultipleOperatorsServiceListProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const searchedOperators = (getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
         .selectedOperators;
 
@@ -163,6 +166,7 @@ export const getServerSideProps = async (
             errors: isMultiOperatorInfoWithErrors(completedOperatorInfo) ? completedOperatorInfo.errors : [],
             operatorName: operatorToUse.operatorPublicName,
             nocCode: operatorToUse.nocCode,
+            csrfToken,
         },
     };
 };

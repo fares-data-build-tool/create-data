@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
+import { getCsrfToken } from '../utils';
 
 const title = 'Forgot Password - Create Fares Data Service';
 const description = 'Forgot Password page of the Create Fares Data Service';
@@ -15,9 +16,10 @@ const id = 'email';
 interface ForgotEmailProps {
     email: string;
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
-const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & CustomAppProps): ReactElement => (
+const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
@@ -72,6 +74,7 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
 );
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ForgotEmailProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const forgotPasswordCookie = cookies[FORGOT_PASSWORD_COOKIE];
 
@@ -80,16 +83,12 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ForgotEmailPr
 
         const { error, email } = forgotPasswordInfo;
 
-        if (error && email) {
-            return { props: { errors: [{ errorMessage: error, id }], email } };
-        }
-
         if (error) {
-            return { props: { errors: [{ errorMessage: error, id }], email: '' } };
+            return { props: { errors: [{ errorMessage: error, id }], email: email ?? '', csrfToken } };
         }
     }
 
-    return { props: { errors: [], email: '' } };
+    return { props: { errors: [], email: '', csrfToken } };
 };
 
 export default ForgotPassword;

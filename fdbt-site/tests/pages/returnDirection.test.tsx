@@ -17,28 +17,14 @@ describe('pages', () => {
 
         it('should render correctly', () => {
             const tree = shallow(
-                <ReturnDirection
-                    service={mockService}
-                    errors={[]}
-                    inboundJourney=""
-                    outboundJourney=""
-                    csrfToken=""
-                    pageProps={[]}
-                />,
+                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" csrfToken="" />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('shows a list of journey patterns for the service in each of the select boxes', () => {
             const wrapper = mount(
-                <ReturnDirection
-                    service={mockService}
-                    errors={[]}
-                    inboundJourney=""
-                    outboundJourney=""
-                    csrfToken=""
-                    pageProps={[]}
-                />,
+                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" csrfToken="" />,
             );
 
             const serviceJourney = wrapper.find('.journey-option');
@@ -60,6 +46,7 @@ describe('pages', () => {
                 props: {
                     errors: [],
                     service: mockService,
+                    csrfToken: '',
                 },
             });
         });
@@ -78,6 +65,7 @@ describe('pages', () => {
                 props: {
                     errors: [],
                     service: mockService,
+                    csrfToken: '',
                 },
             });
         });

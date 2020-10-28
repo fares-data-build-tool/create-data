@@ -35,7 +35,6 @@ describe('pages', () => {
                     numberOfFareStages={mockNumberOfFareStages}
                     inputChecks={mockInputChecks}
                     csrfToken=""
-                    pageProps={[]}
                     errors={[]}
                     defaults={[]}
                 />,
@@ -57,7 +56,6 @@ describe('pages', () => {
                     numberOfFareStages={mockNumberOfFareStages}
                     inputChecks={mockInputChecks}
                     csrfToken=""
-                    pageProps={[]}
                     errors={[]}
                     defaults={[]}
                 />,
@@ -77,7 +75,6 @@ describe('pages', () => {
                     numberOfFareStages={mockNumberOfFareStages}
                     inputChecks={mockinputChecks}
                     csrfToken=""
-                    pageProps={[]}
                     errors={[]}
                     defaults={[]}
                 />,
@@ -94,6 +91,7 @@ describe('pages', () => {
                     errors: [],
                     numberOfFareStages: 6,
                     inputChecks: [],
+                    csrfToken: '',
                 },
             });
         });

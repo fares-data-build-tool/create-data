@@ -6,11 +6,11 @@ const Help = (): ReactElement => {
             <h2 className="govuk-heading-s">Help and Support</h2>
             <p className="govuk-body">
                 If you are having problems, please contact the Create Fares Data Service via the link below:
-                <div>
+                <span>
                     <a href="/contact" className="govuk-link govuk-!-font-size-19">
                         Contact Us
                     </a>
-                </div>
+                </span>
             </p>
         </div>
     );

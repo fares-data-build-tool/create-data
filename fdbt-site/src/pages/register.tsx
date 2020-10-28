@@ -5,9 +5,10 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
+import { getCsrfToken } from '../utils';
 
 const title = 'Register - Create Fares Data Service';
 const description = 'Register page of the Create Fares Data Service';
@@ -15,9 +16,10 @@ const description = 'Register page of the Create Fares Data Service';
 interface RegisterProps {
     errors: ErrorInfo[];
     regKey: string;
+    csrfToken: string;
 }
 
-const Register = ({ errors, regKey, csrfToken }: RegisterProps & CustomAppProps): ReactElement => {
+const Register = ({ errors, regKey, csrfToken }: RegisterProps): ReactElement => {
     let email = '';
     let nocCode = '';
 
@@ -183,7 +185,8 @@ const Register = ({ errors, regKey, csrfToken }: RegisterProps & CustomAppProps)
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: RegisterProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
 
@@ -199,10 +202,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const userCookieParsed = JSON.parse(userCookie);
         const { inputChecks } = userCookieParsed;
 
-        return { props: { errors: inputChecks, regKey: key } };
+        return { props: { errors: inputChecks, regKey: key as string, csrfToken } };
     }
 
-    return { props: { errors, regKey: key } };
+    return { props: { errors, regKey: key as string, csrfToken } };
 };
 
 export default Register;

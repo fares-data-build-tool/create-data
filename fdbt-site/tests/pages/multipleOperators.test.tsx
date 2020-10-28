@@ -10,7 +10,6 @@ describe('pages', () => {
                     errors={[]}
                     operatorsAndNocs={[{ operatorPublicName: 'test', nocCode: 'testNoc' }]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -25,7 +24,6 @@ describe('pages', () => {
                         { operatorPublicName: 'test3', nocCode: 'testNoc3' },
                     ]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

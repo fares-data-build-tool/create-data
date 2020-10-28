@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPE_ATTRIBUTE, PASSENGER_TYPES_WITH_GROUP } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { getCsrfToken } from '../utils';
 
 const title = 'Passenger Type - Create Fares Data Service';
 const description = 'Passenger Type selection page of the Create Fares Data Service';
@@ -16,9 +17,10 @@ const insetText = 'More passenger types will become available soon';
 
 type PassengerTypeProps = {
     errors?: ErrorInfo[];
+    csrfToken: string;
 };
 
-const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAppProps): ReactElement => (
+const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/passengerType" method="post" csrfToken={csrfToken}>
             <>
@@ -69,7 +71,8 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PassengerTypeProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
@@ -77,7 +80,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
             ? passengerTypeAttribute.errors
             : [];
 
-    return { props: { errors } };
+    return { props: { errors, csrfToken } };
 };
 
 export default PassengerType;

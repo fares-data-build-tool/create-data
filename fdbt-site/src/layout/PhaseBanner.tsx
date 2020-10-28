@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { ReactElement } from 'react';
 import { FEEDBACK_LINK } from '../constants';
 
-const PhaseBanner: FC = () => (
+const PhaseBanner = (): ReactElement => (
     <div className="govuk-phase-banner">
         <p className="govuk-phase-banner__content">
             <strong className="govuk-tag govuk-phase-banner__content__tag">beta</strong>

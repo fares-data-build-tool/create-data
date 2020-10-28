@@ -6,7 +6,7 @@ import { ErrorInfo } from '../../src/interfaces';
 describe('pages', () => {
     describe('howManyStages', () => {
         it('should render correctly', () => {
-            const tree = shallow(<HowManyStages errors={[]} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<HowManyStages errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -17,7 +17,7 @@ describe('pages', () => {
                     errorMessage: 'Choose an option regarding how many fare stages you have',
                 },
             ];
-            const tree = shallow(<HowManyStages errors={mockError} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<HowManyStages errors={mockError} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
     });

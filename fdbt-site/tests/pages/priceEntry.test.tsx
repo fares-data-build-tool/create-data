@@ -23,7 +23,7 @@ const mockFareStages: string[] = [
 
 describe('Price Entry Page', () => {
     it('should render correctly', () => {
-        const tree = shallow(<PriceEntry stageNamesArray={mockFareStages} csrfToken="" pageProps={[]} />);
+        const tree = shallow(<PriceEntry stageNamesArray={mockFareStages} csrfToken="" />);
         expect(tree).toMatchSnapshot();
     });
 

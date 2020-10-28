@@ -41,7 +41,6 @@ describe('Inbound Matching Page', () => {
                 error={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
-                pageProps={[]}
             />,
         );
     });
@@ -63,7 +62,6 @@ describe('Inbound Matching Page', () => {
                 error={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
-                pageProps={[]}
             />,
         );
 

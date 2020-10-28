@@ -4,14 +4,15 @@ import UserDataUploadComponent, { UserDataUploadsProps } from '../components/Use
 import { FARE_ZONE_ATTRIBUTE } from '../constants';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
-import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { NextPageContextWithSession, ErrorInfo } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { FareZoneWithErrors, FareZone } from './api/csvZoneUpload';
+import { getCsrfToken } from '../utils';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
 
-const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
+const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
         <UserDataUploadComponent
             // eslint-disable-next-line react/jsx-props-no-spreading
@@ -55,6 +56,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvTemplateSize: '673B',
             errors,
             detailSummary: "My CSV won't upload",
+            csrfToken: getCsrfToken(ctx),
         },
     };
 };

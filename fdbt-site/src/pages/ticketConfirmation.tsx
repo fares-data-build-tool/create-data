@@ -2,14 +2,7 @@ import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import isArray from 'lodash/isArray';
 import startCase from 'lodash/startCase';
-import {
-    CustomAppProps,
-    NextPageContextWithSession,
-    Product,
-    Journey,
-    ProductData,
-    ReturnPeriodValidity,
-} from '../interfaces';
+import { NextPageContextWithSession, Product, Journey, ProductData, ReturnPeriodValidity } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
@@ -39,12 +32,14 @@ import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfa
 import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
+import { getCsrfToken } from '../utils';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
 
 export type TicketConfirmationProps = {
     fareTypeProps: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps;
+    csrfToken: string;
 };
 
 export interface SingleTicketProps {
@@ -343,7 +338,7 @@ export const buildTicketConfirmationElements = (
     return confirmationElements;
 };
 
-const TicketConfirmation = ({ csrfToken, fareTypeProps }: TicketConfirmationProps & CustomAppProps): ReactElement => (
+const TicketConfirmation = ({ csrfToken, fareTypeProps }: TicketConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/ticketConfirmation" method="post" csrfToken={csrfToken}>
             <>
@@ -359,6 +354,7 @@ const TicketConfirmation = ({ csrfToken, fareTypeProps }: TicketConfirmationProp
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TicketConfirmationProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     if (!fareTypeInfo || isFareTypeAttributeWithErrors(fareTypeInfo)) {
         throw new Error('User has reached confirmation page with incorrect fareType information.');
@@ -369,6 +365,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
     return {
         props: {
             fareTypeProps,
+            csrfToken,
         },
     };
 };

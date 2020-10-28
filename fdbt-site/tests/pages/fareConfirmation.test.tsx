@@ -22,7 +22,6 @@ describe('pages', () => {
                         validDays: ['monday', 'tuesday', 'wednesday'],
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

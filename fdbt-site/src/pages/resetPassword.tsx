@@ -5,9 +5,10 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
+import { ErrorInfo } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
+import { getCsrfToken } from '../utils';
 
 const title = 'Reset Password - Create Fares Data Service';
 const description = 'Reset Password page of the Create Fares Data Service';
@@ -17,15 +18,10 @@ interface ResetPasswordProps {
     regKey: string;
     username: string;
     expiry: string;
+    csrfToken: string;
 }
 
-const ResetPassword = ({
-    errors,
-    regKey,
-    username,
-    expiry,
-    csrfToken,
-}: ResetPasswordProps & CustomAppProps): ReactElement => {
+const ResetPassword = ({ errors, regKey, username, expiry, csrfToken }: ResetPasswordProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
@@ -102,6 +98,7 @@ const ResetPassword = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ResetPasswordProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
 
@@ -138,7 +135,9 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ResetPassword
         });
     }
 
-    return { props: { errors, regKey: key as string, username: username as string, expiry: expiry as string } };
+    return {
+        props: { errors, regKey: key as string, username: username as string, expiry: expiry as string, csrfToken },
+    };
 };
 
 export default ResetPassword;

@@ -1,6 +1,6 @@
 import Cookies from 'cookies';
 import { NextPageContext } from 'next';
-import { IncomingMessage } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import {
@@ -10,10 +10,9 @@ import {
     DISABLE_AUTH_COOKIE,
     COOKIES_POLICY_COOKIE,
     COOKIE_PREFERENCES_COOKIE,
-    COOKIE_SETTINGS_SAVED_COOKIE,
 } from '../constants/index';
 import { Stop } from '../data/auroradb';
-import { ErrorInfo, CognitoIdToken, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, CognitoIdToken, NextPageContextWithSession, DocumentContextWithSession } from '../interfaces';
 
 export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
@@ -60,7 +59,6 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
         DISABLE_AUTH_COOKIE,
         COOKIES_POLICY_COOKIE,
         COOKIE_PREFERENCES_COOKIE,
-        COOKIE_SETTINGS_SAVED_COOKIE,
         '_csrf',
     ];
 
@@ -169,3 +167,13 @@ export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boole
     }
     return nocs?.length > 1;
 };
+
+export interface ResponseWithLocals extends ServerResponse {
+    locals: {
+        nonce: string;
+        csrfToken: string;
+    };
+}
+
+export const getCsrfToken = (ctx: DocumentContextWithSession | NextPageContextWithSession | NextPageContext): string =>
+    (ctx.res as ResponseWithLocals)?.locals?.csrfToken ?? '';

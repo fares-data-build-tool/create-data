@@ -17,7 +17,6 @@ describe('resetPassword', () => {
                 expiry={expiryDate.toString()}
                 csrfToken=""
                 errors={[]}
-                pageProps={[]}
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -30,7 +29,6 @@ describe('resetPassword', () => {
                 regKey="123456"
                 expiry={expiryDate.toString()}
                 csrfToken=""
-                pageProps={[]}
                 errors={[
                     {
                         errorMessage: 'Passwords do not match',

@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { NUMBER_OF_STAGES_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
+import { getCsrfToken } from '../utils';
 
 const title = 'How Many Stages - Create Fares Data Service';
 const description = 'How Many Stages selection page of the Create Fares Data Service';
@@ -16,9 +17,10 @@ export interface NumberOfStagesAttributeWithError {
 
 interface HowManyStagesProps {
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
-const HowManyStages = ({ errors, csrfToken }: HowManyStagesProps & CustomAppProps): ReactElement => (
+const HowManyStages = ({ errors, csrfToken }: HowManyStagesProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/howManyStages" method="post" csrfToken={csrfToken}>
             <>
@@ -83,9 +85,10 @@ const HowManyStages = ({ errors, csrfToken }: HowManyStagesProps & CustomAppProp
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HowManyStagesProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const numberOfStagesAttribute = getSessionAttribute(ctx.req, NUMBER_OF_STAGES_ATTRIBUTE);
     const errors: ErrorInfo[] = numberOfStagesAttribute ? numberOfStagesAttribute.errors : [];
-    return { props: { errors } };
+    return { props: { errors, csrfToken } };
 };
 
 export default HowManyStages;

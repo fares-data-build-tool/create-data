@@ -10,8 +10,8 @@ import {
     FARE_TYPE_ATTRIBUTE,
 } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
-import { getAndValidateNoc } from '../utils';
+import { SalesOfferPackage, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { Product } from './api/multipleProductValidity';
@@ -60,6 +60,7 @@ export interface SelectSalesOfferPackageProps {
     productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
 const generateCheckbox = (
@@ -141,7 +142,7 @@ const SelectSalesOfferPackage = ({
     salesOfferPackagesList,
     csrfToken,
     errors,
-}: SelectSalesOfferPackageProps & CustomAppProps): ReactElement => {
+}: SelectSalesOfferPackageProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
@@ -183,6 +184,7 @@ const SelectSalesOfferPackage = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: SelectSalesOfferPackageProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const nocCode = getAndValidateNoc(ctx);
 
     if (!nocCode) {
@@ -235,6 +237,7 @@ export const getServerSideProps = async (
                 productNamesList: productNames,
                 salesOfferPackagesList,
                 errors: salesOfferPackageAttribute.errors,
+                csrfToken,
             },
         };
     }
@@ -244,6 +247,7 @@ export const getServerSideProps = async (
             productNamesList: productNames,
             salesOfferPackagesList,
             errors: [],
+            csrfToken,
         },
     };
 };

@@ -44,7 +44,6 @@ describe('pages', () => {
                     pageHeading={nonMultiOpGeoZonePageHeading}
                     errors={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -52,13 +51,7 @@ describe('pages', () => {
 
         it('should render correctly for multi op', () => {
             const wrapper = shallow(
-                <HowManyProducts
-                    fareType="multiOperator"
-                    pageHeading={multiOpPageHeading}
-                    errors={[]}
-                    csrfToken=""
-                    pageProps={[]}
-                />,
+                <HowManyProducts fareType="multiOperator" pageHeading={multiOpPageHeading} errors={[]} csrfToken="" />,
             );
             expect(wrapper).toMatchSnapshot();
         });
@@ -72,7 +65,6 @@ describe('pages', () => {
                         pageHeading={nonMultiOpSelectedServicesPageHeading}
                         errors={[mockError]}
                         csrfToken=""
-                        pageProps={[]}
                     />,
                 );
                 expect(tree).toMatchSnapshot();
@@ -87,7 +79,6 @@ describe('pages', () => {
                         pageHeading={multiOpPageHeading}
                         errors={[mockError]}
                         csrfToken=""
-                        pageProps={[]}
                     />,
                 );
                 expect(tree).toMatchSnapshot();
