@@ -11,18 +11,11 @@ s3 = boto3.client('s3')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-queries = [
-    'SET FOREIGN_KEY_CHECKS=0',
-    'TRUNCATE TABLE tndsOperatorService',
-    'TRUNCATE TABLE tndsJourneyPattern',
-    'TRUNCATE TABLE tndsJourneyPatternLink',
-    'SET FOREIGN_KEY_CHECKS=1'
-]
-
 
 def lambda_handler(event, context):
     bucket = event['Records'][0]['s3']['bucket']['name']
-    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
+    key = urllib.parse.unquote_plus(
+        event['Records'][0]['s3']['object']['key'], encoding='utf-8')
 
     try:
         s3.download_file(bucket, key, file_dir)
@@ -42,5 +35,6 @@ def lambda_handler(event, context):
                 )
     except Exception as e:
         logger.error(e)
-        logger.error('Error getting object {} from bucket {}.'.format(key, bucket))
+        logger.error(
+            'Error getting object {} from bucket {}.'.format(key, bucket))
         raise e
