@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
 import startCase from 'lodash/startCase';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
-import { CustomAppProps, NextPageContextWithSession, TimeRestriction } from '../interfaces';
+import { NextPageContextWithSession, TimeRestriction } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import { PassengerType } from './api/passengerType';
+import { getCsrfToken } from '../utils';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
@@ -16,6 +17,7 @@ type FareConfirmationProps = {
     fareType: string;
     passengerType: PassengerType;
     timeRestrictions: TimeRestriction;
+    csrfToken: string;
 };
 
 export const buildFareConfirmationElements = (
@@ -114,7 +116,7 @@ const FareConfirmation = ({
     fareType,
     passengerType,
     timeRestrictions,
-}: FareConfirmationProps & CustomAppProps): ReactElement => (
+}: FareConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/fareConfirmation" method="post" csrfToken={csrfToken}>
             <>
@@ -130,6 +132,7 @@ const FareConfirmation = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareConfirmationProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
@@ -148,6 +151,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
             fareType: fareTypeInfo.fareType,
             passengerType: passengerTypeInfo,
             timeRestrictions: timeRestrictionsInfo || {},
+            csrfToken,
         },
     };
 };

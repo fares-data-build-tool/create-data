@@ -37,7 +37,6 @@ describe('pages', () => {
                     services={mockServices}
                     error={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -51,7 +50,6 @@ describe('pages', () => {
                     services={mockServices}
                     error={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             const operatorWelcome = wrapper.find('#service-operator-passenger-type-hint').first();
@@ -67,7 +65,6 @@ describe('pages', () => {
                     services={mockServices}
                     error={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             const operatorServices = wrapper.find('.service-option');
@@ -106,6 +103,7 @@ describe('pages', () => {
                             serviceCode: 'WY_13_IWBT_07_1',
                         },
                     ],
+                    csrfToken: '',
                 },
             });
         });

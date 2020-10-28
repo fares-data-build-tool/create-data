@@ -17,6 +17,7 @@ describe('pages', () => {
             paymentMethods: [],
             ticketFormats: [],
         },
+        csrfToken: '',
     };
 
     const salesOfferPackageWithError: SalesOfferPackagesProps = {
@@ -26,18 +27,19 @@ describe('pages', () => {
             ticketFormats: [],
             errors: [{ errorMessage: 'error', id: '' }],
         },
+        csrfToken: '',
     };
 
     describe('salesOfferPackage', () => {
         it('should render correctly', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<SalesOfferPackages {...salesOfferPackagesNoError} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<SalesOfferPackages {...salesOfferPackagesNoError} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render an error when errors are passed through', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<SalesOfferPackages {...salesOfferPackageWithError} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<SalesOfferPackages {...salesOfferPackageWithError} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
     });

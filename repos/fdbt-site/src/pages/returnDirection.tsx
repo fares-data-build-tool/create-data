@@ -4,9 +4,9 @@ import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../co
 import { getServiceByNocCodeAndLineName, RawService, Service } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
@@ -21,8 +21,9 @@ export const outboundErrorId = 'outbound-journey';
 interface DirectionProps {
     service: Service;
     errors: ErrorInfo[];
-    outboundJourney: string;
-    inboundJourney: string;
+    outboundJourney?: string;
+    inboundJourney?: string;
+    csrfToken: string;
 }
 
 const ReturnDirection = ({
@@ -31,7 +32,7 @@ const ReturnDirection = ({
     outboundJourney,
     inboundJourney,
     csrfToken,
-}: DirectionProps & CustomAppProps): ReactElement => (
+}: DirectionProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/returnDirection" method="post" csrfToken={csrfToken}>
             <>
@@ -79,7 +80,8 @@ const ReturnDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
@@ -134,6 +136,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 errors,
                 outboundJourney,
                 inboundJourney,
+                csrfToken,
             },
         };
     }
@@ -142,6 +145,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             service,
             errors: [],
+            csrfToken,
         },
     };
 };

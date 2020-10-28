@@ -1,9 +1,9 @@
 import { parseCookies } from 'nookies';
 import React, { ReactElement } from 'react';
-import { COOKIES_POLICY_COOKIE, COOKIE_SETTINGS_SAVED_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { COOKIES_POLICY_COOKIE } from '../constants';
+import { getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession } from '../interfaces';
 import { TwoThirdsLayout } from '../layout/Layout';
 
 const title = 'Cookies - Create Fares Data Service';
@@ -12,14 +12,11 @@ const description = 'Cookies Preferences page of the Create Fares Data Service';
 export interface CookiePreferencesProps {
     settingsSaved: boolean;
     trackingDefaultValue: 'on' | 'off';
+    csrfToken: string;
 }
 
-const Cookies = ({
-    settingsSaved,
-    trackingDefaultValue,
-    csrfToken,
-}: CookiePreferencesProps & CustomAppProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description}>
+const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiePreferencesProps): ReactElement => (
+    <TwoThirdsLayout title={title} description={description} hideCookieBanner>
         {settingsSaved ? (
             <div className="cookie-settings__confirmation">
                 <h2 className="govuk-heading-m">Your cookie settings were saved</h2>
@@ -128,17 +125,16 @@ const Cookies = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CookiePreferencesProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
-    deleteCookieOnServerSide(ctx, COOKIE_SETTINGS_SAVED_COOKIE);
 
-    const settingsSaved = cookies[COOKIE_SETTINGS_SAVED_COOKIE]
-        ? JSON.parse(cookies[COOKIE_SETTINGS_SAVED_COOKIE])
-        : false;
+    const settingsSaved = (ctx.query?.settingsSaved ?? 'false') === 'true';
+
     const tracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
 
-    const trackingDefaultValue = !!settingsSaved && !!tracking ? 'on' : 'off';
+    const trackingDefaultValue = tracking ? 'on' : 'off';
 
-    return { props: { settingsSaved, trackingDefaultValue } };
+    return { props: { settingsSaved, trackingDefaultValue, csrfToken } };
 };
 
 export default Cookies;

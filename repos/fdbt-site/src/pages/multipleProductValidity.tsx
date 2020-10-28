@@ -8,7 +8,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -17,6 +17,7 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
 import { Product } from './api/multipleProductValidity';
+import { getCsrfToken } from '../utils';
 
 const title = 'Multiple Product Validity - Create Fares Data Service';
 const description = 'Multiple Product Validity selection page of the Create Fares Data Service';
@@ -29,6 +30,7 @@ interface MultipleProductValidityProps {
     numberOfProducts: string;
     multipleProducts: Product[];
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
 const MultipleProductValidity = ({
@@ -38,7 +40,7 @@ const MultipleProductValidity = ({
     multipleProducts,
     errors,
     csrfToken,
-}: MultipleProductValidityProps & CustomAppProps): ReactElement => (
+}: MultipleProductValidityProps): ReactElement => (
     <FullColumnLayout title={title} description={description} errors={errors}>
         <CsrfForm
             action="/api/multipleProductValidity"
@@ -147,6 +149,7 @@ const MultipleProductValidity = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
@@ -186,6 +189,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             numberOfProducts,
             multipleProducts,
             errors,
+            csrfToken,
         },
     };
 };

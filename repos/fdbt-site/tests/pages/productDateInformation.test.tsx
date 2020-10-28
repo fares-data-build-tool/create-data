@@ -26,7 +26,6 @@ describe('pages', () => {
                         endDateMonth: '',
                         endDateYear: '',
                     }}
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -45,7 +44,6 @@ describe('pages', () => {
                         endDateMonth: '',
                         endDateYear: '',
                     }}
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();

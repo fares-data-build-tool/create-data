@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { NextPageContextWithSession, CustomAppProps } from '../interfaces';
+import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators } from '../utils';
 
@@ -10,7 +10,7 @@ interface HomeProps {
     multipleOperators: boolean;
 }
 
-const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement => (
+const Home = ({ multipleOperators }: HomeProps): ReactElement => (
     <BaseLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">

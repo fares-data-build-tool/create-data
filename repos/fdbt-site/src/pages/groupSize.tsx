@@ -2,17 +2,19 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { NextPageContextWithSession, ErrorInfo } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
 import { GROUP_SIZE_ATTRIBUTE } from '../constants';
 import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from './api/groupSize';
+import { getCsrfToken } from '../utils';
 
 const title = 'Group Size - Create Fares Data Service';
 const description = 'Group Size entry page of the Create Fares Data Service';
 
 export interface GroupSizeProps {
     groupTicketInfo: GroupTicketAttribute | GroupTicketAttributeWithErrors;
+    csrfToken: string;
 }
 
 const isGroupTicketInfoWithErrors = (
@@ -20,7 +22,7 @@ const isGroupTicketInfoWithErrors = (
 ): groupTicketInfo is GroupTicketAttributeWithErrors =>
     (groupTicketInfo as GroupTicketAttributeWithErrors).errors !== undefined;
 
-const GroupSize = ({ groupTicketInfo, csrfToken }: GroupSizeProps & CustomAppProps): ReactElement => {
+const GroupSize = ({ groupTicketInfo, csrfToken }: GroupSizeProps): ReactElement => {
     const errors: ErrorInfo[] = isGroupTicketInfoWithErrors(groupTicketInfo) ? groupTicketInfo.errors : [];
     return (
         <TwoThirdsLayout title={title} description={description}>
@@ -64,6 +66,7 @@ const GroupSize = ({ groupTicketInfo, csrfToken }: GroupSizeProps & CustomAppPro
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: GroupSizeProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const groupTicketInfo = getSessionAttribute(ctx.req, GROUP_SIZE_ATTRIBUTE);
     const defaultGroupTicketInfo: GroupTicketAttribute = {
         maxGroupSize: '',
@@ -71,6 +74,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Gr
     return {
         props: {
             groupTicketInfo: groupTicketInfo || defaultGroupTicketInfo,
+            csrfToken,
         },
     };
 };

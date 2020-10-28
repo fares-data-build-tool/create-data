@@ -30,14 +30,7 @@ describe('pages', () => {
 
         it('should render just the search input when the user first visits the page', () => {
             const tree = shallow(
-                <SearchOperators
-                    errors={[]}
-                    searchText=""
-                    searchResults={[]}
-                    selectedOperators={[]}
-                    csrfToken=""
-                    pageProps={[]}
-                />,
+                <SearchOperators errors={[]} searchText="" searchResults={[]} selectedOperators={[]} csrfToken="" />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -51,7 +44,6 @@ describe('pages', () => {
                     searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
                     selectedOperators={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
 
@@ -66,7 +58,6 @@ describe('pages', () => {
                     searchResults={[]}
                     selectedOperators={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
 
@@ -81,7 +72,6 @@ describe('pages', () => {
                     searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
                     selectedOperators={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
 
@@ -96,7 +86,6 @@ describe('pages', () => {
                     searchResults={[]}
                     selectedOperators={mockOperators}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
 
@@ -111,7 +100,6 @@ describe('pages', () => {
                     searchResults={[]}
                     selectedOperators={mockOperators}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
 
@@ -126,7 +114,6 @@ describe('pages', () => {
                     searchResults={[mockOperators[0]]}
                     selectedOperators={mockOperators}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
 
@@ -143,6 +130,7 @@ describe('pages', () => {
                         searchText: '',
                         searchResults: [],
                         selectedOperators: [],
+                        csrfToken: '',
                     },
                 };
                 const ctx = getMockContext();
@@ -164,6 +152,7 @@ describe('pages', () => {
                         searchText: '',
                         searchResults: [],
                         selectedOperators: [],
+                        csrfToken: '',
                     },
                 };
                 const ctx = getMockContext({ session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: { errors: mockErrors } } });
@@ -186,6 +175,7 @@ describe('pages', () => {
                         searchText: 'asda',
                         searchResults: [],
                         selectedOperators: [],
+                        csrfToken: '',
                     },
                 };
                 const ctx = getMockContext({
@@ -205,6 +195,7 @@ describe('pages', () => {
                         searchText: 'blac',
                         searchResults: mockOperators,
                         selectedOperators: [],
+                        csrfToken: '',
                     },
                 };
                 const ctx = getMockContext({

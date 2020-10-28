@@ -9,14 +9,7 @@ import {
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
 } from '../constants';
-import {
-    CustomAppProps,
-    ErrorInfo,
-    NextPageContextWithSession,
-    ProductData,
-    ProductInfo,
-    ProductInfoWithErrors,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ProductData, ProductInfo, ProductInfoWithErrors } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
@@ -24,6 +17,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerType } from '../interfaces/typeGuards';
 import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
 import { isServiceListAttributeWithErrors } from './serviceList';
+import { getCsrfToken } from '../utils';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details entry page of the Create Fares Data Service';
@@ -34,6 +28,7 @@ type ProductDetailsProps = {
     passengerType: string;
     hintText?: string;
     errors: ErrorInfo[];
+    csrfToken: string;
 };
 
 export const isProductInfoWithErrors = (
@@ -56,7 +51,7 @@ const ProductDetails = ({
     hintText,
     csrfToken,
     errors,
-}: ProductDetailsProps & CustomAppProps): ReactElement => {
+}: ProductDetailsProps): ReactElement => {
     const productName = product && product.productName;
     const productPrice = product && product.productPrice;
 
@@ -140,6 +135,7 @@ const ProductDetails = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
@@ -178,6 +174,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
                     ? productDetailsAttribute.errors
                     : [],
             hintText,
+            csrfToken,
         },
     };
 };

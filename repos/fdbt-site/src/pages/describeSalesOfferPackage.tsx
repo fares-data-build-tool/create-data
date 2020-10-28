@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
@@ -9,12 +9,14 @@ import { SalesOfferPackage, SalesOfferPackageWithErrors } from './api/describeSa
 import { getSessionAttribute } from '../utils/sessions';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 import { SalesOfferPackageInfo } from './api/salesOfferPackages';
+import { getCsrfToken } from '../utils';
 
 const title = 'Sales Offer Package Description - Create Fares Data Service';
 const description = 'Sales Offer Package Description page of the Create Fares Data Service';
 
 interface DescribeSopProps {
     sopInfo: SalesOfferPackageInfo | SalesOfferPackageWithErrors | undefined;
+    csrfToken: string;
 }
 
 export const isSalesOfferPackageWithErrors = (
@@ -22,7 +24,7 @@ export const isSalesOfferPackageWithErrors = (
 ): salesOfferPackage is SalesOfferPackageWithErrors =>
     (salesOfferPackage as SalesOfferPackageWithErrors)?.errors?.length > 0;
 
-const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps & CustomAppProps): ReactElement => {
+const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps): ReactElement => {
     const sopNameError =
         sopInfo && isSalesOfferPackageWithErrors(sopInfo)
             ? sopInfo.errors.find(error => error.id === 'sop-name')
@@ -107,6 +109,7 @@ const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps & CustomAppProps):
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DescribeSopProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SOP_INFO_ATTRIBUTE);
     const salesOfferPackage = getSessionAttribute(ctx.req, SOP_ATTRIBUTE);
     return {
@@ -115,6 +118,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
                 salesOfferPackage && isSalesOfferPackageWithErrors(salesOfferPackage)
                     ? salesOfferPackage
                     : salesOfferPackageInfo,
+            csrfToken,
         },
     };
 };

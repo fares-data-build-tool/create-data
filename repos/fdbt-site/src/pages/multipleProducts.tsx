@@ -9,7 +9,7 @@ import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import {
     MultiProduct,
@@ -21,6 +21,7 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
+import { getCsrfToken } from '../utils';
 
 const title = 'Multiple Product - Create Fares Data Service';
 const description = 'Multiple Product entry page of the Create Fares Data Service';
@@ -31,6 +32,7 @@ export interface MultipleProductProps {
     passengerType: string;
     errors?: ErrorInfo[];
     userInput: MultiProduct[];
+    csrfToken: string;
 }
 
 const MultipleProducts = ({
@@ -40,7 +42,7 @@ const MultipleProducts = ({
     errors = [],
     userInput = [],
     csrfToken,
-}: MultipleProductProps & CustomAppProps): ReactElement => (
+}: MultipleProductProps): ReactElement => (
     <FullColumnLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
             <>
@@ -74,6 +76,7 @@ export const isBaseMultipleProductAttributeWithErrors = (
     !!multiProductAttribute && (multiProductAttribute as BaseMultipleProductAttributeWithErrors).errors !== undefined;
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
 
@@ -102,6 +105,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
                 passengerType: passengerTypeAttribute.passengerType,
                 errors,
                 userInput: multiProductAttribute.products,
+                csrfToken,
             },
         };
     }
@@ -112,6 +116,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             operator: operator.operatorPublicName,
             passengerType: passengerTypeAttribute.passengerType,
             userInput: [],
+            csrfToken,
         },
     };
 };

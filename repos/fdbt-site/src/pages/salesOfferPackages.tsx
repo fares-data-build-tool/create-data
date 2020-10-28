@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import kebabCase from 'lodash/kebabCase';
 import startCase from 'lodash/startCase';
 import { BaseLayout } from '../layout/Layout';
-import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
@@ -10,6 +10,7 @@ import { SOP_INFO_ATTRIBUTE } from '../constants';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from './api/salesOfferPackages';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
+import { getCsrfToken } from '../utils';
 
 const title = 'Sales Offer Packages - Create Fares Data Service';
 const description = 'Sales Offer Packages page for the Create Fares Data Service';
@@ -31,6 +32,7 @@ export const ticketFormatsList = {
 
 export interface SalesOfferPackagesProps {
     salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
+    csrfToken: string;
 }
 
 export const isSalesOfferPackageInfoWithErrors = (
@@ -38,10 +40,7 @@ export const isSalesOfferPackageInfoWithErrors = (
 ): salesOfferPackage is SalesOfferPackageInfoWithErrors =>
     (salesOfferPackage as SalesOfferPackageInfoWithErrors).errors?.length > 0;
 
-const SalesOfferPackages = ({
-    salesOfferPackage,
-    csrfToken,
-}: SalesOfferPackagesProps & CustomAppProps): ReactElement => {
+const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackagesProps): ReactElement => {
     const errors = isSalesOfferPackageInfoWithErrors(salesOfferPackage) ? salesOfferPackage.errors : [];
 
     return (
@@ -201,6 +200,7 @@ const SalesOfferPackages = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SalesOfferPackagesProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const rawSalesOfferPackage = getSessionAttribute(ctx.req, SOP_INFO_ATTRIBUTE);
 
     const defaultSOP: SalesOfferPackageInfo = {
@@ -215,6 +215,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
                 rawSalesOfferPackage && isSalesOfferPackageInfoWithErrors(rawSalesOfferPackage)
                     ? rawSalesOfferPackage
                     : defaultSOP,
+            csrfToken,
         },
     };
 };

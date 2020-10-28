@@ -3,9 +3,9 @@ import { parseCookies } from 'nookies';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE, INTERNAL_NOC } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { setCookieOnServerSide, getAndValidateNoc } from '../utils/index';
+import { setCookieOnServerSide, getAndValidateNoc, getCsrfToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import logger from '../utils/logger';
@@ -20,6 +20,7 @@ const errorId = 'fare-type-single';
 type FareTypeProps = {
     operator: string;
     errors: ErrorInfo[];
+    csrfToken: string;
 };
 
 export const buildUuid = (noc: string): string => {
@@ -28,7 +29,8 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const FareTypePage = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAppProps): ReactElement => {
+const FareTypePage = (props: FareTypeProps): ReactElement => {
+    const { operator, errors = [], csrfToken } = props;
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -125,6 +127,7 @@ const FareTypePage = ({ operator, errors = [], csrfToken }: FareTypeProps & Cust
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const cookies = parseCookies(ctx);
+    const csrfToken = getCsrfToken(ctx);
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const noc = getAndValidateNoc(ctx);
@@ -150,7 +153,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operator: operatorInfo.operator.operatorPublicName, errors } };
+    return { props: { operator: operatorInfo.operator.operatorPublicName, errors, csrfToken } };
 };
 
 export default FareTypePage;

@@ -12,7 +12,11 @@ export default (server: Express): void => {
     server.disable('x-powered-by');
 
     const nonce = (_req: Request, res: Response): string => `'nonce-${res.locals.nonce}'`;
-    const scriptSrc = [nonce, "'strict-dynamic'"];
+    const scriptSrc = [
+        nonce,
+        "'strict-dynamic'",
+        'https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com',
+    ];
     const styleSrc = ["'self'"];
 
     if (process.env.NODE_ENV !== 'production') {
@@ -36,6 +40,7 @@ export default (server: Express): void => {
                     styleSrc,
                     imgSrc: ["'self'", 'data:', 'https:'],
                     defaultSrc: ["'self'"],
+                    connectSrc: ["'self'", 'https://www.google-analytics.com'],
                 },
             },
             hsts: {

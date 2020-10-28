@@ -24,7 +24,6 @@ describe('pages', () => {
                     service={mockService}
                     error={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -39,7 +38,6 @@ describe('pages', () => {
                     service={mockService}
                     error={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             const journeyWelcome = wrapper.find('#direction-operator-linename-passenger-type-hint').first();
@@ -56,7 +54,6 @@ describe('pages', () => {
                     service={mockService}
                     error={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
 

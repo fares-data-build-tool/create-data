@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { ReactElement } from 'react';
 
-const Footer: FC = () => (
+const Footer = (): ReactElement => (
     <footer className="govuk-footer " role="contentinfo">
         <div className="govuk-width-container ">
             <div className="govuk-footer__meta">

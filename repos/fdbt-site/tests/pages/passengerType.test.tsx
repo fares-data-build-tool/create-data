@@ -5,7 +5,7 @@ import PassengerType from '../../src/pages/passengerType';
 describe('pages', () => {
     describe('operator', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PassengerType errors={[]} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<PassengerType errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
     });
