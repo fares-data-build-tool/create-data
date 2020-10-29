@@ -437,12 +437,10 @@
 						<priceUnits>
 							<PriceUnit id="fxc:GBP" version="fxc:v1.0">
 								<Name>Pound Sterling</Name>
-								<PrivateCode>&#163;</PrivateCode>
 								<Precision>2</Precision>
 							</PriceUnit>
 							<PriceUnit id="fxc:EUR" version="fxc:v1.0">
 								<Name>Euro</Name>
-								<PrivateCode>&#8364;</PrivateCode>
 								<Precision>2</Precision>
 							</PriceUnit>
 						</priceUnits>
