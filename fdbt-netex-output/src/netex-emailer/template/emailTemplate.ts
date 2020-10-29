@@ -5,8 +5,9 @@ const emailTemplate = (
     passengerType: string,
     dateTimeCreation: string,
     fareType: string,
-    services?: ServiceList[],
-    products?: ProductList[],
+    lineName: string,
+    services: ServiceList[],
+    products: ProductList[],
 ): string => {
     const productsList =
         products &&
@@ -86,7 +87,7 @@ const emailTemplate = (
                   <p
                     style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400;"
                   >
-                    <strong>Services(s):</strong> ${!serviceList ? 'N/A' : serviceList}
+                    <strong>Services(s):</strong> ${!serviceList || serviceList.length === 0 ? lineName : serviceList}
                   </p>
                   <p
                     style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400;"
@@ -96,7 +97,7 @@ const emailTemplate = (
                   <p
                     style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400;"
                   >
-                    <strong>Products(s):</strong> ${!productsList ? 'N/A' : productsList}
+                    <strong>Products(s):</strong> ${!productsList || productsList.length === 0 ? 'N/A' : productsList}
                   </p>
                   <p
                     style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400;"
