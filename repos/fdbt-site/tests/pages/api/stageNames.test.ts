@@ -34,7 +34,17 @@ describe('stageNames', () => {
             expect(inputCheck).toEqual(expectedArray);
         });
         it('should return an array of invalid and valid input checks when the user enters incorrect data', () => {
-            const mockBody = { stageNameInput: ['abcde', '   ', 'xyz', '', 'gggg', 'gggg'] };
+            const mockBody = {
+                stageNameInput: [
+                    'abcde',
+                    '   ',
+                    'xyz',
+                    '',
+                    'gggg',
+                    'gggg',
+                    'moreThan70Charactersmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+                ],
+            };
             const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
                 { error: '', id: 'fare-stage-name-1', input: 'abcde' },
@@ -43,6 +53,11 @@ describe('stageNames', () => {
                 { error: 'Enter a name for this fare stage', id: 'fare-stage-name-4', input: '' },
                 { error: 'Stage names cannot share exact names', id: 'fare-stage-name-5', input: 'gggg' },
                 { error: 'Stage names cannot share exact names', id: 'fare-stage-name-6', input: 'gggg' },
+                {
+                    error: 'The name for Fare Stage 7 needs to be 70 characters or fewer',
+                    id: 'fare-stage-name-7',
+                    input: 'moreThan70Charactersmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+                },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
@@ -72,7 +87,9 @@ describe('stageNames', () => {
     });
 
     it('should return 302 redirect to /priceEntry when session is valid and request body is present', () => {
-        const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
+        const mockBody = {
+            stageNameInput: ['a', 'b', 'c', '70charactersgaregeargfvfevergergergergergergergergerfsawefwefwewefgerg'],
+        };
         const mockWriteHeadFn = jest.fn();
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody, uuid: {}, mockWriteHeadFn });
         stageNames(req, res);
@@ -92,13 +109,20 @@ describe('stageNames', () => {
 
     it('should set the STAGE_NAMES_ATTRIBUTE with a value matching the invalid data entered by the user', () => {
         const setUpdateSessionspy = jest.spyOn(sessions, 'updateSessionAttribute');
-        const mockBody = { stageNameInput: [' ', 'abcdefghijklmnopqrstuvwxyzabcdefgh', '   ', 'b'] };
+        const mockBody = {
+            stageNameInput: [
+                ' ',
+                'moreThan70Charactersmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+                '   ',
+                'b',
+            ],
+        };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockInputCheck = [
             { input: ' ', error: 'Enter a name for this fare stage', id: 'fare-stage-name-1' },
             {
-                input: 'abcdefghijklmnopqrstuvwxyzabcdefgh',
-                error: 'The name for Fare Stage 2 needs to be less than 30 characters',
+                input: 'moreThan70Charactersmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+                error: 'The name for Fare Stage 2 needs to be 70 characters or fewer',
                 id: 'fare-stage-name-2',
             },
             { input: '   ', error: 'Enter a name for this fare stage', id: 'fare-stage-name-3' },
