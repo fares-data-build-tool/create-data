@@ -26,8 +26,8 @@ export const isStageNameValid = (req: NextApiRequestWithSession): InputCheck[] =
         let error;
         if (!stageNameInput[i] || stageNameInput[i].replace(/\s+/g, '').length === 0) {
             error = 'Enter a name for this fare stage';
-        } else if (stageNameInput[i].length > 30) {
-            error = `The name for Fare Stage ${i + 1} needs to be less than 30 characters`;
+        } else if (stageNameInput[i].length > 70) {
+            error = `The name for Fare Stage ${i + 1} needs to be 70 characters or fewer`;
         } else if (stageNameInArrayMultipleTimes(stageNameInput, stageNameInput[i])) {
             error = 'Stage names cannot share exact names';
         } else {

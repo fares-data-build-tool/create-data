@@ -99,7 +99,7 @@ const StageNames = ({
                             Enter the names of the fare stages in order from first to last
                         </h1>
                     </legend>
-                    <div className="govuk-hint">Fare stage names are limited to 30 characters</div>
+                    <div className="govuk-hint">Fare stage names are limited to 70 characters</div>
                     <div>{renderInputFields(numberOfFareStages, inputChecks, errors, defaults)}</div>
                 </fieldset>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
