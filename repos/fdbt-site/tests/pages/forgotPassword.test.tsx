@@ -7,12 +7,12 @@ describe('pages', () => {
 
     describe('fareType', () => {
         it('should render correctly', () => {
-            const tree = shallow(<ForgotPassword email="" errors={[]} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<ForgotPassword email="" errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed to the page', () => {
-            const tree = shallow(<ForgotPassword email="" errors={mockErrors} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<ForgotPassword email="" errors={mockErrors} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
     });

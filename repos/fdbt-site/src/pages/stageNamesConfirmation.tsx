@@ -3,15 +3,17 @@ import ConfirmationTable, { ConfirmationElement } from '../components/Confirmati
 import { STAGE_NAMES_ATTRIBUTE } from '../constants';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession } from '../interfaces';
 import { isInputCheck } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
+import { getCsrfToken } from '../utils';
 
 const title = 'Stage Names Confirmation - Create Fares Data Service';
 const description = 'Stage Names Confirmation page of the Create Fares Data Service';
 
 interface StageNamesConfirmationProps {
     fareStageNames: string[];
+    csrfToken: string;
 }
 
 export const buildFareStageNamesConfirmationElements = (fareStages: string[]): ConfirmationElement[] => {
@@ -26,10 +28,7 @@ export const buildFareStageNamesConfirmationElements = (fareStages: string[]): C
     return confirmationElements;
 };
 
-const StageNamesConfirmation = ({
-    fareStageNames,
-    csrfToken,
-}: StageNamesConfirmationProps & CustomAppProps): ReactElement => (
+const StageNamesConfirmation = ({ fareStageNames, csrfToken }: StageNamesConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/stageNamesConfirmation" method="post" csrfToken={csrfToken}>
             <>
@@ -45,13 +44,14 @@ const StageNamesConfirmation = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StageNamesConfirmationProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const fareStagesAttribute = getSessionAttribute(ctx.req, STAGE_NAMES_ATTRIBUTE);
 
     if (!fareStagesAttribute || isInputCheck(fareStagesAttribute)) {
         throw new Error('User has reached confirmation page with incorrect fare stages info.');
     }
 
-    return { props: { fareStageNames: fareStagesAttribute } };
+    return { props: { fareStageNames: fareStagesAttribute, csrfToken } };
 };
 
 export default StageNamesConfirmation;

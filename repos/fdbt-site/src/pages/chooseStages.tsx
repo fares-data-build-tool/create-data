@@ -4,20 +4,20 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isFareStageWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { FareStagesAttribute } from './api/chooseStages';
+import { getCsrfToken } from '../utils';
 
 const title = 'Choose Stages - Create Fares Data Service';
 const description = 'Choose Stages page of the Create Fares Data Service';
 
 interface ChooseStagesProps {
-    fareStage: FareStagesAttribute;
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
-const ChooseStages = ({ fareStage, errors, csrfToken }: ChooseStagesProps & CustomAppProps): ReactElement => (
+const ChooseStages = ({ errors, csrfToken }: ChooseStagesProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/chooseStages" method="post" csrfToken={csrfToken}>
             <>
@@ -38,7 +38,6 @@ const ChooseStages = ({ fareStage, errors, csrfToken }: ChooseStagesProps & Cust
                             id="fare-stages"
                             name="fareStageInput"
                             type="text"
-                            defaultValue={errors.length === 0 && fareStage ? fareStage.fareStages : ''}
                             aria-describedby="fare-stage-hint"
                         />
                     </FormElementWrapper>
@@ -49,8 +48,9 @@ const ChooseStages = ({ fareStage, errors, csrfToken }: ChooseStagesProps & Cust
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ChooseStagesProps } => {
     let errors: ErrorInfo[] = [];
+    const csrfToken = getCsrfToken(ctx);
 
     const fareStagesAttribute = getSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE);
 
@@ -62,7 +62,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
         updateSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE, undefined);
     }
 
-    return { props: { fareStages: fareStagesAttribute || '', errors } };
+    return { props: { errors, csrfToken } };
 };
 
 export default ChooseStages;

@@ -3,7 +3,6 @@ import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../constants';
 import {
-    CustomAppProps,
     NextPageContextWithSession,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
@@ -14,6 +13,7 @@ import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
+import { getCsrfToken } from '../utils';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -21,6 +21,7 @@ const description = 'Sales Confirmation page of the Create Fares Data Service';
 type SalesConfirmationProps = {
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[];
     ticketDating: TicketDating;
+    csrfToken: string;
 };
 
 interface TicketDating {
@@ -76,11 +77,7 @@ export const buildSalesConfirmationElements = (
     return confirmationElements;
 };
 
-const SalesConfirmation = ({
-    csrfToken,
-    salesOfferPackages,
-    ticketDating,
-}: SalesConfirmationProps & CustomAppProps): ReactElement => (
+const SalesConfirmation = ({ csrfToken, salesOfferPackages, ticketDating }: SalesConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
             <>
@@ -102,6 +99,7 @@ const SalesConfirmation = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SalesConfirmationProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const ticketDatingInfo = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
 
@@ -158,6 +156,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
                 startDefault,
                 endDefault,
             },
+            csrfToken,
         },
     };
 };

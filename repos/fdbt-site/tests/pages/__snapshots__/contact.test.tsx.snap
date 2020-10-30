@@ -3,6 +3,7 @@
 exports[`contact should render correctly 1`] = `
 <Component
   description="Contact page for the Create Fares Data Service"
+  hideHelp={true}
   title="Contact - Create Fares Data Service"
 >
   <div

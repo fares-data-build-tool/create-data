@@ -23,19 +23,17 @@ describe('describeSalesOfferPackage', () => {
     };
 
     it('should render the page with no errors when no errors are present', () => {
-        const tree = shallow(<DescribeSalesOfferPackage sopInfo={mockSopInfoAttribute} csrfToken="" pageProps={[]} />);
+        const tree = shallow(<DescribeSalesOfferPackage sopInfo={mockSopInfoAttribute} csrfToken="" />);
         expect(tree).toMatchSnapshot();
     });
 
     it('should render the page with errors when errors are present', () => {
-        const tree = shallow(
-            <DescribeSalesOfferPackage sopInfo={mockSopAttributeWithErrors} csrfToken="" pageProps={[]} />,
-        );
+        const tree = shallow(<DescribeSalesOfferPackage sopInfo={mockSopAttributeWithErrors} csrfToken="" />);
         expect(tree).toMatchSnapshot();
     });
 
     it('should be able to handle being passed undefined props', () => {
-        const tree = shallow(<DescribeSalesOfferPackage sopInfo={undefined} csrfToken="" pageProps={[]} />);
+        const tree = shallow(<DescribeSalesOfferPackage sopInfo={undefined} csrfToken="" />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -49,6 +47,7 @@ describe('describeSalesOfferPackage', () => {
             const expectedProps = {
                 props: {
                     sopInfo: mockSopInfoAttribute,
+                    csrfToken: '',
                 },
             };
             const actualProps = getServerSideProps(ctx);
@@ -69,6 +68,7 @@ describe('describeSalesOfferPackage', () => {
             const expectedProps = {
                 props: {
                     sopInfo: mockSopInfoAttribute,
+                    csrfToken: '',
                 },
             };
             const actualProps = getServerSideProps(ctx);
@@ -84,6 +84,7 @@ describe('describeSalesOfferPackage', () => {
             const expectedProps = {
                 props: {
                     sopInfo: mockSopAttributeWithErrors,
+                    csrfToken: '',
                 },
             };
             const actualProps = getServerSideProps(ctx);

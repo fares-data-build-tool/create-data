@@ -20,12 +20,7 @@ describe('pages', () => {
     describe('defineTimeRestrictions', () => {
         it('should render correctly when no errors are passed', () => {
             const wrapper = shallow(
-                <DefineTimeRestrictions
-                    errors={[]}
-                    fieldsets={mockDefineTimeRestrictionsFieldsets}
-                    csrfToken=""
-                    pageProps={[]}
-                />,
+                <DefineTimeRestrictions errors={[]} fieldsets={mockDefineTimeRestrictionsFieldsets} csrfToken="" />,
             );
             expect(wrapper).toMatchSnapshot();
         });
@@ -36,7 +31,6 @@ describe('pages', () => {
                     errors={mockTimeRestrictionsRadioErrors}
                     fieldsets={mockDefineTimeRestrictionsFieldsetsWithRadioErrors}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -48,7 +42,6 @@ describe('pages', () => {
                     errors={mockTimeRestrictionsInputErrors}
                     fieldsets={mockDefineTimeRestrictionsFieldsetsWithInputErrors}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -60,7 +53,6 @@ describe('pages', () => {
                     errors={mockTimeRestrictionsRadioAndInputErrors}
                     fieldsets={mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();

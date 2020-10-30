@@ -21,7 +21,6 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
-    COOKIE_SETTINGS_SAVED_COOKIE,
     COOKIES_POLICY_COOKIE,
 } from '../../src/constants/index';
 
@@ -101,7 +100,6 @@ export const getMockRequestAndResponse = ({
         productPrice = '1234',
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
-        cookieSettingsSaved = null,
         cookiePolicy = null,
     } = cookieValues;
 
@@ -178,8 +176,6 @@ export const getMockRequestAndResponse = ({
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
 
     cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
-
-    cookieString += cookieSettingsSaved ? `${COOKIE_SETTINGS_SAVED_COOKIE}=${cookieSettingsSaved};` : '';
 
     cookieString += cookiePolicy ? `${COOKIES_POLICY_COOKIE}=${encodeURI(JSON.stringify(cookiePolicy))}` : '';
 

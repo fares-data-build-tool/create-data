@@ -2,11 +2,12 @@ import React, { ReactElement } from 'react';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_ATTRIBUTE } from '../constants';
 import TwoThirdsLayout from '../layout/Layout';
-import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { NextPageContextWithSession, ErrorInfo } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from './api/timeRestrictions';
+import { getCsrfToken } from '../utils';
 
 const title = 'Time Restrictions - Create Fares Data Service';
 const description = 'Time Restrictions selection page of the Create Fares Data Service';
@@ -15,6 +16,7 @@ export const timeRestrictionsErrorId = 'time-restrictions-yes';
 
 export interface TimeRestrictionsProps {
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
 const isTimeRestrictionsAttributeWithErrors = (
@@ -22,7 +24,7 @@ const isTimeRestrictionsAttributeWithErrors = (
 ): timeRestrictionsInfo is TimeRestrictionsAttributeWithErrors =>
     (timeRestrictionsInfo as TimeRestrictionsAttributeWithErrors).errors !== undefined;
 
-const TimeRestrictions = ({ errors, csrfToken }: TimeRestrictionsProps & CustomAppProps): ReactElement => (
+const TimeRestrictions = ({ errors, csrfToken }: TimeRestrictionsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/timeRestrictions" method="post" csrfToken={csrfToken}>
             <>
@@ -83,13 +85,14 @@ const TimeRestrictions = ({ errors, csrfToken }: TimeRestrictionsProps & CustomA
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TimeRestrictionsProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
     const errors: ErrorInfo[] =
         timeRestrictionsInfo && isTimeRestrictionsAttributeWithErrors(timeRestrictionsInfo)
             ? timeRestrictionsInfo.errors
             : [];
 
-    return { props: { errors } };
+    return { props: { errors, csrfToken } };
 };
 
 export default TimeRestrictions;

@@ -12,7 +12,6 @@ describe('Choose Validity Page', () => {
                 daysValid=""
                 errors={[]}
                 csrfToken=""
-                pageProps={[]}
             />,
         );
         expect(tree).toMatchSnapshot();

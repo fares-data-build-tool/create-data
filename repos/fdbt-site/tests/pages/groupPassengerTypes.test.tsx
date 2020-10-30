@@ -11,7 +11,6 @@ describe('pages', () => {
                         passengerTypes: [],
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -28,7 +27,6 @@ describe('pages', () => {
                         ],
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -40,7 +38,6 @@ describe('pages', () => {
                         passengerTypes: ['adult', 'child'],
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

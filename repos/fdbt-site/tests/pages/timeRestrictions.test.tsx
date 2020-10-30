@@ -8,7 +8,7 @@ import { TIME_RESTRICTIONS_ATTRIBUTE } from '../../src/constants';
 describe('pages', () => {
     describe('timeRestrictions', () => {
         it('should render correctly with no errors', () => {
-            const tree = shallow(<TimeRestrictions errors={[]} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<TimeRestrictions errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -22,7 +22,6 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -35,6 +34,7 @@ describe('pages', () => {
             const expectedProps: { props: TimeRestrictionsProps } = {
                 props: {
                     errors: [],
+                    csrfToken: '',
                 },
             };
             const props = getServerSideProps(ctx);
@@ -60,6 +60,7 @@ describe('pages', () => {
             const expectedProps: { props: TimeRestrictionsProps } = {
                 props: {
                     errors: timeRestrictionsInfoWithErrors.errors,
+                    csrfToken: '',
                 },
             };
             const props = getServerSideProps(ctx);

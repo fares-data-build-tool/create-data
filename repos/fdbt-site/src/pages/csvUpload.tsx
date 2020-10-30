@@ -4,13 +4,14 @@ import UserDataUploadComponent, { UserDataUploadsProps } from '../components/Use
 import { CSV_UPLOAD_ATTRIBUTE } from '../constants';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
-import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { NextPageContextWithSession, ErrorInfo } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
+import { getCsrfToken } from '../utils';
 
 const title = 'CSV Upload - Create Fares Data Service';
 const description = 'CSV Upload page of the Create Fares Data Service';
 
-const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactElement => (
+const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={uploadProps.errors}>
         <UserDataUploadComponent
             // eslint-disable-next-line react/jsx-props-no-spreading
@@ -45,11 +46,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             guidanceDocDisplayName: `Download Help File - File Type PDF - File Size 1.3MB`,
             guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
             guidanceDocSize: '1.3MB',
-            csvTemplateDisplayName: 'Download fares triangle CSV template - File Type CSV - File Size 353B',
+            csvTemplateDisplayName: 'Download fares triangle CSV template - File Type CSV - File Size 255B',
             csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
-            csvTemplateSize: '353B',
+            csvTemplateSize: '255B',
             errors,
             detailSummary: "My CSV won't upload",
+            csrfToken: getCsrfToken(ctx),
         },
     };
 };

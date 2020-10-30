@@ -5,7 +5,7 @@ import ChangePassword, { getServerSideProps } from '../../src/pages/changePasswo
 
 describe('changePassword', () => {
     it('should render correctly', () => {
-        const tree = shallow(<ChangePassword csrfToken="" pageProps={[]} errors={[]} />);
+        const tree = shallow(<ChangePassword csrfToken="" errors={[]} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -13,7 +13,6 @@ describe('changePassword', () => {
         const tree = shallow(
             <ChangePassword
                 csrfToken=""
-                pageProps={[]}
                 errors={[
                     {
                         errorMessage: 'Passwords do not match',
@@ -29,7 +28,7 @@ describe('changePassword', () => {
         it('should return props containing no errors when the USER_COOKIE is missing (i.e. no errors are present)', () => {
             const ctx = getMockContext();
             const res = getServerSideProps(ctx);
-            expect(res).toEqual({ props: { errors: [] } });
+            expect(res).toEqual({ props: { errors: [], csrfToken: '' } });
         });
 
         it('should return props containing errors when errors are present', () => {
@@ -42,7 +41,7 @@ describe('changePassword', () => {
             };
             const ctx = getMockContext({ cookies: { userCookieValue: mockUserCookieValue } });
             const res = getServerSideProps(ctx);
-            expect(res).toEqual({ props: { errors: [mockError] } });
+            expect(res).toEqual({ props: { errors: [mockError], csrfToken: '' } });
         });
     });
 });

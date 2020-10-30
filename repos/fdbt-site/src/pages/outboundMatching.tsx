@@ -5,8 +5,8 @@ import { JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE, OPERATOR_COOKIE, SERVICE_ATTRIBU
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
-import { getAndValidateNoc } from '../utils';
+import { BasicService, NextPageContextWithSession } from '../interfaces/index';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { isMatchingWithErrors } from './matching';
 import { isJourney, isService } from '../interfaces/typeGuards';
@@ -24,6 +24,7 @@ interface MatchingProps {
     service: BasicService;
     error: boolean;
     selectedFareStages: string[];
+    csrfToken: string;
 }
 
 const OutboundMatching = ({
@@ -33,7 +34,7 @@ const OutboundMatching = ({
     error,
     csrfToken,
     selectedFareStages,
-}: MatchingProps & CustomAppProps): ReactElement => (
+}: MatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -51,6 +52,7 @@ const OutboundMatching = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
@@ -100,6 +102,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 matchingAttribute && isMatchingWithErrors(matchingAttribute)
                     ? matchingAttribute.selectedFareStages
                     : [],
+            csrfToken,
         },
     };
 };

@@ -1,4 +1,3 @@
-import { AppInitialProps } from 'next/app';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { IncomingMessage } from 'http';
@@ -80,10 +79,6 @@ export interface CognitoIdToken {
     iat: number;
     email: string;
     'custom:contactable': string;
-}
-
-export interface CustomAppProps extends AppInitialProps {
-    csrfToken: string;
 }
 
 export interface Breadcrumb {

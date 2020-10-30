@@ -92,4 +92,8 @@ const Accessibility = (): ReactElement => {
     );
 };
 
+export const getServerSideProps = (): {} => {
+    return { props: {} };
+};
+
 export default Accessibility;

@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
 import { getSearchOperators, Operator } from '../data/auroradb';
-import { getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
@@ -25,6 +25,7 @@ export type SearchOperatorProps = {
     errors: ErrorInfo[];
     searchResults: Operator[];
     selectedOperators: Operator[];
+    csrfToken: string;
 };
 
 export const showSelectedOperators = (selectedOperators: Operator[], errors: ErrorInfo[]): ReactElement => {
@@ -215,7 +216,7 @@ const SearchOperators = ({
     searchResults,
     selectedOperators,
     csrfToken,
-}: SearchOperatorProps & CustomAppProps): ReactElement => {
+}: SearchOperatorProps): ReactElement => {
     const selectedOperatorsToDisplay = selectedOperators.length > 0;
     const searchResultsToDisplay = searchResults.length > 0 || errors.find(err => err.id === addOperatorsErrorId);
     return (
@@ -263,6 +264,7 @@ const SearchOperators = ({
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SearchOperatorProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const nocCode = getAndValidateNoc(ctx);
 
     let errors: ErrorInfo[] = [];
@@ -315,7 +317,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
     }
 
-    return { props: { errors, searchText, searchResults, selectedOperators } };
+    return { props: { errors, searchText, searchResults, selectedOperators, csrfToken } };
 };
 
 export default SearchOperators;

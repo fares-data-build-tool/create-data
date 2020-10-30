@@ -20,7 +20,6 @@ describe('pages', () => {
                         ],
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -55,7 +54,6 @@ describe('pages', () => {
                         validity: { amount: '2', typeOfDuration: 'days' },
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -89,7 +87,6 @@ describe('pages', () => {
                         ],
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -103,7 +100,6 @@ describe('pages', () => {
                         productPrice: '60',
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

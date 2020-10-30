@@ -6,7 +6,7 @@ const description = 'Contact page for the Create Fares Data Service';
 
 const Contact = (): ReactElement => {
     return (
-        <BaseLayout title={title} description={description}>
+        <BaseLayout title={title} description={description} hideHelp>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
                     <h1 className="govuk-heading-l">Contact the Create Fares Data Service team</h1>
@@ -39,6 +39,10 @@ const Contact = (): ReactElement => {
             </div>
         </BaseLayout>
     );
+};
+
+export const getServerSideProps = (): {} => {
+    return { props: {} };
 };
 
 export default Contact;

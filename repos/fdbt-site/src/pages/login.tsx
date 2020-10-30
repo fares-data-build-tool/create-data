@@ -5,19 +5,20 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
-import { deleteCookieOnServerSide } from '../utils/index';
+import { ErrorInfo } from '../interfaces';
+import { deleteCookieOnServerSide, getCsrfToken } from '../utils/index';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Login - Create Fares Data Service';
 const description = 'Login page of the Create Fares Data Service';
 
 interface LoginProps {
-    errors: ErrorInfo[];
-    email: string;
+    errors?: ErrorInfo[];
+    email?: string;
+    csrfToken: string;
 }
 
-const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): ReactElement => (
+const Login = ({ errors = [], csrfToken, email }: LoginProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
@@ -104,7 +105,8 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps & CustomAppProps): 
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: LoginProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
 
     if (cookies[OPERATOR_COOKIE]) {
@@ -114,11 +116,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         if (operatorCookieParsed.errors) {
             const { errors, email } = operatorCookieParsed;
             deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
-            return { props: { errors, email: email ?? '' } };
+            return { props: { errors, email: email ?? '', csrfToken } };
         }
     }
 
-    return { props: {} };
+    return { props: { csrfToken } };
 };
 
 export default Login;

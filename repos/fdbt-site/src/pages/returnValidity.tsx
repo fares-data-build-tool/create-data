@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession, ReturnPeriodValidity } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ReturnPeriodValidity } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../constants';
-import { getErrorsByIds } from '../utils';
+import { getCsrfToken, getErrorsByIds } from '../utils';
 
 export interface ReturnPeriodValidityWithErrors {
     amount?: string;
@@ -20,6 +20,7 @@ const description = 'Return Validity page of the Create Fares Data Service';
 export interface ReturnValidityProps {
     errors: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
+    csrfToken: string;
 }
 
 export const getFieldset = (errors: ErrorInfo[], amount: string, duration: string): RadioConditionalInputFieldset => ({
@@ -73,7 +74,7 @@ export const isReturnPeriodValidityWithErrors = (
     returnValidityDefinition !== undefined &&
     (returnValidityDefinition as ReturnPeriodValidityWithErrors).errors !== undefined;
 
-const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & CustomAppProps): ReactElement => (
+const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/returnValidity" method="post" csrfToken={csrfToken}>
             <>
@@ -94,6 +95,7 @@ const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & C
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ReturnValidityProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const returnValidity = getSessionAttribute(ctx.req, RETURN_VALIDITY_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
@@ -102,7 +104,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Re
     const duration = returnValidity && returnValidity.typeOfDuration !== undefined ? returnValidity.typeOfDuration : '';
 
     const fieldset: RadioConditionalInputFieldset = getFieldset(errors, amount, duration);
-    return { props: { errors, fieldset } };
+    return { props: { errors, fieldset, csrfToken } };
 };
 
 export default ReturnValidity;

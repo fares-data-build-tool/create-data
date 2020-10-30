@@ -18,8 +18,6 @@ export const COOKIES_POLICY_COOKIE = 'fdbt-cookies-policy';
 
 export const COOKIE_PREFERENCES_COOKIE = 'fdbt-cookie-preferences-set';
 
-export const COOKIE_SETTINGS_SAVED_COOKIE = 'fdbt-cookie-settings-saved';
-
 // Links
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
@@ -98,7 +96,7 @@ export const MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE = 'fdbt-multiple-operators-se
 
 // Other
 
-export const oneYearInMilliseconds = 31556952000;
+export const oneYearInSeconds = 31556952;
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
