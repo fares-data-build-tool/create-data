@@ -20,6 +20,7 @@ export const setCookieOnResponseObject = (
     req: Req,
     res: Res,
     lifetime?: number,
+    httpOnly = true,
 ): void => {
     const cookies = new Cookies(req, res);
     // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
@@ -29,6 +30,7 @@ export const setCookieOnResponseObject = (
         sameSite: 'strict',
         secure: process.env.NODE_ENV !== 'development',
         maxAge: lifetime,
+        httpOnly,
     });
 };
 

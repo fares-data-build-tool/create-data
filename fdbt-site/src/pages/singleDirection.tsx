@@ -6,9 +6,9 @@ import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_A
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
@@ -22,6 +22,7 @@ interface DirectionProps {
     lineName: string;
     service: Service;
     error: ErrorInfo[];
+    csrfToken: string;
 }
 
 const SingleDirection = ({
@@ -31,7 +32,7 @@ const SingleDirection = ({
     service,
     error,
     csrfToken,
-}: DirectionProps & CustomAppProps): ReactElement => (
+}: DirectionProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
         <CsrfForm action="/api/singleDirection" method="post" csrfToken={csrfToken}>
             <>
@@ -71,6 +72,7 @@ const SingleDirection = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
 
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
@@ -113,6 +115,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             lineName,
             service,
             error: (isJourney(journeyAttribute) && journeyAttribute.errors) || [],
+            csrfToken,
         },
     };
 };

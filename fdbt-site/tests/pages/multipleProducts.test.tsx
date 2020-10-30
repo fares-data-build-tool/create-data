@@ -15,7 +15,6 @@ describe('pages', () => {
                     errors={[]}
                     userInput={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();

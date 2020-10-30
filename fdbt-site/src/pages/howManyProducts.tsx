@@ -3,28 +3,25 @@ import lowercase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession, TicketRepresentationAttribute } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, TicketRepresentationAttribute } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from './api/howManyProducts';
 import { getSessionAttribute } from '../utils/sessions';
 import { FareType } from './api/fareType';
+import { getCsrfToken } from '../utils';
 
 const title = 'How Many Products - Create Fares Data Service';
 const description = 'How Many Products entry page of the Create Fares Data Service';
 
-interface HowManyProductProps {
+interface HowManyProductsProps {
     errors: ErrorInfo[];
     fareType: string;
     pageHeading: string;
+    csrfToken: string;
 }
 
-const HowManyProducts = ({
-    errors,
-    fareType,
-    pageHeading,
-    csrfToken,
-}: HowManyProductProps & CustomAppProps): ReactElement => (
+const HowManyProducts = ({ errors, fareType, pageHeading, csrfToken }: HowManyProductsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/howManyProducts" method="post" csrfToken={csrfToken}>
             <>
@@ -66,7 +63,8 @@ export const isNumberOfProductsAttribute = (
     !!numberOfProductsAttribute &&
     (numberOfProductsAttribute as NumberOfProductsAttribute).numberOfProductsInput !== undefined;
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HowManyProductsProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const ticketType = (getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute)
@@ -84,7 +82,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
             ? numberOfProductsAttribute.errors
             : [];
 
-    return { props: { errors, fareType, pageHeading } };
+    return { props: { errors, fareType, pageHeading, csrfToken } };
 };
 
 export default HowManyProducts;

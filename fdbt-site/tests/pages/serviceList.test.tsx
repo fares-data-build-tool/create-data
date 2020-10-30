@@ -73,7 +73,6 @@ describe('pages', () => {
                     buttonText="Select All"
                     errors={[]}
                     csrfToken=""
-                    pageProps={[]}
                     multiOperator={false}
                 />,
             );
@@ -87,7 +86,6 @@ describe('pages', () => {
                     buttonText="Select All"
                     errors={[]}
                     csrfToken=""
-                    pageProps={[]}
                     multiOperator
                 />,
             );
@@ -101,7 +99,6 @@ describe('pages', () => {
                     errors={mockError}
                     buttonText="Select All"
                     csrfToken=""
-                    pageProps={[]}
                     multiOperator={false}
                 />,
             );

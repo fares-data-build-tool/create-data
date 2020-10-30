@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
 import { FareType } from './api/fareType';
+import { getCsrfToken } from '../utils';
 
 const title = 'Ticket Representation - Create Fares Data Service';
 const description = 'Ticket Representation selection page of the Create Fares Data Service';
@@ -15,13 +16,10 @@ const description = 'Ticket Representation selection page of the Create Fares Da
 type TicketRepresentationProps = {
     fareType: string;
     errors: ErrorInfo[];
+    csrfToken: string;
 };
 
-const TicketRepresentation = ({
-    fareType,
-    errors = [],
-    csrfToken,
-}: TicketRepresentationProps & CustomAppProps): ReactElement => (
+const TicketRepresentation = ({ fareType, errors = [], csrfToken }: TicketRepresentationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/ticketRepresentation" method="post" csrfToken={csrfToken}>
             <>
@@ -76,6 +74,7 @@ const TicketRepresentation = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TicketRepresentationProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const ticketType = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
 
@@ -83,6 +82,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
         props: {
             fareType,
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
+            csrfToken,
         },
     };
 };

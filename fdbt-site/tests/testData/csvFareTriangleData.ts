@@ -1,4 +1,4 @@
-export const testCsv: string =
+export const nonTicketerTestCsv: string =
     ',Acomb Green Lane,,,,,,,\n' +
     'Mattison Way,110,Mattison Way,,,,,,\n' +
     'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
@@ -7,58 +7,68 @@ export const testCsv: string =
     'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
     'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
     'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)';
+
+export const testCsv: string =
+    'Acomb Green Lane,,,,,,,\n' +
+    '110,Mattison Way,,,,,,\n' +
+    '110,110,Nursery Drive,,,,,\n' +
+    '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    '170,170,110,110,Cambridge Street (York),,,\n' +
+    '170,170,110,110,100,Blossom Street,,\n' +
+    '170,170,170,170,100,100,Rail Station (York),\n' +
+    '170,170,170,170,100,100,100,Piccadilly (York)';
 export const testCsvDuplicateFareStages: string =
-    ',Acomb Green Lane,,,,,,,\n' +
-    'Mattison Way,110,Mattison Way,,,,,,\n' +
-    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-    'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
-    'Nursery Drive,170,170,110,110,100,Nursery Drive,,\n' +
-    'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)';
+    'Acomb Green Lane,,,,,,,\n' +
+    '110,Mattison Way,,,,,,\n' +
+    '110,110,Nursery Drive,,,,,\n' +
+    '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    '170,170,110,110,Cambridge Street (York),,,\n' +
+    '170,170,110,110,100,Nursery Drive,,\n' +
+    '170,170,170,170,100,100,Rail Station (York),\n' +
+    '170,170,170,170,100,100,100,Piccadilly (York)';
 
 export const testCsvWithEmptyLines: string =
-    ',Acomb Green Lane,,,,,,,\n' +
-    'Mattison Way,110,Mattison Way,,,,,,\n' +
-    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-    'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
-    'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
-    'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)\n\n\n\n';
+    'Acomb Green Lane,,,,,,,\n' +
+    '110,Mattison Way,,,,,,\n' +
+    '110,110,Nursery Drive,,,,,\n' +
+    '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    '170,170,110,110,Cambridge Street (York),,,\n' +
+    '170,170,110,110,100,Blossom Street,,\n' +
+    '170,170,170,170,100,100,Rail Station (York),\n' +
+    '170,170,170,170,100,100,100,Piccadilly (York)\n\n\n\n';
 
 export const nonNumericPricesTestCsv: string =
-    ',Acomb Green Lane,,,,,,,\n' +
-    'Mattison Way,110,Mattison Way,,,,,,\n' +
-    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-    'Cambridge Street (York),170,d,110,110,Cambridge Street (York),,,\n' +
-    'Blossom Street,170,170,d,110,100,Blossom Street,,\n' +
-    'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,s,100,100,100,Piccadilly (York)';
+    'Acomb Green Lane,,,,,,,\n' +
+    '110,Mattison Way,,,,,,\n' +
+    '110,110,Nursery Drive,,,,,\n' +
+    '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    '170,d,110,110,Cambridge Street (York),,,\n' +
+    '170,170,d,110,100,Blossom Street,,\n' +
+    '170,170,170,170,100,100,Rail Station (York),\n' +
+    '170,170,170,s,100,100,100,Piccadilly (York)';
 
 export const missingPricesTestCsv: string =
-    ',Acomb Green Lane,,,,,,,\n' +
-    'Mattison Way,110,Mattison Way,,,,,,\n' +
-    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-    'Cambridge Street (York),170,,110,,Cambridge Street (York),,,\n' +
-    'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
-    'Rail Station (York),170,,170,170,100,100,Rail Station (York),\n' +
-    'Piccadilly (York),170,170,170,170,100,,100,Piccadilly (York)';
+    'Acomb Green Lane,,,,,,,\n' +
+    '110,Mattison Way,,,,,,\n' +
+    '110,110,Nursery Drive,,,,,\n' +
+    '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    '170,,110,,Cambridge Street (York),,,\n' +
+    '170,170,110,110,100,Blossom Street,,\n' +
+    '170,,170,170,100,100,Rail Station (York),\n' +
+    '170,170,170,170,100,,100,Piccadilly (York)';
 
 export const unprocessedObject = {
     Bucket: 'fdbt-raw-user-data',
     Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
     Body:
-        ',Acomb Green Lane,,,,,,,\n' +
-        'Mattison Way,110,Mattison Way,,,,,,\n' +
-        'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-        'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-        'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
-        'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
-        'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-        'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)',
+        'Acomb Green Lane,,,,,,,\n' +
+        '110,Mattison Way,,,,,,\n' +
+        '110,110,Nursery Drive,,,,,\n' +
+        '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+        '170,170,110,110,Cambridge Street (York),,,\n' +
+        '170,170,110,110,100,Blossom Street,,\n' +
+        '170,170,170,170,100,100,Rail Station (York),\n' +
+        '170,170,170,170,100,100,100,Piccadilly (York)',
     ContentType: 'text/csv; charset=utf-8',
 };
 
@@ -66,14 +76,14 @@ export const unprocessedObjectWithEmptyLines = {
     Bucket: 'fdbt-raw-user-data',
     Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
     Body:
-        ',Acomb Green Lane,,,,,,,\n' +
-        'Mattison Way,110,Mattison Way,,,,,,\n' +
-        'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
-        'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
-        'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
-        'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
-        'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
-        'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)\n\n\n\n',
+        'Acomb Green Lane,,,,,,,\n' +
+        '110,Mattison Way,,,,,,\n' +
+        '110,110,Nursery Drive,,,,,\n' +
+        '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+        '170,170,110,110,Cambridge Street (York),,,\n' +
+        '170,110,110,100,Blossom Street,,\n' +
+        '170,170,170,170,100,100,Rail Station (York),\n' +
+        '170,170,170,170,100,100,100,Piccadilly (York)\n\n\n\n',
     ContentType: 'text/csv; charset=utf-8',
 };
 

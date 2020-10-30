@@ -28,7 +28,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
       <div
         className="govuk-hint"
       >
-        Fare stage names are limited to 30 characters
+        Fare stage names are limited to 70 characters
       </div>
       <div>
         <div
@@ -215,7 +215,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       <div
         className="govuk-hint"
       >
-        Fare stage names are limited to 30 characters
+        Fare stage names are limited to 70 characters
       </div>
       <div>
         <div
@@ -383,7 +383,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       <div
         className="govuk-hint"
       >
-        Fare stage names are limited to 30 characters
+        Fare stage names are limited to 70 characters
       </div>
       <div>
         <div

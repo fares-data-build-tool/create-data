@@ -1,14 +1,11 @@
 import Document, { Html, Head, Main, NextScript, DocumentInitialProps } from 'next/document';
 import React, { ReactElement } from 'react';
-import { ServerResponse } from 'http';
 import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
 import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, ID_TOKEN_COOKIE } from '../constants';
-import PhaseBanner from '../layout/PhaseBanner';
 import { DocumentContextWithSession } from '../interfaces';
-import Footer from '../layout/Footer';
-import Help from '../components/Help';
-import CookieBanner from '../layout/CookieBanner';
+import { getCsrfToken, ResponseWithLocals } from '../utils';
+import { CookieBannerMessage } from '../layout/CookieBanner';
 
 interface DocumentProps extends DocumentInitialProps {
     nonce: string;
@@ -19,18 +16,11 @@ interface DocumentProps extends DocumentInitialProps {
     allowTracking: boolean;
 }
 
-interface ResponseWithLocals extends ServerResponse {
-    locals: {
-        nonce: string;
-        csrfToken: string;
-    };
-}
-
 class MyDocument extends Document<DocumentProps> {
     static async getInitialProps(ctx: DocumentContextWithSession): Promise<DocumentProps> {
         const initialProps = await Document.getInitialProps(ctx);
         const nonce = (ctx.res as ResponseWithLocals)?.locals?.nonce ?? null;
-        const csrfToken = (ctx.res as ResponseWithLocals)?.locals?.csrfToken ?? null;
+        const csrfToken = getCsrfToken(ctx);
 
         if (ctx.pathname !== '/') {
             ctx.res?.setHeader('X-Robots-Tag', 'none, noindex, nofollow, noimageindex, noarchive');
@@ -62,7 +52,7 @@ class MyDocument extends Document<DocumentProps> {
         return (
             <Html lang="en" className="govuk-template app-html-class flexbox no-flexboxtweener">
                 <Head nonce={this.props.nonce}>
-                    {process.env.STAGE === 'prod' && (
+                    {true && (
                         <>
                             <script
                                 async
@@ -83,22 +73,20 @@ class MyDocument extends Document<DocumentProps> {
                         </>
                     )}
                 </Head>
-                <body className="govuk-template__body app-body-class js-enabled">
+                <body className="govuk-template__body app-body-class">
                     <a href="#main-content" className="govuk-skip-link">
                         Skip to main content
                     </a>
-                    {this.props.showCookieBanner ? <CookieBanner /> : null}
+                    <div id="js-cookie-banner" />
+
+                    {this.props.showCookieBanner ? (
+                        <div className="no-js-cookie-banner">
+                            <CookieBannerMessage />
+                        </div>
+                    ) : null}
+
                     <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
-                    <div className="govuk-width-container app-width-container--wide">
-                        <PhaseBanner />
-                        <main id="main-content" role="main" tabIndex={-1}>
-                            <div className="govuk-main-wrapper app-main-class">
-                                <Main />
-                            </div>
-                        </main>
-                        {this.props.url !== '/contact' ? <Help /> : null}
-                    </div>
-                    <Footer />
+                    <Main />
                     <NextScript nonce={this.props.nonce} />
                     <script src="/scripts/all.js" nonce={this.props.nonce} />
                     <script nonce={this.props.nonce}>window.GOVUKFrontend.initAll()</script>

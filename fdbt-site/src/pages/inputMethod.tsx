@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { INPUT_METHOD_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { inputMethodErrorsExist } from '../interfaces/typeGuards';
+import { getCsrfToken } from '../utils';
 
 const title = 'Input Method - Create Fares Data Service';
 const description = 'Input Method selection page of the Create Fares Data Service';
@@ -15,9 +16,10 @@ const errorId = 'csv-upload';
 
 type InputMethodProps = {
     errors: ErrorInfo[];
+    csrfToken: string;
 };
 
-const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppProps): ReactElement => (
+const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
@@ -102,9 +104,15 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppPro
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: InputMethodProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const inputMethodInfo = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
     updateSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE, undefined);
-    return { props: { errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [] } };
+    return {
+        props: {
+            errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [],
+            csrfToken,
+        },
+    };
 };
 
 export default InputMethod;

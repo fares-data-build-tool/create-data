@@ -3,12 +3,13 @@ import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductInfo } from './productDetails';
+import { getCsrfToken } from '../utils';
 
 const title = 'Choose Validity - Create Fares Data Service';
 const description = 'Choose Validity page of the Create Fares Data Service';
@@ -19,6 +20,7 @@ interface ValidityProps {
     passengerType: string;
     daysValid: string;
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
 const ChooseValidity = ({
@@ -28,7 +30,7 @@ const ChooseValidity = ({
     daysValid,
     errors,
     csrfToken,
-}: ValidityProps & CustomAppProps): ReactElement => (
+}: ValidityProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/chooseValidity" method="post" csrfToken={csrfToken}>
             <>
@@ -63,6 +65,7 @@ const ChooseValidity = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ValidityProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const validityInfo = getSessionAttribute(ctx.req, DAYS_VALID_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const productAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
@@ -88,6 +91,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
             passengerType: passengerTypeAttribute.passengerType,
             daysValid: validity ?? '',
             errors: validityInfo?.errors ?? [],
+            csrfToken,
         },
     };
 };

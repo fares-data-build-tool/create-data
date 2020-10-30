@@ -39,7 +39,6 @@ describe('pages', () => {
                     fieldsets={mockDefinePassengerTypeFieldsets}
                     passengerType="adult"
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -54,7 +53,6 @@ describe('pages', () => {
                     numberOfPassengerTypeFieldset={mockNumberOfPassengerTypeFieldset}
                     passengerType="senior"
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -68,7 +66,6 @@ describe('pages', () => {
                     fieldsets={mockDefinePassengerTypeFieldsetsWithRadioErrors}
                     passengerType="infant"
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -82,7 +79,6 @@ describe('pages', () => {
                     fieldsets={mockDefinePassengerTypeFieldsetsWithInputErrors}
                     passengerType="child"
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();

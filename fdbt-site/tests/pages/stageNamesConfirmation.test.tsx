@@ -8,11 +8,7 @@ describe('pages', () => {
     describe('stageNamesConfirmation', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <StageNamesConfirmation
-                    fareStageNames={['leeds', 'manchester', 'bolton']}
-                    csrfToken=""
-                    pageProps={[]}
-                />,
+                <StageNamesConfirmation fareStageNames={['leeds', 'manchester', 'bolton']} csrfToken="" />,
             );
             expect(tree).toMatchSnapshot();
         });

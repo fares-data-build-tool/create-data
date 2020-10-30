@@ -1,12 +1,7 @@
 import cookies from '../../../src/pages/api/cookies';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import {
-    COOKIES_POLICY_COOKIE,
-    COOKIE_PREFERENCES_COOKIE,
-    COOKIE_SETTINGS_SAVED_COOKIE,
-    oneYearInMilliseconds,
-} from '../../../src/constants';
+import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInSeconds } from '../../../src/constants';
 import { CookiePolicy } from '../../../src/interfaces';
 
 describe('cookies', () => {
@@ -32,24 +27,25 @@ describe('cookies', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         cookies(req, res);
-        expect(setCookieSpy).toHaveBeenNthCalledWith(1, COOKIE_SETTINGS_SAVED_COOKIE, 'true', req, res);
         expect(setCookieSpy).toHaveBeenNthCalledWith(
-            2,
+            1,
             COOKIE_PREFERENCES_COOKIE,
             'true',
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
+            false,
         );
         expect(setCookieSpy).toHaveBeenNthCalledWith(
-            3,
+            2,
             COOKIES_POLICY_COOKIE,
             JSON.stringify(mockCookiePolicy),
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
+            false,
         );
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies?settingsSaved=true' });
     });
 
     it("should update all cookies, with the cookie policy 'usage' as true when the user enables tracking", () => {
@@ -61,23 +57,24 @@ describe('cookies', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         cookies(req, res);
-        expect(setCookieSpy).toHaveBeenNthCalledWith(1, COOKIE_SETTINGS_SAVED_COOKIE, 'true', req, res);
         expect(setCookieSpy).toHaveBeenNthCalledWith(
-            2,
+            1,
             COOKIE_PREFERENCES_COOKIE,
             'true',
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
+            false,
         );
         expect(setCookieSpy).toHaveBeenNthCalledWith(
-            3,
+            2,
             COOKIES_POLICY_COOKIE,
             JSON.stringify(mockCookiePolicy),
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
+            false,
         );
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies?settingsSaved=true' });
     });
 });

@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../constants';
 import { isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { getErrorsByIds } from '../utils';
+import { getCsrfToken, getErrorsByIds } from '../utils';
 import { ProductDateInformation } from './api/productDateInformation';
 
 const title = 'Product Date Information - Create Fares Data Service';
@@ -19,6 +19,7 @@ export interface ProductDateInformationProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset;
     dates?: ProductDateInformation;
+    csrfToken: string;
 }
 
 export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
@@ -65,12 +66,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
     };
 };
 
-const ProductDateInfo = ({
-    csrfToken,
-    errors = [],
-    fieldsets,
-    dates,
-}: ProductDateInformationProps & CustomAppProps): ReactElement => {
+const ProductDateInfo = ({ csrfToken, errors = [], fieldsets, dates }: ProductDateInformationProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description}>
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
@@ -99,6 +95,7 @@ const ProductDateInfo = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDateInformationProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const productDateAttribute = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
@@ -123,6 +120,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
                           endDateMonth: '',
                           endDateYear: '',
                       },
+            csrfToken,
         },
     };
 };

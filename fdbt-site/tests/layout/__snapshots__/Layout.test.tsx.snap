@@ -4,6 +4,8 @@ exports[`Layout should render correctly 1`] = `
 <Component
   description="description"
   errors={Array []}
+  hideCookieBanner={false}
+  hideHelp={false}
   title="title"
 >
   <div

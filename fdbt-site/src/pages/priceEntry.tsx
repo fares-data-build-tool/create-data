@@ -4,9 +4,10 @@ import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
 import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { FaresInformation } from './api/priceEntry';
 import { isInputCheck } from '../interfaces/typeGuards';
+import { getCsrfToken } from '../utils';
 
 const title = 'Price Entry - Create Fares Data Service';
 const description = 'Price Entry page of the Create Fares Data Service';
@@ -15,6 +16,7 @@ interface PriceEntryProps {
     stageNamesArray: string[];
     faresInformation?: FaresInformation;
     errors?: ErrorInfo[];
+    csrfToken: string;
 }
 
 export const getDefaultValue = (fareInformation: FaresInformation, rowStage: string, columnStage: string): string => {
@@ -77,7 +79,7 @@ const PriceEntry = ({
     csrfToken,
     faresInformation = { inputs: [], errorInformation: [] },
     errors = [],
-}: PriceEntryProps & CustomAppProps): ReactElement => (
+}: PriceEntryProps): ReactElement => (
     <FullColumnLayout title={title} description={description}>
         <CsrfForm action="/api/priceEntry" method="post" csrfToken={csrfToken}>
             <>
@@ -147,6 +149,7 @@ const PriceEntry = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PriceEntryProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const stageNamesInfo = getSessionAttribute(ctx.req, STAGE_NAMES_ATTRIBUTE);
 
     if (!stageNamesInfo || stageNamesInfo.length === 0 || isInputCheck(stageNamesInfo)) {
@@ -175,11 +178,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
                     errorInformation: priceEntryInfo.errorInformation,
                 },
                 errors: filteredErrors,
+                csrfToken,
             },
         };
     }
 
-    return { props: { stageNamesArray } };
+    return { props: { stageNamesArray, csrfToken } };
 };
 
 export default PriceEntry;

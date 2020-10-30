@@ -11,17 +11,11 @@ import RadioConditionalInput, {
     createErrorId,
     RadioConditionalInputFieldset,
 } from '../components/RadioConditionalInput';
-import {
-    BaseReactElement,
-    CustomAppProps,
-    ErrorInfo,
-    GroupDefinition,
-    NextPageContextWithSession,
-} from '../interfaces';
+import { BaseReactElement, ErrorInfo, GroupDefinition, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { getErrorsByIds } from '../utils';
+import { getCsrfToken, getErrorsByIds } from '../utils';
 import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Define Passenger Type - Create Fares Data Service';
@@ -46,6 +40,7 @@ export interface DefinePassengerTypeProps {
     fieldsets: RadioConditionalInputFieldset[];
     numberOfPassengerTypeFieldset?: TextInputFieldset;
     passengerType: string;
+    csrfToken: string;
 }
 
 export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioConditionalInputFieldset[] => {
@@ -222,7 +217,7 @@ const DefinePassengerType = ({
     numberOfPassengerTypeFieldset,
     csrfToken,
     passengerType,
-}: DefinePassengerTypeProps & CustomAppProps): ReactElement => (
+}: DefinePassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
             <>
@@ -259,6 +254,7 @@ export const isGroupDefinitionWithErrors = (
 ): groupDefinition is GroupDefinitionWithErrors => (groupDefinition as GroupDefinitionWithErrors).errors.length > 0;
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePassengerTypeProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const passengerTypeErrorsAttribute = getSessionAttribute(ctx.req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
@@ -300,6 +296,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
                 fieldsets,
                 numberOfPassengerTypeFieldset,
                 passengerType,
+                csrfToken,
             },
         };
     }
@@ -313,7 +310,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     fieldsets = getFieldsets(errors, passengerType);
 
-    return { props: { group, errors, fieldsets, passengerType } };
+    return { props: { group, errors, fieldsets, passengerType, csrfToken } };
 };
 
 export default DefinePassengerType;

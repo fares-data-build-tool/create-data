@@ -7,9 +7,27 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
 >
   <Head
     nonce=""
-  />
+  >
+    <script
+      async={true}
+      nonce=""
+      src="https://www.googletagmanager.com/gtag/js?id=UA-173062045-1"
+    />
+    <script
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "window['ga-disable-UA-173062045-1'] = false;
+                                        window.dataLayer = window.dataLayer || [];
+                                        function gtag(){dataLayer.push(arguments);}
+                                        gtag('js', new Date());
+                                        gtag('config', 'UA-173062045-1', {'anonymize_ip': true});",
+        }
+      }
+      nonce=""
+    />
+  </Head>
   <body
-    className="govuk-template__body app-body-class js-enabled"
+    className="govuk-template__body app-body-class"
   >
     <a
       className="govuk-skip-link"
@@ -17,28 +35,14 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
     >
       Skip to main content
     </a>
+    <div
+      id="js-cookie-banner"
+    />
     <Header
       csrfToken=""
       isAuthed={true}
     />
-    <div
-      className="govuk-width-container app-width-container--wide"
-    >
-      <PhaseBanner />
-      <main
-        id="main-content"
-        role="main"
-        tabIndex={-1}
-      >
-        <div
-          className="govuk-main-wrapper app-main-class"
-        >
-          <Main />
-        </div>
-      </main>
-      <Help />
-    </div>
-    <Footer />
+    <Main />
     <NextScript
       nonce=""
     />
@@ -62,9 +66,27 @@ exports[`_document should render correctly 1`] = `
 >
   <Head
     nonce=""
-  />
+  >
+    <script
+      async={true}
+      nonce=""
+      src="https://www.googletagmanager.com/gtag/js?id=UA-173062045-1"
+    />
+    <script
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "window['ga-disable-UA-173062045-1'] = false;
+                                        window.dataLayer = window.dataLayer || [];
+                                        function gtag(){dataLayer.push(arguments);}
+                                        gtag('js', new Date());
+                                        gtag('config', 'UA-173062045-1', {'anonymize_ip': true});",
+        }
+      }
+      nonce=""
+    />
+  </Head>
   <body
-    className="govuk-template__body app-body-class js-enabled"
+    className="govuk-template__body app-body-class"
   >
     <a
       className="govuk-skip-link"
@@ -72,29 +94,19 @@ exports[`_document should render correctly 1`] = `
     >
       Skip to main content
     </a>
-    <CookieBanner />
+    <div
+      id="js-cookie-banner"
+    />
+    <div
+      className="no-js-cookie-banner"
+    >
+      <Component />
+    </div>
     <Header
       csrfToken=""
       isAuthed={true}
     />
-    <div
-      className="govuk-width-container app-width-container--wide"
-    >
-      <PhaseBanner />
-      <main
-        id="main-content"
-        role="main"
-        tabIndex={-1}
-      >
-        <div
-          className="govuk-main-wrapper app-main-class"
-        >
-          <Main />
-        </div>
-      </main>
-      <Help />
-    </div>
-    <Footer />
+    <Main />
     <NextScript
       nonce=""
     />

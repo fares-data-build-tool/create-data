@@ -26,7 +26,6 @@ describe('pages', () => {
                         startDefault: true,
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

@@ -20,7 +20,6 @@ describe('pages', () => {
                     passengerType="Adult"
                     hintText="Test Zone"
                     csrfToken=""
-                    pageProps={[]}
                     errors={[]}
                 />,
             );

@@ -40,7 +40,6 @@ exports[`pages chooseStages should render correctly 1`] = `
         <input
           aria-describedby="fare-stage-hint"
           className="govuk-input govuk-input--width-2"
-          defaultValue=""
           id="fare-stages"
           name="fareStageInput"
           type="text"

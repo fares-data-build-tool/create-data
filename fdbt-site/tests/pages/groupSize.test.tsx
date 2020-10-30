@@ -8,7 +8,7 @@ import { GROUP_SIZE_ATTRIBUTE } from '../../src/constants';
 describe('pages', () => {
     describe('groupSize', () => {
         it('should render correctly', () => {
-            const tree = shallow(<GroupSize groupTicketInfo={{ maxGroupSize: '' }} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<GroupSize groupTicketInfo={{ maxGroupSize: '' }} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -26,7 +26,6 @@ describe('pages', () => {
                         ],
                     }}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -41,6 +40,7 @@ describe('pages', () => {
                     groupTicketInfo: {
                         maxGroupSize: '',
                     },
+                    csrfToken: '',
                 },
             };
             const props = getServerSideProps(ctx);
@@ -66,6 +66,7 @@ describe('pages', () => {
             const expectedProps: { props: GroupSizeProps } = {
                 props: {
                     groupTicketInfo: groupTicketInfoWithErrors,
+                    csrfToken: '',
                 },
             };
             const props = getServerSideProps(ctx);

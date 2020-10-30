@@ -3,11 +3,12 @@ import uniqBy from 'lodash/uniqBy';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_STAGES_ATTRIBUTE, STAGE_NAMES_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { isInputCheck, isFareStage } from '../interfaces/typeGuards';
+import { getCsrfToken } from '../utils';
 
 const title = 'Stage Names - Create Fares Data Service';
 const description = 'Stage Names entry page of the Create Fares Data Service';
@@ -23,6 +24,7 @@ type StageNameProps = {
     inputChecks: InputCheck[];
     errors: ErrorInfo[];
     defaults: string[];
+    csrfToken: string;
 };
 
 export const renderInputField = (
@@ -86,7 +88,7 @@ const StageNames = ({
     csrfToken,
     errors = [],
     defaults,
-}: StageNameProps & CustomAppProps): ReactElement => (
+}: StageNameProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/stageNames" method="post" csrfToken={csrfToken}>
             <>
@@ -97,7 +99,7 @@ const StageNames = ({
                             Enter the names of the fare stages in order from first to last
                         </h1>
                     </legend>
-                    <div className="govuk-hint">Fare stage names are limited to 30 characters</div>
+                    <div className="govuk-hint">Fare stage names are limited to 70 characters</div>
                     <div>{renderInputFields(numberOfFareStages, inputChecks, errors, defaults)}</div>
                 </fieldset>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -107,6 +109,7 @@ const StageNames = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StageNameProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const fareStagesAttribute = getSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE);
 
     if (!isFareStage(fareStagesAttribute)) {
@@ -128,7 +131,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: St
                 errors.push({ errorMessage: inputCheck.error, id: inputCheck.id });
             }
         });
-        return { props: { numberOfFareStages, inputChecks, errors, defaults: [] } };
+        return { props: { numberOfFareStages, inputChecks, errors, defaults: [], csrfToken } };
     }
 
     return {
@@ -137,6 +140,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: St
             inputChecks,
             errors: [],
             defaults: !isInputCheck(stageNamesInfo) && stageNamesInfo ? stageNamesInfo : [],
+            csrfToken,
         },
     };
 };

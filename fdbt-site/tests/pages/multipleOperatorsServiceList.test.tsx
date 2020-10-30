@@ -76,7 +76,6 @@ describe('pages', () => {
                     buttonText="Select All"
                     errors={[]}
                     csrfToken=""
-                    pageProps={[]}
                     operatorName="Test Operator"
                     nocCode="TO"
                 />,
@@ -91,7 +90,6 @@ describe('pages', () => {
                     buttonText="Select All"
                     errors={mockError}
                     csrfToken=""
-                    pageProps={[]}
                     operatorName="Test Operator"
                     nocCode="TO"
                 />,

@@ -55,6 +55,8 @@ describe('apiUtils', () => {
                 path: '/',
                 sameSite: 'strict',
                 secure: true,
+                httpOnly: true,
+                maxAge: undefined,
             });
         });
     });
