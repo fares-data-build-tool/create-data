@@ -52,7 +52,7 @@ class MyDocument extends Document<DocumentProps> {
         return (
             <Html lang="en" className="govuk-template app-html-class flexbox no-flexboxtweener">
                 <Head nonce={this.props.nonce}>
-                    {true && (
+                    {process.env.STAGE === 'prod' && (
                         <>
                             <script
                                 async
