@@ -1,17 +1,31 @@
 COMMAND=$1
 EMAIL=$2
-NOC=$3
+USER_IDENTIFIER=$3
+USER_ATTRIBUTE=$4
 
 USER_POOL=$(aws cognito-idp list-user-pools --max-results 1 | jq -r '.UserPools[0].Id')
 
 function add_user() {
-  if [ -z $EMAIL ] || [ -z $NOC ]; then
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ]; then
     echo "usage: cognito-manager add-user <email> <noc>"
     exit 1
   fi
 
   TEMP_PASSWORD=$(cat /dev/urandom | env LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
-  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$NOC --temporary-password $TEMP_PASSWORD --region eu-west-2
+  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$USER_IDENTIFIER --temporary-password $TEMP_PASSWORD --region eu-west-2
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=email_verified,Value=true
+
+  echo "https://fares-data.dft.gov.uk/register?key=$TEMP_PASSWORD"
+}
+
+function add_scheme_operator() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ] || [ -z $USER_ATTRIBUTE ]; then
+    echo "usage: cognito-manager add-scheme-operator <email> <name> <region_code>"
+    exit 1
+  fi
+
+  TEMP_PASSWORD=$(cat /dev/urandom | env LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:schemeOperator,Value=$USER_IDENTIFIER Name=custom:schemeRegionCode,Value=$USER_ATTRIBUTE --temporary-password $TEMP_PASSWORD --region eu-west-2
   aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=email_verified,Value=true
 
   echo "https://fares-data.dft.gov.uk/register?key=$TEMP_PASSWORD"
@@ -27,12 +41,30 @@ function delete_user() {
 }
 
 function update_noc() {
-  if [ -z $EMAIL ] || [ -z $NOC ]; then
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ]; then
     echo "usage: cognito-manager update-noc <email> <noc>"
     exit 1
   fi
 
-  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$NOC --region eu-west-2
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$USER_IDENTIFIER --region eu-west-2
+}
+
+function update_scheme_operator_name() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ]; then
+    echo "usage: cognito-manager update-scheme-operator-name <email> <name>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:schemeOperator,Value=$USER_IDENTIFIER --region eu-west-2
+}
+
+function update_scheme_operator_region_code() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ] || [ -z $USER_ATTRIBUTE ]; then
+    echo "usage: cognito-manager update-scheme-operator-region-code <email> <name> <region_code>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:schemeRegionCode,Value=$USER_ATTRIBUTE --region eu-west-2
 }
 
 function get_user_status() {
@@ -59,16 +91,22 @@ fi
 
 if [[ $COMMAND = 'add-user' ]]; then
   add_user
+elif [[ $COMMAND = 'add-scheme-operator' ]]; then
+  add_scheme_operator
 elif [[ $COMMAND = 'delete-user' ]]; then
   delete_user
 elif [[ $COMMAND = 'update-noc' ]]; then
   update_noc
+elif [[ $COMMAND = 'update-scheme-operator-name' ]]; then
+  update_scheme_operator_name
+elif [[ $COMMAND = 'update-scheme-operator-region-code' ]]; then
+  update_scheme_operator_region_code
 elif [[ $COMMAND = 'get-user-status' ]]; then
   get_user_status
 elif [[ $COMMAND = 'verify-all-emails' ]]; then
   verify_all_emails
 else
-  echo "usage cognito-manager <add-user | delete-user | update-noc | verify-all-emails>"
+  echo "usage cognito-manager <add-user | add-scheme-operator | delete-user | update-noc | update-scheme-operator-name | update-scheme-operator-region-code | verify-all-emails>"
   exit 1
 fi
 
