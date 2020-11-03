@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid, validatePassword } from './apiUtils';
-import { USER_COOKIE, INTERNAL_NOC } from '../../constants';
+import { USER_COOKIE } from '../../constants';
 import { ErrorInfo } from '../../interfaces';
-import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
 
@@ -14,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     };
 
     try {
-        const { email, password, confirmPassword, nocCode, regKey } = req.body;
+        const { email, password, confirmPassword, regKey } = req.body;
 
         let { contactable } = req.body;
 
@@ -38,30 +37,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             inputChecks.push({ userInput: '', ...passwordValidityError });
         }
 
-        inputChecks.push({
-            userInput: nocCode,
-            id: 'noc-code',
-            errorMessage: nocCode === '' ? 'National Operator Code cannot be empty' : '',
-        });
-
-        if (nocCode !== '' && nocCode !== INTERNAL_NOC) {
-            const servicesForNoc = await getServicesByNocCode(nocCode);
-
-            if (servicesForNoc.length === 0) {
-                logger.warn('', {
-                    context: 'api.register',
-                    message: 'NOC not found in database',
-                    nocCode,
-                });
-
-                inputChecks.push({
-                    userInput: '',
-                    id: 'email',
-                    errorMessage: 'There was a problem creating your account',
-                });
-            }
-        }
-
         if (inputChecks.some(el => el.errorMessage !== '')) {
             setErrorsCookie(inputChecks, regKey);
             return;
@@ -71,21 +46,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const { ChallengeName, ChallengeParameters, Session } = await initiateAuth(email, regKey);
 
             if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters?.userAttributes && Session) {
-                const parameters = JSON.parse(ChallengeParameters.userAttributes);
-
-                const cognitoNocs = (parameters['custom:noc'] as string | undefined)?.split('|');
-
-                if (!cognitoNocs || !cognitoNocs.includes(nocCode)) {
-                    logger.warn('', {
-                        context: 'api.register',
-                        message: 'NOC does not match',
-                        inputtedNoc: nocCode,
-                        requiredNoc: parameters['custom:noc'] || '',
-                    });
-
-                    throw new Error('NOC does not match');
-                }
-
                 await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);
                 await updateUserAttributes(email, [{ Name: 'custom:contactable', Value: contactable }]);
                 await globalSignOut(email);
@@ -93,7 +53,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 logger.info('', {
                     context: 'api.register',
                     message: 'registration successful',
-                    noc: nocCode,
                 });
 
                 redirectTo(res, '/confirmRegistration');

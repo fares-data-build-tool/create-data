@@ -57,7 +57,6 @@ describe('register', () => {
                 email: '',
                 password: 'chromosoneTelepathyDinosaur',
                 confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
             },
@@ -68,7 +67,6 @@ describe('register', () => {
                         id: 'email',
                         errorMessage: 'Enter an email address in the correct format, like name@example.com',
                     },
-                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -78,7 +76,6 @@ describe('register', () => {
                 email: 'test@test.com',
                 password: 'abchi',
                 confirmPassword: 'abchi',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
             },
@@ -94,7 +91,6 @@ describe('register', () => {
                         id: 'password',
                         errorMessage: 'Password must be at least 8 characters long',
                     },
-                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -104,7 +100,6 @@ describe('register', () => {
                 email: 'test@test.com',
                 password: '',
                 confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: '',
             },
@@ -120,7 +115,6 @@ describe('register', () => {
                         id: 'password',
                         errorMessage: 'Enter a password',
                     },
-                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 ],
             },
         ],
@@ -130,7 +124,6 @@ describe('register', () => {
                 email: 'test@test.com',
                 password: 'chromosoneTelepathyDinosaur',
                 confirmPassword: 'chromosoneTelepathyDinosa',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 checkboxUserResearch: '',
             },
@@ -142,28 +135,6 @@ describe('register', () => {
                         errorMessage: '',
                     },
                     { userInput: '', id: 'password', errorMessage: 'Passwords do not match' },
-                    { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
-                ],
-            },
-        ],
-        [
-            'empty NOC field',
-            {
-                email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: '',
-                regKey: 'abcdefg',
-                checkboxUserResearch: 'checkboxUserResearch',
-            },
-            {
-                inputChecks: [
-                    {
-                        userInput: 'test@test.com',
-                        id: 'email',
-                        errorMessage: '',
-                    },
-                    { userInput: '', id: 'noc-code', errorMessage: 'National Operator Code cannot be empty' },
                 ],
             },
         ],
@@ -181,43 +152,6 @@ describe('register', () => {
         expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
-    it('should error when the service noc code is invalid', async () => {
-        getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
-
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'abcd',
-                regKey: 'abcdefg',
-            },
-            uuid: '',
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    userInput: 'test@test.com',
-                    id: 'email',
-                    errorMessage: '',
-                },
-                { userInput: 'abcd', id: 'noc-code', errorMessage: '' },
-                {
-                    userInput: '',
-                    id: 'email',
-                    errorMessage: 'There was a problem creating your account',
-                },
-            ],
-        };
-
-        await register(req, res);
-
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
-    });
-
     it('should redirect when successfully signed in', async () => {
         authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
         authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
@@ -230,7 +164,6 @@ describe('register', () => {
                 email: 'test@test.com',
                 password: 'chromosoneTelepathyDinosaur',
                 confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
             uuid: '',
@@ -263,7 +196,6 @@ describe('register', () => {
                     id: 'email',
                     errorMessage: '',
                 },
-                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
                 {
                     userInput: '',
                     id: 'email',
@@ -278,55 +210,6 @@ describe('register', () => {
                 email: 'test@test.com',
                 password: 'chromosoneTelepathyDinosaur',
                 confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
-                regKey: 'abcdefg',
-            },
-            uuid: '',
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        await register(req, res);
-
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
-    });
-
-    it('should error when the NOC does not match what is in Cognito', async () => {
-        authSignInSpy.mockImplementation(() =>
-            Promise.resolve({
-                ChallengeName: 'NEW_PASSWORD_REQUIRED',
-                ChallengeParameters: {
-                    USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-                    userAttributes: JSON.stringify({
-                        'custom:noc': 'FAKE',
-                    }),
-                },
-                Session: 'session',
-            }),
-        );
-
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    userInput: 'test@test.com',
-                    id: 'email',
-                    errorMessage: '',
-                },
-                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
-                {
-                    userInput: '',
-                    id: 'email',
-                    errorMessage: 'There was a problem creating your account',
-                },
-            ],
-        };
-
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
             uuid: '',
@@ -345,7 +228,6 @@ describe('register', () => {
                 email: 'test@test.com',
                 password: 'chromosoneTelepathyDinosaur',
                 confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: 'yes',
             },
@@ -377,7 +259,6 @@ describe('register', () => {
                 email: 'test@test.com',
                 password: 'chromosoneTelepathyDinosaur',
                 confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
                 regKey: 'abcdefg',
                 contactable: '',
             },
@@ -400,128 +281,5 @@ describe('register', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
         });
-    });
-});
-
-describe('register pipe split logic', () => {
-    const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
-        ChallengeName: 'NEW_PASSWORD_REQUIRED',
-        ChallengeParameters: {
-            USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            userAttributes: JSON.stringify({
-                'custom:noc': 'DCCL|TEST|1234',
-            }),
-        },
-        Session: 'session',
-    };
-
-    const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
-    const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
-    const authCompletePasswordSpy = jest.spyOn(auth, 'respondToNewPasswordChallenge');
-    const authUpdateAttributesSpy = jest.spyOn(auth, 'updateUserAttributes');
-    const authSignOutSpy = jest.spyOn(auth, 'globalSignOut');
-    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
-    beforeEach(() => {
-        authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
-        authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
-        authSignOutSpy.mockImplementation(() => Promise.resolve());
-        authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
-        getServicesByNocCodeSpy.mockImplementation(() =>
-            Promise.resolve([
-                {
-                    lineName: '2AC',
-                    startDate: '01012020',
-                    description: 'linename for service ',
-                    serviceCode: 'NW_05_BLAC_2C_1',
-                },
-            ]),
-        );
-    });
-
-    afterEach(() => {
-        jest.resetAllMocks();
-    });
-
-    const writeHeadMock = jest.fn();
-
-    it('should split NOCs into seperate ones if seperated by a pipe, and check if the users matches any', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
-                regKey: 'abcdefg',
-                contactable: '',
-            },
-            uuid: '',
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        await register(req, res);
-
-        expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
-            { Name: 'custom:contactable', Value: 'no' },
-        ]);
-        expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
-        expect(authCompletePasswordSpy).toHaveBeenCalledWith(
-            'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'chromosoneTelepathyDinosaur',
-            'session',
-        );
-        expect(authSignOutSpy).toHaveBeenCalled();
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/confirmRegistration',
-        });
-    });
-
-    it('should error if no NOCs match', async () => {
-        authSignInSpy.mockImplementation(() =>
-            Promise.resolve({
-                ChallengeName: 'NEW_PASSWORD_REQUIRED',
-                ChallengeParameters: {
-                    USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-                    userAttributes: JSON.stringify({
-                        'custom:noc': 'FAKE',
-                    }),
-                },
-                Session: 'session',
-            }),
-        );
-
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    userInput: 'test@test.com',
-                    id: 'email',
-                    errorMessage: '',
-                },
-                { userInput: 'DCCL', id: 'noc-code', errorMessage: '' },
-                {
-                    userInput: '',
-                    id: 'email',
-                    errorMessage: 'There was a problem creating your account',
-                },
-            ],
-        };
-
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
-                nocCode: 'DCCL',
-                regKey: 'abcdefg',
-            },
-            uuid: '',
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        await register(req, res);
-
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 });

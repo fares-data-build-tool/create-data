@@ -1,5 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages selectSalesOfferPackage should not render the 'Create New Sales Offer Package' button for a scheme operator user 1`] = `
+<Component
+  description="Sales Offer Package selection page of the Create Fares Data Service"
+  title="Select Sales Offer Package - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectSalesOfferPackage"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
+    >
+      How are the tickets sold?
+    </h1>
+    <div>
+      <p
+        className="govuk-body"
+      >
+        To create NeTEx for your fare it needs to contain the following:
+      </p>
+      <ol
+        className="govuk-list govuk-list--number"
+      >
+        <li>
+          Where a ticket can be bought
+        </li>
+        <li>
+          What payment method it can be bought with
+        </li>
+        <li>
+          What format the ticket is provided to the passenger in
+        </li>
+      </ol>
+      <p
+        className="govuk-body"
+      >
+        This combination of information is called a 
+        <strong>
+          sales offer package
+        </strong>
+        . You can choose from one you have already setup or create a new one for these products.
+      </p>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
 exports[`pages selectSalesOfferPackage should render an error when an error message is passed through to props 1`] = `
 <Component
   description="Sales Offer Package selection page of the Create Fares Data Service"
