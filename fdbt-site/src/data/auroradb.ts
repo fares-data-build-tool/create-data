@@ -416,11 +416,11 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     }
 };
 
-export const getSearchOperators = async (searchText: string, nocCode: string): Promise<Operator[]> => {
+export const getSearchOperatorsByNocRegion = async (searchText: string, nocCode: string): Promise<Operator[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operators for given search text and noc',
-        noc: nocCode,
+        nocCode,
         search: searchText,
     });
 
@@ -433,6 +433,28 @@ export const getSearchOperators = async (searchText: string, nocCode: string): P
 
     try {
         return await executeQuery<Operator[]>(searchQuery, [nocCodeParameter, `%${searchText}%`]);
+    } catch (error) {
+        throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getSearchOperatorsBySchemeOpRegion = async (
+    searchText: string,
+    regionCode: string,
+): Promise<Operator[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operators for given search text and noc',
+        regionCode,
+        search: searchText,
+    });
+
+    const searchQuery = `SELECT nocCode, operatorPublicName FROM nocTable WHERE nocCode IN (
+        SELECT DISTINCT nocCode FROM tndsOperatorService WHERE regionCode = ?
+        ) AND operatorPublicName LIKE ?`;
+
+    try {
+        return await executeQuery<Operator[]>(searchQuery, [regionCode, `%${searchText}%`]);
     } catch (error) {
         throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
     }

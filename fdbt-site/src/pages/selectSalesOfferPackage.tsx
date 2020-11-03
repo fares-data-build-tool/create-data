@@ -11,7 +11,7 @@ import {
 } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { Product } from './api/multipleProductValidity';
@@ -56,6 +56,7 @@ export const defaultSalesOfferPackageFour: SalesOfferPackage = {
 };
 
 export interface SelectSalesOfferPackageProps {
+    schemeOp: boolean;
     selected?: { [key: string]: string[] };
     productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
@@ -137,6 +138,7 @@ const createSalesOffer = (
     ));
 
 const SelectSalesOfferPackage = ({
+    schemeOp,
     selected,
     productNamesList,
     salesOfferPackagesList,
@@ -165,16 +167,18 @@ const SelectSalesOfferPackage = ({
                     </div>
                     {createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-                    <a
-                        href="/salesOfferPackages"
-                        role="button"
-                        draggable="false"
-                        className="govuk-button govuk-button--secondary create-new-sop-button"
-                        data-module="govuk-button"
-                        id="create-new-button"
-                    >
-                        Create New Sales Offer Package
-                    </a>
+                    {schemeOp ? null : (
+                        <a
+                            href="/salesOfferPackages"
+                            role="button"
+                            draggable="false"
+                            className="govuk-button govuk-button--secondary create-new-sop-button"
+                            data-module="govuk-button"
+                            id="create-new-button"
+                        >
+                            Create New Sales Offer Package
+                        </a>
+                    )}
                 </>
             </CsrfForm>
         </FullColumnLayout>
@@ -185,13 +189,14 @@ export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: SelectSalesOfferPackageProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const nocCode = getAndValidateNoc(ctx);
+    const schemeOp = isSchemeOperator(ctx);
+    const nocCode = schemeOp ? null : getAndValidateNoc(ctx);
 
-    if (!nocCode) {
+    if (!schemeOp && !nocCode) {
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
 
-    const salesOfferPackagesList = await getSalesOfferPackagesByNocCode(nocCode);
+    const salesOfferPackagesList = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
     salesOfferPackagesList.unshift(
         defaultSalesOfferPackageOne,
         defaultSalesOfferPackageTwo,
@@ -233,6 +238,7 @@ export const getServerSideProps = async (
     ) {
         return {
             props: {
+                schemeOp,
                 selected: salesOfferPackageAttribute.selected || '',
                 productNamesList: productNames,
                 salesOfferPackagesList,
@@ -244,6 +250,7 @@ export const getServerSideProps = async (
 
     return {
         props: {
+            schemeOp,
             productNamesList: productNames,
             salesOfferPackagesList,
             errors: [],

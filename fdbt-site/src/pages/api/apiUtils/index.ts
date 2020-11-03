@@ -135,6 +135,32 @@ export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): st
     throw new Error('invalid noc set');
 };
 
+export const getSchemeOpRegionFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
+    getAttributeFromIdToken(req, res, 'custom:schemeRegionCode');
+
+export const getAndValidateSchemeOpRegion = (req: NextApiRequest, res: NextApiResponse): string | null => {
+    const idTokenSchemeOpRegion = getSchemeOpRegionFromIdToken(req, res);
+    const operatorCookie = unescapeAndDecodeCookie(new Cookies(req, res), OPERATOR_COOKIE);
+    const cookieSchemeOpRegion = JSON.parse(operatorCookie).region;
+
+    if (!cookieSchemeOpRegion && !idTokenSchemeOpRegion) {
+        return null;
+    }
+
+    if (
+        !cookieSchemeOpRegion ||
+        !idTokenSchemeOpRegion ||
+        (cookieSchemeOpRegion && idTokenSchemeOpRegion && cookieSchemeOpRegion !== idTokenSchemeOpRegion)
+    ) {
+        throw new Error('invalid scheme operator region code set');
+    }
+
+    return cookieSchemeOpRegion;
+};
+
+export const isSchemeOperator = (req: NextApiRequest, res: NextApiResponse): boolean =>
+    !(!getAndValidateSchemeOpRegion(req, res) && !!getAndValidateNoc(req, res));
+
 export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
     if (username) {
         await globalSignOut(username);

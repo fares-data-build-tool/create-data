@@ -7,9 +7,11 @@ import {
     getAttributeFromIdToken,
     validatePassword,
     getSelectedStages,
+    getAndValidateSchemeOpRegion,
+    isSchemeOperator,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
-import { getMockRequestAndResponse } from '../../../testData/mockData';
+import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../../testData/mockData';
 import { FARE_TYPE_ATTRIBUTE } from '../../../../src/constants';
 
 describe('apiUtils', () => {
@@ -184,6 +186,49 @@ describe('apiUtils', () => {
             const email = getAttributeFromIdToken(req, res, 'custom:noc');
 
             expect(email).toBeNull();
+        });
+    });
+
+    describe('getAndValidateSchemeOpRegion', () => {
+        it('should return the scheme operator region code when the logged in user is a scheme operator', () => {
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {
+                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                    idToken: mockSchemOpIdToken,
+                },
+            });
+            const region = getAndValidateSchemeOpRegion(req, res);
+            expect(region).toBe('SCHEME_REGION');
+        });
+
+        it('should return null when the logged in user is not a scheme operator', () => {
+            const { req, res } = getMockRequestAndResponse();
+            const region = getAndValidateSchemeOpRegion(req, res);
+            expect(region).toEqual(null);
+        });
+
+        it('should throw an error when the idToken and OPERATOR_COOKIE do not match', () => {
+            const { req, res } = getMockRequestAndResponse({ cookieValues: { idToken: mockSchemOpIdToken } });
+            expect(() => getAndValidateSchemeOpRegion(req, res)).toThrow();
+        });
+    });
+
+    describe('isSchemeOperator', () => {
+        it('should return true when the user logged in is a scheme operator', () => {
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {
+                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                    idToken: mockSchemOpIdToken,
+                },
+            });
+            const result = isSchemeOperator(req, res);
+            expect(result).toEqual(true);
+        });
+
+        it('should return false when the user logged in is not a scheme operator', () => {
+            const { req, res } = getMockRequestAndResponse();
+            const result = isSchemeOperator(req, res);
+            expect(result).toEqual(false);
         });
     });
 
