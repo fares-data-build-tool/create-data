@@ -401,6 +401,18 @@ describe('periodTicketNetexHelpers', () => {
             result.forEach(timeInterval => {
                 expect(timeInterval).toEqual(expectedFormat);
             });
+            expect(result[0]).toStrictEqual({
+                version: '1.0',
+                id: 'op:Tariff@Day Rider@1-day',
+                Name: { $t: '1 day}' },
+                Description: { $t: 'P1D' },
+            });
+            expect(result[1]).toStrictEqual({
+                version: '1.0',
+                id: 'op:Tariff@Weekly Rider@7-weeks',
+                Name: { $t: '7 weeks}' },
+                Description: { $t: 'P49D' },
+            });
             expect(result.length).toBe(expectedLength);
         });
     });
