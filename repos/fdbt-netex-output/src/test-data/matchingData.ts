@@ -1036,7 +1036,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
             ],
             productName: 'Selenium Test Product',
             productPrice: '10.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
         },
         {
@@ -1064,7 +1064,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
             ],
             productName: 'Selenium Test Product 2',
             productPrice: '150',
-            productDuration: '2',
+            productDuration: '2 months',
             productValidity: 'Calendar',
         },
         {
@@ -1092,7 +1092,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
             ],
             productName: 'Selenium Test Product 3',
             productPrice: '170',
-            productDuration: '3',
+            productDuration: '3 days',
             productValidity: '24hr',
         },
         {
@@ -1120,7 +1120,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
             ],
             productName: 'Selenium Test Product 4',
             productPrice: '15',
-            productDuration: '4',
+            productDuration: '4 days',
             productValidity: '24hr',
         },
     ],
@@ -1349,7 +1349,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
             ],
             productName: 'Day Rider',
             productPrice: '12',
-            productDuration: '1',
+            productDuration: '1 day',
             productValidity: '24hr',
         },
         {
@@ -1377,7 +1377,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
             ],
             productName: 'Weekly Rider',
             productPrice: '30',
-            productDuration: '7',
+            productDuration: '7 weeks',
             productValidity: '24hr',
         },
     ],
@@ -2107,7 +2107,7 @@ export const periodGeoZoneTicketWithNoType = {
         {
             productName: 'Test Product',
             productPrice: '1000',
-            productDuration: '31',
+            productDuration: '31 months',
             productValidity: 'endOfCalendarDay',
         },
     ],
