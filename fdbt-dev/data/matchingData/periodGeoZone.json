@@ -12,7 +12,7 @@
     {
       "productName": "Product 1",
       "productPrice": "3",
-      "productDuration": "1",
+      "productDuration": "1 day",
       "productValidity": "24hr",
       "salesOfferPackages": [
         {
@@ -53,7 +53,7 @@
     {
       "productName": "Product 2",
       "productPrice": "5",
-      "productDuration": "2",
+      "productDuration": "2 weeks",
       "productValidity": "24hr",
       "salesOfferPackages": [
         {
@@ -94,7 +94,7 @@
     {
       "productName": "Product 3",
       "productPrice": "10",
-      "productDuration": "5",
+      "productDuration": "5 years",
       "productValidity": "24hr",
       "salesOfferPackages": [
         {
@@ -135,7 +135,7 @@
     {
       "productName": "Product 4",
       "productPrice": "15",
-      "productDuration": "7",
+      "productDuration": "7 years",
       "productValidity": "24hr",
       "salesOfferPackages": [
         {
@@ -157,7 +157,7 @@
     {
       "productName": "Product 5",
       "productPrice": "30",
-      "productDuration": "28",
+      "productDuration": "28 weeks",
       "productValidity": "24hr",
       "salesOfferPackages": [
         {
