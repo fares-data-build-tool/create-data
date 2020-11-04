@@ -322,7 +322,7 @@ describe('definePassengerType', () => {
     });
 
     it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to /timeRestrictions', async () => {
-        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['child'] };
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
             {
