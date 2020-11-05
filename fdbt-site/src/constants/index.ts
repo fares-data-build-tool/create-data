@@ -40,7 +40,7 @@ export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
 
 export const STAGE_NAMES_ATTRIBUTE = 'fdbt-stage-names';
 
-export const DAYS_VALID_ATTRIBUTE = 'fdbt-days-valid';
+export const DURATION_VALID_ATTRIBUTE = 'fdbt-duration-valid';
 
 export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
 

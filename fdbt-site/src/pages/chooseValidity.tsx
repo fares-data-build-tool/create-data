@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, DURATION_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import FormElementWrapper from '../components/FormElementWrapper';
+import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
@@ -18,47 +18,81 @@ interface ValidityProps {
     productName: string;
     productPrice: string;
     passengerType: string;
-    daysValid: string;
+    amount: string;
     errors: ErrorInfo[];
     csrfToken: string;
+    duration: string;
 }
 
 const ChooseValidity = ({
     productName,
     productPrice,
     passengerType,
-    daysValid,
+    amount,
     errors,
+    duration,
     csrfToken,
 }: ValidityProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <CsrfForm action="/api/chooseValidity" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group ${errors.length ? 'govuk-form-group--error' : ''}`}>
-                    <label htmlFor="validity">
-                        <h1 className="govuk-heading-l" id="choose-validity-page-heading">
-                            How many days is your product valid for?
-                        </h1>
-                    </label>
+                <fieldset className="govuk-fieldset">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 className="govuk-fieldset__heading">How long is your product valid for?</h1>
+                    </legend>
                     <div className="govuk-hint">
                         Product: {productName} - £{productPrice} - {upperFirst(passengerType)}
                     </div>
                     <div className="govuk-hint" id="choose-validity-page-hint">
-                        Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
+                        Enter a whole number, and select a duration type. For example, 7 months.
                     </div>
-                    <FormElementWrapper errors={errors} errorId="validity" errorClass="govuk-input--error">
-                        <input
-                            className="govuk-input govuk-input--width-2"
-                            id="validity"
-                            name="validityInput"
-                            type="text"
-                            defaultValue={daysValid}
-                            aria-describedby="choose-validity-page-hint"
-                        />
-                    </FormElementWrapper>
-                </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                    <FormGroupWrapper errorId="validity" errors={errors}>
+                        <>
+                            <label className="govuk-label" htmlFor="validity">
+                                Number
+                            </label>
+                            <FormElementWrapper errors={errors} errorId="validity" errorClass="govuk-input--error">
+                                <input
+                                    className="govuk-input govuk-input--width-2"
+                                    id="validity"
+                                    name="validityInput"
+                                    type="text"
+                                    defaultValue={amount}
+                                    aria-describedby="choose-validity-page-hint"
+                                />
+                            </FormElementWrapper>
+                        </>
+                    </FormGroupWrapper>
+                    <FormGroupWrapper errorId="validity-units" errors={errors}>
+                        <>
+                            <label className="govuk-label" htmlFor="validity-units">
+                                Duration
+                            </label>
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId="validity-units"
+                                errorClass="govuk-select--error"
+                            >
+                                <select
+                                    className="govuk-select"
+                                    id="validity-units"
+                                    name="duration"
+                                    defaultValue={duration}
+                                >
+                                    <option selected value="" disabled>
+                                        Select a duration
+                                    </option>
+                                    <option value="day">Days</option>
+                                    <option value="week">Weeks</option>
+                                    <option value="month">Months</option>
+                                    <option value="year">Years</option>
+                                </select>
+                            </FormElementWrapper>
+                        </>
+                    </FormGroupWrapper>
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                </fieldset>
             </>
         </CsrfForm>
     </TwoThirdsLayout>
@@ -66,7 +100,7 @@ const ChooseValidity = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ValidityProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const validityInfo = getSessionAttribute(ctx.req, DAYS_VALID_ATTRIBUTE);
+    const validityInfo = getSessionAttribute(ctx.req, DURATION_VALID_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const productAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
@@ -78,10 +112,17 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
         throw new Error('Failed to retrieve passenger type session info for choose validity page.');
     }
 
-    let validity;
+    let amount;
+    let duration;
 
     if (validityInfo) {
-        validity = validityInfo.daysValid;
+        if (validityInfo.amount) {
+            amount = validityInfo.amount;
+        }
+
+        if (validityInfo.duration) {
+            duration = validityInfo.duration;
+        }
     }
 
     return {
@@ -89,8 +130,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
             productName: productAttribute.productName,
             productPrice: productAttribute.productPrice,
             passengerType: passengerTypeAttribute.passengerType,
-            daysValid: validity ?? '',
+            amount: amount ?? '',
             errors: validityInfo?.errors ?? [],
+            duration: duration ?? '',
             csrfToken,
         },
     };

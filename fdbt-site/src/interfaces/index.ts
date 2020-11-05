@@ -23,8 +23,9 @@ export interface ProductInfo {
     productPrice: string;
 }
 
-export interface DaysValidInfo {
-    daysValid: string;
+export interface DurationValidInfo {
+    amount: string;
+    duration: string;
     errors: ErrorInfo[];
 }
 

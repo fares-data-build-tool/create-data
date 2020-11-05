@@ -9,7 +9,7 @@ import {
     GroupDefinition,
     TimeRestriction,
     CompanionInfo,
-    DaysValidInfo,
+    DurationValidInfo,
     Journey,
     JourneyWithErrors,
     TicketRepresentationAttribute,
@@ -22,7 +22,7 @@ import {
 } from '../interfaces/index';
 import { FaresInformation } from '../pages/api/priceEntry';
 import {
-    DAYS_VALID_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -90,7 +90,7 @@ import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
-    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo;
+    [DURATION_VALID_ATTRIBUTE]: DurationValidInfo;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
     [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
