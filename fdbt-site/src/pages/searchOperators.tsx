@@ -7,8 +7,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { getSearchOperators, Operator } from '../data/auroradb';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getSearchOperatorsByNocRegion, getSearchOperatorsBySchemeOpRegion, Operator } from '../data/auroradb';
+import { getAndValidateNoc, getAndValidateSchemeOpRegion, getCsrfToken, isSchemeOperator } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
@@ -265,7 +265,9 @@ const SearchOperators = ({
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SearchOperatorProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const nocCode = getAndValidateNoc(ctx);
+
+    const schemeOp = isSchemeOperator(ctx);
+    const opIdentifier = getAndValidateSchemeOpRegion(ctx) || getAndValidateNoc(ctx);
 
     let errors: ErrorInfo[] = [];
     let searchText = '';
@@ -299,7 +301,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 id: searchInputId,
             });
         }
-        const results = await getSearchOperators(searchText, nocCode);
+        const results = schemeOp
+            ? await getSearchOperatorsBySchemeOpRegion(searchText, opIdentifier)
+            : await getSearchOperatorsByNocRegion(searchText, opIdentifier);
         const cookies = parseCookies(ctx);
         const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
         results.forEach(operator => {

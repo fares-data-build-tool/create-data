@@ -308,9 +308,7 @@ export const buildTicketConfirmationElements = (
                 },
                 {
                     name: `Product - ${fareTypeProps.products.productName}`,
-                    content: `Duration - ${fareTypeProps.products.productDuration} ${
-                        fareTypeProps.products.productDuration === '1' ? 'day' : 'days'
-                    }`,
+                    content: `Duration - ${fareTypeProps.products.productDuration}`,
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
                 },
                 {

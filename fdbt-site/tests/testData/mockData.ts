@@ -6,7 +6,7 @@ import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     STAGE_NAMES_ATTRIBUTE,
-    DAYS_VALID_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
@@ -45,6 +45,7 @@ import {
     TimeRestriction,
     MultiOperatorGeoZoneTicket,
     MultiOperatorMultipleServicesTicket,
+    SchemeOperatorTicket,
 } from '../../src/interfaces';
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -109,7 +110,7 @@ export const getMockRequestAndResponse = ({
         [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
         [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
-        [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
+        [DURATION_VALID_ATTRIBUTE]: { amount: '2', duration: 'day', errors: [] },
         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZone' },
         [FARE_STAGES_ATTRIBUTE]: { fareStages: 6 },
         [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
@@ -234,6 +235,9 @@ export const getMockContext = ({
 
     return ctx;
 };
+
+export const mockSchemOpIdToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04ifQ.TUnqk__NLBCyCLwJjRhkS6KVqnpZB2qYfV85rJ2M0DQ';
 
 export const mockMatchingFaresZones: MatchingFareZones = {
     'Acomb Green Lane': {
@@ -1894,6 +1898,46 @@ export const expectedFlatFareTicket: FlatFareTicket = {
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
+};
+
+export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
+    schemeOperatorName: expect.any(String),
+    schemeOperatorRegionCode: expect.any(String),
+    type: 'multiOperator',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    zoneName: 'Green Lane Shops',
+    stops: zoneStops,
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28',
+            productValidity: 'endOfCalendarDay',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+    ],
+    additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
 };
 
 export const multipleProducts: MultiProduct[] = [

@@ -1,8 +1,14 @@
 import MockReq from 'mock-req';
 import { NextPageContext } from 'next';
-import { getHost, formatStopName, getAttributeFromIdToken } from '../../src/utils';
+import {
+    getHost,
+    formatStopName,
+    getAttributeFromIdToken,
+    getAndValidateSchemeOpRegion,
+    isSchemeOperator,
+} from '../../src/utils';
 import { Stop } from '../../src/data/auroradb';
-import { getMockContext } from '../testData/mockData';
+import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 
 describe('utils', () => {
     describe('getHost', () => {
@@ -104,6 +110,49 @@ describe('utils', () => {
             const email = getAttributeFromIdToken(ctx, 'custom:noc');
 
             expect(email).toBeNull();
+        });
+    });
+
+    describe('getAndValidateSchemeOpRegion', () => {
+        it('should return the scheme operator region code when the logged in user is a scheme operator', () => {
+            const ctx = getMockContext({
+                cookies: {
+                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                    idToken: mockSchemOpIdToken,
+                },
+            });
+            const region = getAndValidateSchemeOpRegion(ctx);
+            expect(region).toBe('SCHEME_REGION');
+        });
+
+        it('should return null when the logged in user is not a scheme operator', () => {
+            const ctx = getMockContext();
+            const region = getAndValidateSchemeOpRegion(ctx);
+            expect(region).toEqual(null);
+        });
+
+        it('should throw an error when the idToken and OPERATOR_COOKIE do not match', () => {
+            const ctx = getMockContext({ cookies: { idToken: mockSchemOpIdToken } });
+            expect(() => getAndValidateSchemeOpRegion(ctx)).toThrow();
+        });
+    });
+
+    describe('isSchemeOperator', () => {
+        it('should return true when the user logged in is a scheme operator', () => {
+            const ctx = getMockContext({
+                cookies: {
+                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                    idToken: mockSchemOpIdToken,
+                },
+            });
+            const res = isSchemeOperator(ctx);
+            expect(res).toEqual(true);
+        });
+
+        it('should return false when the user logged in is not a scheme operator', () => {
+            const ctx = getMockContext();
+            const res = isSchemeOperator(ctx);
+            expect(res).toEqual(false);
         });
     });
 });

@@ -24,6 +24,7 @@ import {
     getMultipleServicesTicketJson,
     getFlatFareTicketJson,
     getProductsAndSalesOfferPackages,
+    getSchemeOperatorTicketJson,
 } from '../../../../src/pages/api/apiUtils/userData';
 import {
     getMockRequestAndResponse,
@@ -42,6 +43,8 @@ import {
     mockTimeRestriction,
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
+    mockSchemOpIdToken,
+    expectedSchemeOperatorTicket,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
@@ -370,7 +373,7 @@ describe('getPeriodMulipleServicesTicketJson', () => {
 });
 
 describe('getFlatFareTicketJson', () => {
-    it('should return a string a FlatFareTicket object', () => {
+    it('should return a FlatFareTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
             session: {
                 [PRODUCT_DETAILS_ATTRIBUTE]: {
@@ -390,5 +393,97 @@ describe('getFlatFareTicketJson', () => {
         });
         const result = getFlatFareTicketJson(req, res);
         expect(result).toEqual(expectedFlatFareTicket);
+    });
+});
+
+describe('getSchemeOperatorTicketJson', () => {
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    const mockMultiOpSelectedOperators: Operator[] = [
+        {
+            nocCode: 'MCTR',
+            operatorPublicName: 'Manchester Community Transport',
+        },
+        {
+            nocCode: 'WBTR',
+            operatorPublicName: "Warrington's Own Buses",
+        },
+        {
+            nocCode: 'BLAC',
+            operatorPublicName: 'Blackpool Transport',
+        },
+    ];
+
+    const atcoCodes: string[] = ['13003305E', '13003622B', '13003655B'];
+    let batchGetStopsByAtcoCodeSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+        jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
+
+        batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
+    });
+
+    it('should return a SchemeOperatorTicket object', async () => {
+        const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {
+                operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                idToken: mockSchemOpIdToken,
+            },
+            session: {
+                [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
+                [FARE_ZONE_ATTRIBUTE]: mockFareZoneAttribute,
+                [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                    products: [
+                        {
+                            productName: 'Weekly Ticket',
+                            productPrice: '50',
+                            productDuration: '5',
+                            productValidity: '24hr',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Day Ticket',
+                            productPrice: '2.50',
+                            productDuration: '1',
+                            productValidity: '24hr',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Monthly Ticket',
+                            productPrice: '200',
+                            productDuration: '28',
+                            productValidity: 'endOfCalendarDay',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                    ],
+                },
+                [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                    {
+                        productName: 'Weekly Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                    {
+                        productName: 'Day Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                    {
+                        productName: 'Monthly Ticket',
+                        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    },
+                ],
+                [PRODUCT_DATE_ATTRIBUTE]: {
+                    startDate: '2020-12-17T09:30:46.0Z',
+                    endDate: '2020-12-18T09:30:46.0Z',
+                },
+                [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
+            },
+        });
+        batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
+        const result = await getSchemeOperatorTicketJson(req, res);
+        expect(result).toEqual(expectedSchemeOperatorTicket);
     });
 });

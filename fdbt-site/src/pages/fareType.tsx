@@ -2,15 +2,22 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE, INTERNAL_NOC } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE, INTERNAL_NOC, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { setCookieOnServerSide, getAndValidateNoc, getCsrfToken } from '../utils/index';
+import {
+    setCookieOnServerSide,
+    getAndValidateNoc,
+    getCsrfToken,
+    getAndValidateSchemeOpRegion,
+    isSchemeOperator,
+} from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import logger from '../utils/logger';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Fare Type - Create Fares Data Service ';
 const description = 'Fare Type selection page of the Create Fares Data Service';
@@ -18,7 +25,7 @@ const description = 'Fare Type selection page of the Create Fares Data Service';
 const errorId = 'fare-type-single';
 
 type FareTypeProps = {
-    operator: string;
+    operatorName: string;
     errors: ErrorInfo[];
     csrfToken: string;
 };
@@ -29,8 +36,7 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const FareTypePage = (props: FareTypeProps): ReactElement => {
-    const { operator, errors = [], csrfToken } = props;
+const FareTypePage = ({ operatorName, errors = [], csrfToken }: FareTypeProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -44,7 +50,7 @@ const FareTypePage = (props: FareTypeProps): ReactElement => {
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="fare-type-operator-hint">
-                                {operator}
+                                {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                 <div className="govuk-radios">
@@ -125,27 +131,37 @@ const FareTypePage = (props: FareTypeProps): ReactElement => {
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareTypeProps } => {
     const cookies = parseCookies(ctx);
     const csrfToken = getCsrfToken(ctx);
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    const noc = getAndValidateNoc(ctx);
+    const schemeOp = isSchemeOperator(ctx);
+    let opIdentifier = getAndValidateSchemeOpRegion(ctx) || getAndValidateNoc(ctx);
 
-    if (!operatorCookie || !noc) {
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+
+    if (!operatorCookie || !opIdentifier) {
         throw new Error('Necessary data not found to show faretype page');
     }
     const operatorInfo = JSON.parse(operatorCookie);
-    const uuid = buildUuid(noc);
+    const operatorName = schemeOp ? operatorInfo.operator : operatorInfo.operator.operatorPublicName;
+    opIdentifier = schemeOp ? operatorName : opIdentifier;
+    const uuid = buildUuid(opIdentifier);
     const cookieValue = JSON.stringify({ ...operatorInfo, uuid });
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
 
-    if (noc !== INTERNAL_NOC) {
+    if (schemeOp || opIdentifier !== INTERNAL_NOC) {
         logger.info('', {
             context: 'pages.fareType',
             message: 'transaction start',
         });
+    }
+
+    if (schemeOp && ctx.res) {
+        updateSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE, { fareType: 'multiOperator' });
+        updateSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE, { name: 'geoZone' });
+        redirectTo(ctx.res, '/passengerType');
     }
 
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
@@ -153,7 +169,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operator: operatorInfo.operator.operatorPublicName, errors, csrfToken } };
+    return { props: { operatorName, errors, csrfToken } };
 };
 
 export default FareTypePage;

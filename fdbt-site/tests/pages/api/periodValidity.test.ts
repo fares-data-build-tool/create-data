@@ -18,7 +18,7 @@ describe('periodValidity', () => {
                 {
                     productName: 'Product A',
                     productPrice: '1234',
-                    productDuration: '2',
+                    productDuration: '2 days',
                     productValidity: '24hr',
                 },
             ],

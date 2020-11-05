@@ -21,13 +21,10 @@ interface RegisterProps {
 
 const Register = ({ errors, regKey, csrfToken }: RegisterProps): ReactElement => {
     let email = '';
-    let nocCode = '';
 
     errors?.forEach((input: ErrorInfo) => {
         if (input.id === 'email') {
             email = input.userInput ?? '';
-        } else if (input.id === 'nocCode') {
-            nocCode = input.userInput ?? '';
         }
     });
 
@@ -109,26 +106,6 @@ const Register = ({ errors, regKey, csrfToken }: RegisterProps): ReactElement =>
                                             spellCheck="false"
                                             autoComplete="new-password"
                                         />
-                                    </div>
-                                    <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="noc-code" id="noc-code-label">
-                                            Enter National Operator Code
-                                        </label>
-                                        <FormElementWrapper
-                                            errors={errors}
-                                            errorId="noc-code"
-                                            errorClass="govuk-input--error"
-                                        >
-                                            <input
-                                                className="govuk-input"
-                                                id="noc-code"
-                                                name="nocCode"
-                                                type="text"
-                                                aria-describedby="noc-code-label"
-                                                spellCheck="false"
-                                                defaultValue={nocCode}
-                                            />
-                                        </FormElementWrapper>
                                     </div>
                                     <p className="govuk-body govuk-!-margin-top-5">
                                         By using this website, you agree to the&nbsp;

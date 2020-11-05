@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { getMockContext } from '../testData/mockData';
+import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
 import { Operator } from '../../src/data/auroradb';
 import SearchOperators, { getServerSideProps, SearchOperatorProps } from '../../src/pages/searchOperators';
@@ -121,7 +121,8 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            const searchOperatorSpy = jest.spyOn(aurora, 'getSearchOperators');
+            const searchOperatorByNocRegionSpy = jest.spyOn(aurora, 'getSearchOperatorsByNocRegion');
+            const searchOperatorBySchemeOpRegionSpy = jest.spyOn(aurora, 'getSearchOperatorsBySchemeOpRegion');
 
             it('should return base props when the page is first visited by the user', async () => {
                 const mockProps: { props: SearchOperatorProps } = {
@@ -162,7 +163,7 @@ describe('pages', () => {
             });
 
             it('should return base props with errors when the url query string contains an invalid search term', async () => {
-                searchOperatorSpy.mockImplementation().mockResolvedValue([]);
+                searchOperatorByNocRegionSpy.mockImplementation().mockResolvedValue([]);
                 const mockErrors: ErrorInfo[] = [
                     {
                         errorMessage: "No operators found for 'asda'. Try another search term.",
@@ -187,8 +188,8 @@ describe('pages', () => {
                 expect(result).toEqual(mockProps);
             });
 
-            it('should return props containing search results when the url query string contains a valid search term', async () => {
-                searchOperatorSpy.mockImplementation().mockResolvedValue(mockOperators);
+            it('should return props containing search results when the url query string contains a valid search term and the user is not a scheme operator', async () => {
+                searchOperatorByNocRegionSpy.mockImplementation().mockResolvedValue(mockOperators);
                 const mockProps: { props: SearchOperatorProps } = {
                     props: {
                         errors: [],
@@ -204,6 +205,32 @@ describe('pages', () => {
                 });
                 const result = await getServerSideProps(ctx);
 
+                expect(searchOperatorByNocRegionSpy).toHaveBeenCalled();
+                expect(result).toEqual(mockProps);
+            });
+
+            it('should return props containing search results when the url query string contains a valid search term and the user is a scheme operator', async () => {
+                searchOperatorBySchemeOpRegionSpy.mockImplementation().mockResolvedValue(mockOperators);
+                const mockProps: { props: SearchOperatorProps } = {
+                    props: {
+                        errors: [],
+                        searchText: 'blac',
+                        searchResults: mockOperators,
+                        selectedOperators: [],
+                        csrfToken: '',
+                    },
+                };
+                const ctx = getMockContext({
+                    session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: undefined },
+                    query: { searchOperator: 'blac' },
+                    cookies: {
+                        operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                        idToken: mockSchemOpIdToken,
+                    },
+                });
+                const result = await getServerSideProps(ctx);
+
+                expect(searchOperatorBySchemeOpRegionSpy).toHaveBeenCalled();
                 expect(result).toEqual(mockProps);
             });
         });

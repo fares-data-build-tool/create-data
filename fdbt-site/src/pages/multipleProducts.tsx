@@ -21,14 +21,14 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, isSchemeOperator } from '../utils';
 
 const title = 'Multiple Product - Create Fares Data Service';
 const description = 'Multiple Product entry page of the Create Fares Data Service';
 
 export interface MultipleProductProps {
     numberOfProductsToDisplay: string;
-    operator: string;
+    operatorName: string;
     passengerType: string;
     errors?: ErrorInfo[];
     userInput: MultiProduct[];
@@ -37,7 +37,7 @@ export interface MultipleProductProps {
 
 const MultipleProducts = ({
     numberOfProductsToDisplay,
-    operator,
+    operatorName,
     passengerType,
     errors = [],
     userInput = [],
@@ -51,7 +51,7 @@ const MultipleProducts = ({
                     Enter your product details
                 </h1>
                 <span className="govuk-hint" id="service-operator-hint">
-                    {operator} - {numberOfProductsToDisplay} Products - {upperFirst(passengerType)}
+                    {operatorName} - {numberOfProductsToDisplay} Products - {upperFirst(passengerType)}
                 </span>
                 <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2</div>
                 <div className="govuk-grid-row">
@@ -78,22 +78,24 @@ export const isBaseMultipleProductAttributeWithErrors = (
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
-    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
 
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
-        !cookies[OPERATOR_COOKIE] ||
+        !operatorCookie ||
         !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
         !isPassengerType(passengerTypeAttribute)
     ) {
         throw new Error('Necessary cookies/session not found to show multiple products page');
     }
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
-    const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
     const { operator } = JSON.parse(operatorCookie);
+    const operatorName = isSchemeOperator(ctx) ? operator : operator.operatorPublicName;
+    const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
+
+    const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
     if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
         const { errors } = multiProductAttribute;
@@ -101,7 +103,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         return {
             props: {
                 numberOfProductsToDisplay,
-                operator: operator.operatorPublicName,
+                operatorName,
                 passengerType: passengerTypeAttribute.passengerType,
                 errors,
                 userInput: multiProductAttribute.products,
@@ -113,7 +115,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     return {
         props: {
             numberOfProductsToDisplay,
-            operator: operator.operatorPublicName,
+            operatorName,
             passengerType: passengerTypeAttribute.passengerType,
             userInput: [],
             csrfToken,
