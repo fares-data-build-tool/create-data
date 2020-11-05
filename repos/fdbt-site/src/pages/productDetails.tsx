@@ -17,7 +17,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerType } from '../interfaces/typeGuards';
 import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
 import { isServiceListAttributeWithErrors } from './serviceList';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, isSchemeOperator } from '../utils';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details entry page of the Create Fares Data Service';
@@ -167,7 +167,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     return {
         props: {
             product: productDetailsAttribute && isProductInfo(productDetailsAttribute) ? productDetailsAttribute : null,
-            operator: operator.operatorPublicName,
+            operator: isSchemeOperator(ctx) ? operator : operator.operatorPublicName,
             passengerType: passengerTypeAttribute.passengerType,
             errors:
                 productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)

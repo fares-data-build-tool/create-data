@@ -50,6 +50,9 @@ import {
     BasePeriodTicket,
     MultiOperatorMultipleServicesTicket,
     MultiOperatorInfo,
+    SchemeOperatorTicket,
+    Ticket,
+    isSchemeOperatorTicket,
 } from '../../../interfaces/index';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -116,16 +119,11 @@ export const getProductsAndSalesOfferPackages = (
     return productSOPList;
 };
 
-export const putUserDataInS3 = async (
-    data: SingleTicket | ReturnTicket | GeoZoneTicket | PeriodMultipleServicesTicket | FlatFareTicket,
-    uuid: string,
-): Promise<void> => {
-    await putStringInS3(
-        MATCHING_DATA_BUCKET_NAME,
-        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
-        JSON.stringify(data),
-        'application/json; charset=utf-8',
-    );
+export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void> => {
+    const filePath = isSchemeOperatorTicket(data)
+        ? `schemeOperator/${data.schemeOperatorRegionCode}/${uuid}_${Date.now()}.json`
+        : `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`;
+    await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(data), 'application/json; charset=utf-8');
 };
 
 export const getBaseTicketAttributes = (
@@ -437,5 +435,101 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         operatorName: operatorObject?.operator?.operatorPublicName,
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
+    };
+};
+
+export const getSchemeOperatorTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<SchemeOperatorTicket> => {
+    const isProductData = (
+        periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
+    ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
+
+    const cookies = new Cookies(req, res);
+    const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+
+    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
+    const uuid = getUuidFromCookie(req, res);
+    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+    const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
+    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+    const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+    const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
+
+    if (
+        !isFareType(fareTypeAttribute) ||
+        !isPassengerType(passengerTypeAttribute) ||
+        !idToken ||
+        !uuid ||
+        !isTicketPeriodAttribute(ticketPeriodAttribute) ||
+        isSalesOfferPackageWithErrors(salesOfferPackages) ||
+        !salesOfferPackages ||
+        !fareZoneAttribute ||
+        isFareZoneAttributeWithErrors(fareZoneAttribute) ||
+        !multiOpAttribute
+    ) {
+        throw new Error('Could not create scheme operator ticket json. BaseTicket attributes could not be found.');
+    }
+
+    let productDetailsList: ProductDetails[];
+
+    if (!multipleProductAttribute) {
+        if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
+            throw new Error('Could not create geo zone ticket json. Period expiry attribute data problem.');
+        }
+
+        const { products } = periodExpiryAttributeInfo;
+
+        if (isProductWithSalesOfferPackages(salesOfferPackages)) {
+            throw new Error('Could not create geo zone ticket json. Sales offer package info incorrect type.');
+        }
+
+        productDetailsList = products.map(product => ({
+            productName: product.productName,
+            productPrice: product.productPrice,
+            productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
+            productValidity: isPeriodProductDetails(product) ? product.productValidity : '',
+            salesOfferPackages,
+        }));
+    } else {
+        if (isSalesOfferPackages(salesOfferPackages)) {
+            throw new Error('Could not create geo zone ticket json. Product Sales offer package info incorrect type.');
+        }
+        productDetailsList = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductAttribute);
+    }
+
+    const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
+    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+
+    if (zoneStops.length === 0) {
+        throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
+    }
+
+    const additionalNocs = multiOpAttribute.selectedOperators.map(operator => operator.nocCode);
+
+    const { fareType } = fareTypeAttribute;
+
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+    const { email } = decodedIdToken;
+    const schemeOperatorName = decodedIdToken['custom:schemeOperator'];
+    const schemeOperatorRegionCode = decodedIdToken['custom:schemeRegionCode'];
+
+    return {
+        schemeOperatorName,
+        schemeOperatorRegionCode,
+        type: fareType,
+        ...passengerTypeAttribute,
+        email,
+        uuid,
+        ...(timeRestriction && { timeRestriction }),
+        ticketPeriod: ticketPeriodAttribute,
+        products: productDetailsList,
+        zoneName: fareZoneAttribute.fareZoneName,
+        stops: zoneStops,
+        additionalNocs,
     };
 };

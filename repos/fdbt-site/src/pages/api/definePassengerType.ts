@@ -236,10 +236,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 if (selectedPassengerTypes) {
                     const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
-                        type => type === submittedPassengerType,
+                        type => type === filteredReqBody.groupPassengerType,
                     );
-
-                    (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.splice(index, 1);
 
                     const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
                     const { minNumber, maxNumber } = req.body;
@@ -254,23 +252,31 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         });
                     }
 
-                    companions.push({
+                    const companionToAdd: CompanionInfo = {
                         minNumber,
                         maxNumber,
-                        ageRangeMin,
-                        ageRangeMax,
-                        proofDocuments,
                         passengerType: submittedPassengerType,
-                    });
+                    };
+
+                    if (filteredReqBody.ageRange === 'Yes') {
+                        companionToAdd.ageRangeMax = ageRangeMax;
+                        companionToAdd.ageRangeMin = ageRangeMin;
+                    }
+
+                    if (filteredReqBody.proof === 'Yes') {
+                        companionToAdd.proofDocuments = proofDocuments;
+                    }
+
+                    companions[index] = companionToAdd;
 
                     updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
-                    if ((selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length > 0) {
+                    if (index < (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length - 1) {
                         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(
                             res,
                             `/definePassengerType?groupPassengerType=${
-                                (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[0]
+                                (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[index + 1]
                             }`,
                         );
                     } else {

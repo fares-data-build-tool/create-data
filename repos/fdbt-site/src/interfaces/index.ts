@@ -2,6 +2,14 @@ import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { IncomingMessage } from 'http';
 
+export type Ticket =
+    | SingleTicket
+    | ReturnTicket
+    | GeoZoneTicket
+    | PeriodMultipleServicesTicket
+    | FlatFareTicket
+    | SchemeOperatorTicket;
+
 export interface BaseReactElement {
     id: string;
     name: string;
@@ -15,8 +23,9 @@ export interface ProductInfo {
     productPrice: string;
 }
 
-export interface DaysValidInfo {
-    daysValid: string;
+export interface DurationValidInfo {
+    amount: string;
+    duration: string;
     errors: ErrorInfo[];
 }
 
@@ -79,6 +88,8 @@ export interface CognitoIdToken {
     iat: number;
     email: string;
     'custom:contactable': string;
+    'custom:schemeOperator': string;
+    'custom:schemeRegionCode': string;
 }
 
 export interface Breadcrumb {
@@ -154,6 +165,30 @@ export interface TimeRestriction {
     endTime?: string;
     validDays?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
 }
+
+export interface SchemeOperatorTicket {
+    schemeOperatorName: string;
+    schemeOperatorRegionCode: string;
+    type: string;
+    passengerType: string;
+    ageRange?: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string;
+    proofDocuments?: string[];
+    email: string;
+    uuid: string;
+    timeRestriction?: TimeRestriction;
+    ticketPeriod: TicketPeriod;
+    products: ProductDetails[];
+    zoneName: string;
+    stops: Stop[];
+    additionalNocs: string[];
+}
+
+export const isSchemeOperatorTicket = (data: Ticket): data is SchemeOperatorTicket =>
+    (data as SchemeOperatorTicket).schemeOperatorName !== undefined &&
+    (data as SchemeOperatorTicket).schemeOperatorRegionCode !== undefined;
 
 export interface BaseTicket {
     nocCode: string;

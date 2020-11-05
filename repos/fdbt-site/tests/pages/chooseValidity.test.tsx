@@ -9,7 +9,22 @@ describe('Choose Validity Page', () => {
                 productName="bus company"
                 productPrice="£3.00"
                 passengerType="Adult"
-                daysValid=""
+                amount=""
+                duration=""
+                errors={[]}
+                csrfToken=""
+            />,
+        );
+        expect(tree).toMatchSnapshot();
+    });
+    it('should render correctly with defaults when provided', () => {
+        const tree = shallow(
+            <ChooseValidity
+                productName="bus company"
+                productPrice="£3.00"
+                passengerType="Adult"
+                amount="2"
+                duration="day"
                 errors={[]}
                 csrfToken=""
             />,

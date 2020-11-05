@@ -43,9 +43,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvUploadTitle: 'Upload fares triangle as CSV',
             csvUploadHintText:
                 'Upload a fares triangle as a CSV file. Refer to the help documents section to download a help file or a fares triangle template.',
-            guidanceDocDisplayName: `Download Help File - File Type PDF - File Size 1.3MB`,
+            guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 1.2MB',
             guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
-            guidanceDocSize: '1.3MB',
+            guidanceDocSize: '1.2MB',
             csvTemplateDisplayName: 'Download fares triangle CSV template - File Type CSV - File Size 255B',
             csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '255B',

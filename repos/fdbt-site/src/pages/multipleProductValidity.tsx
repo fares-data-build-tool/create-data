@@ -17,7 +17,7 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
 import { Product } from './api/multipleProductValidity';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, isSchemeOperator } from '../utils';
 
 const title = 'Multiple Product Validity - Create Fares Data Service';
 const description = 'Multiple Product Validity selection page of the Create Fares Data Service';
@@ -25,7 +25,7 @@ const description = 'Multiple Product Validity selection page of the Create Fare
 const errorId = 'twenty-four-hours-row-0';
 
 interface MultipleProductValidityProps {
-    operator: string;
+    operatorName: string;
     passengerType: string;
     numberOfProducts: string;
     multipleProducts: Product[];
@@ -34,7 +34,7 @@ interface MultipleProductValidityProps {
 }
 
 const MultipleProductValidity = ({
-    operator,
+    operatorName,
     passengerType,
     numberOfProducts,
     multipleProducts,
@@ -55,7 +55,7 @@ const MultipleProductValidity = ({
                         When does the product expire?
                     </h1>
                     <span className="govuk-hint" id="operator-products-hint">
-                        {operator} - {numberOfProducts} products - {upperFirst(passengerType)}
+                        {operatorName} - {numberOfProducts} products - {upperFirst(passengerType)}
                     </span>
                     <span className="govuk-hint" id="multiple-product-validity-page-hint">
                         We need to know the time that this product would be valid until
@@ -167,6 +167,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }
     const { operator } = JSON.parse(operatorCookie);
+    const operatorName = isSchemeOperator(ctx) ? operator : operator.operatorPublicName;
 
     const multipleProducts: Product[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
@@ -184,7 +185,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     return {
         props: {
-            operator: operator.operatorPublicName,
+            operatorName,
             passengerType: passengerTypeAttribute.passengerType,
             numberOfProducts,
             multipleProducts,
