@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_ATTRIBUTE } from '../../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DURATION_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, ProductData } from '../../interfaces';
@@ -19,7 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (req.body.periodValid) {
             const { periodValid } = req.body;
 
-            const daysValidInfo = getSessionAttribute(req, DAYS_VALID_ATTRIBUTE);
+            const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
 
             if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
@@ -27,14 +27,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             }
 
             const { productName, productPrice } = productDetailsAttribute;
-            const { daysValid } = daysValidInfo;
+            const timePeriodValid = `${daysValidInfo.amount} ${daysValidInfo.duration}${
+                daysValidInfo.amount === '1' ? '' : 's'
+            }`;
 
             const periodExpiryAttributeValue: ProductData = {
                 products: [
                     {
                         productName,
                         productPrice,
-                        productDuration: daysValid,
+                        productDuration: timePeriodValid,
                         productValidity: periodValid,
                     },
                 ],
