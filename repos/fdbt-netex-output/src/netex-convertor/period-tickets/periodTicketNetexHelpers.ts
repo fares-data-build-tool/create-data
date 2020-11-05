@@ -208,14 +208,18 @@ export const getGeoZoneFareTable = (
                         rows: {
                             FareTableRow: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
+                                id: `op:${product.productName}@${name}@p-ticket@${product.productDuration.replace(
+                                    ' ',
+                                    '-',
+                                )}`,
                                 Name: { $t: product.productDuration },
                                 representing: {
                                     TimeIntervalRef: {
                                         version: '1.0',
-                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
-                                            product.productDuration === '1' ? 'day' : 'days'
-                                        }`,
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration.replace(
+                                            ' ',
+                                            '-',
+                                        )}`,
                                     },
                                 },
                             },
@@ -225,19 +229,20 @@ export const getGeoZoneFareTable = (
                                 version: '1.0',
                                 id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${
                                     userPeriodTicket.passengerType
-                                }@${product.productDuration}${product.productDuration === '1' ? 'day' : 'days'}`,
+                                }@${product.productDuration.replace(' ', '-')}`,
                                 order: '1',
                                 TimeIntervalPrice: {
                                     version: '1.0',
                                     id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${
                                         userPeriodTicket.passengerType
-                                    }@${product.productDuration}${product.productDuration === '1' ? 'day' : 'days'}`,
+                                    }@${product.productDuration.replace(' ', '-')}`,
                                     Amount: { $t: `${product.productPrice}` },
                                     TimeIntervalRef: {
                                         version: '1.0',
-                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
-                                            product.productDuration === '1' ? 'day' : 'days'
-                                        }`,
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration.replace(
+                                            ' ',
+                                            '-',
+                                        )}`,
                                     },
                                 },
                                 ColumnRef: {
@@ -246,7 +251,10 @@ export const getGeoZoneFareTable = (
                                 },
                                 RowRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
+                                    ref: `op:${product.productName}@${name}@p-ticket@${product.productDuration.replace(
+                                        ' ',
+                                        '-',
+                                    )}`,
                                 },
                             },
                         },
@@ -333,14 +341,18 @@ const getMultiServiceList = (
                         rows: {
                             FareTableRow: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
+                                id: `op:${product.productName}@${name}@p-ticket@${product.productDuration.replace(
+                                    ' ',
+                                    '-',
+                                )}`,
                                 Name: { $t: product.productDuration },
                                 representing: {
                                     TimeIntervalRef: {
                                         version: '1.0',
-                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
-                                            product.productDuration === '1' ? 'day' : 'days'
-                                        }`,
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration.replace(
+                                            ' ',
+                                            '-',
+                                        )}`,
                                     },
                                 },
                             },
@@ -348,21 +360,22 @@ const getMultiServiceList = (
                         cells: {
                             Cell: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}@${
-                                    product.productDuration
-                                }${product.productDuration === '1' ? 'day' : 'days'}`,
+                                id: `op:${product.productName}@${name}@p-ticket@${
+                                    userPeriodTicket.passengerType
+                                }@${product.productDuration.replace(' ', '-')}`,
                                 order: '1',
                                 TimeIntervalPrice: {
                                     version: '1.0',
-                                    id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}@${
-                                        product.productDuration
-                                    }${product.productDuration === '1' ? 'day' : 'days'}`,
+                                    id: `op:${product.productName}@${name}@p-ticket@${
+                                        userPeriodTicket.passengerType
+                                    }@${product.productDuration.replace(' ', '-')}`,
                                     Amount: { $t: `${product.productPrice}` },
                                     TimeIntervalRef: {
                                         version: '1.0',
-                                        ref: `op:Tariff@${product.productName}@${product.productDuration}${
-                                            product.productDuration === '1' ? 'day' : 'days'
-                                        }`,
+                                        ref: `op:Tariff@${product.productName}@${product.productDuration.replace(
+                                            ' ',
+                                            '-',
+                                        )}`,
                                     },
                                 },
                                 ColumnRef: {
@@ -371,7 +384,10 @@ const getMultiServiceList = (
                                 },
                                 RowRef: {
                                     version: '1.0',
-                                    ref: `op:${product.productName}@${name}@p-ticket@${product.productDuration}`,
+                                    ref: `op:${product.productName}@${name}@p-ticket@${product.productDuration.replace(
+                                        ' ',
+                                        '-',
+                                    )}`,
                                 },
                             },
                         },
@@ -600,12 +616,19 @@ export const getPreassignedFareProducts = (
 
 export const getTimeIntervals = (userPeriodTicket: PeriodTicket): NetexObject[] => {
     const timeIntervals = userPeriodTicket.products.map(product => {
-        const dayOrDays = product.productDuration === '1' ? 'day' : 'days';
+        const amount = product.productDuration.split(' ')[0];
+        const type = product.productDuration.split(' ')[1];
+        let firstLetterOfType = type.charAt(0).toUpperCase();
+        let finalAmount = amount;
+        if (firstLetterOfType === 'W') {
+            finalAmount = (Number(amount) * 7).toString();
+            firstLetterOfType = 'D';
+        }
         return {
             version: '1.0',
-            id: `op:Tariff@${product.productName}@${product.productDuration}${dayOrDays}`,
-            Name: { $t: `${product.productDuration} ${dayOrDays}` },
-            Description: { $t: `P${product.productDuration}D` },
+            id: `op:Tariff@${product.productName}@${product.productDuration.replace(' ', '-')}`,
+            Name: { $t: `${product.productDuration}}` },
+            Description: { $t: `P${finalAmount}${firstLetterOfType}` },
         };
     });
 
@@ -658,9 +681,7 @@ const getDurationElement = (userPeriodTicket: PeriodTicket, product: ProductDeta
         TimeIntervalRef: [
             {
                 version: '1.0',
-                ref: `op:Tariff@${product.productName}@${product.productDuration}${
-                    product.productDuration === '1' ? 'day' : 'days'
-                }`,
+                ref: `op:Tariff@${product.productName}@${product.productDuration.replace(' ', '-')}`,
             },
         ],
     },
