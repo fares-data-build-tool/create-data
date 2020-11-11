@@ -27,7 +27,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                             <span aria-hidden>Product Name</span>
                         </label>
                         <span className="govuk-hint" id={`product-name-hint-${index}`}>
-                            Must be between 2 and 50 characters long
+                            50 characters maximum
                         </span>
 
                         <FormElementWrapper
@@ -54,7 +54,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                         <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${index +
                                 1}`}</span>
-                            <span aria-hidden>Product Price, in pounds</span>
+                            <span aria-hidden>Price, in pounds</span>
                         </label>
                         <span className="govuk-hint" id={`product-price-hint-${index}`}>
                             For example, 2.99
@@ -87,12 +87,12 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 <FormGroupWrapper errors={errors} errorId={`multiple-product-duration-${index}`}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
-                            <span className="govuk-visually-hidden">{`Product Duration, in days - Product ${index +
+                            <span className="govuk-visually-hidden">{`Product Duration amount - Product ${index +
                                 1}`}</span>
-                            <span aria-hidden>Product Duration, in days</span>
+                            <span aria-hidden>Duration</span>
                         </label>
                         <span className="govuk-hint" id={`product-duration-hint-${index}`}>
-                            Enter a whole number
+                            Enter a number
                         </span>
 
                         <FormElementWrapper
@@ -109,6 +109,40 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 maxLength={366}
                                 defaultValue={userInput.length > 0 ? userInput[index].productDuration : ''}
                             />
+                        </FormElementWrapper>
+                    </>
+                </FormGroupWrapper>
+            </div>
+            <div className="govuk-grid-column-one-quarter">
+                <FormGroupWrapper errorId={`multiple-product-duration-units-${index}`} errors={errors}>
+                    <>
+                        <label className="govuk-label" htmlFor={`multiple-product-duration-units-${index}`}>
+                            <span className="govuk-visually-hidden">{`Product Duration units - Product ${index +
+                                1}`}</span>
+                            <span aria-hidden>Duration Type</span>
+                        </label>
+                        <span className="govuk-hint" id={`product-duration-units-hint-${index}`}>
+                            For example, days
+                        </span>
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId={`multiple-product-duration-units-${index}`}
+                            errorClass="govuk-select--error"
+                        >
+                            <select
+                                className="govuk-select"
+                                id={`multiple-product-duration-units-${index}`}
+                                name={`multipleProductDurationUnitsInput${index}`}
+                                defaultValue={userInput.length > 0 ? userInput[index].productDurationUnits : ''}
+                            >
+                                <option selected value="" disabled>
+                                    Select a duration
+                                </option>
+                                <option value="day">Days</option>
+                                <option value="week">Weeks</option>
+                                <option value="month">Months</option>
+                                <option value="year">Years</option>
+                            </select>
                         </FormElementWrapper>
                     </>
                 </FormGroupWrapper>

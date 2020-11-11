@@ -127,6 +127,7 @@ export interface Product {
     productPrice: string;
     productDuration?: string;
     productValidity?: string;
+    productDurationUnits?: string;
 }
 
 export interface ProductData {

@@ -90,7 +90,7 @@ const MultipleProductValidity = ({
                                         <td className="govuk-table__cell">{product.productName}</td>
                                         <td className="govuk-table__cell">£{product.productPrice}</td>
                                         <td className="govuk-table__cell">
-                                            {`${product.productDuration} day${
+                                            {`${product.productDuration} ${product.productDurationUnits}${
                                                 Number(product.productDuration) > 1 ? 's' : ''
                                             }`}
                                         </td>

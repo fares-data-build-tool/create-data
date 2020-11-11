@@ -113,7 +113,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               <td
                 className="govuk-table__cell"
               >
-                5 days
+                5 undefineds
               </td>
               <td
                 className="govuk-table__cell"
@@ -194,7 +194,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               <td
                 className="govuk-table__cell"
               >
-                1 day
+                1 undefined
               </td>
               <td
                 className="govuk-table__cell"
@@ -405,7 +405,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
               <td
                 className="govuk-table__cell"
               >
-                5 days
+                5 undefineds
               </td>
               <td
                 className="govuk-table__cell"
@@ -486,7 +486,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
               <td
                 className="govuk-table__cell"
               >
-                1 day
+                1 undefined
               </td>
               <td
                 className="govuk-table__cell"

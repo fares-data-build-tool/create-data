@@ -109,7 +109,11 @@ export const getProductsAndSalesOfferPackages = (
         const productDetailsItem: ProductDetails = {
             productName: sopInfo.productName,
             productPrice: matchedProduct.productPrice,
-            productDuration: matchedProduct.productDuration || '',
+            productDuration: matchedProduct.productDuration
+                ? `${matchedProduct.productDuration} ${matchedProduct.productDurationUnits}${
+                      matchedProduct.productDuration === '1' ? '' : 's'
+                  }`
+                : '',
             productValidity: matchedProduct.productValidity || '',
             salesOfferPackages: sopInfo.salesOfferPackages,
         };

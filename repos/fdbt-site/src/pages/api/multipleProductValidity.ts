@@ -18,6 +18,7 @@ export interface Product {
     productDurationId?: string;
     productValidity?: string;
     productValidityError?: string;
+    productDurationUnits?: string;
 }
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
@@ -35,6 +36,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productDurationId: rawProduct.productDurationId,
             productValidity: validity,
             productValidityError: error,
+            productDurationUnits: rawProduct.productDurationUnits,
         };
     }
     return {
@@ -42,6 +44,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
         productPrice: rawProduct.productPrice,
         productDuration: rawProduct.productDuration,
         productValidity: validity,
+        productDurationUnits: rawProduct.productDurationUnits,
     };
 };
 
