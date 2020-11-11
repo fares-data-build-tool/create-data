@@ -29,6 +29,9 @@ Mappings:
     DataB:
       CIDR: 10.0.5.0/24
 
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -298,6 +301,18 @@ Resources:
           ToPort: 3000
       VpcId: !Ref VPC
 
+  FargatePrototypeContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Condition: IsTest
+    Properties:
+      GroupDescription: Access to the Fargate Prototype containers
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+          IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+      VpcId: !Ref VPC
+
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -373,6 +388,11 @@ Outputs:
     Value: !Ref FargateMonitoringContainerSecurityGroup
     Export:
       Name: !Sub ${Stage}:FargateMonitoringContainerSecurityGroup
+  FargatePrototypeContainerSecurityGroup:
+    Condition: IsTest
+    Value: !Ref FargatePrototypeContainerSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:FargatePrototypeContainerSecurityGroup
   LoadBalancerSecurityGroup:
     Value: !Ref LoadBalancerSecurityGroup
     Export:

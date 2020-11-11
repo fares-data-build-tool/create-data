@@ -65,6 +65,36 @@ Parameters:
   MonitoringDomain:
     Type: String
     Description: Domain for monitoring
+  PrototypeImageUrl:
+    Type: String
+    Description: The prototype docker image
+  PrototypeContainerPort:
+    Type: Number
+    Default: 8080
+    Description: Port on which the prototype process is running in the container
+  PrototypeContainerCpu:
+    Type: Number
+    Default: 256
+    Description: How much CPU to give the prototype container. 1024 is 1 CPU
+  PrototypeContainerMemory:
+    Type: Number
+    Default: 512
+    Description: How much memory in MiB to give the prototype container
+  PrototypeDesiredCount:
+    Type: Number
+    Default: 1
+    Description: How many copies of the prototype service task to run
+  PrototypeDomain:
+    Type: String
+    Description: Domain for prototype
+  PrototypeUsername:
+    Type: String
+    Description: Username to access prototype
+    NoEcho: "true"
+  PrototypePassword:
+    Type: String
+    Description: Password to access prototype
+    NoEcho: "true"
   SessionSecret:
     AllowedPattern: "[a-zA-Z0-9]+"
     ConstraintDescription: must be between 8 to 41 alphanumeric characters.
@@ -180,6 +210,39 @@ Resources:
             AuthorizationConfig:
               AccessPointId: !Ref EFSMonitoringAccessPoint
 
+  PrototypeTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Condition: IsTest
+    Properties:
+      Family: !Sub ${ProductName}-prototype-${Stage}
+      Cpu: !Ref PrototypeContainerCpu
+      Memory: !Ref PrototypeContainerMemory
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn:
+        Fn::ImportValue: !Sub ${Stage}:EcsTaskExecutionRoleArn
+      ContainerDefinitions:
+        - Name: !Sub ${ProductName}-prototype-${Stage}
+          Cpu: !Ref PrototypeContainerCpu
+          Memory: !Ref PrototypeContainerMemory
+          Image: !Ref PrototypeImageUrl
+          PortMappings:
+            - ContainerPort: !Ref PrototypeContainerPort
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref PrototypeLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: !Ref ProductName
+          Environment:
+            - Name: AWS_NODEJS_CONNECTION_REUSE_ENABLED
+              Value: "1"
+            - Name: USERNAME
+              Value: !Ref PrototypeUsername
+            - Name: PASSWORD
+              Value: !Ref PrototypePassword
+
   SiteService:
     Type: AWS::ECS::Service
     DependsOn: PublicLoadBalancerListener
@@ -232,6 +295,33 @@ Resources:
           ContainerPort: !Ref MonitoringContainerPort
           TargetGroupArn: !Ref MonitoringTargetGroup
 
+  PrototypeService:
+    Type: AWS::ECS::Service
+    Condition: IsTest
+    DependsOn: PublicLoadBalancerListener
+    Properties:
+      ServiceName: !Sub ${ProductName}-prototype-${Stage}
+      Cluster: !Ref ECSCluster
+      LaunchType: FARGATE
+      PlatformVersion: "1.4.0"
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 75
+      DesiredCount: !Ref PrototypeDesiredCount
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::ImportValue: !Sub ${Stage}:FargatePrototypeContainerSecurityGroup
+          Subnets:
+            - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
+            - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
+      TaskDefinition: !Ref PrototypeTaskDefinition
+      LoadBalancers:
+        - ContainerName: !Sub ${ProductName}-prototype-${Stage}
+          ContainerPort: !Ref PrototypeContainerPort
+          TargetGroupArn: !Ref PrototypeTargetGroup
+
   SiteAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
@@ -246,12 +336,12 @@ Resources:
       ScheduledActions:
         Fn::If:
           - IsNotProd
-          - - Schedule: "cron(0 18 * * ? *)"
+          - - Schedule: "cron(0 19 ? * MON-FRI *)"
               ScheduledActionName: SiteScaleIn
               ScalableTargetAction:
                 MaxCapacity: 0
                 MinCapacity: 0
-            - Schedule: "cron(0 7 * * ? *)"
+            - Schedule: "cron(0 7 ? * MON-FRI *)"
               ScheduledActionName: SiteScaleOut
               ScalableTargetAction:
                 MaxCapacity: !Ref SiteMaxCount
@@ -272,17 +362,41 @@ Resources:
       ScheduledActions:
         Fn::If:
           - IsNotProd
-          - - Schedule: "cron(0 19 * * ? *)"
+          - - Schedule: "cron(0 19 ? * MON-FRI *)"
               ScheduledActionName: MonitoringScaleIn
               ScalableTargetAction:
                 MaxCapacity: 0
                 MinCapacity: 0
-            - Schedule: "cron(0 7 * * ? *)"
+            - Schedule: "cron(0 7 ? * MON-FRI *)"
               ScheduledActionName: MonitoringScaleOut
               ScalableTargetAction:
                 MaxCapacity: 1
                 MinCapacity: 1
           - !Ref AWS::NoValue
+
+  PrototypeAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Condition: IsTest
+    Properties:
+      MinCapacity: 1
+      MaxCapacity: 1
+      ResourceId:
+        !Join ["/", [service, !Ref ECSCluster, !GetAtt PrototypeService.Name]]
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      RoleARN:
+        Fn::ImportValue: !Sub ${Stage}:EcsSiteScalingRoleArn
+      ScheduledActions:
+        - Schedule: "cron(0 19 ? * MON-FRI *)"
+          ScheduledActionName: PrototypeScaleIn
+          ScalableTargetAction:
+            MaxCapacity: 0
+            MinCapacity: 0
+        - Schedule: "cron(0 7 ? * MON-FRI *)"
+          ScheduledActionName: PrototypeScaleOut
+          ScalableTargetAction:
+            MaxCapacity: 1
+            MinCapacity: 1
 
   SiteAutoScalingPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
@@ -328,6 +442,23 @@ Resources:
       TargetType: ip
       Name: !Sub ${ProductName}-monitoring-tg-${Stage}
       Port: !Ref MonitoringContainerPort
+      Protocol: HTTP
+      VpcId:
+        Fn::ImportValue: !Sub ${Stage}:VpcId
+
+  PrototypeTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Condition: IsTest
+    Properties:
+      HealthCheckIntervalSeconds: 120
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetType: ip
+      Name: !Sub ${ProductName}-prototype-tg-${Stage}
+      Port: !Ref PrototypeContainerPort
       Protocol: HTTP
       VpcId:
         Fn::ImportValue: !Sub ${Stage}:VpcId
@@ -380,6 +511,21 @@ Resources:
               - !Ref MonitoringDomain
       ListenerArn: !Ref PublicLoadBalancerListener
       Priority: 1
+
+  PrototypeListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Condition: IsTest
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref PrototypeTargetGroup
+          Type: forward
+      Conditions:
+        - Field: host-header
+          HostHeaderConfig:
+            Values:
+              - !Ref PrototypeDomain
+      ListenerArn: !Ref PublicLoadBalancerListener
+      Priority: 2
 
   ALBRedirectHttpsListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -452,6 +598,13 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub ${ProductName}-monitoring-${Stage}
+      RetentionInDays: 60
+
+  PrototypeLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: IsTest
+    Properties:
+      LogGroupName: !Sub ${ProductName}-prototype-${Stage}
       RetentionInDays: 60
 
   2xxResponsesLogGroupMetric:
