@@ -287,8 +287,8 @@ export const buildTicketConfirmationElements = (
                     },
                     {
                         name: `Product - ${product.productName}`,
-                        content: `Duration - ${product.productDuration} ${
-                            product.productDuration === '1' ? 'day' : 'days'
+                        content: `Duration - ${product.productDuration} ${product.productDurationUnits}${
+                            product.productDuration === '1' ? '' : 's'
                         }`,
                         href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
                     },
@@ -308,7 +308,9 @@ export const buildTicketConfirmationElements = (
                 },
                 {
                     name: `Product - ${fareTypeProps.products.productName}`,
-                    content: `Duration - ${fareTypeProps.products.productDuration}`,
+                    content: `Duration - ${fareTypeProps.products.productDuration} ${
+                        fareTypeProps.products.productDurationUnits
+                    }${fareTypeProps.products.productDuration === '1' ? '' : 's'}`,
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
                 },
                 {

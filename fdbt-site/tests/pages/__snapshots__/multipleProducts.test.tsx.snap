@@ -33,7 +33,7 @@ exports[`pages multipleProduct should render correctly 1`] = `
     <div
       className="govuk-inset-text"
     >
-      For example, Super Saver ticket - 4.95 - 2
+      For example, Super Saver ticket - 4.95 - 2 - Days
     </div>
     <div
       className="govuk-grid-row"
