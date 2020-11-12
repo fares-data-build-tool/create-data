@@ -171,10 +171,10 @@ export const signOutUser = async (username: string | null, req: Req, res: Res): 
     deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
 };
 
-export const getSelectedStages = (req: NextApiRequest): string[] => {
+export const getSelectedStages = (req: NextApiRequest): string[][] => {
     const requestBody = req.body;
 
-    const selectObjectsArray: string[] = [];
+    const selectObjectsArray: string[][] = [];
 
     Object.keys(requestBody).map(e => {
         if (requestBody[e] !== '') {

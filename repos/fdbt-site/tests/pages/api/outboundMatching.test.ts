@@ -10,16 +10,26 @@ import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchi
 import { MATCHING_ATTRIBUTE } from '../../../src/constants';
 
 const selectedOptions = {
-    option0:
+    option0: [
+        'Acomb Green Lane',
         '{"stop":{"stopName":"Yoden Way - Chapel Hill Road","naptanCode":"duratdmj","atcoCode":"13003521G","localityCode":"E0045956","localityName":"Peterlee","indicator":"W-bound","street":"Yodan Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Acomb Green Lane"}',
-    option1:
+    ],
+    option1: [
+        'Mattison Way',
         '{"stop":{"stopName":"Yoden Way","naptanCode":"duratdmt","atcoCode":"13003522F","localityCode":"E0010183","localityName":"Horden","indicator":"SW-bound","street":"Yoden Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Mattison Way"}',
-    option2:
+    ],
+    option2: [
+        'Holl Bank/Beech Ave',
         '{"stop":{"stopName":"Surtees Rd-Edenhill Rd","naptanCode":"durapgdw","atcoCode":"13003219H","localityCode":"E0045956","localityName":"Peterlee","indicator":"NW-bound","street":"Surtees Road","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Holl Bank/Beech Ave"}',
-    option3:
+    ],
+    option3: [
+        'Blossom Street',
         '{"stop":{"stopName":"Bus Station","naptanCode":"duratdma","atcoCode":"13003519H","localityCode":"E0045956","localityName":"Peterlee","indicator":"H","street":"Bede Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Blossom Street"}',
-    option4:
+    ],
+    option4: [
+        'Piccadilly (York)',
         '{"stop":{"stopName":"Kell Road","naptanCode":"duraptwp","atcoCode":"13003345D","localityCode":"E0010183","localityName":"Horden","indicator":"SE-bound","street":"Kell Road","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Piccadilly (York)"}',
+    ],
 };
 
 describe('Outbound Matching API', () => {
