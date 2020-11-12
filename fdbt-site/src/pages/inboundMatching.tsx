@@ -23,7 +23,7 @@ interface MatchingProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
-    selectedFareStages: string[];
+    selectedFareStages: string[][];
     csrfToken: string;
 }
 

@@ -21,7 +21,7 @@ export interface InboundMatchingInfo {
 
 export interface MatchingWithErrors {
     error: boolean;
-    selectedFareStages: string[];
+    selectedFareStages: string[][];
 }
 
 export interface MatchingFareZonesData {

@@ -1,4 +1,5 @@
 import { NextApiRequest } from 'next';
+import isArray from 'lodash/isArray';
 import { UserFareStages } from '../../../data/s3';
 import { Stop } from '../../../data/auroradb';
 import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
@@ -27,25 +28,22 @@ export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZ
     const matchingFareZones: MatchingFareZones = {};
     const bodyValues: string[] = Object.values(req.body);
 
-    bodyValues.forEach((zoneString: string) => {
-        if (zoneString && typeof zoneString === 'string') {
-            const zone = JSON.parse(zoneString);
+    bodyValues.forEach((stopSelection: string) => {
+        const stageName = stopSelection[0];
+        if (stageName && typeof stageName === 'string' && isArray(stopSelection)) {
+            const stop = JSON.parse(stopSelection[1]);
 
-            if (matchingFareZones[zone.stage]) {
-                matchingFareZones[zone.stage].stops.push(zone.stop);
+            if (matchingFareZones[stageName]) {
+                matchingFareZones[stageName].stops.push(stop);
             } else {
-                matchingFareZones[zone.stage] = {
-                    name: zone.stage,
-                    stops: [zone.stop],
-                    prices: [zone.price],
+                matchingFareZones[stageName] = {
+                    name: stageName,
+                    stops: [stop],
+                    prices: [],
                 };
             }
         }
     });
-
-    if (Object.keys(matchingFareZones).length === 0) {
-        throw new Error('No Stops allocated to fare stages');
-    }
 
     return matchingFareZones;
 };
