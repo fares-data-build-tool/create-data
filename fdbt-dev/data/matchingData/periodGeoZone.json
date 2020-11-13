@@ -4,10 +4,28 @@
   "nocCode": "BLAC",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
-  "timeRestriction": {
-    "startTime": "0700",
-    "endTime": "2300"
-  },
+  "timeRestriction": [
+    {
+        "day": "monday",
+        "startTime": "0200",
+        "endTime": "0400"
+    },
+    {
+      "day": "tuesday",
+      "startTime": "0900",
+      "endTime": "0500"
+    },
+    {
+      "day": "wednesday",
+      "startTime": "0545",
+      "endTime": "1950"
+    },
+    {
+      "day": "thursday",
+      "startTime": "0000",
+      "endTime": "2359"
+    }
+],
   "products": [
     {
       "productName": "Product 1",
