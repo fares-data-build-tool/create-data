@@ -19,66 +19,20 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
         className="govuk-heading-l"
         id="define-time-restrictions-page-heading"
       >
-        Tell us more about the time restrictions
+        Are there time restrictions on your ticket?
       </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        The following two questions will provide us with all the information we need for time restrictions
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
       </span>
-      <br />
-      <br />
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start and end time to this ticket?",
-              "id": "define-time-restrictions",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "time-restriction-required-conditional",
-                "hint": Object {
-                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
-                  "id": "define-time-restriction-hint",
-                },
-                "id": "time-restriction-required",
-                "inputErrors": Array [],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "start-time",
-                    "label": "Start Time",
-                    "name": "startTime",
-                  },
-                  Object {
-                    "id": "end-time",
-                    "label": "End Time",
-                    "name": "endTime",
-                  },
-                ],
-                "label": "Yes",
-                "name": "timeRestriction",
-                "value": "Yes",
-              },
-              Object {
-                "id": "time-restriction-not-required",
-                "label": "No",
-                "name": "timeRestriction",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-time-restrictions"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is this ticket only valid on certain days?",
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
               "id": "define-valid-days",
             },
             "radioError": Array [],
@@ -126,6 +80,11 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
                   Object {
                     "id": "sunday",
                     "label": "Sunday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
                     "name": "validDays",
                   },
                 ],
@@ -204,75 +163,20 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
         className="govuk-heading-l"
         id="define-time-restrictions-page-heading"
       >
-        Tell us more about the time restrictions
+        Are there time restrictions on your ticket?
       </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        The following two questions will provide us with all the information we need for time restrictions
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
       </span>
-      <br />
-      <br />
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start and end time to this ticket?",
-              "id": "define-time-restrictions",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "time-restriction-required-conditional",
-                "hint": Object {
-                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
-                  "id": "define-time-restriction-hint",
-                },
-                "id": "time-restriction-required",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
-                    "id": "start-time",
-                  },
-                  Object {
-                    "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
-                    "id": "end-time",
-                  },
-                ],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "start-time",
-                    "label": "Start Time",
-                    "name": "startTime",
-                  },
-                  Object {
-                    "id": "end-time",
-                    "label": "End Time",
-                    "name": "endTime",
-                  },
-                ],
-                "label": "Yes",
-                "name": "timeRestriction",
-                "value": "Yes",
-              },
-              Object {
-                "id": "time-restriction-not-required",
-                "label": "No",
-                "name": "timeRestriction",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-time-restrictions"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is this ticket only valid on certain days?",
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
               "id": "define-valid-days",
             },
             "radioError": Array [
@@ -325,6 +229,11 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
                   Object {
                     "id": "sunday",
                     "label": "Sunday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
                     "name": "validDays",
                   },
                 ],
@@ -403,75 +312,20 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
         className="govuk-heading-l"
         id="define-time-restrictions-page-heading"
       >
-        Tell us more about the time restrictions
+        Are there time restrictions on your ticket?
       </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        The following two questions will provide us with all the information we need for time restrictions
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
       </span>
-      <br />
-      <br />
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start and end time to this ticket?",
-              "id": "define-time-restrictions",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "time-restriction-required-conditional",
-                "hint": Object {
-                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
-                  "id": "define-time-restriction-hint",
-                },
-                "id": "time-restriction-required",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
-                    "id": "start-time",
-                  },
-                  Object {
-                    "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
-                    "id": "end-time",
-                  },
-                ],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "start-time",
-                    "label": "Start Time",
-                    "name": "startTime",
-                  },
-                  Object {
-                    "id": "end-time",
-                    "label": "End Time",
-                    "name": "endTime",
-                  },
-                ],
-                "label": "Yes",
-                "name": "timeRestriction",
-                "value": "Yes",
-              },
-              Object {
-                "id": "time-restriction-not-required",
-                "label": "No",
-                "name": "timeRestriction",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-time-restrictions"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is this ticket only valid on certain days?",
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
               "id": "define-valid-days",
             },
             "radioError": Array [],
@@ -526,6 +380,11 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
                     "label": "Sunday",
                     "name": "validDays",
                   },
+                  Object {
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
+                    "name": "validDays",
+                  },
                 ],
                 "label": "Yes",
                 "name": "validDaysSelected",
@@ -560,10 +419,6 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
     Array [
       Object {
         "errorMessage": "Choose one of the options below",
-        "id": "time-restriction-required",
-      },
-      Object {
-        "errorMessage": "Choose one of the options below",
         "id": "valid-days-required",
       },
     ]
@@ -580,10 +435,6 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
         Array [
           Object {
             "errorMessage": "Choose one of the options below",
-            "id": "time-restriction-required",
-          },
-          Object {
-            "errorMessage": "Choose one of the options below",
             "id": "valid-days-required",
           },
         ]
@@ -594,71 +445,20 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
         className="govuk-heading-l"
         id="define-time-restrictions-page-heading"
       >
-        Tell us more about the time restrictions
+        Are there time restrictions on your ticket?
       </h1>
       <span
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        The following two questions will provide us with all the information we need for time restrictions
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
       </span>
-      <br />
-      <br />
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is there a start and end time to this ticket?",
-              "id": "define-time-restrictions",
-            },
-            "radioError": Array [
-              Object {
-                "errorMessage": "Choose one of the options below",
-                "id": "time-restriction-required",
-              },
-            ],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "time-restriction-required-conditional",
-                "hint": Object {
-                  "content": "Enter a start and end time in 24 hour format, for example, 0900 or 2300",
-                  "id": "define-time-restriction-hint",
-                },
-                "id": "time-restriction-required",
-                "inputErrors": Array [],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "start-time",
-                    "label": "Start Time",
-                    "name": "startTime",
-                  },
-                  Object {
-                    "id": "end-time",
-                    "label": "End Time",
-                    "name": "endTime",
-                  },
-                ],
-                "label": "Yes",
-                "name": "timeRestriction",
-                "value": "Yes",
-              },
-              Object {
-                "id": "time-restriction-not-required",
-                "label": "No",
-                "name": "timeRestriction",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-time-restrictions"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Is this ticket only valid on certain days?",
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
               "id": "define-valid-days",
             },
             "radioError": Array [
@@ -711,6 +511,11 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
                   Object {
                     "id": "sunday",
                     "label": "Sunday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
                     "name": "validDays",
                   },
                 ],

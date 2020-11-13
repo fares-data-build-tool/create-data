@@ -18,7 +18,7 @@ import { JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants';
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
 
-describe('Inbound OutboundMatching Page', () => {
+describe('OutboundMatching Page', () => {
     let wrapper: any;
     let getServiceByNocCodeAndLineNameSpy: any;
     let batchGetStopsByAtcoCodeSpy: any;
@@ -70,7 +70,7 @@ describe('Inbound OutboundMatching Page', () => {
                 .find('.farestage-select')
                 .first()
                 .find('option'),
-        ).toHaveLength(9);
+        ).toHaveLength(10);
     });
 
     describe('getServerSideProps', () => {

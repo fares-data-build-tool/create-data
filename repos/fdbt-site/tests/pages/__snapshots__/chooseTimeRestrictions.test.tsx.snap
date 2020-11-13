@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = `
+<Component
+  description="Choose time restrictions page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "2400 is not a valid input. Use 0000.",
+        "id": "end-time-monday",
+        "userInput": "2400",
+      },
+      Object {
+        "errorMessage": "Time must be in 2400 format",
+        "id": "end-time-tuesday",
+        "userInput": "7pm",
+      },
+    ]
+  }
+  title="Choose time restrictions - Create Fares Data Service "
+>
+  <CsrfForm
+    action="/api/chooseTimeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "2400 is not a valid input. Use 0000.",
+            "id": "end-time-monday",
+            "userInput": "2400",
+          },
+          Object {
+            "errorMessage": "Time must be in 2400 format",
+            "id": "end-time-tuesday",
+            "userInput": "7pm",
+          },
+        ]
+      }
+    />
+    <fieldset
+      className="govuk-fieldset"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+        >
+          Tell us more about the time restrictions
+        </h1>
+      </legend>
+      <span
+        className="govuk-hint"
+        id="time-restrictions-hint"
+      >
+        Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+      </span>
+      <div
+        className="govuk-inset-text"
+      >
+        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+      </div>
+      <TimeRestrictionsTable
+        chosenDays={
+          Array [
+            "monday",
+            "tuesday",
+          ]
+        }
+        endTimeInputs={
+          Array [
+            Object {
+              "day": "monday",
+              "timeInput": "2400",
+            },
+            Object {
+              "day": "tuesday",
+              "timeInput": "7pm",
+            },
+          ]
+        }
+        errors={
+          Array [
+            Object {
+              "errorMessage": "2400 is not a valid input. Use 0000.",
+              "id": "end-time-monday",
+              "userInput": "2400",
+            },
+            Object {
+              "errorMessage": "Time must be in 2400 format",
+              "id": "end-time-tuesday",
+              "userInput": "7pm",
+            },
+          ]
+        }
+        startTimeInputs={
+          Array [
+            Object {
+              "day": "monday",
+              "timeInput": "0000",
+            },
+            Object {
+              "day": "tuesday",
+              "timeInput": "0900",
+            },
+          ]
+        }
+      />
+    </fieldset>
+    <input
+      className="govuk-button continue-button-placement"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages chooseTimeRestrictions should render correctly with no prior inputs 1`] = `
+<Component
+  description="Choose time restrictions page of the Create Fares Data Service"
+  errors={Array []}
+  title="Choose time restrictions - Create Fares Data Service "
+>
+  <CsrfForm
+    action="/api/chooseTimeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <fieldset
+      className="govuk-fieldset"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+        >
+          Tell us more about the time restrictions
+        </h1>
+      </legend>
+      <span
+        className="govuk-hint"
+        id="time-restrictions-hint"
+      >
+        Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+      </span>
+      <div
+        className="govuk-inset-text"
+      >
+        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+      </div>
+      <TimeRestrictionsTable
+        chosenDays={
+          Array [
+            "monday",
+            "tuesday",
+          ]
+        }
+        endTimeInputs={Array []}
+        errors={Array []}
+        startTimeInputs={Array []}
+      />
+    </fieldset>
+    <input
+      className="govuk-button continue-button-placement"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages chooseTimeRestrictions should render correctly with prior inputs  1`] = `
+<Component
+  description="Choose time restrictions page of the Create Fares Data Service"
+  errors={Array []}
+  title="Choose time restrictions - Create Fares Data Service "
+>
+  <CsrfForm
+    action="/api/chooseTimeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <fieldset
+      className="govuk-fieldset"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+        >
+          Tell us more about the time restrictions
+        </h1>
+      </legend>
+      <span
+        className="govuk-hint"
+        id="time-restrictions-hint"
+      >
+        Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+      </span>
+      <div
+        className="govuk-inset-text"
+      >
+        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+      </div>
+      <TimeRestrictionsTable
+        chosenDays={
+          Array [
+            "monday",
+            "tuesday",
+          ]
+        }
+        endTimeInputs={
+          Array [
+            Object {
+              "day": "tuesday",
+              "timeInput": "1900",
+            },
+          ]
+        }
+        errors={Array []}
+        startTimeInputs={
+          Array [
+            Object {
+              "day": "monday",
+              "timeInput": "0900",
+            },
+          ]
+        }
+      />
+    </fieldset>
+    <input
+      className="govuk-button continue-button-placement"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

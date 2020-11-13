@@ -53,7 +53,7 @@ const MultipleProducts = ({
                 <span className="govuk-hint" id="service-operator-hint">
                     {operatorName} - {numberOfProductsToDisplay} Products - {upperFirst(passengerType)}
                 </span>
-                <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2</div>
+                <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2 - Days</div>
                 <div className="govuk-grid-row">
                     <ProductRow
                         numberOfProductsToDisplay={numberOfProductsToDisplay}
@@ -99,7 +99,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
         const { errors } = multiProductAttribute;
-
         return {
             props: {
                 numberOfProductsToDisplay,

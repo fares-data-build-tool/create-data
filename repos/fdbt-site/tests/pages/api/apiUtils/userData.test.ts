@@ -1,4 +1,5 @@
 import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
@@ -45,6 +46,7 @@ import {
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
     mockSchemOpIdToken,
     expectedSchemeOperatorTicket,
+    mockFullTimeRestrictions,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
@@ -57,8 +59,20 @@ describe('getProductsAndSalesOfferPackages', () => {
     it('should return an array of ProductDetails objects', () => {
         const multipleProductAttribute: MultipleProductAttribute = {
             products: [
-                { productName: 'Product', productPrice: '2.99', productDuration: '1', productValidity: '24hr' },
-                { productName: 'Product Two', productPrice: '7.99', productDuration: '7', productValidity: '24hr' },
+                {
+                    productName: 'Product',
+                    productPrice: '2.99',
+                    productDuration: '1',
+                    productDurationUnits: 'week',
+                    productValidity: '24hr',
+                },
+                {
+                    productName: 'Product Two',
+                    productPrice: '7.99',
+                    productDuration: '7',
+                    productDurationUnits: 'day',
+                    productValidity: '24hr',
+                },
             ],
         };
         const productSops = [
@@ -91,10 +105,11 @@ describe('getSingleTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
             },
         });
         const result = getSingleTicketJson(req, res);
-        expect(result).toEqual(expectedSingleTicket);
+        expect(result).toStrictEqual(expectedSingleTicket);
     });
 });
 
@@ -117,10 +132,11 @@ describe('getReturnTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
             },
         });
         const result = getReturnTicketJson(req, res);
-        expect(result).toEqual(expectedNonCircularReturnTicket);
+        expect(result).toStrictEqual(expectedNonCircularReturnTicket);
     });
     it('should return a ReturnTicket object for a circular journey', () => {
         const { req, res } = getMockRequestAndResponse({
@@ -137,10 +153,11 @@ describe('getReturnTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
             },
         });
         const result = getReturnTicketJson(req, res);
-        expect(result).toEqual(expectedCircularReturnTicket);
+        expect(result).toStrictEqual(expectedCircularReturnTicket);
     });
 });
 
@@ -190,6 +207,7 @@ describe('getGeoZoneTicketJson', () => {
                             productName: 'Weekly Ticket',
                             productPrice: '50',
                             productDuration: '5',
+                            productDurationUnits: 'week',
                             productValidity: '24hr',
                             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                         },
@@ -197,6 +215,7 @@ describe('getGeoZoneTicketJson', () => {
                             productName: 'Day Ticket',
                             productPrice: '2.50',
                             productDuration: '1',
+                            productDurationUnits: 'year',
                             productValidity: '24hr',
                             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                         },
@@ -204,6 +223,7 @@ describe('getGeoZoneTicketJson', () => {
                             productName: 'Monthly Ticket',
                             productPrice: '200',
                             productDuration: '28',
+                            productDurationUnits: 'month',
                             productValidity: 'endOfCalendarDay',
                             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                         },
@@ -230,11 +250,12 @@ describe('getGeoZoneTicketJson', () => {
                 ...(fareType === 'multiOperator' && {
                     [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
                 }),
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
         const result = await getGeoZoneTicketJson(req, res);
-        expect(result).toEqual(expectedJson);
+        expect(result).toStrictEqual(expectedJson);
     });
 });
 
@@ -252,18 +273,21 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                             productName: 'Weekly Ticket',
                             productPrice: '50',
                             productDuration: '5',
+                            productDurationUnits: 'week',
                             productValidity: '24hr',
                         },
                         {
                             productName: 'Day Ticket',
                             productPrice: '2.50',
                             productDuration: '1',
+                            productDurationUnits: 'year',
                             productValidity: '24hr',
                         },
                         {
                             productName: 'Monthly Ticket',
                             productPrice: '200',
                             productDuration: '28',
+                            productDurationUnits: 'month',
                             productValidity: 'endOfCalendarDay',
                         },
                     ],
@@ -286,10 +310,11 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
             },
         });
         const result = getMultipleServicesTicketJson(req, res);
-        expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+        expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
     });
 
     it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', () => {
@@ -305,18 +330,21 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                             productName: 'Weekly Ticket',
                             productPrice: '50',
                             productDuration: '5',
+                            productDurationUnits: 'week',
                             productValidity: '24hr',
                         },
                         {
                             productName: 'Day Ticket',
                             productPrice: '2.50',
                             productDuration: '1',
+                            productDurationUnits: 'year',
                             productValidity: '24hr',
                         },
                         {
                             productName: 'Monthly Ticket',
                             productPrice: '200',
                             productDuration: '28',
+                            productDurationUnits: 'month',
                             productValidity: 'endOfCalendarDay',
                         },
                     ],
@@ -365,10 +393,11 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                         ],
                     },
                 ],
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
             },
         });
         const result = getMultipleServicesTicketJson(req, res);
-        expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators);
+        expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators);
     });
 });
 
@@ -442,6 +471,7 @@ describe('getSchemeOperatorTicketJson', () => {
                             productName: 'Weekly Ticket',
                             productPrice: '50',
                             productDuration: '5',
+                            productDurationUnits: 'week',
                             productValidity: '24hr',
                             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                         },
@@ -449,6 +479,7 @@ describe('getSchemeOperatorTicketJson', () => {
                             productName: 'Day Ticket',
                             productPrice: '2.50',
                             productDuration: '1',
+                            productDurationUnits: 'month',
                             productValidity: '24hr',
                             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                         },
@@ -456,6 +487,7 @@ describe('getSchemeOperatorTicketJson', () => {
                             productName: 'Monthly Ticket',
                             productPrice: '200',
                             productDuration: '28',
+                            productDurationUnits: 'year',
                             productValidity: 'endOfCalendarDay',
                             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                         },
@@ -480,6 +512,31 @@ describe('getSchemeOperatorTicketJson', () => {
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
                 [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));

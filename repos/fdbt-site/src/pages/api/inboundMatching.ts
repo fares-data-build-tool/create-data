@@ -27,7 +27,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         delete req.body.userfarestages;
 
         if (isFareStageUnassigned(inboundUserFareStages, inboundMatchingFareZones) && inboundMatchingFareZones !== {}) {
-            const selectedStagesList: string[] = getSelectedStages(req);
+            const selectedStagesList: string[][] = getSelectedStages(req);
             const matchingAttributeError: MatchingWithErrors = { error: true, selectedFareStages: selectedStagesList };
             updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
             redirectTo(res, '/inboundMatching');

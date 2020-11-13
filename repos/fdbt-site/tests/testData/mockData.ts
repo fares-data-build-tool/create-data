@@ -2,6 +2,24 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
+import {
+    FullTimeRestrictionAttribute,
+    FullTimeRestriction,
+    ErrorInfo,
+    NextPageContextWithSession,
+    BasicService,
+    SingleTicket,
+    ReturnTicket,
+    PeriodGeoZoneTicket,
+    Stop,
+    PeriodMultipleServicesTicket,
+    FlatFareTicket,
+    SalesOfferPackage,
+    ProductDetails,
+    MultiOperatorGeoZoneTicket,
+    MultiOperatorMultipleServicesTicket,
+    SchemeOperatorTicket,
+} from '../../src/interfaces/index';
 import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -29,24 +47,7 @@ import { UserFareStages } from '../../src/data/s3';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import {
-    ErrorInfo,
-    Breadcrumb,
-    NextPageContextWithSession,
-    BasicService,
-    SingleTicket,
-    ReturnTicket,
-    PeriodGeoZoneTicket,
-    Stop,
-    PeriodMultipleServicesTicket,
-    FlatFareTicket,
-    SalesOfferPackage,
-    ProductDetails,
-    TimeRestriction,
-    MultiOperatorGeoZoneTicket,
-    MultiOperatorMultipleServicesTicket,
-    SchemeOperatorTicket,
-} from '../../src/interfaces';
+
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
@@ -902,8 +903,23 @@ export const zoneStops: Stop[] = [
     },
 ];
 
-export const selectedFareStages: string[] = [
-    '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
+export const selectedFareStages: string[][] = [
+    [
+        'Acomb Green Lane',
+        '{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"}',
+    ],
+    [
+        'Acomb Green Lane',
+        '{"stopName":"Park","naptanCode":"duratgwg","atcoCode":"13003625C","localityCode":"E0010170","localityName":"Deneside","parentLocalityName":"IW Test","indicator":"E-bound","street":"The Avenue"}',
+    ],
+    [
+        'Holl Bank/Beech Ave',
+        '{"stopName":"Vane Terrace - Castlereagh","naptanCode":"duratgdt","atcoCode":"13003609E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Vane Terrace"}',
+    ],
+    [
+        'Holl Bank/Beech Ave',
+        '{"stopName":"New Tempest Road - York House","naptanCode":"duratgjt","atcoCode":"13003611B","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"NE-bound","street":"Tempest Road"}',
+    ],
 ];
 
 export const service: BasicService = {
@@ -1147,24 +1163,41 @@ export const expectedProductDetailsArray: ProductDetails[] = [
     {
         productName: 'Product',
         productPrice: '2.99',
-        productDuration: '1',
+        productDuration: '1 week',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
     },
     {
         productName: 'Product Two',
         productPrice: '7.99',
-        productDuration: '7',
+        productDuration: '7 days',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageTwo],
     },
 ];
 
-export const mockTimeRestriction: TimeRestriction = {
-    startTime: '0900',
-    endTime: '1500',
-    validDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
-};
+export const mockTimeRestriction: FullTimeRestriction[] = [
+    {
+        day: 'monday',
+        startTime: '0900',
+        endTime: '',
+    },
+    {
+        day: 'tuesday',
+        startTime: '',
+        endTime: '1800',
+    },
+    {
+        day: 'bank holiday',
+        startTime: '0900',
+        endTime: '1750',
+    },
+    {
+        day: 'friday',
+        startTime: '',
+        endTime: '',
+    },
+];
 
 export const expectedSingleTicket: SingleTicket = {
     type: 'single',
@@ -1614,21 +1647,21 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1653,21 +1686,21 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1691,21 +1724,21 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1748,21 +1781,21 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1898,6 +1931,7 @@ export const expectedFlatFareTicket: FlatFareTicket = {
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
+    timeRestriction: [],
 };
 
 export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
@@ -1918,21 +1952,21 @@ export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 month',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 years',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1949,6 +1983,8 @@ export const multipleProducts: MultiProduct[] = [
         productPriceId: 'product-price-1',
         productDuration: '66.5',
         productDurationId: 'product-duration-1',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
         productDurationError: 'Product duration must be a whole number',
     },
     {
@@ -1959,6 +1995,8 @@ export const multipleProducts: MultiProduct[] = [
         productPriceError: 'Product price must be a valid price',
         productDuration: '7',
         productDurationId: 'product-duration-2',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -1970,6 +2008,8 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productPriceId: 'product-price-1',
         productDuration: '66',
         productDurationId: 'product-duration-1',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'Super ticket',
@@ -1978,6 +2018,8 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productPriceId: 'product-price-2',
         productDuration: '7',
         productDurationId: 'product-duration-2',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -1989,6 +2031,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '66',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'zero duration',
@@ -1997,6 +2041,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '0',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'negative duration',
@@ -2005,6 +2051,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '-1',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'empty duration',
@@ -2013,6 +2061,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'non-numeric duration',
@@ -2021,6 +2071,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: 'ddd',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2032,6 +2084,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'empty price',
@@ -2040,6 +2094,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'negative price',
@@ -2048,6 +2104,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'non-numeric / invalid price',
@@ -2056,6 +2114,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2067,6 +2127,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: '',
@@ -2075,6 +2137,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'S',
@@ -2083,6 +2147,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName:
@@ -2092,6 +2158,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2103,6 +2171,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2111,6 +2181,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2119,6 +2191,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2809,275 +2883,106 @@ export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
 export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[] = [
     {
         heading: {
-            id: 'define-time-restrictions',
-            content: 'Is there a start and end time to this ticket?',
-        },
-        radios: [
-            {
-                id: 'time-restriction-required',
-                name: 'timeRestriction',
-                value: 'Yes',
-                dataAriaControls: 'time-restriction-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-time-restriction-hint',
-                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'start-time',
-                        name: 'startTime',
-                        label: 'Start Time',
-                    },
-                    {
-                        id: 'end-time',
-                        name: 'endTime',
-                        label: 'End Time',
-                    },
-                ],
-                inputErrors: [],
-            },
-            {
-                id: 'time-restriction-not-required',
-                name: 'timeRestriction',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: [],
-    },
-    {
-        heading: {
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
             id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days?',
         },
+        radioError: [],
         radios: [
             {
-                id: 'valid-days-required',
-                name: 'validDaysSelected',
-                value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-valid-days-hint',
-                    content: 'Select the days of the week the ticket is valid for',
-                },
+                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                id: 'valid-days-required',
+                inputErrors: [],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', name: 'validDays', label: 'Monday' },
-                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
-                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
-                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
-                    { id: 'friday', name: 'validDays', label: 'Friday' },
-                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
-                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                    { id: 'monday', label: 'Monday', name: 'validDays' },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
+                    { id: 'friday', label: 'Friday', name: 'validDays' },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
                 ],
-                inputErrors: [],
-            },
-            {
-                id: 'valid-days-not-required',
+                label: 'Yes',
                 name: 'validDaysSelected',
-                value: 'No',
-                label: 'No',
+                value: 'Yes',
             },
+            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
         ],
-        radioError: [],
     },
 ];
 
 export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditionalInputFieldset[] = [
     {
         heading: {
-            id: 'define-time-restrictions',
-            content: 'Is there a start and end time to this ticket?',
-        },
-        radios: [
-            {
-                id: 'time-restriction-required',
-                name: 'timeRestriction',
-                value: 'Yes',
-                dataAriaControls: 'time-restriction-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-time-restriction-hint',
-                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'start-time',
-                        name: 'startTime',
-                        label: 'Start Time',
-                    },
-                    {
-                        id: 'end-time',
-                        name: 'endTime',
-                        label: 'End Time',
-                    },
-                ],
-                inputErrors: [],
-            },
-            {
-                id: 'time-restriction-not-required',
-                name: 'timeRestriction',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: [
-            {
-                id: 'time-restriction-required',
-                errorMessage: 'Choose one of the options below',
-            },
-        ],
-    },
-    {
-        heading: {
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
             id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days?',
         },
+        radioError: [{ errorMessage: 'Choose one of the options below', id: 'valid-days-required' }],
         radios: [
             {
-                id: 'valid-days-required',
-                name: 'validDaysSelected',
-                value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-valid-days-hint',
-                    content: 'Select the days of the week the ticket is valid for',
-                },
+                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                id: 'valid-days-required',
+                inputErrors: [],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', name: 'validDays', label: 'Monday' },
-                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
-                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
-                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
-                    { id: 'friday', name: 'validDays', label: 'Friday' },
-                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
-                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                    { id: 'monday', label: 'Monday', name: 'validDays' },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
+                    { id: 'friday', label: 'Friday', name: 'validDays' },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
                 ],
-                inputErrors: [],
-            },
-            {
-                id: 'valid-days-not-required',
+                label: 'Yes',
                 name: 'validDaysSelected',
-                value: 'No',
-                label: 'No',
+                value: 'Yes',
             },
-        ],
-        radioError: [
-            {
-                id: 'valid-days-required',
-                errorMessage: 'Choose one of the options below',
-            },
+            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
         ],
     },
 ];
 
 export const mockTimeRestrictionsRadioErrors: ErrorInfo[] = [
-    {
-        id: 'time-restriction-required',
-        errorMessage: 'Choose one of the options below',
-    },
-    {
-        id: 'valid-days-required',
-        errorMessage: 'Choose one of the options below',
-    },
+    { errorMessage: 'Choose one of the options below', id: 'valid-days-required' },
 ];
 
 export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditionalInputFieldset[] = [
     {
         heading: {
-            id: 'define-time-restrictions',
-            content: 'Is there a start and end time to this ticket?',
-        },
-        radios: [
-            {
-                id: 'time-restriction-required',
-                name: 'timeRestriction',
-                value: 'Yes',
-                dataAriaControls: 'time-restriction-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-time-restriction-hint',
-                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'start-time',
-                        name: 'startTime',
-                        label: 'Start Time',
-                    },
-                    {
-                        id: 'end-time',
-                        name: 'endTime',
-                        label: 'End Time',
-                    },
-                ],
-                inputErrors: [
-                    {
-                        id: 'start-time',
-                        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
-                    },
-                    {
-                        id: 'end-time',
-                        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
-                    },
-                ],
-            },
-            {
-                id: 'time-restriction-not-required',
-                name: 'timeRestriction',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: [],
-    },
-    {
-        heading: {
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
             id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days?',
         },
+        radioError: [],
         radios: [
             {
-                id: 'valid-days-required',
-                name: 'validDaysSelected',
-                value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-valid-days-hint',
-                    content: 'Select the days of the week the ticket is valid for',
-                },
+                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                id: 'valid-days-required',
+                inputErrors: [{ errorMessage: 'Select at least one day', id: 'monday' }],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', name: 'validDays', label: 'Monday' },
-                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
-                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
-                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
-                    { id: 'friday', name: 'validDays', label: 'Friday' },
-                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
-                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                    { id: 'monday', label: 'Monday', name: 'validDays' },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
+                    { id: 'friday', label: 'Friday', name: 'validDays' },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
                 ],
-                inputErrors: [
-                    {
-                        id: 'monday',
-                        errorMessage: 'Select at least one day',
-                    },
-                ],
-            },
-            {
-                id: 'valid-days-not-required',
+                label: 'Yes',
                 name: 'validDaysSelected',
-                value: 'No',
-                label: 'No',
+                value: 'Yes',
             },
+            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
         ],
-        radioError: [],
     },
 ];
 
@@ -3099,93 +3004,33 @@ export const mockTimeRestrictionsInputErrors: ErrorInfo[] = [
 export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioConditionalInputFieldset[] = [
     {
         heading: {
-            id: 'define-time-restrictions',
-            content: 'Is there a start and end time to this ticket?',
-        },
-        radios: [
-            {
-                id: 'time-restriction-required',
-                name: 'timeRestriction',
-                value: 'Yes',
-                dataAriaControls: 'time-restriction-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-time-restriction-hint',
-                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'start-time',
-                        name: 'startTime',
-                        label: 'Start Time',
-                    },
-                    {
-                        id: 'end-time',
-                        name: 'endTime',
-                        label: 'End Time',
-                    },
-                ],
-                inputErrors: [
-                    {
-                        id: 'start-time',
-                        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
-                    },
-                    {
-                        id: 'end-time',
-                        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
-                    },
-                ],
-            },
-            {
-                id: 'time-restriction-not-required',
-                name: 'timeRestriction',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: [],
-    },
-    {
-        heading: {
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
             id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days?',
         },
+        radioError: [{ errorMessage: 'Choose one of the options below', id: 'valid-days-required' }],
         radios: [
             {
-                id: 'valid-days-required',
-                name: 'validDaysSelected',
-                value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-valid-days-hint',
-                    content: 'Select the days of the week the ticket is valid for',
-                },
+                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                id: 'valid-days-required',
+                inputErrors: [],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', name: 'validDays', label: 'Monday' },
-                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
-                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
-                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
-                    { id: 'friday', name: 'validDays', label: 'Friday' },
-                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
-                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                    { id: 'monday', label: 'Monday', name: 'validDays' },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
+                    { id: 'friday', label: 'Friday', name: 'validDays' },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
                 ],
-                inputErrors: [],
-            },
-            {
-                id: 'valid-days-not-required',
+                label: 'Yes',
                 name: 'validDaysSelected',
-                value: 'No',
-                label: 'No',
+                value: 'Yes',
             },
-        ],
-        radioError: [
-            {
-                id: 'valid-days-required',
-                errorMessage: 'Choose one of the options below',
-            },
+            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
         ],
     },
 ];
@@ -3435,319 +3280,28 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
     radioError: [{ errorMessage: 'Choose one of the options below', id: 'return-validity-defined' }],
 };
 
-export const mockBreadCrumbList: Breadcrumb[] = [
-    { name: 'Home', link: '/', show: true },
-    { name: 'Select Fare Type', link: '/fareType', show: true },
-    { name: 'Select Passenger Type', link: '/passengerType', show: true },
-    { name: 'Select Service', link: '/service', show: true },
-];
-
-export const mockFromHomeBreadcrumbs: Breadcrumb[] = [];
-
-export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Passenger type details',
-        link: '/definePassengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/timeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Service',
-        link: '/service',
-        show: true,
-    },
-    {
-        name: 'Direction',
-        link: '/singleDirection',
-        show: true,
-    },
-    {
-        name: 'Input method',
-        link: '/inputMethod',
-        show: true,
-    },
-    {
-        name: 'Upload CSV',
-        link: '/csvUpload',
-        show: true,
-    },
-    {
-        name: 'Match stops',
-        link: '/matching',
-        show: true,
-    },
-];
-
-export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/timeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Service',
-        link: '/service',
-        show: true,
-    },
-    {
-        name: 'Direction',
-        link: '/returnDirection',
-        show: true,
-    },
-    {
-        name: 'Input method',
-        link: '/inputMethod',
-        show: true,
-    },
-    {
-        name: 'Stage count check',
-        link: '/howManyStages',
-        show: true,
-    },
-    {
-        name: 'Number of stages',
-        link: '/chooseStages',
-        show: true,
-    },
-    {
-        name: 'Stage names',
-        link: '/stageNames',
-        show: true,
-    },
-    {
-        name: 'Stage prices',
-        link: '/priceEntry',
-        show: true,
-    },
-    {
-        name: 'Outbound stops',
-        link: '/outboundMatching',
-        show: true,
-    },
-];
-
-export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Passenger type details',
-        link: '/definePassengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/timeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Period type',
-        link: '/periodType',
-        show: true,
-    },
-    {
-        name: 'Upload CSV',
-        link: '/csvZoneUpload',
-        show: true,
-    },
-];
-
-export const mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Passenger type details',
-        link: '/definePassengerType',
-        show: true,
-    },
-];
-
-export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/timeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Period type',
-        link: '/periodType',
-        show: true,
-    },
-    {
-        name: 'Services',
-        link: '/serviceList',
-        show: true,
-    },
-    {
-        name: 'Number of products',
-        link: '/howManyProducts',
-        show: true,
-    },
-    {
-        name: 'Product details',
-        link: '/multipleProducts',
-        show: true,
-    },
-    {
-        name: 'Product period validity',
-        link: '/multipleProductValidity',
-        show: true,
-    },
-];
-
-export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/timeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Time restrictions details',
-        link: '/defineTimeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Period type',
-        link: '/periodType',
-        show: true,
-    },
-    {
-        name: 'Services',
-        link: '/serviceList',
-        show: true,
-    },
-    {
-        name: 'Number of products',
-        link: '/howManyProducts',
-        show: true,
-    },
-    {
-        name: 'Product details',
-        link: '/productDetails',
-        show: true,
-    },
-    {
-        name: 'Days valid',
-        link: '/chooseValidity',
-        show: true,
-    },
-    {
-        name: 'Product period validity',
-        link: '/periodValidity',
-        show: true,
-    },
-];
+export const mockFullTimeRestrictions: FullTimeRestrictionAttribute = {
+    fullTimeRestrictions: [
+        {
+            day: 'monday',
+            startTime: '0900',
+            endTime: '',
+        },
+        {
+            day: 'tuesday',
+            startTime: '',
+            endTime: '1800',
+        },
+        {
+            day: 'bank holiday',
+            startTime: '0900',
+            endTime: '1750',
+        },
+        {
+            day: 'friday',
+            startTime: '',
+            endTime: '',
+        },
+    ],
+    errors: [],
+};

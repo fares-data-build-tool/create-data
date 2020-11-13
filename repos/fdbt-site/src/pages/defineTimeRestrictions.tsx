@@ -19,51 +19,11 @@ export interface DefineTimeRestrictionsProps {
 }
 
 export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
-    const timeRestrictionsFieldset: RadioConditionalInputFieldset = {
-        heading: {
-            id: 'define-time-restrictions',
-            content: 'Is there a start and end time to this ticket?',
-        },
-        radios: [
-            {
-                id: 'time-restriction-required',
-                name: 'timeRestriction',
-                value: 'Yes',
-                dataAriaControls: 'time-restriction-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-time-restriction-hint',
-                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'start-time',
-                        name: 'startTime',
-                        label: 'Start Time',
-                    },
-                    {
-                        id: 'end-time',
-                        name: 'endTime',
-                        label: 'End Time',
-                    },
-                ],
-                inputErrors: getErrorsByIds(['start-time', 'end-time'], errors),
-            },
-            {
-                id: 'time-restriction-not-required',
-                name: 'timeRestriction',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: getErrorsByIds(['time-restriction-required'], errors),
-    };
-
     const validDaysFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days?',
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
         },
         radios: [
             {
@@ -113,6 +73,11 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         name: 'validDays',
                         label: 'Sunday',
                     },
+                    {
+                        id: 'bankHoliday',
+                        name: 'validDays',
+                        label: 'Bank holiday',
+                    },
                 ],
                 inputErrors: getErrorsByIds(['monday'], errors),
             },
@@ -125,7 +90,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         ],
         radioError: getErrorsByIds(['valid-days-required'], errors),
     };
-    return [timeRestrictionsFieldset, validDaysFieldset];
+    return [validDaysFieldset];
 };
 
 export const isTimeRestrictionsDefinitionWithErrors = (
@@ -140,14 +105,12 @@ const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTim
                 <ErrorSummary errors={errors} />
                 <div>
                     <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
-                        Tell us more about the time restrictions
+                        Are there time restrictions on your ticket?
                     </h1>
                     <span className="govuk-hint" id="define-time-restrictions-hint">
-                        The following two questions will provide us with all the information we need for time
-                        restrictions
+                        We need to know if your ticket(s) will have any time restrictions, for example select yes if
+                        your ticket(s) can only be used on a certain day or during a certain time period
                     </span>
-                    <br />
-                    <br />
                     {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}

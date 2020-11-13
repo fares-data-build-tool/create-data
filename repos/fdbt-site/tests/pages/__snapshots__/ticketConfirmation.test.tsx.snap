@@ -73,7 +73,7 @@ exports[`pages ticketConfirmation should render correctly for period and multiOp
             "name": "Product - Super ticket",
           },
           Object {
-            "content": "Duration - 2 days",
+            "content": "Duration - 2 undefineds",
             "href": "multipleProducts",
             "name": "Product - Super ticket",
           },
@@ -88,7 +88,7 @@ exports[`pages ticketConfirmation should render correctly for period and multiOp
             "name": "Product - Best ticket",
           },
           Object {
-            "content": "Duration - 22 days",
+            "content": "Duration - 22 undefineds",
             "href": "multipleProducts",
             "name": "Product - Best ticket",
           },
@@ -103,7 +103,7 @@ exports[`pages ticketConfirmation should render correctly for period and multiOp
             "name": "Product - Normal ticket",
           },
           Object {
-            "content": "Duration - 23 days",
+            "content": "Duration - 23 undefineds",
             "href": "multipleProducts",
             "name": "Product - Normal ticket",
           },

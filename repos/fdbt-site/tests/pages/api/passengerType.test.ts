@@ -52,7 +52,7 @@ describe('passengerType', () => {
         passengerType(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/timeRestrictions',
+            Location: '/defineTimeRestrictions',
         });
     });
 

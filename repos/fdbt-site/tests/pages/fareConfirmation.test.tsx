@@ -16,11 +16,23 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['membership card'],
                     }}
-                    timeRestrictions={{
-                        startTime: '0900',
-                        endTime: '1600',
-                        validDays: ['monday', 'tuesday', 'wednesday'],
-                    }}
+                    fullTimeRestrictions={[
+                        {
+                            day: 'thursday',
+                            startTime: '0900',
+                            endTime: '1600',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '1600',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ]}
                     csrfToken=""
                 />,
             );
@@ -39,11 +51,23 @@ describe('pages', () => {
                     proof: 'yes',
                     proofDocuments: ['membership card'],
                 },
-                {
-                    startTime: '0900',
-                    endTime: '1600',
-                    validDays: ['monday', 'tuesday', 'wednesday'],
-                },
+                [
+                    {
+                        day: 'wednesday',
+                        startTime: '0900',
+                        endTime: '1600',
+                    },
+                    {
+                        day: 'thursday',
+                        startTime: '',
+                        endTime: '1600',
+                    },
+                    {
+                        day: 'friday',
+                        startTime: '',
+                        endTime: '',
+                    },
+                ],
             );
             expect(result).toStrictEqual([
                 { content: 'Return', href: 'fareType', name: 'Fare Type' },
@@ -58,12 +82,20 @@ describe('pages', () => {
                     href: 'definePassengerType',
                     name: 'Passenger Information - Proof Documents',
                 },
-                { content: '0900', href: 'defineTimeRestrictions', name: 'Time Restrictions - Start Time' },
-                { content: '1600', href: 'defineTimeRestrictions', name: 'Time Restrictions - End Time' },
                 {
-                    content: 'Monday, Tuesday, Wednesday',
+                    content: 'Start time: 0900 End time: 1600',
                     href: 'defineTimeRestrictions',
-                    name: 'Time Restrictions - Valid Days',
+                    name: 'Time Restrictions - Wednesday',
+                },
+                {
+                    content: 'Start time: N/A End time: 1600',
+                    href: 'defineTimeRestrictions',
+                    name: 'Time Restrictions - Thursday',
+                },
+                {
+                    content: 'Start time: N/A End time: N/A',
+                    href: 'defineTimeRestrictions',
+                    name: 'Time Restrictions - Friday',
                 },
             ]);
         });
