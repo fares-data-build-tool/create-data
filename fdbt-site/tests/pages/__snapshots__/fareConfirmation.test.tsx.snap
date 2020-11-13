@@ -40,19 +40,19 @@ exports[`pages fareConfirmation should render correctly 1`] = `
             "name": "Passenger Information - Proof Documents",
           },
           Object {
-            "content": "0900",
+            "content": "Start time: 0900 End time: 1600",
             "href": "defineTimeRestrictions",
-            "name": "Time Restrictions - Start Time",
+            "name": "Time Restrictions - Thursday",
           },
           Object {
-            "content": "1600",
+            "content": "Start time: N/A End time: 1600",
             "href": "defineTimeRestrictions",
-            "name": "Time Restrictions - End Time",
+            "name": "Time Restrictions - Friday",
           },
           Object {
-            "content": "Monday, Tuesday, Wednesday",
+            "content": "Start time: N/A End time: N/A",
             "href": "defineTimeRestrictions",
-            "name": "Time Restrictions - Valid Days",
+            "name": "Time Restrictions - Bank Holiday",
           },
         ]
       }

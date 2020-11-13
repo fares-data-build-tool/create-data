@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import startCase from 'lodash/startCase';
-import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
-import { NextPageContextWithSession, TimeRestriction } from '../interfaces';
+import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../constants';
+import { NextPageContextWithSession, FullTimeRestriction } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
@@ -16,14 +16,14 @@ const description = 'Fare Confirmation page of the Create Fares Data Service';
 type FareConfirmationProps = {
     fareType: string;
     passengerType: PassengerType;
-    timeRestrictions: TimeRestriction;
+    fullTimeRestrictions: FullTimeRestriction[];
     csrfToken: string;
 };
 
 export const buildFareConfirmationElements = (
     fareType: string,
     passengerType: PassengerType,
-    timeRestrictions: TimeRestriction,
+    fullTimeRestrictions: FullTimeRestriction[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -66,48 +66,16 @@ export const buildFareConfirmationElements = (
         });
     }
 
-    if (timeRestrictions.startTime) {
-        confirmationElements.push({
-            name: 'Time Restrictions - Start Time',
-            content: timeRestrictions.startTime,
-            href: 'defineTimeRestrictions',
-        });
-    } else {
-        confirmationElements.push({
-            name: 'Time Restrictions - Start Time',
-            content: 'No details entered',
-            href: 'defineTimeRestrictions',
+    if (fullTimeRestrictions.length > 0) {
+        fullTimeRestrictions.forEach(fullTimeRestriction => {
+            confirmationElements.push({
+                name: `Time Restrictions - ${startCase(fullTimeRestriction.day)}`,
+                content: `Start time: ${fullTimeRestriction.startTime ||
+                    'N/A'} End time: ${fullTimeRestriction.endTime || 'N/A'}`,
+                href: 'defineTimeRestrictions',
+            });
         });
     }
-
-    if (timeRestrictions.endTime) {
-        confirmationElements.push({
-            name: 'Time Restrictions - End Time',
-            content: timeRestrictions.endTime,
-            href: 'defineTimeRestrictions',
-        });
-    } else {
-        confirmationElements.push({
-            name: 'Time Restrictions - End Time',
-            content: 'No details entered',
-            href: 'defineTimeRestrictions',
-        });
-    }
-
-    if (timeRestrictions.validDays) {
-        confirmationElements.push({
-            name: 'Time Restrictions - Valid Days',
-            content: timeRestrictions.validDays.map(stop => startCase(stop)).join(', '),
-            href: 'defineTimeRestrictions',
-        });
-    } else {
-        confirmationElements.push({
-            name: 'Time Restrictions - Valid Days',
-            content: 'No details entered',
-            href: 'defineTimeRestrictions',
-        });
-    }
-
     return confirmationElements;
 };
 
@@ -115,7 +83,7 @@ const FareConfirmation = ({
     csrfToken,
     fareType,
     passengerType,
-    timeRestrictions,
+    fullTimeRestrictions,
 }: FareConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/fareConfirmation" method="post" csrfToken={csrfToken}>
@@ -123,7 +91,7 @@ const FareConfirmation = ({
                 <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
                 <ConfirmationTable
                     header="Fare Information"
-                    confirmationElements={buildFareConfirmationElements(fareType, passengerType, timeRestrictions)}
+                    confirmationElements={buildFareConfirmationElements(fareType, passengerType, fullTimeRestrictions)}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
@@ -135,7 +103,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     const csrfToken = getCsrfToken(ctx);
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const fullTimeRestrictionsAttribute = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
 
     if (
         !passengerTypeInfo ||
@@ -150,7 +118,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
         props: {
             fareType: fareTypeInfo.fareType,
             passengerType: passengerTypeInfo,
-            timeRestrictions: timeRestrictionsInfo || {},
+            fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
             csrfToken,
         },
     };
