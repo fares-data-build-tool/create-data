@@ -83,9 +83,11 @@ describe('multipleProduct', () => {
                 multipleProductNameInput0: 'Best Product',
                 multipleProductPriceInput0: '2.00',
                 multipleProductDurationInput0: '-1',
+                multipleProductDurationUnitsInput0: 'week',
                 multipleProductNameInput1: 'Second Best Product',
                 multipleProductPriceInput1: '2.05',
                 multipleProductDurationInput1: '54',
+                multipleProductDurationUnitsInput1: 'month',
             },
             { Location: '/multipleProducts' },
         ],
@@ -95,9 +97,11 @@ describe('multipleProduct', () => {
                 multipleProductNameInput0: 'B',
                 multipleProductPriceInput0: '2.00',
                 multipleProductDurationInput0: '1',
+                multipleProductDurationUnitsInput0: 'year',
                 multipleProductNameInput1: 'Second Best Product',
                 multipleProductPriceInput1: '2',
                 multipleProductDurationInput1: '54',
+                multipleProductDurationUnitsInput1: 'week',
             },
             { Location: '/multipleProducts' },
         ],
@@ -107,6 +111,7 @@ describe('multipleProduct', () => {
                 multipleProductNameInput0: 'Best Product',
                 multipleProductPriceInput0: '2.00',
                 multipleProductDurationInput0: '23',
+                multipleProductDurationUnitsInput0: 'week',
                 multipleProductNameInput1:
                     'Super Saver Bus Ticket for the cheapest you have ever seen and no other bus service will compare to this one, or your money back',
                 multipleProductPriceInput1: '2.05',
@@ -120,25 +125,14 @@ describe('multipleProduct', () => {
                 multipleProductNameInput0: 'Best Product',
                 multipleProductPriceInput0: '2.00',
                 multipleProductDurationInput0: '3',
+                multipleProductDurationUnitsInput0: 'day',
                 multipleProductNameInput1: 'Second Best Product',
                 multipleProductPriceInput1: '2.05',
                 multipleProductDurationInput1: '54',
+                multipleProductDurationUnitsInput1: 'week',
             },
             { Location: '/multipleProductValidity' },
         ],
-
-        // this redirects to error, despite being valid, because the amount of
-        // products we expect is 2
-        [
-            {
-                multipleProductNameInput0: 'Best Product',
-                multipleProductPriceInput0: '2.00',
-                multipleProductDurationInput0: '1',
-            },
-            { Location: '/error' },
-        ],
-
-        [{}, { Location: '/error' }],
 
         [
             {
@@ -155,7 +149,7 @@ describe('multipleProduct', () => {
                 multipleProductPriceInput4: '',
                 multipleProductDurationInput4: '',
             },
-            { Location: '/error' },
+            { Location: '/multipleProducts' },
         ],
     ];
 

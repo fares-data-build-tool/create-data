@@ -30,6 +30,7 @@ jobs:
             cd fdbt-ui-automation
 
             ./ci_scripts/run_tests_in_browserstack.sh
+          no_output_timeout: 40m
 
   build-site:
     docker:

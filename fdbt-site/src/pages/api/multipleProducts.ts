@@ -1,8 +1,9 @@
 import { NextApiResponse } from 'next';
+import { isValidInputDuration } from './chooseValidity';
 import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
 
@@ -15,7 +16,7 @@ import {
 } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
-import { isNumberOfProductsAttribute } from '../howManyProducts';
+import { NumberOfProductsAttribute } from './howManyProducts';
 
 export interface BaseMultipleProductAttribute {
     products: MultiProduct[];
@@ -36,6 +37,9 @@ export interface MultiProduct {
     productDuration: string;
     productDurationId: string;
     productDurationError?: string;
+    productDurationUnits: string;
+    productDurationUnitsId: string;
+    productDurationUnitsError?: string;
 }
 
 export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorInfo[] => {
@@ -60,6 +64,13 @@ export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorInfo[
                 id: product.productPriceId,
             });
         }
+
+        if (product.productDurationUnitsError) {
+            errors.push({
+                errorMessage: product.productDurationUnitsError,
+                id: product.productDurationUnitsId,
+            });
+        }
     });
 
     return errors;
@@ -67,7 +78,11 @@ export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorInfo[
 
 export const containsErrors = (products: MultiProduct[]): boolean => {
     return products.some(
-        product => product.productNameError || product.productPriceError || product.productDurationError,
+        product =>
+            product.productNameError ||
+            product.productPriceError ||
+            product.productDurationError ||
+            product.productDurationUnitsError,
     );
 };
 
@@ -81,6 +96,25 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
             return {
                 ...product,
                 productDurationError,
+            };
+        }
+
+        return product;
+    });
+
+    return productsWithErrors;
+};
+
+export const checkProductDurationTypesAreValid = (products: MultiProduct[]): MultiProduct[] => {
+    const productsWithErrors: MultiProduct[] = products.map(product => {
+        const durationUnits = product.productDurationUnits;
+        const productDurationUnitsError = !isValidInputDuration(durationUnits)
+            ? 'Choose an option from the dropdown'
+            : '';
+        if (productDurationUnitsError) {
+            return {
+                ...product,
+                productDurationUnitsError,
             };
         }
 
@@ -137,27 +171,19 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-        const numberOfProductsAtribute = getSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
-        const numberOfProducts: string = isNumberOfProductsAttribute(numberOfProductsAtribute)
-            ? numberOfProductsAtribute.numberOfProductsInput
-            : '';
-        const numberOfReceivedProducts: number = Object.entries(req.body).length / 3;
-
-        if (Number(numberOfProducts) !== numberOfReceivedProducts) {
-            throw new Error('Number of products received does not match number given in cookie.');
-        }
-        const arrayedRequest = Object.entries(req.body);
+        const numberOfProducts = Number(
+            (getSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute).numberOfProductsInput,
+        );
         const multipleProducts: MultiProduct[] = [];
-
-        let count = 0;
-
-        while (arrayedRequest.length > 0) {
-            const productName = String(arrayedRequest[0][1]);
-            const productPrice = String(arrayedRequest[1][1]);
-            const productDuration = String(arrayedRequest[2][1]);
-            const productNameId = `multiple-product-name-${count}`;
-            const productPriceId = `multiple-product-price-${count}`;
-            const productDurationId = `multiple-product-duration-${count}`;
+        for (let i = 0; i < numberOfProducts; i += 1) {
+            const productName = req.body[`multipleProductNameInput${i}`];
+            const productPrice = req.body[`multipleProductPriceInput${i}`];
+            const productDuration = req.body[`multipleProductDurationInput${i}`];
+            const productDurationUnits = req.body[`multipleProductDurationUnitsInput${i}`] || '';
+            const productNameId = `multiple-product-name-${i}`;
+            const productPriceId = `multiple-product-price-${i}`;
+            const productDurationId = `multiple-product-duration-${i}`;
+            const productDurationUnitsId = `multiple-product-duration-units-${i}`;
             const product: MultiProduct = {
                 productName,
                 productNameId,
@@ -165,16 +191,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 productPriceId,
                 productDuration,
                 productDurationId,
+                productDurationUnits,
+                productDurationUnitsId,
             };
             multipleProducts.push(product);
-            arrayedRequest.splice(0, 3);
-
-            count += 1;
         }
 
         const nameValidationResult: MultiProduct[] = checkProductNamesAreValid(multipleProducts);
         const priceValidationResult: MultiProduct[] = checkProductPricesAreValid(nameValidationResult);
-        const fullValidationResult: MultiProduct[] = checkProductDurationsAreValid(priceValidationResult);
+        const productDurationResult: MultiProduct[] = checkProductDurationsAreValid(priceValidationResult);
+        const fullValidationResult: MultiProduct[] = checkProductDurationTypesAreValid(productDurationResult);
 
         if (containsErrors(fullValidationResult)) {
             const errors: ErrorInfo[] = getErrorsForCookie(fullValidationResult);
@@ -182,7 +208,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/multipleProducts');
             return;
         }
-
         updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, undefined);
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
         redirectTo(res, '/multipleProductValidity');

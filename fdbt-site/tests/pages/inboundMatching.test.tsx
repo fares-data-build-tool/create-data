@@ -64,13 +64,12 @@ describe('Inbound Matching Page', () => {
                 csrfToken=""
             />,
         );
-
         expect(
             mountedWrapper
                 .find('.farestage-select')
                 .first()
                 .find('option'),
-        ).toHaveLength(9);
+        ).toHaveLength(10);
     });
 
     describe('getServerSideProps', () => {
