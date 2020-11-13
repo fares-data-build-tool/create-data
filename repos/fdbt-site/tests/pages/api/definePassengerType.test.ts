@@ -185,7 +185,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set the PASSENGER_TYPE_ATTRIBUTE, delete the DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE and redirect to /timeRestrictions when no errors are found', async () => {
+    it('should set the PASSENGER_TYPE_ATTRIBUTE, delete the DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE and redirect to /defineTimeRestrictions when no errors are found', async () => {
         const mockPassengerTypeDetails = {
             passengerType: 'Adult',
             ageRange: 'Yes',
@@ -203,7 +203,7 @@ describe('definePassengerType', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, mockPassengerTypeDetails);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/timeRestrictions',
+            Location: '/defineTimeRestrictions',
         });
     });
 
@@ -321,7 +321,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to /timeRestrictions', async () => {
+    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to /defineTimeRestrictions', async () => {
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
@@ -382,7 +382,7 @@ describe('definePassengerType', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, mockPassengerCompanions);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/timeRestrictions',
+            Location: '/defineTimeRestrictions',
         });
     });
 });

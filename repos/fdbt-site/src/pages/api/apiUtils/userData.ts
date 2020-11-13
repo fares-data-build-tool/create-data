@@ -3,6 +3,7 @@ import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import isArray from 'lodash/isArray';
 import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     ID_TOKEN_COOKIE,
@@ -16,12 +17,12 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     MATCHING_DATA_BUCKET_NAME,
     MULTIPLE_PRODUCT_ATTRIBUTE,
-    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../../../constants/index';
+
 import {
     isProductWithSalesOfferPackages,
     isSalesOfferPackageWithErrors,
@@ -142,7 +143,7 @@ export const getBaseTicketAttributes = (
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromCookie(req, res);
-    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
     const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
@@ -165,7 +166,10 @@ export const getBaseTicketAttributes = (
         ...passengerTypeAttribute,
         email,
         uuid,
-        ...(timeRestriction && { timeRestriction }),
+        timeRestriction:
+            fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
+                ? fullTimeRestriction.fullTimeRestrictions
+                : [],
         ticketPeriod: ticketPeriodAttribute,
     };
 };
@@ -456,7 +460,7 @@ export const getSchemeOperatorTicketJson = async (
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromCookie(req, res);
-    const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
     const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
     const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
@@ -529,7 +533,10 @@ export const getSchemeOperatorTicketJson = async (
         ...passengerTypeAttribute,
         email,
         uuid,
-        ...(timeRestriction && { timeRestriction }),
+        timeRestriction:
+            fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
+                ? fullTimeRestriction.fullTimeRestrictions
+                : [],
         ticketPeriod: ticketPeriodAttribute,
         products: productDetailsList,
         zoneName: fareZoneAttribute.fareZoneName,

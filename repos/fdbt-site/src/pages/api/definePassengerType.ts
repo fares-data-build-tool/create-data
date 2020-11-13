@@ -281,13 +281,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         );
                     } else {
                         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-                        redirectTo(res, '/timeRestrictions');
+                        redirectTo(res, '/defineTimeRestrictions');
                     }
                     return;
                 }
             }
             updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-            redirectTo(res, '/timeRestrictions');
+            redirectTo(res, '/defineTimeRestrictions');
             return;
         }
 

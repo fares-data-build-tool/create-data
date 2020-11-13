@@ -67,11 +67,6 @@ export interface MultiOperatorInfo {
     services: string[];
 }
 
-export interface MultiOperatorInfoWithErrors {
-    multiOperatorInfo: MultiOperatorInfo[];
-    errors: ErrorInfo[];
-}
-
 // Miscellaneous
 
 export type PassengerAttributes = {
@@ -170,7 +165,7 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    timeRestriction?: TimeRestriction;
+    timeRestriction: FullTimeRestriction[];
     ticketPeriod: TicketPeriod;
 }
 
@@ -254,7 +249,7 @@ export interface SchemeOperatorTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    timeRestriction?: TimeRestriction;
+    timeRestriction: FullTimeRestriction[];
     ticketPeriod: TicketPeriod;
     products: ProductDetails[];
     zoneName: string;
@@ -272,6 +267,11 @@ export interface PassengerDetails {
     passengerType: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
+    proofDocuments?: string[];
+    email: string;
+    uuid: string;
+    timeRestriction: FullTimeRestriction[];
+    ticketPeriod: TicketPeriod;
     proof?: string[];
 }
 
@@ -297,7 +297,7 @@ export interface GroupDefinition {
 export interface TimeRestriction {
     startTime?: string;
     endTime?: string;
-    validDays?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
+    validDays: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
 }
 
 export interface ReturnPeriodValidity {
@@ -360,4 +360,24 @@ export interface ProductData {
     products: Product[];
 }
 
+export interface MultiOperatorInfoWithErrors {
+    multiOperatorInfo: MultiOperatorInfo[];
+    errors: ErrorInfo[];
+}
+
+export interface FullTimeRestriction {
+    day: string;
+    startTime: string;
+    endTime: string;
+}
+
+export interface FullTimeRestrictionAttribute {
+    fullTimeRestrictions: FullTimeRestriction[];
+    errors: ErrorInfo[];
+}
+
+export interface TimeInput {
+    timeInput: string;
+    day: string;
+}
 export interface ProductDetails extends Product, BaseProduct {}

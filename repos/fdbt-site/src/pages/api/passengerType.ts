@@ -32,7 +32,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType });
 
             if (passengerType === 'anyone') {
-                redirectTo(res, '/timeRestrictions');
+                redirectTo(res, '/defineTimeRestrictions');
                 return;
             }
 

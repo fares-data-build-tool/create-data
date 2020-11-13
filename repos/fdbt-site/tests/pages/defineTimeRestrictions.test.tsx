@@ -65,19 +65,9 @@ describe('pages', () => {
                 expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsets);
             });
 
-            it('should return fieldsets with radio errors when radio errors are passed', () => {
+            it('should return fieldsets radio errors when errors are passed', () => {
                 const fieldsets = getFieldsets(mockTimeRestrictionsRadioErrors);
                 expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithRadioErrors);
-            });
-
-            it('should return fieldsets with input errors when input errors are passed', () => {
-                const fieldsets = getFieldsets(mockTimeRestrictionsInputErrors);
-                expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithInputErrors);
-            });
-
-            it('should return fieldsets with radio and input errors when both radio and input errors are passed', () => {
-                const fieldsets = getFieldsets(mockTimeRestrictionsRadioAndInputErrors);
-                expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors);
             });
         });
 

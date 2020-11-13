@@ -19,12 +19,13 @@ import {
     ReturnPeriodValidity,
     MultiOperatorInfo,
     TicketPeriod,
+    FullTimeRestrictionAttribute,
 } from '../interfaces/index';
+
 import { FaresInformation } from '../pages/api/priceEntry';
 import {
     DURATION_VALID_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
-    TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
     SOP_INFO_ATTRIBUTE,
@@ -56,6 +57,7 @@ import {
     RETURN_VALIDITY_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
 } from '../constants/index';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -70,7 +72,6 @@ import {
 } from '../pages/api/groupPassengerTypes';
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
-import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
 import { InputCheck } from '../pages/stageNames';
 import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
@@ -108,7 +109,6 @@ type SessionAttributeTypes = {
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
-    [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
@@ -130,6 +130,7 @@ type SessionAttributeTypes = {
     [PRODUCT_DATE_ATTRIBUTE]: TicketPeriod | TicketPeriodWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
+    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

@@ -313,3 +313,21 @@ svg:not(:root) {
 .text-input-margin {
     margin-right: 10px;
 }
+
+.time-restrictions-table {
+    &.flex-container {
+        margin-bottom: 20px;
+    }
+
+    .day-label {
+        margin-bottom: 8px !important;
+    }
+
+    .govuk-form-group {
+        margin-bottom: 0;
+    }
+}
+
+.continue-button-placement {
+    margin-top: 30px !important;
+}
