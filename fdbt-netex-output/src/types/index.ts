@@ -40,10 +40,10 @@ export interface SalesOfferPackage {
     ticketFormats: string[];
 }
 
-export interface TimeRestriction {
-    startTime?: string;
-    endTime?: string;
-    validDays?: DayOfWeek[];
+export interface FullTimeRestriction {
+    day: string;
+    startTime: string;
+    endTime: string;
 }
 
 export interface BaseTicket {
@@ -57,7 +57,7 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    timeRestriction?: TimeRestriction;
+    timeRestriction: FullTimeRestriction[];
     ticketPeriod: TicketPeriod;
 }
 
@@ -65,8 +65,6 @@ export interface TicketPeriod {
     startDate: string;
     endDate: string;
 }
-
-type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
 export interface User {
     passengerType: string;

@@ -26,7 +26,6 @@ import {
     getNetexTemplateAsJson,
     convertJsonToXml,
     getTimeRestrictions,
-    isValidTimeRestriction,
     getNetexMode,
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
@@ -230,7 +229,7 @@ const periodTicketNetexGenerator = (
             priceFareFrameToUpdate.tariffs.Tariff.timeIntervals = null;
         }
 
-        if (userPeriodTicket.timeRestriction && isValidTimeRestriction(userPeriodTicket.timeRestriction)) {
+        if (userPeriodTicket.timeRestriction && userPeriodTicket.timeRestriction.length > 0) {
             priceFareFrameToUpdate.tariffs.Tariff.qualityStructureFactors = getTimeRestrictions(
                 userPeriodTicket.timeRestriction,
             );
