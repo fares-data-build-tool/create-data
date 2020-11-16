@@ -806,7 +806,7 @@ export const getFareStructuresElements = (
     const fareStructureElements = userPeriodTicket.products.flatMap((product: ProductDetails) => {
         let availabilityElementId = '';
         let validityParametersObject = {};
-        const hasTimeRestriction = userPeriodTicket.timeRestriction.length > 0;
+        const hasTimeRestriction = !!userPeriodTicket.timeRestriction && userPeriodTicket.timeRestriction.length > 0;
 
         if (isGeoZoneTicket(userPeriodTicket)) {
             availabilityElementId = `Tariff@${product.productName}@access_zones`;

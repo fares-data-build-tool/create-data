@@ -224,7 +224,7 @@ export interface SchemeOperatorTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    timeRestriction?: TimeRestriction;
+    timeRestriction?: FullTimeRestriction[];
     ticketPeriod: TicketPeriod;
     products: ProductDetails[];
     zoneName: string;
