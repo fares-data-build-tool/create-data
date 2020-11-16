@@ -145,7 +145,10 @@ export const getFareDayTypeElements = (timeRestriction: FullTimeRestriction): Ne
     properties: {
         PropertyOfDay: {
             DaysOfWeek: {
-                $t: capitalize(timeRestriction.day),
+                $t: timeRestriction.day === 'bankHoliday' ? 'Everyday' : capitalize(timeRestriction.day),
+            },
+            HolidayTypes: {
+                $t: timeRestriction.day === 'bankHoliday' ? 'NationalHoliday' : null,
             },
         },
     },
