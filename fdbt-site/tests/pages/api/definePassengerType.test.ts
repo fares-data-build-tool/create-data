@@ -10,6 +10,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants';
 import { GroupPassengerTypesCollection } from '../../../src/pages/api/groupPassengerTypes';
 import * as sessions from '../../../src/utils/sessions';
@@ -185,9 +186,9 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set the PASSENGER_TYPE_ATTRIBUTE, delete the DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE and redirect to /defineTimeRestrictions when no errors are found', async () => {
+    it('should set the relevant attributes and redirect to /defineTimeRestrictions when no errors are found', async () => {
         const mockPassengerTypeDetails = {
-            passengerType: 'Adult',
+            passengerType: 'adult',
             ageRange: 'Yes',
             ageRangeMin: '5',
             ageRangeMax: '10',
@@ -207,6 +208,29 @@ describe('definePassengerType', () => {
         });
     });
 
+    it('should set the relevant attributes and redirect to /termTime when no errors are found and the user is entering a school ticket', async () => {
+        const mockPassengerTypeDetails = {
+            passengerType: 'schoolPupil',
+            ageRange: 'No',
+            proof: 'Yes',
+            proofDocuments: ['Student Card'],
+        };
+        const { req, res } = getMockRequestAndResponse({
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+            },
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await definePassengerType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, mockPassengerTypeDetails);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/termTime',
+        });
+    });
+
     it.each([
         [
             {
@@ -215,7 +239,7 @@ describe('definePassengerType', () => {
                 ageRangeMax: '',
                 proof: 'Yes',
                 proofDocuments: [],
-                passengerType: 'Adult',
+                passengerType: 'adult',
             },
             [
                 {
@@ -238,7 +262,7 @@ describe('definePassengerType', () => {
                 ageRangeMin: '25',
                 ageRangeMax: '12',
                 proof: 'No',
-                passengerType: 'Adult',
+                passengerType: 'adult',
             },
             [
                 {
@@ -256,7 +280,7 @@ describe('definePassengerType', () => {
         async (mockUserInput, errors) => {
             const mockPassengerTypeCookieValue = {
                 errors,
-                passengerType: 'Adult',
+                passengerType: 'adult',
             };
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},

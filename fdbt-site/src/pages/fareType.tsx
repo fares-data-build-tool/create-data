@@ -53,74 +53,107 @@ const FareTypePage = ({ operatorName, errors = [], csrfToken }: FareTypeProps): 
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <div className="govuk-radios">
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="fare-type-single"
-                                            name="fareType"
-                                            type="radio"
-                                            value="single"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-single">
-                                            Single Ticket - Point to Point
-                                        </label>
+                                <>
+                                    <h2 className="govuk-heading-m govuk-!-margin-top-5" id="standard-fares-heading">
+                                        Standard Fares
+                                    </h2>
+                                    <div className="govuk-radios">
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="fare-type-single"
+                                                name="fareType"
+                                                type="radio"
+                                                value="single"
+                                            />
+                                            <label
+                                                className="govuk-label govuk-radios__label"
+                                                htmlFor="fare-type-single"
+                                            >
+                                                Single Ticket - Point to Point
+                                            </label>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="fare-type-period"
+                                                name="fareType"
+                                                type="radio"
+                                                value="period"
+                                            />
+                                            <label
+                                                className="govuk-label govuk-radios__label"
+                                                htmlFor="fare-type-period"
+                                            >
+                                                Period Ticket (Day, Week, Month and Annual)
+                                            </label>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="fare-type-return"
+                                                name="fareType"
+                                                type="radio"
+                                                value="return"
+                                            />
+                                            <label
+                                                className="govuk-label govuk-radios__label"
+                                                htmlFor="fare-type-return"
+                                            >
+                                                Return Ticket - Single Service
+                                            </label>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="fare-type-flat-fare"
+                                                name="fareType"
+                                                type="radio"
+                                                value="flatFare"
+                                            />
+                                            <label
+                                                className="govuk-label govuk-radios__label"
+                                                htmlFor="fare-type-flat-fare"
+                                            >
+                                                Flat Fare Ticket - Single Journey
+                                            </label>
+                                        </div>
+                                        <h2 className="govuk-heading-m govuk-!-margin-top-5" id="other-fares-heading">
+                                            Other Fares
+                                        </h2>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="fare-type-multi-operator"
+                                                name="fareType"
+                                                type="radio"
+                                                value="multiOperator"
+                                            />
+                                            <label
+                                                className="govuk-label govuk-radios__label"
+                                                htmlFor="fare-type-multi-operator"
+                                            >
+                                                Multi-operator - A ticket that covers more than one operator
+                                            </label>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="fare-type-school-service"
+                                                name="fareType"
+                                                type="radio"
+                                                value="schoolService"
+                                                disabled
+                                            />
+                                            <label
+                                                className="govuk-label govuk-radios__label"
+                                                htmlFor="fare-type-school-service"
+                                            >
+                                                School Service - A ticket available to pupils in full-time education
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="fare-type-period"
-                                            name="fareType"
-                                            type="radio"
-                                            value="period"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-period">
-                                            Period Ticket (Day, Week, Month and Annual)
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="fare-type-return"
-                                            name="fareType"
-                                            type="radio"
-                                            value="return"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-return">
-                                            Return Ticket - Single Service
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="fare-type-flat-fare"
-                                            name="fareType"
-                                            type="radio"
-                                            value="flatFare"
-                                        />
-                                        <label
-                                            className="govuk-label govuk-radios__label"
-                                            htmlFor="fare-type-flat-fare"
-                                        >
-                                            Flat Fare Ticket - Single Journey
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="fare-type-multi-operator"
-                                            name="fareType"
-                                            type="radio"
-                                            value="multiOperator"
-                                        />
-                                        <label
-                                            className="govuk-label govuk-radios__label"
-                                            htmlFor="fare-type-multi-operator"
-                                        >
-                                            Multi-operator - A ticket that covers more than one operator
-                                        </label>
-                                    </div>
-                                </div>
+                                </>
                             </FormElementWrapper>
                         </fieldset>
                     </div>
