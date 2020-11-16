@@ -46,10 +46,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const nocCode = decodedIdToken['custom:noc'];
                 const schemeOpName = decodedIdToken['custom:schemeOperator'];
                 const schemeOpRegion = decodedIdToken['custom:schemeRegionCode'];
-                if (nocCode && nocCode.split('|').length === 1) {
-                    const operatorName = await getOperatorNameByNocCode(nocCode);
-                    const operatorCookieValue = JSON.stringify({ operator: operatorName, noc: nocCode });
-                    setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
+
+                if (nocCode) {
+                    if (nocCode.split('|').length === 1) {
+                        const operatorName = await getOperatorNameByNocCode(nocCode);
+                        const operatorCookieValue = JSON.stringify({ operator: operatorName, noc: nocCode });
+                        setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
+                    }
                 } else if (schemeOpName && schemeOpRegion) {
                     const operatorCookieValue = JSON.stringify({ operator: schemeOpName, region: schemeOpRegion });
                     setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
