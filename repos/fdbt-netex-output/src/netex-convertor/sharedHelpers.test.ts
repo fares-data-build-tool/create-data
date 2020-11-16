@@ -1,29 +1,33 @@
-import { TimeRestriction } from '../types';
+import { FullTimeRestriction } from '../types';
 import { getTimeRestrictions } from './sharedHelpers';
 
 describe('Shared Helpers', () => {
     describe('getTimeRestrictions', () => {
-        const fullTimeRestriction: TimeRestriction = {
-            startTime: '0500',
-            endTime: '1200',
-            validDays: ['monday'],
-        };
+        const fullTimeRestriction: FullTimeRestriction[] = [
+            {
+                day: 'monday',
+                startTime: '',
+                endTime: '',
+            },
+            {
+                day: 'tuesday',
+                startTime: '0900',
+                endTime: '1700',
+            },
+            {
+                day: 'wednesday',
+                startTime: '',
+                endTime: '1950',
+            },
+            {
+                day: 'thursday',
+                startTime: '0000',
+                endTime: '2359',
+            },
+        ];
 
-        const timeOnlyTimeRestriction: TimeRestriction = {
-            startTime: '0401',
-            endTime: '2032',
-        };
-
-        const validDaysOnlyTimeRestriction: TimeRestriction = {
-            validDays: ['monday', 'tuesday', 'wednesday', 'sunday'],
-        };
-
-        it.each([
-            [fullTimeRestriction, 'PT7H', '05:00:00', 'Monday'],
-            [timeOnlyTimeRestriction, 'PT16H31M', '04:01:00', null],
-            [validDaysOnlyTimeRestriction, null, null, 'Monday Tuesday Wednesday Sunday'],
-        ])('generates the correct fareDayType', (timeRestrictionData, dayLength, earliestTime, daysOfWeek) => {
-            const timeRestrictionNetex = getTimeRestrictions(timeRestrictionData);
+        it('generates the correct fareDayType', () => {
+            const timeRestrictionNetex = getTimeRestrictions(fullTimeRestriction);
 
             expect(timeRestrictionNetex).toEqual({
                 FareDemandFactor: {
@@ -32,21 +36,36 @@ describe('Shared Helpers', () => {
                         AvailabilityCondition: {
                             IsAvailable: { $t: true },
                             dayTypes: {
-                                FareDayType: {
-                                    DayLength: { $t: dayLength },
-                                    EarliestTime: { $t: earliestTime },
-                                    id: 'op@Tariff@DayType',
-                                    properties: daysOfWeek
-                                        ? {
-                                              PropertyOfDay: {
-                                                  DaysOfWeek: {
-                                                      $t: daysOfWeek,
-                                                  },
-                                              },
-                                          }
-                                        : null,
-                                    version: '1.0',
-                                },
+                                FareDayType: [
+                                    {
+                                        DayLength: { $t: null },
+                                        EarliestTime: { $t: null },
+                                        id: 'op@Tariff@DayType@monday',
+                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Monday' } } },
+                                        version: '1.0',
+                                    },
+                                    {
+                                        DayLength: { $t: 'PT8H' },
+                                        EarliestTime: { $t: '09:00:00' },
+                                        id: 'op@Tariff@DayType@tuesday',
+                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Tuesday' } } },
+                                        version: '1.0',
+                                    },
+                                    {
+                                        DayLength: { $t: null },
+                                        EarliestTime: { $t: null },
+                                        id: 'op@Tariff@DayType@wednesday',
+                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Wednesday' } } },
+                                        version: '1.0',
+                                    },
+                                    {
+                                        DayLength: { $t: 'PT23H59M' },
+                                        EarliestTime: { $t: '00:00:00' },
+                                        id: 'op@Tariff@DayType@thursday',
+                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Thursday' } } },
+                                        version: '1.0',
+                                    },
+                                ],
                             },
                             id: 'op@Tariff@Condition',
                             version: '1.0',

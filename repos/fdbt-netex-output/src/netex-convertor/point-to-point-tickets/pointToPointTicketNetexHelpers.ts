@@ -13,7 +13,7 @@ import {
     NetexSalesOfferPackage,
     FareStructureElement,
 } from '../../types';
-import { NetexObject, getProfileRef, isGroupTicket, isValidTimeRestriction } from '../sharedHelpers';
+import { NetexObject, getProfileRef, isGroupTicket } from '../sharedHelpers';
 
 export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>
     ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
@@ -206,7 +206,7 @@ export const getPreassignedFareProduct = (matchingData: PointToPointTicket): Net
         },
     ];
 
-    if (matchingData.timeRestriction && isValidTimeRestriction(matchingData.timeRestriction)) {
+    if (matchingData.timeRestriction.length > 0) {
         fareStructureElementList.push({
             version: '1.0',
             ref: `Tariff@${matchingData.type}@availability`,
