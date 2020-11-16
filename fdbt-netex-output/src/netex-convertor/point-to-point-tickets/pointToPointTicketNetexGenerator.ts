@@ -21,7 +21,6 @@ import {
     isGroupTicket,
     getGroupElement,
     getTimeRestrictions,
-    isValidTimeRestriction,
     getNetexMode,
 } from '../sharedHelpers';
 
@@ -159,7 +158,7 @@ const pointToPointTicketNetexGenerator = (
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;
         priceFareFrameToUpdate.tariffs.Tariff.LineRef.ref = matchingData.lineName;
 
-        if (matchingData.timeRestriction && isValidTimeRestriction(matchingData.timeRestriction)) {
+        if (matchingData.timeRestriction.length > 0) {
             priceFareFrameToUpdate.tariffs.Tariff.qualityStructureFactors = getTimeRestrictions(
                 matchingData.timeRestriction,
             );
@@ -215,7 +214,7 @@ const pointToPointTicketNetexGenerator = (
             );
         }
 
-        if (matchingData.timeRestriction && isValidTimeRestriction(matchingData.timeRestriction)) {
+        if (matchingData.timeRestriction.length > 0) {
             priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement.push(
                 getAvailabilityElement(`Tariff@${matchingData.type}@availability`),
             );

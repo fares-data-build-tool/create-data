@@ -105,6 +105,7 @@ export const singleTicket: SingleTicket = {
         startDate: '2010-12-17T09:30:46.0Z',
         endDate: '2020-12-17T09:30:46.0Z',
     },
+    timeRestriction: [],
 };
 
 export const returnNonCircularTicket: ReturnTicket = {
@@ -446,6 +447,7 @@ export const returnNonCircularTicket: ReturnTicket = {
         startDate: '2010-12-17T09:30:46.0Z',
         endDate: '2020-12-17T09:30:46.0Z',
     },
+    timeRestriction: [],
 };
 
 export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
@@ -791,6 +793,7 @@ export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
         startDate: '2010-12-17T09:30:46.0Z',
         endDate: '2030-12-17T09:30:46.0Z',
     },
+    timeRestriction: [],
 };
 
 export const returnCircularTicket: ReturnTicket = {
@@ -1002,6 +1005,7 @@ export const returnCircularTicket: ReturnTicket = {
         startDate: '2010-12-17T09:30:46.0Z',
         endDate: '2030-12-17T09:30:46.0Z',
     },
+    timeRestriction: [],
 };
 
 export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
@@ -1315,6 +1319,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
         startDate: '2010-12-17T09:30:46.0Z',
         endDate: '2030-12-17T09:30:46.0Z',
     },
+    timeRestriction: [],
 };
 
 export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
@@ -1575,6 +1580,28 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
         startDate: '2015-12-17T09:30:46.0Z',
         endDate: '2025-12-17T09:30:46.0Z',
     },
+    timeRestriction: [
+        {
+            day: 'monday',
+            startTime: '',
+            endTime: '',
+        },
+        {
+            day: 'tuesday',
+            startTime: '0900',
+            endTime: '1700',
+        },
+        {
+            day: 'wednesday',
+            startTime: '',
+            endTime: '1950',
+        },
+        {
+            day: 'thursday',
+            startTime: '0000',
+            endTime: '2359',
+        },
+    ],
 };
 
 export const flatFareTicket: FlatFareTicket = {
@@ -2086,6 +2113,7 @@ export const flatFareTicket: FlatFareTicket = {
         startDate: '2010-12-17T09:30:46.0Z',
         endDate: '2022-12-17T09:30:46.0Z',
     },
+    timeRestriction: [],
 };
 
 export const periodGeoZoneTicketWithNoType = {
