@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { FARE_TYPE_ATTRIBUTE } from '../../constants/index';
+import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../constants/index';
 
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
@@ -24,6 +24,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType: req.body.fareType,
             });
+            if (req.body.fareType === 'schoolService') {
+                updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: 'schoolPupil' });
+                redirectTo(res, '/definePassengerType');
+                return;
+            }
             redirectTo(res, '/passengerType');
         } else {
             const errors: ErrorInfo[] = [
