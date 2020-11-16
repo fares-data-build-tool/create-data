@@ -9,12 +9,14 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { GroupPassengerTypesCollection } from './groupPassengerTypes';
 import { PassengerType } from './passengerType';
+import { FareType } from './fareType';
 
 export interface DefinePassengerTypeWithErrors extends PassengerType {
     errors: ErrorInfo[];
@@ -195,6 +197,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const { passengerType } = req.body;
 
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         const passengerInfo = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
@@ -230,6 +233,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (errors.length === 0) {
             if (!group) {
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType, ...filteredReqBody });
+                updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+                const redirectLocation =
+                    passengerType === 'schoolPupil' && fareType === 'schoolService'
+                        ? '/termTime'
+                        : '/defineTimeRestrictions';
+                redirectTo(res, redirectLocation);
             } else {
                 const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
                 const submittedPassengerType = passengerType;
@@ -283,11 +292,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(res, '/defineTimeRestrictions');
                     }
-                    return;
                 }
             }
-            updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-            redirectTo(res, '/defineTimeRestrictions');
             return;
         }
 
