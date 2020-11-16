@@ -42,6 +42,12 @@ exports[`pages fareType should render correctly 1`] = `
           errorId="fare-type-single"
           errors={Array []}
         >
+          <h2
+            className="govuk-heading-m govuk-!-margin-top-5"
+            id="standard-fares-heading"
+          >
+            Standard Fares
+          </h2>
           <div
             className="govuk-radios"
           >
@@ -113,6 +119,12 @@ exports[`pages fareType should render correctly 1`] = `
                 Flat Fare Ticket - Single Journey
               </label>
             </div>
+            <h2
+              className="govuk-heading-m govuk-!-margin-top-5"
+              id="other-fares-heading"
+            >
+              Other Fares
+            </h2>
             <div
               className="govuk-radios__item"
             >
@@ -128,6 +140,24 @@ exports[`pages fareType should render correctly 1`] = `
                 htmlFor="fare-type-multi-operator"
               >
                 Multi-operator - A ticket that covers more than one operator
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                disabled={true}
+                id="fare-type-school-service"
+                name="fareType"
+                type="radio"
+                value="schoolService"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="fare-type-school-service"
+              >
+                School Service - A ticket available to pupils in full-time education
               </label>
             </div>
           </div>
@@ -207,6 +237,12 @@ exports[`pages fareType should render error messaging when errors are passed to 
             ]
           }
         >
+          <h2
+            className="govuk-heading-m govuk-!-margin-top-5"
+            id="standard-fares-heading"
+          >
+            Standard Fares
+          </h2>
           <div
             className="govuk-radios"
           >
@@ -278,6 +314,12 @@ exports[`pages fareType should render error messaging when errors are passed to 
                 Flat Fare Ticket - Single Journey
               </label>
             </div>
+            <h2
+              className="govuk-heading-m govuk-!-margin-top-5"
+              id="other-fares-heading"
+            >
+              Other Fares
+            </h2>
             <div
               className="govuk-radios__item"
             >
@@ -293,6 +335,24 @@ exports[`pages fareType should render error messaging when errors are passed to 
                 htmlFor="fare-type-multi-operator"
               >
                 Multi-operator - A ticket that covers more than one operator
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                disabled={true}
+                id="fare-type-school-service"
+                name="fareType"
+                type="radio"
+                value="schoolService"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="fare-type-school-service"
+              >
+                School Service - A ticket available to pupils in full-time education
               </label>
             </div>
           </div>
