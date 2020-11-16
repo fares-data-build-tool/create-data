@@ -6,9 +6,9 @@
   "uuid": "BLACc1363964",
   "timeRestriction": [
     {
-        "day": "monday",
-        "startTime": "0200",
-        "endTime": "0400"
+      "day": "monday",
+      "startTime": "0200",
+      "endTime": "0400"
     },
     {
       "day": "tuesday",
@@ -16,7 +16,7 @@
       "endTime": "0500"
     },
     {
-      "day": "wednesday",
+      "day": "bankHoliday",
       "startTime": "0545",
       "endTime": "1950"
     },
@@ -25,7 +25,7 @@
       "startTime": "0000",
       "endTime": "2359"
     }
-],
+  ],
   "products": [
     {
       "productName": "Product 1",
@@ -36,35 +36,59 @@
         {
           "name": "Onboard (cash)",
           "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["cash"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         },
         {
           "name": "Onboard (contactless)",
           "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["contactlessPaymentCard"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "contactlessPaymentCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         },
         {
           "name": "Online (smart card)",
           "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
-          "purchaseLocations": ["online"],
-          "paymentMethods": ["directDebit", "creditCard", "debitCard"],
-          "ticketFormats": ["smartCard"]
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "directDebit",
+            "creditCard",
+            "debitCard"
+          ],
+          "ticketFormats": [
+            "smartCard"
+          ]
         },
         {
           "name": "Mobile App",
           "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
-          "purchaseLocations": ["mobileDevice"],
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
           "paymentMethods": [
             "debitCard",
             "creditCard",
             "mobilePhone",
             "directDebit"
           ],
-          "ticketFormats": ["mobileApp"]
+          "ticketFormats": [
+            "mobileApp"
+          ]
         }
       ]
     },
@@ -77,35 +101,59 @@
         {
           "name": "Onboard (cash)",
           "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["cash"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         },
         {
           "name": "Onboard (contactless)",
           "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["contactlessPaymentCard"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "contactlessPaymentCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         },
         {
           "name": "Online (smart card)",
           "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
-          "purchaseLocations": ["online"],
-          "paymentMethods": ["directDebit", "creditCard", "debitCard"],
-          "ticketFormats": ["smartCard"]
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "directDebit",
+            "creditCard",
+            "debitCard"
+          ],
+          "ticketFormats": [
+            "smartCard"
+          ]
         },
         {
           "name": "Mobile App",
           "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
-          "purchaseLocations": ["mobileDevice"],
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
           "paymentMethods": [
             "debitCard",
             "creditCard",
             "mobilePhone",
             "directDebit"
           ],
-          "ticketFormats": ["mobileApp"]
+          "ticketFormats": [
+            "mobileApp"
+          ]
         }
       ]
     },
@@ -118,35 +166,66 @@
         {
           "name": "Onboard (contactless)",
           "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["contactlessPaymentCard"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "contactlessPaymentCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         },
         {
           "name": "Online (smart card)",
           "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
-          "purchaseLocations": ["online"],
-          "paymentMethods": ["directDebit", "creditCard", "debitCard"],
-          "ticketFormats": ["smartCard"]
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "directDebit",
+            "creditCard",
+            "debitCard"
+          ],
+          "ticketFormats": [
+            "smartCard"
+          ]
         },
         {
           "name": "Mobile App",
           "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
-          "purchaseLocations": ["mobileDevice"],
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
           "paymentMethods": [
             "debitCard",
             "creditCard",
             "mobilePhone",
             "directDebit"
           ],
-          "ticketFormats": ["mobileApp"]
+          "ticketFormats": [
+            "mobileApp"
+          ]
         },
         {
           "name": "All Encompassing",
           "description": "All currently available options selected",
-          "purchaseLocations": ["onBoard", "online", "mobileDevice"],
-          "paymentMethods": ["cash", "debitCard", "creditCard", "mobilePhone"],
-          "ticketFormats": ["paperTicket", "mobileApp", "smartCard"]
+          "purchaseLocations": [
+            "onBoard",
+            "online",
+            "mobileDevice"
+          ],
+          "paymentMethods": [
+            "cash",
+            "debitCard",
+            "creditCard",
+            "mobilePhone"
+          ],
+          "ticketFormats": [
+            "paperTicket",
+            "mobileApp",
+            "smartCard"
+          ]
         }
       ]
     },
@@ -159,16 +238,28 @@
         {
           "name": "Onboard (cash)",
           "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["cash"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         },
         {
           "name": "Onboard (contactless)",
           "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["contactlessPaymentCard"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "contactlessPaymentCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         }
       ]
     },
@@ -181,23 +272,47 @@
         {
           "name": "onboard sales offer package",
           "description": "this sales offer package explains how to buy the ticket onboard",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["cash", "debitCard", "creditCard"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash",
+            "debitCard",
+            "creditCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         },
         {
           "name": "mobile app offer package",
           "description": "this sales offer package explains how to buy the ticket on a mobile app",
-          "purchaseLocations": ["mobileDevice"],
-          "paymentMethods": ["debitCard", "creditCard", "mobilePhone"],
-          "ticketFormats": ["mobileApp"]
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
+          "paymentMethods": [
+            "debitCard",
+            "creditCard",
+            "mobilePhone"
+          ],
+          "ticketFormats": [
+            "mobileApp"
+          ]
         },
         {
           "name": "online offer package",
           "description": "this sales offer package explains how to buy the ticket on a mobile app",
-          "purchaseLocations": ["online"],
-          "paymentMethods": ["debitCard", "creditCard", "directDebit"],
-          "ticketFormats": ["paperTicket"]
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "debitCard",
+            "creditCard",
+            "directDebit"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
         }
       ]
     }
@@ -392,5 +507,5 @@
   "ticketPeriod": {
     "startDate": "2010-12-17T09:30:46.0Z",
     "endDate": "2028-12-17T09:30:46.0Z"
-}
+  }
 }
