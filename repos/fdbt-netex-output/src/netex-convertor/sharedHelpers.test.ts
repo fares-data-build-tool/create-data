@@ -24,6 +24,11 @@ describe('Shared Helpers', () => {
                 startTime: '0000',
                 endTime: '2359',
             },
+            {
+                day: 'bankHoliday',
+                startTime: '0000',
+                endTime: '2359',
+            },
         ];
 
         it('generates the correct fareDayType', () => {
@@ -41,28 +46,70 @@ describe('Shared Helpers', () => {
                                         DayLength: { $t: null },
                                         EarliestTime: { $t: null },
                                         id: 'op@Tariff@DayType@monday',
-                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Monday' } } },
+                                        properties: {
+                                            PropertyOfDay: {
+                                                DaysOfWeek: { $t: 'Monday' },
+                                                HolidayTypes: {
+                                                    $t: null,
+                                                },
+                                            },
+                                        },
                                         version: '1.0',
                                     },
                                     {
                                         DayLength: { $t: 'PT8H' },
                                         EarliestTime: { $t: '09:00:00' },
                                         id: 'op@Tariff@DayType@tuesday',
-                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Tuesday' } } },
+                                        properties: {
+                                            PropertyOfDay: {
+                                                DaysOfWeek: { $t: 'Tuesday' },
+                                                HolidayTypes: {
+                                                    $t: null,
+                                                },
+                                            },
+                                        },
                                         version: '1.0',
                                     },
                                     {
                                         DayLength: { $t: null },
                                         EarliestTime: { $t: null },
                                         id: 'op@Tariff@DayType@wednesday',
-                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Wednesday' } } },
+                                        properties: {
+                                            PropertyOfDay: {
+                                                DaysOfWeek: { $t: 'Wednesday' },
+                                                HolidayTypes: {
+                                                    $t: null,
+                                                },
+                                            },
+                                        },
                                         version: '1.0',
                                     },
                                     {
                                         DayLength: { $t: 'PT23H59M' },
                                         EarliestTime: { $t: '00:00:00' },
                                         id: 'op@Tariff@DayType@thursday',
-                                        properties: { PropertyOfDay: { DaysOfWeek: { $t: 'Thursday' } } },
+                                        properties: {
+                                            PropertyOfDay: {
+                                                DaysOfWeek: { $t: 'Thursday' },
+                                                HolidayTypes: {
+                                                    $t: null,
+                                                },
+                                            },
+                                        },
+                                        version: '1.0',
+                                    },
+                                    {
+                                        DayLength: { $t: 'PT23H59M' },
+                                        EarliestTime: { $t: '00:00:00' },
+                                        id: 'op@Tariff@DayType@bankHoliday',
+                                        properties: {
+                                            PropertyOfDay: {
+                                                DaysOfWeek: { $t: 'Everyday' },
+                                                HolidayTypes: {
+                                                    $t: 'NationalHoliday',
+                                                },
+                                            },
+                                        },
                                         version: '1.0',
                                     },
                                 ],
