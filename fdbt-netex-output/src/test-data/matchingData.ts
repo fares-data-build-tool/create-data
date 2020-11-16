@@ -2158,7 +2158,28 @@ export const schemeOperatorTicket: SchemeOperatorTicket = {
     type: 'multiOperator',
     email: 'test@example.com',
     uuid: 'BLACc1363964',
-    timeRestriction: { startTime: '0900', endTime: '1500', validDays: ['monday', 'wednesday'] },
+    timeRestriction: [
+        {
+            day: 'bankHoliday',
+            startTime: '',
+            endTime: '',
+        },
+        {
+            day: 'tuesday',
+            startTime: '0900',
+            endTime: '1700',
+        },
+        {
+            day: 'wednesday',
+            startTime: '',
+            endTime: '1950',
+        },
+        {
+            day: 'thursday',
+            startTime: '0000',
+            endTime: '2359',
+        },
+    ],
     products: [
         {
             productName: 'Product 1',
