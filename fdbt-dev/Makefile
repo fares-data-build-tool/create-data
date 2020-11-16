@@ -84,6 +84,11 @@ generate-multi-op-multi-service:
 
 generate-validate-multi-op-multi-service: generate-multi-op-multi-service validate-latest-file
 
+generate-scheme-operator:
+	./scripts/trigger_netex_convertor.sh schemeOperator
+
+generate-validate-scheme-operator: generate-scheme-operator validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 
