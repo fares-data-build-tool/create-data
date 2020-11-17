@@ -23,7 +23,7 @@ exports[`pages createdFiles should render correctly 1`] = `
   >
     <div
       className="govuk-accordion__section"
-      key="TEST12345"
+      key="TEST12345Test Name"
     >
       <div
         className="govuk-accordion__section-header"
@@ -115,7 +115,7 @@ exports[`pages createdFiles should render correctly 1`] = `
     </div>
     <div
       className="govuk-accordion__section"
-      key="TEST54321"
+      key="TEST54321Test Name 2"
     >
       <div
         className="govuk-accordion__section-header"

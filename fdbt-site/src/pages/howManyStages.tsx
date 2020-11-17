@@ -51,7 +51,7 @@ const HowManyStages = ({ errors, csrfToken }: HowManyStagesProps): ReactElement 
                                         value="lessThan20"
                                     />
                                     <label
-                                        className="govuk-label govuk-radios__label govuk-label--s"
+                                        className="govuk-label govuk-radios__label"
                                         htmlFor="less-than-20-fare-stages"
                                     >
                                         20 fare stages or fewer
@@ -68,7 +68,7 @@ const HowManyStages = ({ errors, csrfToken }: HowManyStagesProps): ReactElement 
                                         value="moreThan20"
                                     />
                                     <label
-                                        className="govuk-label govuk-radios__label govuk-label--s"
+                                        className="govuk-label govuk-radios__label"
                                         htmlFor="more-than-20-fare-stages"
                                     >
                                         Greater than 20 fare stages
