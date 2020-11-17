@@ -89,7 +89,6 @@ class MyDocument extends Document<DocumentProps> {
                     <Main />
                     <NextScript nonce={this.props.nonce} />
                     <script src="/scripts/all.js" nonce={this.props.nonce} />
-                    <script nonce={this.props.nonce}>window.GOVUKFrontend.initAll()</script>
                 </body>
             </Html>
         );
