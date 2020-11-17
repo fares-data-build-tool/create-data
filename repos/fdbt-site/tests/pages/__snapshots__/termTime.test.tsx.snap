@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages howManyStages should render correctly 1`] = `
+exports[`pages termTime should render correctly 1`] = `
 <Component
-  description="How Many Stages selection page of the Create Fares Data Service"
+  description="Term Time selection page of the Create Fares Data Service"
   errors={Array []}
-  title="How Many Stages - Create Fares Data Service"
+  title="Term Time - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/howManyStages"
+    action="/api/termTime"
     csrfToken=""
     method="post"
   >
@@ -18,7 +18,7 @@ exports[`pages howManyStages should render correctly 1`] = `
       className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="number-of-stages-hint"
+        aria-describedby="term-time-hint"
         className="govuk-fieldset"
       >
         <legend
@@ -27,39 +27,39 @@ exports[`pages howManyStages should render correctly 1`] = `
           <h1
             className="govuk-fieldset__heading"
           >
-            How many fare stages does the service have?
+            Is this ticket only valid during term times?
           </h1>
         </legend>
         <span
           className="govuk-hint"
-          id="number-of-stages-hint"
+          id="term-time-hint"
         >
-          If the service has more than 20 fare stages you will be required to upload a CSV file. A template file is available if required.
+          Term dates should be specified in route and timetable data.
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="less-than-20-fare-stages"
+          errorId="term-time-yes"
           errors={Array []}
         >
           <div
             className="govuk-radios"
-            id="radio-buttons"
+            id="term-time-radios"
           >
             <div
               className="govuk-radios__item"
             >
               <input
                 className="govuk-radios__input  "
-                id="less-than-20-fare-stages"
-                name="howManyStages"
+                id="term-time-yes"
+                name="termTime"
                 type="radio"
-                value="lessThan20"
+                value="Yes"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="less-than-20-fare-stages"
+                htmlFor="term-time-yes"
               >
-                20 fare stages or fewer
+                Yes
               </label>
             </div>
             <div
@@ -67,16 +67,16 @@ exports[`pages howManyStages should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input  "
-                id="more-than-20-fare-stages"
-                name="howManyStages"
+                id="term-time-no"
+                name="termTime"
                 type="radio"
-                value="moreThan20"
+                value="No"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="more-than-20-fare-stages"
+                htmlFor="term-time-no"
               >
-                Greater than 20 fare stages
+                No
               </label>
             </div>
           </div>
@@ -93,21 +93,21 @@ exports[`pages howManyStages should render correctly 1`] = `
 </Component>
 `;
 
-exports[`pages howManyStages should render errors correctly 1`] = `
+exports[`pages termTime should render errors correctly 1`] = `
 <Component
-  description="How Many Stages selection page of the Create Fares Data Service"
+  description="Term Time selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
-        "errorMessage": "Choose an option regarding how many fare stages you have",
-        "id": "how-many-stages-error",
+        "errorMessage": "Choose an option below",
+        "id": "term-time-yes",
       },
     ]
   }
-  title="How Many Stages - Create Fares Data Service"
+  title="Term Time - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/howManyStages"
+    action="/api/termTime"
     csrfToken=""
     method="post"
   >
@@ -115,8 +115,8 @@ exports[`pages howManyStages should render errors correctly 1`] = `
       errors={
         Array [
           Object {
-            "errorMessage": "Choose an option regarding how many fare stages you have",
-            "id": "how-many-stages-error",
+            "errorMessage": "Choose an option below",
+            "id": "term-time-yes",
           },
         ]
       }
@@ -125,7 +125,7 @@ exports[`pages howManyStages should render errors correctly 1`] = `
       className="govuk-form-group govuk-form-group--error"
     >
       <fieldset
-        aria-describedby="number-of-stages-hint"
+        aria-describedby="term-time-hint"
         className="govuk-fieldset"
       >
         <legend
@@ -134,46 +134,46 @@ exports[`pages howManyStages should render errors correctly 1`] = `
           <h1
             className="govuk-fieldset__heading"
           >
-            How many fare stages does the service have?
+            Is this ticket only valid during term times?
           </h1>
         </legend>
         <span
           className="govuk-hint"
-          id="number-of-stages-hint"
+          id="term-time-hint"
         >
-          If the service has more than 20 fare stages you will be required to upload a CSV file. A template file is available if required.
+          Term dates should be specified in route and timetable data.
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="less-than-20-fare-stages"
+          errorId="term-time-yes"
           errors={
             Array [
               Object {
-                "errorMessage": "Choose an option regarding how many fare stages you have",
-                "id": "how-many-stages-error",
+                "errorMessage": "Choose an option below",
+                "id": "term-time-yes",
               },
             ]
           }
         >
           <div
             className="govuk-radios"
-            id="radio-buttons"
+            id="term-time-radios"
           >
             <div
               className="govuk-radios__item"
             >
               <input
                 className="govuk-radios__input govuk-input--error "
-                id="less-than-20-fare-stages"
-                name="howManyStages"
+                id="term-time-yes"
+                name="termTime"
                 type="radio"
-                value="lessThan20"
+                value="Yes"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="less-than-20-fare-stages"
+                htmlFor="term-time-yes"
               >
-                20 fare stages or fewer
+                Yes
               </label>
             </div>
             <div
@@ -181,16 +181,16 @@ exports[`pages howManyStages should render errors correctly 1`] = `
             >
               <input
                 className="govuk-radios__input govuk-input--error "
-                id="more-than-20-fare-stages"
-                name="howManyStages"
+                id="term-time-no"
+                name="termTime"
                 type="radio"
-                value="moreThan20"
+                value="No"
               />
               <label
                 className="govuk-label govuk-radios__label"
-                htmlFor="more-than-20-fare-stages"
+                htmlFor="term-time-no"
               >
-                Greater than 20 fare stages
+                No
               </label>
             </div>
           </div>

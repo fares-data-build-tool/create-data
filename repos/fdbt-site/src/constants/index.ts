@@ -94,6 +94,8 @@ export const MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE = 'fdbt-multiple-operators-se
 
 export const FULL_TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-full-time-restrictions-attribute';
 
+export const TERM_TIME_ATTRIBUTE = 'fdbt-term-time';
+
 // Other
 
 export const oneYearInSeconds = 31556952;
