@@ -67,6 +67,10 @@ export interface MultiOperatorInfo {
     services: string[];
 }
 
+export interface TermTimeAttribute {
+    termTime: boolean;
+}
+
 // Miscellaneous
 
 export type PassengerAttributes = {

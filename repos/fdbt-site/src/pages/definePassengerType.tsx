@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import lowerCase from 'lodash/lowerCase';
-import startCase from 'lodash/startCase';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
@@ -50,7 +49,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
     const ageRangeFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-age-range',
-            content: `Do ${lowerCase(startCase(passengerType))} passengers have an age range?`,
+            content: `Do ${lowerCase(passengerType)} passengers have an age range?`,
         },
         radios: [
             {
@@ -91,7 +90,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
     const proofRequiredFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-proof',
-            content: `Do ${lowerCase(startCase(passengerType))} passengers require a proof document?`,
+            content: `Do ${lowerCase(passengerType)} passengers require a proof document?`,
         },
         radios: [
             {
@@ -146,7 +145,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
 export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerType: string): TextInputFieldset => ({
     heading: {
         id: 'number-of-passenger-type-heading',
-        content: `How many ${lowerCase(startCase(passengerType))} passengers can be in the group?`,
+        content: `How many ${lowerCase(passengerType)} passengers can be in the group?`,
     },
     inputs: [
         {

@@ -129,7 +129,7 @@ const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: Cr
         {files && files.length > 0 ? (
             <div className="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
                 {files.map((file, index) => (
-                    <div className="govuk-accordion__section" key={file.reference}>
+                    <div className="govuk-accordion__section" key={file.reference + file.name}>
                         <div className="govuk-accordion__section-header">
                             <h2 className="govuk-accordion__section-heading">
                                 <span

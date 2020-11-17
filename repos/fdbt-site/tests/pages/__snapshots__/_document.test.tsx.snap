@@ -32,11 +32,6 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
       nonce=""
       src="/scripts/all.js"
     />
-    <script
-      nonce=""
-    >
-      window.GOVUKFrontend.initAll()
-    </script>
   </body>
 </Html>
 `;
@@ -78,11 +73,6 @@ exports[`_document should render correctly 1`] = `
       nonce=""
       src="/scripts/all.js"
     />
-    <script
-      nonce=""
-    >
-      window.GOVUKFrontend.initAll()
-    </script>
   </body>
 </Html>
 `;
