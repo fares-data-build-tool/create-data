@@ -40,76 +40,68 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
         ]
       }
     />
-    <fieldset
-      className="govuk-fieldset"
+    <h1
+      className="govuk-heading-l"
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
-      >
-        <h1
-          className="govuk-fieldset__heading"
-        >
-          Tell us more about the time restrictions
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="time-restrictions-hint"
-      >
-        Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
-      </span>
-      <div
-        className="govuk-inset-text"
-      >
-        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
-      </div>
-      <TimeRestrictionsTable
-        chosenDays={
-          Array [
-            "monday",
-            "tuesday",
-          ]
-        }
-        endTimeInputs={
-          Array [
-            Object {
-              "day": "monday",
-              "timeInput": "2400",
-            },
-            Object {
-              "day": "tuesday",
-              "timeInput": "7pm",
-            },
-          ]
-        }
-        errors={
-          Array [
-            Object {
-              "errorMessage": "2400 is not a valid input. Use 0000.",
-              "id": "end-time-monday",
-              "userInput": "2400",
-            },
-            Object {
-              "errorMessage": "Time must be in 2400 format",
-              "id": "end-time-tuesday",
-              "userInput": "7pm",
-            },
-          ]
-        }
-        startTimeInputs={
-          Array [
-            Object {
-              "day": "monday",
-              "timeInput": "0000",
-            },
-            Object {
-              "day": "tuesday",
-              "timeInput": "0900",
-            },
-          ]
-        }
-      />
-    </fieldset>
+      Tell us more about the time restrictions
+    </h1>
+    <span
+      className="govuk-hint"
+    >
+      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+    </span>
+    <div
+      className="govuk-inset-text"
+      id="time-restrictions-hint"
+    >
+      Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+    </div>
+    <TimeRestrictionsTable
+      chosenDays={
+        Array [
+          "monday",
+          "tuesday",
+        ]
+      }
+      endTimeInputs={
+        Array [
+          Object {
+            "day": "monday",
+            "timeInput": "2400",
+          },
+          Object {
+            "day": "tuesday",
+            "timeInput": "7pm",
+          },
+        ]
+      }
+      errors={
+        Array [
+          Object {
+            "errorMessage": "2400 is not a valid input. Use 0000.",
+            "id": "end-time-monday",
+            "userInput": "2400",
+          },
+          Object {
+            "errorMessage": "Time must be in 2400 format",
+            "id": "end-time-tuesday",
+            "userInput": "7pm",
+          },
+        ]
+      }
+      startTimeInputs={
+        Array [
+          Object {
+            "day": "monday",
+            "timeInput": "0000",
+          },
+          Object {
+            "day": "tuesday",
+            "timeInput": "0900",
+          },
+        ]
+      }
+    />
     <input
       className="govuk-button continue-button-placement"
       id="continue-button"
@@ -134,41 +126,33 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
     <ErrorSummary
       errors={Array []}
     />
-    <fieldset
-      className="govuk-fieldset"
+    <h1
+      className="govuk-heading-l"
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
-      >
-        <h1
-          className="govuk-fieldset__heading"
-        >
-          Tell us more about the time restrictions
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="time-restrictions-hint"
-      >
-        Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
-      </span>
-      <div
-        className="govuk-inset-text"
-      >
-        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
-      </div>
-      <TimeRestrictionsTable
-        chosenDays={
-          Array [
-            "monday",
-            "tuesday",
-          ]
-        }
-        endTimeInputs={Array []}
-        errors={Array []}
-        startTimeInputs={Array []}
-      />
-    </fieldset>
+      Tell us more about the time restrictions
+    </h1>
+    <span
+      className="govuk-hint"
+    >
+      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+    </span>
+    <div
+      className="govuk-inset-text"
+      id="time-restrictions-hint"
+    >
+      Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+    </div>
+    <TimeRestrictionsTable
+      chosenDays={
+        Array [
+          "monday",
+          "tuesday",
+        ]
+      }
+      endTimeInputs={Array []}
+      errors={Array []}
+      startTimeInputs={Array []}
+    />
     <input
       className="govuk-button continue-button-placement"
       id="continue-button"
@@ -193,55 +177,47 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
     <ErrorSummary
       errors={Array []}
     />
-    <fieldset
-      className="govuk-fieldset"
+    <h1
+      className="govuk-heading-l"
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
-      >
-        <h1
-          className="govuk-fieldset__heading"
-        >
-          Tell us more about the time restrictions
-        </h1>
-      </legend>
-      <span
-        className="govuk-hint"
-        id="time-restrictions-hint"
-      >
-        Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
-      </span>
-      <div
-        className="govuk-inset-text"
-      >
-        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
-      </div>
-      <TimeRestrictionsTable
-        chosenDays={
-          Array [
-            "monday",
-            "tuesday",
-          ]
-        }
-        endTimeInputs={
-          Array [
-            Object {
-              "day": "tuesday",
-              "timeInput": "1900",
-            },
-          ]
-        }
-        errors={Array []}
-        startTimeInputs={
-          Array [
-            Object {
-              "day": "monday",
-              "timeInput": "0900",
-            },
-          ]
-        }
-      />
-    </fieldset>
+      Tell us more about the time restrictions
+    </h1>
+    <span
+      className="govuk-hint"
+    >
+      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+    </span>
+    <div
+      className="govuk-inset-text"
+      id="time-restrictions-hint"
+    >
+      Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+    </div>
+    <TimeRestrictionsTable
+      chosenDays={
+        Array [
+          "monday",
+          "tuesday",
+        ]
+      }
+      endTimeInputs={
+        Array [
+          Object {
+            "day": "tuesday",
+            "timeInput": "1900",
+          },
+        ]
+      }
+      errors={Array []}
+      startTimeInputs={
+        Array [
+          Object {
+            "day": "monday",
+            "timeInput": "0900",
+          },
+        ]
+      }
+    />
     <input
       className="govuk-button continue-button-placement"
       id="continue-button"
