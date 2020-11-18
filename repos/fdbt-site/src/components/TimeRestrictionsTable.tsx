@@ -22,8 +22,10 @@ const TimeRestrictionsTable = ({
     return (
         <>
             {chosenDays.map((chosenDay, index) => (
-                <div className="flex-container time-restrictions-table" key={chosenDay}>
-                    <div className="day-label govuk-body govuk-grid-column-one-quarter">{startCase(chosenDay)}</div>
+                <fieldset className="govuk-fieldset flex-container time-restrictions-table" key={chosenDay}>
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s day-label govuk-grid-column-one-quarter">
+                        {startCase(chosenDay)}
+                    </legend>
                     <div className="govuk-grid-column-one-quarter">
                         <FormGroupWrapper errors={errors} errorId={`start-time-${chosenDay}`}>
                             <FormElementWrapper
@@ -36,7 +38,7 @@ const TimeRestrictionsTable = ({
                                         className={`govuk-label ${index === 0 ? '' : 'govuk-visually-hidden'}`}
                                         htmlFor={`start-time-${chosenDay}`}
                                     >
-                                        Start time
+                                        Start time <span className="govuk-visually-hidden">for {chosenDay}</span>
                                     </label>
                                     <input
                                         className="govuk-input govuk-input--width-4"
@@ -62,7 +64,7 @@ const TimeRestrictionsTable = ({
                                         className={`govuk-label ${index === 0 ? '' : 'govuk-visually-hidden'}`}
                                         htmlFor={`end-time-${chosenDay}`}
                                     >
-                                        End time
+                                        End time <span className="govuk-visually-hidden">for {chosenDay}</span>
                                     </label>
                                     <input
                                         className="govuk-input govuk-input--width-4"
@@ -76,7 +78,7 @@ const TimeRestrictionsTable = ({
                             </FormElementWrapper>
                         </FormGroupWrapper>
                     </div>
-                </div>
+                </fieldset>
             ))}
         </>
     );
