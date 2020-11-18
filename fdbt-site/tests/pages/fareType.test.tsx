@@ -10,7 +10,7 @@ describe('pages', () => {
         jest.resetAllMocks();
     });
 
-    const mockErrors = [{ errorMessage: 'Choose a fare type from the options', id: 'fare-type-error' }];
+    const mockErrors = [{ errorMessage: 'Choose a fare type from the options', id: 'fare-type-single' }];
 
     describe('fareType', () => {
         it('should render correctly', () => {

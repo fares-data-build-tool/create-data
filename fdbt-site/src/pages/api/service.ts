@@ -39,7 +39,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (fareTypeAttribute && isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return') {
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return') {
             redirectTo(res, '/returnDirection');
             return;
         }
