@@ -48,14 +48,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                           .toISOString(),
         });
 
-        if (
-            isFareType(fareTypeAttribute) &&
-            fareTypeAttribute.fareType !== 'single' &&
-            fareTypeAttribute.fareType !== 'return' &&
-            fareTypeAttribute.fareType !== 'period' &&
-            fareTypeAttribute.fareType !== 'flatFare' &&
-            fareTypeAttribute.fareType !== 'multiOperator'
-        ) {
+        if (!isFareType(fareTypeAttribute)) {
             throw new Error('No fare type found to generate user data json.');
         }
 

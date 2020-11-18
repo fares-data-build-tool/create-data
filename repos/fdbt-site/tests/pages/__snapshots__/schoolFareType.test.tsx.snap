@@ -2,12 +2,12 @@
 
 exports[`pages fareType should render correctly 1`] = `
 <Component
-  description="Fare Type selection page of the Create Fares Data Service"
+  description="School Fare Type selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Fare Type - Create Fares Data Service "
+  title="School Fare Type - Create Fares Data Service "
 >
   <CsrfForm
-    action="/api/fareType"
+    action="/api/schoolFareType"
     csrfToken=""
     method="post"
   >
@@ -18,7 +18,7 @@ exports[`pages fareType should render correctly 1`] = `
       className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="fare-type-page-heading"
+        aria-describedby="school-fare-type-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -26,35 +26,23 @@ exports[`pages fareType should render correctly 1`] = `
         >
           <h1
             className="govuk-fieldset__heading"
-            id="fare-type-page-heading"
+            id="school-fare-type-page-heading"
           >
             Select a fare type
           </h1>
         </legend>
         <span
           className="govuk-hint"
-          id="fare-type-operator-hint"
+          id="school-fare-type-operator-hint"
         >
            
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="school-fare-type-single"
           errors={Array []}
         >
           <FareTypeRadios
-            otherFares={
-              Array [
-                Object {
-                  "fareType": "multiOperator",
-                  "label": "Multi-operator - A ticket that covers more than one operator",
-                },
-                Object {
-                  "fareType": "schoolService",
-                  "label": "School Service - A ticket available to pupils in full-time education",
-                },
-              ]
-            }
             standardFares={
               Array [
                 Object {
@@ -64,10 +52,6 @@ exports[`pages fareType should render correctly 1`] = `
                 Object {
                   "fareType": "period",
                   "label": "Period Ticket (Day, Week, Month and Annual)",
-                },
-                Object {
-                  "fareType": "return",
-                  "label": "Return Ticket - Single Service",
                 },
                 Object {
                   "fareType": "flatFare",
@@ -91,19 +75,19 @@ exports[`pages fareType should render correctly 1`] = `
 
 exports[`pages fareType should render error messaging when errors are passed to the page 1`] = `
 <Component
-  description="Fare Type selection page of the Create Fares Data Service"
+  description="School Fare Type selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
         "errorMessage": "Choose a fare type from the options",
-        "id": "fare-type-single",
+        "id": "school-fare-type-single",
       },
     ]
   }
-  title="Fare Type - Create Fares Data Service "
+  title="School Fare Type - Create Fares Data Service "
 >
   <CsrfForm
-    action="/api/fareType"
+    action="/api/schoolFareType"
     csrfToken=""
     method="post"
   >
@@ -112,7 +96,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
         Array [
           Object {
             "errorMessage": "Choose a fare type from the options",
-            "id": "fare-type-single",
+            "id": "school-fare-type-single",
           },
         ]
       }
@@ -121,7 +105,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
       className="govuk-form-group govuk-form-group--error"
     >
       <fieldset
-        aria-describedby="fare-type-page-heading"
+        aria-describedby="school-fare-type-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -129,42 +113,30 @@ exports[`pages fareType should render error messaging when errors are passed to 
         >
           <h1
             className="govuk-fieldset__heading"
-            id="fare-type-page-heading"
+            id="school-fare-type-page-heading"
           >
             Select a fare type
           </h1>
         </legend>
         <span
           className="govuk-hint"
-          id="fare-type-operator-hint"
+          id="school-fare-type-operator-hint"
         >
            
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="school-fare-type-single"
           errors={
             Array [
               Object {
                 "errorMessage": "Choose a fare type from the options",
-                "id": "fare-type-single",
+                "id": "school-fare-type-single",
               },
             ]
           }
         >
           <FareTypeRadios
-            otherFares={
-              Array [
-                Object {
-                  "fareType": "multiOperator",
-                  "label": "Multi-operator - A ticket that covers more than one operator",
-                },
-                Object {
-                  "fareType": "schoolService",
-                  "label": "School Service - A ticket available to pupils in full-time education",
-                },
-              ]
-            }
             standardFares={
               Array [
                 Object {
@@ -174,10 +146,6 @@ exports[`pages fareType should render error messaging when errors are passed to 
                 Object {
                   "fareType": "period",
                   "label": "Period Ticket (Day, Week, Month and Annual)",
-                },
-                Object {
-                  "fareType": "return",
-                  "label": "Return Ticket - Single Service",
                 },
                 Object {
                   "fareType": "flatFare",

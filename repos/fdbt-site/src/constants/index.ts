@@ -96,6 +96,8 @@ export const FULL_TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-full-time-restrictions-att
 
 export const TERM_TIME_ATTRIBUTE = 'fdbt-term-time';
 
+export const SCHOOL_FARE_TYPE_ATTRIBUTE = 'fdbt-school-fare-type';
+
 // Other
 
 export const oneYearInSeconds = 31556952;
@@ -138,3 +140,5 @@ export const PASSENGER_TYPES_WITH_GROUP: PassengerAttributes[] = [
 export const INTERNAL_NOC = 'IWBusCo';
 
 export const CREATED_FILES_NUM_PER_PAGE = 10;
+
+export const validFareTypes = ['single', 'period', 'return', 'flatFare', 'multiOperator', 'schoolService'];
