@@ -6,6 +6,7 @@ import {
     periodMultipleServicesTicket,
     flatFareTicket,
     periodGeoZoneTicketWithNoType,
+    schemeOperatorTicket,
 } from '../test-data/matchingData';
 import mockS3Event from './test-data/mockS3Event';
 import * as s3 from './data/s3';
@@ -75,6 +76,14 @@ describe('netexConvertorHandler', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         periodTicketNetexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(flatFareTicket));
+        await netexConvertorHandler(event);
+        expect(periodTicketNetexGeneratorSpy).toHaveBeenCalled();
+    });
+
+    it('should call the periodTicketNetexGenerator when a user uploads info for scheme operator ticket', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        periodTicketNetexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorTicket));
         await netexConvertorHandler(event);
         expect(periodTicketNetexGeneratorSpy).toHaveBeenCalled();
     });

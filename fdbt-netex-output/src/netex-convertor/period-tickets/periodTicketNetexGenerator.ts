@@ -3,6 +3,8 @@ import {
     isMultiOperatorGeoZoneTicket,
     Operator,
     PeriodTicket,
+    SchemeOperatorTicket,
+    isSchemeOperatorTicket,
 } from '../../types/index';
 
 import {
@@ -19,6 +21,8 @@ import {
     isGeoZoneTicket,
     getOrganisations,
     getGroupOfOperators,
+    getBaseSchemeOperatorInfo,
+    isBaseSchemeOperatorInfo,
 } from './periodTicketNetexHelpers';
 import {
     NetexObject,
@@ -31,21 +35,28 @@ import {
 } from '../sharedHelpers';
 
 const periodTicketNetexGenerator = (
-    userPeriodTicket: PeriodTicket,
+    userPeriodTicket: PeriodTicket | SchemeOperatorTicket,
     operatorData: Operator[],
 ): { generate: Function } => {
-    const baseOperatorInfo = operatorData.find(
-        operator => operator.operatorPublicName === userPeriodTicket.operatorName,
-    );
+    const baseOperatorInfo = isSchemeOperatorTicket(userPeriodTicket)
+        ? getBaseSchemeOperatorInfo(userPeriodTicket)
+        : operatorData.find(operator => operator.operatorPublicName === userPeriodTicket.operatorName);
+    const operatorIdentifier = isSchemeOperatorTicket(userPeriodTicket)
+        ? `${userPeriodTicket.schemeOperatorName}-${userPeriodTicket.schemeOperatorRegionCode}`
+        : userPeriodTicket.nocCode;
+
     if (!baseOperatorInfo) {
         throw new Error('Could not find base operator');
     }
+
     const opIdNocFormat = `noc:${baseOperatorInfo.opId}`;
-    const nocCodeNocFormat = `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`;
+    const nocCodeNocFormat = `noc:${
+        isSchemeOperatorTicket(userPeriodTicket) ? operatorIdentifier : replaceIWBusCoNocCode(userPeriodTicket.nocCode)
+    }`;
     const currentDate = new Date(Date.now());
     const website = getCleanWebsite(baseOperatorInfo.website);
-    const placeHolderGroupOfProductsName = `${userPeriodTicket.nocCode}_products`;
-    const brandingId = `op:${userPeriodTicket.nocCode}@brand`;
+    const placeHolderGroupOfProductsName = `${operatorIdentifier}_products`;
+    const brandingId = `op:${operatorIdentifier}@brand`;
     const ticketUserConcat = `${userPeriodTicket.type}_${userPeriodTicket.passengerType}`;
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
@@ -58,7 +69,7 @@ const periodTicketNetexGenerator = (
     const updatePublicationRequest = (publicationRequest: NetexObject): NetexObject => {
         const publicationRequestToUpdate = { ...publicationRequest };
         publicationRequestToUpdate.RequestTimestamp.$t = currentDate;
-        publicationRequestToUpdate.Description.$t = `Request for ${userPeriodTicket.nocCode} bus pass fares`;
+        publicationRequestToUpdate.Description.$t = `Request for ${operatorIdentifier} bus pass fares`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${
             isGeoZoneTicket(userPeriodTicket) ? 'NETWORK' : 'LINE'
         }_FARE_OFFER:FXCP`;
@@ -94,36 +105,47 @@ const periodTicketNetexGenerator = (
 
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
-        compositeFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:CompositeFrame_UK_PI_${
+        const operatorName = isSchemeOperatorTicket(userPeriodTicket)
+            ? userPeriodTicket.schemeOperatorName
+            : userPeriodTicket.operatorName;
+
+        compositeFrameToUpdate.id = `epd:UK:${operatorIdentifier}:CompositeFrame_UK_PI_${
             isGeoZoneTicket(userPeriodTicket) ? 'NETWORK' : 'LINE'
         }_FARE_OFFER:Pass@${placeHolderGroupOfProductsName}:op`;
-        compositeFrameToUpdate.Name.$t = `Fares for ${userPeriodTicket.operatorName}`;
-        compositeFrameToUpdate.Description.$t = `Period ticket for ${userPeriodTicket.operatorName}`;
+        compositeFrameToUpdate.Name.$t = `Fares for ${operatorName}`;
+        compositeFrameToUpdate.Description.$t = `Period ticket for ${operatorName}`;
 
         return compositeFrameToUpdate;
     };
 
     const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
         const resourceFrameToUpdate = { ...resourceFrame };
+        const operatorPublicName = isBaseSchemeOperatorInfo(baseOperatorInfo)
+            ? baseOperatorInfo.schemeOperatorName
+            : baseOperatorInfo.operatorPublicName;
 
-        resourceFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:ResourceFrame_UK_PI_COMMON:${userPeriodTicket.nocCode}:op`;
+        resourceFrameToUpdate.id = `epd:UK:${operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${operatorIdentifier}:op`;
         resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = website;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = baseOperatorInfo.ttrteEnq;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-            baseOperatorInfo.operatorPublicName;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t = operatorPublicName;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t =
-            baseOperatorInfo.operatorPublicName;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t = operatorPublicName;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.id = brandingId;
-        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = baseOperatorInfo.operatorPublicName;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = operatorPublicName;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = website;
 
-        if (userPeriodTicket.type === 'multiOperator' && isMultiOperatorGeoZoneTicket(userPeriodTicket)) {
+        if (
+            userPeriodTicket.type === 'multiOperator' &&
+            (isMultiOperatorGeoZoneTicket(userPeriodTicket) || isSchemeOperatorTicket(userPeriodTicket))
+        ) {
             const nocs = [...userPeriodTicket.additionalNocs];
-            nocs.push(userPeriodTicket.nocCode);
-
-            resourceFrameToUpdate.organisations.Operator = getOrganisations(operatorData);
+            if (isMultiOperatorGeoZoneTicket(userPeriodTicket)) {
+                nocs.push(userPeriodTicket.nocCode);
+                resourceFrameToUpdate.organisations.Operator = getOrganisations(operatorData);
+            } else if (isBaseSchemeOperatorInfo(baseOperatorInfo) && isSchemeOperatorTicket(userPeriodTicket)) {
+                resourceFrameToUpdate.organisations.Operator = getOrganisations(operatorData, baseOperatorInfo);
+            }
             resourceFrameToUpdate.groupsOfOperators = getGroupOfOperators(operatorData);
         } else if (
             userPeriodTicket.type === 'multiOperator' &&
@@ -135,10 +157,14 @@ const periodTicketNetexGenerator = (
             nocs.push(userPeriodTicket.nocCode);
             resourceFrameToUpdate.organisations.Operator = getOrganisations(operatorData);
             resourceFrameToUpdate.groupsOfOperators = getGroupOfOperators(operatorData);
-        } else {
+        } else if (
+            !isMultiOperatorGeoZoneTicket(userPeriodTicket) &&
+            !isSchemeOperatorTicket(userPeriodTicket) &&
+            !isMultiOperatorMultipleServicesTicket(userPeriodTicket)
+        ) {
             resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
-            resourceFrameToUpdate.organisations.Operator.PublicCode.$t = userPeriodTicket.nocCode;
-            resourceFrameToUpdate.organisations.Operator.Name.$t = baseOperatorInfo.operatorPublicName;
+            resourceFrameToUpdate.organisations.Operator.PublicCode.$t = operatorIdentifier;
+            resourceFrameToUpdate.organisations.Operator.Name.$t = operatorPublicName;
             resourceFrameToUpdate.organisations.Operator.ShortName.$t = userPeriodTicket.operatorName;
             resourceFrameToUpdate.organisations.Operator.TradingName.$t = baseOperatorInfo.vosaPsvLicenseName;
             resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = baseOperatorInfo.fareEnq;
@@ -167,9 +193,9 @@ const periodTicketNetexGenerator = (
         if (isGeoZoneTicket(userPeriodTicket)) {
             const networkFareFrameToUpdate = { ...networkFareFrame };
 
-            networkFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
+            networkFareFrameToUpdate.id = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
             networkFareFrameToUpdate.Name.$t = `${placeHolderGroupOfProductsName} Network`;
-            networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:ResourceFrame_UK_PI_COMMON:${userPeriodTicket.nocCode}:op`;
+            networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${operatorIdentifier}:op`;
 
             networkFareFrameToUpdate.fareZones.FareZone.id = `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`;
             networkFareFrameToUpdate.fareZones.FareZone.Name.$t = `${userPeriodTicket.zoneName}`;
@@ -190,10 +216,10 @@ const periodTicketNetexGenerator = (
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
 
-        priceFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
+        priceFareFrameToUpdate.id = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
 
         if (isGeoZoneTicket(userPeriodTicket)) {
-            priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
+            priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
         } else if (isMultiServiceTicket(userPeriodTicket)) {
             priceFareFrameToUpdate.prerequisites = null;
         }
@@ -258,9 +284,9 @@ const periodTicketNetexGenerator = (
     const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
 
-        fareTableFareFrameToUpdate.id = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRICE:${placeHolderGroupOfProductsName}@pass:op`;
+        fareTableFareFrameToUpdate.id = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_PRICE:${placeHolderGroupOfProductsName}@pass:op`;
         fareTableFareFrameToUpdate.Name.$t = `${placeHolderGroupOfProductsName} Prices`;
-        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${userPeriodTicket.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
+        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
 
         if (isGeoZoneTicket(userPeriodTicket)) {
             fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(
