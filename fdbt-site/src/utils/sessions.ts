@@ -21,6 +21,7 @@ import {
     TicketPeriod,
     FullTimeRestrictionAttribute,
     TermTimeAttribute,
+    WithErrors,
 } from '../interfaces/index';
 
 import { FaresInformation } from '../pages/api/priceEntry';
@@ -60,6 +61,7 @@ import {
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/index';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -91,6 +93,7 @@ import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 import { TermTimeAttributeWithErrors } from '../pages/termTime';
+import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -135,6 +138,7 @@ type SessionAttributeTypes = {
     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
     [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | TermTimeAttributeWithErrors;
+    [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

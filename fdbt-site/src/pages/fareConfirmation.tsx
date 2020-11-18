@@ -6,7 +6,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerTypeAttributeWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
 import { PassengerType } from './api/passengerType';
 import { getCsrfToken } from '../utils';
 
@@ -105,12 +105,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const fullTimeRestrictionsAttribute = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
 
-    if (
-        !passengerTypeInfo ||
-        isPassengerTypeAttributeWithErrors(passengerTypeInfo) ||
-        !fareTypeInfo ||
-        isFareTypeAttributeWithErrors(fareTypeInfo)
-    ) {
+    if (!passengerTypeInfo || isPassengerTypeAttributeWithErrors(passengerTypeInfo) || !isFareType(fareTypeInfo)) {
         throw new Error('User has reached fare confirmation page with incorrect passenger type info.');
     }
 

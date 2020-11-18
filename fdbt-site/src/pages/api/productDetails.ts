@@ -29,13 +29,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-        if (
-            !fareTypeAttribute ||
-            (isFareType(fareTypeAttribute) &&
-                fareTypeAttribute.fareType !== 'period' &&
-                fareTypeAttribute.fareType !== 'flatFare' &&
-                fareTypeAttribute.fareType !== 'multiOperator')
-        ) {
+        if (!isFareType(fareTypeAttribute)) {
             throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
         }
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;

@@ -239,6 +239,44 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   Mobile Phone
                 </label>
               </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-cheque"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-cheque"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="cheque"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-cheque"
+                >
+                  Cheque
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-direct-debit"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-5-direct-debit"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="directDebit"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-5-direct-debit"
+                >
+                  Direct Debit
+                </label>
+              </div>
             </FormElementWrapper>
           </fieldset>
         </Component>
@@ -554,6 +592,44 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   htmlFor="checkbox-3-mobile-phone"
                 >
                   Mobile Phone
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-cheque"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-cheque"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="cheque"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-cheque"
+                >
+                  Cheque
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-direct-debit"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-5-direct-debit"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="directDebit"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-5-direct-debit"
+                >
+                  Direct Debit
                 </label>
               </div>
             </FormElementWrapper>

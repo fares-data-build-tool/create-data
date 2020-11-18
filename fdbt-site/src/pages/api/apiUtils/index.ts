@@ -4,12 +4,18 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
-import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, FARE_TYPE_ATTRIBUTE } from '../../../constants';
+import {
+    OPERATOR_COOKIE,
+    ID_TOKEN_COOKIE,
+    REFRESH_TOKEN_COOKIE,
+    FARE_TYPE_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+} from '../../../constants';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
 import { getSessionAttribute } from '../../../utils/sessions';
-import { isFareType } from '../../../interfaces/typeGuards';
+import { isFareType, isSchoolFareType } from '../../../interfaces/typeGuards';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -68,6 +74,28 @@ export const redirectToError = (
     redirectTo(res, '/error');
 };
 
+export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+
+    if (isSchoolFareType(schoolFareTypeAttribute)) {
+        switch (schoolFareTypeAttribute.schoolFareType) {
+            case 'single':
+                redirectTo(res, '/service');
+                return;
+            case 'period':
+                redirectTo(res, '/serviceList');
+                return;
+            case 'flatFare':
+                redirectTo(res, '/serviceList');
+                return;
+            default:
+                throw new Error('Did not receive an expected schoolFareType.');
+        }
+    } else {
+        throw new Error('Could not extract schoolFareType from the schoolFareTypeAttribute.');
+    }
+};
+
 export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
@@ -88,8 +116,11 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
             case 'multiOperator':
                 redirectTo(res, '/ticketRepresentation');
                 return;
+            case 'schoolService':
+                redirectOnSchoolFareType(req, res);
+                return;
             default:
-                throw new Error('Fare Type we expect was not received.');
+                throw new Error('Did not receive an expected fareType.');
         }
     } else {
         throw new Error('Could not extract fareType from the fare type attribute.');
