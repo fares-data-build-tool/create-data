@@ -22,7 +22,7 @@ export const purchaseLocationsList = {
 
 export const paymentMethodsList = {
     id: 'checkbox-0-cash',
-    paymentMethods: ['cash', 'debitCard', 'creditCard', 'mobilePhone'],
+    paymentMethods: ['cash', 'debitCard', 'creditCard', 'mobilePhone', 'cheque', 'directDebit'],
 };
 
 export const ticketFormatsList = {
