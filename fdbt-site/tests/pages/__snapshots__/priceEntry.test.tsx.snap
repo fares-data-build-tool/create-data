@@ -49,12 +49,12 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Briggate"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span />
             </span>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Briggate
@@ -66,6 +66,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Chapeltown"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -95,7 +96,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Chapeltown
@@ -107,6 +107,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Chapel Allerton"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -158,7 +159,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Chapel Allerton
@@ -170,6 +170,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Moortown"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -243,7 +244,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Moortown
@@ -255,6 +255,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Harrogate Road"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -350,7 +351,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Harrogate Road
@@ -362,6 +362,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Harehills"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -479,7 +480,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Harehills
@@ -491,6 +491,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Gipton"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -630,7 +631,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Gipton
@@ -642,6 +642,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Armley"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -803,7 +804,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Armley
@@ -815,6 +815,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Stanningley"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -998,7 +999,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Stanningley
@@ -1010,6 +1010,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Pudsey"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -1215,7 +1216,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Pudsey
@@ -1227,6 +1227,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Seacroft"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -1454,7 +1455,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Seacroft
@@ -1466,6 +1466,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Rothwell"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -1715,7 +1716,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Rothwell
@@ -1727,6 +1727,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Dewsbury"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -1998,7 +1999,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Dewsbury
@@ -2010,6 +2010,7 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Wakefield"
           >
             <span
+              aria-hidden="true"
               className="govuk-heading-s fare-triangle-label-left"
             >
               <span>
@@ -2303,7 +2304,6 @@ exports[`Price Entry Page should render correctly 1`] = `
                in pence
             </label>
             <div
-              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
             >
               Wakefield
