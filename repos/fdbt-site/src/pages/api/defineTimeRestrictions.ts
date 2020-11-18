@@ -10,6 +10,7 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, TimeRestriction } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isFareType } from '../../interfaces/typeGuards';
 
 interface TimeRestrictionsDefinition extends TimeRestriction {
     validDaysSelected?: string;
@@ -27,7 +28,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (!fareTypeAttribute) {
+        if (!isFareType(fareTypeAttribute)) {
             throw new Error('Failed to retrieve the fareType attribute for the defineTimeRestrictions API');
         }
 

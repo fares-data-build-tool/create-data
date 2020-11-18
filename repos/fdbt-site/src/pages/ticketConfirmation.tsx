@@ -21,11 +21,11 @@ import {
     PERIOD_EXPIRY_ATTRIBUTE,
 } from '../constants';
 import {
-    isFareTypeAttributeWithErrors,
     isSingleTicketProps,
     isReturnTicketProps,
     isPeriodTicketProps,
     isFlatFareTicketProps,
+    isFareType,
 } from '../interfaces/typeGuards';
 import { Service } from './api/service';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
@@ -356,15 +356,14 @@ const TicketConfirmation = ({ csrfToken, fareTypeProps }: TicketConfirmationProp
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TicketConfirmationProps } => {
     const csrfToken = getCsrfToken(ctx);
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-    if (!fareTypeInfo || isFareTypeAttributeWithErrors(fareTypeInfo)) {
+
+    if (!isFareType(fareTypeInfo)) {
         throw new Error('User has reached confirmation page with incorrect fareType information.');
     }
 
-    const fareTypeProps = buildFareTypeProps(fareTypeInfo.fareType, ctx);
-
     return {
         props: {
-            fareTypeProps,
+            fareTypeProps: buildFareTypeProps(fareTypeInfo.fareType, ctx),
             csrfToken,
         },
     };

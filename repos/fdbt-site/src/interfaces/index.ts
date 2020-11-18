@@ -71,6 +71,10 @@ export interface TermTimeAttribute {
     termTime: boolean;
 }
 
+export type WithErrors<T> = {
+    errors: ErrorInfo[];
+} & T;
+
 // Miscellaneous
 
 export type PassengerAttributes = {

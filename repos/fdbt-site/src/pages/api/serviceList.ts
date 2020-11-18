@@ -28,7 +28,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (isFareType(fareTypeAttribute) && !fareTypeAttribute.fareType) {
+        if (!isFareType(fareTypeAttribute)) {
             throw new Error('Failed to retrieve fare type attribute info for serviceList API');
         }
 
@@ -70,11 +70,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare') {
+        if (fareTypeAttribute.fareType === 'flatFare') {
             redirectTo(res, '/productDetails');
             return;
         }
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'multiOperator') {
+        if (fareTypeAttribute.fareType === 'multiOperator') {
             redirectTo(res, '/searchOperators');
             return;
         }
