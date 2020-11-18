@@ -101,7 +101,7 @@ const PriceEntry = ({
                         <div className="fare-triangle">
                             {stageNamesArray.map((rowStage, rowIndex) => (
                                 <div id={`row-${rowIndex}`} className="fare-triangle-row" key={rowStage}>
-                                    <span className="govuk-heading-s fare-triangle-label-left">
+                                    <span className="govuk-heading-s fare-triangle-label-left" aria-hidden="true">
                                         <span>{rowIndex > 0 ? rowStage : null}</span>
                                     </span>
                                     {stageNamesArray.slice(0, rowIndex).map(columnStage => (
@@ -134,9 +134,7 @@ const PriceEntry = ({
                                             </label>
                                         </React.Fragment>
                                     ))}
-                                    <div aria-sort="none" className="govuk-heading-s fare-triangle-label-right">
-                                        {rowStage}
-                                    </div>
+                                    <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
                                 </div>
                             ))}
                         </div>
