@@ -33,7 +33,7 @@ const HowManyProducts = ({ errors, fareType, pageHeading, csrfToken }: HowManyPr
                         </h1>
                     </label>
                     <div className="govuk-hint" id="number-of-products-hint">
-                        {`Enter the number of ${lowercase(fareType)} tickets below. Up to a maximum of 5 at once.`}
+                        {`Enter the number of ${lowercase(fareType)} tickets below. Up to a maximum of 10 at once.`}
                     </div>
                     <FormElementWrapper errors={errors} errorId="number-of-products" errorClass="govuk-input--error">
                         <input

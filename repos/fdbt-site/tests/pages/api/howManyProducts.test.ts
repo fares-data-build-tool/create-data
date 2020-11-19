@@ -19,23 +19,23 @@ describe('howManyProducts', () => {
         it('should return errors when the user enters no data', () => {
             const mockUserInputAsNumber = Number('');
             const mockError: ErrorInfo[] = [
-                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 5' },
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10' },
             ];
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual(mockError);
         });
 
         it('should return errors when the user enters incorrect data', () => {
-            const mockUserInputAsNumber = Number('10');
+            const mockUserInputAsNumber = Number('11');
             const mockError: ErrorInfo[] = [
-                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 5' },
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10' },
             ];
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual(mockError);
         });
 
         it('should return no errors when the user enters correct data', () => {
-            const mockUserInputAsNumber = Number('5');
+            const mockUserInputAsNumber = Number('10');
             const errors = getErrors(mockUserInputAsNumber);
             expect(errors).toEqual([]);
         });
@@ -62,7 +62,7 @@ describe('howManyProducts', () => {
     });
 
     it('should return 302 redirect to /multipleProducts when the user defines more than one product', () => {
-        const mockBody = { numberOfProductsInput: '5' };
+        const mockBody = { numberOfProductsInput: '10' };
         const mockWriteHeadFn = jest.fn();
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody, uuid: {}, mockWriteHeadFn });
         howManyProducts(req, res);
@@ -92,7 +92,9 @@ describe('howManyProducts', () => {
             body: mockBody,
         });
         const attributeValue: NumberOfProductsAttributeWithErrors = {
-            errors: [{ id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 5', userInput: '' }],
+            errors: [
+                { id: 'number-of-products', errorMessage: 'Enter a whole number between 1 and 10', userInput: '' },
+            ],
         };
         howManyProducts(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, attributeValue);
