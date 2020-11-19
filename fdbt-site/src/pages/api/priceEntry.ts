@@ -11,7 +11,7 @@ import {
 
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
-import { isSessionValid } from './apiUtils/validator';
+import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { isJourney } from '../../interfaces/typeGuards';
 
 interface UserFareStages {
@@ -56,13 +56,13 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
             if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
                 errors.push({
                     input: 'Enter a valid price for each stage',
-                    locator: priceEntry[0],
+                    locator: removeAllWhiteSpace(priceEntry[0]),
                 });
             }
         }
         return {
             input: priceEntry[1] as string,
-            locator: priceEntry[0],
+            locator: removeAllWhiteSpace(priceEntry[0]),
         };
     });
     return {
