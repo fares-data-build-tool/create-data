@@ -31,7 +31,7 @@ exports[`pages howManyProducts should render correctly for multi op 1`] = `
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -89,7 +89,7 @@ exports[`pages howManyProducts should render correctly for non multi op 1`] = `
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -163,7 +163,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -245,7 +245,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -327,7 +327,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -409,7 +409,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -491,7 +491,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -573,7 +573,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -655,7 +655,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of multi operator tickets below. Up to a maximum of 5 at once.
+        Enter the number of multi operator tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -737,7 +737,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -819,7 +819,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -901,7 +901,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -983,7 +983,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -1065,7 +1065,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -1147,7 +1147,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
@@ -1229,7 +1229,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         className="govuk-hint"
         id="number-of-products-hint"
       >
-        Enter the number of period tickets below. Up to a maximum of 5 at once.
+        Enter the number of period tickets below. Up to a maximum of 10 at once.
       </div>
       <FormElementWrapper
         errorClass="govuk-input--error"
