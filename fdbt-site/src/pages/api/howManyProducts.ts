@@ -15,8 +15,8 @@ export interface NumberOfProductsAttributeWithErrors {
 
 export const getErrors = (inputAsNumber: number): ErrorInfo[] => {
     const errorMessage =
-        Number.isNaN(inputAsNumber) || !Number.isInteger(inputAsNumber) || inputAsNumber > 5 || inputAsNumber < 1
-            ? 'Enter a whole number between 1 and 5'
+        Number.isNaN(inputAsNumber) || !Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1
+            ? 'Enter a whole number between 1 and 10'
             : '';
     return errorMessage !== '' ? [{ id: 'number-of-products', errorMessage }] : [];
 };
