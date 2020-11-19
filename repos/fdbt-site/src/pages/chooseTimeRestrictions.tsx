@@ -31,24 +31,21 @@ const ChooseTimeRestrictions = ({
             <CsrfForm action="/api/chooseTimeRestrictions" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <fieldset className="govuk-fieldset">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading">Tell us more about the time restrictions</h1>
-                        </legend>
-                        <span className="govuk-hint" id="time-restrictions-hint">
-                            Enter the times at which your ticket(s) start and end, if applicable. If they are valid at
-                            all times, leave them blank. You can leave them all blank, if needed.
-                        </span>
-                        <div className="govuk-inset-text">
-                            Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
-                        </div>
-                        <TimeRestrictionsTable
-                            chosenDays={chosenDays}
-                            errors={errors}
-                            startTimeInputs={startTimeInputs}
-                            endTimeInputs={endTimeInputs}
-                        />
-                    </fieldset>
+
+                    <h1 className="govuk-heading-l">Tell us more about the time restrictions</h1>
+                    <span className="govuk-hint">
+                        Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all
+                        times, leave them blank. You can leave them all blank, if needed.
+                    </span>
+                    <div className="govuk-inset-text" id="time-restrictions-hint">
+                        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+                    </div>
+                    <TimeRestrictionsTable
+                        chosenDays={chosenDays}
+                        errors={errors}
+                        startTimeInputs={startTimeInputs}
+                        endTimeInputs={endTimeInputs}
+                    />
                     <input
                         type="submit"
                         value="Continue"

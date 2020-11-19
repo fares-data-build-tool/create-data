@@ -121,14 +121,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Chapel Allerton-Briggate"
+                id="ChapelAllerton-Briggate"
                 name="Chapel Allerton-Briggate"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Chapel Allerton-Briggate"
+              htmlFor="ChapelAllerton-Briggate"
             >
               Input price from 
               Briggate
@@ -143,14 +143,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Chapel Allerton-Chapeltown"
+                id="ChapelAllerton-Chapeltown"
                 name="Chapel Allerton-Chapeltown"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Chapel Allerton-Chapeltown"
+              htmlFor="ChapelAllerton-Chapeltown"
             >
               Input price from 
               Chapeltown
@@ -228,14 +228,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Moortown-Chapel Allerton"
+                id="Moortown-ChapelAllerton"
                 name="Moortown-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Moortown-Chapel Allerton"
+              htmlFor="Moortown-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -269,14 +269,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Harrogate Road-Briggate"
+                id="HarrogateRoad-Briggate"
                 name="Harrogate Road-Briggate"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Harrogate Road-Briggate"
+              htmlFor="HarrogateRoad-Briggate"
             >
               Input price from 
               Briggate
@@ -291,14 +291,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Harrogate Road-Chapeltown"
+                id="HarrogateRoad-Chapeltown"
                 name="Harrogate Road-Chapeltown"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Harrogate Road-Chapeltown"
+              htmlFor="HarrogateRoad-Chapeltown"
             >
               Input price from 
               Chapeltown
@@ -313,14 +313,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Harrogate Road-Chapel Allerton"
+                id="HarrogateRoad-ChapelAllerton"
                 name="Harrogate Road-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Harrogate Road-Chapel Allerton"
+              htmlFor="HarrogateRoad-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -335,14 +335,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Harrogate Road-Moortown"
+                id="HarrogateRoad-Moortown"
                 name="Harrogate Road-Moortown"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Harrogate Road-Moortown"
+              htmlFor="HarrogateRoad-Moortown"
             >
               Input price from 
               Moortown
@@ -420,14 +420,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Harehills-Chapel Allerton"
+                id="Harehills-ChapelAllerton"
                 name="Harehills-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Harehills-Chapel Allerton"
+              htmlFor="Harehills-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -464,14 +464,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Harehills-Harrogate Road"
+                id="Harehills-HarrogateRoad"
                 name="Harehills-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Harehills-Harrogate Road"
+              htmlFor="Harehills-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -549,14 +549,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Gipton-Chapel Allerton"
+                id="Gipton-ChapelAllerton"
                 name="Gipton-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Gipton-Chapel Allerton"
+              htmlFor="Gipton-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -593,14 +593,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Gipton-Harrogate Road"
+                id="Gipton-HarrogateRoad"
                 name="Gipton-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Gipton-Harrogate Road"
+              htmlFor="Gipton-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -700,14 +700,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Armley-Chapel Allerton"
+                id="Armley-ChapelAllerton"
                 name="Armley-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Armley-Chapel Allerton"
+              htmlFor="Armley-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -744,14 +744,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Armley-Harrogate Road"
+                id="Armley-HarrogateRoad"
                 name="Armley-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Armley-Harrogate Road"
+              htmlFor="Armley-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -873,14 +873,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Stanningley-Chapel Allerton"
+                id="Stanningley-ChapelAllerton"
                 name="Stanningley-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Stanningley-Chapel Allerton"
+              htmlFor="Stanningley-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -917,14 +917,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Stanningley-Harrogate Road"
+                id="Stanningley-HarrogateRoad"
                 name="Stanningley-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Stanningley-Harrogate Road"
+              htmlFor="Stanningley-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -1068,14 +1068,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Pudsey-Chapel Allerton"
+                id="Pudsey-ChapelAllerton"
                 name="Pudsey-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Pudsey-Chapel Allerton"
+              htmlFor="Pudsey-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -1112,14 +1112,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Pudsey-Harrogate Road"
+                id="Pudsey-HarrogateRoad"
                 name="Pudsey-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Pudsey-Harrogate Road"
+              htmlFor="Pudsey-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -1285,14 +1285,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Seacroft-Chapel Allerton"
+                id="Seacroft-ChapelAllerton"
                 name="Seacroft-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Seacroft-Chapel Allerton"
+              htmlFor="Seacroft-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -1329,14 +1329,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Seacroft-Harrogate Road"
+                id="Seacroft-HarrogateRoad"
                 name="Seacroft-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Seacroft-Harrogate Road"
+              htmlFor="Seacroft-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -1524,14 +1524,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Rothwell-Chapel Allerton"
+                id="Rothwell-ChapelAllerton"
                 name="Rothwell-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Rothwell-Chapel Allerton"
+              htmlFor="Rothwell-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -1568,14 +1568,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Rothwell-Harrogate Road"
+                id="Rothwell-HarrogateRoad"
                 name="Rothwell-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Rothwell-Harrogate Road"
+              htmlFor="Rothwell-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -1785,14 +1785,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Dewsbury-Chapel Allerton"
+                id="Dewsbury-ChapelAllerton"
                 name="Dewsbury-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Dewsbury-Chapel Allerton"
+              htmlFor="Dewsbury-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -1829,14 +1829,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Dewsbury-Harrogate Road"
+                id="Dewsbury-HarrogateRoad"
                 name="Dewsbury-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Dewsbury-Harrogate Road"
+              htmlFor="Dewsbury-HarrogateRoad"
             >
               Input price from 
               Harrogate Road
@@ -2068,14 +2068,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Wakefield-Chapel Allerton"
+                id="Wakefield-ChapelAllerton"
                 name="Wakefield-Chapel Allerton"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Wakefield-Chapel Allerton"
+              htmlFor="Wakefield-ChapelAllerton"
             >
               Input price from 
               Chapel Allerton
@@ -2112,14 +2112,14 @@ exports[`Price Entry Page should render correctly 1`] = `
                 aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="Wakefield-Harrogate Road"
+                id="Wakefield-HarrogateRoad"
                 name="Wakefield-Harrogate Road"
                 type="text"
               />
             </span>
             <label
               className="govuk-visually-hidden"
-              htmlFor="Wakefield-Harrogate Road"
+              htmlFor="Wakefield-HarrogateRoad"
             >
               Input price from 
               Harrogate Road

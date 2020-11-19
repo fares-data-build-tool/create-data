@@ -8,6 +8,7 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { FaresInformation } from './api/priceEntry';
 import { isInputCheck } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
+import { removeAllWhiteSpace } from './api/apiUtils/validator';
 
 const title = 'Price Entry - Create Fares Data Service';
 const description = 'Price Entry page of the Create Fares Data Service';
@@ -44,7 +45,7 @@ export const createClassName = (
 
     let errorClass = '';
 
-    const name = `${rowStage}-${columnStage}`;
+    const name = `${removeAllWhiteSpace(rowStage)}-${removeAllWhiteSpace(columnStage)}`;
 
     if (inputs.errorInformation.some(el => el.locator === name)) {
         errorClass = ' govuk-input--error';
@@ -114,7 +115,9 @@ const PriceEntry = ({
                                                 }`}
                                             >
                                                 <input
-                                                    id={`${rowStage}-${columnStage}`}
+                                                    id={`${removeAllWhiteSpace(rowStage)}-${removeAllWhiteSpace(
+                                                        columnStage,
+                                                    )}`}
                                                     className={createClassName(faresInformation, rowStage, columnStage)}
                                                     name={`${rowStage}-${columnStage}`}
                                                     type="text"
@@ -127,7 +130,9 @@ const PriceEntry = ({
                                                 />
                                             </span>
                                             <label
-                                                htmlFor={`${rowStage}-${columnStage}`}
+                                                htmlFor={`${removeAllWhiteSpace(rowStage)}-${removeAllWhiteSpace(
+                                                    columnStage,
+                                                )}`}
                                                 className="govuk-visually-hidden"
                                             >
                                                 Input price from {columnStage} to {rowStage} in pence
