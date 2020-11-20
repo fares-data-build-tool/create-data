@@ -48,7 +48,10 @@ describe('termTime', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         termTime(req, res);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, TERM_TIME_ATTRIBUTE, { errors: mockError });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TERM_TIME_ATTRIBUTE, {
+            termTime: false,
+            errors: mockError,
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/termTime',
         });

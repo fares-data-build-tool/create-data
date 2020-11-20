@@ -1,16 +1,21 @@
 import moment from 'moment';
 import { NextApiResponse } from 'next';
-import { isFareType, isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
+import { isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
 import {
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 
-import { redirectTo, redirectToError, getUuidFromCookie, isSchemeOperator } from './apiUtils';
+import {
+    redirectTo,
+    redirectToError,
+    getUuidFromCookie,
+    isSchemeOperator,
+    getFareTypeFromFromAttributes,
+} from './apiUtils';
 import {
     getSingleTicketJson,
     getReturnTicketJson,
@@ -30,11 +35,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('Session is invalid.');
         }
 
-        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
-        if (!fareTypeAttribute) {
-            throw new Error('No fare type session attribute found.');
-        }
+        const fareType = getFareTypeFromFromAttributes(req);
 
         const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as TicketPeriod | undefined;
 
@@ -48,15 +49,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                           .toISOString(),
         });
 
-        if (!isFareType(fareTypeAttribute)) {
-            throw new Error('No fare type found to generate user data json.');
-        }
-
         const uuid = getUuidFromCookie(req, res);
 
         let userDataJson;
-
-        const fareType = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType;
 
         if (isSchemeOperator(req, res)) {
             userDataJson = await getSchemeOperatorTicketJson(req, res);

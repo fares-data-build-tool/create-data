@@ -34,7 +34,7 @@ import {
     service,
     mockMatchingFaresZones,
     expectedNonCircularReturnTicket,
-    mockOutBoundMatchingFaresZones,
+    mockOutboundMatchingFaresZones,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     zoneStops,
     expectedFlatFareTicket,
@@ -120,7 +120,7 @@ describe('getReturnTicketJson', () => {
                 [MATCHING_ATTRIBUTE]: {
                     service,
                     userFareStages,
-                    matchingFareZones: mockOutBoundMatchingFaresZones,
+                    matchingFareZones: mockOutboundMatchingFaresZones,
                 },
                 [INBOUND_MATCHING_ATTRIBUTE]: {
                     inboundUserFareStages: userFareStages,
@@ -138,6 +138,7 @@ describe('getReturnTicketJson', () => {
         const result = getReturnTicketJson(req, res);
         expect(result).toStrictEqual(expectedNonCircularReturnTicket);
     });
+
     it('should return a ReturnTicket object for a circular journey', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},

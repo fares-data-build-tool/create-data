@@ -92,7 +92,6 @@ import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api
 import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
-import { TermTimeAttributeWithErrors } from '../pages/termTime';
 import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
 
 type SessionAttributeTypes = {
@@ -137,11 +136,13 @@ type SessionAttributeTypes = {
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
-    [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | TermTimeAttributeWithErrors;
+    [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | WithErrors<TermTimeAttribute>;
     [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;
 };
 
-type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;
+export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
+    ? SessionAttributeTypes[T]
+    : string;
 
 export const getSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,
