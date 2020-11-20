@@ -212,6 +212,7 @@ export interface Product {
     productDuration?: string;
     productValidity?: string;
     productDurationUnits?: string;
+    serviceEndTime?: string;
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
