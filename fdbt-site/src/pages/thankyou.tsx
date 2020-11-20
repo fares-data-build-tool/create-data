@@ -35,8 +35,13 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
             within the next 5 minutes for the fares you have just told us about.
         </p>
         <p className="govuk-body">You will be contacted should there be a problem with your upload.</p>
+        <h2 className="govuk-heading-m">Your options</h2>
         <p className="govuk-body">
-            If you would like to provide feedback on this service, please click{' '}
+            You now have two options; you can add another fare using this service, or you can continue to the Bus Open
+            Data Service (BODS) to upload your NeTEx file.
+        </p>
+        <p className="govuk-body">
+            If you would like to provide feedback on this service, please click&nbsp;
             <a href={FEEDBACK_LINK} className="govuk-link" aria-label="Provide feedback on this service">
                 here
             </a>
@@ -44,6 +49,16 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
         <br />
         <a href="/home" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
             Add another fare
+        </a>
+        <a
+            href="https://publish.bus-data.dft.gov.uk/"
+            role="button"
+            draggable="false"
+            className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+            data-module="govuk-button"
+            aria-label="continue to bods"
+        >
+            Continue to BODS
         </a>
     </TwoThirdsLayout>
 );
