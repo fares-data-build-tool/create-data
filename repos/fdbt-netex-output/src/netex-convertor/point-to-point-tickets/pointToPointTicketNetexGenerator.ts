@@ -148,11 +148,24 @@ const pointToPointTicketNetexGenerator = (
         priceFareFrameToUpdate.id = `epd:UK:${matchingData.nocCode}:FareFrame_UK_PI_FARE_PRODUCT:${lineIdName}:op`;
         priceFareFrameToUpdate.tariffs.Tariff.id = `Tariff@${matchingData.type}@${lineIdName}`;
         priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${operatorPublicNameLineNameFormat} - ${matchingData.type} fares`;
+
+        let validityCondition;
+        if (isSingleTicket(matchingData) && matchingData.termTime === true) {
+            validityCondition = {
+                id: 'op:termtime',
+                version: '1.0',
+                Name: {
+                    $t: 'Term Time Usage Only',
+                },
+            };
+        }
+
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
                 FromDate: { $t: matchingData.ticketPeriod.startDate },
                 ToDate: { $t: matchingData.ticketPeriod.endDate },
             },
+            ValidityCondition: validityCondition,
         };
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
         priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;

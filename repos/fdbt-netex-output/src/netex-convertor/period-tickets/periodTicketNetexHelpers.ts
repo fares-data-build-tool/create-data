@@ -1,4 +1,5 @@
 import {
+    FlatFareTicket,
     MultiOperatorMultipleServicesTicket,
     isMultiOperatorMultipleServicesTicket,
     GroupOfOperators,
@@ -24,6 +25,7 @@ import {
     Ticket,
     isSchemeOperatorTicket,
 } from '../../types/index';
+
 import {
     getNetexMode,
     NetexObject,
@@ -420,7 +422,7 @@ const getMultiServiceList = (
     }));
 };
 
-const getFlatFareList = (userPeriodTicket: PeriodMultipleServicesTicket, ticketUserConcat: string): NetexObject[] =>
+const getFlatFareList = (userPeriodTicket: FlatFareTicket, ticketUserConcat: string): NetexObject[] =>
     userPeriodTicket.products.map(product => ({
         version: '1.0',
         id: `op:${product.productName}`,
