@@ -224,11 +224,22 @@ const periodTicketNetexGenerator = (
             priceFareFrameToUpdate.prerequisites = null;
         }
         priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${placeHolderGroupOfProductsName}`;
+        let validityCondition;
+        if (isMultiServiceTicket(userPeriodTicket) && userPeriodTicket.termTime === true) {
+            validityCondition = {
+                id: 'op:termtime',
+                version: '1.0',
+                Name: {
+                    $t: 'Term Time Usage Only',
+                },
+            };
+        }
         priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
             ValidBetween: {
                 FromDate: { $t: userPeriodTicket.ticketPeriod.startDate },
                 ToDate: { $t: userPeriodTicket.ticketPeriod.endDate },
             },
+            ValidityCondition: validityCondition,
         };
         priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${placeHolderGroupOfProductsName} - Tariff`;
         priceFareFrameToUpdate.tariffs.Tariff.Description.$t = `${placeHolderGroupOfProductsName} single zone tariff`;
