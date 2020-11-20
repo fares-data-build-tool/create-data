@@ -5,6 +5,7 @@
   "email": "test@example.com",
   "uuid": "BLACc1363964",
   "timeRestriction": [],
+  "termTime": true,
   "products": [
     {
       "productName": "Weekly Rider",

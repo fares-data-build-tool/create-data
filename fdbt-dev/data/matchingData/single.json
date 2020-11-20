@@ -6,6 +6,7 @@
   "type": "single",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
+  "termTime": true,
   "timeRestriction": [
     {
       "day": "monday",

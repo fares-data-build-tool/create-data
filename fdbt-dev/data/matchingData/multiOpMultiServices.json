@@ -51,6 +51,7 @@
   "type": "multiOperator",
   "nocCode": "BLAC",
   "email": "test@example.com",
+  "termTime": false,
   "uuid": "BLACc1363964",
   "timeRestriction": [
     {
