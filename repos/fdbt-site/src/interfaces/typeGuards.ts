@@ -1,9 +1,3 @@
-import {
-    SingleTicketProps,
-    ReturnTicketProps,
-    PeriodTicketProps,
-    FlatFareTicketProps,
-} from '../pages/ticketConfirmation';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import {
     PeriodTicket,
@@ -33,7 +27,6 @@ import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api
 import { InputCheck } from '../pages/stageNames';
 import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
-import { TermTimeAttributeWithErrors } from '../pages/termTime';
 import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
 import { validFareTypes } from '../constants';
 
@@ -156,22 +149,6 @@ export const isSalesOfferPackages = (
     salesOfferPackageInfo !== undefined &&
     (salesOfferPackageInfo as SalesOfferPackage[])[0].ticketFormats !== undefined;
 
-export const isSingleTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is SingleTicketProps => (props as SingleTicketProps).journeyDirection !== undefined;
-
-export const isReturnTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is ReturnTicketProps => (props as ReturnTicketProps).circular !== undefined;
-
-export const isPeriodTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is PeriodTicketProps => (props as PeriodTicketProps).zone !== undefined;
-
-export const isFlatFareTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is FlatFareTicketProps => (props as FlatFareTicketProps).productName !== undefined;
-
 export const isTicketPeriodAttributeWithErrors = (
     productDates: TicketPeriod | TicketPeriodWithErrors | undefined,
 ): productDates is TicketPeriodWithErrors =>
@@ -195,9 +172,9 @@ export const isMultiOperatorInfoWithErrors = (
     multiOperatorInfo !== undefined && (multiOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;
 
 export const isTermTimeAttributeWithErrors = (
-    termTime: undefined | TermTimeAttribute | TermTimeAttributeWithErrors,
-): termTime is TermTimeAttributeWithErrors =>
-    !!termTime && (termTime as TermTimeAttributeWithErrors).errors !== undefined;
+    termTime: undefined | TermTimeAttribute | WithErrors<TermTimeAttribute>,
+): termTime is WithErrors<TermTimeAttribute> =>
+    !!termTime && (termTime as WithErrors<TermTimeAttribute>).errors !== undefined;
 
 export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
     !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;

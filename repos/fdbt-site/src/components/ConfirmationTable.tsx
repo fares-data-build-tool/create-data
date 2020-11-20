@@ -19,9 +19,11 @@ const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTablePr
                     <dt className="govuk-summary-list__key">{element.name}</dt>
                     <dd className="govuk-summary-list__value">{element.content}</dd>
                     <dd className="govuk-summary-list__actions">
-                        <a className="govuk-link" href={element.href}>
-                            change<span className="govuk-visually-hidden">{element.name}</span>
-                        </a>
+                        {element.href !== '' ? (
+                            <a className="govuk-link" href={element.href}>
+                                change<span className="govuk-visually-hidden">{element.name}</span>
+                            </a>
+                        ) : null}
                     </dd>
                 </div>
             </dl>

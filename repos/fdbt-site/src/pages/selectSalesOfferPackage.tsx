@@ -8,6 +8,7 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
@@ -17,6 +18,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { Product } from './api/multipleProductValidity';
 import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
+import { SchoolFareTypeAttribute } from './api/schoolFareType';
 
 const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
 const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
@@ -207,21 +209,23 @@ export const getServerSideProps = async (
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const singleProductAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
     let productNames: string[] = ['product'];
 
     if (isFareType(fareTypeAttribute)) {
-        if (
-            (fareTypeAttribute.fareType === 'period' || fareTypeAttribute.fareType === 'multiOperator') &&
-            multipleProductAttribute
-        ) {
+        const fareType =
+            fareTypeAttribute.fareType === 'schoolService' && schoolFareTypeAttribute
+                ? schoolFareTypeAttribute.schoolFareType
+                : fareTypeAttribute.fareType;
+        if ((fareType === 'period' || fareType === 'multiOperator') && multipleProductAttribute) {
             const multiProducts: Product[] = multipleProductAttribute.products;
             productNames = multiProducts.map((product: ProductInfo) => product.productName);
         } else if (singleProductAttribute) {
-            if (fareTypeAttribute.fareType === 'flatFare' && isProductData(singleProductAttribute)) {
+            if (fareType === 'flatFare' && isProductData(singleProductAttribute)) {
                 productNames = [singleProductAttribute.products[0].productName];
             } else if (
-                (fareTypeAttribute.fareType === 'period' || fareTypeAttribute.fareType === 'multiOperator') &&
+                (fareType === 'period' || fareType === 'multiOperator') &&
                 isProductInfo(singleProductAttribute)
             ) {
                 productNames = [singleProductAttribute.productName];

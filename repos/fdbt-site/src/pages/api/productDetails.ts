@@ -1,15 +1,14 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError } from './apiUtils';
+import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
-import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
 import {
     isSessionValid,
     removeExcessWhiteSpace,
     checkPriceIsValid,
     checkProductNameIsValid,
 } from './apiUtils/validator';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
+import { updateSessionAttribute } from '../../utils/sessions';
 
 const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
@@ -28,10 +27,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-        if (!isFareType(fareTypeAttribute)) {
-            throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
-        }
+
+        const fareType = getFareTypeFromFromAttributes(req);
+
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
         const productDetails = getProductDetails(productDetailsNameInput, productDetailsPriceInput);
         const productNameError = checkProductNameIsValid(productDetails.productName);
@@ -58,10 +56,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, undefined);
 
-        if (
-            isFareType(fareTypeAttribute) &&
-            (fareTypeAttribute.fareType === 'period' || fareTypeAttribute.fareType === 'multiOperator')
-        ) {
+        if (fareType === 'period' || fareType === 'multiOperator') {
             const periodProduct: Product = {
                 productName: productDetails.productName,
                 productPrice: productDetails.productPrice,

@@ -67,11 +67,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ho
     const csrfToken = getCsrfToken(ctx);
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
-    const ticketType = (getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute)
-        .name;
+    const ticketType = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute;
 
     let pageHeading = `How many period tickets do you have for ${
-        ticketType === 'geoZone' ? 'this geographic zone' : `the selected services`
+        ticketType && ticketType.name === 'geoZone' ? 'this geographic zone' : `the selected services`
     }?`;
     if (fareType === 'multiOperator') {
         pageHeading =
