@@ -33,6 +33,7 @@ import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
 import { getCsrfToken } from '../utils';
+import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
@@ -279,6 +280,7 @@ export const buildTicketConfirmationElements = (
                 if (!product.productDuration || !product.productValidity) {
                     throw new Error('User has no product duration and/or validity information.');
                 }
+
                 confirmationElements.push(
                     {
                         name: `Product - ${product.productName}`,
@@ -294,7 +296,9 @@ export const buildTicketConfirmationElements = (
                     },
                     {
                         name: `Product - ${product.productName}`,
-                        content: `Validity - ${startCase(product.productValidity)}`,
+                        content: `Validity - ${startCase(product.productValidity)}${
+                            product.serviceEndTime ? ` - ${product.serviceEndTime}` : ''
+                        }`,
                         href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
                     },
                 );
@@ -315,7 +319,12 @@ export const buildTicketConfirmationElements = (
                 },
                 {
                     name: `Product - ${fareTypeProps.products.productName}`,
-                    content: `Validity - ${startCase(fareTypeProps.products.productValidity)}`,
+                    content: removeExcessWhiteSpace(
+                        `Validity - ${startCase(fareTypeProps.products.productValidity)} ${
+                            fareTypeProps.products.serviceEndTime ? `- ${fareTypeProps.products.serviceEndTime}` : ''
+                        }`,
+                    ),
+
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
                 },
             );

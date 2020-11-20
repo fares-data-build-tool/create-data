@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isSessionValid } from './apiUtils/validator';
+import { isSessionValid, isValidTime, removeExcessWhiteSpace } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
@@ -7,6 +7,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 
 export interface MultipleProductAttribute {
     products: Product[];
+    endTimesList?: string[];
 }
 
 export interface Product {
@@ -18,15 +19,43 @@ export interface Product {
     productDurationId?: string;
     productValidity?: string;
     productValidityError?: string;
+    productValidityId?: string;
     productDurationUnits?: string;
+    serviceEndTime?: string;
 }
 
+export const isValidInputValidity = (durationInput: string): boolean =>
+    ['24hr', 'endOfCalendarDay', 'endOfServiceDay'].includes(durationInput);
+
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
-    let validity = req.body[`validity-row${index}`];
+    const validity = req.body[`validity-option-${index}`];
+    const validityEndTime = removeExcessWhiteSpace(req.body[`validity-end-time-${index}`]);
     let error = '';
-    if (!validity) {
-        validity = '';
-        error = 'Select one of the two validity options';
+    let errorId = '';
+
+    if (
+        !validity ||
+        (validity === 'endOfServiceDay' && validityEndTime === '') ||
+        (validity === 'endOfServiceDay' && validityEndTime !== '' && !isValidTime(validityEndTime))
+    ) {
+        if (!validity) {
+            error = 'Select one of the three expiry options';
+            errorId = `validity-option-${index}`;
+        } else if (validity === 'endOfServiceDay' && validityEndTime === '') {
+            error = 'Specify an end time for service day';
+            errorId = `validity-end-time-${index}`;
+        }
+
+        if (validity === 'endOfServiceDay' && validityEndTime && !isValidTime(validityEndTime)) {
+            if (validityEndTime === '2400') {
+                error = '2400 is not a valid input. Use 0000.';
+                errorId = `validity-end-time-${index}`;
+            } else {
+                error = 'Time must be in 2400 format';
+                errorId = `validity-end-time-${index}`;
+            }
+        }
+
         return {
             productName: rawProduct.productName,
             productNameId: rawProduct.productNameId,
@@ -34,17 +63,21 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productPriceId: rawProduct.productPriceId,
             productDuration: rawProduct.productDuration,
             productDurationId: rawProduct.productDurationId,
-            productValidity: validity,
             productValidityError: error,
+            productValidityId: errorId,
             productDurationUnits: rawProduct.productDurationUnits,
+            productValidity: validity || '',
+            serviceEndTime: validity === 'endOfServiceDay' ? validityEndTime : '',
         };
     }
+
     return {
         productName: rawProduct.productName,
         productPrice: rawProduct.productPrice,
         productDuration: rawProduct.productDuration,
-        productValidity: validity,
         productDurationUnits: rawProduct.productDurationUnits,
+        productValidity: validity,
+        serviceEndTime: validity === 'endOfServiceDay' ? validityEndTime : '',
     };
 };
 
@@ -63,7 +96,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const rawProducts: Product[] = multiProductAttribute.products;
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
 
-        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products });
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
+            products,
+            endTimesList: req.body && req.body.listOfEndTimes !== '' ? req.body.listOfEndTimes.split(',') : [],
+        });
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');

@@ -21,18 +21,18 @@ describe('multipleProductValidity', () => {
                 productPriceId: '',
                 productDuration: '3',
                 productDurationId: '',
+                serviceEndTime: '',
             };
             const result = addErrorsIfInvalid(req, product, userInputIndex);
 
             expect(result.productValidity).toBe('');
-            expect(result.productValidityError).toBe('Select one of the two validity options');
+            expect(result.productValidityError).toBe('Select one of the three expiry options');
         });
 
         it('does not add errors to correct data', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    'validity-row0': 'endOfCalendarDay',
-                    'validity-row1': '24hr',
+                    'validity-option-0': 'endOfCalendarDay',
                 },
             });
 
@@ -44,31 +44,120 @@ describe('multipleProductValidity', () => {
                 productPriceId: '',
                 productDuration: '30',
                 productDurationId: '',
+                productValidity: 'endOfCalendarDay',
             };
             const result = addErrorsIfInvalid(req, product, userInputIndex);
 
             expect(result.productValidity).toBe('endOfCalendarDay');
             expect(result.productValidityError).toBe(undefined);
         });
-    });
 
-    it('redirects back to the multipleProductValidity page if there is no body', () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {},
-            mockWriteHeadFn: writeHeadMock,
+        it('add error when service day is selected but no end time entered', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'endOfServiceDay',
+                    'validity-end-time-0': '',
+                },
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'endOfServiceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('endOfServiceDay');
+            expect(result.productValidityError).toBe('Specify an end time for service day');
         });
 
-        multipleProductValidity(req, res);
+        it('add error when validity end time is entered incorrectly', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'endOfServiceDay',
+                    'validity-end-time-0': '2400',
+                },
+            });
 
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/multipleProductValidity',
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'endOfServiceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('endOfServiceDay');
+            expect(result.productValidityError).toBe('2400 is not a valid input. Use 0000.');
+        });
+
+        it('should not error if there is whitespace in the time', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'endOfServiceDay',
+                    'validity-end-time-0': ' 1200',
+                },
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'endOfServiceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('endOfServiceDay');
+            expect(result.productValidityError).toBe(undefined);
+        });
+
+        it('add error when validity end time is has invalid characters', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'endOfServiceDay',
+                    'validity-end-time-0': '140a',
+                },
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'endOfServiceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('endOfServiceDay');
+            expect(result.productValidityError).toBe('Time must be in 2400 format');
         });
     });
 
     it('redirects to selectSalesOfferPackage page if all valid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
-            body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            body: {
+                'validity-option-0': '24hr',
+                'validity-option-1': '24hr',
+                'validity-option-2': 'endOfCalendarDay',
+                listOfEndTimes: '',
+            },
             mockWriteHeadFn: writeHeadMock,
         });
         multipleProductValidity(req, res);
