@@ -186,6 +186,7 @@ export interface BasePointToPointTicket extends BaseTicket {
 
 export interface SingleTicket extends BasePointToPointTicket {
     fareZones: FareZone[];
+    termTime: boolean;
 }
 
 export interface ReturnTicket extends BasePointToPointTicket {
@@ -223,6 +224,7 @@ export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
+    termTime: boolean;
 }
 
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
@@ -236,6 +238,7 @@ export interface FlatFareTicket extends BaseTicket {
     operatorName: string;
     products: FlatFareProductDetails[];
     selectedServices: SelectedService[];
+    termTime: boolean;
 }
 
 export interface BaseGroupTicket {

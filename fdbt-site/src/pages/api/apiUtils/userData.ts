@@ -3,6 +3,32 @@ import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import isArray from 'lodash/isArray';
 import {
+    TermTimeAttribute,
+    ProductWithSalesOfferPackages,
+    CognitoIdToken,
+    FlatFareTicket,
+    NextApiRequestWithSession,
+    GeoZoneTicket,
+    PeriodMultipleServicesTicket,
+    Product,
+    ProductData,
+    ProductDetails,
+    ProductInfo,
+    ReturnTicket,
+    SelectedService,
+    SingleTicket,
+    Stop,
+    SalesOfferPackage,
+    BaseTicket,
+    BasePeriodTicket,
+    MultiOperatorMultipleServicesTicket,
+    MultiOperatorInfo,
+    SchemeOperatorTicket,
+    Ticket,
+    isSchemeOperatorTicket,
+} from '../../../interfaces/index';
+import {
+    TERM_TIME_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -31,30 +57,6 @@ import {
     isPassengerType,
     isTicketPeriodAttribute,
 } from '../../../interfaces/typeGuards';
-import {
-    ProductWithSalesOfferPackages,
-    CognitoIdToken,
-    FlatFareTicket,
-    NextApiRequestWithSession,
-    GeoZoneTicket,
-    PeriodMultipleServicesTicket,
-    Product,
-    ProductData,
-    ProductDetails,
-    ProductInfo,
-    ReturnTicket,
-    SelectedService,
-    SingleTicket,
-    Stop,
-    SalesOfferPackage,
-    BaseTicket,
-    BasePeriodTicket,
-    MultiOperatorMultipleServicesTicket,
-    MultiOperatorInfo,
-    SchemeOperatorTicket,
-    Ticket,
-    isSchemeOperatorTicket,
-} from '../../../interfaces/index';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 
@@ -68,6 +70,11 @@ import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { MultipleProductAttribute } from '../multipleProductValidity';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
+
+export const isTermTime = (req: NextApiRequestWithSession): boolean => {
+    const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
+    return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
+};
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -257,6 +264,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...service,
         fareZones: getFareZones(userFareStages, matchingFareZones),
         products: [{ salesOfferPackages }],
+        termTime: isTermTime(req),
     };
 };
 
@@ -384,12 +392,14 @@ export const getMultipleServicesTicketJson = (
             ...basePeriodTicketAttributes,
             selectedServices: formattedServiceInfo,
             additionalOperators: additionalOperatorsInfo.additionalOperators,
+            termTime: isTermTime(req),
         };
     }
 
     return {
         ...basePeriodTicketAttributes,
         selectedServices: formattedServiceInfo,
+        termTime: isTermTime(req),
     };
 };
 
@@ -443,6 +453,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         operatorName: operatorObject?.operator?.operatorPublicName,
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
+        termTime: isTermTime(req),
     };
 };
 
