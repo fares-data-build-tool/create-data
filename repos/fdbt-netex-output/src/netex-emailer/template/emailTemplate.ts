@@ -109,11 +109,21 @@ const emailTemplate = (
                   >
                       <strong>Date & Time of Creation:</strong> ${dateTimeCreation}
                   </p>
-                    <p
-                            style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400; margin-bottom: 20px;"
-                    >
-                        Please download this file for safe storage of your fares information.
-                    </p>
+                  <p
+                    style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400; margin-bottom: 20px;"
+                  >
+                    You can download this file to your own computer or access all of your created files from the <a href="https://fares-data.dft.gov.uk/home" aria-label="home page link">home page</a> on our service.
+                  </p>
+                  <p
+                    style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400; margin-bottom: 20px;"
+                  >
+                  <strong>Your options</strong>
+                  </p>
+                  <p
+                    style="color: #0b0c0c; font-family: Arial,sans-serif; -webkit-font-smoothing: antialiased; font-weight: 400; margin-bottom: 20px;"
+                  >
+                    You can return to our service if you wish to create additional fares data or go straight to the <a href="https://fares-data.dft.gov.uk/home" aria-label="Bus Open Data Service (BODS) link">Bus Open Data Service (BODS)</a> to upload your file.
+                  </p>
                 </div>
               </div>
             </div>
