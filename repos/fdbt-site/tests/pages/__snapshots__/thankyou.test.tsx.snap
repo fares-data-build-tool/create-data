@@ -50,11 +50,20 @@ exports[`pages thankyou should render correctly 1`] = `
   >
     You will be contacted should there be a problem with your upload.
   </p>
+  <h2
+    className="govuk-heading-m"
+  >
+    Your options
+  </h2>
   <p
     className="govuk-body"
   >
-    If you would like to provide feedback on this service, please click
-     
+    You now have two options; you can add another fare using this service, or you can continue to the Bus Open Data Service (BODS) to upload your NeTEx file.
+  </p>
+  <p
+    className="govuk-body"
+  >
+    If you would like to provide feedback on this service, please click 
     <a
       aria-label="Provide feedback on this service"
       className="govuk-link"
@@ -72,6 +81,16 @@ exports[`pages thankyou should render correctly 1`] = `
     role="button"
   >
     Add another fare
+  </a>
+  <a
+    aria-label="continue to bods"
+    className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+    data-module="govuk-button"
+    draggable="false"
+    href="https://publish.bus-data.dft.gov.uk/"
+    role="button"
+  >
+    Continue to BODS
   </a>
 </Component>
 `;

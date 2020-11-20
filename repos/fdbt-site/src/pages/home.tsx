@@ -34,7 +34,7 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
                         Download previously created NeTEx data
                     </a>
                 </div>
-                <div className="govuk-!-margin-top-7 govuk-!-padding-bottom-7">
+                <div className="govuk-!-margin-top-7">
                     <h2 className="govuk-heading-s">Operator settings</h2>
                     <p className="govuk-body">
                         For updating the information we use about your services when creating NeTEx data.
@@ -43,6 +43,16 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
                     <a href="/account" className="govuk-link govuk-!-font-size-19" id="account-link">
                         My account settings
                     </a>
+                </div>
+                <div className="govuk-!-margin-top-7 govuk-!-padding-bottom-7">
+                    <h2 className="govuk-heading-s govuk-!-margin-top-3">Related services</h2>
+                    <p className="govuk-body">
+                        If your query relates to the use of the Bus Open Data Service go&nbsp;
+                        <a href="https://publish.bus-data.dft.gov.uk/" aria-label="go to the bus open data service">
+                            here
+                        </a>
+                        &nbsp;to view their contact details.
+                    </p>
                 </div>
             </div>
             <div className="govuk-grid-column-one-third">
