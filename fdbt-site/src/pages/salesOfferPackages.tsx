@@ -15,16 +15,27 @@ import { getCsrfToken } from '../utils';
 const title = 'Sales Offer Packages - Create Fares Data Service';
 const description = 'Sales Offer Packages page for the Create Fares Data Service';
 
+// DistributionChannelType
 export const purchaseLocationsList = {
     id: 'checkbox-0-on-board',
-    method: ['onBoard', 'online', 'mobileDevice'],
+    method: ['onBoard', 'online', 'mobileDevice', 'postal', 'agency'],
 };
 
+// Payment Method
 export const paymentMethodsList = {
     id: 'checkbox-0-cash',
-    paymentMethods: ['cash', 'debitCard', 'creditCard', 'mobilePhone', 'cheque', 'directDebit'],
+    paymentMethods: [
+        'cash',
+        'debitCard',
+        'creditCard',
+        'mobilePhone',
+        'cheque',
+        'directDebit',
+        'contactlessTravelCard',
+    ],
 };
 
+// FulfilmentMethodType
 export const ticketFormatsList = {
     id: 'checkbox-0-paper-ticket',
     ticketFormats: ['paperTicket', 'mobileApp', 'smartCard'],
@@ -34,6 +45,11 @@ export interface SalesOfferPackagesProps {
     salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     csrfToken: string;
 }
+
+export const valuesMap: { [key: string]: string } = {
+    agency: 'Travel Shop',
+    contactlessTravelCard: 'Contactless SmartCard (e.g Oyster)',
+};
 
 export const isSalesOfferPackageInfoWithErrors = (
     salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors,
@@ -69,8 +85,8 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                         errorClass="govuk-form-group--error"
                                     >
                                         <>
-                                            {purchaseLocationsList.method.map((purchaseLocations, index) => {
-                                                const purchaseLocationId = kebabCase(purchaseLocations);
+                                            {purchaseLocationsList.method.map((purchaseLocation, index) => {
+                                                const purchaseLocationId = kebabCase(purchaseLocation);
                                                 return (
                                                     <div
                                                         className="govuk-checkboxes__item"
@@ -81,16 +97,16 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             id={`checkbox-${index}-${purchaseLocationId}`}
                                                             name="purchaseLocations"
                                                             type="checkbox"
-                                                            value={purchaseLocations}
+                                                            value={purchaseLocation}
                                                             defaultChecked={salesOfferPackage.purchaseLocations.includes(
-                                                                purchaseLocations,
+                                                                purchaseLocation,
                                                             )}
                                                         />
                                                         <label
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${purchaseLocationId}`}
                                                         >
-                                                            {startCase(purchaseLocations)}
+                                                            {valuesMap[purchaseLocation] || startCase(purchaseLocation)}
                                                         </label>
                                                     </div>
                                                 );
@@ -113,8 +129,8 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                         errorClass="govuk-form-group--error"
                                     >
                                         <>
-                                            {paymentMethodsList.paymentMethods.map((paymentMethods, index) => {
-                                                const paymentMethodId = kebabCase(paymentMethods);
+                                            {paymentMethodsList.paymentMethods.map((paymentMethod, index) => {
+                                                const paymentMethodId = kebabCase(paymentMethod);
                                                 return (
                                                     <div
                                                         className="govuk-checkboxes__item"
@@ -125,16 +141,16 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             id={`checkbox-${index}-${paymentMethodId}`}
                                                             name="paymentMethods"
                                                             type="checkbox"
-                                                            value={paymentMethods}
+                                                            value={paymentMethod}
                                                             defaultChecked={salesOfferPackage.paymentMethods.includes(
-                                                                paymentMethods,
+                                                                paymentMethod,
                                                             )}
                                                         />
                                                         <label
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${paymentMethodId}`}
                                                         >
-                                                            {startCase(paymentMethods)}
+                                                            {valuesMap[paymentMethod] || startCase(paymentMethod)}
                                                         </label>
                                                     </div>
                                                 );
@@ -157,8 +173,8 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                         errorClass="govuk-form-group--error"
                                     >
                                         <>
-                                            {ticketFormatsList.ticketFormats.map((ticketFormats, index) => {
-                                                const ticketFormatId = kebabCase(ticketFormats);
+                                            {ticketFormatsList.ticketFormats.map((ticketFormat, index) => {
+                                                const ticketFormatId = kebabCase(ticketFormat);
                                                 return (
                                                     <div
                                                         className="govuk-checkboxes__item"
@@ -169,16 +185,16 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             id={`checkbox-${index}-${ticketFormatId}`}
                                                             name="ticketFormats"
                                                             type="checkbox"
-                                                            value={ticketFormats}
+                                                            value={ticketFormat}
                                                             defaultChecked={salesOfferPackage.ticketFormats.includes(
-                                                                ticketFormats,
+                                                                ticketFormat,
                                                             )}
                                                         />
                                                         <label
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${ticketFormatId}`}
                                                         >
-                                                            {startCase(ticketFormats)}
+                                                            {startCase(ticketFormat)}
                                                         </label>
                                                     </div>
                                                 );
