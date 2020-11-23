@@ -1,7 +1,6 @@
 import Cookies from 'cookies';
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import isArray from 'lodash/isArray';
 import {
     TermTimeAttribute,
     ProductWithSalesOfferPackages,
@@ -18,7 +17,6 @@ import {
     SelectedService,
     SingleTicket,
     Stop,
-    SalesOfferPackage,
     BaseTicket,
     BasePeriodTicket,
     MultiOperatorMultipleServicesTicket,
@@ -59,7 +57,6 @@ import {
 } from '../../../interfaces/typeGuards';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
-
 import { PeriodExpiryWithErrors } from '../periodValidity';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
@@ -74,31 +71,6 @@ import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
     return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
-};
-
-export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
-    const salesOfferPackageList: SalesOfferPackage[] = [];
-
-    entry
-        .filter(item => item)
-        .forEach(sop => {
-            let sopToProcess = sop;
-
-            if (isArray(sop)) {
-                [sopToProcess] = sop;
-            }
-            const parsedEntry = JSON.parse(sopToProcess);
-            const formattedPackageObject = {
-                name: parsedEntry.name,
-                description: parsedEntry.description,
-                purchaseLocations: parsedEntry.purchaseLocations,
-                paymentMethods: parsedEntry.paymentMethods,
-                ticketFormats: parsedEntry.ticketFormats,
-            };
-            salesOfferPackageList.push(formattedPackageObject);
-        });
-
-    return salesOfferPackageList;
 };
 
 export const getProductsAndSalesOfferPackages = (
