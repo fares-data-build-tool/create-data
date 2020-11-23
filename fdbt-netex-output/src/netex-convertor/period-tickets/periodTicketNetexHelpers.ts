@@ -759,7 +759,12 @@ const getConditionsElement = (product: ProductDetails): NetexObject => {
                 version: '1.0',
                 id: `op:Trip@${product.productName}@back@frequency`,
                 UsageTrigger: { $t: 'purchase' },
-                UsageEnd: { $t: product.productValidity === 'endOfCalendarDay' ? 'endOfFareDay' : 'standardDuration' },
+                UsageEnd: {
+                    $t:
+                        product.productValidity === 'endOfCalendarDay' || product.productValidity === 'endOfServiceDay'
+                            ? 'endOfFareDay'
+                            : 'standardDuration',
+                },
                 ActivationMeans: { $t: 'noneRequired' },
             },
         };
