@@ -805,6 +805,16 @@
 							<DistributionChannelType>online</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
+						<DistributionChannel id="fxc:postal" version="fxc:v1.0">
+							<ShortName>Ticket or card received by post</ShortName>
+							<DistributionChannelType>postal</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
+						<DistributionChannel id="fxc:agency" version="fxc:v1.0">
+							<ShortName>e.g. Travel shop</ShortName>
+							<DistributionChannelType>agency</DistributionChannelType>
+							<IsObligatory>false</IsObligatory>
+						</DistributionChannel>
 						<DistributionChannel id="fxc:atStop" version="fxc:v1.0">
 							<ShortName>In station sale by machine, counter or payg</ShortName>
 							<DistributionChannelType>atStop</DistributionChannelType>

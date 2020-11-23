@@ -3,7 +3,15 @@ import capitalize from 'lodash/capitalize';
 import parser from 'xml2json';
 import fs from 'fs';
 import moment from 'moment';
-import { PeriodTicket, PointToPointTicket, GroupTicket, User, GroupCompanion, FullTimeRestriction } from '../types';
+import {
+    FlatFareTicket,
+    PeriodTicket,
+    PointToPointTicket,
+    GroupTicket,
+    User,
+    GroupCompanion,
+    FullTimeRestriction,
+} from '../types/index';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -37,10 +45,10 @@ export const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => 
     return netexFileAsXmlString;
 };
 
-export const isGroupTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is GroupTicket =>
+export const isGroupTicket = (ticket: PeriodTicket | PointToPointTicket | FlatFareTicket): ticket is GroupTicket =>
     (ticket as GroupTicket).groupDefinition !== undefined;
 
-export const getProfileRef = (ticket: PeriodTicket | PointToPointTicket): NetexObject => {
+export const getProfileRef = (ticket: PeriodTicket | PointToPointTicket | FlatFareTicket): NetexObject => {
     if (isGroupTicket(ticket)) {
         return {
             GroupTicketRef: {

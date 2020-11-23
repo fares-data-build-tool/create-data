@@ -29,6 +29,7 @@ export const singleTicket: SingleTicket = {
     ],
     lineName: '237',
     nocCode: 'MCTR',
+    termTime: true,
     operatorShortName: 'Manchester Community Tr',
     serviceDescription: 'Ashton Under Lyne - Glossop',
     type: 'single',
@@ -1329,6 +1330,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
     email: 'test@example.com',
     uuid: 'BLACadge12d',
     nocCode: 'PBLT',
+    termTime: false,
     products: [
         {
             salesOfferPackages: [
@@ -1611,6 +1613,7 @@ export const flatFareTicket: FlatFareTicket = {
     type: 'flatFare',
     email: 'test@example.com',
     uuid: 'BLACadge12d',
+    termTime: true,
     products: [
         {
             salesOfferPackages: [
