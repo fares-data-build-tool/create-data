@@ -20,14 +20,14 @@ exports[`pages ticketConfirmation should render correctly for flat fare tickets 
       confirmationElements={
         Array [
           Object {
-            "content": "2A, 7F, 200",
+            "content": "12A, 6, 101",
             "href": "serviceList",
             "name": "Services",
           },
           Object {
-            "content": "Price - £60",
+            "content": "Price - £12",
             "href": "productDetails",
-            "name": "Product - Flat fare ticket",
+            "name": "Product - Some Product",
           },
         ]
       }
@@ -63,54 +63,24 @@ exports[`pages ticketConfirmation should render correctly for period and multiOp
       confirmationElements={
         Array [
           Object {
-            "content": "You uploaded a Fare Zone CSV file",
-            "href": "csvZoneUpload",
-            "name": "Zone",
+            "content": "12A, 6, 101",
+            "href": "serviceList",
+            "name": "Services",
           },
           Object {
-            "content": "Price - £30",
-            "href": "multipleProducts",
-            "name": "Product - Super ticket",
+            "content": "Price - £50",
+            "href": "productDetails",
+            "name": "Product - Weekly Ticket",
           },
           Object {
-            "content": "Duration - 2 undefineds",
-            "href": "multipleProducts",
-            "name": "Product - Super ticket",
-          },
-          Object {
-            "content": "Validity - 24 Hr",
-            "href": "multipleProductValidity",
-            "name": "Product - Super ticket",
-          },
-          Object {
-            "content": "Price - £10",
-            "href": "multipleProducts",
-            "name": "Product - Best ticket",
-          },
-          Object {
-            "content": "Duration - 22 undefineds",
-            "href": "multipleProducts",
-            "name": "Product - Best ticket",
+            "content": "Duration - 5 weekss",
+            "href": "chooseValidity",
+            "name": "Product - Weekly Ticket",
           },
           Object {
             "content": "Validity - 24 Hr",
-            "href": "multipleProductValidity",
-            "name": "Product - Best ticket",
-          },
-          Object {
-            "content": "Price - £3",
-            "href": "multipleProducts",
-            "name": "Product - Normal ticket",
-          },
-          Object {
-            "content": "Duration - 23 undefineds",
-            "href": "multipleProducts",
-            "name": "Product - Normal ticket",
-          },
-          Object {
-            "content": "Validity - 24 Hr",
-            "href": "multipleProductValidity",
-            "name": "Product - Normal ticket",
+            "href": "periodValidity",
+            "name": "Product - Weekly Ticket",
           },
         ]
       }
@@ -146,42 +116,22 @@ exports[`pages ticketConfirmation should render correctly for return tickets 1`]
       confirmationElements={
         Array [
           Object {
-            "content": "2B",
+            "content": "X01",
             "href": "service",
             "name": "Service",
           },
           Object {
-            "content": "Stops - At station, Outside station, Near park",
+            "content": "Stops - Yoden Way - Chapel Hill Road",
             "href": "outboundMatching",
-            "name": "Outbound Fare Stage - Another Bus station",
+            "name": "Outbound Fare Stage - Acomb Green Lane",
           },
           Object {
-            "content": "Stops - At church, Outside corner shop, Near pub",
-            "href": "outboundMatching",
-            "name": "Outbound Fare Stage - Smally Church",
-          },
-          Object {
-            "content": "Stops - At Liverpool station, Outside Liverpool train station, Near Liverpool green park",
-            "href": "outboundMatching",
-            "name": "Outbound Fare Stage - Liverpool",
-          },
-          Object {
-            "content": "Stops - At station, Outside station, Near park",
+            "content": "Stops - Yoden Way - Chapel Hill Road",
             "href": "inboundMatching",
-            "name": "Inbound Fare Stage - Bus station",
+            "name": "Inbound Fare Stage - Acomb Green Lane",
           },
           Object {
-            "content": "Stops - At church, Outside corner shop, Near pub",
-            "href": "inboundMatching",
-            "name": "Inbound Fare Stage - Longly Church",
-          },
-          Object {
-            "content": "Stops - At london station, Outside train station, Near green park",
-            "href": "inboundMatching",
-            "name": "Inbound Fare Stage - London",
-          },
-          Object {
-            "content": "2 days",
+            "content": "5 day",
             "href": "returnValidity",
             "name": "Return Validity",
           },
@@ -219,7 +169,7 @@ exports[`pages ticketConfirmation should render correctly for single tickets 1`]
       confirmationElements={
         Array [
           Object {
-            "content": "3A",
+            "content": "X01",
             "href": "service",
             "name": "Service",
           },
@@ -229,19 +179,9 @@ exports[`pages ticketConfirmation should render correctly for single tickets 1`]
             "name": "Fare Triangle",
           },
           Object {
-            "content": "Stops - At station, Outside station, Near park",
+            "content": "Stops - Yoden Way - Chapel Hill Road",
             "href": "matching",
-            "name": "Fare Stage - Bus station",
-          },
-          Object {
-            "content": "Stops - At church, Outside corner shop, Near pub",
-            "href": "matching",
-            "name": "Fare Stage - Longly Church",
-          },
-          Object {
-            "content": "Stops - At london station, Outside train station, Near green park",
-            "href": "matching",
-            "name": "Fare Stage - London",
+            "name": "Fare Stage - Acomb Green Lane",
           },
         ]
       }

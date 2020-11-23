@@ -17,6 +17,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/schoolFareType');
         } else {
             updateSessionAttribute(req, TERM_TIME_ATTRIBUTE, {
+                termTime: false,
                 errors: [
                     {
                         id: 'term-time-yes',

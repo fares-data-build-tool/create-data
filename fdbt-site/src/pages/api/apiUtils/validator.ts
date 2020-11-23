@@ -78,3 +78,5 @@ export const checkDurationIsValid = (inputtedDuration: string): string => {
 
     return '';
 };
+
+export const isValidTime = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);

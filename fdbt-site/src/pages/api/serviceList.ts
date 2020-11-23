@@ -1,10 +1,9 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { redirectTo, redirectToError } from './apiUtils';
+import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
+import { SERVICE_LIST_ATTRIBUTE } from '../../constants';
+import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 
 const errorId = 'checkbox-0';
@@ -26,11 +25,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
 
-        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
-        if (!isFareType(fareTypeAttribute)) {
-            throw new Error('Failed to retrieve fare type attribute info for serviceList API');
-        }
+        const fareType = getFareTypeFromFromAttributes(req);
 
         const refererUrl = req?.headers?.referer;
         const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
@@ -70,11 +65,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
-        if (fareTypeAttribute.fareType === 'flatFare') {
+        if (fareType === 'flatFare') {
             redirectTo(res, '/productDetails');
             return;
         }
-        if (fareTypeAttribute.fareType === 'multiOperator') {
+        if (fareType === 'multiOperator') {
             redirectTo(res, '/searchOperators');
             return;
         }

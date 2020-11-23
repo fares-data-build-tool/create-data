@@ -45,7 +45,7 @@ exports[`pages home page should render correctly 1`] = `
         </a>
       </div>
       <div
-        className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
+        className="govuk-!-margin-top-7"
       >
         <h2
           className="govuk-heading-s"
@@ -64,6 +64,27 @@ exports[`pages home page should render correctly 1`] = `
         >
           My account settings
         </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
+      >
+        <h2
+          className="govuk-heading-s govuk-!-margin-top-3"
+        >
+          Related services
+        </h2>
+        <p
+          className="govuk-body"
+        >
+          If your query relates to the use of the Bus Open Data Service go 
+          <a
+            aria-label="go to the bus open data service"
+            href="https://publish.bus-data.dft.gov.uk/"
+          >
+            here
+          </a>
+           to view their contact details.
+        </p>
       </div>
     </div>
     <div
@@ -131,7 +152,7 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
         </a>
       </div>
       <div
-        className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
+        className="govuk-!-margin-top-7"
       >
         <h2
           className="govuk-heading-s"
@@ -150,6 +171,27 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
         >
           My account settings
         </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-7 govuk-!-padding-bottom-7"
+      >
+        <h2
+          className="govuk-heading-s govuk-!-margin-top-3"
+        >
+          Related services
+        </h2>
+        <p
+          className="govuk-body"
+        >
+          If your query relates to the use of the Bus Open Data Service go 
+          <a
+            aria-label="go to the bus open data service"
+            href="https://publish.bus-data.dft.gov.uk/"
+          >
+            here
+          </a>
+           to view their contact details.
+        </p>
       </div>
     </div>
     <div

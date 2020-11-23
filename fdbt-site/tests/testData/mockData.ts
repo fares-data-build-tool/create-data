@@ -113,7 +113,7 @@ export const getMockRequestAndResponse = ({
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
         [DURATION_VALID_ATTRIBUTE]: { amount: '2', duration: 'day', errors: [] },
         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZone' },
-        [FARE_STAGES_ATTRIBUTE]: { fareStages: 6 },
+        [FARE_STAGES_ATTRIBUTE]: { fareStages: '6' },
         [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
         [SERVICE_LIST_ATTRIBUTE]: {
             selectedServices: [
@@ -123,7 +123,7 @@ export const getMockRequestAndResponse = ({
             ],
         },
         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-            numberOfProducts: 2,
+            numberOfProductsInput: '3',
         },
         [MULTIPLE_PRODUCT_ATTRIBUTE]: {
             products: [
@@ -134,6 +134,8 @@ export const getMockRequestAndResponse = ({
                     productPriceId: 'multiple-product-price-1',
                     productDuration: '5',
                     productDurationId: 'multiple-product-duration-1',
+                    productValidity: '24hr',
+                    productDurationUnits: 'weeks',
                 },
                 {
                     productName: 'Day Ticket',
@@ -142,6 +144,8 @@ export const getMockRequestAndResponse = ({
                     productPriceId: 'multiple-product-price-2',
                     productDuration: '1',
                     productDurationId: 'multiple-product-duration-2',
+                    productValidity: '24hr',
+                    productDurationUnits: 'weeks',
                 },
                 {
                     productName: 'Monthly Ticket',
@@ -150,6 +154,8 @@ export const getMockRequestAndResponse = ({
                     productPriceId: 'multiple-product-price-3',
                     productDuration: '28',
                     productDurationId: 'multiple-product-duration-3',
+                    productValidity: '24hr',
+                    productDurationUnits: 'weeks',
                 },
             ],
         },
@@ -355,7 +361,7 @@ export const mockMatchingFaresZones: MatchingFareZones = {
     },
 };
 
-export const mockOutBoundMatchingFaresZones: MatchingFareZones = {
+export const mockOutboundMatchingFaresZones: MatchingFareZones = {
     'Acomb Green Lane': {
         name: 'Acomb Green Lane',
         stops: [
@@ -1205,6 +1211,7 @@ export const expectedSingleTicket: SingleTicket = {
     nocCode: 'DCCL',
     passengerType: 'Adult',
     operatorShortName: 'DCC',
+    termTime: true,
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
@@ -1715,6 +1722,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: 'Adult',
+    termTime: false,
     timeRestriction: mockTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -1772,6 +1780,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: 'Adult',
+    termTime: false,
     timeRestriction: mockTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -1900,6 +1909,7 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    termTime: false,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',

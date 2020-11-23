@@ -10,14 +10,21 @@ import {
     getAndValidateSchemeOpRegion,
     isSchemeOperator,
     redirectOnSchoolFareType,
+    getFareTypeFromFromAttributes,
 } from '../../../../src/pages/api/apiUtils';
 import * as apiUtils from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../../testData/mockData';
-import { FARE_TYPE_ATTRIBUTE, SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../../../src/constants';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../../../../src/constants';
+import * as sessions from '../../../../src/utils/sessions';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     beforeEach(() => {
         jest.spyOn(s3, 'putStringInS3');
@@ -79,6 +86,51 @@ describe('apiUtils', () => {
         });
     });
 
+    describe('getFareTypeFromFromAttributes', () => {
+        it("should return the fare type from the FARE_TYPE_ATTRIBUTE when fareType is not 'schoolService'", () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+                },
+            });
+            const fareType = getFareTypeFromFromAttributes(req);
+            expect(fareType).toBe('single');
+        });
+
+        it("should return the fare type from the SCHOOL_FARE_TYPE_ATTRIBUTE when fareType is 'schoolService'", () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'flatFare' },
+                },
+            });
+            const fareType = getFareTypeFromFromAttributes(req);
+            expect(fareType).toBe('flatFare');
+        });
+
+        it('should throw an error when the fare type is not a valid fare type', () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'FAKE FARE TYPE' },
+                },
+            });
+            expect(() => getFareTypeFromFromAttributes(req)).toThrowError(
+                'Incorrect fare type session attributes found.',
+            );
+        });
+
+        it("should throw an error when the fare type is 'schoolService', but there is no SCHOOL_FARE_TYPE_ATTRIBUTE", () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                },
+            });
+            expect(() => getFareTypeFromFromAttributes(req)).toThrowError(
+                'Incorrect fare type session attributes found.',
+            );
+        });
+    });
+
     describe('redirectOnSchoolFareType', () => {
         it.each([
             ['/service', 'single'],
@@ -98,6 +150,20 @@ describe('apiUtils', () => {
             });
         });
 
+        it('should update the TICKET_REPRESENTATION_ATTRIBUTE when the period ticket option is selected', () => {
+            const { req, res } = getMockRequestAndResponse({
+                mockWriteHeadFn: writeHeadMock,
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
+                },
+            });
+            redirectOnSchoolFareType(req, res);
+            expect(updateSessionAttributeSpy).toBeCalledWith(req, TICKET_REPRESENTATION_ATTRIBUTE, {
+                name: 'multipleServices',
+            });
+        });
+
         it('should throw error if unexpected fare type is selected', () => {
             const { req, res } = getMockRequestAndResponse({
                 mockWriteHeadFn: writeHeadMock,
@@ -106,7 +172,6 @@ describe('apiUtils', () => {
                     [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'roundandaround' },
                 },
             });
-
             expect(() => {
                 redirectOnFareType(req, res);
             }).toThrowError(new Error('Did not receive an expected schoolFareType.'));

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages fareConfirmation should render correctly 1`] = `
+exports[`pages fareConfirmation should render correctly for non school tickets 1`] = `
 <Component
   description="Fare Confirmation page of the Create Fares Data Service"
   errors={Array []}
@@ -53,6 +53,69 @@ exports[`pages fareConfirmation should render correctly 1`] = `
             "content": "Start time: N/A End time: N/A",
             "href": "defineTimeRestrictions",
             "name": "Time Restrictions - Bank Holiday",
+          },
+        ]
+      }
+      header="Fare Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages fareConfirmation should render correctly for school tickets 1`] = `
+<Component
+  description="Fare Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Fare Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/fareConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your fares information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "School Service",
+            "href": "fareType",
+            "name": "Fare Type",
+          },
+          Object {
+            "content": "School Pupil",
+            "href": "",
+            "name": "Passenger Type",
+          },
+          Object {
+            "content": "Minimum Age: No details entered Maximum Age: 18",
+            "href": "definePassengerType",
+            "name": "Passenger Information - Age Range",
+          },
+          Object {
+            "content": "Student Card",
+            "href": "definePassengerType",
+            "name": "Passenger Information - Proof Documents",
+          },
+          Object {
+            "content": "Yes",
+            "href": "termTime",
+            "name": "Only Valid During Term Times",
+          },
+          Object {
+            "content": "Single",
+            "href": "schoolFareType",
+            "name": "School Ticket Fare Type",
           },
         ]
       }

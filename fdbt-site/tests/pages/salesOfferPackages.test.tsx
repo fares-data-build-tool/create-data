@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import SalesOfferPackages, { getServerSideProps, SalesOfferPackagesProps } from '../../src/pages/salesOfferPackages';
+import SalesOfferPackages, {
+    getServerSideProps,
+    SalesOfferPackagesProps,
+    valuesMap,
+} from '../../src/pages/salesOfferPackages';
 import { getMockContext } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../src/constants';
@@ -20,6 +24,15 @@ describe('pages', () => {
         csrfToken: '',
     };
 
+    const salesOfferPackagesNoErrorWithMappedValues: SalesOfferPackagesProps = {
+        salesOfferPackage: {
+            purchaseLocations: ['agency'],
+            paymentMethods: ['contactlessTravelCard'],
+            ticketFormats: ['mobileApp'],
+        },
+        csrfToken: '',
+    };
+
     const salesOfferPackageWithError: SalesOfferPackagesProps = {
         salesOfferPackage: {
             purchaseLocations: [],
@@ -34,6 +47,12 @@ describe('pages', () => {
         it('should render correctly', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
             const tree = shallow(<SalesOfferPackages {...salesOfferPackagesNoError} csrfToken="" />);
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render mapped values correctly', () => {
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            const tree = shallow(<SalesOfferPackages {...salesOfferPackagesNoErrorWithMappedValues} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -83,6 +102,17 @@ describe('pages', () => {
 
             const result = getServerSideProps(ctx).props.salesOfferPackage;
             expect(result).toEqual(expectedProps);
+        });
+    });
+    describe('valuesMap', () => {
+        it('doesnt return a value for a non-mapped value', () => {
+            expect(valuesMap.directDebit).toBeUndefined();
+        });
+        it('returns a value for agency', () => {
+            expect(valuesMap.agency).toBe('Travel Shop');
+        });
+        it('returns a value for contactlessTravelCard', () => {
+            expect(valuesMap.contactlessTravelCard).toBe('Contactless SmartCard (e.g Oyster)');
         });
     });
 });

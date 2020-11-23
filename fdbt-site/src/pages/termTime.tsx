@@ -7,14 +7,10 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
-import { isTermTimeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Term Time - Create Fares Data Service';
 const description = 'Term Time selection page of the Create Fares Data Service';
-
-export interface TermTimeAttributeWithErrors {
-    errors: ErrorInfo[];
-}
 
 interface TermTimeProps {
     errors: ErrorInfo[];
@@ -77,7 +73,7 @@ const TermTime = ({ errors, csrfToken }: TermTimeProps): ReactElement => (
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TermTimeProps } => {
     const csrfToken = getCsrfToken(ctx);
     const termTimeAttribute = getSessionAttribute(ctx.req, TERM_TIME_ATTRIBUTE);
-    const errors: ErrorInfo[] = isTermTimeAttributeWithErrors(termTimeAttribute) ? termTimeAttribute.errors : [];
+    const errors: ErrorInfo[] = isWithErrors(termTimeAttribute) ? termTimeAttribute.errors : [];
     return { props: { errors, csrfToken } };
 };
 
