@@ -50,7 +50,6 @@ const FareTypeRadios = ({ standardFares, otherFares = [] }: FareTypeRadioProps):
                                     name="fareType"
                                     type="radio"
                                     value={otherFare.fareType}
-                                    disabled={otherFare.fareType === 'schoolService'}
                                 />
                                 <label
                                     className="govuk-label govuk-radios__label"

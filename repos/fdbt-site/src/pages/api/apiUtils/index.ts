@@ -10,12 +10,14 @@ import {
     REFRESH_TOKEN_COOKIE,
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../constants';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
-import { getSessionAttribute } from '../../../utils/sessions';
-import { isFareType, isSchoolFareType } from '../../../interfaces/typeGuards';
+import { getSessionAttribute, updateSessionAttribute } from '../../../utils/sessions';
+import { isFareType } from '../../../interfaces/typeGuards';
+import { SchoolFareTypeAttribute } from '../schoolFareType';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -74,15 +76,32 @@ export const redirectToError = (
     redirectTo(res, '/error');
 };
 
-export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
-    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+export const getFareTypeFromFromAttributes = (req: NextApiRequestWithSession): string => {
+    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
-    if (isSchoolFareType(schoolFareTypeAttribute)) {
+    if (
+        !isFareType(fareTypeAttribute) ||
+        (fareTypeAttribute.fareType === 'schoolService' && !schoolFareTypeAttribute)
+    ) {
+        throw new Error('Incorrect fare type session attributes found.');
+    }
+
+    return fareTypeAttribute.fareType === 'schoolService'
+        ? schoolFareTypeAttribute.schoolFareType
+        : fareTypeAttribute.fareType;
+};
+
+export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+
+    if (schoolFareTypeAttribute) {
         switch (schoolFareTypeAttribute.schoolFareType) {
             case 'single':
                 redirectTo(res, '/service');
                 return;
             case 'period':
+                updateSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE, { name: 'multipleServices' });
                 redirectTo(res, '/serviceList');
                 return;
             case 'flatFare':

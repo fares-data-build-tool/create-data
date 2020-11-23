@@ -308,6 +308,14 @@ svg:not(:root) {
     .no-js-cookie-banner {
         display: none;
     }
+
+    .inputVisible {
+        display: block;
+    }
+
+    .inputHidden {
+        display: none;
+    }
 }
 
 .text-input-margin {

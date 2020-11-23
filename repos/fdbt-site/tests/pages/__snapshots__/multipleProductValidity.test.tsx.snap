@@ -52,214 +52,215 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
       >
         Calendar day means a ticket purchased at 3pm would be valid until midnight on its day of expiry
       </span>
-      <FormElementWrapper
-        errorClass="govuk-radios--error"
-        errorId="twenty-four-hours-row-0"
-        errors={Array []}
+      <span
+        className="govuk-hint"
+        id="end-service-day-validity-type-hint"
       >
-        <table
-          className="govuk-table multiple-product-validity-table"
+        End of service day means a ticket is valid beyond midnight and expires in line with the end of your service day
+      </span>
+      <table
+        className="govuk-table multiple-product-validity-table"
+      >
+        <thead
+          className="govuk-table__head"
         >
-          <thead
-            className="govuk-table__head"
+          <tr
+            className="govuk-table__row"
           >
-            <tr
-              className="govuk-table__row"
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
             >
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Product Name
-              </th>
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Product Price
-              </th>
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Product Duration
-              </th>
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Choose Validity
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
+              Name
+            </th>
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
+            >
+              Price
+            </th>
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
+            >
+              Duration
+            </th>
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
+            >
+              Expiry
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          className="govuk-table__body"
+        >
+          <tr
+            className="govuk-table__row"
+            key="multiple-product-name-1"
           >
-            <tr
-              className="govuk-table__row"
-              key="multiple-product-name-1"
+            <td
+              className="govuk-table__cell"
             >
-              <td
-                className="govuk-table__cell"
-              >
-                Weekly Ticket
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                £
-                50
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                5 undefineds
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <span
-                  className="govuk-radios validity-select-wrapper"
-                >
-                  <span
-                    className="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
-              </td>
-            </tr>
-            <tr
-              className="govuk-table__row"
-              key="multiple-product-name-2"
+              Weekly Ticket
+            </td>
+            <td
+              className="govuk-table__cell"
             >
-              <td
-                className="govuk-table__cell"
+              £
+              50
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              5 undefineds
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-option-0"
+                errors={Array []}
+                hideText={true}
               >
-                Day Ticket
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                £
-                2.50
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                1 undefined
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <span
-                  className="govuk-radios validity-select-wrapper"
+                <select
+                  aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
+                  className="govuk-select farestage-select"
+                  id="validity-option-0"
+                  name="validity-option-0"
+                  onChange={[Function]}
                 >
-                  <span
-                    className="govuk-radios__item"
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
                   >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
+                    Select an expiry
+                  </option>
+                  <option
+                    value="24hr"
                   >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </FormElementWrapper>
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    End of calendar day
+                  </option>
+                  <option
+                    value="endOfServiceDay"
+                  >
+                    End of service day
+                  </option>
+                </select>
+              </FormElementWrapper>
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-end-time-0"
+                errors={Array []}
+                hideText={true}
+              >
+                <input
+                  className="inputHidden govuk-input govuk-input--width-4"
+                  defaultValue=""
+                  id="validity-end-time-0"
+                  name="validity-end-time-0"
+                />
+              </FormElementWrapper>
+            </td>
+          </tr>
+          <tr
+            className="govuk-table__row"
+            key="multiple-product-name-2"
+          >
+            <td
+              className="govuk-table__cell"
+            >
+              Day Ticket
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              £
+              2.50
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              1 undefined
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-option-1"
+                errors={Array []}
+                hideText={true}
+              >
+                <select
+                  aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
+                  className="govuk-select farestage-select"
+                  id="validity-option-1"
+                  name="validity-option-1"
+                  onChange={[Function]}
+                >
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
+                  >
+                    Select an expiry
+                  </option>
+                  <option
+                    value="24hr"
+                  >
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    End of calendar day
+                  </option>
+                  <option
+                    value="endOfServiceDay"
+                  >
+                    End of service day
+                  </option>
+                </select>
+              </FormElementWrapper>
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-end-time-1"
+                errors={Array []}
+                hideText={true}
+              >
+                <input
+                  className="inputHidden govuk-input govuk-input--width-4"
+                  defaultValue=""
+                  id="validity-end-time-1"
+                  name="validity-end-time-1"
+                />
+              </FormElementWrapper>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <input
+        defaultValue=""
+        hidden={true}
+        name="listOfEndTimes"
+      />
     </div>
     <input
       className="govuk-button"
@@ -337,221 +338,243 @@ exports[`pages multipleProductValidity should render error messaging when errors
       >
         Calendar day means a ticket purchased at 3pm would be valid until midnight on its day of expiry
       </span>
-      <FormElementWrapper
-        errorClass="govuk-radios--error"
-        errorId="twenty-four-hours-row-0"
-        errors={
-          Array [
-            Object {
-              "errorMessage": "Select one of the two validity options",
-              "id": "twenty-four-hours-row-0",
-            },
-          ]
-        }
+      <span
+        className="govuk-hint"
+        id="end-service-day-validity-type-hint"
       >
-        <table
-          className="govuk-table multiple-product-validity-table"
+        End of service day means a ticket is valid beyond midnight and expires in line with the end of your service day
+      </span>
+      <table
+        className="govuk-table multiple-product-validity-table"
+      >
+        <thead
+          className="govuk-table__head"
         >
-          <thead
-            className="govuk-table__head"
+          <tr
+            className="govuk-table__row"
           >
-            <tr
-              className="govuk-table__row"
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
             >
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Product Name
-              </th>
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Product Price
-              </th>
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Product Duration
-              </th>
-              <th
-                className="govuk-table__header govuk-!-width-one-quarter"
-                scope="col"
-              >
-                Choose Validity
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
+              Name
+            </th>
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
+            >
+              Price
+            </th>
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
+            >
+              Duration
+            </th>
+            <th
+              className="govuk-table__header govuk-!-width-one-fifth"
+              scope="col"
+            >
+              Expiry
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          className="govuk-table__body"
+        >
+          <tr
+            className="govuk-table__row"
+            key="multiple-product-name-1"
           >
-            <tr
-              className="govuk-table__row"
-              key="multiple-product-name-1"
+            <td
+              className="govuk-table__cell"
             >
-              <td
-                className="govuk-table__cell"
-              >
-                Weekly Ticket
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                £
-                50
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                5 undefineds
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <span
-                  className="govuk-radios validity-select-wrapper"
-                >
-                  <span
-                    className="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
-              </td>
-            </tr>
-            <tr
-              className="govuk-table__row"
-              key="multiple-product-name-2"
+              Weekly Ticket
+            </td>
+            <td
+              className="govuk-table__cell"
             >
-              <td
-                className="govuk-table__cell"
+              £
+              50
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              5 undefineds
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-option-0"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Select one of the two validity options",
+                      "id": "twenty-four-hours-row-0",
+                    },
+                  ]
+                }
+                hideText={true}
               >
-                Day Ticket
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                £
-                2.50
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                1 undefined
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <span
-                  className="govuk-radios validity-select-wrapper"
+                <select
+                  aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
+                  className="govuk-select farestage-select"
+                  id="validity-option-0"
+                  name="validity-option-0"
+                  onChange={[Function]}
                 >
-                  <span
-                    className="govuk-radios__item"
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
                   >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
+                    Select an expiry
+                  </option>
+                  <option
+                    value="24hr"
                   >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </FormElementWrapper>
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    End of calendar day
+                  </option>
+                  <option
+                    value="endOfServiceDay"
+                  >
+                    End of service day
+                  </option>
+                </select>
+              </FormElementWrapper>
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-end-time-0"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Select one of the two validity options",
+                      "id": "twenty-four-hours-row-0",
+                    },
+                  ]
+                }
+                hideText={true}
+              >
+                <input
+                  className="inputHidden govuk-input govuk-input--width-4"
+                  defaultValue=""
+                  id="validity-end-time-0"
+                  name="validity-end-time-0"
+                />
+              </FormElementWrapper>
+            </td>
+          </tr>
+          <tr
+            className="govuk-table__row"
+            key="multiple-product-name-2"
+          >
+            <td
+              className="govuk-table__cell"
+            >
+              Day Ticket
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              £
+              2.50
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              1 undefined
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-option-1"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Select one of the two validity options",
+                      "id": "twenty-four-hours-row-0",
+                    },
+                  ]
+                }
+                hideText={true}
+              >
+                <select
+                  aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
+                  className="govuk-select farestage-select"
+                  id="validity-option-1"
+                  name="validity-option-1"
+                  onChange={[Function]}
+                >
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
+                  >
+                    Select an expiry
+                  </option>
+                  <option
+                    value="24hr"
+                  >
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    End of calendar day
+                  </option>
+                  <option
+                    value="endOfServiceDay"
+                  >
+                    End of service day
+                  </option>
+                </select>
+              </FormElementWrapper>
+            </td>
+            <td
+              className="govuk-table__cell"
+            >
+              <FormElementWrapper
+                errorClass="govuk-select--error"
+                errorId="validity-end-time-1"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Select one of the two validity options",
+                      "id": "twenty-four-hours-row-0",
+                    },
+                  ]
+                }
+                hideText={true}
+              >
+                <input
+                  className="inputHidden govuk-input govuk-input--width-4"
+                  defaultValue=""
+                  id="validity-end-time-1"
+                  name="validity-end-time-1"
+                />
+              </FormElementWrapper>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <input
+        defaultValue=""
+        hidden={true}
+        name="listOfEndTimes"
+      />
     </div>
     <input
       className="govuk-button"

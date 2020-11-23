@@ -34,6 +34,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
+                    endTimesList={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -53,12 +54,13 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
+                    endTimesList={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
         });
 
-        it('renders 2 radio buttons per product', () => {
+        it('renders dropdown for product validity per product', () => {
             const wrapper = shallow(
                 <MultiProductValidity
                     operatorName="Infinity Line"
@@ -67,9 +69,51 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
+                    endTimesList={[]}
                 />,
             );
-            expect(wrapper.find('.govuk-radios__item')).toHaveLength(4);
+            expect(wrapper.find('.govuk-select')).toHaveLength(2);
+        });
+
+        it('show the service end time column', () => {
+            const wrapper = shallow(
+                <MultiProductValidity
+                    operatorName="Infinity Line"
+                    passengerType="Adult"
+                    numberOfProducts="2"
+                    multipleProducts={multipleProducts}
+                    errors={[]}
+                    csrfToken=""
+                    endTimesList={['validity-option-0']}
+                />,
+            );
+            expect(wrapper.find('.govuk-table__header')).toHaveLength(5);
+        });
+
+        it('should call the handleSelection function on change of expiry dropdown value', () => {
+            const mockSetState = jest.fn();
+            jest.mock('react', () => ({ useState: (initialState: unknown): unknown => [initialState, mockSetState] }));
+            const mockChangeEvent = ({
+                target: { id: 'validity-option-0' },
+                currentTarget: { value: 'endOfServiceDay' },
+            } as unknown) as React.ChangeEvent;
+            const wrapper = shallow(
+                <MultiProductValidity
+                    operatorName="Infinity Line"
+                    passengerType="Adult"
+                    numberOfProducts="2"
+                    multipleProducts={multipleProducts}
+                    errors={[]}
+                    csrfToken=""
+                    endTimesList={['validity-option-0']}
+                />,
+            );
+
+            (wrapper.find(`#validity-option-0`).prop('onChange') as Function)(mockChangeEvent);
+
+            const input = wrapper.find('#validity-end-time-0').prop('className');
+
+            expect(input).toEqual(expect.stringContaining('inputVisible'));
         });
 
         describe('getServerSideProps', () => {
@@ -113,7 +157,8 @@ describe('pages', () => {
                                     productPriceId: 'multipleProductPriceInput0',
                                     productDuration: '3',
                                     productDurationId: 'multipleProductDurationInput0',
-                                    productValidity: '',
+                                    productValidity: undefined,
+                                    productValidityId: 'validity-option-0',
                                     productValidityError: 'Select one of the two validity options',
                                 },
                                 {
@@ -133,7 +178,7 @@ describe('pages', () => {
                 expect(result.props.multipleProducts.length).toBe(2);
                 expect(result.props.errors.length).toBe(1);
                 expect(result.props.errors[0].errorMessage).toBe('Select one of the two validity options');
-                expect(result.props.errors[0].id).toBe('twenty-four-hours-row-0');
+                expect(result.props.errors[0].id).toBe('validity-option-0');
             });
         });
     });

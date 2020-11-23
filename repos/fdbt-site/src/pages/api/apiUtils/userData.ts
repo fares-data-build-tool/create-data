@@ -1,8 +1,32 @@
 import Cookies from 'cookies';
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import isArray from 'lodash/isArray';
 import {
+    TermTimeAttribute,
+    ProductWithSalesOfferPackages,
+    CognitoIdToken,
+    FlatFareTicket,
+    NextApiRequestWithSession,
+    GeoZoneTicket,
+    PeriodMultipleServicesTicket,
+    Product,
+    ProductData,
+    ProductDetails,
+    ProductInfo,
+    ReturnTicket,
+    SelectedService,
+    SingleTicket,
+    Stop,
+    BaseTicket,
+    BasePeriodTicket,
+    MultiOperatorMultipleServicesTicket,
+    MultiOperatorInfo,
+    SchemeOperatorTicket,
+    Ticket,
+    isSchemeOperatorTicket,
+} from '../../../interfaces/index';
+import {
+    TERM_TIME_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -21,6 +45,7 @@ import {
     RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../../constants/index';
 
 import {
@@ -31,33 +56,8 @@ import {
     isPassengerType,
     isTicketPeriodAttribute,
 } from '../../../interfaces/typeGuards';
-import {
-    ProductWithSalesOfferPackages,
-    CognitoIdToken,
-    FlatFareTicket,
-    NextApiRequestWithSession,
-    GeoZoneTicket,
-    PeriodMultipleServicesTicket,
-    Product,
-    ProductData,
-    ProductDetails,
-    ProductInfo,
-    ReturnTicket,
-    SelectedService,
-    SingleTicket,
-    Stop,
-    SalesOfferPackage,
-    BaseTicket,
-    BasePeriodTicket,
-    MultiOperatorMultipleServicesTicket,
-    MultiOperatorInfo,
-    SchemeOperatorTicket,
-    Ticket,
-    isSchemeOperatorTicket,
-} from '../../../interfaces/index';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
-
 import { PeriodExpiryWithErrors } from '../periodValidity';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
@@ -69,29 +69,9 @@ import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { MultipleProductAttribute } from '../multipleProductValidity';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
 
-export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
-    const salesOfferPackageList: SalesOfferPackage[] = [];
-
-    entry
-        .filter(item => item)
-        .forEach(sop => {
-            let sopToProcess = sop;
-
-            if (isArray(sop)) {
-                [sopToProcess] = sop;
-            }
-            const parsedEntry = JSON.parse(sopToProcess);
-            const formattedPackageObject = {
-                name: parsedEntry.name,
-                description: parsedEntry.description,
-                purchaseLocations: parsedEntry.purchaseLocations,
-                paymentMethods: parsedEntry.paymentMethods,
-                ticketFormats: parsedEntry.ticketFormats,
-            };
-            salesOfferPackageList.push(formattedPackageObject);
-        });
-
-    return salesOfferPackageList;
+export const isTermTime = (req: NextApiRequestWithSession): boolean => {
+    const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
+    return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
 };
 
 export const getProductsAndSalesOfferPackages = (
@@ -141,6 +121,7 @@ export const getBaseTicketAttributes = (
 
     const nocCode = getAndValidateNoc(req, res);
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromCookie(req, res);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
@@ -149,6 +130,7 @@ export const getBaseTicketAttributes = (
     if (
         !nocCode ||
         !isFareType(fareTypeAttribute) ||
+        (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'schoolService' && !schoolFareTypeAttribute) ||
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
@@ -162,7 +144,10 @@ export const getBaseTicketAttributes = (
 
     return {
         nocCode,
-        type: fareType,
+        type:
+            fareType === 'schoolService' && schoolFareTypeAttribute?.schoolFareType
+                ? schoolFareTypeAttribute?.schoolFareType
+                : fareType,
         ...passengerTypeAttribute,
         email,
         uuid,
@@ -257,6 +242,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...service,
         fareZones: getFareZones(userFareStages, matchingFareZones),
         products: [{ salesOfferPackages }],
+        termTime: isTermTime(req),
     };
 };
 
@@ -384,12 +370,14 @@ export const getMultipleServicesTicketJson = (
             ...basePeriodTicketAttributes,
             selectedServices: formattedServiceInfo,
             additionalOperators: additionalOperatorsInfo.additionalOperators,
+            termTime: isTermTime(req),
         };
     }
 
     return {
         ...basePeriodTicketAttributes,
         selectedServices: formattedServiceInfo,
+        termTime: isTermTime(req),
     };
 };
 
@@ -443,6 +431,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         operatorName: operatorObject?.operator?.operatorPublicName,
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
+        termTime: isTermTime(req),
     };
 };
 
