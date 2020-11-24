@@ -19,7 +19,7 @@ exports[`PhaseBanner should render correctly 1`] = `
        
       <a
         className="govuk-link"
-        href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
+        href="/feedback"
         id="feedback-link"
       >
         feedback
