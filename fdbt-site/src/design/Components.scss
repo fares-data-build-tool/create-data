@@ -52,10 +52,12 @@
 .pagination {
     padding: 0;
 }
+
 .pagination__item {
     display: inline-block;
     list-style: none;
 }
+
 .pagination__link {
     display: block;
     padding: 5px 10px;
@@ -92,9 +94,18 @@
     }
 }
 
-.cookie-settings__confirmation {
+.information_box__success {
     display: block;
     padding: 20px;
     margin-bottom: 50px;
-    border: 5px solid #00703c;
+    border: 5px solid;
+    border-color: govuk-colour("green");
+}
+
+.information_box__warning {
+    display: block;
+    padding: 20px;
+    margin-bottom: 50px;
+    border: 5px solid;
+    border-color: govuk-colour("red");
 }

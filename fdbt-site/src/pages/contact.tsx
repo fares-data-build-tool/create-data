@@ -36,6 +36,13 @@ const Contact = (): ReactElement => {
                         </a>
                         &nbsp;to view their contact details.
                     </p>
+                    <h3 className="govuk-heading-s">Feedback</h3>
+                    <p className="govuk-body">
+                        To help improve the Create Fares Data service, send us your feedback&nbsp;
+                        <a href="/feedback" aria-label="send feedback">
+                            here
+                        </a>
+                    </p>
                 </div>
                 <div className="govuk-grid-column-one-third">
                     <h2 className="govuk-heading-m">Create Fares Data Service</h2>
