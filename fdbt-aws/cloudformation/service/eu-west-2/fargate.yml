@@ -456,6 +456,8 @@ Resources:
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: "200,302"
       TargetType: ip
       Name: !Sub ${ProductName}-prototype-tg-${Stage}
       Port: !Ref PrototypeContainerPort
