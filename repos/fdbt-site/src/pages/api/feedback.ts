@@ -14,8 +14,8 @@ import logger from '../../utils/logger';
 export const buildFeedbackForEmail = (req: NextApiRequestWithSession): Feedback[] => {
     const { body } = req;
     const feedback: Feedback[] = [];
-    const refinedHearAboutServiceInput = removeExcessWhiteSpace(body.hearAboutService);
-    const refinedGeneralFeedbackInput = removeExcessWhiteSpace(body.generalFeedback);
+    const refinedHearAboutServiceInput = removeExcessWhiteSpace(body.hearAboutServiceQuestion);
+    const refinedGeneralFeedbackInput = removeExcessWhiteSpace(body.generalFeedbackQuestion);
     if (body.contactQuestion) {
         feedback.push({
             question: contactFeedbackQuestion,
@@ -46,8 +46,8 @@ export const buildFeedbackForEmail = (req: NextApiRequestWithSession): Feedback[
 
 export const requestIsEmpty = (req: NextApiRequestWithSession): boolean => {
     const { body } = req;
-    const refinedHearAboutServiceInput = removeExcessWhiteSpace(body.hearAboutService);
-    const refinedGeneralFeedbackInput = removeExcessWhiteSpace(body.generalFeedback);
+    const refinedHearAboutServiceInput = removeExcessWhiteSpace(body.hearAboutServiceQuestion);
+    const refinedGeneralFeedbackInput = removeExcessWhiteSpace(body.generalFeedbackQuestion);
     if (
         !body.contactQuestion &&
         !body.problemQuestion &&

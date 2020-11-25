@@ -13,7 +13,7 @@ describe('feedback', () => {
             body: {
                 contactQuestion: 'Yes',
                 problemQuestion: 'No',
-                hearAboutService: 'Heard about it from colleague',
+                hearAboutServiceQuestion: 'Heard about it from colleague',
                 generalFeedbackQuestion: 'Should be easier to use',
             },
             mockWriteHeadFn: writeHeadMock,
@@ -28,7 +28,7 @@ describe('feedback', () => {
     it('should redirect to the feedback page with query string false if feedback was empty', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                hearAboutService: '',
+                hearAboutServiceQuestion: '',
                 generalFeedbackQuestion: '',
             },
             mockWriteHeadFn: writeHeadMock,
@@ -44,7 +44,7 @@ describe('feedback', () => {
         it('should return true if req.body is empty', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    hearAboutService: '',
+                    hearAboutServiceQuestion: '',
                     generalFeedbackQuestion: '',
                 },
             });
@@ -54,7 +54,7 @@ describe('feedback', () => {
         it('should return false if req.body is not empty', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    hearAboutService: 'From a friend',
+                    hearAboutServiceQuestion: 'From a friend',
                     generalFeedbackQuestion: '          ',
                 },
             });
