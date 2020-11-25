@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import AWS from 'aws-sdk';
+import { STAGE } from '../../../constants/index';
 import { Feedback } from '../../../interfaces';
 
 export const buildFeedbackContent = (feedbackQuestions: Feedback[]): string => {
@@ -15,7 +16,7 @@ export const setFeedbackMailOptions = (nocCodeOfSender: string, feedback: Feedba
     return {
         from: 'fdbt@transportforthenorth.com',
         to: 'fdbt-support@infinityworks.com',
-        subject: `Feedback received from ${nocCodeOfSender}`,
+        subject: `${STAGE} - Feedback received from ${nocCodeOfSender}`,
         text: buildFeedbackContent(feedback),
     };
 };

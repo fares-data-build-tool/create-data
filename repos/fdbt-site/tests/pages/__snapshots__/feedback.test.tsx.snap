@@ -14,12 +14,12 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
     <h1
       className="govuk-heading-l"
     >
-      Help us improve the Create Fares Data service 
+      Help us improve Create Fares Data
     </h1>
     <span
       className="govuk-hint"
     >
-      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using the Create Fares Data service, and be as specific as possible
+      Thank you for providing feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
     </span>
     <div
       className="govuk-!-padding-top-3"
@@ -51,7 +51,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
           className="govuk-fieldset__legend govuk-fieldset__legend--m"
           id="general-feedback-header"
         >
-          Please let us know any feedback or suggestions for improvement you may have
+          Please let us know any feedback or suggestions for improvements you may have
         </legend>
         <textarea
           className="govuk-textarea"
@@ -217,12 +217,12 @@ exports[`pages feedback should render correctly with feedbackSubmitted not submi
     <h1
       className="govuk-heading-l"
     >
-      Help us improve the Create Fares Data service 
+      Help us improve Create Fares Data
     </h1>
     <span
       className="govuk-hint"
     >
-      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using the Create Fares Data service, and be as specific as possible
+      Thank you for providing feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
     </span>
     <div
       className="govuk-!-padding-top-3"
@@ -254,7 +254,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted not submi
           className="govuk-fieldset__legend govuk-fieldset__legend--m"
           id="general-feedback-header"
         >
-          Please let us know any feedback or suggestions for improvement you may have
+          Please let us know any feedback or suggestions for improvements you may have
         </legend>
         <textarea
           className="govuk-textarea"
@@ -420,12 +420,12 @@ exports[`pages feedback should render correctly with feedbackSubmitted submitted
     <h1
       className="govuk-heading-l"
     >
-      Help us improve the Create Fares Data service 
+      Help us improve Create Fares Data
     </h1>
     <span
       className="govuk-hint"
     >
-      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using the Create Fares Data service, and be as specific as possible
+      Thank you for providing feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
     </span>
     <div
       className="govuk-!-padding-top-3"
@@ -457,7 +457,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted submitted
           className="govuk-fieldset__legend govuk-fieldset__legend--m"
           id="general-feedback-header"
         >
-          Please let us know any feedback or suggestions for improvement you may have
+          Please let us know any feedback or suggestions for improvements you may have
         </legend>
         <textarea
           className="govuk-textarea"

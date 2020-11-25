@@ -37,10 +37,10 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
         <CsrfForm action="/api/feedback" method="post" csrfToken={csrfToken}>
             <>
                 {feedbackSubmitted !== 'false' ? createFeedbackBox(feedbackSubmitted) : null}
-                <h1 className="govuk-heading-l">Help us improve the Create Fares Data service </h1>
+                <h1 className="govuk-heading-l">Help us improve Create Fares Data</h1>
                 <span className="govuk-hint">
-                    Thank you for providing helpful feedback and comments. Answer any questions which apply to your
-                    experience using the Create Fares Data service, and be as specific as possible
+                    Thank you for providing feedback and comments. Answer any questions which apply to your experience
+                    using Create Fares Data, and be as specific as possible
                 </span>
 
                 <div className="govuk-!-padding-top-3">
