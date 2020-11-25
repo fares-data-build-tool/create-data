@@ -16,18 +16,6 @@ export const buildFeedbackForEmail = (req: NextApiRequestWithSession): Feedback[
     const feedback: Feedback[] = [];
     const refinedHearAboutServiceInput = removeExcessWhiteSpace(body.hearAboutServiceQuestion);
     const refinedGeneralFeedbackInput = removeExcessWhiteSpace(body.generalFeedbackQuestion);
-    if (body.contactQuestion) {
-        feedback.push({
-            question: contactFeedbackQuestion,
-            answer: body.contactQuestion,
-        });
-    }
-    if (body.problemQuestion) {
-        feedback.push({
-            question: solveFeedbackQuestion,
-            answer: body.problemQuestion,
-        });
-    }
     if (refinedHearAboutServiceInput && refinedHearAboutServiceInput !== '') {
         feedback.push({
             question: hearAboutUsFeedbackQuestion,
@@ -38,6 +26,18 @@ export const buildFeedbackForEmail = (req: NextApiRequestWithSession): Feedback[
         feedback.push({
             question: generalFeedbackQuestion,
             answer: refinedGeneralFeedbackInput,
+        });
+    }
+    if (body.contactQuestion) {
+        feedback.push({
+            question: contactFeedbackQuestion,
+            answer: body.contactQuestion,
+        });
+    }
+    if (body.problemQuestion) {
+        feedback.push({
+            question: solveFeedbackQuestion,
+            answer: body.problemQuestion,
         });
     }
 

@@ -135,7 +135,7 @@ export const PASSENGER_TYPES_LIST: PassengerAttributes[] = [
 export const contactFeedbackQuestion = 'Did you contact us for assistance at any point?';
 export const solveFeedbackQuestion = 'Did we solve your problem?';
 export const hearAboutUsFeedbackQuestion = 'How did you hear about our service?';
-export const generalFeedbackQuestion = 'Please let us know any feedback or suggestions for improvement you may have';
+export const generalFeedbackQuestion = 'Please let us know any feedback or suggestions for improvements you may have';
 
 export const PASSENGER_TYPES_WITH_GROUP: PassengerAttributes[] = [
     { passengerTypeDisplay: 'Group (more than one passenger)', passengerTypeValue: 'group' },

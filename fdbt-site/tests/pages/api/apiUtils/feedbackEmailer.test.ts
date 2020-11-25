@@ -40,7 +40,7 @@ describe('feedbackEmailer', () => {
                 'Answer: Yes\n' +
                 'Question: How did you hear about our service?\n' +
                 'Answer: From a colleague\n' +
-                'Question: Please let us know any feedback or suggestions for improvement you may have\n' +
+                'Question: Please let us know any feedback or suggestions for improvements you may have\n' +
                 'Answer: Make the text bigger and a different colour like purple.';
             expect(buildFeedbackContent(feedback)).toBe(expected);
         });
