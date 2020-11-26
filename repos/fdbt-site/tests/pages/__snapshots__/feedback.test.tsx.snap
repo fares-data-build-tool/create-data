@@ -1,0 +1,586 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages feedback should render correctly with feedbackSubmitted false 1`] = `
+<Component
+  description="Feedback page of the Create Fares Data Service"
+  errors={Array []}
+  title="Feedback - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/feedback"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Help us improve Create Fares Data
+    </h1>
+    <span
+      className="govuk-hint"
+    >
+      Thank you for providing feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
+    </span>
+    <div
+      className="govuk-!-padding-top-3"
+    >
+      <fieldset
+        aria-describedby="hear-about-service-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="hear-about-service-header"
+        >
+          How did you hear about our service?
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="hear-about-service-question"
+          name="hearAboutServiceQuestion"
+          rows={3}
+        />
+      </fieldset>
+    </div>
+    <div>
+      <fieldset
+        aria-describedby="general-feedback-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="general-feedback-header"
+        >
+          Please let us know any feedback or suggestions for improvements you may have
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="general-feedback-question"
+          name="generalFeedbackQuestion"
+          rows={6}
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-3"
+    >
+      <fieldset
+        aria-describedby="contact-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="contact-header"
+        >
+          Did you contact us for assistance at any point?
+        </legend>
+        <div
+          className="govuk-radios"
+          id="contact-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="contact-question-yes"
+              name="contactQuestion"
+              type="radio"
+              value="Yes"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="contact-question-yes"
+            >
+              Yes
+            </label>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="contact-question-no"
+              name="contactQuestion"
+              type="radio"
+              value="No"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="contact-question-no"
+            >
+              No
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-6"
+    >
+      <fieldset
+        aria-describedby="problem-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="problem-header"
+        >
+          Did we solve your problem?
+        </legend>
+        <div
+          className="govuk-radios"
+          id="problem-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="problem-question-yes"
+              name="problemQuestion"
+              type="radio"
+              value="Yes"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="problem-question-yes"
+            >
+              Yes
+            </label>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="problem-question-no"
+              name="problemQuestion"
+              type="radio"
+              value="No"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="problem-question-no"
+            >
+              No
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Submit"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages feedback should render correctly with feedbackSubmitted not submitted 1`] = `
+<Component
+  description="Feedback page of the Create Fares Data Service"
+  errors={Array []}
+  title="Feedback - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/feedback"
+    csrfToken=""
+    method="post"
+  >
+    <div
+      className="information_box__warning"
+    >
+      <h2
+        className="govuk-heading-m"
+      >
+        Your feedback was 
+        not submitted
+      </h2>
+      <p
+        className="govuk-body"
+      >
+        The feedback form was empty, at least one question has to be answered
+      </p>
+      <p
+        className="govuk-body"
+      >
+        <a
+          href="/home"
+        >
+          Click here to return to the homepage
+        </a>
+      </p>
+    </div>
+    <h1
+      className="govuk-heading-l"
+    >
+      Help us improve Create Fares Data
+    </h1>
+    <span
+      className="govuk-hint"
+    >
+      Thank you for providing feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
+    </span>
+    <div
+      className="govuk-!-padding-top-3"
+    >
+      <fieldset
+        aria-describedby="hear-about-service-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="hear-about-service-header"
+        >
+          How did you hear about our service?
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="hear-about-service-question"
+          name="hearAboutServiceQuestion"
+          rows={3}
+        />
+      </fieldset>
+    </div>
+    <div>
+      <fieldset
+        aria-describedby="general-feedback-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="general-feedback-header"
+        >
+          Please let us know any feedback or suggestions for improvements you may have
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="general-feedback-question"
+          name="generalFeedbackQuestion"
+          rows={6}
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-3"
+    >
+      <fieldset
+        aria-describedby="contact-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="contact-header"
+        >
+          Did you contact us for assistance at any point?
+        </legend>
+        <div
+          className="govuk-radios"
+          id="contact-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="contact-question-yes"
+              name="contactQuestion"
+              type="radio"
+              value="Yes"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="contact-question-yes"
+            >
+              Yes
+            </label>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="contact-question-no"
+              name="contactQuestion"
+              type="radio"
+              value="No"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="contact-question-no"
+            >
+              No
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-6"
+    >
+      <fieldset
+        aria-describedby="problem-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="problem-header"
+        >
+          Did we solve your problem?
+        </legend>
+        <div
+          className="govuk-radios"
+          id="problem-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="problem-question-yes"
+              name="problemQuestion"
+              type="radio"
+              value="Yes"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="problem-question-yes"
+            >
+              Yes
+            </label>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="problem-question-no"
+              name="problemQuestion"
+              type="radio"
+              value="No"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="problem-question-no"
+            >
+              No
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Submit"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages feedback should render correctly with feedbackSubmitted submitted 1`] = `
+<Component
+  description="Feedback page of the Create Fares Data Service"
+  errors={Array []}
+  title="Feedback - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/feedback"
+    csrfToken=""
+    method="post"
+  >
+    <div
+      className="information_box__success"
+    >
+      <h2
+        className="govuk-heading-m"
+      >
+        Your feedback was 
+        submitted
+      </h2>
+      <p
+        className="govuk-body"
+      >
+        Thank you for taking the time to improve the service
+      </p>
+      <p
+        className="govuk-body"
+      >
+        <a
+          href="/home"
+        >
+          Click here to return to the homepage
+        </a>
+      </p>
+    </div>
+    <h1
+      className="govuk-heading-l"
+    >
+      Help us improve Create Fares Data
+    </h1>
+    <span
+      className="govuk-hint"
+    >
+      Thank you for providing feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
+    </span>
+    <div
+      className="govuk-!-padding-top-3"
+    >
+      <fieldset
+        aria-describedby="hear-about-service-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="hear-about-service-header"
+        >
+          How did you hear about our service?
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="hear-about-service-question"
+          name="hearAboutServiceQuestion"
+          rows={3}
+        />
+      </fieldset>
+    </div>
+    <div>
+      <fieldset
+        aria-describedby="general-feedback-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="general-feedback-header"
+        >
+          Please let us know any feedback or suggestions for improvements you may have
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="general-feedback-question"
+          name="generalFeedbackQuestion"
+          rows={6}
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-3"
+    >
+      <fieldset
+        aria-describedby="contact-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="contact-header"
+        >
+          Did you contact us for assistance at any point?
+        </legend>
+        <div
+          className="govuk-radios"
+          id="contact-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="contact-question-yes"
+              name="contactQuestion"
+              type="radio"
+              value="Yes"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="contact-question-yes"
+            >
+              Yes
+            </label>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="contact-question-no"
+              name="contactQuestion"
+              type="radio"
+              value="No"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="contact-question-no"
+            >
+              No
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-6"
+    >
+      <fieldset
+        aria-describedby="problem-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="problem-header"
+        >
+          Did we solve your problem?
+        </legend>
+        <div
+          className="govuk-radios"
+          id="problem-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="problem-question-yes"
+              name="problemQuestion"
+              type="radio"
+              value="Yes"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="problem-question-yes"
+            >
+              Yes
+            </label>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              id="problem-question-no"
+              name="problemQuestion"
+              type="radio"
+              value="No"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="problem-question-no"
+            >
+              No
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Submit"
+    />
+  </CsrfForm>
+</Component>
+`;

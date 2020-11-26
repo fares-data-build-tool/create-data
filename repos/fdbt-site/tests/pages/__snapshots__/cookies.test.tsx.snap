@@ -7,7 +7,7 @@ exports[`pages cookies should display a confirmation box when the user saves the
   title="Cookies - Create Fares Data Service"
 >
   <div
-    className="cookie-settings__confirmation"
+    className="information_box__success"
   >
     <h2
       className="govuk-heading-m"
@@ -364,7 +364,7 @@ exports[`pages cookies should set the tracking cookie selection radio to 'on' wh
   title="Cookies - Create Fares Data Service"
 >
   <div
-    className="cookie-settings__confirmation"
+    className="information_box__success"
   >
     <h2
       className="govuk-heading-m"

@@ -22,7 +22,7 @@ export const COOKIE_PREFERENCES_COOKIE = 'fdbt-cookie-preferences-set';
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 
-export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
+export const FEEDBACK_LINK = '/feedback';
 
 // Session Attributes
 
@@ -102,10 +102,14 @@ export const SCHOOL_FARE_TYPE_ATTRIBUTE = 'fdbt-school-fare-type';
 
 export const oneYearInSeconds = 31556952;
 
+export const ALLOWED_XLSX_FILE_TYPES = [
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel',
+];
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',
-    'application/vnd.ms-excel',
     'application/csv',
     'application/x-csv',
     'application/octet-stream',
@@ -131,6 +135,11 @@ export const PASSENGER_TYPES_LIST: PassengerAttributes[] = [
     { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson' },
     { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone' },
 ];
+
+export const contactFeedbackQuestion = 'Did you contact us for assistance at any point?';
+export const solveFeedbackQuestion = 'Did we solve your problem?';
+export const hearAboutUsFeedbackQuestion = 'How did you hear about our service?';
+export const generalFeedbackQuestion = 'Please let us know any feedback or suggestions for improvements you may have';
 
 export const PASSENGER_TYPES_WITH_GROUP: PassengerAttributes[] = [
     { passengerTypeDisplay: 'Group (more than one passenger)', passengerTypeValue: 'group' },

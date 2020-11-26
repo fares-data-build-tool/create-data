@@ -73,6 +73,22 @@ exports[`contact should render correctly 1`] = `
         </a>
          to view their contact details.
       </p>
+      <h3
+        className="govuk-heading-s"
+      >
+        Feedback
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        To help improve the Create Fares Data service, send us your feedback 
+        <a
+          aria-label="send feedback"
+          href="/feedback"
+        >
+          here
+        </a>
+      </p>
     </div>
     <div
       className="govuk-grid-column-one-third"

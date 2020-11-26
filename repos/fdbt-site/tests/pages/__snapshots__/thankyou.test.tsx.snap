@@ -67,7 +67,7 @@ exports[`pages thankyou should render correctly 1`] = `
     <a
       aria-label="Provide feedback on this service"
       className="govuk-link"
-      href="mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com"
+      href="/feedback"
     >
       here
     </a>

@@ -24,7 +24,7 @@ exports[`pages howManyProducts should render correctly for multi op 1`] = `
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for the selected services?
         </h1>
       </label>
       <div
@@ -156,7 +156,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for this geographic zone?
         </h1>
       </label>
       <div
@@ -238,7 +238,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for this geographic zone?
         </h1>
       </label>
       <div
@@ -320,7 +320,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for this geographic zone?
         </h1>
       </label>
       <div
@@ -402,7 +402,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for this geographic zone?
         </h1>
       </label>
       <div
@@ -484,7 +484,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for this geographic zone?
         </h1>
       </label>
       <div
@@ -566,7 +566,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for this geographic zone?
         </h1>
       </label>
       <div
@@ -648,7 +648,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many multi operator tickets do you have for the selected operators and/or selected services?
+          How many multi operator tickets do you have for this geographic zone?
         </h1>
       </label>
       <div

@@ -18,7 +18,7 @@ export interface CookiePreferencesProps {
 const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiePreferencesProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} hideCookieBanner>
         {settingsSaved ? (
-            <div className="cookie-settings__confirmation">
+            <div className="information_box__success">
                 <h2 className="govuk-heading-m">Your cookie settings were saved</h2>
                 <p className="govuk-body">Return to this page at any point to change your cookie settings.</p>
                 <p className="govuk-body">

@@ -101,7 +101,7 @@ export const processCsv = async (
                     logger.warn('', {
                         context: 'api.csvZoneUpload',
                         message:
-                            'the uploaded CSV was not of the correct format, one of the required columns of information is missing or misnamed',
+                            'the uploaded fare zone was not of the correct format, one of the required columns of information is missing or misnamed',
                     });
                     csvValid = false;
                 }
@@ -113,7 +113,7 @@ export const processCsv = async (
         if (rawUserFareZones.length === 0) {
             logger.warn('', {
                 context: 'api.csvZoneUpload',
-                message: 'the uploaded CSV contained no Naptan Codes or Atco Codes',
+                message: 'the uploaded fare zone contained no Naptan Codes or Atco Codes',
             });
             csvValid = false;
         }

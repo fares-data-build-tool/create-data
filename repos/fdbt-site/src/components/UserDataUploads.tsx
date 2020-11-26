@@ -61,7 +61,7 @@ const UserDataUploadComponent = ({
                                     id="csv-upload"
                                     name="csv-upload"
                                     type="file"
-                                    accept=".csv"
+                                    accept=".csv,.xlsx,.xls"
                                     aria-describedby="csv-upload-hint"
                                 />
                             </FormElementWrapper>
