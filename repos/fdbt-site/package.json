@@ -37,6 +37,7 @@
     "license": "ISC",
     "dependencies": {
         "@types/nodemailer": "^6.4.0",
+        "@types/xlsx": "0.0.36",
         "@types/zxcvbn": "^4.4.0",
         "aws-param-store": "^3.2.0",
         "aws-sdk": "^2.675.0",
@@ -70,6 +71,7 @@
         "universal-cookie": "^4.0.4",
         "uuid": "^7.0.2",
         "winston": "^3.3.3",
+        "xlsx": "^0.16.9",
         "yup": "^0.29.0",
         "zxcvbn": "^4.4.2"
     },

@@ -309,7 +309,7 @@ describe('csvZoneUpload', () => {
             expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
                 errors: [
                     {
-                        errorMessage: 'The selected file must be a CSV',
+                        errorMessage: 'The selected file must be a .csv or .xlsx',
                         id: 'csv-upload',
                     },
                 ],

@@ -46,7 +46,7 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement
                                                 value="csv"
                                             />
                                             <label className="govuk-label govuk-radios__label" htmlFor="csv-upload">
-                                                Upload (.csv)
+                                                Upload a fares triangle (CSV)
                                             </label>
                                         </div>
                                         <div className="govuk-radios__item">
@@ -60,7 +60,7 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement
                                                 value="manual"
                                             />
                                             <label className="govuk-label govuk-radios__label" htmlFor="manual-entry">
-                                                Manual Fares Triangle input
+                                                Manual fares triangle input
                                             </label>
                                         </div>
                                         <div className="govuk-radios__item">
@@ -95,8 +95,9 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement
                 <p className="govuk-body">
                     CSV stands for Comma Separated Values. A CSV file is a popular format for publishing data on the
                     web. They are plain text files which means they can contain numbers and letters only. Most
-                    spreadsheet software (Microsoft Excel, Google Sheets etc.) will have a &apos;.csv&apos; option when
-                    saving your data. This is the easiest way to turn your spreadsheet into a CSV file.
+                    spreadsheet software (Microsoft Excel, Google Sheets etc.) will have a <b>.csv</b>, <b>.xlsx</b> or{' '}
+                    <b>.xls</b> option when saving your data. This is the easiest way to turn your spreadsheet into a
+                    CSV file.
                 </p>
             </div>
         </div>

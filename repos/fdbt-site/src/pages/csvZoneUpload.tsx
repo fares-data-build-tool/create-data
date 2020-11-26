@@ -19,13 +19,13 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
             {...uploadProps}
             detailBody={
                 <>
-                    <p>Some common issues with CSV uploads include:</p>
+                    <p>Some common issues with fare zone uploads include:</p>
                     <ul className="govuk-list govuk-list--bullet">
                         <li>Commas in fare zone names</li>
                     </ul>
                     <p>
                         Use the help file document for a more detailed help on constructing a fare zone CSV in the
-                        required format or download the CSV template to create a new file.
+                        required format or download the .csv template to create a new file.
                     </p>
                 </>
             }
@@ -45,9 +45,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
     return {
         props: {
             csvUploadApiRoute: '/api/csvZoneUpload',
-            csvUploadTitle: 'Upload fare zone as CSV',
+            csvUploadTitle: 'Upload fare zone',
             csvUploadHintText:
-                'Upload a fare zone as a CSV file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
+                'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
             guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 967KB',
             guidanceDocAttachmentUrl: HowToUploadFareZone,
             guidanceDocSize: '967KB',
@@ -55,7 +55,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
             csvTemplateSize: '673B',
             errors,
-            detailSummary: "My CSV won't upload",
+            detailSummary: "My fare zone won't upload",
             csrfToken: getCsrfToken(ctx),
         },
     };
