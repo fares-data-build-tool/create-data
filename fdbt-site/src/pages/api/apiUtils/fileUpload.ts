@@ -81,7 +81,7 @@ export const containsViruses = async (pathToFileToScan: string): Promise<boolean
         remove_infected: false,
         quarantine_infected: false,
         scan_log: null,
-        debug_mode: false,
+        debug_mode: true,
         file_list: null,
         scan_recursively: true,
         clamdscan: {
