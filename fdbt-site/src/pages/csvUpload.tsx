@@ -18,7 +18,7 @@ const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
             {...uploadProps}
             detailBody={
                 <>
-                    <p>Some common issues with CSV uploads include:</p>
+                    <p>Some common issues with fares triangle uploads include:</p>
                     <ul className="govuk-list govuk-list--bullet">
                         <li>Commas in fare stage names</li>
                         <li>Not providing a price in every cell</li>
@@ -26,7 +26,7 @@ const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
                     </ul>
                     <p>
                         Use the help file for a more detailed guide on constructing a fares triangle in the required
-                        format or download the CSV template to create a new file.
+                        format or download the fares triangle template to create a new file.
                     </p>
                 </>
             }
@@ -40,9 +40,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
     return {
         props: {
             csvUploadApiRoute: '/api/csvUpload',
-            csvUploadTitle: 'Upload fares triangle as CSV',
+            csvUploadTitle: 'Upload fares triangle',
             csvUploadHintText:
-                'Upload a fares triangle as a CSV file. Refer to the help documents section to download a help file or a fares triangle template.',
+                'Upload a fares triangle as a .csv or MS Excel file. Refer to the help documents section to download a help file or a fares triangle template.',
             guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 1.2MB',
             guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
             guidanceDocSize: '1.2MB',
@@ -50,7 +50,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '255B',
             errors,
-            detailSummary: "My CSV won't upload",
+            detailSummary: "My fare triangle won't upload",
             csrfToken: getCsrfToken(ctx),
         },
     };

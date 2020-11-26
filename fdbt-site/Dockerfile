@@ -14,14 +14,27 @@ ENV NODE_ENV production
 
 WORKDIR /home/node/app
 
-COPY package*.json ./
+COPY package*.json start_clamav.sh ./
+COPY supervisord.conf /etc/supervisor/
 
-RUN apk update && apk upgrade && apk add --no-cache -t .clamv-run-deps openrc clamav clamav-daemon clamav-libunrar && \
-    npm install --ignore-scripts && mkdir /run/clamav && chown -R clamav:clamav /run/clamav && freshclam
+RUN apk update && apk upgrade && \
+    apk add --no-cache -t .clamv-run-deps openrc clamav clamav-daemon clamav-libunrar supervisor && \
+    npm install --ignore-scripts && \
+    mkdir /run/clamav && \
+    chown clamav:clamav /run/clamav && \
+    chmod 750 /run/clamav && \
+    mkdir -p /var/lib/clamav/ && \
+    chown -R clamav:clamav /var/lib/clamav/ && \
+    mkdir -p  /var/log/supervisor && \
+    chmod -R 0777 /var/log/supervisor && \
+    chmod +x /home/node/app/start_clamav.sh && \
+    sed -i 's/^#Foreground yes/Foreground yes/g' /etc/clamav/clamd.conf && \
+    sed -i 's/^#Foreground yes/Foreground yes/g' /etc/clamav/freshclam.conf && \
+    freshclam --stdout
 
 COPY --from=build /tmp/.next ./.next
 COPY --from=build /tmp/dist ./dist
 
 EXPOSE 80
 
-CMD ["sh", "-c", "sleep 20 && (freshclam && (clamd -F & freshclam -d)) & npm start"]
+CMD ["supervisord",  "-c",  "/etc/supervisor/supervisord.conf", "-n"]

@@ -138,7 +138,9 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error message when the attached file is not a csv', async () => {
-        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file must be a CSV' }];
+        const mockError: ErrorInfo[] = [
+            { id: 'csv-upload', errorMessage: 'The selected file must be a .csv or .xlsx' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,

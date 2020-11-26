@@ -102,6 +102,11 @@ export interface ErrorInfo {
     userInput?: string;
 }
 
+export interface Feedback {
+    question: string;
+    answer: string;
+}
+
 // AWS and Reference Data (e.g. NOC, TNDS, NaPTAN datasets)
 
 export interface Stop {
