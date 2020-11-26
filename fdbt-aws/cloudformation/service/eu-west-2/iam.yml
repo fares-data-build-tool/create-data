@@ -225,6 +225,12 @@ Resources:
                   - "dynamodb:PutItem"
                   - "dynamodb:UpdateItem"
                 Resource: "*"
+              - Effect: 'Allow'
+                Action:
+                  - ses:SendEmail
+                  - ses:SendRawEmail
+                Resource:
+                  - '*'
           PolicyName: ecs-site-task-policy
 
   EcsSiteScalingRole:
