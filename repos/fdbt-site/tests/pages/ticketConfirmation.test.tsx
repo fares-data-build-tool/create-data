@@ -20,6 +20,8 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
@@ -27,7 +29,10 @@ import {
     RETURN_VALIDITY_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../src/constants';
+import { Operator } from '../../src/data/auroradb';
+import { MultiOperatorInfo } from '../../src/interfaces';
 
 describe('pages', () => {
     const confirmationElementStructure: ConfirmationElement = {
@@ -118,7 +123,34 @@ describe('pages', () => {
         });
 
         describe('buildPeriodOrMultiOpTicketConfirmationElements', () => {
-            it('should build confirmation elements for a period geo zone or multi operator ticket with multiple products', () => {
+            const mockSingleProduct = [
+                {
+                    productName: 'Weekly Ticket',
+                    productPrice: '50',
+                    productDuration: '5',
+                    productValidity: '24hr',
+                    productDurationUnits: 'weeks',
+                },
+            ];
+            const mockAdditionalOperators: Operator[] = [
+                { nocCode: 'BLAC', operatorPublicName: expect.any(String) },
+                { nocCode: 'MCT', operatorPublicName: expect.any(String) },
+            ];
+            const mockAdditionalOperatorsServices: MultiOperatorInfo[] = [
+                {
+                    nocCode: 'BLAC',
+                    services: ['12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester'],
+                },
+                {
+                    nocCode: 'MCT',
+                    services: [
+                        '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
+                        '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+                    ],
+                },
+            ];
+
+            it('should build confirmation elements for a period geoZone ticket with multiple products', () => {
                 const ctx = getMockContext({
                     session: {
                         [SERVICE_LIST_ATTRIBUTE]: undefined,
@@ -131,28 +163,61 @@ describe('pages', () => {
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
             });
 
-            it('should build confirmation elements for a period multi services ticket with a single product', () => {
-                const mockProduct = [
-                    {
-                        productName: 'Weekly Ticket',
-                        productPrice: '50',
-                        productDuration: '5',
-                        productValidity: '24hr',
-                        productDurationUnits: 'weeks',
-                    },
-                ];
+            it('should build confirmation elements for a multi operator geoZone ticket with a single product', () => {
                 const ctx = getMockContext({
                     session: {
+                        [SERVICE_LIST_ATTRIBUTE]: undefined,
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
                             numberOfProductsInput: '1',
                         },
                         [PERIOD_EXPIRY_ATTRIBUTE]: {
-                            products: mockProduct,
+                            products: mockSingleProduct,
+                        },
+                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                            selectedOperators: mockAdditionalOperators,
                         },
                     },
                 });
-                const numberOfElementsDueToProducts = mockProduct.length * 3;
+                const numberOfElementsDueToProducts = mockSingleProduct.length * 3;
+                const totalExpectedLength = 2 + numberOfElementsDueToProducts;
+                const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(totalExpectedLength);
+            });
+
+            it('should build confirmation elements for a period multiService ticket with a single product', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
+                            numberOfProductsInput: '1',
+                        },
+                        [PERIOD_EXPIRY_ATTRIBUTE]: {
+                            products: mockSingleProduct,
+                        },
+                    },
+                });
+                const numberOfElementsDueToProducts = mockSingleProduct.length * 3;
                 const totalExpectedLength = 1 + numberOfElementsDueToProducts;
+                const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(totalExpectedLength);
+            });
+
+            it('should build confirmation elements for a multi operator multiService ticket with multiple products', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
+                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                            selectedOperators: mockAdditionalOperators,
+                        },
+                        [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: mockAdditionalOperatorsServices,
+                    },
+                });
+                const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length * 3;
+                const numberOfElementsDueToAdditionalOperators = mockAdditionalOperators.length;
+                const totalExpectedLength =
+                    2 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
