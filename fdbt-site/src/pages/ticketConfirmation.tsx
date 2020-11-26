@@ -2,7 +2,15 @@ import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import isArray from 'lodash/isArray';
 import startCase from 'lodash/startCase';
-import { NextPageContextWithSession, Product, Journey, ProductData, ReturnPeriodValidity } from '../interfaces';
+import {
+    NextPageContextWithSession,
+    Product,
+    Journey,
+    ProductData,
+    ReturnPeriodValidity,
+    TicketRepresentationAttribute,
+    MultiOperatorInfo,
+} from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
@@ -20,6 +28,10 @@ import {
     RETURN_VALIDITY_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    OPERATOR_COOKIE,
 } from '../constants';
 import { isFareType } from '../interfaces/typeGuards';
 import { Service } from './api/service';
@@ -27,8 +39,9 @@ import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfa
 import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
-import { getCsrfToken } from '../utils';
+import { getCookieValue, getCsrfToken } from '../utils';
 import { SchoolFareTypeAttribute } from './api/schoolFareType';
+import { MultipleOperatorsAttribute } from './api/searchOperators';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
@@ -157,19 +170,24 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
 
+    const ticketRepresentation = (getSessionAttribute(
+        ctx.req,
+        TICKET_REPRESENTATION_ATTRIBUTE,
+    ) as TicketRepresentationAttribute).name;
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
-    const services = serviceInformation ? serviceInformation.selectedServices : [];
-    const zone = services.length === 0;
+    const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
+    const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as MultiOperatorInfo[];
     const numberOfProducts = Number(
         (getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute).numberOfProductsInput,
     );
 
-    let products;
-    if (!numberOfProducts || numberOfProducts === 1) {
-        [products] = (getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE) as ProductData).products;
-    } else {
-        products = (getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute).products;
-    }
+    const services = serviceInformation ? serviceInformation.selectedServices : [];
+    const zone = ticketRepresentation === 'geoZone';
+
+    const products =
+        !numberOfProducts || numberOfProducts === 1
+            ? (getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE) as ProductData).products[0]
+            : (getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute).products;
 
     if (zone) {
         confirmationElements.push({
@@ -178,15 +196,39 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             href: 'csvZoneUpload',
         });
     } else if (!zone) {
+        const opInfo = getCookieValue(ctx, OPERATOR_COOKIE);
+        const opName = opInfo ? `${JSON.parse(opInfo).operator.operatorPublicName} ` : '';
         confirmationElements.push({
-            name: 'Services',
+            name: `${opName}Services`,
             content: `${services.map(service => service.split('#')[0]).join(', ')}`,
             href: 'serviceList',
         });
     }
 
+    if (multiOpAttribute) {
+        const additionalOperators = multiOpAttribute.selectedOperators;
+        confirmationElements.push({
+            name: 'Additional Operators',
+            content: `${additionalOperators.map(operator => operator.operatorPublicName).join(', ')}`,
+            href: 'searchOperators',
+        });
+
+        if (!zone && multiOpServices) {
+            multiOpServices.forEach(serviceInfo => {
+                confirmationElements.push({
+                    name: `${
+                        additionalOperators.find(operator => operator.nocCode === serviceInfo.nocCode)
+                            ?.operatorPublicName
+                    } Services`,
+                    content: `${serviceInfo.services.map(service => service.split('#')[0]).join(', ')}`,
+                    href: 'searchOperators',
+                });
+            });
+        }
+    }
+
     const addProduct = (product: Product): void => {
-        const productDurationText = `Duration - ${
+        const productDurationText = `${
             product.productDurationUnits
                 ? `${product.productDuration} ${product.productDurationUnits}${
                       product.productDuration === '1' ? '' : 's'
@@ -199,18 +241,18 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
         confirmationElements.push(
             {
-                name: `Product - ${product.productName}`,
-                content: `Price - £${product.productPrice}`,
+                name: `${product.productName} - Price`,
+                content: `£${product.productPrice}`,
                 href: numberOfProducts > 1 ? 'multipleProducts' : 'productDetails',
             },
             {
-                name: `Product - ${product.productName}`,
+                name: `${product.productName} - Duration`,
                 content: productDurationText,
                 href: numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
             },
             {
-                name: `Product - ${product.productName}`,
-                content: `Validity - ${startCase(product.productValidity)}${
+                name: `${product.productName} - Validity`,
+                content: `${startCase(product.productValidity)}${
                     product.serviceEndTime ? ` - ${product.serviceEndTime}` : ''
                 }`,
                 href: numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
