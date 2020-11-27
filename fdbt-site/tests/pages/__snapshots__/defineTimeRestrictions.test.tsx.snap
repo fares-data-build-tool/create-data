@@ -39,12 +39,12 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
             "radios": Array [
               Object {
                 "dataAriaControls": "valid-days-required-conditional",
-                "hint": Object {
-                  "content": "Select the days of the week the ticket is valid for",
-                  "id": "define-valid-days-hint",
-                },
                 "id": "valid-days-required",
                 "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
@@ -188,12 +188,12 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
             "radios": Array [
               Object {
                 "dataAriaControls": "valid-days-required-conditional",
-                "hint": Object {
-                  "content": "Select the days of the week the ticket is valid for",
-                  "id": "define-valid-days-hint",
-                },
                 "id": "valid-days-required",
                 "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
@@ -332,10 +332,6 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
             "radios": Array [
               Object {
                 "dataAriaControls": "valid-days-required-conditional",
-                "hint": Object {
-                  "content": "Select the days of the week the ticket is valid for",
-                  "id": "define-valid-days-hint",
-                },
                 "id": "valid-days-required",
                 "inputErrors": Array [
                   Object {
@@ -343,6 +339,10 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
                     "id": "monday",
                   },
                 ],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
@@ -470,12 +470,12 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
             "radios": Array [
               Object {
                 "dataAriaControls": "valid-days-required-conditional",
-                "hint": Object {
-                  "content": "Select the days of the week the ticket is valid for",
-                  "id": "define-valid-days-hint",
-                },
                 "id": "valid-days-required",
                 "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {

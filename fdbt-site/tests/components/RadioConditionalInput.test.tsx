@@ -55,7 +55,7 @@ describe('RadioConditionalInput', () => {
                     value: 'Yes',
                     label: 'Yes',
                     dataAriaControls: 'age-range-required-conditional',
-                    hint: { id: 'define-passenger-hint', content: 'Enter a minimum age for this passenger type.' },
+                    inputHint: { id: 'define-passenger-hint', content: 'Enter a minimum age for this passenger type.' },
                     inputType: 'text',
                     inputs: [{ id: 'age-range-min', name: 'ageRangeMin', label: 'Minimum age (if applicable)' }],
                     inputErrors: [],
@@ -82,7 +82,7 @@ describe('RadioConditionalInput', () => {
                 value: 'Yes',
                 label: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
-                hint: { id: 'define-passenger-hint', content: 'Enter a minimum age for this passenger type.' },
+                inputHint: { id: 'define-passenger-hint', content: 'Enter a minimum age for this passenger type.' },
                 inputType: 'text',
                 inputs: [
                     { id: 'age-range-min', name: 'ageRangeMin', label: 'Minimum age (if applicable)' },
@@ -109,7 +109,7 @@ describe('RadioConditionalInput', () => {
                 value: 'Yes',
                 dataAriaControls: 'return-validity-defined-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-return-validity-hint',
                     content: 'Enter an amount and select a duration from the dropdown',
                 },
@@ -136,7 +136,7 @@ describe('RadioConditionalInput', () => {
                 value: 'Yes',
                 dataAriaControls: 'return-validity-defined-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-return-validity-hint',
                     content: 'Enter an amount and select a duration from the dropdown',
                 },
@@ -183,7 +183,7 @@ describe('RadioConditionalInput', () => {
                 value: 'Yes',
                 dataAriaControls: 'return-validity-defined-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-return-validity-hint',
                     content: 'Enter an amount and select a duration from the dropdown',
                 },

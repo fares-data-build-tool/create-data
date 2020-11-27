@@ -2226,7 +2226,7 @@ export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset 
             value: 'Yes',
             dataAriaControls: 'product-dates-required-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: '',
                 content: '',
             },
@@ -2236,11 +2236,13 @@ export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset 
                     id: 'start-date',
                     name: 'startDate',
                     label: 'Start Date',
+                    defaultValues: '##',
                 },
                 {
                     id: 'end-date',
                     name: 'endDate',
                     label: 'End Date',
+                    defaultValues: '##',
                 },
             ],
             inputErrors: [],
@@ -2268,7 +2270,7 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
             value: 'Yes',
             dataAriaControls: 'product-dates-required-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: '',
                 content: '',
             },
@@ -2278,11 +2280,13 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
                     id: 'start-date',
                     name: 'startDate',
                     label: 'Start Date',
+                    defaultValues: '#12#2020',
                 },
                 {
                     id: 'end-date',
                     name: 'endDate',
                     label: 'End Date',
+                    defaultValues: '#12#2020',
                 },
             ],
             inputErrors: [
@@ -2319,7 +2323,7 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
             value: 'Yes',
             dataAriaControls: 'product-dates-required-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: '',
                 content: '',
             },
@@ -2352,6 +2356,186 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
         },
     ],
 };
+export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'endOfServiceDay',
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'end-of-service-day-hint',
+                content: 'Enter an end time for your service day',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'service-end-time',
+                    name: 'serviceEndTime',
+                    label: 'End time',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'endOfServiceDay',
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'end-of-service-day-hint',
+                content: 'Enter an end time for your service day',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'service-end-time',
+                    name: 'serviceEndTime',
+                    label: 'End time',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the validity options',
+            id: 'period-end-calendar',
+        },
+    ],
+};
+
+export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'endOfServiceDay',
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'end-of-service-day-hint',
+                content: 'Enter an end time for your service day',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'service-end-time',
+                    name: 'serviceEndTime',
+                    label: 'End time',
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Specify an end time for service day',
+                    id: 'service-end-time',
+                },
+            ],
+        },
+    ],
+    radioError: [],
+};
 
 export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] = [
     {
@@ -2366,7 +2550,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
@@ -2406,7 +2590,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
@@ -2449,7 +2633,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
@@ -2494,7 +2678,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
@@ -2553,7 +2737,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
@@ -2602,7 +2786,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
@@ -2659,7 +2843,7 @@ export const mockAdultServerSideProps: RadioConditionalInputFieldset[] = [
         radios: [
             {
                 dataAriaControls: 'age-range-required-conditional',
-                hint: {
+                inputHint: {
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                     id: 'define-passenger-age-range-hint',
                 },
@@ -2692,7 +2876,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
@@ -2741,7 +2925,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
@@ -2784,7 +2968,7 @@ export const mockAdultDefinePassengerTypeFieldsetsWithRadioAndInputErrors: Radio
                 value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
@@ -2901,7 +3085,10 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
         radios: [
             {
                 dataAriaControls: 'valid-days-required-conditional',
-                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                inputHint: {
+                    content: 'Select the days of the week the ticket is valid for',
+                    id: 'define-valid-days-inputHint',
+                },
                 id: 'valid-days-required',
                 inputErrors: [],
                 inputType: 'checkbox',
@@ -2935,7 +3122,10 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
         radios: [
             {
                 dataAriaControls: 'valid-days-required-conditional',
-                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                inputHint: {
+                    content: 'Select the days of the week the ticket is valid for',
+                    id: 'define-valid-days-inputHint',
+                },
                 id: 'valid-days-required',
                 inputErrors: [],
                 inputType: 'checkbox',
@@ -2973,7 +3163,10 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
         radios: [
             {
                 dataAriaControls: 'valid-days-required-conditional',
-                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                inputHint: {
+                    content: 'Select the days of the week the ticket is valid for',
+                    id: 'define-valid-days-inputHint',
+                },
                 id: 'valid-days-required',
                 inputErrors: [{ errorMessage: 'Select at least one day', id: 'monday' }],
                 inputType: 'checkbox',
@@ -3022,7 +3215,10 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
         radios: [
             {
                 dataAriaControls: 'valid-days-required-conditional',
-                hint: { content: 'Select the days of the week the ticket is valid for', id: 'define-valid-days-hint' },
+                inputHint: {
+                    content: 'Select the days of the week the ticket is valid for',
+                    id: 'define-valid-days-inputHint',
+                },
                 id: 'valid-days-required',
                 inputErrors: [],
                 inputType: 'checkbox',
@@ -3073,7 +3269,7 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
@@ -3083,14 +3279,14 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValue: '',
+                    defaultValues: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValue: '',
+                    defaultValues: '',
                 },
             ],
             inputErrors: [],
@@ -3118,7 +3314,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
@@ -3128,14 +3324,14 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValue: '',
+                    defaultValues: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValue: '',
+                    defaultValues: '',
                 },
             ],
             inputErrors: [{ errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' }],
@@ -3163,7 +3359,7 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
@@ -3173,14 +3369,14 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValue: '',
+                    defaultValues: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValue: '',
+                    defaultValues: '',
                 },
             ],
             inputErrors: [
@@ -3210,7 +3406,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
@@ -3220,14 +3416,14 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValue: '',
+                    defaultValues: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValue: '',
+                    defaultValues: '',
                 },
             ],
             inputErrors: [
@@ -3258,7 +3454,7 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
-            hint: {
+            inputHint: {
                 id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
@@ -3268,14 +3464,14 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValue: '',
+                    defaultValues: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValue: '',
+                    defaultValues: '',
                 },
             ],
             inputErrors: [],
