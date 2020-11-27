@@ -3,17 +3,21 @@ import camelCase from 'lodash/camelCase';
 import startCase from 'lodash/startCase';
 import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
-import { ProductDateInformation } from '../pages/api/productDateInformation';
 
 export interface RadioWithoutConditionals extends BaseReactElement {
     value: string;
+    radioButtonHint?: {
+        id: string;
+        content: string;
+    };
 }
 
 export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
     dataAriaControls: string;
-    hint: {
+    inputHint: {
         id: string;
         content: string;
+        hidden?: boolean;
     };
     inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits';
     inputs: BaseReactElement[];
@@ -34,7 +38,6 @@ export interface RadioConditionalInputFieldset {
 
 export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
-    dates?: ProductDateInformation;
 }
 
 export const createErrorId = (input: BaseReactElement, inputErrors: ErrorInfo[]): string => {
@@ -53,9 +56,14 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                    {radio.hint.content}
+            <fieldset className="govuk-fieldset" aria-describedby={radio.inputHint.id}>
+                <legend
+                    className={`govuk-fieldset__legend govuk-fieldset__legend--s${
+                        radio.inputHint.hidden ? ' govuk-visually-hidden' : ''
+                    }`}
+                    id={radio.inputHint.id}
+                >
+                    {radio.inputHint.content}
                 </legend>
                 {radio.inputs.map(input => {
                     const errorId = createErrorId(input, radio.inputErrors);
@@ -96,9 +104,14 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
             id={radio.dataAriaControls}
         >
             <div className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}>
-                <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                        {radio.hint.content}
+                <fieldset className="govuk-fieldset" aria-describedby={radio.inputHint.id}>
+                    <legend
+                        className={`govuk-fieldset__legend govuk-fieldset__legend--s${
+                            radio.inputHint.hidden ? ' govuk-visually-hidden' : ''
+                        }`}
+                        id={radio.inputHint.id}
+                    >
+                        {radio.inputHint.content}
                     </legend>
                     <FormElementWrapper
                         errors={radio.inputErrors}
@@ -138,9 +151,14 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <fieldset className="govuk-fieldset" role="group" aria-describedby={radio.hint.id}>
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                    {radio.hint.content}
+            <fieldset className="govuk-fieldset" role="group" aria-describedby={radio.inputHint.id}>
+                <legend
+                    className={`govuk-fieldset__legend govuk-fieldset__legend--s${
+                        radio.inputHint.hidden ? ' govuk-visually-hidden' : ''
+                    }`}
+                    id={radio.inputHint.id}
+                >
+                    {radio.inputHint.content}
                 </legend>
                 {radio.inputs.map(input => {
                     const errorId = createErrorId(input, radio.inputErrors);
@@ -164,7 +182,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                                         className="govuk-select"
                                         id={input.id}
                                         name={input.name}
-                                        defaultValue={input.defaultValue || ''}
+                                        defaultValue={input.defaultValues || ''}
                                     >
                                         <option value="" disabled>
                                             Select a {input.name}
@@ -181,7 +199,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                                         id={input.id}
                                         name={input.name}
                                         type="text"
-                                        defaultValue={input.defaultValue || ''}
+                                        defaultValue={input.defaultValues || ''}
                                     />
                                 )}
                             </FormElementWrapper>
@@ -193,10 +211,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
     );
 };
 
-const renderConditionalDateInputs = (
-    radio: RadioWithConditionalInputs,
-    dates: ProductDateInformation,
-): ReactElement => {
+const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactElement => {
     const error = radio.inputErrors.length > 0;
 
     return (
@@ -208,10 +223,6 @@ const renderConditionalDateInputs = (
                 const inputGroupError = radio.inputErrors.find(({ id }) => {
                     return id.includes(input.id);
                 });
-
-                const dayValue = input.name === 'startDate' ? dates.startDateDay : dates.endDateDay;
-                const monthValue = input.name === 'startDate' ? dates.startDateMonth : dates.endDateMonth;
-                const yearValue = input.name === 'startDate' ? dates.startDateYear : dates.endDateYear;
 
                 return (
                     <div className="govuk-form-group">
@@ -239,7 +250,9 @@ const renderConditionalDateInputs = (
                                                 id={`${input.id}-day`}
                                                 name={`${input.name}Day`}
                                                 type="text"
-                                                defaultValue={dayValue}
+                                                defaultValue={
+                                                    input.defaultValues ? input.defaultValues.split('#')[0] : ''
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -258,7 +271,9 @@ const renderConditionalDateInputs = (
                                                 id={`${input.id}-month`}
                                                 name={`${input.name}Month`}
                                                 type="text"
-                                                defaultValue={monthValue}
+                                                defaultValue={
+                                                    input.defaultValues ? input.defaultValues.split('#')[1] : ''
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -277,7 +292,9 @@ const renderConditionalDateInputs = (
                                                 id={`${input.id}-year`}
                                                 name={`${input.name}Year`}
                                                 type="text"
-                                                defaultValue={yearValue}
+                                                defaultValue={
+                                                    input.defaultValues ? input.defaultValues.split('#')[2] : ''
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -294,7 +311,7 @@ const renderConditionalDateInputs = (
 const renderConditionalRadioButton = (
     radio: RadioWithConditionalInputs,
     radioLabel: ReactElement,
-    dates?: ProductDateInformation,
+    radioButtonHint?: ReactElement,
 ): ReactElement => {
     const baseRadioInput = (
         <input
@@ -322,6 +339,7 @@ const renderConditionalRadioButton = (
         checkbox: renderConditionalCheckbox,
         text: renderConditionalTextInput,
         textWithUnits: renderConditionalTextWithUnitsInput,
+        date: renderConditionalDateInputs,
     };
 
     return (
@@ -329,20 +347,9 @@ const renderConditionalRadioButton = (
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
+                {radio.radioButtonHint ? radioButtonHint : null}
             </div>
-            {radio.inputType === 'date'
-                ? renderConditionalDateInputs(
-                      radio,
-                      dates || {
-                          startDateDay: '',
-                          startDateMonth: '',
-                          startDateYear: '',
-                          endDateDay: '',
-                          endDateMonth: '',
-                          endDateYear: '',
-                      },
-                  )
-                : inputTypeMap[radio.inputType](radio)}
+            {inputTypeMap[radio.inputType](radio)}
         </div>
     );
 };
@@ -350,29 +357,36 @@ const renderConditionalRadioButton = (
 const isRadioWithConditionalInputs = (
     radioButton: RadioWithConditionalInputs | RadioWithoutConditionals,
 ): radioButton is RadioWithConditionalInputs => {
-    return (radioButton as RadioWithConditionalInputs).hint !== undefined;
+    return (radioButton as RadioWithConditionalInputs).inputHint !== undefined;
 };
 
-const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformation): ReactElement => {
+const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     const radioButtonLabel: ReactElement = (
         <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
             {radio.label}
         </label>
     );
 
+    const radioButtonHint: ReactElement = (
+        <span className="govuk-hint govuk-radios__hint" id={radio.radioButtonHint?.id}>
+            {radio.radioButtonHint?.content}
+        </span>
+    );
+
     if (isRadioWithConditionalInputs(radio)) {
-        return renderConditionalRadioButton(radio, radioButtonLabel, dates);
+        return renderConditionalRadioButton(radio, radioButtonLabel, radioButtonHint);
     }
 
     return (
         <div key={radio.id} className="govuk-radios__item">
             <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
             {radioButtonLabel}
+            {radio.radioButtonHint ? radioButtonHint : null}
         </div>
     );
 };
 
-const RadioConditionalInput = ({ fieldset, dates }: RadioConditionalInputProps): ReactElement => {
+const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactElement => {
     const radioError = fieldset.radioError.length > 0;
 
     return (
@@ -392,7 +406,7 @@ const RadioConditionalInput = ({ fieldset, dates }: RadioConditionalInputProps):
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => renderRadioButtonSet(radio, dates))}
+                        {fieldset.radios.map(radio => renderRadioButtonSet(radio))}
                     </div>
                 </FormElementWrapper>
             </fieldset>

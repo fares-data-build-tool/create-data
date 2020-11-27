@@ -86,7 +86,7 @@ export interface BaseReactElement {
     id: string;
     name: string;
     label: string;
-    defaultValue?: string;
+    defaultValues?: string;
     options?: string[];
 }
 
