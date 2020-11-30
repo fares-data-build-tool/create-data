@@ -112,7 +112,7 @@ functions:
     events:
       - s3: xmlRefData
         event: s3:ObjectCreated:*
-    reservedConcurrency: 40
+    reservedConcurrency: 20
     alarms:
       - name: functionDuration
         threshold: 50000
