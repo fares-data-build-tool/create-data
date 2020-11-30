@@ -138,6 +138,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 <option selected value="" disabled>
                                     Select a duration
                                 </option>
+                                <option value="hour">Hours</option>
                                 <option value="day">Days</option>
                                 <option value="week">Weeks</option>
                                 <option value="month">Months</option>
