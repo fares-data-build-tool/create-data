@@ -18,11 +18,10 @@ const productDatingHintText =
 export interface ProductDateInformationProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset;
-    dates?: ProductDateInformation;
     csrfToken: string;
 }
 
-export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
+export const getFieldsets = (errors: ErrorInfo[], dates: ProductDateInformation): RadioConditionalInputFieldset => {
     return {
         heading: {
             id: 'product-dates-information',
@@ -36,7 +35,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 value: 'Yes',
                 dataAriaControls: 'product-dates-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: '',
                     content: '',
                 },
@@ -46,11 +45,13 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         id: 'start-date',
                         name: 'startDate',
                         label: 'Start Date',
+                        defaultValues: `${dates.startDateDay}#${dates.startDateMonth}#${dates.startDateYear}`,
                     },
                     {
                         id: 'end-date',
                         name: 'endDate',
                         label: 'End Date',
+                        defaultValues: `${dates.endDateDay}#${dates.endDateMonth}#${dates.endDateYear}`,
                     },
                 ],
                 inputErrors: getErrorsByIds(['start-date-day', 'end-date-day'], errors),
@@ -66,7 +67,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
     };
 };
 
-const ProductDateInfo = ({ csrfToken, errors = [], fieldsets, dates }: ProductDateInformationProps): ReactElement => {
+const ProductDateInfo = ({ csrfToken, errors = [], fieldsets }: ProductDateInformationProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description}>
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
@@ -84,7 +85,7 @@ const ProductDateInfo = ({ csrfToken, errors = [], fieldsets, dates }: ProductDa
                             <span className="govuk-hint" id="product-dating-hint">
                                 {productDatingHintText}
                             </span>
-                            <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
+                            <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} />
                         </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -98,28 +99,26 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const csrfToken = getCsrfToken(ctx);
     const productDateAttribute = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
 
-    const errors: ErrorInfo[] =
-        productDateAttribute && isTicketPeriodAttributeWithErrors(productDateAttribute)
-            ? productDateAttribute.errors
-            : [];
+    let errors: ErrorInfo[] = [];
+    let dates: ProductDateInformation = {
+        startDateDay: '',
+        startDateMonth: '',
+        startDateYear: '',
+        endDateDay: '',
+        endDateMonth: '',
+        endDateYear: '',
+    };
+    if (productDateAttribute && isTicketPeriodAttributeWithErrors(productDateAttribute)) {
+        errors = productDateAttribute.errors;
+        dates = productDateAttribute.dates;
+    }
 
-    const fieldsets: RadioConditionalInputFieldset = getFieldsets(errors);
+    const fieldsets: RadioConditionalInputFieldset = getFieldsets(errors, dates);
 
     return {
         props: {
             errors,
             fieldsets,
-            dates:
-                productDateAttribute && isTicketPeriodAttributeWithErrors(productDateAttribute)
-                    ? productDateAttribute.dates
-                    : {
-                          startDateDay: '',
-                          startDateMonth: '',
-                          startDateYear: '',
-                          endDateDay: '',
-                          endDateMonth: '',
-                          endDateYear: '',
-                      },
             csrfToken,
         },
     };

@@ -24,6 +24,7 @@ import {
     SchemeOperatorTicket,
     Ticket,
     isSchemeOperatorTicket,
+    WithErrors,
 } from '../../../interfaces/index';
 import {
     TERM_TIME_ATTRIBUTE,
@@ -58,7 +59,6 @@ import {
 } from '../../../interfaces/typeGuards';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
-import { PeriodExpiryWithErrors } from '../periodValidity';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
@@ -169,7 +169,7 @@ export const getBasePeriodTicketAttributes = (
     ticketType: string,
 ): BasePeriodTicket => {
     const isProductData = (
-        periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
+        periodExpiryAttributeInfo: ProductData | WithErrors<ProductData>,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
     const cookies = new Cookies(req, res);
@@ -440,7 +440,7 @@ export const getSchemeOperatorTicketJson = async (
     res: NextApiResponse,
 ): Promise<SchemeOperatorTicket> => {
     const isProductData = (
-        periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
+        periodExpiryAttributeInfo: ProductData | WithErrors<ProductData>,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
     const cookies = new Cookies(req, res);

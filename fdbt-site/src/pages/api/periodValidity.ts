@@ -2,25 +2,44 @@ import { NextApiResponse } from 'next';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DURATION_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
-import { NextApiRequestWithSession, ProductData } from '../../interfaces';
+import { isSessionValid, isValidTime } from './apiUtils/validator';
+import { ErrorInfo, NextApiRequestWithSession, ProductData } from '../../interfaces';
 import { isProductInfo } from '../productDetails';
-
-export interface PeriodExpiryWithErrors {
-    errorMessage: string;
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const errors: ErrorInfo[] = [];
+
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
 
         if (req.body.periodValid) {
-            const { periodValid } = req.body;
+            const { periodValid, serviceEndTime } = req.body;
 
             const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+
+            if (periodValid === 'endOfServiceDay') {
+                if (serviceEndTime === '') {
+                    errors.push({ id: 'service-end-time', errorMessage: 'Specify an end time for service day' });
+                } else if (!isValidTime(serviceEndTime)) {
+                    if (serviceEndTime === '2400') {
+                        errors.push({
+                            id: 'service-end-time',
+                            errorMessage: '2400 is not a valid input. Use 0000.',
+                        });
+                    } else {
+                        errors.push({ id: 'service-end-time', errorMessage: 'Time must be in 2400 format' });
+                    }
+                }
+
+                if (errors.length > 0) {
+                    updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, { products: [], errors });
+                    redirectTo(res, '/periodValidity');
+                    return;
+                }
+            }
 
             if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
                 throw new Error('Necessary session data not found for period validity API');
@@ -38,6 +57,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                         productPrice,
                         productDuration: timePeriodValid,
                         productValidity: periodValid,
+                        serviceEndTime: serviceEndTime || '',
                     },
                 ],
             };
@@ -46,10 +66,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             redirectTo(res, '/ticketConfirmation');
         } else {
-            const periodExpiryAttributeError: PeriodExpiryWithErrors = {
+            errors.push({
+                id: 'period-end-calendar',
                 errorMessage: 'Choose an option regarding your period ticket validity',
-            };
-            updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeError);
+            });
+            updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, { products: [], errors });
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {
