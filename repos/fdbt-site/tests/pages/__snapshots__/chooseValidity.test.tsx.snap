@@ -95,6 +95,11 @@ exports[`Choose Validity Page should render correctly 1`] = `
               Select a duration
             </option>
             <option
+              value="hour"
+            >
+              Hours
+            </option>
+            <option
               value="day"
             >
               Days
@@ -221,6 +226,11 @@ exports[`Choose Validity Page should render correctly with defaults when provide
               value=""
             >
               Select a duration
+            </option>
+            <option
+              value="hour"
+            >
+              Hours
             </option>
             <option
               value="day"

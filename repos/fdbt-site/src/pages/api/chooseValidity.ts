@@ -29,7 +29,7 @@ export const isInvalidInput = (validityInput: string): boolean => {
 };
 
 export const isValidInputDuration = (durationInput: string): boolean =>
-    ['day', 'week', 'month', 'year'].includes(durationInput);
+    ['day', 'week', 'month', 'year', 'hour'].includes(durationInput);
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
