@@ -31,7 +31,7 @@
     {
       "productName": "Test Product 1",
       "productPrice": "3",
-      "productDuration": "1 week",
+      "productDuration": "1 hour",
       "productValidity": "24hr",
       "salesOfferPackages": [
         {
