@@ -37,62 +37,66 @@ exports[`pages periodValidity should render correctly 1`] = `
         >
           We need to know the time that this product would be valid until
         </span>
-        <FormElementWrapper
-          errorClass="govuk-radios--error"
-          errorId="period-end-calendar"
-          errors={Array []}
-        >
-          <div
-            className="govuk-radios"
-          >
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="period-end-calendar"
-                name="periodValid"
-                type="radio"
-                value="endOfCalendarDay"
-              />
-              <label
-                className="govuk-label govuk-radios__label govuk-label--s"
-                htmlFor="period-end-calendar"
-              >
-                At the end of a calendar day
-              </label>
-              <span
-                className="govuk-hint govuk-radios__hint"
-                id="period-end-calendar-hint"
-              >
-                For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry
-              </span>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="period-twenty-four-hours"
-                name="periodValid"
-                type="radio"
-                value="24hr"
-              />
-              <label
-                className="govuk-label govuk-radios__label govuk-label--s"
-                htmlFor="period-twenty-four-hours"
-              >
-                At the end of a 24 hour period from purchase
-              </label>
-              <span
-                className="govuk-hint govuk-radios__hint"
-                id="period-twenty-four-hours-hint"
-              >
-                For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry
-              </span>
-            </div>
-          </div>
-        </FormElementWrapper>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": Any<String>,
+                "hidden": true,
+                "id": "period-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "id": "period-end-calendar",
+                  "label": " At the end of a calendar day",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "id": "period-end-calendar-hint",
+                  },
+                  "value": "endOfCalendarDay",
+                },
+                Object {
+                  "id": "period-twenty-four-hours",
+                  "label": "At the end of a 24 hour period from purchase",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry",
+                    "id": "period-twenty-four-hours-hint",
+                  },
+                  "value": "24hr",
+                },
+                Object {
+                  "dataAriaControls": "period-validity-end-of-service-required-conditional",
+                  "id": "period-end-of-service",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "Enter an end time for your service day",
+                    "hidden": true,
+                    "id": "end-of-service-day-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "id": "service-end-time",
+                      "label": "End time",
+                      "name": "serviceEndTime",
+                    },
+                  ],
+                  "label": "End of service day",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",
+                    "id": "period-end-of-service-hint",
+                  },
+                  "value": "endOfServiceDay",
+                },
+              ],
+            }
+          }
+          key="period-validity"
+        />
       </fieldset>
     </div>
     <input
@@ -156,69 +160,66 @@ exports[`pages periodValidity should render error messaging when errors are pass
         >
           We need to know the time that this product would be valid until
         </span>
-        <FormElementWrapper
-          errorClass="govuk-radios--error"
-          errorId="period-end-calendar"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Choose an option regarding your period ticket validity",
-                "id": "period-validity-error",
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": Any<String>,
+                "hidden": true,
+                "id": "period-validity",
               },
-            ]
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "id": "period-end-calendar",
+                  "label": " At the end of a calendar day",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "id": "period-end-calendar-hint",
+                  },
+                  "value": "endOfCalendarDay",
+                },
+                Object {
+                  "id": "period-twenty-four-hours",
+                  "label": "At the end of a 24 hour period from purchase",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry",
+                    "id": "period-twenty-four-hours-hint",
+                  },
+                  "value": "24hr",
+                },
+                Object {
+                  "dataAriaControls": "period-validity-end-of-service-required-conditional",
+                  "id": "period-end-of-service",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "Enter an end time for your service day",
+                    "hidden": true,
+                    "id": "end-of-service-day-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "id": "service-end-time",
+                      "label": "End time",
+                      "name": "serviceEndTime",
+                    },
+                  ],
+                  "label": "End of service day",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",
+                    "id": "period-end-of-service-hint",
+                  },
+                  "value": "endOfServiceDay",
+                },
+              ],
+            }
           }
-        >
-          <div
-            className="govuk-radios"
-          >
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input govuk-input--error "
-                id="period-end-calendar"
-                name="periodValid"
-                type="radio"
-                value="endOfCalendarDay"
-              />
-              <label
-                className="govuk-label govuk-radios__label govuk-label--s"
-                htmlFor="period-end-calendar"
-              >
-                At the end of a calendar day
-              </label>
-              <span
-                className="govuk-hint govuk-radios__hint"
-                id="period-end-calendar-hint"
-              >
-                For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry
-              </span>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input govuk-input--error "
-                id="period-twenty-four-hours"
-                name="periodValid"
-                type="radio"
-                value="24hr"
-              />
-              <label
-                className="govuk-label govuk-radios__label govuk-label--s"
-                htmlFor="period-twenty-four-hours"
-              >
-                At the end of a 24 hour period from purchase
-              </label>
-              <span
-                className="govuk-hint govuk-radios__hint"
-                id="period-twenty-four-hours-hint"
-              >
-                For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry
-              </span>
-            </div>
-          </div>
-        </FormElementWrapper>
+          key="period-validity"
+        />
       </fieldset>
     </div>
     <input

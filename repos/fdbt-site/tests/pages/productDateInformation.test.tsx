@@ -9,24 +9,13 @@ import {
 import ProductDateInfo, { getFieldsets, getServerSideProps } from '../../src/pages/productDateInformation';
 import { ErrorInfo } from '../../src/interfaces';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants';
+import { ProductDateInformation } from '../../src/pages/api/productDateInformation';
 
 describe('pages', () => {
     describe('productDateInformation', () => {
         it('it should render the product date information page', () => {
             const wrapper = shallow(
-                <ProductDateInfo
-                    errors={[]}
-                    fieldsets={mockProductDateInformationFieldsets}
-                    csrfToken=""
-                    dates={{
-                        startDateDay: '',
-                        startDateMonth: '',
-                        startDateYear: '',
-                        endDateDay: '',
-                        endDateMonth: '',
-                        endDateYear: '',
-                    }}
-                />,
+                <ProductDateInfo errors={[]} fieldsets={mockProductDateInformationFieldsets} csrfToken="" />,
             );
             expect(wrapper).toMatchSnapshot();
         });
@@ -36,14 +25,6 @@ describe('pages', () => {
                     errors={mockProductRadioErrors}
                     fieldsets={mockProductDateInformationFieldsets}
                     csrfToken=""
-                    dates={{
-                        startDateDay: '',
-                        startDateMonth: '',
-                        startDateYear: '',
-                        endDateDay: '',
-                        endDateMonth: '',
-                        endDateYear: '',
-                    }}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -51,9 +32,27 @@ describe('pages', () => {
     });
 
     describe('getProductDateInformationFieldSets', () => {
+        const mockDates: ProductDateInformation = {
+            startDateDay: '',
+            startDateMonth: '',
+            startDateYear: '',
+            endDateDay: '',
+            endDateMonth: '',
+            endDateYear: '',
+        };
+
+        const mockDatesWithErrors: ProductDateInformation = {
+            startDateDay: '',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        };
+
         it('it should return a fieldset containing two text inputs with no errors when no errors are passed', () => {
             const errors: ErrorInfo[] = [];
-            const fieldset = getFieldsets(errors);
+            const fieldset = getFieldsets(errors, mockDates);
             expect(fieldset).toEqual(mockProductDateInformationFieldsets);
         });
 
@@ -68,7 +67,7 @@ describe('pages', () => {
                     errorMessage: 'End date must be a real date',
                 },
             ];
-            const fieldset = getFieldsets(errors);
+            const fieldset = getFieldsets(errors, mockDatesWithErrors);
             expect(fieldset).toEqual(mockProductDateInformationFieldsetsWithInputErrors);
         });
 
@@ -84,7 +83,7 @@ describe('pages', () => {
             it('it should return props containing no errors and valid fieldsets when no are present', () => {
                 const ctx = getMockContext({
                     session: {
-                        [PRODUCT_DATE_ATTRIBUTE]: { errors: [] },
+                        [PRODUCT_DATE_ATTRIBUTE]: { errors: [], dates: mockDates },
                     },
                 });
                 const result = getServerSideProps(ctx);
@@ -107,7 +106,7 @@ describe('pages', () => {
 
                 const ctx = getMockContext({
                     session: {
-                        [PRODUCT_DATE_ATTRIBUTE]: { errors },
+                        [PRODUCT_DATE_ATTRIBUTE]: { errors, dates: mockDatesWithErrors },
                     },
                 });
                 const result = getServerSideProps(ctx);

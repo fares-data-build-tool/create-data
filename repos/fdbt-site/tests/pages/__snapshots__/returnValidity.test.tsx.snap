@@ -41,22 +41,22 @@ exports[`pages returnValidity should render the page correctly 1`] = `
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
+                "id": "return-validity-defined",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Enter a number and select a duration from the dropdown",
                   "id": "define-return-validity-hint",
                 },
-                "id": "return-validity-defined",
-                "inputErrors": Array [],
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-amount",
                     "label": "Number",
                     "name": "amount",
                   },
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -157,10 +157,6 @@ exports[`pages returnValidity should render the page with errors when both text 
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
-                },
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
@@ -172,16 +168,20 @@ exports[`pages returnValidity should render the page with errors when both text 
                     "id": "return-validity-units",
                   },
                 ],
+                "inputHint": Object {
+                  "content": "Enter a number and select a duration from the dropdown",
+                  "id": "define-return-validity-hint",
+                },
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-amount",
                     "label": "Number",
                     "name": "amount",
                   },
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -274,10 +274,6 @@ exports[`pages returnValidity should render the page with errors when only dropd
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
-                },
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
@@ -285,16 +281,20 @@ exports[`pages returnValidity should render the page with errors when only dropd
                     "id": "return-validity-units",
                   },
                 ],
+                "inputHint": Object {
+                  "content": "Enter a number and select a duration from the dropdown",
+                  "id": "define-return-validity-hint",
+                },
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-amount",
                     "label": "Number",
                     "name": "amount",
                   },
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -387,10 +387,6 @@ exports[`pages returnValidity should render the page with errors when only text 
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
-                  "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-hint",
-                },
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
@@ -398,16 +394,20 @@ exports[`pages returnValidity should render the page with errors when only text 
                     "id": "return-validity-amount",
                   },
                 ],
+                "inputHint": Object {
+                  "content": "Enter a number and select a duration from the dropdown",
+                  "id": "define-return-validity-hint",
+                },
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-amount",
                     "label": "Number",
                     "name": "amount",
                   },
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -505,22 +505,22 @@ exports[`pages returnValidity should render the page with errors when radio erro
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
-                "hint": Object {
+                "id": "return-validity-defined",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Enter a number and select a duration from the dropdown",
                   "id": "define-return-validity-hint",
                 },
-                "id": "return-validity-defined",
-                "inputErrors": Array [],
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-amount",
                     "label": "Number",
                     "name": "amount",
                   },
                   Object {
-                    "defaultValue": "",
+                    "defaultValues": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",

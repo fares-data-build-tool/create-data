@@ -103,12 +103,12 @@ exports[`pages definePassengerType should render correctly when on the group tic
             "radios": Array [
               Object {
                 "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
+                "id": "age-range-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Enter a minimum and/or maximum age for this passenger type.",
                   "id": "define-passenger-age-range-hint",
                 },
-                "id": "age-range-required",
-                "inputErrors": Array [],
                 "inputType": "text",
                 "inputs": Array [
                   Object {
@@ -148,12 +148,12 @@ exports[`pages definePassengerType should render correctly when on the group tic
             "radios": Array [
               Object {
                 "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
+                "id": "proof-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Select the applicable proof document(s).",
                   "id": "define-passenger-proof-hint",
                 },
-                "id": "proof-required",
-                "inputErrors": Array [],
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
@@ -243,12 +243,12 @@ exports[`pages definePassengerType should render correctly when on the non-group
             "radios": Array [
               Object {
                 "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
+                "id": "age-range-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Enter a minimum and/or maximum age for this passenger type.",
                   "id": "define-passenger-age-range-hint",
                 },
-                "id": "age-range-required",
-                "inputErrors": Array [],
                 "inputType": "text",
                 "inputs": Array [
                   Object {
@@ -288,12 +288,12 @@ exports[`pages definePassengerType should render correctly when on the non-group
             "radios": Array [
               Object {
                 "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
+                "id": "proof-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Select the applicable proof document(s).",
                   "id": "define-passenger-proof-hint",
                 },
-                "id": "proof-required",
-                "inputErrors": Array [],
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
@@ -413,10 +413,6 @@ exports[`pages definePassengerType should render errors correctly when input err
             "radios": Array [
               Object {
                 "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
-                  "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-hint",
-                },
                 "id": "age-range-required",
                 "inputErrors": Array [
                   Object {
@@ -428,6 +424,10 @@ exports[`pages definePassengerType should render errors correctly when input err
                     "id": "age-range-max",
                   },
                 ],
+                "inputHint": Object {
+                  "content": "Enter a minimum and/or maximum age for this passenger type.",
+                  "id": "define-passenger-age-range-hint",
+                },
                 "inputType": "text",
                 "inputs": Array [
                   Object {
@@ -467,10 +467,6 @@ exports[`pages definePassengerType should render errors correctly when input err
             "radios": Array [
               Object {
                 "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
-                  "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-hint",
-                },
                 "id": "proof-required",
                 "inputErrors": Array [
                   Object {
@@ -478,6 +474,10 @@ exports[`pages definePassengerType should render errors correctly when input err
                     "id": "membership-card",
                   },
                 ],
+                "inputHint": Object {
+                  "content": "Select the applicable proof document(s).",
+                  "id": "define-passenger-proof-hint",
+                },
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
@@ -594,12 +594,12 @@ exports[`pages definePassengerType should render errors correctly when radio err
             "radios": Array [
               Object {
                 "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
+                "id": "age-range-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Enter a minimum and/or maximum age for this passenger type.",
                   "id": "define-passenger-age-range-hint",
                 },
-                "id": "age-range-required",
-                "inputErrors": Array [],
                 "inputType": "text",
                 "inputs": Array [
                   Object {
@@ -644,12 +644,12 @@ exports[`pages definePassengerType should render errors correctly when radio err
             "radios": Array [
               Object {
                 "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
+                "id": "proof-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
                   "content": "Select the applicable proof document(s).",
                   "id": "define-passenger-proof-hint",
                 },
-                "id": "proof-required",
-                "inputErrors": Array [],
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {

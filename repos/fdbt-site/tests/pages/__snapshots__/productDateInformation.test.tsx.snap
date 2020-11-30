@@ -40,16 +40,6 @@ exports[`pages productDateInformation it should render errors correctly when rad
           If not supplied, your start date will default to today and your end date will default to 100 years from today
         </span>
         <RadioConditionalInput
-          dates={
-            Object {
-              "endDateDay": "",
-              "endDateMonth": "",
-              "endDateYear": "",
-              "startDateDay": "",
-              "startDateMonth": "",
-              "startDateYear": "",
-            }
-          }
           fieldset={
             Object {
               "heading": Object {
@@ -61,20 +51,22 @@ exports[`pages productDateInformation it should render errors correctly when rad
               "radios": Array [
                 Object {
                   "dataAriaControls": "product-dates-required-conditional",
-                  "hint": Object {
+                  "id": "product-dates-required",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
                     "content": "",
                     "id": "",
                   },
-                  "id": "product-dates-required",
-                  "inputErrors": Array [],
                   "inputType": "date",
                   "inputs": Array [
                     Object {
+                      "defaultValues": "##",
                       "id": "start-date",
                       "label": "Start Date",
                       "name": "startDate",
                     },
                     Object {
+                      "defaultValues": "##",
                       "id": "end-date",
                       "label": "End Date",
                       "name": "endDate",
@@ -140,16 +132,6 @@ exports[`pages productDateInformation it should render the product date informat
           If not supplied, your start date will default to today and your end date will default to 100 years from today
         </span>
         <RadioConditionalInput
-          dates={
-            Object {
-              "endDateDay": "",
-              "endDateMonth": "",
-              "endDateYear": "",
-              "startDateDay": "",
-              "startDateMonth": "",
-              "startDateYear": "",
-            }
-          }
           fieldset={
             Object {
               "heading": Object {
@@ -161,20 +143,22 @@ exports[`pages productDateInformation it should render the product date informat
               "radios": Array [
                 Object {
                   "dataAriaControls": "product-dates-required-conditional",
-                  "hint": Object {
+                  "id": "product-dates-required",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
                     "content": "",
                     "id": "",
                   },
-                  "id": "product-dates-required",
-                  "inputErrors": Array [],
                   "inputType": "date",
                   "inputs": Array [
                     Object {
+                      "defaultValues": "##",
                       "id": "start-date",
                       "label": "Start Date",
                       "name": "startDate",
                     },
                     Object {
+                      "defaultValues": "##",
                       "id": "end-date",
                       "label": "End Date",
                       "name": "endDate",

@@ -32,8 +32,8 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
                 label: 'Yes',
-                hint: {
-                    id: 'define-valid-days-hint',
+                inputHint: {
+                    id: 'define-valid-days-inputHint',
                     content: 'Select the days of the week the ticket is valid for',
                 },
                 inputType: 'checkbox',
