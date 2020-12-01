@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { TwoThirdsLayout } from '../layout/Layout';
+import DACimage from '../assets/images/DAC_certification.png';
 
 const title = 'Accessibility - Create Fares Data Service';
 const description = 'Accessibility page for the Create Fares Data Service';
@@ -86,8 +87,18 @@ const Accessibility = (): ReactElement => {
             </p>
             <p className="govuk-body">
                 This website was last tested on 7 October 2020. The test was carried out by the Digital Accessibility
-                Centre.
+                Centre, certificate found&nbsp;
+                <a
+                    href="http://digitalaccessibilitycentre.org/index.php/tfn"
+                    aria-label="see digital accessibility centre certificate"
+                >
+                    here
+                </a>
+                .
             </p>
+            <div>
+                <img width="150" src={DACimage} alt="DAC AA certification" />
+            </div>
         </TwoThirdsLayout>
     );
 };
