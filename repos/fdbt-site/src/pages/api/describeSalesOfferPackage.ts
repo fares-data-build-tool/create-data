@@ -31,7 +31,7 @@ export const sopInfoSchema = yup.object({
     description: yup
         .string()
         .min(0, noInputError('description'))
-        .max(50, inputTooLongError('description', 50))
+        .max(150, inputTooLongError('description', 150))
         .required(noInputError('description')),
 });
 
