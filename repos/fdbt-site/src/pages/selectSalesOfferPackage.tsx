@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import startCase from 'lodash/startCase';
 import { isSalesOfferPackageWithErrors, isFareType } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
@@ -25,7 +26,7 @@ const pageDescription = 'Sales Offer Package selection page of the Create Fares 
 
 export const defaultSalesOfferPackageOne: SalesOfferPackage = {
     name: 'Onboard (cash)',
-    description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+    description: '',
     purchaseLocations: ['onBoard'],
     paymentMethods: ['cash'],
     ticketFormats: ['paperTicket'],
@@ -33,7 +34,7 @@ export const defaultSalesOfferPackageOne: SalesOfferPackage = {
 
 export const defaultSalesOfferPackageTwo: SalesOfferPackage = {
     name: 'Onboard (contactless)',
-    description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
+    description: '',
     purchaseLocations: ['onBoard'],
     paymentMethods: ['contactlessPaymentCard'],
     ticketFormats: ['paperTicket'],
@@ -41,8 +42,7 @@ export const defaultSalesOfferPackageTwo: SalesOfferPackage = {
 
 export const defaultSalesOfferPackageThree: SalesOfferPackage = {
     name: 'Online (smart card)',
-    description:
-        'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
+    description: '',
     purchaseLocations: ['online'],
     paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
     ticketFormats: ['smartCard'],
@@ -50,8 +50,7 @@ export const defaultSalesOfferPackageThree: SalesOfferPackage = {
 
 export const defaultSalesOfferPackageFour: SalesOfferPackage = {
     name: 'Mobile App',
-    description:
-        'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
+    description: '',
     purchaseLocations: ['mobileDevice'],
     paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
     ticketFormats: ['mobileApp'],
@@ -66,18 +65,15 @@ export interface SelectSalesOfferPackageProps {
     csrfToken: string;
 }
 
+const formatSOPArray = (stringArray: string[]): string => stringArray.map(string => startCase(string)).join(', ');
+
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
     productName: string,
     selected?: { [key: string]: string[] },
 ): ReactElement[] => {
     return salesOfferPackagesList.map((offer, index) => {
-        const { name, description } = offer;
-        let checkboxTitles = `${name} - ${description}`;
-
-        if (checkboxTitles.length > 200) {
-            checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
-        }
+        const { name, description, purchaseLocations, paymentMethods, ticketFormats } = offer;
 
         const productNameIds = removeAllWhiteSpace(productName);
 
@@ -106,8 +102,17 @@ const generateCheckbox = (
                     defaultChecked={isSelectedOffer}
                 />
                 <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productNameIds}-checkbox-${index}`}>
-                    {checkboxTitles}
+                    <b>{name}</b> {description.length > 0 ? '-' : ''} {description}
                 </label>
+                <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
+                    Purchase locations: {formatSOPArray(purchaseLocations)}
+                </span>
+                <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
+                    Payment methods: {formatSOPArray(paymentMethods)}
+                </span>
+                <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
+                    Ticket formats: {formatSOPArray(ticketFormats)}
+                </span>
             </div>
         );
     });
