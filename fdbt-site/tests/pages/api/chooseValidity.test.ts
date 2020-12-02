@@ -21,6 +21,7 @@ describe('chooseValidity', () => {
         [{ validityInput: "[]'l..33" }, { Location: '/chooseValidity' }],
         [{ validityInput: '-1' }, { Location: '/chooseValidity' }],
         [{ validityInput: '2', duration: 'day' }, { Location: '/periodValidity' }],
+        [{ validityInput: '3', duration: 'hour' }, { Location: '/periodValidity' }],
         [{ validityInput: '2', duration: 'fortnights' }, { Location: '/chooseValidity' }],
     ];
 
