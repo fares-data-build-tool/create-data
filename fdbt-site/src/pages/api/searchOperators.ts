@@ -1,11 +1,10 @@
 import { NextApiResponse } from 'next';
 import uniqBy from 'lodash/uniqBy';
-import { ErrorInfo, NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, Operator, TicketRepresentationAttribute } from '../../interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
-import { Operator } from '../../data/auroradb';
 import { addOperatorsErrorId, removeOperatorsErrorId, searchInputId } from '../searchOperators';
 
 export interface MultipleOperatorsAttribute {
@@ -31,7 +30,7 @@ export const addOperatorsToPreviouslySelectedOperators = (
 ): Operator[] => {
     const formattedRawList = rawList.map(item => ({
         nocCode: item.split('#')[0],
-        operatorPublicName: item.split('#')[1],
+        name: item.split('#')[1],
     }));
     const combinedLists = selectedOperators.concat(formattedRawList);
     const updatedList = uniqBy(combinedLists, 'nocCode');

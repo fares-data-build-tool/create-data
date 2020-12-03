@@ -9,13 +9,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import FareTypeRadios, { FareTypeRadioProps } from '../components/FareTypeRadios';
-import {
-    setCookieOnServerSide,
-    getAndValidateNoc,
-    getCsrfToken,
-    getAndValidateSchemeOpRegion,
-    isSchemeOperator,
-} from '../utils/index';
+import { setCookieOnServerSide, getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/index';
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
@@ -104,7 +98,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     const csrfToken = getCsrfToken(ctx);
 
     const schemeOp = isSchemeOperator(ctx);
-    let opIdentifier = getAndValidateSchemeOpRegion(ctx) || getAndValidateNoc(ctx);
+    const opIdentifier = getAndValidateNoc(ctx);
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
@@ -112,8 +106,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
         throw new Error('Could not extract the necessary operator info for the fareType page.');
     }
     const operatorInfo = JSON.parse(operatorCookie);
-    const operatorName = schemeOp ? operatorInfo.operator : operatorInfo.operator.operatorPublicName;
-    opIdentifier = schemeOp ? operatorName : opIdentifier;
+    const operatorName = operatorInfo.name;
     const uuid = buildUuid(opIdentifier);
     const cookieValue = JSON.stringify({ ...operatorInfo, uuid });
 

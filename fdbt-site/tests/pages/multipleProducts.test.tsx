@@ -28,10 +28,8 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     cookies: {
                         operator: {
-                            operator: {
-                                operatorPublicName: 'BLP',
-                            },
-                            noc: 'TEST',
+                            name: 'BLP',
+                            nocCode: 'TEST',
                         },
 
                         passengerType: { passengerType: 'Adult' },

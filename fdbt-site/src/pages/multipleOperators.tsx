@@ -3,10 +3,10 @@ import { parseCookies } from 'nookies';
 import { getCsrfToken, getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, Operator } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { batchGetOperatorNamesByNocCode, OperatorNameType } from '../data/auroradb';
+import { batchGetOperatorNamesByNocCode } from '../data/auroradb';
 import { OPERATOR_COOKIE } from '../constants';
 
 const title = 'Multiple Operators - Create Fares Data Service';
@@ -15,7 +15,7 @@ const errorId = 'operators';
 
 type MultipleOperatorsProps = {
     errors?: ErrorInfo[];
-    operatorsAndNocs: OperatorNameType[];
+    operatorsAndNocs: Operator[];
     csrfToken: string;
 };
 
@@ -35,13 +35,13 @@ const MultipleOperators = ({ operatorsAndNocs, errors = [], csrfToken }: Multipl
                             <option value="" disabled>
                                 Select One
                             </option>
-                            {operatorsAndNocs.map((operatorAndNoc: OperatorNameType) => (
+                            {operatorsAndNocs.map((operatorAndNoc: Operator) => (
                                 <option
                                     key="operator"
-                                    value={`${operatorAndNoc.operatorPublicName}|${operatorAndNoc.nocCode}`}
+                                    value={`${operatorAndNoc.name}|${operatorAndNoc.nocCode}`}
                                     className="service-option"
                                 >
-                                    {operatorAndNoc.operatorPublicName} - {operatorAndNoc.nocCode}
+                                    {operatorAndNoc.name} - {operatorAndNoc.nocCode}
                                 </option>
                             ))}
                         </select>
@@ -68,7 +68,7 @@ export const getServerSideProps = async (
         splitNocs = idTokenNoc.split('|');
     }
 
-    const operatorInfo: OperatorNameType[] = await batchGetOperatorNamesByNocCode(splitNocs);
+    const operatorInfo: Operator[] = await batchGetOperatorNamesByNocCode(splitNocs);
 
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];

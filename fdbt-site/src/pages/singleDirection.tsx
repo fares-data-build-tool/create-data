@@ -86,7 +86,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Necessary cookies not found to show direction page');
     }
 
-    const { operator } = JSON.parse(operatorCookie);
+    const { name } = JSON.parse(operatorCookie);
 
     const lineName = serviceAttribute.service.split('#')[0];
 
@@ -110,7 +110,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
-            operator: operator.operatorPublicName,
+            operator: name,
             passengerType: passengerTypeAttribute.passengerType,
             lineName,
             service,

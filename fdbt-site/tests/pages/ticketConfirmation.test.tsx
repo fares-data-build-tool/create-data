@@ -31,8 +31,7 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../src/constants';
-import { Operator } from '../../src/data/auroradb';
-import { MultiOperatorInfo } from '../../src/interfaces';
+import { MultiOperatorInfo, Operator } from '../../src/interfaces';
 
 describe('pages', () => {
     const confirmationElementStructure: ConfirmationElement = {
@@ -133,8 +132,8 @@ describe('pages', () => {
                 },
             ];
             const mockAdditionalOperators: Operator[] = [
-                { nocCode: 'BLAC', operatorPublicName: expect.any(String) },
-                { nocCode: 'MCT', operatorPublicName: expect.any(String) },
+                { nocCode: 'BLAC', name: expect.any(String) },
+                { nocCode: 'MCT', name: expect.any(String) },
             ];
             const mockAdditionalOperatorsServices: MultiOperatorInfo[] = [
                 {

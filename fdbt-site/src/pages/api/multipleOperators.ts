@@ -10,10 +10,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const noc = splitOperator.slice(-1)[0];
 
             const operatorCookieValue = JSON.stringify({
-                operator: {
-                    operatorPublicName: splitOperator[0],
-                },
-                noc,
+                name: splitOperator[0],
+                nocCode: noc,
             });
             setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
             redirectTo(res, '/fareType');

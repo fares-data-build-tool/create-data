@@ -197,7 +197,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         });
     } else if (!zone) {
         const opInfo = getCookieValue(ctx, OPERATOR_COOKIE);
-        const opName = opInfo ? `${JSON.parse(opInfo).operator.operatorPublicName} ` : '';
+        const opName = opInfo ? `${JSON.parse(opInfo).name} ` : '';
         confirmationElements.push({
             name: `${opName}Services`,
             content: `${services.map(service => service.split('#')[0]).join(', ')}`,
@@ -209,7 +209,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         const additionalOperators = multiOpAttribute.selectedOperators;
         confirmationElements.push({
             name: 'Additional Operators',
-            content: `${additionalOperators.map(operator => operator.operatorPublicName).join(', ')}`,
+            content: `${additionalOperators.map(operator => operator.name).join(', ')}`,
             href: 'searchOperators',
         });
 
@@ -217,8 +217,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             multiOpServices.forEach(serviceInfo => {
                 confirmationElements.push({
                     name: `${
-                        additionalOperators.find(operator => operator.nocCode === serviceInfo.nocCode)
-                            ?.operatorPublicName
+                        additionalOperators.find(operator => operator.nocCode === serviceInfo.nocCode)?.name
                     } Services`,
                     content: `${serviceInfo.services.map(service => service.split('#')[0]).join(', ')}`,
                     href: 'searchOperators',

@@ -47,14 +47,18 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const schemeOpName = decodedIdToken['custom:schemeOperator'];
                 const schemeOpRegion = decodedIdToken['custom:schemeRegionCode'];
 
-                if (nocCode) {
+                if (nocCode && !schemeOpName && !schemeOpRegion) {
                     if (nocCode.split('|').length === 1) {
                         const operatorName = await getOperatorNameByNocCode(nocCode);
-                        const operatorCookieValue = JSON.stringify({ operator: operatorName, noc: nocCode });
+                        const operatorCookieValue = JSON.stringify({ name: operatorName, nocCode });
                         setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
                     }
                 } else if (schemeOpName && schemeOpRegion) {
-                    const operatorCookieValue = JSON.stringify({ operator: schemeOpName, region: schemeOpRegion });
+                    const operatorCookieValue = JSON.stringify({
+                        name: schemeOpName,
+                        region: schemeOpRegion,
+                        nocCode,
+                    });
                     setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
                 } else if (!nocCode || (!schemeOpName && !schemeOpRegion)) {
                     throw new Error('Could not extract user info from their ID Token.');

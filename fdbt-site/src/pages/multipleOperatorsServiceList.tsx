@@ -126,9 +126,8 @@ export const getServerSideProps = async (
     if (doneOperators.length > 0) {
         const searchedOperatorsNocs = searchedOperators.map(operator => operator.nocCode);
         const doneOperatorsNocs = doneOperators.map(operator => operator.nocCode);
-        const result = searchedOperatorsNocs.find(searchedNoc => {
-            return !doneOperatorsNocs.includes(searchedNoc);
-        });
+        const result = searchedOperatorsNocs.find(searchedNoc => !doneOperatorsNocs.includes(searchedNoc));
+
         if (!result) {
             updateSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
         }
@@ -164,7 +163,7 @@ export const getServerSideProps = async (
             serviceList,
             buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
             errors: isMultiOperatorInfoWithErrors(completedOperatorInfo) ? completedOperatorInfo.errors : [],
-            operatorName: operatorToUse.operatorPublicName,
+            operatorName: operatorToUse.name,
             nocCode: operatorToUse.nocCode,
             csrfToken,
         },
