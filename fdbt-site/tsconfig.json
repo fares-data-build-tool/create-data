@@ -26,5 +26,5 @@
         }
     },
     "exclude": ["node_modules", "next.config.js"],
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".jest/setupEnzyme.ts"]
 }

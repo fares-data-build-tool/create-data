@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { SUPPORT_EMAIL_ADDRESS, SUPPORT_PHONE_NUMBER } from '../constants';
 import { BaseLayout } from '../layout/Layout';
 
 const title = 'Contact - Create Fares Data Service';
@@ -19,14 +20,14 @@ const Contact = (): ReactElement => {
                     <p className="govuk-body">
                         Create Fares Data Service support line:
                         <br />
-                        Telephone: 0800 464 3290
+                        Telephone: {SUPPORT_PHONE_NUMBER}
                         <br />
                         Monday to Friday, 9:00am to 5:00pm
                     </p>
                     <h3 className="govuk-heading-s">By email</h3>
                     <p className="govuk-body">
                         If you have any suggestions, comments or criticisms, please send an email to:&nbsp;
-                        <a href="mailto:fdbt-support@infinityworks.com">fdbt-support@infinityworks.com</a>
+                        <a href={`mailto:${SUPPORT_EMAIL_ADDRESS}`}>{SUPPORT_EMAIL_ADDRESS}</a>
                     </p>
                     <h3 className="govuk-heading-s">Related services</h3>
                     <p className="govuk-body">

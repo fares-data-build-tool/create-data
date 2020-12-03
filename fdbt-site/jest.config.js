@@ -13,7 +13,8 @@ module.exports = {
     },
 
     coveragePathIgnorePatterns: ['/node_modules/', 'enzyme.js'],
-    setupFilesAfterEnv: ['<rootDir>/setupEnzyme.ts'],
+    setupFiles: ['<rootDir>/.jest/setEnvVars.ts'],
+    setupFilesAfterEnv: ['<rootDir>/.jest/setupEnzyme.ts'],
     coverageReporters: ['json', 'lcov', 'text', 'text-summary'],
     moduleNameMapper: {
         '\\.(css|sass|scss|png|ico)$': 'identity-obj-proxy',
