@@ -121,6 +121,10 @@ export const ALLOWED_CSV_FILE_TYPES = [
 
 export const STAGE = process.env.STAGE || 'dev';
 
+export const { SERVICE_EMAIL_ADDRESS } = process.env;
+export const { SUPPORT_EMAIL_ADDRESS } = process.env;
+export const { SUPPORT_PHONE_NUMBER } = process.env;
+
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
