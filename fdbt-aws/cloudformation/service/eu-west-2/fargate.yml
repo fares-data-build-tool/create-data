@@ -97,8 +97,8 @@ Parameters:
     NoEcho: "true"
   SessionSecret:
     AllowedPattern: "[a-zA-Z0-9]+"
-    ConstraintDescription: must be between 8 to 41 alphanumeric characters.
-    Description: The session secret, between 8 to 41 alphanumeric characters.
+    ConstraintDescription: Must be between 8 to 41 alphanumeric characters
+    Description: The session secret, between 8 to 41 alphanumeric characters
     MaxLength: "41"
     MinLength: "8"
     NoEcho: "true"
@@ -107,6 +107,15 @@ Parameters:
     Type: String
     Default: ""
     Description: ARN for ACM certificate for external domain
+  SupportPhoneNumber:
+    Type: String
+    Description: The phone number to be used for user support
+  SupportEmailAddress:
+    Type: String
+    Description: The email address to be used for user support
+  ServiceEmailAddress:
+    Type: String
+    Description: The email address used by the service to email users
 
 Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
@@ -166,6 +175,12 @@ Resources:
               Value: !Ref SessionSecret
             - Name: ENABLE_VIRUS_SCAN
               Value: "1"
+            - Name: SUPPORT_PHONE_NUMBER
+              Value: !Ref SupportPhoneNumber
+            - Name: SUPPORT_EMAIL_ADDRESS
+              Value: !Ref SupportEmailAddress
+            - Name: SERVICE_EMAIL_ADDRESS
+              Value: !Ref ServiceEmailAddress
 
   MonitoringTaskDefinition:
     Type: AWS::ECS::TaskDefinition
