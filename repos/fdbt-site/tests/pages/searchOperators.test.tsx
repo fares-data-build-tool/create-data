@@ -2,24 +2,23 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
-import { Operator } from '../../src/data/auroradb';
 import SearchOperators, { getServerSideProps, SearchOperatorProps } from '../../src/pages/searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, Operator } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('searchOperator', () => {
         const mockOperators: Operator[] = [
             {
-                operatorPublicName: "Warrington's Own Buses",
+                name: "Warrington's Own Buses",
                 nocCode: 'WBTR',
             },
             {
-                operatorPublicName: 'Blackpool Transport',
+                name: 'Blackpool Transport',
                 nocCode: 'BLAC',
             },
             {
-                operatorPublicName: 'IW Bus Co',
+                name: 'IW Bus Co',
                 nocCode: 'IWBusCo',
             },
         ];
@@ -41,7 +40,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText="blac"
-                    searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    searchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
                     selectedOperators={[]}
                     csrfToken=""
                 />,
@@ -69,7 +68,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText="blac"
-                    searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    searchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
                     selectedOperators={[]}
                     csrfToken=""
                 />,

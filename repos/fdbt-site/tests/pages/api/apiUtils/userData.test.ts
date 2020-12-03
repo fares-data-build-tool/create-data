@@ -58,7 +58,7 @@ import * as auroradb from '../../../../src/data/auroradb';
 
 import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
 import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProductValidity';
-import { Operator } from '../../../../src/data/auroradb';
+import { Operator } from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -221,15 +221,15 @@ describe('userData', () => {
         const mockMultiOpSelectedOperators: Operator[] = [
             {
                 nocCode: 'MCTR',
-                operatorPublicName: 'Manchester Community Transport',
+                name: 'Manchester Community Transport',
             },
             {
                 nocCode: 'WBTR',
-                operatorPublicName: "Warrington's Own Buses",
+                name: "Warrington's Own Buses",
             },
             {
                 nocCode: 'BLAC',
-                operatorPublicName: 'Blackpool Transport',
+                name: 'Blackpool Transport',
             },
         ];
 
@@ -485,15 +485,15 @@ describe('userData', () => {
         const mockMultiOpSelectedOperators: Operator[] = [
             {
                 nocCode: 'MCTR',
-                operatorPublicName: 'Manchester Community Transport',
+                name: 'Manchester Community Transport',
             },
             {
                 nocCode: 'WBTR',
-                operatorPublicName: "Warrington's Own Buses",
+                name: "Warrington's Own Buses",
             },
             {
                 nocCode: 'BLAC',
-                operatorPublicName: 'Blackpool Transport',
+                name: 'Blackpool Transport',
             },
         ];
 
@@ -510,7 +510,7 @@ describe('userData', () => {
             const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {
-                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                    operator: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION', nocCode: 'TESTSCHEME' },
                     idToken: mockSchemOpIdToken,
                 },
                 session: {

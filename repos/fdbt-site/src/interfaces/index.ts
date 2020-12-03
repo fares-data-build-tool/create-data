@@ -62,6 +62,11 @@ export interface TicketRepresentationAttributeWithErrors {
     errors: ErrorInfo[];
 }
 
+export interface Operator {
+    name: string;
+    nocCode: string;
+}
+
 export interface MultiOperatorInfo {
     nocCode: string;
     services: string[];
@@ -257,6 +262,7 @@ export interface BaseGroupTicket {
 export interface SchemeOperatorTicket {
     schemeOperatorName: string;
     schemeOperatorRegionCode: string;
+    nocCode?: string;
     type: string;
     passengerType: string;
     ageRange?: string;

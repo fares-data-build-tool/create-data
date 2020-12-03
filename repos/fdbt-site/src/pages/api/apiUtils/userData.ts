@@ -23,8 +23,8 @@ import {
     MultiOperatorInfo,
     SchemeOperatorTicket,
     Ticket,
-    isSchemeOperatorTicket,
     WithErrors,
+    isSchemeOperatorTicket,
 } from '../../../interfaces/index';
 import {
     TERM_TIME_ATTRIBUTE,
@@ -105,10 +105,14 @@ export const getProductsAndSalesOfferPackages = (
 };
 
 export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void> => {
-    const filePath = isSchemeOperatorTicket(data)
-        ? `schemeOperator/${data.schemeOperatorRegionCode}/${uuid}_${Date.now()}.json`
-        : `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`;
-    await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(data), 'application/json; charset=utf-8');
+    const s3Data = { ...data };
+    const filePath = `${s3Data.nocCode}/${s3Data.type}/${uuid}_${Date.now()}.json`;
+
+    if (isSchemeOperatorTicket(s3Data)) {
+        delete s3Data.nocCode;
+    }
+
+    await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
 };
 
 export const getBaseTicketAttributes = (
@@ -185,7 +189,7 @@ export const getBasePeriodTicketAttributes = (
         throw new Error(`Could not create ${ticketType} ticket json. BasePeriodTicket attributes could not be found.`);
     }
 
-    const { operator } = JSON.parse(operatorCookie);
+    const { name } = JSON.parse(operatorCookie);
 
     let productDetailsList: ProductDetails[];
 
@@ -216,7 +220,7 @@ export const getBasePeriodTicketAttributes = (
 
     return {
         ...baseTicketAttributes,
-        operatorName: operator?.operatorPublicName,
+        operatorName: name,
         products: productDetailsList,
     };
 };
@@ -428,7 +432,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     return {
         ...baseTicketAttributes,
-        operatorName: operatorObject?.operator?.operatorPublicName,
+        operatorName: operatorObject?.name,
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
         termTime: isTermTime(req),
@@ -514,10 +518,12 @@ export const getSchemeOperatorTicketJson = async (
     const { email } = decodedIdToken;
     const schemeOperatorName = decodedIdToken['custom:schemeOperator'];
     const schemeOperatorRegionCode = decodedIdToken['custom:schemeRegionCode'];
+    const noc = getAndValidateNoc(req, res);
 
     return {
         schemeOperatorName,
         schemeOperatorRegionCode,
+        nocCode: noc,
         type: fareType,
         ...passengerTypeAttribute,
         email,
