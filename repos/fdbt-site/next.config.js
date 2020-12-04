@@ -4,6 +4,11 @@ const withImages = require('next-images');
 const nextConfig = {
     target: 'server',
     poweredByHeader: false,
+    env: {
+        SERVICE_EMAIL_ADDRESS: process.env.SERVICE_EMAIL_ADDRESS,
+        SUPPORT_EMAIL_ADDRESS: process.env.SUPPORT_EMAIL_ADDRESS,
+        SUPPORT_PHONE_NUMBER: process.env.SUPPORT_PHONE_NUMBER,
+    },
     webpack: (config, { isServer }) => {
         config.module.rules.push({
             test: /\.(pdf|csv)$/,
