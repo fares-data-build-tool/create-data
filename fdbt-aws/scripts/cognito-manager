@@ -5,6 +5,12 @@ USER_ATTRIBUTE=$4
 
 USER_POOL=$(aws cognito-idp list-user-pools --max-results 1 | jq -r '.UserPools[0].Id')
 
+function get_users_by_noc() {
+  NOC=$1
+
+  echo $(aws cognito-idp list-users --user-pool-id $USER_POOL | jq --arg noc "$NOC" -c '.Users[] | select(.Attributes[].Value | contains($noc))')
+}
+
 function add_user() {
   if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ]; then
     echo "usage: cognito-manager add-user <email> <noc>"
@@ -25,7 +31,17 @@ function add_scheme_operator() {
   fi
 
   TEMP_PASSWORD=$(cat /dev/urandom | env LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
-  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:schemeOperator,Value=$USER_IDENTIFIER Name=custom:schemeRegionCode,Value=$USER_ATTRIBUTE --temporary-password $TEMP_PASSWORD --region eu-west-2
+  NAME_ABBR=$(echo $USER_IDENTIFIER | cut -c1-5 | tr '[:lower:]' '[:upper:]')
+  REGION_UPPER=$(echo $USER_ATTRIBUTE | tr '[:lower:]' '[:upper:]')
+  SCHEME_NOC="$NAME_ABBR$REGION_UPPER"
+  USERS=$(get_users_by_noc $SCHEME_NOC)
+
+  if [ -n "$USERS" ]; then
+    echo "NOC already exists"
+    exit 1
+  fi
+
+  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$SCHEME_NOC Name=custom:schemeOperator,Value=$USER_IDENTIFIER Name=custom:schemeRegionCode,Value=$USER_ATTRIBUTE --temporary-password $TEMP_PASSWORD --region eu-west-2
   aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=email_verified,Value=true
 
   echo "https://fares-data.dft.gov.uk/register?key=$TEMP_PASSWORD"
