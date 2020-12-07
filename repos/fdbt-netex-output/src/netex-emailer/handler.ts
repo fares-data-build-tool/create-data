@@ -56,7 +56,7 @@ export const setMailOptions = (
     const { email, uuid, passengerType, type, selectedServices, products, lineName } = matchingData;
 
     return {
-        from: 'fdbt@transportforthenorth.com',
+        from: process.env.SERVICE_EMAIL_ADDRESS,
         to: email,
         subject: `NeTEx created for ${params.Key}`,
         text: `There was a file uploaded to '${params.Bucket}' [Filename: '${params.Key} ']`,
