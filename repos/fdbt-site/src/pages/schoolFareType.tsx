@@ -8,7 +8,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import FareTypeRadios, { FareTypeRadioProps } from '../components/FareTypeRadios';
-import { getCsrfToken, isSchemeOperator } from '../utils/index';
+import { getCsrfToken } from '../utils/index';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'School Fare Type - Create Fares Data Service ';
@@ -69,7 +69,6 @@ const SchoolFareType = ({ operatorName, errors = [], csrfToken }: SchoolFareType
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SchoolFareTypeProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const schemeOp = isSchemeOperator(ctx);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
@@ -77,14 +76,13 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sc
         throw new Error('Could not extract the necessary operator info for the schoolFareType page.');
     }
 
-    const operatorInfo = JSON.parse(operatorCookie);
-    const operatorName = schemeOp ? operatorInfo.operator : operatorInfo.operator.operatorPublicName;
+    const { name } = JSON.parse(operatorCookie);
 
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
 
     const errors: ErrorInfo[] = isWithErrors(schoolFareTypeAttribute) ? schoolFareTypeAttribute.errors : [];
 
-    return { props: { operatorName, errors, csrfToken } };
+    return { props: { operatorName: name, errors, csrfToken } };
 };
 
 export default SchoolFareType;

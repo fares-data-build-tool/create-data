@@ -17,7 +17,6 @@ jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
     const selectSalesOfferPackagePropsInfoNoError: SelectSalesOfferPackageProps = {
-        schemeOp: false,
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
@@ -30,7 +29,6 @@ describe('pages', () => {
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
-        schemeOp: false,
         productNamesList: [],
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
@@ -46,7 +44,6 @@ describe('pages', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
-                    schemeOp={selectSalesOfferPackagePropsInfoNoError.schemeOp}
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
                     productNamesList={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
@@ -59,7 +56,6 @@ describe('pages', () => {
         it('should render an error when an error message is passed through to props', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
-                    schemeOp={selectSalesOfferPackagePropsInfoWithError.schemeOp}
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoWithError.salesOfferPackagesList}
                     productNamesList={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
@@ -72,7 +68,6 @@ describe('pages', () => {
         it("should not render the 'Create New Sales Offer Package' button for a scheme operator user", () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
-                    schemeOp
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
                     productNamesList={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}

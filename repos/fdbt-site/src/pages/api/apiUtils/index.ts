@@ -173,8 +173,9 @@ export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): st
 
 export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): string => {
     const idTokenNoc = getNocFromIdToken(req, res);
+
     const operatorCookie = unescapeAndDecodeCookie(new Cookies(req, res), OPERATOR_COOKIE);
-    const cookieNoc = JSON.parse(operatorCookie).noc;
+    const cookieNoc = JSON.parse(operatorCookie).nocCode;
 
     const splitNoc = idTokenNoc?.split('|');
 
@@ -182,7 +183,7 @@ export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): st
         return cookieNoc;
     }
 
-    throw new Error('invalid noc set');
+    throw new Error('invalid NOC set');
 };
 
 export const getSchemeOpRegionFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
@@ -209,7 +210,7 @@ export const getAndValidateSchemeOpRegion = (req: NextApiRequest, res: NextApiRe
 };
 
 export const isSchemeOperator = (req: NextApiRequest, res: NextApiResponse): boolean =>
-    !(!getAndValidateSchemeOpRegion(req, res) && !!getAndValidateNoc(req, res));
+    !!getAndValidateSchemeOpRegion(req, res);
 
 export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
     if (username) {

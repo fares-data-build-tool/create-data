@@ -4,22 +4,13 @@ import awsParamStore from 'aws-param-store';
 import logger from '../utils/logger';
 import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
 import { INTERNAL_NOC } from '../constants';
+import { Operator } from '../interfaces';
 
 export interface ServiceType {
     lineName: string;
     startDate: string;
     description: string;
     serviceCode: string;
-}
-
-export interface OperatorNameType {
-    operatorPublicName: string;
-    nocCode?: string;
-}
-
-export interface Operator {
-    operatorPublicName: string;
-    nocCode: string;
 }
 
 export interface JourneyPattern {
@@ -186,7 +177,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     }
 };
 
-export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
+export const getOperatorNameByNocCode = async (nocCode: string): Promise<string> => {
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',
@@ -195,23 +186,23 @@ export const getOperatorNameByNocCode = async (nocCode: string): Promise<Operato
     });
 
     const queryInput = `
-    SELECT operatorPublicName
+    SELECT operatorPublicName AS name
     FROM nocTable
     WHERE nocCode = ?
     `;
 
-    let queryResult: OperatorNameType[];
+    let queryResult: Operator[];
 
     try {
-        queryResult = await executeQuery<OperatorNameType[]>(queryInput, [nocCodeParameter]);
+        queryResult = await executeQuery<Operator[]>(queryInput, [nocCodeParameter]);
     } catch (error) {
         throw new Error(`Could not retrieve operator name from AuroraDB: ${error.stack}`);
     }
 
-    return queryResult[0];
+    return queryResult[0].name;
 };
 
-export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promise<OperatorNameType[]> => {
+export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promise<Operator[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operator name for given noc',
@@ -220,12 +211,12 @@ export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promis
     try {
         const substitution = nocCodes.map(() => '?').join(',');
         const batchQuery = `
-            SELECT operatorPublicName, nocCode
+            SELECT operatorPublicName AS name, nocCode
             FROM nocTable
             WHERE nocCode IN (${substitution})
         `;
 
-        return executeQuery<OperatorNameType[]>(batchQuery, nocCodes);
+        return executeQuery<Operator[]>(batchQuery, nocCodes);
     } catch (error) {
         throw new Error(
             `Error performing batch get for operator names against noc codes '${JSON.stringify(nocCodes)}': ${
@@ -426,10 +417,13 @@ export const getSearchOperatorsByNocRegion = async (searchText: string, nocCode:
 
     const nocCodeParameter = replaceInternalNocCode(nocCode);
 
-    const searchQuery = `SELECT nocCode, operatorPublicName FROM nocTable WHERE nocCode IN (
-                             SELECT DISTINCT nocCode FROM tndsOperatorService WHERE regionCode IN (
-                                SELECT DISTINCT regionCode FROM tndsOperatorService WHERE nocCode = ?)
-                        ) AND operatorPublicName LIKE ?`;
+    const searchQuery = `
+        SELECT nocCode, operatorPublicName AS name FROM nocTable WHERE nocCode IN (
+                SELECT DISTINCT nocCode FROM tndsOperatorService WHERE regionCode IN (
+                    SELECT DISTINCT regionCode FROM tndsOperatorService WHERE nocCode = ?
+                )
+        ) AND operatorPublicName LIKE ?
+    `;
 
     try {
         return await executeQuery<Operator[]>(searchQuery, [nocCodeParameter, `%${searchText}%`]);
@@ -449,7 +443,7 @@ export const getSearchOperatorsBySchemeOpRegion = async (
         search: searchText,
     });
 
-    const searchQuery = `SELECT nocCode, operatorPublicName FROM nocTable WHERE nocCode IN (
+    const searchQuery = `SELECT nocCode, operatorPublicName AS name FROM nocTable WHERE nocCode IN (
         SELECT DISTINCT nocCode FROM tndsOperatorService WHERE regionCode = ?
         ) AND operatorPublicName LIKE ?`;
 

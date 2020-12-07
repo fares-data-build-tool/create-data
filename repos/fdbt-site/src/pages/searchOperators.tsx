@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, Operator } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { getSearchOperatorsByNocRegion, getSearchOperatorsBySchemeOpRegion, Operator } from '../data/auroradb';
+import { getSearchOperatorsByNocRegion, getSearchOperatorsBySchemeOpRegion } from '../data/auroradb';
 import { getAndValidateNoc, getAndValidateSchemeOpRegion, getCsrfToken, isSchemeOperator } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
@@ -60,14 +60,14 @@ export const showSelectedOperators = (selectedOperators: Operator[], errors: Err
                                             className="govuk-checkboxes__input"
                                             id={`remove-operator-checkbox-${index}`}
                                             name="operatorsToRemove"
-                                            value={`${operator.nocCode}#${operator.operatorPublicName}`}
+                                            value={`${operator.nocCode}#${operator.name}`}
                                             type="checkbox"
                                         />
                                         <label
                                             className="govuk-label govuk-checkboxes__label"
                                             htmlFor={`remove-operator-checkbox-${index}`}
                                         >
-                                            {operator.operatorPublicName} - {operator.nocCode}
+                                            {operator.name} - {operator.nocCode}
                                         </label>
                                     </div>
                                 ))}
@@ -174,21 +174,21 @@ export const showSearchResults = (searchText: string, searchResults: Operator[],
                                 characters are the operator&apos;s National Operator Code (NOC).
                             </p>
                             {searchResults.map((operator, index) => {
-                                const { nocCode, operatorPublicName } = operator;
+                                const { nocCode, name } = operator;
                                 return (
-                                    <div className="govuk-checkboxes__item" key={`checkbox-item-${operatorPublicName}`}>
+                                    <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
                                         <input
                                             className="govuk-checkboxes__input"
                                             id={`add-operator-checkbox-${index}`}
                                             name="operatorsToAdd"
                                             type="checkbox"
-                                            value={`${nocCode}#${operatorPublicName}`}
+                                            value={`${nocCode}#${name}`}
                                         />
                                         <label
                                             className="govuk-label govuk-checkboxes__label"
                                             htmlFor={`add-operator-checkbox-${index}`}
                                         >
-                                            {operatorPublicName} - {nocCode}
+                                            {name} - {nocCode}
                                         </label>
                                     </div>
                                 );
@@ -267,7 +267,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
 
     const schemeOp = isSchemeOperator(ctx);
-    const opIdentifier = getAndValidateSchemeOpRegion(ctx) || getAndValidateNoc(ctx);
+    const searchParam = getAndValidateSchemeOpRegion(ctx) || getAndValidateNoc(ctx);
 
     let errors: ErrorInfo[] = [];
     let searchText = '';
@@ -302,12 +302,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             });
         }
         const results = schemeOp
-            ? await getSearchOperatorsBySchemeOpRegion(searchText, opIdentifier)
-            : await getSearchOperatorsByNocRegion(searchText, opIdentifier);
+            ? await getSearchOperatorsBySchemeOpRegion(searchText, searchParam)
+            : await getSearchOperatorsByNocRegion(searchText, searchParam);
         const cookies = parseCookies(ctx);
-        const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
+        const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).name;
         results.forEach(operator => {
-            if (operator.operatorPublicName !== operatorName) {
+            if (operator.name !== operatorName) {
                 searchResults.push(operator);
             }
         });

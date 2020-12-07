@@ -84,8 +84,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Could not render the service selection page. Necessary cookies not found.');
     }
 
-    const operatorInfo = JSON.parse(operatorCookie);
-    const { operator } = operatorInfo;
+    const { name } = JSON.parse(operatorCookie);
 
     const services = await getServicesByNocCode(nocCode);
 
@@ -95,7 +94,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
-            operator: operator.operatorPublicName,
+            operator: name,
             passengerType: passengerTypeAttribute.passengerType,
             services,
             error,

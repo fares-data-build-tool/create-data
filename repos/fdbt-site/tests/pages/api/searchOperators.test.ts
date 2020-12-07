@@ -8,7 +8,7 @@ import searchOperators, {
 } from '../../../src/pages/api/searchOperators';
 import * as session from '../../../src/utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants';
-import { Operator } from '../../../src/data/auroradb';
+import { Operator } from '../../../src/interfaces';
 
 describe('searchOperators', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
@@ -21,12 +21,12 @@ describe('searchOperators', () => {
         it('should remove operators from the list of selected operators', () => {
             const mockOperatorToRemove = ['BLAC#Blackpool Transport'];
             const expectedUpdatedList: Operator[] = [
-                { operatorPublicName: "Warrington's Own Buses", nocCode: 'WBTR' },
-                { operatorPublicName: 'IW Bus Co', nocCode: 'IWBusCo' },
+                { name: "Warrington's Own Buses", nocCode: 'WBTR' },
+                { name: 'IW Bus Co', nocCode: 'IWBusCo' },
             ];
             const mockSelectedOperators: Operator[] = [
                 ...expectedUpdatedList,
-                { operatorPublicName: 'Blackpool Transport', nocCode: 'BLAC' },
+                { name: 'Blackpool Transport', nocCode: 'BLAC' },
             ];
             const updatedList = removeOperatorsFromPreviouslySelectedOperators(
                 mockOperatorToRemove,
@@ -40,13 +40,13 @@ describe('searchOperators', () => {
         it('should add operators to the list of selected operators', () => {
             const mockOperatorsToAdd = ['BLAC#Blackpool Transport', "WBTR#Warrington's Own Buses"];
             const mockSelectedOperators: Operator[] = [
-                { operatorPublicName: 'IW Bus Co', nocCode: 'IWBusCo' },
-                { operatorPublicName: "Warrington's Own Buses", nocCode: 'WBTR' },
+                { name: 'IW Bus Co', nocCode: 'IWBusCo' },
+                { name: "Warrington's Own Buses", nocCode: 'WBTR' },
             ];
             const expectedUpdatedList: Operator[] = [
-                { operatorPublicName: 'IW Bus Co', nocCode: 'IWBusCo' },
-                { operatorPublicName: "Warrington's Own Buses", nocCode: 'WBTR' },
-                { operatorPublicName: 'Blackpool Transport', nocCode: 'BLAC' },
+                { name: 'IW Bus Co', nocCode: 'IWBusCo' },
+                { name: "Warrington's Own Buses", nocCode: 'WBTR' },
+                { name: 'Blackpool Transport', nocCode: 'BLAC' },
             ];
             const updatedList = addOperatorsToPreviouslySelectedOperators(mockOperatorsToAdd, mockSelectedOperators);
             expect(updatedList).toEqual(expectedUpdatedList);
@@ -122,7 +122,7 @@ describe('searchOperators', () => {
             selectedOperators: [
                 {
                     nocCode: 'WBTR',
-                    operatorPublicName: "Warrington's Own Buses",
+                    name: "Warrington's Own Buses",
                 },
             ],
         };
@@ -140,9 +140,7 @@ describe('searchOperators', () => {
     });
 
     it("should redirect with errors when the user tries to add to the selected operators and clicks the 'Continue' button", () => {
-        const mockSelectedOperators: Operator[] = [
-            { nocCode: 'MCTR', operatorPublicName: 'Manchester Community Transport' },
-        ];
+        const mockSelectedOperators: Operator[] = [{ nocCode: 'MCTR', name: 'Manchester Community Transport' }];
         const { req, res } = getMockRequestAndResponse({
             requestHeaders: { referer: 'host/searchOperators?searchOperator=warr' },
             body: {
@@ -214,15 +212,15 @@ describe('searchOperators', () => {
                     selectedOperators: [
                         {
                             nocCode: 'MCTR',
-                            operatorPublicName: 'Manchester Community Transport',
+                            name: 'Manchester Community Transport',
                         },
                         {
                             nocCode: 'MCTR2',
-                            operatorPublicName: 'Manchester Community Transport 2',
+                            name: 'Manchester Community Transport 2',
                         },
                         {
                             nocCode: 'MCTR3',
-                            operatorPublicName: 'Manchester Community Transport 3',
+                            name: 'Manchester Community Transport 3',
                         },
                     ],
                 },
@@ -233,7 +231,7 @@ describe('searchOperators', () => {
             selectedOperators: [
                 {
                     nocCode: 'MCTR3',
-                    operatorPublicName: 'Manchester Community Transport 3',
+                    name: 'Manchester Community Transport 3',
                 },
             ],
         };
@@ -251,7 +249,7 @@ describe('searchOperators', () => {
     });
 
     it("should redirect with errors when the user tries to remove selected operators and clicks the 'Continue' button", () => {
-        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }];
+        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', name: "Warrington's Own Buses" }];
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
@@ -288,7 +286,7 @@ describe('searchOperators', () => {
     });
 
     it("should redirect with errors when the user clicks the 'Remove Operator' button without making a selection", () => {
-        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }];
+        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', name: "Warrington's Own Buses" }];
         const { req, res } = getMockRequestAndResponse({
             body: {
                 removeOperators: 'Remove Operators',
@@ -327,15 +325,15 @@ describe('searchOperators', () => {
             const mockSelectedOperators: Operator[] = [
                 {
                     nocCode: 'MCTR',
-                    operatorPublicName: 'Manchester Community Transport',
+                    name: 'Manchester Community Transport',
                 },
                 {
                     nocCode: 'MCTR2',
-                    operatorPublicName: 'Manchester Community Transport 2',
+                    name: 'Manchester Community Transport 2',
                 },
                 {
                     nocCode: 'MCTR3',
-                    operatorPublicName: 'Manchester Community Transport 3',
+                    name: 'Manchester Community Transport 3',
                 },
             ];
             const { req, res } = getMockRequestAndResponse({

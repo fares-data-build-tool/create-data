@@ -17,7 +17,7 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
 import { Product } from './api/multipleProductValidity';
-import { getCsrfToken, isSchemeOperator } from '../utils';
+import { getCsrfToken } from '../utils';
 
 const title = 'Multiple Product Validity - Create Fares Data Service';
 const description = 'Multiple Product Validity selection page of the Create Fares Data Service';
@@ -200,8 +200,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     ) {
         throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }
-    const { operator } = JSON.parse(operatorCookie);
-    const operatorName = isSchemeOperator(ctx) ? operator : operator.operatorPublicName;
+    const { name } = JSON.parse(operatorCookie);
 
     const multipleProducts: Product[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
@@ -221,7 +220,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     return {
         props: {
-            operatorName,
+            operatorName: name,
             passengerType: passengerTypeAttribute.passengerType,
             numberOfProducts,
             multipleProducts,

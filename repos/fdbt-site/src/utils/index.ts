@@ -138,7 +138,7 @@ export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAtt
 
 export const getAndValidateNoc = (ctx: NextPageContext): string => {
     const idTokenNoc = getNocFromIdToken(ctx);
-    const cookieNoc = getCookieValue(ctx, OPERATOR_COOKIE, 'noc');
+    const cookieNoc = getCookieValue(ctx, OPERATOR_COOKIE, 'nocCode');
 
     const splitNoc = idTokenNoc?.split('|');
 
@@ -171,8 +171,7 @@ export const getAndValidateSchemeOpRegion = (ctx: NextPageContext): string | nul
     return cookieSchemeOpRegion;
 };
 
-export const isSchemeOperator = (ctx: NextPageContextWithSession): boolean =>
-    !(!getAndValidateSchemeOpRegion(ctx) && !!getAndValidateNoc(ctx));
+export const isSchemeOperator = (ctx: NextPageContextWithSession): boolean => !!getAndValidateSchemeOpRegion(ctx);
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];

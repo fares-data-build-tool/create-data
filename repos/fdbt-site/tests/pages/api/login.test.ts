@@ -17,7 +17,7 @@ const mockBaseOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthRe
 const mockSchemeOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
     AuthenticationResult: {
         IdToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04ifQ.iZ-AJUm34FkHvXQ-zNoaqwAIT_LB708r1zj3xYvT3as',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVFNDSEVNRSJ9.NZEY2oD25-Y-wcaYLQMlXozGkhjI4hXxAXxkrOICXvA',
         RefreshToken: 'eyJj',
     },
 };
@@ -30,7 +30,7 @@ describe('login', () => {
     const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
 
     beforeEach(() => {
-        getOperatorNameByNocCodeSpy.mockImplementation(() => Promise.resolve({ operatorPublicName: 'DCCL' }));
+        getOperatorNameByNocCodeSpy.mockImplementation(() => Promise.resolve('DCCL'));
         authSignInSpy.mockImplementation(() => Promise.resolve(mockBaseOpAuthResponse));
     });
 
@@ -84,8 +84,8 @@ describe('login', () => {
     it('should redirect when successfully signed in as an ordinary operator', async () => {
         authSignInSpy.mockImplementation(() => Promise.resolve(mockBaseOpAuthResponse));
         const mockOperatorCookie = {
-            operator: { operatorPublicName: 'DCCL' },
-            noc: 'TEST',
+            name: 'DCCL',
+            nocCode: 'TEST',
         };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
@@ -109,8 +109,9 @@ describe('login', () => {
     it('should redirect when successfully signed in as a scheme operator', async () => {
         authSignInSpy.mockImplementation(() => Promise.resolve(mockSchemeOpAuthResponse));
         const mockOperatorCookie = {
-            operator: 'SCHEME_OPERATOR',
+            name: 'SCHEME_OPERATOR',
             region: 'SCHEME_REGION',
+            nocCode: 'TESTSCHEME',
         };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
