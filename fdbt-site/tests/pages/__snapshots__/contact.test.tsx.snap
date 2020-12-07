@@ -37,7 +37,8 @@ exports[`contact should render correctly 1`] = `
       >
         Create Fares Data Service support line:
         <br />
-        Telephone: 0800 464 3290
+        Telephone: 
+        0800 123 1234
         <br />
         Monday to Friday, 9:00am to 5:00pm
       </p>
@@ -51,9 +52,9 @@ exports[`contact should render correctly 1`] = `
       >
         If you have any suggestions, comments or criticisms, please send an email to: 
         <a
-          href="mailto:fdbt-support@infinityworks.com"
+          href="mailto:mock-support-address@email.co.uk"
         >
-          fdbt-support@infinityworks.com
+          mock-support-address@email.co.uk
         </a>
       </p>
       <h3

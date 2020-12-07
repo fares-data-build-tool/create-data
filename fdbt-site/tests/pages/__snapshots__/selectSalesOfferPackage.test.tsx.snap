@@ -54,6 +54,16 @@ exports[`pages selectSalesOfferPackage should not render the 'Create New Sales O
       type="submit"
       value="Continue"
     />
+    <a
+      className="govuk-button govuk-button--secondary create-new-sop-button"
+      data-module="govuk-button"
+      draggable="false"
+      href="/salesOfferPackages"
+      id="create-new-button"
+      role="button"
+    >
+      Create New Sales Offer Package
+    </a>
   </CsrfForm>
 </Component>
 `;

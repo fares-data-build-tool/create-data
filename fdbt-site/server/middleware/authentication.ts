@@ -107,10 +107,8 @@ export const setDisableAuthCookies = (server: Express): void => {
                 setCookieOnResponseObject(
                     OPERATOR_COOKIE,
                     JSON.stringify({
-                        operator: {
-                            operatorPublicName: 'Blackpool Transport',
-                        },
-                        noc: 'BLAC',
+                        name: 'Blackpool Transport',
+                        nocCode: 'BLAC',
                     }),
                     req,
                     res,

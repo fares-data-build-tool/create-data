@@ -7,6 +7,7 @@ exports[`FareTypeRadios should render a set of radio buttons for just standard f
   >
     <div
       className="govuk-radios__item"
+      key="single"
     >
       <input
         className="govuk-radios__input"
@@ -24,6 +25,7 @@ exports[`FareTypeRadios should render a set of radio buttons for just standard f
     </div>
     <div
       className="govuk-radios__item"
+      key="period"
     >
       <input
         className="govuk-radios__input"
@@ -41,6 +43,7 @@ exports[`FareTypeRadios should render a set of radio buttons for just standard f
     </div>
     <div
       className="govuk-radios__item"
+      key="return"
     >
       <input
         className="govuk-radios__input"
@@ -58,6 +61,7 @@ exports[`FareTypeRadios should render a set of radio buttons for just standard f
     </div>
     <div
       className="govuk-radios__item"
+      key="flatFare"
     >
       <input
         className="govuk-radios__input"
@@ -90,6 +94,7 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
   >
     <div
       className="govuk-radios__item"
+      key="single"
     >
       <input
         className="govuk-radios__input"
@@ -107,6 +112,7 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
     </div>
     <div
       className="govuk-radios__item"
+      key="period"
     >
       <input
         className="govuk-radios__input"
@@ -124,6 +130,7 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
     </div>
     <div
       className="govuk-radios__item"
+      key="return"
     >
       <input
         className="govuk-radios__input"
@@ -141,6 +148,7 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
     </div>
     <div
       className="govuk-radios__item"
+      key="flatFare"
     >
       <input
         className="govuk-radios__input"

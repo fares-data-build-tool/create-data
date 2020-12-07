@@ -93,10 +93,8 @@ export const getMockRequestAndResponse = ({
 
     const {
         operator = {
-            operator: {
-                operatorPublicName: 'test',
-            },
-            noc: 'TEST',
+            name: 'test',
+            nocCode: 'TEST',
         },
         productName = 'Product A',
         productPrice = '1234',
@@ -244,7 +242,7 @@ export const getMockContext = ({
 };
 
 export const mockSchemOpIdToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04ifQ.TUnqk__NLBCyCLwJjRhkS6KVqnpZB2qYfV85rJ2M0DQ';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVFNDSEVNRSJ9.jaTbkwPmrf00_MnH1WMJmFfKWVjwr4U64N_HWy2Lojs';
 
 export const mockMatchingFaresZones: MatchingFareZones = {
     'Acomb Green Lane': {
@@ -1947,6 +1945,7 @@ export const expectedFlatFareTicket: FlatFareTicket = {
 export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
     schemeOperatorName: expect.any(String),
     schemeOperatorRegionCode: expect.any(String),
+    nocCode: expect.any(String),
     type: 'multiOperator',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',

@@ -8,7 +8,7 @@ describe('pages', () => {
             const tree = shallow(
                 <MultipleOperators
                     errors={[]}
-                    operatorsAndNocs={[{ operatorPublicName: 'test', nocCode: 'testNoc' }]}
+                    operatorsAndNocs={[{ name: 'test', nocCode: 'testNoc' }]}
                     csrfToken=""
                 />,
             );
@@ -19,9 +19,9 @@ describe('pages', () => {
                 <MultipleOperators
                     errors={[]}
                     operatorsAndNocs={[
-                        { operatorPublicName: 'test', nocCode: 'testNoc' },
-                        { operatorPublicName: 'test2', nocCode: 'testNoc2' },
-                        { operatorPublicName: 'test3', nocCode: 'testNoc3' },
+                        { name: 'test', nocCode: 'testNoc' },
+                        { name: 'test2', nocCode: 'testNoc2' },
+                        { name: 'test3', nocCode: 'testNoc3' },
                     ]}
                     csrfToken=""
                 />,

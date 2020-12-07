@@ -103,9 +103,9 @@ describe('pages', () => {
                     session: {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                             selectedOperators: [
-                                { operatorPublicName: 'Test1', nocCode: 'N1' },
-                                { operatorPublicName: 'Test2', nocCode: 'N2' },
-                                { operatorPublicName: 'Test3', nocCode: 'N3' },
+                                { name: 'Test1', nocCode: 'N1' },
+                                { name: 'Test2', nocCode: 'N2' },
+                                { name: 'Test3', nocCode: 'N3' },
                             ],
                         },
                     },
@@ -127,9 +127,9 @@ describe('pages', () => {
                     session: {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                             selectedOperators: [
-                                { operatorPublicName: 'Test1', nocCode: 'N1' },
-                                { operatorPublicName: 'Test2', nocCode: 'N2' },
-                                { operatorPublicName: 'Test3', nocCode: 'N3' },
+                                { name: 'Test1', nocCode: 'N1' },
+                                { name: 'Test2', nocCode: 'N2' },
+                                { name: 'Test3', nocCode: 'N3' },
                             ],
                         },
                         [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
@@ -157,9 +157,9 @@ describe('pages', () => {
                     session: {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                             selectedOperators: [
-                                { operatorPublicName: 'Test1', nocCode: 'N1' },
-                                { operatorPublicName: 'Test2', nocCode: 'N2' },
-                                { operatorPublicName: 'Test3', nocCode: 'N3' },
+                                { name: 'Test1', nocCode: 'N1' },
+                                { name: 'Test2', nocCode: 'N2' },
+                                { name: 'Test3', nocCode: 'N3' },
                             ],
                         },
                         [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
@@ -191,9 +191,9 @@ describe('pages', () => {
                     session: {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                             selectedOperators: [
-                                { operatorPublicName: 'Test1', nocCode: 'N1' },
-                                { operatorPublicName: 'Test2', nocCode: 'N2' },
-                                { operatorPublicName: 'Test3', nocCode: 'N3' },
+                                { name: 'Test1', nocCode: 'N1' },
+                                { name: 'Test2', nocCode: 'N2' },
+                                { name: 'Test3', nocCode: 'N3' },
                             ],
                         },
                         [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
@@ -229,9 +229,9 @@ describe('pages', () => {
                     session: {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                             selectedOperators: [
-                                { operatorPublicName: 'Test1', nocCode: 'N1' },
-                                { operatorPublicName: 'Test2', nocCode: 'N2' },
-                                { operatorPublicName: 'Test3', nocCode: 'N3' },
+                                { name: 'Test1', nocCode: 'N1' },
+                                { name: 'Test2', nocCode: 'N2' },
+                                { name: 'Test3', nocCode: 'N3' },
                             ],
                         },
                         [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: {
