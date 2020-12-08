@@ -48,7 +48,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvUploadTitle: 'Upload fare zone',
             csvUploadHintText:
                 'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
-            guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 967KB',
+            guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 826KB',
             guidanceDocAttachmentUrl: HowToUploadFareZone,
             guidanceDocSize: '967KB',
             csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
