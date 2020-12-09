@@ -7,7 +7,7 @@ import { getMockContext, expectedSingleTicket } from '../testData/mockData';
 
 jest.mock('../../src/data/s3.ts');
 
-const netexFiles: S3NetexFile[] = [
+const classicOperatorNetexFiles: S3NetexFile[] = [
     {
         name: 'Test Name',
         fareType: 'single',
@@ -24,6 +24,34 @@ const netexFiles: S3NetexFile[] = [
         name: 'Test Name 2',
         fareType: 'flatFare',
         noc: 'TEST2',
+        passengerType: 'child',
+        reference: 'TEST54321',
+        date: 'Wed, 02 Sep 2020 14:46:58 GMT',
+        signedUrl: 'https://test.example.com/gfnhgddd',
+        sopNames: 'Test SOP Name 2',
+        serviceNames: '1, 56, X02',
+        productNames: 'Product 1, Product 2',
+        fileSize: 456,
+    },
+];
+
+const schemeOperatorNetexFiles: S3NetexFile[] = [
+    {
+        name: 'Test Name',
+        fareType: 'single',
+        noc: undefined,
+        passengerType: 'adult',
+        reference: 'TEST12345',
+        date: 'Tue, 01 Sep 2020 14:46:58 GMT',
+        signedUrl: 'https://test.example.com/dscsdcd',
+        sopNames: 'Test SOP Name, Test SOP Name 2',
+        lineName: 'X01',
+        fileSize: 123,
+    },
+    {
+        name: 'Test Name 2',
+        fareType: 'flatFare',
+        noc: undefined,
         passengerType: 'child',
         reference: 'TEST54321',
         date: 'Wed, 02 Sep 2020 14:46:58 GMT',
@@ -75,23 +103,50 @@ describe('pages', () => {
             jest.resetAllMocks();
         });
 
-        it('should render correctly', () => {
+        it('should render correctly for a classic operator', () => {
             const tree = shallow(
-                <CreatedFiles files={netexFiles} numberOfResults={10} currentPage={1} numberPerPage={5} />,
+                <CreatedFiles
+                    files={classicOperatorNetexFiles}
+                    numberOfResults={10}
+                    currentPage={1}
+                    numberPerPage={5}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for a scheme operator', () => {
+            const tree = shallow(
+                <CreatedFiles
+                    files={schemeOperatorNetexFiles}
+                    numberOfResults={10}
+                    currentPage={1}
+                    numberPerPage={5}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render pagination if number of results more than number per page', () => {
             const tree = shallow(
-                <CreatedFiles files={netexFiles} numberOfResults={10} currentPage={1} numberPerPage={5} />,
+                <CreatedFiles
+                    files={classicOperatorNetexFiles}
+                    numberOfResults={10}
+                    currentPage={1}
+                    numberPerPage={5}
+                />,
             );
             expect(tree.find('Pagination')).toHaveLength(1);
         });
 
         it('should not render pagination if number of results less than number per page', () => {
             const tree = shallow(
-                <CreatedFiles files={netexFiles} numberOfResults={2} currentPage={1} numberPerPage={5} />,
+                <CreatedFiles
+                    files={classicOperatorNetexFiles}
+                    numberOfResults={2}
+                    currentPage={1}
+                    numberPerPage={5}
+                />,
             );
             expect(tree.find('Pagination')).toHaveLength(0);
         });

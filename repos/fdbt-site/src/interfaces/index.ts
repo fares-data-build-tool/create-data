@@ -128,7 +128,7 @@ export interface Stop {
 
 export interface S3NetexFile {
     name: string;
-    noc: string;
+    noc: string | undefined;
     reference: string;
     fareType: string;
     productNames?: string;
