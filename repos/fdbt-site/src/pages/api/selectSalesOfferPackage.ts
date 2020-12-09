@@ -8,7 +8,7 @@ import {
 } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export interface SelectSalesOfferPackageWithError {
@@ -16,32 +16,39 @@ export interface SelectSalesOfferPackageWithError {
     selected: { [key: string]: string[] };
 }
 
+export interface SanitisedBodyAndErrors {
+    sanitisedBody: { [key: string]: string[] };
+    errors: ErrorInfo[];
+}
+
+export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAndErrors => {
+    const sanitisedBody: { [key: string]: string[] } = {};
+    const errors: ErrorInfo[] = [];
+
+    Object.entries(req.body).forEach(item => {
+        if (item[1] && isArray(item[1])) {
+            sanitisedBody[item[0]] = (item[1] as string[]).filter(a => a !== '');
+        } else {
+            errors.push({
+                errorMessage: 'Choose at least one sales offer package from the options',
+                id: `${removeAllWhiteSpace(item[0])}-checkbox-0`,
+            });
+        }
+    });
+
+    return {
+        sanitisedBody,
+        errors,
+    };
+};
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
 
-        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
-        if (!fareTypeAttribute) {
-            throw new Error('No fare type session attribute found.');
-        }
-
-        const errors: ErrorInfo[] = [];
-
-        const sanitisedBody: { [key: string]: string[] } = {};
-
-        Object.entries(req.body).forEach(item => {
-            if (item[1] && isArray(item[1])) {
-                sanitisedBody[item[0]] = (item[1] as string[]).filter(a => a !== '');
-            } else {
-                errors.push({
-                    errorMessage: 'Choose at least one sales offer package from the options',
-                    id: `${removeAllWhiteSpace(item[0])}-checkbox-0`,
-                });
-            }
-        });
+        const { sanitisedBody, errors } = sanitiseReqBody(req);
 
         if (errors.length > 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
