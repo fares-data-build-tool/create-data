@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import CreatedFiles, { getServerSideProps } from '../../src/pages/createdFiles';
+import CreatedFiles, { getServerSideProps, buildName } from '../../src/pages/createdFiles';
 import { S3NetexFile } from '../../src/interfaces';
 import * as s3 from '../../src/data/s3';
 import { getMockContext, expectedSingleTicket } from '../testData/mockData';
@@ -94,6 +94,47 @@ describe('pages', () => {
                 <CreatedFiles files={netexFiles} numberOfResults={2} currentPage={1} numberPerPage={5} />,
             );
             expect(tree.find('Pagination')).toHaveLength(0);
+        });
+
+        describe('buildName', () => {
+            it('includes the NOC if its there', () => {
+                const file = {
+                    operatorName: '',
+                    products: [],
+                    nocCode: 'NOC',
+                    type: 'Single',
+                    passengerType: 'Child',
+                    email: '',
+                    uuid: '',
+                    timeRestriction: [],
+                    ticketPeriod: {
+                        startDate: '',
+                        endDate: '',
+                    },
+                    zoneName: 'The Test Zone',
+                    stops: [],
+                };
+                expect(buildName(file)).toBe('NOC - Single - Child - The Test Zone');
+            });
+            it('does not include the NOC if its not there', () => {
+                const file = {
+                    operatorName: '',
+                    products: [],
+                    nocCode: '',
+                    type: 'Single',
+                    passengerType: 'Child',
+                    email: '',
+                    uuid: '',
+                    timeRestriction: [],
+                    ticketPeriod: {
+                        startDate: '',
+                        endDate: '',
+                    },
+                    zoneName: 'The Test Zone',
+                    stops: [],
+                };
+                expect(buildName(file)).toBe('Single - Child - The Test Zone');
+            });
         });
 
         describe('getServerSideProps', () => {

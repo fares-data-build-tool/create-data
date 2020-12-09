@@ -25,8 +25,8 @@ interface CreateFilesProps {
     numberPerPage: number;
 }
 
-const buildName = (file: PointToPointTicket | PeriodTicket): string => {
-    let name = `${file.nocCode} - ${startCase(file.type)} - ${startCase(file.passengerType)}`;
+export const buildName = (file: PointToPointTicket | PeriodTicket): string => {
+    let name = `${file.nocCode ? `${file.nocCode} - ` : ''}${startCase(file.type)} - ${startCase(file.passengerType)}`;
 
     if (isPointToPointTicket(file)) {
         name += ` - Line ${file.lineName}`;
