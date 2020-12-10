@@ -149,9 +149,15 @@ const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: Cr
                                 <span className="govuk-body govuk-!-font-weight-bold">Reference: </span>{' '}
                                 {file.reference}
                                 <br />
-                                <span className="govuk-body govuk-!-font-weight-bold">National Operator Code: </span>
-                                {file.noc}
-                                <br />
+                                {file.noc && (
+                                    <>
+                                        <span className="govuk-body govuk-!-font-weight-bold">
+                                            National Operator Code:{' '}
+                                        </span>
+                                        {file.noc}
+                                        <br />
+                                    </>
+                                )}
                                 <span className="govuk-body govuk-!-font-weight-bold">Fare Type: </span>{' '}
                                 {startCase(file.fareType)}
                                 <br />
