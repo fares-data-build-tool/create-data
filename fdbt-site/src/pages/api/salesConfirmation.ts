@@ -63,10 +63,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
             const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
 
-            if (
-                (ticketType !== 'geoZone' && ticketType !== 'multipleServices') ||
-                (fareType === 'multiOperator' && ticketType !== 'geoZone')
-            ) {
+            if (ticketType !== 'geoZone' && ticketType !== 'multipleServices') {
                 throw new Error(
                     `Fare type of '${fareType}' and Ticket type of '${ticketType} not compatible. User data json cannot be created.`,
                 );
