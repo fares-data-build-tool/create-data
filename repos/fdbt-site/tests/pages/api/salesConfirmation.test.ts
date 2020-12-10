@@ -175,6 +175,23 @@ describe('salesOfferPackages', () => {
         expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
     });
 
+    it('gets multiService json for a multi operator multiService ticket', () => {
+        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
+        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'multiOperator');
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'multipleServices',
+                },
+            },
+        });
+
+        salesConfirmation(req, res);
+
+        expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
+    });
+
     it('gets flatFare json for a flatFare ticket', () => {
         const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
         getFareTypeFromFromAttributesSpy.mockImplementation(() => 'flatFare');
