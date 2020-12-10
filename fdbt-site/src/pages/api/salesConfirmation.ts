@@ -64,12 +64,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
 
             if (ticketType !== 'geoZone' && ticketType !== 'multipleServices') {
-                throw new Error('No period type found to generate user data json.');
+                throw new Error(
+                    `Fare type of '${fareType}' and Ticket type of '${ticketType} not compatible. User data json cannot be created.`,
+                );
             }
 
             if (ticketType === 'geoZone') {
                 userDataJson = await getGeoZoneTicketJson(req, res);
-            } else if (ticketType === 'multipleServices') {
+            } else {
                 userDataJson = getMultipleServicesTicketJson(req, res);
             }
         } else if (fareType === 'flatFare') {
