@@ -17,14 +17,6 @@ Parameters:
     Type: CommaDelimitedList
     Default: ""
 
-  TfnIpSetList:
-    Type: CommaDelimitedList
-    Default: ""
-
-  TesterIpSetList:
-    Type: CommaDelimitedList
-    Default: ""
-
 Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
 
@@ -38,26 +30,6 @@ Resources:
       Scope: REGIONAL
       IPAddressVersion: IPV4
       Addresses: !Ref IwIpSetList
-
-  TfnIpSet:
-    Type: AWS::WAFv2::IPSet
-    Condition: IsTest
-    Properties:
-      Description: IP Set for TFN offices
-      Name: TfnIpSet
-      Scope: REGIONAL
-      IPAddressVersion: IPV4
-      Addresses: !Ref TfnIpSetList
-
-  TesterIpSet:
-    Type: AWS::WAFv2::IPSet
-    Condition: IsTest
-    Properties:
-      Description: IP Set for testers of the tool
-      Name: TesterIpSet
-      Scope: REGIONAL
-      IPAddressVersion: IPV4
-      Addresses: !Ref TesterIpSetList
 
   CiIpSet:
     Type: AWS::WAFv2::IPSet
@@ -73,7 +45,7 @@ Resources:
     Type: AWS::WAFv2::IPSet
     Condition: IsTest
     Properties:
-      Description: Personal IPs for IW, TFN and DFT users of the tool
+      Description: Personal IPs for IW and DFT users of the tool
       Name: PersonalUserIpSet
       Scope: REGIONAL
       IPAddressVersion: IPV4
@@ -85,7 +57,7 @@ Resources:
     Properties:
       Name: !Sub ${ProductName}-waf-restrictaccess-${Stage}
       Scope: REGIONAL
-      Description: Restricts access to Infinity Works, TFN and external testers
+      Description: Restricts access to Infinity Works and DFT
       DefaultAction:
         Block: {}
       VisibilityConfig:
@@ -104,28 +76,6 @@ Resources:
           Statement:
             IPSetReferenceStatement:
               Arn: !GetAtt IwIpSet.Arn
-        - Name: AllowTfn
-          Action:
-            Allow: {}
-          Priority: 1
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: AllowTfnRuleMetric
-          Statement:
-            IPSetReferenceStatement:
-              Arn: !GetAtt TfnIpSet.Arn
-        - Name: AllowTesters
-          Action:
-            Allow: {}
-          Priority: 2
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: AllowTestersRuleMetric
-          Statement:
-            IPSetReferenceStatement:
-              Arn: !GetAtt TesterIpSet.Arn
         - Name: AllowCi
           Action:
             Allow: {}
