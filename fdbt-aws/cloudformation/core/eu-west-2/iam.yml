@@ -70,6 +70,7 @@ Resources:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       Description: Policy for cicd accounts
+      ManagedPolicyName: circleci-access
       Path: /
       PolicyDocument:
         Version: "2012-10-17"
@@ -82,7 +83,7 @@ Resources:
   DeveloperGroup:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: tfn-developers
+      GroupName: cfd-developers
       Policies:
         - PolicyName: allow-developer-access
           PolicyDocument:
@@ -92,9 +93,9 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - !Sub arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2
-                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-admin-preprod-eu-west-2
-                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-cognito-manager-prod-eu-west-2
+                  - !Sub arn:aws:iam::${TestAccountId}:role/cfd-admin-test-eu-west-2
+                  - !Sub arn:aws:iam::${PreProdAccountId}:role/cfd-admin-preprod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/cfd-cognito-manager-prod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref ManageOwnUserPolicy
@@ -102,7 +103,7 @@ Resources:
   CognitoManagerGroup:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: tfn-cognito-managers
+      GroupName: cfd-cognito-managers
       Policies:
         - PolicyName: allow-cognito-manager-access
           PolicyDocument:
@@ -112,14 +113,14 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-cognito-manager-prod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/cfd-cognito-manager-prod-eu-west-2
       ManagedPolicyArns:
         - !Ref ManageOwnUserPolicy
 
   ServiceAdminGroup:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: tfn-service-admins
+      GroupName: cfd-service-admins
       Policies:
         - PolicyName: allow-service-admin-access
           PolicyDocument:
@@ -129,9 +130,9 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - !Sub arn:aws:iam::${TestAccountId}:role/tfn-admin-test-eu-west-2
-                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-admin-preprod-eu-west-2
-                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-admin-prod-eu-west-2
+                  - !Sub arn:aws:iam::${TestAccountId}:role/cfd-admin-test-eu-west-2
+                  - !Sub arn:aws:iam::${PreProdAccountId}:role/cfd-admin-preprod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/cfd-admin-prod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref ManageOwnUserPolicy
@@ -139,7 +140,7 @@ Resources:
   BillingGroup:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: tfn-billing
+      GroupName: cfd-billing
       Policies:
         - PolicyName: allow-billing-access
           PolicyDocument:
@@ -149,9 +150,9 @@ Resources:
                 Action:
                   - "sts:AssumeRole"
                 Resource:
-                  - !Sub arn:aws:iam::${TestAccountId}:role/tfn-billing-test-eu-west-2
-                  - !Sub arn:aws:iam::${PreProdAccountId}:role/tfn-billing-preprod-eu-west-2
-                  - !Sub arn:aws:iam::${ProdAccountId}:role/tfn-billing-prod-eu-west-2
+                  - !Sub arn:aws:iam::${TestAccountId}:role/cfd-billing-test-eu-west-2
+                  - !Sub arn:aws:iam::${PreProdAccountId}:role/cfd-billing-preprod-eu-west-2
+                  - !Sub arn:aws:iam::${ProdAccountId}:role/cfd-billing-prod-eu-west-2
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/Billing
         - !Ref ManageOwnUserPolicy
@@ -159,7 +160,7 @@ Resources:
   AdminGroup:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: tfn-admins
+      GroupName: cfd-admins
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
 
@@ -172,6 +173,8 @@ Resources:
 
   CircleCiUser:
     Type: AWS::IAM::User
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       UserName: fdbt-core-circleci-user
       Groups:

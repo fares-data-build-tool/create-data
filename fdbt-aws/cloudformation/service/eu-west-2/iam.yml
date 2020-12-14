@@ -96,7 +96,7 @@ Resources:
             Condition:
               Bool:
                 aws:MultiFactorAuthPresent: true
-      RoleName: !Sub tfn-admin-${Stage}-${AWS::Region}
+      RoleName: !Sub cfd-admin-${Stage}-${AWS::Region}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
 
@@ -115,7 +115,7 @@ Resources:
             Condition:
               Bool:
                 aws:MultiFactorAuthPresent: true
-      RoleName: !Sub tfn-readonly-${Stage}-${AWS::Region}
+      RoleName: !Sub cfd-readonly-${Stage}-${AWS::Region}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
 
@@ -134,7 +134,7 @@ Resources:
             Condition:
               Bool:
                 aws:MultiFactorAuthPresent: true
-      RoleName: !Sub tfn-cognito-manager-${Stage}-${AWS::Region}
+      RoleName: !Sub cfd-cognito-manager-${Stage}-${AWS::Region}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
         - !Ref CognitoManagerPolicy
@@ -154,7 +154,7 @@ Resources:
             Condition:
               Bool:
                 aws:MultiFactorAuthPresent: true
-      RoleName: !Sub tfn-billing-${Stage}-${AWS::Region}
+      RoleName: !Sub cfd-billing-${Stage}-${AWS::Region}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/Billing
 
@@ -225,12 +225,12 @@ Resources:
                   - "dynamodb:PutItem"
                   - "dynamodb:UpdateItem"
                 Resource: "*"
-              - Effect: 'Allow'
+              - Effect: "Allow"
                 Action:
                   - ses:SendEmail
                   - ses:SendRawEmail
                 Resource:
-                  - '*'
+                  - "*"
           PolicyName: ecs-site-task-policy
 
   EcsSiteScalingRole:
@@ -360,7 +360,7 @@ Resources:
                 Action:
                   - "s3:GetObject"
                 Resource:
-                  - arn:aws:s3:::tfn-slack-alerts-code/*
+                  - arn:aws:s3:::cfd-slack-alerts-code/*
           PolicyName: allow-slack-alerts-code-access
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
@@ -383,7 +383,7 @@ Resources:
                 Action:
                   - "s3:GetObject"
                 Resource:
-                  - arn:aws:s3:::tfn-cognito-custom-triggers/*
+                  - arn:aws:s3:::cfd-cognito-custom-triggers/*
           PolicyName: allow-cognito-custom-triggers
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole

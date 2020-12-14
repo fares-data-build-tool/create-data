@@ -17,5 +17,5 @@ Resources:
       IncludeGlobalServiceEvents: true
       IsLogging: true
       IsMultiRegionTrail: true
-      S3BucketName: tfn-audit-trails
+      S3BucketName: cfd-audit-trails
       TrailName: !Sub fdbt-audit-trail-${Stage}

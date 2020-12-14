@@ -22,7 +22,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
-        S3Bucket: tfn-slack-alerts-code
+        S3Bucket: cfd-slack-alerts-code
         S3Key: v4/index.zip
       Description: Lambda to send CloudWatch alerts to Slack
       Environment:

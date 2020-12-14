@@ -45,7 +45,7 @@ def template_forgotten_password(email, code, password_link, ts):
                        <p>To recover your password for the Fares Data Build Tool click on the link below:</p>
                        <a href="{password_link}?key={code}&user_name={email}&expiry={ts}">Link to reset password</a>
                        <p>The link is valid for 24 hours from the time it was requested.</p>
-                       <p>If this wasn't you, please contact tfn@infinityworks.com.</p>
+                       <p>If this wasn't you, please get in touch via the <a href="https://fares-data.dft.gov.uk/contact">contact page</a>.</p>
                     </div>"""
 
     return get_base_template(email_body)

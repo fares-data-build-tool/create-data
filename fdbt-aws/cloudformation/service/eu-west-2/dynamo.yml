@@ -6,17 +6,6 @@ Parameters:
     Type: String
     Default: id
 
-  Stage:
-    Type: String
-    AllowedValues:
-      - test
-      - preprod
-      - prod
-
-  ProductName:
-    Type: String
-    Default: fdbt
-
 Resources:
   siteSessionStorage:
     Type: AWS::DynamoDB::Table

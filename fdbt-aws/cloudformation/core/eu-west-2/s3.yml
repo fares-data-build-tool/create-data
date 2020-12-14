@@ -14,7 +14,7 @@ Resources:
   SlackAlertsCodeBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: tfn-slack-alerts-code
+      BucketName: cfd-slack-alerts-code
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -40,7 +40,7 @@ Resources:
   CognitoCustomTriggersBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: tfn-cognito-custom-triggers
+      BucketName: cfd-cognito-custom-triggers
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -68,7 +68,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      BucketName: tfn-audit-trails
+      BucketName: cfd-audit-trails
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -93,17 +93,17 @@ Resources:
               - "s3:PutObject"
             Effect: "Allow"
             Resource:
-              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${TestAccountId}/*"
-              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${PreProdAccountId}/*"
-              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${ProdAccountId}/*"
-              - !Sub "arn:aws:s3:::tfn-audit-trails/AWSLogs/${AWS::AccountId}/*"
+              - !Sub "arn:aws:s3:::cfd-audit-trails/AWSLogs/${TestAccountId}/*"
+              - !Sub "arn:aws:s3:::cfd-audit-trails/AWSLogs/${PreProdAccountId}/*"
+              - !Sub "arn:aws:s3:::cfd-audit-trails/AWSLogs/${ProdAccountId}/*"
+              - !Sub "arn:aws:s3:::cfd-audit-trails/AWSLogs/${AWS::AccountId}/*"
             Principal:
               Service: "cloudtrail.amazonaws.com"
             Condition:
               StringEquals: { "s3:x-amz-acl": "bucket-owner-full-control" }
           - Action:
               - "s3:GetBucketAcl"
-            Resource: "arn:aws:s3:::tfn-audit-trails"
+            Resource: "arn:aws:s3:::cfd-audit-trails"
             Effect: "Allow"
             Principal:
               Service: "cloudtrail.amazonaws.com"
@@ -111,7 +111,7 @@ Resources:
   AthenaQueryResultsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: tfn-athena-query-results
+      BucketName: cfd-athena-query-results
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true

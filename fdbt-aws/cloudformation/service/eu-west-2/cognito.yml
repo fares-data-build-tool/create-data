@@ -23,8 +23,8 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
-        S3Bucket: tfn-cognito-custom-triggers
-        S3Key: email-trigger/v4/customEmailTrigger.zip
+        S3Bucket: cfd-cognito-custom-triggers
+        S3Key: email-trigger/v6/customEmailTrigger.zip
       Description: Lambda to send custom emails on user creation and forgotten password
       Environment:
         Variables:

@@ -29,28 +29,6 @@ Then in each service account you wish to deploy the tool into, run in the follow
 
 Requirements:
 
-- AWS CLI
-- AWS CLI Session Manager Plugin
-- jq
+- [awsume](https://awsu.me/general/quickstart.html)
 
-In order to use the helper scripts, you will first need to set some env vars in your bashrc or zshrc:
-
-```bash
- export TFN_CORE_ACCOUNT_ID=ID_HERE
- export TFN_TEST_ACCOUNT_ID=ID_HERE
- export TFN_PREPROD_ACCOUNT_ID=ID_HERE
-```
-
-After adding these you will be able to run the `awstfn-mfa` script:
-
-```bash
-. ./awstfn-mfa {ACCOUNT_NAME} {AWS_IAM_USERNAME}
-```
-
-The script will ask for your MFA code, after entering it you will have assumed the role into the target account.
-
-After assuming this role you will be able to run the bastion tunnel script:
-
-```bash
-./tfn-bastion-tunnel
-```
+AWSume is used to authenticate against the AWS environments, follow the above link to get it running. You will need to assume a role into the target account before running the scripts in this repo

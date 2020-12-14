@@ -22,10 +22,6 @@ Resources:
       SubjectAlternativeNames:
         - !Sub "*.${DomainName}"
       ValidationMethod: DNS
-      DomainValidationOptions:
-        - HostedZoneId:
-            Fn::ImportValue: !Sub ${Stage}:HostedZoneId
-          DomainName: !Ref DomainName
 
 Outputs:
   CertificateArn:
