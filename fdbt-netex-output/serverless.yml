@@ -82,7 +82,7 @@ functions:
         event: s3:ObjectCreated:*
     environment:
       MATCHING_DATA_BUCKET: fdbt-matching-data-${self:provider.stage}
-      SERVICE_EMAIL_ADDRESS: fdbt@transportforthenorth.com
+      SERVICE_EMAIL_ADDRESS: create-fares-data@infinityworks.com
 
 resources:
   Resources:
