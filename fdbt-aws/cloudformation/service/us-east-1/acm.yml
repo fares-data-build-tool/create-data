@@ -8,9 +8,15 @@ Parameters:
       - test
       - preprod
       - prod
-  DomainName:
+  PrimaryDomain:
     Type: String
-    Description: Domain name for ACM certificate
+    Description: Primary domain name for ACM certificate
+  SecondaryDomain:
+    Type: String
+    Description: Optional secondary domain name for ACM certificate
+
+Conditions:
+  HasSecondaryDomain: !Not [!Equals ["", !Ref SecondaryDomain]]
 
 Resources:
   Certificate:
@@ -18,9 +24,17 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      DomainName: !Ref DomainName
+      DomainName: !Ref PrimaryDomain
       SubjectAlternativeNames:
-        - !Sub "*.${DomainName}"
+        - !Sub "*.${PrimaryDomain}"
+        - !If
+          - HasSecondaryDomain
+          - !Ref SecondaryDomain
+          - !Ref AWS::NoValue
+        - !If
+          - HasSecondaryDomain
+          - !Sub "*.${SecondaryDomain}"
+          - !Ref AWS::NoValue
       ValidationMethod: DNS
 
 Outputs:

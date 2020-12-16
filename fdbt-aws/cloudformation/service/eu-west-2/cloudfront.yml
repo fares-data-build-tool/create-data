@@ -17,51 +17,58 @@ Parameters:
   OriginRequestPolicyId:
     Type: String
     Default: 216adef6-5c7f-47e4-b989-5492eafa07d3
-  SiteCachePolicy:
+  WebAclArn:
     Type: String
-  ErrorCachePolicy:
+    Description: ARN for the WAF to apply to the distribution (optional)
+  HeaderName:
     Type: String
+    Default: X-Origin-Verify
+    Description: Header name for origin secret
+
+Conditions:
+  HasWaf: !Not [!Equals ["", !Ref WebAclArn]]
 
 Resources:
-  # SiteCachePolicy:
-  #   Type: AWS::CloudFront::CachePolicy
-  #   Properties:
-  #     CachePolicyConfig:
-  #       DefaultTTL: 86400
-  #       MinTTL: 0
-  #       MaxTTL: 31536000
-  #       Name: SiteCachePolicy
-  #       ParametersInCacheKeyAndForwardedToOrigin:
-  #         CookiesConfig:
-  #           CookieBehavior: all
-  #         EnableAcceptEncodingGzip: true
-  #         HeadersConfig:
-  #           HeaderBehavior: none
-  #         QueryStringsConfig:
-  #           QueryStringBehavior: all
+  SiteCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        DefaultTTL: 86400
+        MinTTL: 0
+        MaxTTL: 31536000
+        Name: CfdSiteCachePolicy
+        ParametersInCacheKeyAndForwardedToOrigin:
+          CookiesConfig:
+            CookieBehavior: all
+          EnableAcceptEncodingGzip: true
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: all
 
-  # ErrorCachePolicy:
-  #   Type: AWS::CloudFront::CachePolicy
-  #   Properties:
-  #     CachePolicyConfig:
-  #       DefaultTTL: 31536000
-  #       MinTTL: 31536000
-  #       MaxTTL: 31536000
-  #       Name: ErrorCachePolicy
-  #       ParametersInCacheKeyAndForwardedToOrigin:
-  #         CookiesConfig:
-  #           CookieBehavior: none
-  #         EnableAcceptEncodingGzip: true
-  #         HeadersConfig:
-  #           HeaderBehavior: none
-  #         QueryStringsConfig:
-  #           QueryStringBehavior: none
+  ErrorCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        DefaultTTL: 31536000
+        MinTTL: 31536000
+        MaxTTL: 31536000
+        Name: CfdErrorCachePolicy
+        ParametersInCacheKeyAndForwardedToOrigin:
+          CookiesConfig:
+            CookieBehavior: none
+          EnableAcceptEncodingGzip: true
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
 
   SiteDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Aliases: !Ref DomainList
+        WebACLId: !If [HasWaf, !Ref WebAclArn, !Ref AWS::NoValue]
         CacheBehaviors:
           - TargetOriginId: ErrorOrigin
             ViewerProtocolPolicy: redirect-to-https
@@ -121,6 +128,14 @@ Resources:
                 - TLSv1.2
             DomainName:
               Fn::ImportValue: !Sub ${Stage}:LoadbalancerDomainName
+            OriginCustomHeaders:
+              - HeaderName: !Ref HeaderName
+                HeaderValue:
+                  Fn::Join:
+                    - ""
+                    - - "{{resolve:secretsmanager:"
+                      - Fn::ImportValue: !Sub ${Stage}:OriginVerifySecret
+                      - ":SecretString:HEADERVALUE}}"
           - Id: ErrorOrigin
             S3OriginConfig:
               OriginAccessIdentity:

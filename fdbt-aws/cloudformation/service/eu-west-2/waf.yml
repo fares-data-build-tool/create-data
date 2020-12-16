@@ -8,101 +8,72 @@ Parameters:
       - test
       - preprod
       - prod
-
   ProductName:
     Type: String
     Default: fdbt
-
-  IwIpSetList:
-    Type: CommaDelimitedList
-    Default: ""
-
-Conditions:
-  IsTest: !Equals [!Ref Stage, "test"]
+  HeaderName:
+    Type: String
+    Default: X-Origin-Verify
+    Description: Header name for origin secret
 
 Resources:
-  IwIpSet:
-    Type: AWS::WAFv2::IPSet
-    Condition: IsTest
+  OriginVerifySecret:
+    Type: AWS::SecretsManager::Secret
     Properties:
-      Description: IP Set for Infinity Works office
-      Name: IwIpSet
-      Scope: REGIONAL
-      IPAddressVersion: IPV4
-      Addresses: !Ref IwIpSetList
+      GenerateSecretString:
+        SecretStringTemplate: '{"HEADERVALUE": "RandomPassword"}'
+        GenerateStringKey: "HEADERVALUE"
+        ExcludePunctuation: true
 
-  CiIpSet:
-    Type: AWS::WAFv2::IPSet
-    Condition: IsTest
-    Properties:
-      Description: IP Set for CI
-      Name: CiIpSet
-      Scope: REGIONAL
-      IPAddressVersion: IPV4
-      Addresses: []
-
-  PersonalUserIpSet:
-    Type: AWS::WAFv2::IPSet
-    Condition: IsTest
-    Properties:
-      Description: Personal IPs for IW and DFT users of the tool
-      Name: PersonalUserIpSet
-      Scope: REGIONAL
-      IPAddressVersion: IPV4
-      Addresses: []
-
-  RestrictAccessAcl:
+  RestrictToCloudfrontAccessAcl:
     Type: AWS::WAFv2::WebACL
-    Condition: IsTest
     Properties:
-      Name: !Sub ${ProductName}-waf-restrictaccess-${Stage}
+      Name: !Sub ${ProductName}-waf-restrict-cloudfront-access-${Stage}
       Scope: REGIONAL
-      Description: Restricts access to Infinity Works and DFT
+      Description: Restricts access to CloudFront
       DefaultAction:
         Block: {}
       VisibilityConfig:
         SampledRequestsEnabled: true
         CloudWatchMetricsEnabled: true
-        MetricName: RestrictAccessMetric
+        MetricName: RestrictCloudfrontAccessMetric
       Rules:
-        - Name: AllowIw
-          Action:
-            Allow: {}
+        - Name: AllowCloudfrontHeader
           Priority: 0
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
-            MetricName: AllowIwRuleMetric
-          Statement:
-            IPSetReferenceStatement:
-              Arn: !GetAtt IwIpSet.Arn
-        - Name: AllowCi
+            MetricName: AllowCloudfrontHeaderMetric
           Action:
             Allow: {}
-          Priority: 3
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: AllowCiRuleMetric
           Statement:
-            IPSetReferenceStatement:
-              Arn: !GetAtt CiIpSet.Arn
-        - Name: AllowPersonalUserIP
-          Action:
-            Allow: {}
-          Priority: 4
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: AllowPersonalUserIPRuleMetric
-          Statement:
-            IPSetReferenceStatement:
-              Arn: !GetAtt PersonalUserIpSet.Arn
+            ByteMatchStatement:
+              PositionalConstraint: EXACTLY
+              FieldToMatch:
+                SingleHeader:
+                  Name: !Ref HeaderName
+              SearchString:
+                !Join [
+                  "",
+                  [
+                    "{{resolve:secretsmanager:",
+                    !Ref OriginVerifySecret,
+                    ":SecretString:HEADERVALUE}}",
+                  ],
+                ]
+              TextTransformations:
+                - Priority: 0
+                  Type: NONE
 
   WafAssociation:
     Type: AWS::WAFv2::WebACLAssociation
-    Condition: IsTest
     Properties:
       ResourceArn:
         Fn::ImportValue: !Sub ${Stage}:LoadbalancerArn
-      WebACLArn: !GetAtt RestrictAccessAcl.Arn
+      WebACLArn: !GetAtt RestrictToCloudfrontAccessAcl.Arn
+
+Outputs:
+  OriginVerifySecret:
+    Value: !Ref OriginVerifySecret
+    Export:
+      Name: !Sub ${Stage}:OriginVerifySecret
