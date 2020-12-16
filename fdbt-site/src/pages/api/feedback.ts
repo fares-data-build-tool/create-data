@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { setFeedbackMailOptions, createMailTransporter } from './apiUtils/feedbackEmailer';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
-import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils/index';
+import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils/index';
 import { NextApiRequestWithSession, Feedback } from '../../interfaces';
 import {
     contactFeedbackQuestion,
@@ -68,7 +68,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const feedback: Feedback[] = buildFeedbackForEmail(req);
-        const noc: string = getAndValidateNoc(req, res);
+        const noc = getNocFromIdToken(req, res) || 'UNKNOWN';
         const mailOptions = setFeedbackMailOptions(noc, feedback);
 
         if (process.env.NODE_ENV !== 'production') {
