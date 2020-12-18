@@ -4,6 +4,9 @@ import parser from 'xml2json';
 import fs from 'fs';
 import moment from 'moment';
 import {
+    CoreData,
+    SchemeOperatorTicket,
+    isSchemeOperatorTicket,
     FlatFareTicket,
     PeriodTicket,
     PointToPointTicket,
@@ -11,7 +14,14 @@ import {
     User,
     GroupCompanion,
     FullTimeRestriction,
+    Operator,
 } from '../types/index';
+
+import {
+    getBaseSchemeOperatorInfo,
+    isGeoZoneTicket,
+    isMultiServiceTicket,
+} from './period-tickets/periodTicketNetexHelpers';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -202,4 +212,73 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
     }
 
     return nocCode;
+};
+
+export const getCoreData = (
+    operators: Operator[],
+    matchingData: PointToPointTicket | PeriodTicket | SchemeOperatorTicket,
+): CoreData => {
+    const pointToPoint: boolean = matchingData.type === 'single' || matchingData.type === 'return';
+
+    if (pointToPoint) {
+        const pointToPointMatchingData: PointToPointTicket = matchingData as PointToPointTicket;
+
+        return {
+            opIdNocFormat: `noc:${operators[0].opId}`,
+            nocCodeFormat: `noc:${pointToPointMatchingData.nocCode}`,
+            currentDate: new Date(Date.now()),
+            website: getCleanWebsite(operators[0].website),
+            brandingId: `op:${pointToPointMatchingData.nocCode}@brand`,
+            operatorIdentifier: pointToPointMatchingData.nocCode,
+            baseOperatorInfo: [],
+            placeholderGroupOfProductsName: '',
+            ticketUserConcat: '',
+            operatorPublicNameLineNameFormat: `${operators[0].operatorPublicName} ${pointToPointMatchingData.lineName}`,
+            nocCodeLineNameFormat: `${pointToPointMatchingData.nocCode}_${pointToPointMatchingData.lineName}`,
+            lineIdName: `Line_${pointToPointMatchingData.lineName}`,
+            lineName: pointToPointMatchingData.lineName,
+            isGeoZone: false,
+            isMultiProduct: false,
+            isMultiOperator: false,
+            isPointToPoint: pointToPoint,
+        };
+    }
+    const periodMatchingData: PeriodTicket | SchemeOperatorTicket = matchingData as PeriodTicket | SchemeOperatorTicket;
+    const baseOperatorInfo = isSchemeOperatorTicket(periodMatchingData)
+        ? getBaseSchemeOperatorInfo(periodMatchingData)
+        : operators.find(operator => operator.operatorPublicName === periodMatchingData.operatorName);
+
+    const operatorIdentifier = isSchemeOperatorTicket(periodMatchingData)
+        ? `${periodMatchingData.schemeOperatorName}-${periodMatchingData.schemeOperatorRegionCode}`
+        : periodMatchingData.nocCode;
+
+    if (!baseOperatorInfo) {
+        throw new Error('Could not find base operator');
+    }
+
+    const nocCodeFormat = `noc:${
+        isSchemeOperatorTicket(periodMatchingData)
+            ? operatorIdentifier
+            : replaceIWBusCoNocCode(periodMatchingData.nocCode)
+    }`;
+
+    return {
+        opIdNocFormat: `noc:${baseOperatorInfo.opId}`,
+        nocCodeFormat,
+        currentDate: new Date(Date.now()),
+        website: getCleanWebsite(baseOperatorInfo.website),
+        brandingId: `op:${operatorIdentifier}@brand`,
+        operatorIdentifier,
+        baseOperatorInfo: [baseOperatorInfo],
+        placeholderGroupOfProductsName: `${operatorIdentifier}_products`,
+        ticketUserConcat: `${periodMatchingData.type}_${periodMatchingData.passengerType}`,
+        operatorPublicNameLineNameFormat: '',
+        nocCodeLineNameFormat: '',
+        lineIdName: '',
+        lineName: '',
+        isGeoZone: isGeoZoneTicket(matchingData),
+        isMultiProduct: isMultiServiceTicket(matchingData),
+        isMultiOperator: matchingData.type === 'multiOperator',
+        isPointToPoint: pointToPoint,
+    };
 };

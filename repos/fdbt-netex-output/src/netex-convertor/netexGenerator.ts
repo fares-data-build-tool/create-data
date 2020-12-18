@@ -1,3 +1,11 @@
+import {
+    getCoreData,
+    NetexObject,
+    getNetexTemplateAsJson,
+    convertJsonToXml,
+    getTimeRestrictions,
+    getNetexMode,
+} from './sharedHelpers';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     isMultiOperatorMultipleServicesTicket,
@@ -20,85 +28,69 @@ import {
     isGeoZoneTicket,
     getOrganisations,
     getGroupOfOperators,
-    getBaseSchemeOperatorInfo,
     isBaseSchemeOperatorInfo,
 } from './period-tickets/periodTicketNetexHelpers';
-import {
-    NetexObject,
-    getCleanWebsite,
-    getNetexTemplateAsJson,
-    convertJsonToXml,
-    getTimeRestrictions,
-    getNetexMode,
-    replaceIWBusCoNocCode,
-} from './sharedHelpers';
 
 const netexGenerator = (
     // userPeriodTicket: PeriodTicket | SchemeOperatorTicket,
     ticket: any,
     operatorData: Operator[],
 ): { generate: Function } => {
-    const baseOperatorInfo = isSchemeOperatorTicket(ticket)
-        ? getBaseSchemeOperatorInfo(ticket)
-        : operatorData.find(operator => operator.operatorPublicName === ticket.operatorName);
-    const operatorIdentifier = isSchemeOperatorTicket(ticket)
-        ? `${ticket.schemeOperatorName}-${ticket.schemeOperatorRegionCode}`
-        : ticket.nocCode;
-
-    if (!baseOperatorInfo) {
-        throw new Error('Could not find base operator');
-    }
-
-    const opIdNocFormat = `noc:${baseOperatorInfo.opId}`;
-    const nocCodeNocFormat = `noc:${
-        isSchemeOperatorTicket(ticket) ? operatorIdentifier : replaceIWBusCoNocCode(ticket.nocCode)
-    }`;
-    const currentDate = new Date(Date.now());
-    const website = getCleanWebsite(baseOperatorInfo.website);
-    const placeHolderGroupOfProductsName = `${operatorIdentifier}_products`;
-    const brandingId = `op:${operatorIdentifier}@brand`;
-    const ticketUserConcat = `${ticket.type}_${ticket.passengerType}`;
+    const coreData = getCoreData(operatorData, ticket);
+    const baseOperatorInfo = coreData.baseOperatorInfo[0];
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
         const publicationTimeStampToUpdate = { ...publicationTimeStamp };
-        publicationTimeStampToUpdate.PublicationTimestamp.$t = currentDate;
+        publicationTimeStampToUpdate.PublicationTimestamp.$t = coreData.currentDate;
 
         return publicationTimeStampToUpdate;
     };
 
     const updatePublicationRequest = (publicationRequest: NetexObject): NetexObject => {
+        // get the pub request
         const publicationRequestToUpdate = { ...publicationRequest };
-        publicationRequestToUpdate.RequestTimestamp.$t = currentDate;
-        publicationRequestToUpdate.Description.$t = `Request for ${operatorIdentifier} bus pass fares`;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${
-            isGeoZoneTicket(ticket) ? 'NETWORK' : 'LINE'
-        }_FARE_OFFER:FXCP`;
-
-        if (ticket.type === 'multiOperator') {
-            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.GroupOfOperatorsRef = {
-                version: '1.0',
-                ref: 'operators@bus',
-            };
-            delete publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences
-                .OperatorRef;
-        } else {
-            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref = nocCodeNocFormat;
-            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t = opIdNocFormat;
-            delete publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences
-                .GroupOfOperatorsRef;
-        }
-
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef = ticket.products.map(
-            (product: { productName: any }) => ({
-                version: '1.0',
-                ref: `op:Pass@${product.productName}_${ticket.passengerType}`,
-            }),
-        );
-
+        // update the things that are always there
+        publicationRequestToUpdate.RequestTimestamp.$t = coreData.currentDate;
+        publicationRequestToUpdate.Description.$t = `Request for ${
+            coreData.isPointToPoint ? `${ticket.nocCode} ${coreData.lineIdName}` : coreData.operatorIdentifier
+        } bus pass fares`;
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.BrandingRef = {
             version: '1.0',
-            ref: brandingId,
+            ref: coreData.brandingId,
         };
+        // update point to point only
+        if (coreData.isPointToPoint) {
+            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref =
+                coreData.lineName;
+        } else {
+            // update period only
+            publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${
+                coreData.isGeoZone ? 'NETWORK' : 'LINE'
+            }_FARE_OFFER:FXCP`;
+
+            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef = ticket.products.map(
+                (product: { productName: any }) => ({
+                    version: '1.0',
+                    ref: `op:Pass@${product.productName}_${ticket.passengerType}`,
+                }),
+            );
+            // check if multiOperator and delete as required
+            if (coreData.isMultiOperator) {
+                publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.GroupOfOperatorsRef = {
+                    version: '1.0',
+                    ref: 'operators@bus',
+                };
+                delete publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences
+                    .OperatorRef;
+            } else {
+                publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref =
+                    coreData.nocCodeFormat;
+                publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.$t =
+                    coreData.opIdNocFormat;
+                delete publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences
+                    .GroupOfOperatorsRef;
+            }
+        }
 
         return publicationRequestToUpdate;
     };
@@ -107,9 +99,9 @@ const netexGenerator = (
         const compositeFrameToUpdate = { ...compositeFrame };
         const operatorName = isSchemeOperatorTicket(ticket) ? ticket.schemeOperatorName : ticket.operatorName;
 
-        compositeFrameToUpdate.id = `epd:UK:${operatorIdentifier}:CompositeFrame_UK_PI_${
+        compositeFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:CompositeFrame_UK_PI_${
             isGeoZoneTicket(ticket) ? 'NETWORK' : 'LINE'
-        }_FARE_OFFER:Pass@${placeHolderGroupOfProductsName}:op`;
+        }_FARE_OFFER:Pass@${coreData.placeholderGroupOfProductsName}:op`;
         compositeFrameToUpdate.Name.$t = `Fares for ${operatorName}`;
         compositeFrameToUpdate.Description.$t = `Period ticket for ${operatorName}`;
 
@@ -122,16 +114,18 @@ const netexGenerator = (
             ? baseOperatorInfo.schemeOperatorName
             : baseOperatorInfo.operatorPublicName;
 
-        resourceFrameToUpdate.id = `epd:UK:${operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${operatorIdentifier}:op`;
-        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = website;
+        resourceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${coreData.operatorIdentifier}:op`;
+        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = coreData.website;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = baseOperatorInfo.ttrteEnq;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref =
+            coreData.nocCodeFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t = operatorPublicName;
-        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref = nocCodeNocFormat;
+        resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref =
+            coreData.nocCodeFormat;
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[1].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.$t = operatorPublicName;
-        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.id = brandingId;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.id = coreData.brandingId;
         resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Name.$t = operatorPublicName;
-        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = website;
+        resourceFrameToUpdate.typesOfValue.ValueSet[0].values.Branding.Url.$t = coreData.website;
 
         if (
             ticket.type === 'multiOperator' &&
@@ -155,13 +149,13 @@ const netexGenerator = (
             !isSchemeOperatorTicket(ticket) &&
             !isMultiOperatorMultipleServicesTicket(ticket)
         ) {
-            resourceFrameToUpdate.organisations.Operator.id = nocCodeNocFormat;
-            resourceFrameToUpdate.organisations.Operator.PublicCode.$t = operatorIdentifier;
+            resourceFrameToUpdate.organisations.Operator.id = coreData.nocCodeFormat;
+            resourceFrameToUpdate.organisations.Operator.PublicCode.$t = coreData.operatorIdentifier;
             resourceFrameToUpdate.organisations.Operator.Name.$t = operatorPublicName;
             resourceFrameToUpdate.organisations.Operator.ShortName.$t = ticket.operatorName;
             resourceFrameToUpdate.organisations.Operator.TradingName.$t = baseOperatorInfo.vosaPsvLicenseName;
             resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = baseOperatorInfo.fareEnq;
-            resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = website;
+            resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = coreData.website;
             resourceFrameToUpdate.organisations.Operator.Address.Street.$t = baseOperatorInfo.complEnq;
             resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode);
         }
@@ -172,9 +166,9 @@ const netexGenerator = (
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
         if (isMultiServiceTicket(ticket)) {
             const serviceFrameToUpdate = { ...serviceFrame };
-            serviceFrameToUpdate.id = `epd:UK:${ticket.nocCode}:ServiceFrame_UK_PI_NETWORK:${placeHolderGroupOfProductsName}:op`;
+            serviceFrameToUpdate.id = `epd:UK:${ticket.nocCode}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
 
-            serviceFrameToUpdate.lines.Line = getLinesList(ticket, website, operatorData);
+            serviceFrameToUpdate.lines.Line = getLinesList(ticket, coreData.website, operatorData);
 
             return serviceFrameToUpdate;
         }
@@ -186,13 +180,13 @@ const netexGenerator = (
         if (isGeoZoneTicket(ticket)) {
             const networkFareFrameToUpdate = { ...networkFareFrame };
 
-            networkFareFrameToUpdate.id = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
-            networkFareFrameToUpdate.Name.$t = `${placeHolderGroupOfProductsName} Network`;
-            networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${operatorIdentifier}:op`;
+            networkFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${coreData.placeholderGroupOfProductsName}@pass:op`;
+            networkFareFrameToUpdate.Name.$t = `${coreData.placeholderGroupOfProductsName} Network`;
+            networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${coreData.operatorIdentifier}:op`;
 
-            networkFareFrameToUpdate.fareZones.FareZone.id = `op:${placeHolderGroupOfProductsName}@${ticket.zoneName}`;
+            networkFareFrameToUpdate.fareZones.FareZone.id = `op:${coreData.placeholderGroupOfProductsName}@${ticket.zoneName}`;
             networkFareFrameToUpdate.fareZones.FareZone.Name.$t = `${ticket.zoneName}`;
-            networkFareFrameToUpdate.fareZones.FareZone.Description.$t = `${ticket.zoneName} ${placeHolderGroupOfProductsName} Zone`;
+            networkFareFrameToUpdate.fareZones.FareZone.Description.$t = `${ticket.zoneName} ${coreData.placeholderGroupOfProductsName} Zone`;
             networkFareFrameToUpdate.fareZones.FareZone.members.ScheduledStopPointRef = getScheduledStopPointsList(
                 ticket.stops,
             );
@@ -209,14 +203,14 @@ const netexGenerator = (
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
 
-        priceFareFrameToUpdate.id = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
+        priceFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${coreData.placeholderGroupOfProductsName}@pass:op`;
 
         if (isGeoZoneTicket(ticket)) {
-            priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${placeHolderGroupOfProductsName}@pass:op`;
+            priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${coreData.placeholderGroupOfProductsName}@pass:op`;
         } else if (isMultiServiceTicket(ticket)) {
             priceFareFrameToUpdate.prerequisites = null;
         }
-        priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${placeHolderGroupOfProductsName}`;
+        priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
         let validityCondition;
         if (isMultiServiceTicket(ticket) && ticket.termTime === true) {
             validityCondition = {
@@ -234,8 +228,8 @@ const netexGenerator = (
             },
             ValidityCondition: validityCondition,
         };
-        priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${placeHolderGroupOfProductsName} - Tariff`;
-        priceFareFrameToUpdate.tariffs.Tariff.Description.$t = `${placeHolderGroupOfProductsName} single zone tariff`;
+        priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${coreData.placeholderGroupOfProductsName} - Tariff`;
+        priceFareFrameToUpdate.tariffs.Tariff.Description.$t = `${coreData.placeholderGroupOfProductsName} single zone tariff`;
 
         if (ticket.type === 'multiOperator') {
             priceFareFrameToUpdate.tariffs.Tariff.GroupOfOperatorsRef = {
@@ -244,8 +238,8 @@ const netexGenerator = (
             };
             delete priceFareFrameToUpdate.tariffs.Tariff.OperatorRef;
         } else {
-            priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = nocCodeNocFormat;
-            priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = opIdNocFormat;
+            priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = coreData.nocCodeFormat;
+            priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = coreData.opIdNocFormat;
             delete priceFareFrameToUpdate.tariffs.Tariff.GroupOfOperatorsRef;
         }
 
@@ -263,18 +257,18 @@ const netexGenerator = (
         // Fare structure elements
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement = getFareStructuresElements(
             ticket,
-            placeHolderGroupOfProductsName,
+            coreData.placeholderGroupOfProductsName,
         );
 
         // Preassigned Fare Product
         priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProducts(
             ticket,
-            nocCodeNocFormat,
-            opIdNocFormat,
+            coreData.nocCodeFormat,
+            coreData.opIdNocFormat,
         );
 
         // Sales Offer Packages
-        const salesOfferPackages = getSalesOfferPackageList(ticket, ticketUserConcat);
+        const salesOfferPackages = getSalesOfferPackageList(ticket, coreData.ticketUserConcat);
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = salesOfferPackages.flat();
 
         return priceFareFrameToUpdate;
@@ -283,18 +277,21 @@ const netexGenerator = (
     const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
 
-        fareTableFareFrameToUpdate.id = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_PRICE:${placeHolderGroupOfProductsName}@pass:op`;
-        fareTableFareFrameToUpdate.Name.$t = `${placeHolderGroupOfProductsName} Prices`;
-        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${placeHolderGroupOfProductsName}@pass:op`;
+        fareTableFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRICE:${coreData.placeholderGroupOfProductsName}@pass:op`;
+        fareTableFareFrameToUpdate.Name.$t = `${coreData.placeholderGroupOfProductsName} Prices`;
+        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${coreData.placeholderGroupOfProductsName}@pass:op`;
 
         if (isGeoZoneTicket(ticket)) {
             fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(
                 ticket,
-                placeHolderGroupOfProductsName,
-                ticketUserConcat,
+                coreData.placeholderGroupOfProductsName,
+                coreData.ticketUserConcat,
             );
         } else if (isMultiServiceTicket(ticket)) {
-            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(ticket, ticketUserConcat);
+            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(
+                ticket,
+                coreData.ticketUserConcat,
+            );
         }
         return fareTableFareFrameToUpdate;
     };

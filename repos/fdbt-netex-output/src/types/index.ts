@@ -1,5 +1,27 @@
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
+// Misc
+
+export interface CoreData {
+    opIdNocFormat: string;
+    nocCodeFormat: string;
+    currentDate: Date;
+    website: string;
+    brandingId: string;
+    operatorIdentifier: string;
+    baseOperatorInfo: (Operator | SchemeOperator)[];
+    placeholderGroupOfProductsName: string;
+    ticketUserConcat: string;
+    operatorPublicNameLineNameFormat: string;
+    nocCodeLineNameFormat: string;
+    lineIdName: string;
+    lineName: string;
+    isGeoZone: boolean;
+    isMultiProduct: boolean;
+    isMultiOperator: boolean;
+    isPointToPoint: boolean;
+}
+
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
 
 export interface Operator {
