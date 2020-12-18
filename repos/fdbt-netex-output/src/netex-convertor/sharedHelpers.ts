@@ -241,6 +241,8 @@ export const getCoreData = (
             isMultiProduct: false,
             isMultiOperator: false,
             isPointToPoint: pointToPoint,
+            type: matchingData.type,
+            isSchemeOperator: false,
         };
     }
     const periodMatchingData: PeriodTicket | SchemeOperatorTicket = matchingData as PeriodTicket | SchemeOperatorTicket;
@@ -280,5 +282,7 @@ export const getCoreData = (
         isMultiProduct: isMultiServiceTicket(matchingData),
         isMultiOperator: matchingData.type === 'multiOperator',
         isPointToPoint: pointToPoint,
+        type: matchingData.type,
+        isSchemeOperator: isSchemeOperatorTicket(matchingData),
     };
 };
