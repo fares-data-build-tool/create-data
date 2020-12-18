@@ -97,13 +97,20 @@ const netexGenerator = (
 
     const updateCompositeFrame = (compositeFrame: NetexObject): NetexObject => {
         const compositeFrameToUpdate = { ...compositeFrame };
-        const operatorName = isSchemeOperatorTicket(ticket) ? ticket.schemeOperatorName : ticket.operatorName;
-
-        compositeFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:CompositeFrame_UK_PI_${
-            isGeoZoneTicket(ticket) ? 'NETWORK' : 'LINE'
-        }_FARE_OFFER:Pass@${coreData.placeholderGroupOfProductsName}:op`;
-        compositeFrameToUpdate.Name.$t = `Fares for ${operatorName}`;
-        compositeFrameToUpdate.Description.$t = `Period ticket for ${operatorName}`;
+        const { nocCode } = baseOperatorInfo as Operator;
+        const { lineIdName, type } = coreData;
+        if (coreData.isPointToPoint) {
+            compositeFrameToUpdate.id = `epd:UK:${nocCode}:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@${coreData.lineIdName}:op`;
+            compositeFrameToUpdate.Name.$t = `Fares for ${lineIdName}`;
+            compositeFrameToUpdate.Description.$t = `${nocCode} ${lineIdName} is accessible as a ${type} trip fare.  Prices are given zone to zone, where each zone is a linear group of stops, i.e. fare stage.`;
+        } else {
+            const operatorName = coreData.isSchemeOperator ? ticket.schemeOperatorName : ticket.operatorName;
+            compositeFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:CompositeFrame_UK_PI_${
+                coreData.isGeoZone ? 'NETWORK' : 'LINE'
+            }_FARE_OFFER:Pass@${coreData.placeholderGroupOfProductsName}:op`;
+            compositeFrameToUpdate.Name.$t = `Fares for ${operatorName}`;
+            compositeFrameToUpdate.Description.$t = `Period ticket for ${operatorName}`;
+        }
 
         return compositeFrameToUpdate;
     };

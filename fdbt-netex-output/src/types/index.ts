@@ -20,6 +20,8 @@ export interface CoreData {
     isMultiProduct: boolean;
     isMultiOperator: boolean;
     isPointToPoint: boolean;
+    isSchemeOperator: boolean;
+    type: string;
 }
 
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
