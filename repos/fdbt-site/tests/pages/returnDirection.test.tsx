@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
 import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';

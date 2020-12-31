@@ -4,7 +4,7 @@ import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/index'
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
-import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
+import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
@@ -158,9 +158,25 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const userFareZones = await processCsv(fileContents, req, res);
 
             if (!userFareZones) {
+                const errors: ErrorInfo[] = [
+                    { id: 'csv-upload', errorMessage: 'Unable to find any user fare zones for uploaded CSV zone.' },
+                ];
+                setFareZoneAttributeAndRedirect(req, res, errors);
                 return;
             }
-
+            const atcoCodes: string[] = userFareZones.map(fareZone => fareZone.AtcoCodes);
+            try {
+                await batchGetStopsByAtcoCode(atcoCodes);
+            } catch (error) {
+                const errors: ErrorInfo[] = [
+                    {
+                        id: 'csv-upload',
+                        errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
+                    },
+                ];
+                setFareZoneAttributeAndRedirect(req, res, errors);
+                return;
+            }
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, { fareZoneName });
