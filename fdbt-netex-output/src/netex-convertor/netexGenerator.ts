@@ -1,6 +1,7 @@
 import {
     isReturnTicket,
     getPointToPointScheduledStopPointsList,
+    getFareZoneList,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     getCoreData,
@@ -21,6 +22,8 @@ import {
     isPointToPointTicket,
     isMultiOperatorTicket,
     ScheduledStopPoints,
+    FareZoneList,
+    isSingleTicket,
 } from '../types/index';
 
 import {
@@ -214,6 +217,8 @@ const netexGenerator = (
         return null;
     };
 
+    // This method is called for all period-type tickets instead of 'updateZoneFareFrame'.
+    // Only GeoZoneTickets need a NetworkFareFrame. MultiServiceTickets do not need a NetworkFareFrame.
     const updateNetworkFareFrame = (networkFareFrame: NetexObject): NetexObject | null => {
         if (isGeoZoneTicket(ticket)) {
             const networkFareFrameToUpdate = { ...networkFareFrame };
@@ -233,6 +238,31 @@ const netexGenerator = (
             );
 
             return networkFareFrameToUpdate;
+        }
+
+        return null;
+    };
+
+    // This method is called for all point-to-point-type tickets instead of 'updateNetworkFareFrame'.
+    const updateZoneFareFrame = (zoneFareFrame: NetexObject): NetexObject | null => {
+        if (isPointToPointTicket(ticket)) {
+            const zoneFareFrameToUpdate = { ...zoneFareFrame };
+            zoneFareFrameToUpdate.id = `epd:UK:${ticket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${coreData.lineIdName}:op`;
+
+            if (isReturnTicket(ticket)) {
+                const outbound = getFareZoneList(ticket.outboundFareZones);
+                const inbound = getFareZoneList(ticket.inboundFareZones);
+
+                const fareZones: FareZoneList[] = inbound.concat(outbound);
+
+                zoneFareFrameToUpdate.fareZones.FareZone = [...new Set(fareZones.map(({ id }) => id))].map(e =>
+                    fareZones.find(({ id }) => id === e),
+                );
+            } else if (isSingleTicket(ticket)) {
+                zoneFareFrameToUpdate.fareZones.FareZone = getFareZoneList(ticket.fareZones);
+            }
+
+            return zoneFareFrameToUpdate;
         }
 
         return null;
@@ -354,22 +384,15 @@ const netexGenerator = (
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
         netexFrames.ResourceFrame = updateResourceFrame(netexFrames.ResourceFrame);
-
         netexFrames.ServiceFrame = updateServiceFrame(netexFrames.ServiceFrame);
 
-        // Multi Service does not need a Network Frame
-        if (isGeoZoneTicket(ticket)) {
-            netexFrames.FareFrame = [
-                updateNetworkFareFrame(netexFrames.FareFrame[0]),
-                updatePriceFareFrame(netexFrames.FareFrame[1]),
-                updateFareTableFareFrame(netexFrames.FareFrame[2]),
-            ];
-        } else if (isMultiServiceTicket(ticket)) {
-            netexFrames.FareFrame = [
-                updatePriceFareFrame(netexFrames.FareFrame[1]),
-                updateFareTableFareFrame(netexFrames.FareFrame[2]),
-            ];
-        }
+        netexFrames.FareFrame = [
+            isPointToPointTicket(ticket)
+                ? updateZoneFareFrame(netexFrames.FareFrame[0])
+                : updateNetworkFareFrame(netexFrames.FareFrame[0]),
+            updatePriceFareFrame(netexFrames.FareFrame[1]),
+            updateFareTableFareFrame(netexFrames.FareFrame[2]),
+        ];
 
         return convertJsonToXml(netexJson);
     };
