@@ -186,6 +186,13 @@ export const isMultiOperatorGeoZoneTicket = (ticketData: Ticket): ticketData is 
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
     ticketData.type === 'single' || ticketData.type === 'return';
 
+export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>
+    ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
+    ((ticket as ReturnTicket).outboundFareZones !== undefined && (ticket as ReturnTicket).outboundFareZones.length > 0);
+
+export const isSingleTicket = (ticket: PointToPointTicket): ticket is SingleTicket =>
+    (ticket as SingleTicket).fareZones !== undefined && (ticket as SingleTicket).fareZones.length > 0;
+
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket | SchemeOperatorTicket;
 
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {

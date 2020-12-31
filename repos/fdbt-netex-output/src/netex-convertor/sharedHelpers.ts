@@ -24,7 +24,6 @@ export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const getCleanWebsite = (nocWebsite: string): string => {
     if (nocWebsite !== null) {
         const splitWebsite = nocWebsite.split('#');

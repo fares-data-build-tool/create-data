@@ -1,4 +1,8 @@
 import {
+    isReturnTicket,
+    getPointToPointScheduledStopPointsList,
+} from './point-to-point-tickets/pointToPointTicketNetexHelpers';
+import {
     getCoreData,
     NetexObject,
     getNetexTemplateAsJson,
@@ -16,6 +20,7 @@ import {
     SchemeOperatorTicket,
     isPointToPointTicket,
     isMultiOperatorTicket,
+    ScheduledStopPoints,
 } from '../types/index';
 
 import {
@@ -174,15 +179,38 @@ const netexGenerator = (
     };
 
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
+        const serviceFrameToUpdate = { ...serviceFrame };
         if (isMultiServiceTicket(ticket)) {
-            const serviceFrameToUpdate = { ...serviceFrame };
             serviceFrameToUpdate.id = `epd:UK:${ticket.nocCode}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
-
             serviceFrameToUpdate.lines.Line = getLinesList(ticket, coreData.website, operatorData);
 
             return serviceFrameToUpdate;
         }
+        if (isPointToPointTicket(ticket)) {
+            serviceFrameToUpdate.id = `epd:UK:${ticket.nocCode}:ServiceFrame_UK_PI_NETWORK:${coreData.lineIdName}:op`;
+            serviceFrameToUpdate.lines.Line.id = coreData.lineName;
+            serviceFrameToUpdate.lines.Line.Name.$t = coreData.operatorPublicNameLineNameFormat;
+            serviceFrameToUpdate.lines.Line.PublicCode.$t = coreData.lineName;
+            serviceFrameToUpdate.lines.Line.PrivateCode.$t = coreData.nocCodeLineNameFormat;
+            serviceFrameToUpdate.lines.Line.OperatorRef.ref = coreData.nocCodeFormat;
+            serviceFrameToUpdate.lines.Line.OperatorRef.$t = coreData.opIdNocFormat;
+            serviceFrameToUpdate.lines.Line.Description.$t = ticket.serviceDescription;
 
+            if (isReturnTicket(ticket)) {
+                const outboundStops = getPointToPointScheduledStopPointsList(ticket.outboundFareZones);
+                const inboundStops = getPointToPointScheduledStopPointsList(ticket.inboundFareZones);
+                const scheduledStopPointList: ScheduledStopPoints[] = outboundStops.concat(inboundStops);
+                serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = [
+                    ...new Set(scheduledStopPointList.map(({ id }) => id)),
+                ].map(e => scheduledStopPointList.find(({ id }) => id === e));
+            } else {
+                serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getPointToPointScheduledStopPointsList(
+                    ticket.fareZones,
+                );
+            }
+
+            return serviceFrameToUpdate;
+        }
         return null;
     };
 
