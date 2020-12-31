@@ -99,7 +99,7 @@ describe('Netex Helpers', () => {
 
     describe('getScheduledStopPointsList', () => {
         it('gets a NeTEx scheduled stop point for each stop in the fare zones', () => {
-            const stops = netexHelpers.getScheduledStopPointsList(fareZones);
+            const stops = netexHelpers.getPointToPointScheduledStopPointsList(fareZones);
 
             expect(stops).toEqual([
                 {

@@ -30,7 +30,7 @@ export const getUniquePriceGroups = (fareZones: FareZone[]): string[] => [
 
 export const getIdName = (name: string): string => name.replace(/(\s)+/g, '_');
 
-export const getScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] =>
+export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] =>
     getStops(fareZones).map(stop => ({
         version: 'any',
         id: stop.atcoCode ? `atco:${stop.atcoCode}` : `naptan:${stop.naptanCode}`,

@@ -3,7 +3,7 @@ import {
     getDistanceMatrixElements,
     getFareZoneList,
     getPriceGroups,
-    getScheduledStopPointsList,
+    getPointToPointScheduledStopPointsList,
     getPreassignedFareProduct,
     isReturnTicket,
     isSingleTicket,
@@ -106,14 +106,14 @@ const pointToPointTicketNetexGenerator = (
         serviceFrameToUpdate.lines.Line.Description.$t = matchingData.serviceDescription;
 
         if (isReturnTicket(matchingData)) {
-            const outboundStops = getScheduledStopPointsList(matchingData.outboundFareZones);
-            const inboundStops = getScheduledStopPointsList(matchingData.inboundFareZones);
+            const outboundStops = getPointToPointScheduledStopPointsList(matchingData.outboundFareZones);
+            const inboundStops = getPointToPointScheduledStopPointsList(matchingData.inboundFareZones);
             const scheduledStopPointList: ScheduledStopPoints[] = outboundStops.concat(inboundStops);
             serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = [
                 ...new Set(scheduledStopPointList.map(({ id }) => id)),
             ].map(e => scheduledStopPointList.find(({ id }) => id === e));
         } else if (isSingleTicket(matchingData)) {
-            serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getScheduledStopPointsList(
+            serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getPointToPointScheduledStopPointsList(
                 matchingData.fareZones,
             );
         }
