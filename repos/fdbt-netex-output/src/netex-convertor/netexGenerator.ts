@@ -2,6 +2,11 @@ import {
     isReturnTicket,
     getPointToPointScheduledStopPointsList,
     getFareZoneList,
+    getDistanceMatrixElements,
+    getPreassignedFareProduct,
+    buildSalesOfferPackages,
+    getConditionsOfTravelFareStructureElement,
+    getAvailabilityElement,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     getCoreData,
@@ -10,6 +15,9 @@ import {
     convertJsonToXml,
     getTimeRestrictions,
     getNetexMode,
+    isGroupTicket,
+    getUserProfile,
+    getGroupElement,
 } from './sharedHelpers';
 import {
     Operator,
@@ -24,6 +32,7 @@ import {
     ScheduledStopPoints,
     FareZoneList,
     isSingleTicket,
+    User,
 } from '../types/index';
 
 import {
@@ -271,15 +280,110 @@ const netexGenerator = (
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
 
-        priceFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${coreData.placeholderGroupOfProductsName}@pass:op`;
+        const ticketIdentifier: string = isPointToPointTicket(ticket)
+            ? coreData.lineIdName
+            : coreData.placeholderGroupOfProductsName;
+
+        priceFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${ticketIdentifier}@pass:op`;
+        priceFareFrameToUpdate.tariffs.Tariff.id = isPointToPointTicket(ticket)
+            ? `Tariff@${coreData.ticketType}@${coreData.lineIdName}`
+            : `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
+        priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${coreData.operatorName} - ${ticketIdentifier} - Fares for ${coreData.ticketType} ticket`;
+        let validityCondition;
+
+        if (isPointToPointTicket(ticket)) {
+            const fareZones = isReturnTicket(ticket) ? ticket.outboundFareZones : ticket.fareZones;
+            if (isSingleTicket(ticket) && ticket.termTime === true) {
+                validityCondition = {
+                    id: 'op:termtime',
+                    version: '1.0',
+                    Name: {
+                        $t: 'Term Time Usage Only',
+                    },
+                };
+            }
+
+            priceFareFrameToUpdate.tariffs.Tariff.validityConditions = {
+                ValidBetween: {
+                    FromDate: { $t: ticket.ticketPeriod.startDate },
+                    ToDate: { $t: ticket.ticketPeriod.endDate },
+                },
+                ValidityCondition: validityCondition,
+            };
+            priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.ref = coreData.nocCodeFormat;
+            priceFareFrameToUpdate.tariffs.Tariff.OperatorRef.$t = coreData.opIdNocFormat;
+            priceFareFrameToUpdate.tariffs.Tariff.LineRef.ref = coreData.lineName;
+
+            if (ticket.timeRestriction.length > 0) {
+                priceFareFrameToUpdate.tariffs.Tariff.qualityStructureFactors = getTimeRestrictions(
+                    ticket.timeRestriction,
+                );
+            }
+
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].Name.$t = `O/D pairs for ${coreData.lineName}`;
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].distanceMatrixElements.DistanceMatrixElement = getDistanceMatrixElements(
+                fareZones,
+            );
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.validityParameters.LineRef.ref =
+                coreData.lineName;
+
+            const users = isGroupTicket(ticket)
+                ? ticket.groupDefinition.companions
+                : [
+                      {
+                          ageRangeMin: ticket.ageRangeMin,
+                          ageRangeMax: ticket.ageRangeMax,
+                          passengerType: ticket.passengerType,
+                          proofDocuments: ticket.proofDocuments,
+                      } as User,
+                  ];
+            priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.limitations.UserProfile = users.map(
+                getUserProfile,
+            );
+            priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(ticket);
+
+            priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
+                ticket.products[0],
+                coreData.ticketUserConcat,
+            );
+
+            if (isReturnTicket(ticket)) {
+                priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].id =
+                    'Tariff@return@lines';
+                priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[0].GenericParameterAssignment.id =
+                    'Tariff@return@lines';
+
+                priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].id =
+                    'Tariff@return@eligibility';
+                priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[1].GenericParameterAssignment.id =
+                    'Tariff@return@eligibility';
+
+                priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement[2] = getConditionsOfTravelFareStructureElement(
+                    ticket,
+                );
+            }
+
+            if (isGroupTicket(ticket)) {
+                priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement.push(
+                    getGroupElement(ticket),
+                );
+            }
+
+            if (ticket.timeRestriction.length > 0) {
+                priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement.push(
+                    getAvailabilityElement(`Tariff@${coreData.ticketType}@availability`),
+                );
+            }
+
+            return priceFareFrameToUpdate;
+        }
 
         if (isGeoZoneTicket(ticket)) {
             priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${coreData.placeholderGroupOfProductsName}@pass:op`;
         } else if (isMultiServiceTicket(ticket)) {
             priceFareFrameToUpdate.prerequisites = null;
         }
-        priceFareFrameToUpdate.tariffs.Tariff.id = `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
-        let validityCondition;
+
         if (isMultiServiceTicket(ticket) && ticket.termTime === true) {
             validityCondition = {
                 id: 'op:termtime',
@@ -296,8 +400,6 @@ const netexGenerator = (
             },
             ValidityCondition: validityCondition,
         };
-        priceFareFrameToUpdate.tariffs.Tariff.Name.$t = `${coreData.placeholderGroupOfProductsName} - Tariff`;
-        priceFareFrameToUpdate.tariffs.Tariff.Description.$t = `${coreData.placeholderGroupOfProductsName} single zone tariff`;
 
         if (ticket.type === 'multiOperator') {
             priceFareFrameToUpdate.tariffs.Tariff.GroupOfOperatorsRef = {
@@ -324,19 +426,19 @@ const netexGenerator = (
 
         // Fare structure elements
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement = getFareStructuresElements(
-            ticket as PeriodTicket,
+            ticket,
             coreData.placeholderGroupOfProductsName,
         );
 
         // Preassigned Fare Product
         priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProducts(
-            ticket as PeriodTicket,
+            ticket,
             coreData.nocCodeFormat,
             coreData.opIdNocFormat,
         );
 
         // Sales Offer Packages
-        const salesOfferPackages = getSalesOfferPackageList(ticket as PeriodTicket, coreData.ticketUserConcat);
+        const salesOfferPackages = getSalesOfferPackageList(ticket, coreData.ticketUserConcat);
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = salesOfferPackages.flat();
 
         return priceFareFrameToUpdate;
