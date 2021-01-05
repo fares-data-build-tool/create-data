@@ -8,11 +8,18 @@ import {
     isMultiOperatorGeoZoneTicket,
     isSchemeOperatorTicket,
     SchemeOperatorTicket,
+    Ticket,
 } from '../types/index';
 import pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';
 import periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
-import * as db from './data/auroradb';
-import * as s3 from './data/s3';
+import * as db from '../data/auroradb';
+import * as s3 from '../data/s3';
+
+const isPointToPointTicket = (ticket: Ticket): ticket is PointToPointTicket =>
+    ticket.type === 'single' || ticket.type === 'return';
+
+const isPeriodTicket = (ticket: Ticket): ticket is PeriodTicket =>
+    ticket.type === 'period' || ticket.type === 'flatFare' || ticket.type === 'multiOperator';
 
 const xsl = `
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -56,13 +63,13 @@ export const generateFileName = (eventFileName: string): string => eventFileName
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     try {
-        const s3Data = await s3.fetchDataFromS3(event);
+        const s3Data = await s3.fetchDataFromS3<PointToPointTicket | PeriodTicket | SchemeOperatorTicket>(event);
         const s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
         const { type } = s3Data;
 
         console.info(`NeTEx generation starting for type ${type}...`);
 
-        if (type === 'single' || type === 'return') {
+        if (isPointToPointTicket(s3Data)) {
             const matchingData: PointToPointTicket = s3Data;
             const operatorData = await db.getOperatorDataByNocCode([matchingData.nocCode]);
 
@@ -76,8 +83,8 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             if (matchingData.nocCode !== 'IWBusCo') {
                 console.info(`NeTEx generation complete for type ${type}`);
             }
-        } else if (type === 'period' || type === 'flatFare' || type === 'multiOperator') {
-            const userPeriodTicket: PeriodTicket | SchemeOperatorTicket = s3Data;
+        } else if (isPeriodTicket(s3Data)) {
+            const userPeriodTicket: PeriodTicket = s3Data;
             let operatorData: Operator[] = [];
             if (type === 'multiOperator') {
                 if (isMultiOperatorGeoZoneTicket(userPeriodTicket) || isSchemeOperatorTicket(userPeriodTicket)) {
