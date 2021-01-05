@@ -1,7 +1,7 @@
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
-import { Operator, Service } from '../../types';
-import { replaceIWBusCoNocCode } from '../sharedHelpers';
+import { Operator, Service } from '../types';
+import { replaceIWBusCoNocCode } from '../netex-convertor/sharedHelpers';
 
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;

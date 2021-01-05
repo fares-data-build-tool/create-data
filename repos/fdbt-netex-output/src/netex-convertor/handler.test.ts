@@ -9,12 +9,12 @@ import {
     schemeOperatorTicket,
 } from '../test-data/matchingData';
 import mockS3Event from './test-data/mockS3Event';
-import * as s3 from './data/s3';
+import * as s3 from '../data/s3';
 import * as pointToPointTicketNetexGenerator from './point-to-point-tickets/pointToPointTicketNetexGenerator';
 import * as periodTicketNetexGenerator from './period-tickets/periodTicketNetexGenerator';
-import * as db from './data/auroradb';
+import * as db from '../data/auroradb';
 
-jest.mock('./data/auroradb.ts');
+jest.mock('../data/auroradb.ts');
 jest.spyOn(s3, 'uploadNetexToS3').mockImplementation(() => Promise.resolve());
 const event: S3Event = mockS3Event('BucketThing', 'TheBigBucketName');
 const mockFetchDataFromS3Spy = jest.spyOn(s3, 'fetchDataFromS3');
