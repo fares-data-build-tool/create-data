@@ -7,6 +7,8 @@ import {
     buildSalesOfferPackages,
     getConditionsOfTravelFareStructureElement,
     getAvailabilityElement,
+    getPriceGroups,
+    getFareTables,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     getCoreData,
@@ -59,6 +61,9 @@ const netexGenerator = (
 ): { generate: Function } => {
     const coreData = getCoreData(operatorData, ticket);
     const baseOperatorInfo = coreData.baseOperatorInfo[0];
+    const ticketIdentifier: string = isPointToPointTicket(ticket)
+        ? coreData.lineIdName
+        : coreData.placeholderGroupOfProductsName;
 
     const updatePublicationTimeStamp = (publicationTimeStamp: NetexObject): NetexObject => {
         const publicationTimeStampToUpdate = { ...publicationTimeStamp };
@@ -280,10 +285,7 @@ const netexGenerator = (
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
 
-        const ticketIdentifier: string = isPointToPointTicket(ticket)
-            ? coreData.lineIdName
-            : coreData.placeholderGroupOfProductsName;
-
+        // pass on the end of this id might cause issues
         priceFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${ticketIdentifier}@pass:op`;
         priceFareFrameToUpdate.tariffs.Tariff.id = isPointToPointTicket(ticket)
             ? `Tariff@${coreData.ticketType}@${coreData.lineIdName}`
@@ -447,9 +449,18 @@ const netexGenerator = (
     const updateFareTableFareFrame = (fareTableFareFrame: NetexObject): NetexObject => {
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
 
-        fareTableFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRICE:${coreData.placeholderGroupOfProductsName}@pass:op`;
-        fareTableFareFrameToUpdate.Name.$t = `${coreData.placeholderGroupOfProductsName} Prices`;
-        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${coreData.placeholderGroupOfProductsName}@pass:op`;
+        // pass on the end of this id might cause issues
+        const fareFrameId = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRICE:${ticketIdentifier}@pass:op`;
+        fareTableFareFrameToUpdate.id = fareFrameId;
+        fareTableFareFrameToUpdate.Name.$t = `${ticketIdentifier} Prices`;
+        fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = fareFrameId;
+
+        if (isPointToPointTicket(ticket)) {
+            fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(ticket);
+            fareTableFareFrameToUpdate.fareTables.FareTable = getFareTables(ticket);
+
+            return fareTableFareFrameToUpdate;
+        }
 
         if (isGeoZoneTicket(ticket)) {
             fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(
