@@ -1,29 +1,27 @@
-import { collectErrors, isValidTime, collectInputsFromRequest } from '../../../src/pages/api/chooseTimeRestrictions';
+import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
+import chooseTimeRestrictions, {
+    collectErrors,
+    isValidTime,
+    collectInputsFromRequest,
+} from '../../../src/pages/api/chooseTimeRestrictions';
+import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('changePassword', () => {
-    afterEach(() => {
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+    beforeEach(() => {
         jest.resetAllMocks();
     });
 
     describe('isValidTime', () => {
-        it('should return true for a valid time in 2400 format', () => {
-            expect(isValidTime('0730')).toBe(true);
-        });
-        it('should return false for 1 over the maximum value in 2400 format', () => {
-            expect(isValidTime('2400')).toBe(false);
-        });
-        it('should return true for the maximum value in 2400 format', () => {
-            expect(isValidTime('2359')).toBe(true);
-        });
-        it('should return true for the minumum value in 2400 format', () => {
-            expect(isValidTime('0000')).toBe(true);
-        });
-        it('should return false for an invalid time in 2400 format', () => {
-            expect(isValidTime('7pm')).toBe(false);
-        });
-        it('should return false for a valid time format but ovre 2400', () => {
-            expect(isValidTime('2500')).toBe(false);
+        it.each([
+            [true, 'a valid time', '0730'],
+            [true, 'the max value', '2359'],
+            [true, 'the min value', '0000'],
+            [false, 'a valid time over the max value', '2400'],
+            [false, 'an invalid time', '7pm'],
+        ])('should return %s for %s in 2400 format', (validity, _case, value) => {
+            expect(isValidTime(value)).toBe(validity);
         });
     });
 
@@ -164,5 +162,38 @@ describe('changePassword', () => {
             const result = collectErrors(inputs);
             expect(result).toStrictEqual([]);
         });
+    });
+
+    it('should update the session attribute and redirect to /fareConfirmation on valid input', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { startTimemonday: '0900', endTimemonday: '1400' },
+            session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
+        });
+        chooseTimeRestrictions(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
+            fullTimeRestrictions: [{ day: 'monday', startTime: '0900', endTime: '1400' }],
+            errors: [],
+        });
+        expect(res.writeHead).toBeCalledWith(302, { Location: '/fareConfirmation' });
+    });
+
+    it('should update the session attribute with errors and redirect to itself (i.e. /chooseTimeRestrictions) on invalid input', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { startTimemonday: 'invalid', endTimemonday: '2600' },
+            session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
+        });
+        const mockErrors = expect.arrayContaining([
+            expect.objectContaining({
+                errorMessage: expect.any(String),
+                id: expect.any(String),
+                userInput: expect.any(String),
+            }),
+        ]);
+        chooseTimeRestrictions(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
+            fullTimeRestrictions: [{ day: 'monday', startTime: 'invalid', endTime: '2600' }],
+            errors: mockErrors,
+        });
+        expect(res.writeHead).toBeCalledWith(302, { Location: '/chooseTimeRestrictions' });
     });
 });

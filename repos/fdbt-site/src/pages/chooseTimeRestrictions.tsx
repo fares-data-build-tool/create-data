@@ -64,22 +64,28 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
         ctx.req,
         TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     ) as TimeRestriction;
+    const fullTimeRestrictionsAttribute = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
+
     if (!chosenDaysAttribute || !chosenDaysAttribute.validDays || chosenDaysAttribute.validDays.length === 0) {
         throw new Error('Necessary list of days not found to render page.');
     }
     const chosenDays = chosenDaysAttribute.validDays;
+
     const errors: ErrorInfo[] = [];
-    const fullTimeRestrictionsAttribute = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
-    if (fullTimeRestrictionsAttribute && fullTimeRestrictionsAttribute.errors.length > 0) {
-        fullTimeRestrictionsAttribute.errors.forEach(error => errors.push(error));
-    }
     const startTimeInputs: TimeInput[] = [];
     const endTimeInputs: TimeInput[] = [];
-    if (fullTimeRestrictionsAttribute && fullTimeRestrictionsAttribute.fullTimeRestrictions.length > 0) {
-        fullTimeRestrictionsAttribute.fullTimeRestrictions.forEach(fullTimeRestriction => {
-            startTimeInputs.push({ timeInput: fullTimeRestriction.startTime, day: fullTimeRestriction.day });
-            endTimeInputs.push({ timeInput: fullTimeRestriction.endTime, day: fullTimeRestriction.day });
-        });
+
+    if (fullTimeRestrictionsAttribute) {
+        if (fullTimeRestrictionsAttribute.errors.length > 0) {
+            fullTimeRestrictionsAttribute.errors.forEach(error => errors.push(error));
+        }
+
+        if (fullTimeRestrictionsAttribute.fullTimeRestrictions.length > 0) {
+            fullTimeRestrictionsAttribute.fullTimeRestrictions.forEach(fullTimeRestriction => {
+                startTimeInputs.push({ timeInput: fullTimeRestriction.startTime, day: fullTimeRestriction.day });
+                endTimeInputs.push({ timeInput: fullTimeRestriction.endTime, day: fullTimeRestriction.day });
+            });
+        }
     }
     return { props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs } };
 };

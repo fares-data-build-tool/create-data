@@ -114,7 +114,6 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ResetPassword
             const parsedExpiry = parseInt(expiry, 10);
 
             const currentTimeStamp = Math.floor(Date.now() / 1000);
-
             if (currentTimeStamp > parsedExpiry) {
                 if (ctx.res) {
                     redirectTo(ctx.res, '/resetLinkExpired');

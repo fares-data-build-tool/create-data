@@ -55,3 +55,73 @@ exports[`pages chooseStages should render correctly 1`] = `
   </CsrfForm>
 </Component>
 `;
+
+exports[`pages chooseStages should render errors correctly 1`] = `
+<Component
+  description="Choose Stages page of the Create Fares Data Service"
+  title="Choose Stages - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/chooseStages"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a whole number between 2 and 20",
+            "id": "fare-stages",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="fare-stages"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="choose-stages-page-heading"
+        >
+          How many fare stages does the service have?
+        </h1>
+      </label>
+      <div
+        className="govuk-hint"
+        id="fare-stage-hint"
+      >
+        Enter the number of fare stages between 2 - 20 (for example 3)
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="fare-stages"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a whole number between 2 and 20",
+              "id": "fare-stages",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="fare-stage-hint"
+          className="govuk-input govuk-input--width-2"
+          id="fare-stages"
+          name="fareStageInput"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
