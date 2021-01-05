@@ -110,10 +110,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     ) {
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }
+
     let startDate = '';
     let endDate = '';
     let startDefault = false;
     let endDefault = false;
+
     if (!ticketDatingInfo) {
         startDate = moment()
             .add(1, 'hours')

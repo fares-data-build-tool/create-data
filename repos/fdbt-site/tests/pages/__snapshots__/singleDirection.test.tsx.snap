@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages direction should render correctly 1`] = `
+exports[`pages singleDirection should render correctly 1`] = `
 <Component
   description="Single Direction selection page of the Create Fares Data Service"
   errors={Array []}

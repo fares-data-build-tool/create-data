@@ -9,7 +9,7 @@ import { SERVICE_ATTRIBUTE } from '../../src/constants';
 jest.mock('../../src/data/auroradb.ts');
 
 describe('pages', () => {
-    describe('direction', () => {
+    describe('singleDirection', () => {
         beforeEach(() => {
             (getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
             (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
@@ -64,48 +64,52 @@ describe('pages', () => {
             expect(serviceJourney.at(1).text()).toBe('Interchange Stand B TO Estate (Hail and Ride) N/B');
         });
 
-        it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
+        describe('getServerSideProps', () => {
+            it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
+                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
 
-            const ctx = getMockContext();
+                const ctx = getMockContext();
 
-            const result = await getServerSideProps(ctx);
+                const result = await getServerSideProps(ctx);
 
-            expect(result.props.service).toEqual(mockService);
-        });
-
-        it('removes journeys that have the same start and end points before rendering', async () => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
-                () => mockRawServiceWithDuplicates,
-            ));
-
-            const ctx = getMockContext();
-
-            const result = await getServerSideProps(ctx);
-            expect(result.props.service).toEqual(mockService);
-        });
-
-        it('throws an error if no journey patterns can be found', async () => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
-            const ctx = getMockContext();
-
-            await expect(getServerSideProps(ctx)).rejects.toThrow();
-        });
-
-        it('throws an error if noc invalid', async () => {
-            const ctx = getMockContext({ cookies: { operator: null } });
-
-            await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
-        });
-
-        it('throws an error if the service cookie does not exist', async () => {
-            const ctx = getMockContext({
-                session: {
-                    [SERVICE_ATTRIBUTE]: undefined,
-                },
+                expect(result.props.service).toEqual(mockService);
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');
+            it('removes journeys that have the same start and end points before rendering', async () => {
+                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
+                    () => mockRawServiceWithDuplicates,
+                ));
+
+                const ctx = getMockContext();
+
+                const result = await getServerSideProps(ctx);
+                expect(result.props.service).toEqual(mockService);
+            });
+
+            it('throws an error if no journey patterns can be found', async () => {
+                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
+                const ctx = getMockContext();
+
+                await expect(getServerSideProps(ctx)).rejects.toThrow();
+            });
+
+            it('throws an error if noc invalid', async () => {
+                const ctx = getMockContext({ cookies: { operator: null } });
+
+                await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
+            });
+
+            it('throws an error if the service cookie does not exist', async () => {
+                const ctx = getMockContext({
+                    session: {
+                        [SERVICE_ATTRIBUTE]: undefined,
+                    },
+                });
+
+                await expect(getServerSideProps(ctx)).rejects.toThrow(
+                    'Necessary cookies not found to show direction page',
+                );
+            });
         });
     });
 });
