@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages feedback should render correctly with feedbackSubmitted false 1`] = `
+exports[`pages feedback should render correctly after feedback has been successfully submitted 1`] = `
 <Component
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
@@ -11,6 +11,30 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
     csrfToken=""
     method="post"
   >
+    <div
+      className="information_box__success"
+    >
+      <h2
+        className="govuk-heading-m"
+      >
+        Your feedback was 
+        submitted
+      </h2>
+      <p
+        className="govuk-body"
+      >
+        Thank you for taking the time to improve the service
+      </p>
+      <p
+        className="govuk-body"
+      >
+        <a
+          href="/home"
+        >
+          Click here to return to the homepage
+        </a>
+      </p>
+    </div>
     <h1
       className="govuk-heading-l"
     >
@@ -179,7 +203,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
 </Component>
 `;
 
-exports[`pages feedback should render correctly with feedbackSubmitted not submitted 1`] = `
+exports[`pages feedback should render correctly after the user tries to submit no feedback 1`] = `
 <Component
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
@@ -382,7 +406,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted not submi
 </Component>
 `;
 
-exports[`pages feedback should render correctly with feedbackSubmitted submitted 1`] = `
+exports[`pages feedback should render correctly when the page is first visited 1`] = `
 <Component
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
@@ -393,30 +417,6 @@ exports[`pages feedback should render correctly with feedbackSubmitted submitted
     csrfToken=""
     method="post"
   >
-    <div
-      className="information_box__success"
-    >
-      <h2
-        className="govuk-heading-m"
-      >
-        Your feedback was 
-        submitted
-      </h2>
-      <p
-        className="govuk-body"
-      >
-        Thank you for taking the time to improve the service
-      </p>
-      <p
-        className="govuk-body"
-      >
-        <a
-          href="/home"
-        >
-          Click here to return to the homepage
-        </a>
-      </p>
-    </div>
     <h1
       className="govuk-heading-l"
     >

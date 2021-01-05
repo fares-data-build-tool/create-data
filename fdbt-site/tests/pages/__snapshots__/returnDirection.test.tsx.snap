@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages selectJourneyDirection should render correctly 1`] = `
+exports[`pages returnDirection should render correctly 1`] = `
 <Component
   description="Return Direction selection page of the Create Fares Data Service"
   errors={Array []}
@@ -105,6 +105,241 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
           <DirectionDropdown
             dropdownLabel="Inbound Journey"
             errors={Array []}
+            inboundJourney=""
+            journeyPatterns={
+              Array [
+                Object {
+                  "endPoint": Object {
+                    "Display": "Interchange Stand B",
+                    "Id": "13003655B",
+                  },
+                  "startPoint": Object {
+                    "Display": "Estate (Hail and Ride) N/B",
+                    "Id": "13003921A",
+                  },
+                  "stopList": Array [
+                    "13003921A",
+                    "13003305E",
+                    "13003306B",
+                    "13003618B",
+                    "13003622B",
+                    "13003923B",
+                    "13003939H",
+                    "13003625C",
+                    "13003612D",
+                    "13003611B",
+                    "13003609E",
+                    "13003661E",
+                    "13003949C",
+                    "13003635B",
+                    "13003655B",
+                  ],
+                },
+                Object {
+                  "endPoint": Object {
+                    "Display": "Estate (Hail and Ride) N/B",
+                    "Id": "13003921A",
+                  },
+                  "startPoint": Object {
+                    "Display": "Interchange Stand B",
+                    "Id": "13003655B",
+                  },
+                  "stopList": Array [
+                    "13003655B",
+                    "13003654G",
+                    "13003609A",
+                    "13003611F",
+                    "13003612H",
+                    "13003625G",
+                    "13003939D",
+                    "13003923F",
+                    "13003622F",
+                    "13003621F",
+                    "13003618F",
+                    "13003306A",
+                    "13003305A",
+                    "13003921A",
+                  ],
+                },
+              ]
+            }
+            selectName="inboundJourney"
+            selectNameID="inbound-journey"
+          />
+        </div>
+        <span
+          className="govuk-hint hint-text"
+          id="traveline-main-hint"
+        >
+          This data is taken from the Traveline National Dataset (TNDS) and should include all of your registered routes for this service
+        </span>
+        <span
+          className="govuk-hint hint-text"
+          id="traveline-sub-hint"
+        >
+          If you have route variations within your fares triangle, you are only required to upload one complete triangle that includes all of the potential stops
+        </span>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages returnDirection should render errors correctly 1`] = `
+<Component
+  description="Return Direction selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose an option for an outbound journey",
+        "id": "outbound-journey",
+      },
+      Object {
+        "errorMessage": "Choose an option for an inbound journey",
+        "id": "inbound-journey",
+      },
+    ]
+  }
+  title="Return Direction - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/returnDirection"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose an option for an outbound journey",
+            "id": "outbound-journey",
+          },
+          Object {
+            "errorMessage": "Choose an option for an inbound journey",
+            "id": "inbound-journey",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="return-direction-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="return-direction-page-heading"
+          >
+            Select the outbound and inbound journeys for your service
+          </h1>
+        </legend>
+        <div
+          className="govuk-!-margin-top-5"
+        >
+          <DirectionDropdown
+            dropdownLabel="Outbound Journey"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Choose an option for an outbound journey",
+                  "id": "outbound-journey",
+                },
+                Object {
+                  "errorMessage": "Choose an option for an inbound journey",
+                  "id": "inbound-journey",
+                },
+              ]
+            }
+            journeyPatterns={
+              Array [
+                Object {
+                  "endPoint": Object {
+                    "Display": "Interchange Stand B",
+                    "Id": "13003655B",
+                  },
+                  "startPoint": Object {
+                    "Display": "Estate (Hail and Ride) N/B",
+                    "Id": "13003921A",
+                  },
+                  "stopList": Array [
+                    "13003921A",
+                    "13003305E",
+                    "13003306B",
+                    "13003618B",
+                    "13003622B",
+                    "13003923B",
+                    "13003939H",
+                    "13003625C",
+                    "13003612D",
+                    "13003611B",
+                    "13003609E",
+                    "13003661E",
+                    "13003949C",
+                    "13003635B",
+                    "13003655B",
+                  ],
+                },
+                Object {
+                  "endPoint": Object {
+                    "Display": "Estate (Hail and Ride) N/B",
+                    "Id": "13003921A",
+                  },
+                  "startPoint": Object {
+                    "Display": "Interchange Stand B",
+                    "Id": "13003655B",
+                  },
+                  "stopList": Array [
+                    "13003655B",
+                    "13003654G",
+                    "13003609A",
+                    "13003611F",
+                    "13003612H",
+                    "13003625G",
+                    "13003939D",
+                    "13003923F",
+                    "13003622F",
+                    "13003621F",
+                    "13003618F",
+                    "13003306A",
+                    "13003305A",
+                    "13003921A",
+                  ],
+                },
+              ]
+            }
+            outboundJourney=""
+            selectName="outboundJourney"
+            selectNameID="outbound-journey"
+          />
+        </div>
+        <div
+          className="govuk-!-margin-top-6"
+        >
+          <DirectionDropdown
+            dropdownLabel="Inbound Journey"
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Choose an option for an outbound journey",
+                  "id": "outbound-journey",
+                },
+                Object {
+                  "errorMessage": "Choose an option for an inbound journey",
+                  "id": "inbound-journey",
+                },
+              ]
+            }
             inboundJourney=""
             journeyPatterns={
               Array [

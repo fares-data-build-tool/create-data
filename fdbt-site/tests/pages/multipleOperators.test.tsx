@@ -28,5 +28,20 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
+
+        it('should render errors correctly', () => {
+            const tree = shallow(
+                <MultipleOperators
+                    errors={[{ errorMessage: 'Choose an operator name and NOC from the options', id: 'operators' }]}
+                    operatorsAndNocs={[
+                        { name: 'test', nocCode: 'testNoc' },
+                        { name: 'test2', nocCode: 'testNoc2' },
+                        { name: 'test3', nocCode: 'testNoc3' },
+                    ]}
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
     });
 });

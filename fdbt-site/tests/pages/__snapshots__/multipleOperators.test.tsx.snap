@@ -161,3 +161,114 @@ exports[`pages multipleOperators should render correctly with one operator NOC p
   </CsrfForm>
 </Component>
 `;
+
+exports[`pages multipleOperators should render errors correctly 1`] = `
+<Component
+  description="Multiple Operators page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose an operator name and NOC from the options",
+        "id": "operators",
+      },
+    ]
+  }
+  title="Multiple Operators - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/multipleOperators"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose an operator name and NOC from the options",
+            "id": "operators",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <label
+        htmlFor="operators"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="multiple-operators-page-heading"
+        >
+          Choose an operator name and National Operator Code
+        </h1>
+      </label>
+      <FormElementWrapper
+        errorClass="govuk-select--error"
+        errorId="operators"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Choose an operator name and NOC from the options",
+              "id": "operators",
+            },
+          ]
+        }
+      >
+        <select
+          className="govuk-select"
+          defaultValue=""
+          id="operators"
+          name="operator"
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select One
+          </option>
+          <option
+            className="service-option"
+            key="operator"
+            value="test|testNoc"
+          >
+            test
+             - 
+            testNoc
+          </option>
+          <option
+            className="service-option"
+            key="operator"
+            value="test2|testNoc2"
+          >
+            test2
+             - 
+            testNoc2
+          </option>
+          <option
+            className="service-option"
+            key="operator"
+            value="test3|testNoc3"
+          >
+            test3
+             - 
+            testNoc3
+          </option>
+        </select>
+      </FormElementWrapper>
+      <span
+        className="govuk-hint hint-text"
+        id="traveline-hint"
+      >
+        This data is taken from the NOC Dataset
+      </span>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

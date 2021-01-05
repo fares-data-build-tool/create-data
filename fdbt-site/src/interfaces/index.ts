@@ -320,7 +320,7 @@ export interface GroupDefinition {
 export interface TimeRestriction {
     startTime?: string;
     endTime?: string;
-    validDays: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
+    validDays: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday' | 'bankHoliday')[];
 }
 
 export interface ReturnPeriodValidity {
