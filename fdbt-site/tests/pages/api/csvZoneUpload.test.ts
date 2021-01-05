@@ -9,6 +9,7 @@ import * as dynamo from '../../../src/data/auroradb';
 import { FARE_ZONE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
+jest.mock('../../../src/data/auroradb');
 
 describe('csvZoneUpload', () => {
     const writeHeadMock = jest.fn();

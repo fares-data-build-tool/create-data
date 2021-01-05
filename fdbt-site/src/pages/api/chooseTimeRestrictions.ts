@@ -7,11 +7,8 @@ import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUT
 
 export const isValidTime = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
 
-export const collectInputsFromRequest = (
-    req: NextApiRequestWithSession,
-    chosenDays: string[],
-): FullTimeRestriction[] => {
-    return chosenDays.map(day => {
+export const collectInputsFromRequest = (req: NextApiRequestWithSession, chosenDays: string[]): FullTimeRestriction[] =>
+    chosenDays.map(day => {
         const startTime = removeAllWhiteSpace(req.body[`startTime${day}`]);
         const endTime = removeAllWhiteSpace(req.body[`endTime${day}`]);
         return {
@@ -20,7 +17,6 @@ export const collectInputsFromRequest = (
             endTime,
         };
     });
-};
 
 export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];

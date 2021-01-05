@@ -241,6 +241,9 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
         `;
 
         const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
+        if (queryResults.length !== atcoCodes.length) {
+            throw new Error('Not all ATCO codes returned stops, some must be invalid.');
+        }
 
         return queryResults.map(item => ({
             stopName: item.commonName,
