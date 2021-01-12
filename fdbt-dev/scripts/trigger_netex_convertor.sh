@@ -8,8 +8,8 @@ UNVALIDATED_NETEX_BUCKET=fdbt-unvalidated-netex-data-dev
 
 EVENT_DATA=$(cat $FDBT_ROOT/fdbt-dev/data/s3Events/putEvent.json | sed s:KEY_HERE:BLAC/$FILE_NAME.json:g | sed s:BUCKET_HERE:$BUCKET_NAME:g)
 
-cd $FDBT_ROOT/repos/fdbt-netex-output/src/netex-convertor
+cd $FDBT_ROOT/repos/fdbt-netex-output
 
-rm -rf build
+rm -rf src/netex-convertor/build
 
-NODE_ENV=development UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET ts-node run-local.ts "$EVENT_DATA"
+EVENT_DATA=$EVENT_DATA UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET npm run netexConvert
