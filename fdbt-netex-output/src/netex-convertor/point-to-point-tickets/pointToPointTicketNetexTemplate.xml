@@ -17,8 +17,8 @@
 				<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP" />
 				<NetworkFilterByValue>
 					<objectReferences>
-						<OperatorRef version="1.0" ref="noc:HCTY">noc:137122</OperatorRef>
-						<LineRef version="1.0" ref="016" />
+						<OperatorRef version="1.0" ref=""></OperatorRef>
+						<LineRef version="1.0" ref="" />
 					</objectReferences>
 				</NetworkFilterByValue>
 			</NetworkFrameTopic>
@@ -112,6 +112,7 @@
 							<TradingName></TradingName>
 							<ContactDetails>
 								<Phone></Phone>
+								<Url></Url>
 							</ContactDetails>
 							<OrganisationType>operator</OrganisationType>
 							<Address>
@@ -119,7 +120,7 @@
 							</Address>
 							<PrimaryMode>bus</PrimaryMode>
 							<CustomerServiceContactDetails>
-								<Email>operations@connexionsbuses.com</Email>
+								<Email></Email>
 							</CustomerServiceContactDetails>
 						</Operator>
 					</organisations>
@@ -363,11 +364,15 @@
 					<salesOfferPackages></salesOfferPackages>
 				</FareFrame>
 				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRICE:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
+					<Name></Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0" />
 					<FrameDefaults>
 						<!-- Fares are shown in pence. -->
 						<DefaultCurrency>GBP</DefaultCurrency>
 					</FrameDefaults>
+					<prerequisites>
+						<FareFrameRef version="1.0" ref="" />
+					</prerequisites>
 					<!--==== Fare Prices ==== -->
 					<priceGroups>
 						<!--  === PRICE BANDS  === -->
