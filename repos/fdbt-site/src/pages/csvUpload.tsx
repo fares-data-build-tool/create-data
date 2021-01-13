@@ -21,7 +21,6 @@ const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
                     <p>Some common issues with fares triangle uploads include:</p>
                     <ul className="govuk-list govuk-list--bullet">
                         <li>Commas in fare stage names</li>
-                        <li>Not providing a price in every cell</li>
                         <li>Not filling in every fare stage on the diagonal row</li>
                     </ul>
                     <p>
