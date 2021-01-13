@@ -212,9 +212,13 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
 
 export const getCoreData = (
     operators: Operator[],
-    ticket: PointToPointTicket | PeriodTicket | SchemeOperatorTicket,
+    ticket: PointToPointTicket | PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
 ): CoreData => {
     if (isPointToPointTicket(ticket)) {
+        const baseOperatorInfo = operators.find(operator => operator.operatorPublicName === ticket.operatorShortName);
+        if (!baseOperatorInfo) {
+            throw new Error('Could not find base operator information for point to point ticket.');
+        }
         return {
             opIdNocFormat: `noc:${operators[0].opId}`,
             nocCodeFormat: `noc:${ticket.nocCode}`,
@@ -222,7 +226,7 @@ export const getCoreData = (
             website: getCleanWebsite(operators[0].website),
             brandingId: `op:${ticket.nocCode}@brand`,
             operatorIdentifier: ticket.nocCode,
-            baseOperatorInfo: [],
+            baseOperatorInfo: [baseOperatorInfo],
             placeholderGroupOfProductsName: '',
             ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
             operatorPublicNameLineNameFormat: `${operators[0].operatorPublicName} ${ticket.lineName}`,
@@ -233,7 +237,7 @@ export const getCoreData = (
             ticketType: ticket.type,
         };
     }
-    const periodTicket: PeriodTicket | SchemeOperatorTicket = ticket;
+    const periodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket = ticket;
     const baseOperatorInfo = isSchemeOperatorTicket(periodTicket)
         ? getBaseSchemeOperatorInfo(periodTicket)
         : operators.find(operator => operator.operatorPublicName === periodTicket.operatorName);

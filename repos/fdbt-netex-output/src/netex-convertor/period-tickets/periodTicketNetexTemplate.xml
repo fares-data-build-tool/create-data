@@ -153,6 +153,9 @@
 								<Street></Street>
 							</Address>
 							<PrimaryMode></PrimaryMode>
+							<CustomerServiceContactDetails>
+								<Email></Email>
+							</CustomerServiceContactDetails>
 						</Operator>
 					</organisations>
 				</ResourceFrame>
