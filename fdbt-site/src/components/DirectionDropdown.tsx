@@ -56,7 +56,7 @@ const DirectionDropdown = ({
                                 value={`${journeyPattern.startPoint.Id}#${journeyPattern.endPoint.Id}`}
                                 className="journey-option"
                             >
-                                {journeyPattern.startPoint.Display} TO {journeyPattern.endPoint.Display}
+                                {journeyPattern.startPoint.Display} - {journeyPattern.endPoint.Display}
                             </option>
                         );
                     })}
