@@ -26,13 +26,14 @@ const mockUploadNetexToS3Spy = jest.spyOn(s3, 'uploadNetexToS3');
 mockUploadNetexToS3Spy.mockImplementation(() => Promise.resolve());
 
 const netexGeneratorSpy = jest.spyOn(netexGenerator, 'default');
+const dbSpy = jest.spyOn(db, 'getOperatorDataByNocCode');
 
 describe('netexConvertorHandler', () => {
     beforeEach(() => {
-        jest.spyOn(db, 'getOperatorDataByNocCode').mockImplementation(() =>
+        dbSpy.mockImplementation(() =>
             Promise.resolve([
                 {
-                    nocCode: 'aaa',
+                    nocCode: 'TEST',
                     website: 'www.unittest.com',
                     ttrteEnq: 'aaaaaa',
                     operatorPublicName: 'Test Buses',
@@ -97,6 +98,22 @@ describe('netexConvertorHandler', () => {
 
     it('should generate single fare netex with no undefined variables', async () => {
         netexGeneratorSpy.mockRestore();
+        dbSpy.mockImplementation(() =>
+            Promise.resolve([
+                {
+                    nocCode: 'MCTR',
+                    website: 'www.unittest.com',
+                    ttrteEnq: 'aaaaaa',
+                    operatorPublicName: 'Test Buses',
+                    opId: '7Z',
+                    vosaPsvLicenseName: 'CCD',
+                    fareEnq: 'SSSS',
+                    complEnq: '334',
+                    mode: 'test',
+                },
+            ]),
+        );
+
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(singleTicket));
         await netexConvertorHandler(event);
         const generatedNetex: string = mockUploadNetexToS3Spy.mock.calls[0][0];
@@ -105,6 +122,21 @@ describe('netexConvertorHandler', () => {
 
     it('should generate flat fare netex with no undefined variables', async () => {
         netexGeneratorSpy.mockRestore();
+        dbSpy.mockImplementation(() =>
+            Promise.resolve([
+                {
+                    nocCode: 'WBTR',
+                    website: 'www.unittest.com',
+                    ttrteEnq: 'aaaaaa',
+                    operatorPublicName: 'Test Buses',
+                    opId: '7Z',
+                    vosaPsvLicenseName: 'CCD',
+                    fareEnq: 'SSSS',
+                    complEnq: '334',
+                    mode: 'test',
+                },
+            ]),
+        );
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(flatFareTicket));
         await netexConvertorHandler(event);
         const generatedNetex: string = mockUploadNetexToS3Spy.mock.calls[0][0];
@@ -113,6 +145,21 @@ describe('netexConvertorHandler', () => {
 
     it('should generate multiple services period netex with no undefined variables', async () => {
         netexGeneratorSpy.mockRestore();
+        dbSpy.mockImplementation(() =>
+            Promise.resolve([
+                {
+                    nocCode: 'PBLT',
+                    website: 'www.unittest.com',
+                    ttrteEnq: 'aaaaaa',
+                    operatorPublicName: 'Test Buses',
+                    opId: '7Z',
+                    vosaPsvLicenseName: 'CCD',
+                    fareEnq: 'SSSS',
+                    complEnq: '334',
+                    mode: 'test',
+                },
+            ]),
+        );
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodMultipleServicesTicket));
         await netexConvertorHandler(event);
         const generatedNetex: string = mockUploadNetexToS3Spy.mock.calls[0][0];
@@ -121,6 +168,21 @@ describe('netexConvertorHandler', () => {
 
     it('should generate geozone period netex with no undefined variables', async () => {
         netexGeneratorSpy.mockRestore();
+        dbSpy.mockImplementation(() =>
+            Promise.resolve([
+                {
+                    nocCode: 'BLAC',
+                    website: 'www.unittest.com',
+                    ttrteEnq: 'aaaaaa',
+                    operatorPublicName: 'Test Buses',
+                    opId: '7Z',
+                    vosaPsvLicenseName: 'CCD',
+                    fareEnq: 'SSSS',
+                    complEnq: '334',
+                    mode: 'test',
+                },
+            ]),
+        );
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodGeoZoneTicket));
         await netexConvertorHandler(event);
         const generatedNetex: string = mockUploadNetexToS3Spy.mock.calls[0][0];
