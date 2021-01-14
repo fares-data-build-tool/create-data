@@ -1,11 +1,25 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import InputMethod from '../../src/pages/inputMethod';
+import CsvUpload from '../../src/pages/csvUpload';
 
 describe('pages', () => {
     describe('csvUpload', () => {
         it('should render correctly', () => {
-            const tree = shallow(<InputMethod errors={[]} csrfToken="" />);
+            const tree = shallow(
+                <CsvUpload
+                    csvUploadApiRoute=""
+                    csvUploadTitle="Upload fares triangle as CSV"
+                    csvUploadHintText=""
+                    guidanceDocDisplayName=""
+                    guidanceDocAttachmentUrl=""
+                    guidanceDocSize=""
+                    csvTemplateDisplayName=""
+                    csvTemplateAttachmentUrl=""
+                    csvTemplateSize=""
+                    errors={[]}
+                    csrfToken=""
+                />,
+            );
             expect(tree).toMatchSnapshot();
         });
     });

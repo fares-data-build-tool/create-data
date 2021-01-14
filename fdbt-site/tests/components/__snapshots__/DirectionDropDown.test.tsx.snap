@@ -31,7 +31,7 @@ exports[`DirectionDropdown should render the dropdown with options 1`] = `
         value="13003921A#13003655B"
       >
         Estate (Hail and Ride) N/B
-         TO 
+         - 
         Interchange Stand B
       </option>
       <option
@@ -40,7 +40,7 @@ exports[`DirectionDropdown should render the dropdown with options 1`] = `
         value="13003655B#13003921A"
       >
         Interchange Stand B
-         TO 
+         - 
         Estate (Hail and Ride) N/B
       </option>
     </select>
