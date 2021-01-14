@@ -139,3 +139,7 @@ Outputs:
     Value: !Ref UserPool
     Export:
       Name: !Sub ${Stage}:UserPoolID
+  UserPoolArn:
+    Value: !GetAtt UserPool.Arn
+    Export:
+      Name: !Sub ${Stage}:UserPoolArn
