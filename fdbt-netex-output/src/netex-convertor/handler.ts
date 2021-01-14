@@ -88,6 +88,7 @@ export const buildNocList = (ticket: PointToPointTicket | PeriodTicket | SchemeO
             nocs.push(periodTicket.nocCode);
         }
     }
+
     return nocs;
 };
 
