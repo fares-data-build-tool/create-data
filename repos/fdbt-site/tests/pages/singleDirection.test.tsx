@@ -60,8 +60,8 @@ describe('pages', () => {
             const serviceJourney = wrapper.find('.journey-option');
 
             expect(serviceJourney).toHaveLength(2);
-            expect(serviceJourney.first().text()).toBe('Estate (Hail and Ride) N/B TO Interchange Stand B');
-            expect(serviceJourney.at(1).text()).toBe('Interchange Stand B TO Estate (Hail and Ride) N/B');
+            expect(serviceJourney.first().text()).toBe('Estate (Hail and Ride) N/B - Interchange Stand B');
+            expect(serviceJourney.at(1).text()).toBe('Interchange Stand B - Estate (Hail and Ride) N/B');
         });
 
         describe('getServerSideProps', () => {

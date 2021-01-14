@@ -2,142 +2,42 @@
 
 exports[`pages csvUpload should render correctly 1`] = `
 <Component
-  description="Input Method selection page of the Create Fares Data Service"
+  description="CSV Upload page of the Create Fares Data Service"
   errors={Array []}
-  title="Input Method - Create Fares Data Service"
+  title="CSV Upload - Create Fares Data Service"
 >
-  <div
-    className="govuk-grid-row"
-  >
-    <div
-      className="govuk-grid-column-two-thirds"
-    >
-      <CsrfForm
-        action="/api/inputMethod"
-        csrfToken=""
-        method="post"
-      >
-        <ErrorSummary
-          errors={Array []}
-        />
-        <div
-          className="govuk-form-group "
+  <UserDataUploadComponent
+    csrfToken=""
+    csvTemplateAttachmentUrl=""
+    csvTemplateDisplayName=""
+    csvTemplateSize=""
+    csvUploadApiRoute=""
+    csvUploadHintText=""
+    csvUploadTitle="Upload fares triangle as CSV"
+    detailBody={
+      <React.Fragment>
+        <p>
+          Some common issues with fares triangle uploads include:
+        </p>
+        <ul
+          className="govuk-list govuk-list--bullet"
         >
-          <fieldset
-            aria-describedby="input-method-heading"
-            className="govuk-fieldset"
-          >
-            <legend
-              className="govuk-fieldset__legend govuk-fieldset__legend--l"
-            >
-              <h1
-                className="govuk-fieldset__heading"
-                id="input-method-heading"
-              >
-                Select an input method
-              </h1>
-            </legend>
-            <FormElementWrapper
-              errorClass="govuk-radios--error"
-              errorId="csv-upload"
-              errors={Array []}
-            >
-              <div
-                className="govuk-radios"
-                id="radio-buttons"
-              >
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    className="govuk-radios__input  "
-                    id="csv-upload"
-                    name="inputMethod"
-                    type="radio"
-                    value="csv"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label"
-                    htmlFor="csv-upload"
-                  >
-                    Upload a fares triangle (CSV)
-                  </label>
-                </div>
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    className="govuk-radios__input  "
-                    id="manual-entry"
-                    name="inputMethod"
-                    type="radio"
-                    value="manual"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label"
-                    htmlFor="manual-entry"
-                  >
-                    Manual fares triangle input
-                  </label>
-                </div>
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    aria-disabled="true"
-                    className="govuk-radios__input  "
-                    disabled={true}
-                    id="interactive-map"
-                    name="inputMethod"
-                    type="radio"
-                    value="interactiveMap"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label"
-                    htmlFor="interactive-map"
-                  >
-                    Interactive Map (not yet available)
-                  </label>
-                </div>
-              </div>
-            </FormElementWrapper>
-          </fieldset>
-        </div>
-        <input
-          className="govuk-button"
-          id="continue-button"
-          type="submit"
-          value="Continue"
-        />
-      </CsrfForm>
-    </div>
-    <div
-      className="govuk-grid-column-one-third"
-    >
-      <h3
-        className="govuk-heading-s"
-      >
-        What is a CSV?
-      </h3>
-      <p
-        className="govuk-body"
-      >
-        CSV stands for Comma Separated Values. A CSV file is a popular format for publishing data on the web. They are plain text files which means they can contain numbers and letters only. Most spreadsheet software (Microsoft Excel, Google Sheets etc.) will have a 
-        <b>
-          .csv
-        </b>
-        , 
-        <b>
-          .xlsx
-        </b>
-         or
-         
-        <b>
-          .xls
-        </b>
-         option when saving your data. This is the easiest way to turn your spreadsheet into a CSV file.
-      </p>
-    </div>
-  </div>
+          <li>
+            Commas in fare stage names
+          </li>
+          <li>
+            Not filling in every fare stage on the diagonal row
+          </li>
+        </ul>
+        <p>
+          Use the help file for a more detailed guide on constructing a fares triangle in the required format or download the fares triangle template to create a new file.
+        </p>
+      </React.Fragment>
+    }
+    errors={Array []}
+    guidanceDocAttachmentUrl=""
+    guidanceDocDisplayName=""
+    guidanceDocSize=""
+  />
 </Component>
 `;

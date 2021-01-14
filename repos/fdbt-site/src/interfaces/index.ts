@@ -126,6 +126,11 @@ export interface Stop {
     street?: string;
 }
 
+export interface StopPoint {
+    stopPointRef: string;
+    commonName: string;
+}
+
 export interface S3NetexFile {
     name: string;
     noc: string | undefined;

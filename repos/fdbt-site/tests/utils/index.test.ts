@@ -10,7 +10,7 @@ import {
 import { Stop } from '../../src/data/auroradb';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 
-describe('utils', () => {
+describe('index', () => {
     describe('getHost', () => {
         it('should return http when host is localhost', () => {
             const expected = 'http://localhost';
