@@ -1,5 +1,4 @@
 import { ReactElement, useEffect, useState } from 'react';
-import './App.css';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
