@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import moment from 'moment-timezone';
-import { fetchDataFromS3, getFileFromS3 } from '../utils/s3';
+import { fetchDataFromS3, getFileFromS3 } from '../data/s3';
 import emailTemplate from './template/emailTemplate';
 
 export interface S3ObjectParameters {
@@ -86,7 +86,7 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
         const pathToSavedNetex = `/tmp/${splitKey}`;
         const netexFile = await getFileFromS3(s3ObjectParams);
 
-        const matchingData: MatchingData = await fetchDataFromS3<MatchingData>(event, true);
+        const matchingData = await fetchDataFromS3<MatchingData>(event, true);
 
         if (!matchingData.email) {
             return;

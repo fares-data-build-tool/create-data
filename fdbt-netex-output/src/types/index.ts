@@ -1,5 +1,25 @@
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
+// Misc
+
+export interface CoreData {
+    ticketType: string;
+    opIdNocFormat: string;
+    nocCodeFormat: string;
+    currentDate: Date;
+    website: string;
+    brandingId: string;
+    operatorIdentifier: string;
+    baseOperatorInfo: (Operator | SchemeOperator)[];
+    placeholderGroupOfProductsName: string;
+    ticketUserConcat: string;
+    operatorPublicNameLineNameFormat: string;
+    nocCodeLineNameFormat: string;
+    lineIdName: string;
+    lineName: string;
+    operatorName: string;
+}
+
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
 
 export interface Operator {
@@ -163,6 +183,18 @@ export const isMultiOperatorGeoZoneTicket = (ticketData: Ticket): ticketData is 
     (ticketData as MultiOperatorGeoZoneTicket).additionalNocs &&
     (ticketData as MultiOperatorGeoZoneTicket).additionalNocs.length > 0;
 
+export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
+    ticketData.type === 'single' || ticketData.type === 'return';
+
+export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>
+    ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
+    ((ticket as ReturnTicket).outboundFareZones !== undefined && (ticket as ReturnTicket).outboundFareZones.length > 0);
+
+export const isSingleTicket = (ticket: PointToPointTicket): ticket is SingleTicket =>
+    (ticket as SingleTicket).fareZones !== undefined && (ticket as SingleTicket).fareZones.length > 0;
+
+export const isFlatFareTicket = (ticketData: Ticket): ticketData is FlatFareTicket => ticketData.type === 'flatFare';
+
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket | SchemeOperatorTicket;
 
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
@@ -182,6 +214,11 @@ export const isMultiOperatorMultipleServicesTicket = (
 ): ticketData is MultiOperatorMultipleServicesTicket =>
     (ticketData as MultiOperatorMultipleServicesTicket).additionalOperators &&
     (ticketData as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0;
+
+export const isMultiOperatorTicket = (
+    ticketData: Ticket,
+): ticketData is MultiOperatorGeoZoneTicket | MultiOperatorMultipleServicesTicket =>
+    ticketData.type === 'multiOperator';
 
 export type MultipleServicesTicket = PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket;
 

@@ -5,22 +5,15 @@ import {
     Stop,
     PointToPointTicket,
     ReturnTicket,
-    SingleTicket,
     DistributionAssignment,
     SalesOfferPackageElement,
     SalesOfferPackage,
     BaseProduct,
     NetexSalesOfferPackage,
     FareStructureElement,
+    isReturnTicket,
 } from '../../types';
 import { NetexObject, getProfileRef, isGroupTicket } from '../sharedHelpers';
-
-export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>
-    ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
-    ((ticket as ReturnTicket).outboundFareZones !== undefined && (ticket as ReturnTicket).outboundFareZones.length > 0);
-
-export const isSingleTicket = (ticket: PointToPointTicket): ticket is SingleTicket =>
-    (ticket as SingleTicket).fareZones !== undefined && (ticket as SingleTicket).fareZones.length > 0;
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
@@ -30,7 +23,7 @@ export const getUniquePriceGroups = (fareZones: FareZone[]): string[] => [
 
 export const getIdName = (name: string): string => name.replace(/(\s)+/g, '_');
 
-export const getScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] =>
+export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] =>
     getStops(fareZones).map(stop => ({
         version: 'any',
         id: stop.atcoCode ? `atco:${stop.atcoCode}` : `naptan:${stop.naptanCode}`,
