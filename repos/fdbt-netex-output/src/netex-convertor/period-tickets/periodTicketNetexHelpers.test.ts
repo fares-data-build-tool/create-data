@@ -4,7 +4,7 @@ import * as netexHelpers from './periodTicketNetexHelpers';
 import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
 import { getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
-import * as db from '../data/auroradb';
+import * as db from '../../data/auroradb';
 
 describe('periodTicketNetexHelpers', () => {
     const { stops } = periodGeoZoneTicket;

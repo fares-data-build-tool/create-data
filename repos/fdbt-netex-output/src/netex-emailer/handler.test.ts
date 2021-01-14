@@ -2,7 +2,7 @@ import { S3Event } from 'aws-lambda';
 import nodemailer from 'nodemailer';
 import * as testData from './testData/testData';
 import { createMailTransporter, netexEmailerHandler } from './handler';
-import * as s3 from '../utils/s3';
+import * as s3 from '../data/s3';
 import { periodGeoZoneTicket } from '../test-data/matchingData';
 
 jest.mock('aws-sdk');

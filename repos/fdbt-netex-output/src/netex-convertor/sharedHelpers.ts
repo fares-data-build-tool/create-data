@@ -4,6 +4,9 @@ import parser from 'xml2json';
 import fs from 'fs';
 import moment from 'moment';
 import {
+    CoreData,
+    SchemeOperatorTicket,
+    isSchemeOperatorTicket,
     FlatFareTicket,
     PeriodTicket,
     PointToPointTicket,
@@ -11,13 +14,16 @@ import {
     User,
     GroupCompanion,
     FullTimeRestriction,
+    Operator,
+    isPointToPointTicket,
 } from '../types/index';
+
+import { getBaseSchemeOperatorInfo } from './period-tickets/periodTicketNetexHelpers';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const getCleanWebsite = (nocWebsite: string): string => {
     if (nocWebsite !== null) {
         const splitWebsite = nocWebsite.split('#');
@@ -202,4 +208,69 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
     }
 
     return nocCode;
+};
+
+export const getCoreData = (
+    operators: Operator[],
+    ticket: PointToPointTicket | PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
+): CoreData => {
+    if (isPointToPointTicket(ticket)) {
+        const baseOperatorInfo = operators.find(operator => operator.nocCode === ticket.nocCode);
+        if (!baseOperatorInfo) {
+            throw new Error('Could not find base operator information for point to point ticket.');
+        }
+        return {
+            opIdNocFormat: `noc:${operators[0].opId}`,
+            nocCodeFormat: `noc:${ticket.nocCode}`,
+            currentDate: new Date(Date.now()),
+            website: getCleanWebsite(operators[0].website),
+            brandingId: `op:${ticket.nocCode}@brand`,
+            operatorIdentifier: ticket.nocCode,
+            baseOperatorInfo: [baseOperatorInfo],
+            placeholderGroupOfProductsName: '',
+            ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
+            operatorPublicNameLineNameFormat: `${operators[0].operatorPublicName} ${ticket.lineName}`,
+            nocCodeLineNameFormat: `${ticket.nocCode}_${ticket.lineName}`,
+            lineIdName: `Line_${ticket.lineName}`,
+            lineName: ticket.lineName,
+            operatorName: ticket.operatorShortName,
+            ticketType: ticket.type,
+        };
+    }
+    const periodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket = ticket;
+    const baseOperatorInfo = isSchemeOperatorTicket(periodTicket)
+        ? getBaseSchemeOperatorInfo(periodTicket)
+        : operators.find(operator => operator.nocCode === periodTicket.nocCode);
+
+    const operatorIdentifier = isSchemeOperatorTicket(periodTicket)
+        ? `${periodTicket.schemeOperatorName}-${periodTicket.schemeOperatorRegionCode}`
+        : periodTicket.nocCode;
+
+    if (!baseOperatorInfo) {
+        throw new Error('Could not find base operator');
+    }
+
+    const nocCodeFormat = `noc:${
+        isSchemeOperatorTicket(periodTicket) ? operatorIdentifier : replaceIWBusCoNocCode(periodTicket.nocCode)
+    }`;
+
+    return {
+        opIdNocFormat: `noc:${baseOperatorInfo.opId}`,
+        nocCodeFormat,
+        currentDate: new Date(Date.now()),
+        website: getCleanWebsite(baseOperatorInfo.website),
+        brandingId: `op:${operatorIdentifier}@brand`,
+        operatorIdentifier,
+        baseOperatorInfo: [baseOperatorInfo],
+        placeholderGroupOfProductsName: `${operatorIdentifier}_products`,
+        ticketUserConcat: `${periodTicket.type}_${periodTicket.passengerType}`,
+        operatorPublicNameLineNameFormat: '',
+        nocCodeLineNameFormat: '',
+        lineIdName: '',
+        lineName: '',
+        operatorName: isSchemeOperatorTicket(periodTicket)
+            ? periodTicket.schemeOperatorName
+            : periodTicket.operatorName,
+        ticketType: periodTicket.type,
+    };
 };
