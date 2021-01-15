@@ -91,7 +91,8 @@ export interface BaseReactElement {
     id: string;
     name: string;
     label: string;
-    defaultValues?: string;
+    defaultValue?: string;
+    defaultChecked?: boolean;
     options?: string[];
 }
 

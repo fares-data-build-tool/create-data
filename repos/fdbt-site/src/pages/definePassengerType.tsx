@@ -5,18 +5,20 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
     createErrorId,
     RadioConditionalInputFieldset,
 } from '../components/RadioConditionalInput';
-import { BaseReactElement, ErrorInfo, GroupDefinition, NextPageContextWithSession } from '../interfaces';
+import { BaseReactElement, CompanionInfo, ErrorInfo, GroupDefinition, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getCsrfToken, getErrorsByIds } from '../utils';
-import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isPassengerType, isPassengerTypeAttributeWithErrors, isWithErrors } from '../interfaces/typeGuards';
+import { PassengerType } from './api/passengerType';
 
 const title = 'Define Passenger Type - Create Fares Data Service';
 const description = 'Define Passenger Type page of the Create Fares Data Service';
@@ -43,7 +45,11 @@ export interface DefinePassengerTypeProps {
     csrfToken: string;
 }
 
-export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioConditionalInputFieldset[] => {
+export const getFieldsets = (
+    errors: ErrorInfo[],
+    passengerType: string,
+    passengerInfo?: PassengerType | CompanionInfo,
+): RadioConditionalInputFieldset[] => {
     const fieldsets: RadioConditionalInputFieldset[] = [];
 
     const ageRangeFieldset: RadioConditionalInputFieldset = {
@@ -68,11 +74,13 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                         id: 'age-range-min',
                         name: 'ageRangeMin',
                         label: 'Minimum Age (if applicable)',
+                        defaultValue: passengerInfo?.ageRangeMin || '',
                     },
                     {
                         id: 'age-range-max',
                         name: 'ageRangeMax',
                         label: 'Maximum Age (if applicable)',
+                        defaultValue: passengerInfo?.ageRangeMax || '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['age-range-min', 'age-range-max'], errors),
@@ -109,16 +117,19 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                         id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
+                        defaultChecked: passengerInfo?.proofDocuments?.includes('membershipCard') || false,
                     },
                     {
                         id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
+                        defaultChecked: passengerInfo?.proofDocuments?.includes('studentCard') || false,
                     },
                     {
                         id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
+                        defaultChecked: passengerInfo?.proofDocuments?.includes('identityDocument') || false,
                     },
                 ],
                 inputErrors: getErrorsByIds(['membership-card'], errors),
@@ -142,7 +153,11 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
     return fieldsets;
 };
 
-export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerType: string): TextInputFieldset => ({
+export const getNumberOfPassengerTypeFieldset = (
+    errors: ErrorInfo[],
+    passengerType: string,
+    passengerInfo?: CompanionInfo,
+): TextInputFieldset => ({
     heading: {
         id: 'number-of-passenger-type-heading',
         content: `How many ${lowerCase(passengerType)} passengers can be in the group?`,
@@ -152,11 +167,13 @@ export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerT
             id: 'min-number-of-passengers',
             name: 'minNumber',
             label: 'Minimum (optional)',
+            defaultValue: passengerInfo?.minNumber || '',
         },
         {
             id: 'max-number-of-passengers',
             name: 'maxNumber',
             label: 'Maximum (required)',
+            defaultValue: passengerInfo?.maxNumber || '',
         },
     ],
     inputErrors: getErrorsByIds(['min-number-of-passengers', 'max-number-of-passengers'], errors),
@@ -174,6 +191,10 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                 </legend>
                 {fieldset.inputs.map(input => {
                     const errorId = createErrorId(input, fieldset.inputErrors);
+                    const defaultValue =
+                        fieldset.inputErrors.find(inputError => inputError.id === input.id)?.userInput ||
+                        fieldset.inputs.find(userInput => userInput.id === input.id)?.defaultValue ||
+                        '';
                     return (
                         <div
                             key={input.id}
@@ -192,12 +213,7 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                                     id={input.id}
                                     name={input.name}
                                     type="text"
-                                    defaultValue={
-                                        fieldset.inputErrors.find(inputError => inputError.id === input.id)
-                                            ? fieldset.inputErrors.find(inputError => inputError.id === input.id)
-                                                  ?.userInput
-                                            : ''
-                                    }
+                                    defaultValue={defaultValue}
                                 />
                             </FormElementWrapper>
                         </div>
@@ -249,10 +265,6 @@ const DefinePassengerType = ({
     </TwoThirdsLayout>
 );
 
-export const isGroupDefinitionWithErrors = (
-    groupDefinition: GroupDefinition | GroupDefinitionWithErrors,
-): groupDefinition is GroupDefinitionWithErrors => (groupDefinition as GroupDefinitionWithErrors).errors.length > 0;
-
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePassengerTypeProps } => {
     const csrfToken = getCsrfToken(ctx);
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
@@ -266,40 +278,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
-    const errors: ErrorInfo[] =
-        passengerTypeErrorsAttribute && isPassengerTypeAttributeWithErrors(passengerTypeErrorsAttribute)
-            ? passengerTypeErrorsAttribute.errors
-            : [];
+    const errors: ErrorInfo[] = isWithErrors(passengerTypeErrorsAttribute) ? passengerTypeErrorsAttribute.errors : [];
 
     let passengerType = ctx?.query?.groupPassengerType as string;
-
-    let fieldsets: RadioConditionalInputFieldset[];
-    let numberOfPassengerTypeFieldset: TextInputFieldset;
 
     const group =
         !!groupPassengerTypes &&
         !isPassengerTypeAttributeWithErrors(passengerTypeAttribute) &&
         passengerTypeAttribute.passengerType === 'group';
-
-    if (!passengerType && isPassengerType(passengerTypeAttribute) && group) {
-        passengerType = passengerTypeAttribute.passengerType;
-    }
-
-    if (group) {
-        fieldsets = getFieldsets(errors, passengerType);
-        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
-
-        return {
-            props: {
-                group,
-                errors,
-                fieldsets,
-                numberOfPassengerTypeFieldset,
-                passengerType,
-                csrfToken,
-            },
-        };
-    }
 
     if (!passengerType) {
         if (isPassengerTypeAttributeWithErrors(passengerTypeAttribute)) {
@@ -308,9 +294,28 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         passengerType = passengerTypeAttribute.passengerType;
     }
 
-    fieldsets = getFieldsets(errors, passengerType);
+    let numberOfPassengerTypeFieldset = group ? getNumberOfPassengerTypeFieldset(errors, passengerType) : undefined;
 
-    return { props: { group, errors, fieldsets, passengerType, csrfToken } };
+    let passengerInfo;
+    const groupPassengerInfo = getSessionAttribute(ctx.req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+
+    if (isWithErrors(passengerTypeErrorsAttribute)) {
+        passengerInfo = passengerTypeErrorsAttribute;
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType, passengerInfo);
+    } else if (group) {
+        if (!isWithErrors(passengerTypeErrorsAttribute) && groupPassengerInfo) {
+            passengerInfo = groupPassengerInfo.find(info => info.passengerType === passengerType);
+        }
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType, passengerInfo);
+    } else if (!group && passengerTypeAttribute && !isWithErrors(passengerTypeAttribute)) {
+        passengerInfo = passengerTypeAttribute;
+    }
+
+    const radioFieldsets = getFieldsets(errors, passengerType, passengerInfo);
+
+    return {
+        props: { group, errors, fieldsets: radioFieldsets, numberOfPassengerTypeFieldset, passengerType, csrfToken },
+    };
 };
 
 export default DefinePassengerType;

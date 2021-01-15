@@ -255,6 +255,10 @@ describe('definePassengerType', () => {
                     errorMessage: 'Select at least one proof document',
                 },
             ],
+            {
+                maxNumber: '',
+                proofDocuments: [],
+            },
         ],
         [
             {
@@ -274,13 +278,19 @@ describe('definePassengerType', () => {
                     errorMessage: 'Minimum age cannot be greater than maximum age',
                 },
             ],
+            {
+                ageRangeMin: '25',
+                ageRangeMax: '12',
+                maxNumber: '',
+            },
         ],
     ])(
         'should set the PASSENGER_TYPE_ERRORS_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
-        async (mockUserInput, errors) => {
+        async (mockUserInput, errors, mockCookieValue) => {
             const mockPassengerTypeCookieValue = {
                 errors,
                 passengerType: 'adult',
+                ...mockCookieValue,
             };
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
