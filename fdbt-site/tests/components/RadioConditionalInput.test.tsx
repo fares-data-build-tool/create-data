@@ -57,7 +57,14 @@ describe('RadioConditionalInput', () => {
                     dataAriaControls: 'age-range-required-conditional',
                     inputHint: { id: 'define-passenger-hint', content: 'Enter a minimum age for this passenger type.' },
                     inputType: 'text',
-                    inputs: [{ id: 'age-range-min', name: 'ageRangeMin', label: 'Minimum age (if applicable)' }],
+                    inputs: [
+                        {
+                            id: 'age-range-min',
+                            name: 'ageRangeMin',
+                            label: 'Minimum age (if applicable)',
+                            defaultValue: '',
+                        },
+                    ],
                     inputErrors: [],
                 },
                 { id: 'age-range-not-required', name: 'ageRange', value: 'No', label: 'No' },

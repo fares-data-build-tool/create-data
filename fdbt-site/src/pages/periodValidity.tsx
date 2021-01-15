@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ProductData, WithErrors } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
@@ -18,7 +18,10 @@ type PeriodValidityProps = {
     csrfToken: string;
 };
 
-export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
+export const getFieldset = (
+    errors: ErrorInfo[],
+    periodExpiryAttribute?: ProductData | WithErrors<ProductData>,
+): RadioConditionalInputFieldset => {
     const periodValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'period-validity',
@@ -69,6 +72,7 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
                         id: 'service-end-time',
                         name: 'serviceEndTime',
                         label: 'End time',
+                        defaultValue: periodExpiryAttribute?.products[0].serviceEndTime || '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['service-end-time'], errors),
@@ -114,7 +118,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pe
         errors = periodExpiryAttribute.errors;
     }
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(errors);
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, periodExpiryAttribute);
     return { props: { errors, fieldset, csrfToken } };
 };
 

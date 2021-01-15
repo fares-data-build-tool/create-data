@@ -79,6 +79,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "inputType": "text",
                   "inputs": Array [
                     Object {
+                      "defaultValue": "",
                       "id": "service-end-time",
                       "label": "End time",
                       "name": "serviceEndTime",
@@ -202,6 +203,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "inputType": "text",
                   "inputs": Array [
                     Object {
+                      "defaultValue": "",
                       "id": "service-end-time",
                       "label": "End time",
                       "name": "serviceEndTime",
