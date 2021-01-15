@@ -1,162 +1,35 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import multipleProductValidity, { addErrorsIfInvalid, Product } from '../../../src/pages/api/multipleProductValidity';
+import multipleProductValidity from '../../../src/pages/api/multipleProductValidity';
+import * as sessions from '../../../src/utils/sessions';
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants';
 
 describe('multipleProductValidity', () => {
     const writeHeadMock = jest.fn();
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+    const mockProducts = expect.arrayContaining([
+        expect.objectContaining({
+            productName: expect.any(String),
+            productNameId: expect.any(String),
+            productPrice: expect.any(String),
+            productPriceId: expect.any(String),
+            productDuration: expect.any(String),
+            productDurationId: expect.any(String),
+            productValidity: expect.any(String),
+            productValidityId: expect.any(String),
+        }),
+    ]);
 
-    describe('addErrorsIfInvalid', () => {
-        it('adds errors to incorrect data if there are invalid inputs', () => {
-            const { req } = getMockRequestAndResponse({
-                body: {
-                    'validity-row0': '',
-                    'validity-row1': '',
-                },
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'super ticket',
-                productNameId: '',
-                productPrice: '3.50',
-                productPriceId: '',
-                productDuration: '3',
-                productDurationId: '',
-                serviceEndTime: '',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('');
-            expect(result.productValidityError).toBe('Select one of the three expiry options');
-        });
-
-        it('does not add errors to correct data', () => {
-            const { req } = getMockRequestAndResponse({
-                body: {
-                    'validity-option-0': 'endOfCalendarDay',
-                },
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'best ticket',
-                productNameId: '',
-                productPrice: '30.90',
-                productPriceId: '',
-                productDuration: '30',
-                productDurationId: '',
-                productValidity: 'endOfCalendarDay',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('endOfCalendarDay');
-            expect(result.productValidityError).toBe(undefined);
-        });
-
-        it('add error when service day is selected but no end time entered', () => {
-            const { req } = getMockRequestAndResponse({
-                body: {
-                    'validity-option-0': 'endOfServiceDay',
-                    'validity-end-time-0': '',
-                },
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'best ticket',
-                productNameId: '',
-                productPrice: '30.90',
-                productPriceId: '',
-                productDuration: '30',
-                productDurationId: '',
-                productValidity: 'endOfServiceDay',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('endOfServiceDay');
-            expect(result.productValidityError).toBe('Specify an end time for service day');
-        });
-
-        it('add error when validity end time is entered incorrectly', () => {
-            const { req } = getMockRequestAndResponse({
-                body: {
-                    'validity-option-0': 'endOfServiceDay',
-                    'validity-end-time-0': '2400',
-                },
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'best ticket',
-                productNameId: '',
-                productPrice: '30.90',
-                productPriceId: '',
-                productDuration: '30',
-                productDurationId: '',
-                productValidity: 'endOfServiceDay',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('endOfServiceDay');
-            expect(result.productValidityError).toBe('2400 is not a valid input. Use 0000.');
-        });
-
-        it('should not error if there is whitespace in the time', () => {
-            const { req } = getMockRequestAndResponse({
-                body: {
-                    'validity-option-0': 'endOfServiceDay',
-                    'validity-end-time-0': ' 1200',
-                },
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'best ticket',
-                productNameId: '',
-                productPrice: '30.90',
-                productPriceId: '',
-                productDuration: '30',
-                productDurationId: '',
-                productValidity: 'endOfServiceDay',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('endOfServiceDay');
-            expect(result.productValidityError).toBe(undefined);
-        });
-
-        it('add error when validity end time is has invalid characters', () => {
-            const { req } = getMockRequestAndResponse({
-                body: {
-                    'validity-option-0': 'endOfServiceDay',
-                    'validity-end-time-0': '140a',
-                },
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'best ticket',
-                productNameId: '',
-                productPrice: '30.90',
-                productPriceId: '',
-                productDuration: '30',
-                productDurationId: '',
-                productValidity: 'endOfServiceDay',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('endOfServiceDay');
-            expect(result.productValidityError).toBe('Time must be in 2400 format');
-        });
+    beforeEach(() => {
+        jest.resetAllMocks();
     });
 
-    it('redirects to selectSalesOfferPackage page if all valid', () => {
+    it('updates the MULTIPLE_PRODUCT_ATTRIBUTE and redirects to selectSalesOfferPackage page if all valid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
             body: {
                 'validity-option-0': '24hr',
                 'validity-option-1': '24hr',
                 'validity-option-2': 'endOfCalendarDay',
-                listOfEndTimes: '',
             },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -164,6 +37,32 @@ describe('multipleProductValidity', () => {
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/ticketConfirmation',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
+            products: mockProducts,
+        });
+    });
+
+    it('updates the MULTIPLE_PRODUCT_ATTRIBUTE with errors and redirects to itself (i.e. /multipleProductValidity) if invalid', () => {
+        const mockErrors = expect.arrayContaining([
+            expect.objectContaining({ errorMessage: expect.any(String), id: expect.any(String) }),
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareZoneName: null },
+            body: {
+                'validity-option-0': '24hr',
+                'validity-option-1': '24hr',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        multipleProductValidity(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/multipleProductValidity',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
+            products: mockProducts,
+            errors: mockErrors,
         });
     });
 

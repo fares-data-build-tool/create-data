@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DURATION_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo } from './apiUtils';
-import { isSessionValid, isValidTime } from './apiUtils/validator';
+import { isSessionValid, isValid24hrTimeFormat } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, ProductData } from '../../interfaces';
 import { isProductInfo } from '../productDetails';
 
@@ -15,22 +15,22 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         if (req.body.periodValid) {
-            const { periodValid, serviceEndTime } = req.body;
+            const { periodValid, productEndTime } = req.body;
 
             const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
 
             if (periodValid === 'endOfServiceDay') {
-                if (serviceEndTime === '') {
-                    errors.push({ id: 'service-end-time', errorMessage: 'Specify an end time for service day' });
-                } else if (!isValidTime(serviceEndTime)) {
-                    if (serviceEndTime === '2400') {
+                if (productEndTime === '') {
+                    errors.push({ id: 'product-end-time', errorMessage: 'Specify an end time for service day' });
+                } else if (!isValid24hrTimeFormat(productEndTime)) {
+                    if (productEndTime === '2400') {
                         errors.push({
-                            id: 'service-end-time',
+                            id: 'product-end-time',
                             errorMessage: '2400 is not a valid input. Use 0000.',
                         });
                     } else {
-                        errors.push({ id: 'service-end-time', errorMessage: 'Time must be in 2400 format' });
+                        errors.push({ id: 'product-end-time', errorMessage: 'Time must be in 2400 format' });
                     }
                 }
 
@@ -57,7 +57,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                         productPrice,
                         productDuration: timePeriodValid,
                         productValidity: periodValid,
-                        serviceEndTime: serviceEndTime || '',
+                        productEndTime: productEndTime || '',
                     },
                 ],
             };

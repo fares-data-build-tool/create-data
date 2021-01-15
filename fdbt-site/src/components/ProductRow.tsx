@@ -42,7 +42,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 type="text"
                                 aria-describedby={`product-name-hint-${index}`}
                                 maxLength={50}
-                                defaultValue={userInput.length > 0 ? userInput[index].productName : ''}
+                                defaultValue={userInput[index]?.productName ?? ''}
                             />
                         </FormElementWrapper>
                     </>
@@ -75,7 +75,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                         type="text"
                                         aria-describedby={`product-price-hint-${index}`}
                                         id={`multiple-product-price-${index}`}
-                                        defaultValue={userInput.length > 0 ? userInput[index].productPrice : ''}
+                                        defaultValue={userInput[index]?.productPrice ?? ''}
                                     />
                                 </FormElementWrapper>
                             </div>
@@ -107,7 +107,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 type="text"
                                 aria-describedby={`product-duration-hint-${index}`}
                                 maxLength={366}
-                                defaultValue={userInput.length > 0 ? userInput[index].productDuration : ''}
+                                defaultValue={userInput[index]?.productDuration ?? ''}
                             />
                         </FormElementWrapper>
                     </>
@@ -133,7 +133,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 className="govuk-select"
                                 id={`multiple-product-duration-units-${index}`}
                                 name={`multipleProductDurationUnitsInput${index}`}
-                                defaultValue={userInput.length > 0 ? userInput[index].productDurationUnits : ''}
+                                defaultValue={userInput[index]?.productDurationUnits ?? ''}
                             >
                                 <option selected value="" disabled>
                                     Select a duration

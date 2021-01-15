@@ -11,16 +11,11 @@ import {
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import {
-    MultiProduct,
-    BaseMultipleProductAttribute,
-    BaseMultipleProductAttributeWithErrors,
-} from './api/multipleProducts';
+import { MultiProduct } from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType } from '../interfaces/typeGuards';
+import { isPassengerType, isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { isNumberOfProductsAttribute } from './howManyProducts';
-import { MultipleProductAttribute } from './api/multipleProductValidity';
 import { getCsrfToken } from '../utils';
 
 const title = 'Multiple Product - Create Fares Data Service';
@@ -66,15 +61,6 @@ const MultipleProducts = ({
     </FullColumnLayout>
 );
 
-export const isBaseMultipleProductAttributeWithErrors = (
-    multiProductAttribute:
-        | undefined
-        | BaseMultipleProductAttribute
-        | BaseMultipleProductAttributeWithErrors
-        | MultipleProductAttribute,
-): multiProductAttribute is BaseMultipleProductAttributeWithErrors =>
-    !!multiProductAttribute && (multiProductAttribute as BaseMultipleProductAttributeWithErrors).errors !== undefined;
-
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
@@ -96,7 +82,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-    if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
+    if (isWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
         const { errors } = multiProductAttribute;
         return {
             props: {
@@ -115,7 +101,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             numberOfProductsToDisplay,
             operatorName: name,
             passengerType: passengerTypeAttribute.passengerType,
-            userInput: [],
+            errors: isWithErrors(multiProductAttribute) ? multiProductAttribute.errors : [],
+            userInput: multiProductAttribute ? multiProductAttribute.products : [],
             csrfToken,
         },
     };

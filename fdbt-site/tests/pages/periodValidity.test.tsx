@@ -53,7 +53,7 @@ describe('pages', () => {
                 const inputErrors: ErrorInfo[] = [
                     {
                         errorMessage: 'Specify an end time for service day',
-                        id: 'service-end-time',
+                        id: 'product-end-time',
                     },
                 ];
                 const fieldsets = getFieldset(inputErrors);

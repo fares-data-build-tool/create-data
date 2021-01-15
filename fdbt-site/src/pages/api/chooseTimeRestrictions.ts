@@ -5,7 +5,7 @@ import { redirectToError, redirectTo } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants';
 
-export const isValidTime = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
+export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
 
 export const collectInputsFromRequest = (req: NextApiRequestWithSession, chosenDays: string[]): FullTimeRestriction[] =>
     chosenDays.map(day => {
@@ -21,7 +21,7 @@ export const collectInputsFromRequest = (req: NextApiRequestWithSession, chosenD
 export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
     userInputs.forEach(input => {
-        if (input.startTime && !isValidTime(input.startTime)) {
+        if (input.startTime && !isValid24hrTimeFormat(input.startTime)) {
             if (input.startTime === '2400') {
                 errors.push({
                     errorMessage: '2400 is not a valid input. Use 0000.',
@@ -37,7 +37,7 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
             }
         }
 
-        if (input.endTime && !isValidTime(input.endTime)) {
+        if (input.endTime && !isValid24hrTimeFormat(input.endTime)) {
             if (input.endTime === '2400') {
                 errors.push({
                     errorMessage: '2400 is not a valid input. Use 0000.',

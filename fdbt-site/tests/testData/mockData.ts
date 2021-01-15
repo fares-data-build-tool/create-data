@@ -45,7 +45,7 @@ import {
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 
-import { MultiProduct } from '../../src/pages/api/multipleProducts';
+import { MultiProduct, MultiProductWithErrors } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
@@ -1985,32 +1985,6 @@ export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
 
 export const multipleProducts: MultiProduct[] = [
     {
-        productName: 'p',
-        productNameId: 'product-name-1',
-        productNameError: 'Name too short',
-        productPrice: '3.50',
-        productPriceId: 'product-price-1',
-        productDuration: '66.5',
-        productDurationId: 'product-duration-1',
-        productDurationUnits: 'week',
-        productDurationUnitsId: 'product-duration-units-1',
-        productDurationError: 'Product duration must be a whole number',
-    },
-    {
-        productName: 'Super ticket',
-        productNameId: 'product-name-1',
-        productPrice: '3.50gg',
-        productPriceId: 'product-price-2',
-        productPriceError: 'Product price must be a valid price',
-        productDuration: '7',
-        productDurationId: 'product-duration-2',
-        productDurationUnits: 'week',
-        productDurationUnitsId: 'product-duration-units-1',
-    },
-];
-
-export const multipleProductsWithoutErrors: MultiProduct[] = [
-    {
         productName: 'Best ticket',
         productNameId: 'product-name-1',
         productPrice: '3.50',
@@ -2019,6 +1993,8 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productDurationId: 'product-duration-1',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'Super ticket',
@@ -2029,6 +2005,61 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productDurationId: 'product-duration-2',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'Super Duper ticket',
+        productNameId: 'product-name-3',
+        productPrice: '3.50',
+        productPriceId: 'product-price-3',
+        productDuration: '7',
+        productDurationId: 'product-duration-3',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-3',
+        productValidity: '',
+        productValidityId: '',
+    },
+];
+
+export const multipleProductsWithErrors: MultiProductWithErrors[] = [
+    {
+        productName: 'Valid Product',
+        productNameId: 'multiple-product-name-0',
+        productPrice: '100',
+        productPriceId: 'multiple-product-price-0',
+        productDuration: '66',
+        productDurationId: 'multiple-product-duration-0',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'multiple-product-duration-units-0',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'Invalid Price',
+        productNameId: 'multiple-product-name-0',
+        productPrice: 'ifancueuUBY',
+        productPriceId: 'multiple-product-price-0',
+        productPriceError: 'This must be a valid price in pounds and pence',
+        productDuration: '66',
+        productDurationId: 'multiple-product-duration-0',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'multiple-product-duration-units-0',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'Invalid Duration',
+        productNameId: 'multiple-product-name-0',
+        productPrice: '100',
+        productPriceId: 'multiple-product-price-0',
+        productDuration: '-66',
+        productDurationId: 'multiple-product-duration-0',
+        productDurationError: 'Product duration cannot be zero or a negative number',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'multiple-product-duration-units-0',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2042,6 +2073,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'zero duration',
@@ -2052,6 +2085,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'negative duration',
@@ -2062,6 +2097,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'empty duration',
@@ -2072,6 +2109,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'non-numeric duration',
@@ -2082,6 +2121,47 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+];
+
+export const invalidDurationTypeProducts: MultiProduct[] = [
+    {
+        productName: 'valid duration type',
+        productNameId: 'multiple-product-name-input-0',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '66',
+        productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'no duration type',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '0',
+        productDurationId: '.',
+        productDurationUnits: '',
+        productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'valid duration',
+        productNameId: 'multiple-product-name-input-0',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '66',
+        productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2095,6 +2175,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'empty price',
@@ -2105,6 +2187,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'negative price',
@@ -2115,6 +2199,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'non-numeric / invalid price',
@@ -2125,6 +2211,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2138,6 +2226,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: '',
@@ -2148,6 +2238,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'S',
@@ -2158,6 +2250,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName:
@@ -2169,6 +2263,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2182,6 +2278,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2192,6 +2290,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2202,6 +2302,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2394,15 +2496,15 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
-                    name: 'serviceEndTime',
+                    id: 'product-end-time',
+                    name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
                 },
@@ -2452,15 +2554,15 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
-                    name: 'serviceEndTime',
+                    id: 'product-end-time',
+                    name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
                 },
@@ -2515,15 +2617,15 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
-                    name: 'serviceEndTime',
+                    id: 'product-end-time',
+                    name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
                 },
@@ -2531,7 +2633,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
             inputErrors: [
                 {
                     errorMessage: 'Specify an end time for service day',
-                    id: 'service-end-time',
+                    id: 'product-end-time',
                 },
             ],
         },
