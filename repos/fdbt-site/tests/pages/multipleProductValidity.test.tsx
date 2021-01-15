@@ -14,6 +14,10 @@ describe('pages', () => {
                 productPriceId: 'multiple-product-price-1',
                 productDuration: '5',
                 productDurationId: 'multiple-product-duration-1',
+                productDurationUnits: 'day',
+                productDurationUnitsId: '',
+                productValidity: '',
+                productValidityId: '',
             },
             {
                 productName: 'Day Ticket',
@@ -22,6 +26,10 @@ describe('pages', () => {
                 productPriceId: 'multiple-product-price-2',
                 productDuration: '1',
                 productDurationId: 'multiple-product-duration-2',
+                productDurationUnits: 'day',
+                productDurationUnitsId: '',
+                productValidity: '',
+                productValidityId: '',
             },
         ];
 
@@ -34,7 +42,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    endTimesList={[]}
+                    endTimes={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -54,7 +62,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    endTimesList={[]}
+                    endTimes={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -69,7 +77,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    endTimesList={[]}
+                    endTimes={[]}
                 />,
             );
             expect(wrapper.find('.govuk-select')).toHaveLength(2);
@@ -84,7 +92,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    endTimesList={['validity-option-0']}
+                    endTimes={['validity-option-0']}
                 />,
             );
             expect(wrapper.find('.govuk-table__header')).toHaveLength(5);
@@ -105,7 +113,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    endTimesList={['validity-option-0']}
+                    endTimes={['validity-option-0']}
                 />,
             );
 
@@ -157,9 +165,8 @@ describe('pages', () => {
                                     productPriceId: 'multipleProductPriceInput0',
                                     productDuration: '3',
                                     productDurationId: 'multipleProductDurationInput0',
-                                    productValidity: undefined,
+                                    productValidity: '',
                                     productValidityId: 'validity-option-0',
-                                    productValidityError: 'Select one of the two validity options',
                                 },
                                 {
                                     productName: 'Super Product',
@@ -168,16 +175,18 @@ describe('pages', () => {
                                     productValidity: '24hr',
                                 },
                             ],
+                            errors: [
+                                { errorMessage: 'Select one of the three expiry options', id: 'validity-option-0' },
+                            ],
                         },
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
                     },
                 });
 
                 const result = getServerSideProps(ctx);
-
                 expect(result.props.multipleProducts.length).toBe(2);
                 expect(result.props.errors.length).toBe(1);
-                expect(result.props.errors[0].errorMessage).toBe('Select one of the two validity options');
+                expect(result.props.errors[0].errorMessage).toBe('Select one of the three expiry options');
                 expect(result.props.errors[0].id).toBe('validity-option-0');
             });
         });

@@ -66,7 +66,7 @@ import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
-import { MultipleProductAttribute } from '../multipleProductValidity';
+import { MultipleProductAttribute } from '../multipleProducts';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {

@@ -114,7 +114,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
             <td
               className="govuk-table__cell"
             >
-              5 undefineds
+              5 days
             </td>
             <td
               className="govuk-table__cell"
@@ -128,6 +128,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                 <select
                   aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
                   className="govuk-select farestage-select"
+                  defaultValue=""
                   id="validity-option-0"
                   name="validity-option-0"
                   onChange={[Function]}
@@ -193,7 +194,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
             <td
               className="govuk-table__cell"
             >
-              1 undefined
+              1 day
             </td>
             <td
               className="govuk-table__cell"
@@ -207,6 +208,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                 <select
                   aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
                   className="govuk-select farestage-select"
+                  defaultValue=""
                   id="validity-option-1"
                   name="validity-option-1"
                   onChange={[Function]}
@@ -256,11 +258,6 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
           </tr>
         </tbody>
       </table>
-      <input
-        defaultValue=""
-        hidden={true}
-        name="listOfEndTimes"
-      />
     </div>
     <input
       className="govuk-button"
@@ -400,7 +397,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
             <td
               className="govuk-table__cell"
             >
-              5 undefineds
+              5 days
             </td>
             <td
               className="govuk-table__cell"
@@ -421,6 +418,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                 <select
                   aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
                   className="govuk-select farestage-select"
+                  defaultValue=""
                   id="validity-option-0"
                   name="validity-option-0"
                   onChange={[Function]}
@@ -493,7 +491,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
             <td
               className="govuk-table__cell"
             >
-              1 undefined
+              1 day
             </td>
             <td
               className="govuk-table__cell"
@@ -514,6 +512,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                 <select
                   aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
                   className="govuk-select farestage-select"
+                  defaultValue=""
                   id="validity-option-1"
                   name="validity-option-1"
                   onChange={[Function]}
@@ -570,11 +569,6 @@ exports[`pages multipleProductValidity should render error messaging when errors
           </tr>
         </tbody>
       </table>
-      <input
-        defaultValue=""
-        hidden={true}
-        name="listOfEndTimes"
-      />
     </div>
     <input
       className="govuk-button"

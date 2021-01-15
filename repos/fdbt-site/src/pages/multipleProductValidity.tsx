@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-onchange */
 import React, { ReactElement, useState } from 'react';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
@@ -13,11 +14,10 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerType } from '../interfaces/typeGuards';
+import { isPassengerType, isWithErrors } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from './howManyProducts';
-import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
-import { Product } from './api/multipleProductValidity';
 import { getCsrfToken } from '../utils';
+import { MultiProduct } from './api/multipleProducts';
 
 const title = 'Multiple Product Validity - Create Fares Data Service';
 const description = 'Multiple Product Validity selection page of the Create Fares Data Service';
@@ -26,10 +26,10 @@ interface MultipleProductValidityProps {
     operatorName: string;
     passengerType: string;
     numberOfProducts: string;
-    multipleProducts: Product[];
+    multipleProducts: MultiProduct[];
     errors: ErrorInfo[];
     csrfToken: string;
-    endTimesList: string[];
+    endTimes: string[];
 }
 
 const MultipleProductValidity = ({
@@ -39,9 +39,9 @@ const MultipleProductValidity = ({
     multipleProducts,
     errors,
     csrfToken,
-    endTimesList,
+    endTimes,
 }: MultipleProductValidityProps): ReactElement => {
-    const [listOfEndTimes, setListOfEndTimes] = useState(endTimesList || []);
+    const [listOfEndTimes, setListOfEndTimes] = useState(endTimes || []);
 
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const id = event.target.id.toString();
@@ -127,26 +127,21 @@ const MultipleProductValidity = ({
                                                     errorClass="govuk-select--error"
                                                     hideText
                                                 >
-                                                    <>
-                                                        {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-                                                        <select
-                                                            className="govuk-select farestage-select"
-                                                            id={`validity-option-${index}`}
-                                                            name={`validity-option-${index}`}
-                                                            aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
-                                                            onChange={handleSelection}
-                                                            defaultValue={product.productValidity}
-                                                        >
-                                                            <option selected value="" disabled>
-                                                                Select an expiry
-                                                            </option>
-                                                            <option value="24hr">24hr</option>
-                                                            <option value="endOfCalendarDay">
-                                                                End of calendar day
-                                                            </option>
-                                                            <option value="endOfServiceDay">End of service day</option>
-                                                        </select>
-                                                    </>
+                                                    <select
+                                                        className="govuk-select farestage-select"
+                                                        id={`validity-option-${index}`}
+                                                        name={`validity-option-${index}`}
+                                                        aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
+                                                        onChange={handleSelection}
+                                                        defaultValue={product.productValidity}
+                                                    >
+                                                        <option selected value="" disabled>
+                                                            Select an expiry
+                                                        </option>
+                                                        <option value="24hr">24hr</option>
+                                                        <option value="endOfCalendarDay">End of calendar day</option>
+                                                        <option value="endOfServiceDay">End of service day</option>
+                                                    </select>
                                                 </FormElementWrapper>
                                             </td>
                                             <td className="govuk-table__cell">
@@ -164,7 +159,7 @@ const MultipleProductValidity = ({
                                                                 : 'inputHidden'
                                                         } govuk-input govuk-input--width-4`}
                                                         name={`validity-end-time-${index}`}
-                                                        defaultValue={product.serviceEndTime || ''}
+                                                        defaultValue={product.productEndTime || ''}
                                                     />
                                                 </FormElementWrapper>
                                             </td>
@@ -173,7 +168,6 @@ const MultipleProductValidity = ({
                                 })}
                             </tbody>
                         </table>
-                        <input hidden defaultValue={listOfEndTimes.toString()} name="listOfEndTimes" />
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
@@ -195,28 +189,20 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         !operatorCookie ||
         !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
         !multipleProductAttribute ||
-        isBaseMultipleProductAttributeWithErrors(multipleProductAttribute) ||
         !isPassengerType(passengerTypeAttribute)
     ) {
         throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }
     const { name } = JSON.parse(operatorCookie);
 
-    const multipleProducts: Product[] = multipleProductAttribute.products;
+    const multipleProducts: MultiProduct[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
 
-    const { endTimesList } = multipleProductAttribute;
-    const errors: ErrorInfo[] = [];
-    multipleProducts.forEach(el => {
-        const { productValidityError, productValidityId } = el;
-
-        if (productValidityError && productValidityId) {
-            errors.push({
-                errorMessage: productValidityError,
-                id: productValidityId,
-            });
-        }
-    });
+    const endTimes: string[] = [];
+    multipleProductAttribute.products.forEach(
+        product => product.productEndTimeId && endTimes.push(product.productEndTimeId),
+    );
+    const errors: ErrorInfo[] = isWithErrors(multipleProductAttribute) ? multipleProductAttribute.errors : [];
 
     return {
         props: {
@@ -226,7 +212,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             multipleProducts,
             errors,
             csrfToken,
-            endTimesList: endTimesList || [],
+            endTimes,
         },
     };
 };

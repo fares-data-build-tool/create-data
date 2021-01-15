@@ -57,7 +57,7 @@ import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
 
 import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
-import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProductValidity';
+import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProducts';
 import { Operator } from '../../../../src/interfaces';
 
 describe('userData', () => {
@@ -86,17 +86,27 @@ describe('userData', () => {
                 products: [
                     {
                         productName: 'Product',
+                        productNameId: '',
                         productPrice: '2.99',
+                        productPriceId: '',
                         productDuration: '1',
+                        productDurationId: '',
                         productDurationUnits: 'week',
+                        productDurationUnitsId: '',
                         productValidity: '24hr',
+                        productValidityId: '',
                     },
                     {
                         productName: 'Product Two',
+                        productNameId: '',
                         productPrice: '7.99',
+                        productPriceId: '',
                         productDuration: '7',
+                        productDurationId: '',
                         productDurationUnits: 'day',
+                        productDurationUnitsId: '',
                         productValidity: '24hr',
+                        productValidityId: '',
                     },
                 ],
             };

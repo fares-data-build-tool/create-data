@@ -4,12 +4,12 @@ import isArray from 'lodash/isArray';
 import startCase from 'lodash/startCase';
 import {
     NextPageContextWithSession,
-    Product,
     Journey,
     ProductData,
     ReturnPeriodValidity,
     TicketRepresentationAttribute,
     MultiOperatorInfo,
+    Product,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -38,7 +38,7 @@ import { Service } from './api/service';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
-import { MultipleProductAttribute } from './api/multipleProductValidity';
+import { MultipleProductAttribute, MultiProduct } from './api/multipleProducts';
 import { getCookieValue, getCsrfToken } from '../utils';
 import { SchoolFareTypeAttribute } from './api/schoolFareType';
 import { MultipleOperatorsAttribute } from './api/searchOperators';
@@ -226,7 +226,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
     }
 
-    const addProduct = (product: Product): void => {
+    const addProduct = (product: Product | MultiProduct): void => {
         const productDurationText = `${
             product.productDurationUnits
                 ? `${product.productDuration} ${product.productDurationUnits}${
@@ -252,7 +252,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             {
                 name: `${product.productName} - Validity`,
                 content: `${startCase(product.productValidity)}${
-                    product.serviceEndTime ? ` - ${product.serviceEndTime}` : ''
+                    product.productEndTime ? ` - ${product.productEndTime}` : ''
                 }`,
                 href: numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
             },
