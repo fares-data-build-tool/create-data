@@ -46,7 +46,7 @@ import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 
 import { MultiProduct, MultiProductWithErrors } from '../../src/pages/api/multipleProducts';
-import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
+import { RadioConditionalInputFieldset, RadioWithConditionalInputs } from '../../src/components/RadioConditionalInput';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -2314,6 +2314,170 @@ export const mockProductRadioErrors: ErrorInfo[] = [
     },
 ];
 
+export const conditionalRadioWithTextInput: RadioWithConditionalInputs = {
+    id: 'text-input',
+    name: 'textInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-input-conditional',
+    inputHint: { id: 'text-input-hint', content: 'Hint.' },
+    inputType: 'text',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: 'Default text',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithEmptyTextInput: RadioWithConditionalInputs = {
+    id: 'text-input',
+    name: 'textInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-input-conditional',
+    inputHint: { id: 'text-input-hint', content: 'Hint.' },
+    inputType: 'text',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: '',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithTextWithUnitsInput: RadioWithConditionalInputs = {
+    id: 'text-units-input',
+    name: 'textUnitsInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-units-input-conditional',
+    inputHint: { id: 'text-units-input-hint', content: 'Hint.' },
+    inputType: 'textWithUnits',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: '',
+        },
+        {
+            id: 'units',
+            name: 'units',
+            label: 'Units',
+            defaultValue: '10',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithEmptyTextWithUnitsInput: RadioWithConditionalInputs = {
+    id: 'text-units-input',
+    name: 'textUnitsInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-units-input-conditional',
+    inputHint: { id: 'text-units-input-hint', content: 'Hint.' },
+    inputType: 'textWithUnits',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: '',
+        },
+        {
+            id: 'units',
+            name: 'units',
+            label: 'Units',
+            defaultValue: '',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithDateInput: RadioWithConditionalInputs = {
+    id: 'date-input',
+    name: 'dateInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'date-input-conditional',
+    inputHint: { id: 'date-input-hint', content: 'Hint.' },
+    inputType: 'date',
+    inputs: [
+        {
+            id: 'date',
+            name: 'date',
+            label: 'Date',
+            defaultValue: '12#12#2020',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithEmptyDateInput: RadioWithConditionalInputs = {
+    id: 'date-input',
+    name: 'dateInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'date-input-conditional',
+    inputHint: { id: 'date-input-hint', content: 'Hint.' },
+    inputType: 'date',
+    inputs: [
+        {
+            id: 'date',
+            name: 'date',
+            label: 'Date',
+            defaultValue: '##',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithCheckedCheckboxInput: RadioWithConditionalInputs = {
+    id: 'checkbox-input',
+    name: 'checkboxInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'checkbox-input-conditional',
+    inputHint: { id: 'checkbox-input-hint', content: 'Hint.' },
+    inputType: 'checkbox',
+    inputs: [
+        {
+            id: 'checkbox',
+            name: 'checkbox',
+            label: 'Checkbox',
+            defaultChecked: true,
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithUncheckedCheckboxInput: RadioWithConditionalInputs = {
+    id: 'checkbox-input',
+    name: 'checkboxInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'checkbox-input-conditional',
+    inputHint: { id: 'checkbox-input-hint', content: 'Hint.' },
+    inputType: 'checkbox',
+    inputs: [
+        {
+            id: 'checkbox',
+            name: 'checkbox',
+            label: 'Checkbox',
+            defaultChecked: false,
+        },
+    ],
+    inputErrors: [],
+};
+
 export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset = {
     heading: {
         id: 'product-dates-information',
@@ -2457,6 +2621,7 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
         },
     ],
 };
+
 export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
