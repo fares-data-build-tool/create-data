@@ -310,6 +310,19 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
     );
 };
 
+export const conditionalRadioInputDefaultExists = (radio: RadioWithConditionalInputs): boolean => {
+    if (radio.inputType === 'text' || radio.inputType === 'textWithUnits') {
+        return radio.inputs.some(input => input.defaultValue !== '');
+    }
+    if (radio.inputType === 'date') {
+        return radio.inputs.some(input => input.defaultValue !== '##');
+    }
+    if (radio.inputType === 'checkbox') {
+        return radio.inputs.some(input => input.defaultChecked);
+    }
+    return false;
+};
+
 const renderConditionalRadioButton = (
     radio: RadioWithConditionalInputs,
     radioLabel: ReactElement,
@@ -347,12 +360,7 @@ const renderConditionalRadioButton = (
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
-                {radio.inputErrors.length > 0 ||
-                radio.inputs.some(
-                    input =>
-                        (input.defaultChecked === undefined && input.defaultValue !== '') ||
-                        (input.defaultValue === undefined && input.defaultChecked),
-                )
+                {radio.inputErrors.length > 0 || conditionalRadioInputDefaultExists(radio)
                     ? checkedRadioInput
                     : uncheckedRadioInput}
                 {radioLabel}
