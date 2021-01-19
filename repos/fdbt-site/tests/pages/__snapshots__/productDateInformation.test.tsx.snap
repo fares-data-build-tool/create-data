@@ -60,13 +60,13 @@ exports[`pages productDateInformation it should render errors correctly when rad
                   "inputType": "date",
                   "inputs": Array [
                     Object {
-                      "defaultValues": "##",
+                      "defaultValue": "##",
                       "id": "start-date",
                       "label": "Start Date",
                       "name": "startDate",
                     },
                     Object {
-                      "defaultValues": "##",
+                      "defaultValue": "##",
                       "id": "end-date",
                       "label": "End Date",
                       "name": "endDate",
@@ -152,13 +152,13 @@ exports[`pages productDateInformation it should render the product date informat
                   "inputType": "date",
                   "inputs": Array [
                     Object {
-                      "defaultValues": "##",
+                      "defaultValue": "##",
                       "id": "start-date",
                       "label": "Start Date",
                       "name": "startDate",
                     },
                     Object {
-                      "defaultValues": "##",
+                      "defaultValue": "##",
                       "id": "end-date",
                       "label": "End Date",
                       "name": "endDate",

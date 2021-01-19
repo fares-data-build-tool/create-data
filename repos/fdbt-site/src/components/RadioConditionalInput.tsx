@@ -85,6 +85,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
                                     id={input.id}
                                     name={input.name}
                                     type="text"
+                                    defaultValue={input.defaultValue || ''}
                                 />
                             </FormElementWrapper>
                         </div>
@@ -128,6 +129,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                                             name={input.name}
                                             value={camelCase(input.id)}
                                             type="checkbox"
+                                            defaultChecked={input.defaultChecked}
                                         />
                                         <label className="govuk-label govuk-checkboxes__label" htmlFor={input.id}>
                                             {input.label}
@@ -182,7 +184,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                                         className="govuk-select"
                                         id={input.id}
                                         name={input.name}
-                                        defaultValue={input.defaultValues || ''}
+                                        defaultValue={input.defaultValue || ''}
                                     >
                                         <option value="" disabled>
                                             Select a {input.name}
@@ -199,7 +201,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                                         id={input.id}
                                         name={input.name}
                                         type="text"
-                                        defaultValue={input.defaultValues || ''}
+                                        defaultValue={input.defaultValue || ''}
                                     />
                                 )}
                             </FormElementWrapper>
@@ -251,7 +253,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                                 name={`${input.name}Day`}
                                                 type="text"
                                                 defaultValue={
-                                                    input.defaultValues ? input.defaultValues.split('#')[0] : ''
+                                                    input.defaultValue ? input.defaultValue.split('#')[0] : ''
                                                 }
                                             />
                                         </div>
@@ -272,7 +274,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                                 name={`${input.name}Month`}
                                                 type="text"
                                                 defaultValue={
-                                                    input.defaultValues ? input.defaultValues.split('#')[1] : ''
+                                                    input.defaultValue ? input.defaultValue.split('#')[1] : ''
                                                 }
                                             />
                                         </div>
@@ -293,7 +295,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                                 name={`${input.name}Year`}
                                                 type="text"
                                                 defaultValue={
-                                                    input.defaultValues ? input.defaultValues.split('#')[2] : ''
+                                                    input.defaultValue ? input.defaultValue.split('#')[2] : ''
                                                 }
                                             />
                                         </div>
@@ -308,12 +310,25 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
     );
 };
 
+export const conditionalRadioInputDefaultExists = (radio: RadioWithConditionalInputs): boolean => {
+    if (radio.inputType === 'text' || radio.inputType === 'textWithUnits') {
+        return radio.inputs.some(input => input.defaultValue !== '');
+    }
+    if (radio.inputType === 'date') {
+        return radio.inputs.some(input => input.defaultValue !== '##');
+    }
+    if (radio.inputType === 'checkbox') {
+        return radio.inputs.some(input => input.defaultChecked);
+    }
+    return false;
+};
+
 const renderConditionalRadioButton = (
     radio: RadioWithConditionalInputs,
     radioLabel: ReactElement,
     radioButtonHint?: ReactElement,
 ): ReactElement => {
-    const baseRadioInput = (
+    const uncheckedRadioInput = (
         <input
             className="govuk-radios__input"
             id={radio.id}
@@ -323,7 +338,7 @@ const renderConditionalRadioButton = (
             data-aria-controls={radio.dataAriaControls}
         />
     );
-    const radioInputWithError = (
+    const checkedRadioInput = (
         <input
             className="govuk-radios__input"
             id={radio.id}
@@ -345,7 +360,9 @@ const renderConditionalRadioButton = (
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
-                {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
+                {radio.inputErrors.length > 0 || conditionalRadioInputDefaultExists(radio)
+                    ? checkedRadioInput
+                    : uncheckedRadioInput}
                 {radioLabel}
                 {radio.radioButtonHint ? radioButtonHint : null}
             </div>

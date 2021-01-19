@@ -1,7 +1,7 @@
 import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
 import chooseTimeRestrictions, {
     collectErrors,
-    isValidTime,
+    isValid24hrTimeFormat,
     collectInputsFromRequest,
 } from '../../../src/pages/api/chooseTimeRestrictions';
 import * as sessions from '../../../src/utils/sessions';
@@ -13,7 +13,7 @@ describe('changePassword', () => {
         jest.resetAllMocks();
     });
 
-    describe('isValidTime', () => {
+    describe('isValid24hrTimeFormat', () => {
         it.each([
             [true, 'a valid time', '0730'],
             [true, 'the max value', '2359'],
@@ -21,7 +21,7 @@ describe('changePassword', () => {
             [false, 'a valid time over the max value', '2400'],
             [false, 'an invalid time', '7pm'],
         ])('should return %s for %s in 2400 format', (validity, _case, value) => {
-            expect(isValidTime(value)).toBe(validity);
+            expect(isValid24hrTimeFormat(value)).toBe(validity);
         });
     });
 

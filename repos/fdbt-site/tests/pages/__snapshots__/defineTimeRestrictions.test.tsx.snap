@@ -48,41 +48,49 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": false,
                     "id": "monday",
                     "label": "Monday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "tuesday",
                     "label": "Tuesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "wednesday",
                     "label": "Wednesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "thursday",
                     "label": "Thursday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "friday",
                     "label": "Friday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "saturday",
                     "label": "Saturday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "sunday",
                     "label": "Sunday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "bankHoliday",
                     "label": "Bank holiday",
                     "name": "validDays",
@@ -197,41 +205,49 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": false,
                     "id": "monday",
                     "label": "Monday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "tuesday",
                     "label": "Tuesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "wednesday",
                     "label": "Wednesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "thursday",
                     "label": "Thursday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "friday",
                     "label": "Friday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "saturday",
                     "label": "Saturday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "sunday",
                     "label": "Sunday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "bankHoliday",
                     "label": "Bank holiday",
                     "name": "validDays",
@@ -346,41 +362,49 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": true,
                     "id": "monday",
                     "label": "Monday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": true,
                     "id": "tuesday",
                     "label": "Tuesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "wednesday",
                     "label": "Wednesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "thursday",
                     "label": "Thursday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "friday",
                     "label": "Friday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "saturday",
                     "label": "Saturday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "sunday",
                     "label": "Sunday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "bankHoliday",
                     "label": "Bank holiday",
                     "name": "validDays",
@@ -479,41 +503,49 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": false,
                     "id": "monday",
                     "label": "Monday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "tuesday",
                     "label": "Tuesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "wednesday",
                     "label": "Wednesday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "thursday",
                     "label": "Thursday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "friday",
                     "label": "Friday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "saturday",
                     "label": "Saturday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "sunday",
                     "label": "Sunday",
                     "name": "validDays",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "bankHoliday",
                     "label": "Bank holiday",
                     "name": "validDays",

@@ -91,7 +91,8 @@ export interface BaseReactElement {
     id: string;
     name: string;
     label: string;
-    defaultValues?: string;
+    defaultValue?: string;
+    defaultChecked?: boolean;
     options?: string[];
 }
 
@@ -228,7 +229,7 @@ export interface Product {
     productDuration?: string;
     productValidity?: string;
     productDurationUnits?: string;
-    serviceEndTime?: string;
+    productEndTime?: string;
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {

@@ -80,8 +80,7 @@ import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
 import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
-import { MultipleProductAttribute } from '../pages/api/multipleProductValidity';
-import { BaseMultipleProductAttribute, BaseMultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
+import { MultipleProductAttribute, MultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
 import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
 import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerType';
@@ -118,10 +117,7 @@ type SessionAttributeTypes = {
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
     [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
-    [MULTIPLE_PRODUCT_ATTRIBUTE]:
-        | BaseMultipleProductAttribute
-        | BaseMultipleProductAttributeWithErrors
-        | MultipleProductAttribute;
+    [MULTIPLE_PRODUCT_ATTRIBUTE]: MultipleProductAttribute | MultipleProductAttributeWithErrors;
     [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;

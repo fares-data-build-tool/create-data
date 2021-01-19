@@ -74,14 +74,15 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "inputHint": Object {
                     "content": "Enter an end time for your service day",
                     "hidden": true,
-                    "id": "end-of-service-day-hint",
+                    "id": "product-end-time-hint",
                   },
                   "inputType": "text",
                   "inputs": Array [
                     Object {
-                      "id": "service-end-time",
+                      "defaultValue": "",
+                      "id": "product-end-time",
                       "label": "End time",
-                      "name": "serviceEndTime",
+                      "name": "productEndTime",
                     },
                   ],
                   "label": "End of service day",
@@ -197,14 +198,15 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "inputHint": Object {
                     "content": "Enter an end time for your service day",
                     "hidden": true,
-                    "id": "end-of-service-day-hint",
+                    "id": "product-end-time-hint",
                   },
                   "inputType": "text",
                   "inputs": Array [
                     Object {
-                      "id": "service-end-time",
+                      "defaultValue": "",
+                      "id": "product-end-time",
                       "label": "End time",
-                      "name": "serviceEndTime",
+                      "name": "productEndTime",
                     },
                   ],
                   "label": "End of service day",

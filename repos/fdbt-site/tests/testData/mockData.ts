@@ -45,8 +45,8 @@ import {
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 
-import { MultiProduct } from '../../src/pages/api/multipleProducts';
-import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
+import { MultiProduct, MultiProductWithErrors } from '../../src/pages/api/multipleProducts';
+import { RadioConditionalInputFieldset, RadioWithConditionalInputs } from '../../src/components/RadioConditionalInput';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -1985,32 +1985,6 @@ export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
 
 export const multipleProducts: MultiProduct[] = [
     {
-        productName: 'p',
-        productNameId: 'product-name-1',
-        productNameError: 'Name too short',
-        productPrice: '3.50',
-        productPriceId: 'product-price-1',
-        productDuration: '66.5',
-        productDurationId: 'product-duration-1',
-        productDurationUnits: 'week',
-        productDurationUnitsId: 'product-duration-units-1',
-        productDurationError: 'Product duration must be a whole number',
-    },
-    {
-        productName: 'Super ticket',
-        productNameId: 'product-name-1',
-        productPrice: '3.50gg',
-        productPriceId: 'product-price-2',
-        productPriceError: 'Product price must be a valid price',
-        productDuration: '7',
-        productDurationId: 'product-duration-2',
-        productDurationUnits: 'week',
-        productDurationUnitsId: 'product-duration-units-1',
-    },
-];
-
-export const multipleProductsWithoutErrors: MultiProduct[] = [
-    {
         productName: 'Best ticket',
         productNameId: 'product-name-1',
         productPrice: '3.50',
@@ -2019,6 +1993,8 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productDurationId: 'product-duration-1',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'Super ticket',
@@ -2029,6 +2005,61 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productDurationId: 'product-duration-2',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'Super Duper ticket',
+        productNameId: 'product-name-3',
+        productPrice: '3.50',
+        productPriceId: 'product-price-3',
+        productDuration: '7',
+        productDurationId: 'product-duration-3',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-3',
+        productValidity: '',
+        productValidityId: '',
+    },
+];
+
+export const multipleProductsWithErrors: MultiProductWithErrors[] = [
+    {
+        productName: 'Valid Product',
+        productNameId: 'multiple-product-name-0',
+        productPrice: '100',
+        productPriceId: 'multiple-product-price-0',
+        productDuration: '66',
+        productDurationId: 'multiple-product-duration-0',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'multiple-product-duration-units-0',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'Invalid Price',
+        productNameId: 'multiple-product-name-0',
+        productPrice: 'ifancueuUBY',
+        productPriceId: 'multiple-product-price-0',
+        productPriceError: 'This must be a valid price in pounds and pence',
+        productDuration: '66',
+        productDurationId: 'multiple-product-duration-0',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'multiple-product-duration-units-0',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'Invalid Duration',
+        productNameId: 'multiple-product-name-0',
+        productPrice: '100',
+        productPriceId: 'multiple-product-price-0',
+        productDuration: '-66',
+        productDurationId: 'multiple-product-duration-0',
+        productDurationError: 'Product duration cannot be zero or a negative number',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'multiple-product-duration-units-0',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2042,6 +2073,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'zero duration',
@@ -2052,6 +2085,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'negative duration',
@@ -2062,6 +2097,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'empty duration',
@@ -2072,6 +2109,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'non-numeric duration',
@@ -2082,6 +2121,47 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+];
+
+export const invalidDurationTypeProducts: MultiProduct[] = [
+    {
+        productName: 'valid duration type',
+        productNameId: 'multiple-product-name-input-0',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '66',
+        productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'no duration type',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '0',
+        productDurationId: '.',
+        productDurationUnits: '',
+        productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
+    },
+    {
+        productName: 'valid duration',
+        productNameId: 'multiple-product-name-input-0',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '66',
+        productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2095,6 +2175,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'empty price',
@@ -2105,6 +2187,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'negative price',
@@ -2115,6 +2199,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'non-numeric / invalid price',
@@ -2125,6 +2211,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2138,6 +2226,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: '',
@@ -2148,6 +2238,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'S',
@@ -2158,6 +2250,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName:
@@ -2169,6 +2263,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2182,6 +2278,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2192,6 +2290,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2202,6 +2302,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: 'week',
         productDurationUnitsId: 'product-duration-units-1',
+        productValidity: '',
+        productValidityId: '',
     },
 ];
 
@@ -2211,6 +2313,170 @@ export const mockProductRadioErrors: ErrorInfo[] = [
         id: 'start-date',
     },
 ];
+
+export const conditionalRadioWithTextInput: RadioWithConditionalInputs = {
+    id: 'text-input',
+    name: 'textInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-input-conditional',
+    inputHint: { id: 'text-input-hint', content: 'Hint.' },
+    inputType: 'text',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: 'Default text',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithEmptyTextInput: RadioWithConditionalInputs = {
+    id: 'text-input',
+    name: 'textInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-input-conditional',
+    inputHint: { id: 'text-input-hint', content: 'Hint.' },
+    inputType: 'text',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: '',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithTextWithUnitsInput: RadioWithConditionalInputs = {
+    id: 'text-units-input',
+    name: 'textUnitsInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-units-input-conditional',
+    inputHint: { id: 'text-units-input-hint', content: 'Hint.' },
+    inputType: 'textWithUnits',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: '',
+        },
+        {
+            id: 'units',
+            name: 'units',
+            label: 'Units',
+            defaultValue: '10',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithEmptyTextWithUnitsInput: RadioWithConditionalInputs = {
+    id: 'text-units-input',
+    name: 'textUnitsInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'text-units-input-conditional',
+    inputHint: { id: 'text-units-input-hint', content: 'Hint.' },
+    inputType: 'textWithUnits',
+    inputs: [
+        {
+            id: 'text',
+            name: 'text',
+            label: 'Text',
+            defaultValue: '',
+        },
+        {
+            id: 'units',
+            name: 'units',
+            label: 'Units',
+            defaultValue: '',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithDateInput: RadioWithConditionalInputs = {
+    id: 'date-input',
+    name: 'dateInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'date-input-conditional',
+    inputHint: { id: 'date-input-hint', content: 'Hint.' },
+    inputType: 'date',
+    inputs: [
+        {
+            id: 'date',
+            name: 'date',
+            label: 'Date',
+            defaultValue: '12#12#2020',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithEmptyDateInput: RadioWithConditionalInputs = {
+    id: 'date-input',
+    name: 'dateInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'date-input-conditional',
+    inputHint: { id: 'date-input-hint', content: 'Hint.' },
+    inputType: 'date',
+    inputs: [
+        {
+            id: 'date',
+            name: 'date',
+            label: 'Date',
+            defaultValue: '##',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithCheckedCheckboxInput: RadioWithConditionalInputs = {
+    id: 'checkbox-input',
+    name: 'checkboxInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'checkbox-input-conditional',
+    inputHint: { id: 'checkbox-input-hint', content: 'Hint.' },
+    inputType: 'checkbox',
+    inputs: [
+        {
+            id: 'checkbox',
+            name: 'checkbox',
+            label: 'Checkbox',
+            defaultChecked: true,
+        },
+    ],
+    inputErrors: [],
+};
+
+export const conditionalRadioWithUncheckedCheckboxInput: RadioWithConditionalInputs = {
+    id: 'checkbox-input',
+    name: 'checkboxInput',
+    value: 'Yes',
+    label: 'Yes',
+    dataAriaControls: 'checkbox-input-conditional',
+    inputHint: { id: 'checkbox-input-hint', content: 'Hint.' },
+    inputType: 'checkbox',
+    inputs: [
+        {
+            id: 'checkbox',
+            name: 'checkbox',
+            label: 'Checkbox',
+            defaultChecked: false,
+        },
+    ],
+    inputErrors: [],
+};
 
 export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset = {
     heading: {
@@ -2235,13 +2501,13 @@ export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset 
                     id: 'start-date',
                     name: 'startDate',
                     label: 'Start Date',
-                    defaultValues: '##',
+                    defaultValue: '##',
                 },
                 {
                     id: 'end-date',
                     name: 'endDate',
                     label: 'End Date',
-                    defaultValues: '##',
+                    defaultValue: '##',
                 },
             ],
             inputErrors: [],
@@ -2279,13 +2545,13 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
                     id: 'start-date',
                     name: 'startDate',
                     label: 'Start Date',
-                    defaultValues: '#12#2020',
+                    defaultValue: '#12#2020',
                 },
                 {
                     id: 'end-date',
                     name: 'endDate',
                     label: 'End Date',
-                    defaultValues: '#12#2020',
+                    defaultValue: '#12#2020',
                 },
             ],
             inputErrors: [
@@ -2355,6 +2621,7 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
         },
     ],
 };
+
 export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
@@ -2394,16 +2661,17 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
-                    name: 'serviceEndTime',
+                    id: 'product-end-time',
+                    name: 'productEndTime',
                     label: 'End time',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [],
@@ -2451,16 +2719,17 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
-                    name: 'serviceEndTime',
+                    id: 'product-end-time',
+                    name: 'productEndTime',
                     label: 'End time',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [],
@@ -2513,22 +2782,23 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
-                    name: 'serviceEndTime',
+                    id: 'product-end-time',
+                    name: 'productEndTime',
                     label: 'End time',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [
                 {
                     errorMessage: 'Specify an end time for service day',
-                    id: 'service-end-time',
+                    id: 'product-end-time',
                 },
             ],
         },
@@ -2559,11 +2829,13 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                         id: 'age-range-min',
                         name: 'ageRangeMin',
                         label: 'Minimum Age (if applicable)',
+                        defaultValue: '',
                     },
                     {
                         id: 'age-range-max',
                         name: 'ageRangeMax',
                         label: 'Maximum Age (if applicable)',
+                        defaultValue: '',
                     },
                 ],
                 inputErrors: [],
@@ -2599,16 +2871,19 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                         id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
+                        defaultChecked: false,
                     },
                 ],
                 inputErrors: [],
@@ -2642,11 +2917,13 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                         id: 'age-range-min',
                         name: 'ageRangeMin',
                         label: 'Minimum Age (if applicable)',
+                        defaultValue: '',
                     },
                     {
                         id: 'age-range-max',
                         name: 'ageRangeMax',
                         label: 'Maximum Age (if applicable)',
+                        defaultValue: '',
                     },
                 ],
                 inputErrors: [],
@@ -2687,16 +2964,19 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                         id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
+                        defaultChecked: false,
                     },
                 ],
                 inputErrors: [],
@@ -2746,11 +3026,13 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                         id: 'age-range-min',
                         name: 'ageRangeMin',
                         label: 'Minimum Age (if applicable)',
+                        defaultValue: '',
                     },
                     {
                         id: 'age-range-max',
                         name: 'ageRangeMax',
                         label: 'Maximum Age (if applicable)',
+                        defaultValue: '',
                     },
                 ],
                 inputErrors: [
@@ -2795,16 +3077,19 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                         id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
+                        defaultChecked: false,
                     },
                 ],
                 inputErrors: [
@@ -2850,8 +3135,18 @@ export const mockAdultServerSideProps: RadioConditionalInputFieldset[] = [
                 inputErrors: [],
                 inputType: 'text',
                 inputs: [
-                    { id: 'age-range-min', label: 'Minimum Age (if applicable)', name: 'ageRangeMin' },
-                    { id: 'age-range-max', label: 'Maximum Age (if applicable)', name: 'ageRangeMax' },
+                    {
+                        id: 'age-range-min',
+                        label: 'Minimum Age (if applicable)',
+                        name: 'ageRangeMin',
+                        defaultValue: '',
+                    },
+                    {
+                        id: 'age-range-max',
+                        label: 'Maximum Age (if applicable)',
+                        name: 'ageRangeMax',
+                        defaultValue: '',
+                    },
                 ],
                 label: 'Yes',
                 name: 'ageRange',
@@ -2885,11 +3180,13 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                         id: 'age-range-min',
                         name: 'ageRangeMin',
                         label: 'Minimum Age (if applicable)',
+                        defaultValue: '',
                     },
                     {
                         id: 'age-range-max',
                         name: 'ageRangeMax',
                         label: 'Maximum Age (if applicable)',
+                        defaultValue: '',
                     },
                 ],
                 inputErrors: [
@@ -2934,16 +3231,19 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                         id: 'membership-card',
                         name: 'proofDocuments',
                         label: 'Membership Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'student-card',
                         name: 'proofDocuments',
                         label: 'Student Card',
+                        defaultChecked: false,
                     },
                     {
                         id: 'identity-document',
                         name: 'proofDocuments',
                         label: 'Identity Document',
+                        defaultChecked: false,
                     },
                 ],
                 inputErrors: [],
@@ -2977,11 +3277,13 @@ export const mockAdultDefinePassengerTypeFieldsetsWithRadioAndInputErrors: Radio
                         id: 'age-range-min',
                         name: 'ageRangeMin',
                         label: 'Minimum Age (if applicable)',
+                        defaultValue: '',
                     },
                     {
                         id: 'age-range-max',
                         name: 'ageRangeMax',
                         label: 'Maximum Age (if applicable)',
+                        defaultValue: '',
                     },
                 ],
                 inputErrors: [
@@ -3034,11 +3336,13 @@ export const mockNumberOfPassengerTypeFieldset: TextInputFieldset = {
             id: 'min-number-of-passengers',
             name: 'minNumber',
             label: 'Minimum (optional)',
+            defaultValue: '',
         },
         {
             id: 'max-number-of-passengers',
             name: 'maxNumber',
             label: 'Maximum (required)',
+            defaultValue: '',
         },
     ],
     inputErrors: [],
@@ -3054,11 +3358,13 @@ export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
             id: 'min-number-of-passengers',
             name: 'minNumber',
             label: 'Minimum (optional)',
+            defaultValue: '',
         },
         {
             id: 'max-number-of-passengers',
             name: 'maxNumber',
             label: 'Maximum (required)',
+            defaultValue: '',
         },
     ],
     inputErrors: [
@@ -3092,14 +3398,14 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
                 inputErrors: [],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', label: 'Monday', name: 'validDays' },
-                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
-                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
-                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
-                    { id: 'friday', label: 'Friday', name: 'validDays' },
-                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
-                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
-                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
+                    { id: 'monday', label: 'Monday', name: 'validDays', defaultChecked: false },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays', defaultChecked: false },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays', defaultChecked: false },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays', defaultChecked: false },
+                    { id: 'friday', label: 'Friday', name: 'validDays', defaultChecked: false },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays', defaultChecked: false },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays', defaultChecked: false },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
                 label: 'Yes',
                 name: 'validDaysSelected',
@@ -3129,14 +3435,14 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
                 inputErrors: [],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', label: 'Monday', name: 'validDays' },
-                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
-                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
-                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
-                    { id: 'friday', label: 'Friday', name: 'validDays' },
-                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
-                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
-                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
+                    { id: 'monday', label: 'Monday', name: 'validDays', defaultChecked: false },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays', defaultChecked: false },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays', defaultChecked: false },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays', defaultChecked: false },
+                    { id: 'friday', label: 'Friday', name: 'validDays', defaultChecked: false },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays', defaultChecked: false },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays', defaultChecked: false },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
                 label: 'Yes',
                 name: 'validDaysSelected',
@@ -3170,14 +3476,14 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
                 inputErrors: [{ errorMessage: 'Select at least one day', id: 'monday' }],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', label: 'Monday', name: 'validDays' },
-                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
-                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
-                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
-                    { id: 'friday', label: 'Friday', name: 'validDays' },
-                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
-                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
-                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
+                    { id: 'monday', label: 'Monday', name: 'validDays', defaultChecked: true },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays', defaultChecked: true },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays', defaultChecked: false },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays', defaultChecked: false },
+                    { id: 'friday', label: 'Friday', name: 'validDays', defaultChecked: false },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays', defaultChecked: false },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays', defaultChecked: false },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
                 label: 'Yes',
                 name: 'validDaysSelected',
@@ -3222,14 +3528,14 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
                 inputErrors: [],
                 inputType: 'checkbox',
                 inputs: [
-                    { id: 'monday', label: 'Monday', name: 'validDays' },
-                    { id: 'tuesday', label: 'Tuesday', name: 'validDays' },
-                    { id: 'wednesday', label: 'Wednesday', name: 'validDays' },
-                    { id: 'thursday', label: 'Thursday', name: 'validDays' },
-                    { id: 'friday', label: 'Friday', name: 'validDays' },
-                    { id: 'saturday', label: 'Saturday', name: 'validDays' },
-                    { id: 'sunday', label: 'Sunday', name: 'validDays' },
-                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays' },
+                    { id: 'monday', label: 'Monday', name: 'validDays', defaultChecked: false },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays', defaultChecked: false },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays', defaultChecked: false },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays', defaultChecked: false },
+                    { id: 'friday', label: 'Friday', name: 'validDays', defaultChecked: false },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays', defaultChecked: false },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays', defaultChecked: false },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
                 label: 'Yes',
                 name: 'validDaysSelected',
@@ -3278,14 +3584,14 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValues: '',
+                    defaultValue: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValues: '',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [],
@@ -3323,14 +3629,14 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValues: '',
+                    defaultValue: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValues: '',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [{ errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' }],
@@ -3368,14 +3674,14 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValues: '',
+                    defaultValue: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValues: '',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [
@@ -3415,14 +3721,14 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValues: '',
+                    defaultValue: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValues: '',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [
@@ -3463,14 +3769,14 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Number',
-                    defaultValues: '',
+                    defaultValue: '',
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
                     options: ['day', 'week', 'month', 'year'],
-                    defaultValues: '',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [],
