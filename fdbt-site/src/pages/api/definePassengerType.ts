@@ -15,10 +15,9 @@ import { isSessionValid } from './apiUtils/validator';
 import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { GroupPassengerTypesCollection } from './groupPassengerTypes';
-import { PassengerType } from './passengerType';
 import { FareType } from './fareType';
 
-export interface DefinePassengerTypeWithErrors extends PassengerType {
+export interface DefinePassengerTypeWithErrors extends CompanionInfo {
     errors: ErrorInfo[];
 }
 
@@ -279,9 +278,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     companions[index] = companionToAdd;
 
                     updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
+                    updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
                     if (index < (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length - 1) {
-                        updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(
                             res,
                             `/definePassengerType?groupPassengerType=${
@@ -289,7 +288,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             }`,
                         );
                     } else {
-                        updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(res, '/defineTimeRestrictions');
                     }
                 }
@@ -297,7 +295,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, { errors, passengerType });
+        const sessionInfo: DefinePassengerTypeWithErrors = {
+            errors,
+            passengerType,
+            maxNumber: filteredReqBody.maxNumber || '',
+            ...(filteredReqBody.ageRangeMin && { ageRangeMin: filteredReqBody.ageRangeMin }),
+            ...(filteredReqBody.ageRangeMax && { ageRangeMax: filteredReqBody.ageRangeMax }),
+            ...(filteredReqBody.minNumber && { minNumber: filteredReqBody.minNumber }),
+            ...(filteredReqBody.proofDocuments && { proofDocuments: filteredReqBody.proofDocuments }),
+        };
+
+        updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
+
         if (group) {
             redirectTo(res, `/definePassengerType?groupPassengerType=${passengerType}`);
             return;

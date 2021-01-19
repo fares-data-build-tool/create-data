@@ -18,7 +18,10 @@ export interface DefineTimeRestrictionsProps {
     csrfToken: string;
 }
 
-export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
+export const getFieldsets = (
+    errors: ErrorInfo[],
+    timeRestrictionsDefinition?: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
+): RadioConditionalInputFieldset[] => {
     const validDaysFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-valid-days',
@@ -42,41 +45,49 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         id: 'monday',
                         name: 'validDays',
                         label: 'Monday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('monday') || false,
                     },
                     {
                         id: 'tuesday',
                         name: 'validDays',
                         label: 'Tuesday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('tuesday') || false,
                     },
                     {
                         id: 'wednesday',
                         name: 'validDays',
                         label: 'Wednesday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('wednesday') || false,
                     },
                     {
                         id: 'thursday',
                         name: 'validDays',
                         label: 'Thursday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('thursday') || false,
                     },
                     {
                         id: 'friday',
                         name: 'validDays',
                         label: 'Friday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('friday') || false,
                     },
                     {
                         id: 'saturday',
                         name: 'validDays',
                         label: 'Saturday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('saturday') || false,
                     },
                     {
                         id: 'sunday',
                         name: 'validDays',
                         label: 'Sunday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('sunday') || false,
                     },
                     {
                         id: 'bankHoliday',
                         name: 'validDays',
                         label: 'Bank holiday',
+                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('bankHoliday') || false,
                     },
                 ],
                 inputErrors: getErrorsByIds(['monday'], errors),
@@ -130,7 +141,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         errors = timeRestrictionsDefinition.errors;
     }
 
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
+    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors, timeRestrictionsDefinition);
     return { props: { errors, fieldsets, csrfToken } };
 };
 

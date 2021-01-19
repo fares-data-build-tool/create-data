@@ -112,11 +112,13 @@ exports[`pages definePassengerType should render correctly when on the group tic
                 "inputType": "text",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-min",
                     "label": "Minimum Age (if applicable)",
                     "name": "ageRangeMin",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-max",
                     "label": "Maximum Age (if applicable)",
                     "name": "ageRangeMax",
@@ -157,16 +159,19 @@ exports[`pages definePassengerType should render correctly when on the group tic
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": false,
                     "id": "membership-card",
                     "label": "Membership Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "student-card",
                     "label": "Student Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "identity-document",
                     "label": "Identity Document",
                     "name": "proofDocuments",
@@ -252,11 +257,13 @@ exports[`pages definePassengerType should render correctly when on the non-group
                 "inputType": "text",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-min",
                     "label": "Minimum Age (if applicable)",
                     "name": "ageRangeMin",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-max",
                     "label": "Maximum Age (if applicable)",
                     "name": "ageRangeMax",
@@ -297,16 +304,19 @@ exports[`pages definePassengerType should render correctly when on the non-group
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": false,
                     "id": "membership-card",
                     "label": "Membership Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "student-card",
                     "label": "Student Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "identity-document",
                     "label": "Identity Document",
                     "name": "proofDocuments",
@@ -431,11 +441,13 @@ exports[`pages definePassengerType should render errors correctly when input err
                 "inputType": "text",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-min",
                     "label": "Minimum Age (if applicable)",
                     "name": "ageRangeMin",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-max",
                     "label": "Maximum Age (if applicable)",
                     "name": "ageRangeMax",
@@ -481,16 +493,19 @@ exports[`pages definePassengerType should render errors correctly when input err
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": false,
                     "id": "membership-card",
                     "label": "Membership Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "student-card",
                     "label": "Student Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "identity-document",
                     "label": "Identity Document",
                     "name": "proofDocuments",
@@ -603,11 +618,13 @@ exports[`pages definePassengerType should render errors correctly when radio err
                 "inputType": "text",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-min",
                     "label": "Minimum Age (if applicable)",
                     "name": "ageRangeMin",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "age-range-max",
                     "label": "Maximum Age (if applicable)",
                     "name": "ageRangeMax",
@@ -653,16 +670,19 @@ exports[`pages definePassengerType should render errors correctly when radio err
                 "inputType": "checkbox",
                 "inputs": Array [
                   Object {
+                    "defaultChecked": false,
                     "id": "membership-card",
                     "label": "Membership Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "student-card",
                     "label": "Student Card",
                     "name": "proofDocuments",
                   },
                   Object {
+                    "defaultChecked": false,
                     "id": "identity-document",
                     "label": "Identity Document",
                     "name": "proofDocuments",

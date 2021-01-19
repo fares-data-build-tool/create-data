@@ -1,11 +1,22 @@
 import { shallow } from 'enzyme';
 import React, { ReactElement } from 'react';
+import {
+    conditionalRadioWithCheckedCheckboxInput,
+    conditionalRadioWithDateInput,
+    conditionalRadioWithEmptyDateInput,
+    conditionalRadioWithEmptyTextInput,
+    conditionalRadioWithEmptyTextWithUnitsInput,
+    conditionalRadioWithTextInput,
+    conditionalRadioWithTextWithUnitsInput,
+    conditionalRadioWithUncheckedCheckboxInput,
+} from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
     renderConditionalTextInput,
     RadioWithConditionalInputs,
     renderConditionalTextWithUnitsInput,
+    conditionalRadioInputDefaultExists,
 } from '../../src/components/RadioConditionalInput';
 
 describe('RadioConditionalInput', () => {
@@ -57,7 +68,14 @@ describe('RadioConditionalInput', () => {
                     dataAriaControls: 'age-range-required-conditional',
                     inputHint: { id: 'define-passenger-hint', content: 'Enter a minimum age for this passenger type.' },
                     inputType: 'text',
-                    inputs: [{ id: 'age-range-min', name: 'ageRangeMin', label: 'Minimum age (if applicable)' }],
+                    inputs: [
+                        {
+                            id: 'age-range-min',
+                            name: 'ageRangeMin',
+                            label: 'Minimum age (if applicable)',
+                            defaultValue: '',
+                        },
+                    ],
                     inputErrors: [],
                 },
                 { id: 'age-range-not-required', name: 'ageRange', value: 'No', label: 'No' },
@@ -213,6 +231,21 @@ describe('RadioConditionalInput', () => {
             expect(selectInputFormGroup.props.className).toEqual('govuk-form-group govuk-form-group--error');
             expect(textInputFormElementWrapper.props.errors).toBe(inputErrors);
             expect(selectInputFormElementWrapper.props.errors).toBe(inputErrors);
+        });
+    });
+
+    describe('conditionalRadioInputDefaultExists', () => {
+        it.each([
+            [true, 'text input has default value', conditionalRadioWithTextInput],
+            [false, 'text input has no default value', conditionalRadioWithEmptyTextInput],
+            [true, 'textWithUnits input has default value', conditionalRadioWithTextWithUnitsInput],
+            [false, 'textWithUnits input has no default value', conditionalRadioWithEmptyTextWithUnitsInput],
+            [true, 'date input has default value', conditionalRadioWithDateInput],
+            [false, 'date input has no default value', conditionalRadioWithEmptyDateInput],
+            [true, 'checkbox input is checked', conditionalRadioWithCheckedCheckboxInput],
+            [false, 'checkbox input is unchecked', conditionalRadioWithUncheckedCheckboxInput],
+        ])('should return %s when %s', (defaultExists, _case, conditionalRadioWithInput) => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithInput)).toBe(defaultExists);
         });
     });
 });

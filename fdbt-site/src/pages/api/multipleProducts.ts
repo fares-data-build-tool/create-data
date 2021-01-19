@@ -18,32 +18,37 @@ import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { NumberOfProductsAttribute } from './howManyProducts';
 
-export interface BaseMultipleProductAttribute {
+export interface MultipleProductAttribute {
     products: MultiProduct[];
-    endTimesList: string[];
 }
 
-export interface BaseMultipleProductAttributeWithErrors {
-    products: MultiProduct[];
+export interface MultipleProductAttributeWithErrors extends MultipleProductAttribute {
     errors: ErrorInfo[];
 }
 
 export interface MultiProduct {
     productName: string;
     productNameId: string;
-    productNameError?: string;
     productPrice: string;
     productPriceId: string;
-    productPriceError?: string;
     productDuration: string;
     productDurationId: string;
-    productDurationError?: string;
     productDurationUnits: string;
     productDurationUnitsId: string;
+    productValidity: string;
+    productValidityId: string;
+    productEndTime?: string;
+    productEndTimeId?: string;
+}
+
+export interface MultiProductWithErrors extends MultiProduct {
+    productNameError?: string;
+    productPriceError?: string;
+    productDurationError?: string;
     productDurationUnitsError?: string;
 }
 
-export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorInfo[] => {
+export const getErrorsForCookie = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
 
     validationResult.forEach(product => {
@@ -77,7 +82,7 @@ export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorInfo[
     return errors;
 };
 
-export const containsErrors = (products: MultiProduct[]): boolean => {
+export const containsErrors = (products: MultiProductWithErrors[]): boolean => {
     return products.some(
         product =>
             product.productNameError ||
@@ -87,7 +92,7 @@ export const containsErrors = (products: MultiProduct[]): boolean => {
     );
 };
 
-export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiProduct[] => {
+export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
     const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productDuration } = product;
         const trimmedDuration = removeExcessWhiteSpace(productDuration);
@@ -106,10 +111,10 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
     return productsWithErrors;
 };
 
-export const checkProductDurationTypesAreValid = (products: MultiProduct[]): MultiProduct[] => {
+export const checkProductDurationTypesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
     const productsWithErrors: MultiProduct[] = products.map(product => {
-        const durationUnits = product.productDurationUnits;
-        const productDurationUnitsError = !isValidInputDuration(durationUnits)
+        const { productDurationUnits } = product;
+        const productDurationUnitsError = !isValidInputDuration(productDurationUnits)
             ? 'Choose an option from the dropdown'
             : '';
         if (productDurationUnitsError) {
@@ -125,7 +130,7 @@ export const checkProductDurationTypesAreValid = (products: MultiProduct[]): Mul
     return productsWithErrors;
 };
 
-export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProduct[] => {
+export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
     const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productPrice } = product;
         const trimmedPrice = removeExcessWhiteSpace(productPrice);
@@ -144,7 +149,7 @@ export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProdu
     return productsWithErrors;
 };
 
-export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduct[] => {
+export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
     const productNames = products.map(product => product.productName);
 
     const productsWithErrors: MultiProduct[] = products.map(product => {
@@ -194,14 +199,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 productDurationId,
                 productDurationUnits,
                 productDurationUnitsId,
+                productValidity: '',
+                productValidityId: '',
             };
             multipleProducts.push(product);
         }
 
-        const nameValidationResult: MultiProduct[] = checkProductNamesAreValid(multipleProducts);
-        const priceValidationResult: MultiProduct[] = checkProductPricesAreValid(nameValidationResult);
-        const productDurationResult: MultiProduct[] = checkProductDurationsAreValid(priceValidationResult);
-        const fullValidationResult: MultiProduct[] = checkProductDurationTypesAreValid(productDurationResult);
+        const nameValidationResult = checkProductNamesAreValid(multipleProducts);
+        const priceValidationResult = checkProductPricesAreValid(nameValidationResult);
+        const productDurationResult = checkProductDurationsAreValid(priceValidationResult);
+        const fullValidationResult = checkProductDurationTypesAreValid(productDurationResult);
 
         if (containsErrors(fullValidationResult)) {
             const errors: ErrorInfo[] = getErrorsForCookie(fullValidationResult);

@@ -150,6 +150,7 @@ exports[`RadioConditionalInput should render a set of radio buttons with conditi
                 >
                   <input
                     className="govuk-input govuk-!-width-one-third"
+                    defaultValue=""
                     id="age-range-min"
                     name="ageRangeMin"
                     type="text"

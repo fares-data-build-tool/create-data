@@ -16,7 +16,7 @@ import { SalesOfferPackage, ErrorInfo, NextPageContextWithSession, ProductInfo }
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { Product } from './api/multipleProductValidity';
+import { MultiProduct } from './api/multipleProducts';
 import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
 import { SchoolFareTypeAttribute } from './api/schoolFareType';
@@ -219,7 +219,7 @@ export const getServerSideProps = async (
                 ? schoolFareTypeAttribute.schoolFareType
                 : fareTypeAttribute.fareType;
         if ((fareType === 'period' || fareType === 'multiOperator') && multipleProductAttribute) {
-            const multiProducts: Product[] = multipleProductAttribute.products;
+            const multiProducts: MultiProduct[] = multipleProductAttribute.products;
             productNames = multiProducts.map((product: ProductInfo) => product.productName);
         } else if (singleProductAttribute) {
             if (fareType === 'flatFare' && isProductData(singleProductAttribute)) {

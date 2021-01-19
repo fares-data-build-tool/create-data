@@ -1,85 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { isSessionValid, isValidTime, removeExcessWhiteSpace } from './apiUtils/validator';
+import { NextApiResponse } from 'next';
+import { isSessionValid, isValid24hrTimeFormat, removeExcessWhiteSpace } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-
-export interface MultipleProductAttribute {
-    products: Product[];
-    endTimesList?: string[];
-}
-
-export interface Product {
-    productName: string;
-    productNameId?: string;
-    productPrice: string;
-    productPriceId?: string;
-    productDuration: string;
-    productDurationId?: string;
-    productValidity?: string;
-    productValidityError?: string;
-    productValidityId?: string;
-    productDurationUnits?: string;
-    serviceEndTime?: string;
-}
-
-export const isValidInputValidity = (durationInput: string): boolean =>
-    ['24hr', 'endOfCalendarDay', 'endOfServiceDay'].includes(durationInput);
-
-export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
-    const validity = req.body[`validity-option-${index}`];
-    const validityEndTime = removeExcessWhiteSpace(req.body[`validity-end-time-${index}`]);
-    let error = '';
-    let errorId = '';
-
-    if (
-        !validity ||
-        (validity === 'endOfServiceDay' && validityEndTime === '') ||
-        (validity === 'endOfServiceDay' && validityEndTime !== '' && !isValidTime(validityEndTime))
-    ) {
-        if (!validity) {
-            error = 'Select one of the three expiry options';
-            errorId = `validity-option-${index}`;
-        } else if (validity === 'endOfServiceDay' && validityEndTime === '') {
-            error = 'Specify an end time for service day';
-            errorId = `validity-end-time-${index}`;
-        }
-
-        if (validity === 'endOfServiceDay' && validityEndTime && !isValidTime(validityEndTime)) {
-            if (validityEndTime === '2400') {
-                error = '2400 is not a valid input. Use 0000.';
-                errorId = `validity-end-time-${index}`;
-            } else {
-                error = 'Time must be in 2400 format';
-                errorId = `validity-end-time-${index}`;
-            }
-        }
-
-        return {
-            productName: rawProduct.productName,
-            productNameId: rawProduct.productNameId,
-            productPrice: rawProduct.productPrice,
-            productPriceId: rawProduct.productPriceId,
-            productDuration: rawProduct.productDuration,
-            productDurationId: rawProduct.productDurationId,
-            productValidityError: error,
-            productValidityId: errorId,
-            productDurationUnits: rawProduct.productDurationUnits,
-            productValidity: validity || '',
-            serviceEndTime: validity === 'endOfServiceDay' ? validityEndTime : '',
-        };
-    }
-
-    return {
-        productName: rawProduct.productName,
-        productPrice: rawProduct.productPrice,
-        productDuration: rawProduct.productDuration,
-        productDurationUnits: rawProduct.productDurationUnits,
-        productValidity: validity,
-        serviceEndTime: validity === 'endOfServiceDay' ? validityEndTime : '',
-    };
-};
+import { MultiProduct } from './multipleProducts';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -93,19 +18,53 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('Necessary cookies not found for multiple product validity API');
         }
 
-        const rawProducts: Product[] = multiProductAttribute.products;
-        const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
+        const rawProducts: MultiProduct[] = multiProductAttribute.products;
+        const products: MultiProduct[] = rawProducts.map(
+            (rawProduct, i): MultiProduct => {
+                const productValidityId = `validity-option-${i}`;
+                const productValidity = req.body[productValidityId] || '';
+                const productEndTimeId = `validity-end-time-${i}`;
+                const productEndTime = removeExcessWhiteSpace(req.body[productEndTimeId]) || '';
+                return {
+                    ...rawProduct,
+                    productValidity,
+                    productValidityId,
+                    ...(productValidity === 'endOfServiceDay' && { productEndTime, productEndTimeId }),
+                };
+            },
+        );
 
-        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
-            products,
-            endTimesList: req.body && req.body.listOfEndTimes !== '' ? req.body.listOfEndTimes.split(',') : [],
+        const errors: ErrorInfo[] = [];
+        products.forEach(product => {
+            const index = product.productValidityId.split('-').pop();
+            const endTimeId = `validity-end-time-${index}`;
+            if (product.productValidity === '') {
+                errors.push({ errorMessage: 'Select one of the three expiry options', id: product.productValidityId });
+            } else if (product.productValidity === 'endOfServiceDay') {
+                if (!product.productEndTime) {
+                    errors.push({ errorMessage: 'Specify an end time for service day', id: endTimeId });
+                } else if (!isValid24hrTimeFormat(product.productEndTime)) {
+                    if (product.productEndTime === '2400') {
+                        errors.push({ errorMessage: '2400 is not a valid input. Use 0000.', id: endTimeId });
+                    } else {
+                        errors.push({ errorMessage: 'Time must be in 2400 format', id: endTimeId });
+                    }
+                }
+            }
         });
 
-        if (products.some(el => el.productValidityError)) {
+        if (errors.length > 0) {
+            updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
+                products,
+                errors,
+            });
             redirectTo(res, '/multipleProductValidity');
             return;
         }
 
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
+            products,
+        });
         redirectTo(res, '/ticketConfirmation');
     } catch (error) {
         const message = 'There was a problem collecting the user defined products:';
