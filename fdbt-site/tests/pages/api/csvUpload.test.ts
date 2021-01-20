@@ -244,7 +244,7 @@ describe('csvUpload', () => {
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
             files: file,
-            fileContents: csvData.validTestCsvWithEmptyCells,
+            fileContents: csvData.validTestCsvWithEmptyCellsAndEmptyLine,
         });
 
         jest.spyOn(fileUpload, 'containsViruses')
