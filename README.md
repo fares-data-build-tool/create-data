@@ -12,7 +12,7 @@ The codebase for the Create Fares Data admin panel. The site is built using Reac
 
 * If using aws-vault, follow the instructions in 'Using aws-vault' below instead
 * Run `npm install` to install necessary dependencies
-* Retrieve the contents of the secret, `adminTeamProviderInfo`, from secrets manager in the core AWS account
+* Retrieve the contents of the secret, `adminTeamProviderInfo`, from secrets manager in the core or test AWS account
 * Create a file called `team-provider-info.json` in the root of the amplify folder and paste the above content into it
 * Run `amplify init` to start init process
   * "Do you want to use an existing environment?": Yes
@@ -34,7 +34,7 @@ credential_process=aws-vault exec {PROFILE_NAME} --json
 ```
 
 * Run `npm install` to install necessary dependencies
-* Retrieve the contents of the secret, `adminTeamProviderInfo`, from secrets manager in the core AWS account
+* Retrieve the contents of the secret, `adminTeamProviderInfo`, from secrets manager in the core or test AWS account
 * Create a file called `team-provider-info.json` in the root of the amplify folder and paste the above content into it
 * Run `aws-vault exec {PROFILE_NAME} -- amplify init` to start init process
   * "Do you want to use an existing environment?": Yes

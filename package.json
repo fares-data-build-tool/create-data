@@ -28,11 +28,12 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint . --ext .ts,.tsx",
-        "lint:fix": "eslint --fix . --ext .ts,.tsx"
+        "lint:fix": "eslint --fix . --ext .ts,.tsx",
+        "test:ci": "CI=true jest --silent -w 1 --forceExit"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && npm t && tsc"
+            "pre-commit": "lint-staged && tsc"
         }
     },
     "lint-staged": {
