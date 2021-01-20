@@ -63,6 +63,24 @@ Resources:
           QueryStringsConfig:
             QueryStringBehavior: none
 
+  AssetsCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        DefaultTTL: 86400
+        MinTTL: 1
+        MaxTTL: 31536000
+        Name: CfdAssetsCachePolicy
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
+          CookiesConfig:
+            CookieBehavior: none
+
   SiteDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -74,6 +92,24 @@ Resources:
             ViewerProtocolPolicy: redirect-to-https
             PathPattern: /error/*
             CachePolicyId: !Ref ErrorCachePolicy
+            Compress: true
+          - TargetOriginId: AlbOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            PathPattern: /assets/*
+            CachePolicyId: !Ref AssetsCachePolicy
+            OriginRequestPolicyId: !Ref OriginRequestPolicyId
+            Compress: true
+          - TargetOriginId: AlbOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            PathPattern: /_next/static/*
+            CachePolicyId: !Ref AssetsCachePolicy
+            OriginRequestPolicyId: !Ref OriginRequestPolicyId
+            Compress: true
+          - TargetOriginId: AlbOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            PathPattern: /scripts/*
+            CachePolicyId: !Ref AssetsCachePolicy
+            OriginRequestPolicyId: !Ref OriginRequestPolicyId
             Compress: true
         CustomErrorResponses:
           - ErrorCode: 400

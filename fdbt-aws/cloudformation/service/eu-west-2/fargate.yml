@@ -42,12 +42,6 @@ Parameters:
     Type: Number
     Default: 50
     Description: CPU usage percentage to track for auto scaling
-  ExternalSiteDomain:
-    Type: String
-    Description: (Prod only) Publically resolvable URL for the site
-  ProdRedirectUrls:
-    Type: CommaDelimitedList
-    Description: (Prod only) URLs to redirect to the ExternalSiteDomain
   MonitoringImage:
     Type: String
     Description: The monitoring docker image
@@ -547,22 +541,6 @@ Resources:
           HostHeaderConfig:
             Values:
               - !Ref PrototypeDomain
-      ListenerArn: !Ref PublicLoadBalancerListener
-      Priority: 2
-
-  ProdRedirectRule:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    Condition: IsProd
-    Properties:
-      Actions:
-        - RedirectConfig:
-            Host: !Ref ExternalSiteDomain
-            StatusCode: HTTP_301
-          Type: redirect
-      Conditions:
-        - Field: host-header
-          HostHeaderConfig:
-            Values: !Ref ProdRedirectUrls
       ListenerArn: !Ref PublicLoadBalancerListener
       Priority: 2
 
