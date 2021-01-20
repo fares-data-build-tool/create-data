@@ -63,7 +63,7 @@ export const faresTriangleDataMapper = (
         fareStages: [],
     };
 
-    const fareStageLines = (Papa.parse(dataToMap).data as string[][]).filter(item => item.length > 0);
+    const fareStageLines = (Papa.parse(dataToMap).data as string[][]).filter(item => item.length > 1);
     const fareStageCount = fareStageLines.length;
 
     if (fareStageCount < 2) {

@@ -18,7 +18,7 @@ export const testCsv: string =
     '170,170,170,170,100,100,Rail Station (York),\n' +
     '170,170,170,170,100,100,100,Piccadilly (York)';
 
-export const validTestCsvWithEmptyCells: string =
+export const validTestCsvWithEmptyCellsAndEmptyLine: string =
     'Acomb Green Lane   ,,,,,,,\n' +
     ',Mattison Way,,,,,,\n' +
     '110,110,Nursery Drive,,,,,\n' +
@@ -26,7 +26,7 @@ export const validTestCsvWithEmptyCells: string =
     '170,170,110,110,Cambridge Street (York),,,\n' +
     '170,170,110,110,100,"Blossom Street, test",,\n' +
     '170,170,170,170,100,100,Rail Station (York),\n' +
-    ' ,170,170,170,100,100,100, Piccadilly (York)';
+    ' ,170,170,170,100,100,100, Piccadilly (York)\n';
 
 export const noPricesTestCsv: string =
     'Acomb Green Lane,,,,,,,\n' +
@@ -139,7 +139,7 @@ export const unprocessedObjectWithEmptyCells = {
         '170,170,110,110,Cambridge Street (York),,,\n' +
         '170,170,110,110,100,"Blossom Street, test",,\n' +
         '170,170,170,170,100,100,Rail Station (York),\n' +
-        ' ,170,170,170,100,100,100, Piccadilly (York)',
+        ' ,170,170,170,100,100,100, Piccadilly (York)\n',
     ContentType: 'text/csv; charset=utf-8',
 };
 
