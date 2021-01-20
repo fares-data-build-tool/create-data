@@ -366,6 +366,10 @@ Resources:
                 Effect: 'Allow'
                 Resource:
                   Fn::ImportValue: !Sub ${env}:UserPoolArn
+              - Action:
+                  - 'cognito-idp:ListUserPools'
+                Effect: 'Allow'
+                Resource: '*'
 
   IdentityPoolRoleMap:
     # Created to map Auth and Unauth roles to the identity pool

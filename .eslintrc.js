@@ -85,6 +85,7 @@ module.exports = {
         'func-style': [2, 'expression'],
         curly: [2, 'all'],
         '@typescript-eslint/unbound-method': 0,
+        'no-console': 0,
     },
     settings: {
         'import/resolver': {

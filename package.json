@@ -7,6 +7,7 @@
         "@aws-amplify/ui-react": "^0.2.34",
         "@govuk-react/heading": "^0.7.1",
         "@govuk-react/page": "^0.7.1",
+        "@govuk-react/table": "^0.7.1",
         "@govuk-react/top-nav": "^0.7.1",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
@@ -29,11 +30,11 @@
         "eject": "react-scripts eject",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx",
-        "test:ci": "CI=true jest --silent -w 1 --forceExit"
+        "test:ci": "CI=true react-scripts test"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && tsc"
+            "pre-commit": "lint-staged && npm run test:ci && tsc"
         }
     },
     "lint-staged": {
