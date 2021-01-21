@@ -23,11 +23,26 @@ export const listUsersInPool = async (
     cognito: CognitoIdentityServiceProvider,
     userPoolId: string,
 ): Promise<UserType[]> => {
-    const params: ListUsersRequest = {
-        UserPoolId: userPoolId,
+    const users: UserType[] = [];
+
+    const getUsersWithPaginationToken = async (paginationToken: string | undefined) => {
+        const params: ListUsersRequest = {
+            UserPoolId: userPoolId,
+            PaginationToken: paginationToken,
+        };
+
+        const listUsersResponse = await cognito.listUsers(params).promise();
+
+        if (listUsersResponse.Users) {
+            users.push(...listUsersResponse.Users);
+
+            if (listUsersResponse.PaginationToken) {
+                await getUsersWithPaginationToken(listUsersResponse.PaginationToken);
+            }
+        }
     };
 
-    const listUsersResponse = await cognito.listUsers(params).promise();
+    await getUsersWithPaginationToken(undefined);
 
-    return listUsersResponse?.Users ?? [];
+    return users;
 };

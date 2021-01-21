@@ -160,10 +160,10 @@ Resources:
       Policies:
         PasswordPolicy:
           MinimumLength: !Ref passwordPolicyMinLength
-          RequireLowercase: false
-          RequireNumbers: false
+          RequireLowercase: true
+          RequireNumbers: true
           RequireSymbols: false
-          RequireUppercase: false
+          RequireUppercase: true
 
       UsernameAttributes: !Ref usernameAttributes
 

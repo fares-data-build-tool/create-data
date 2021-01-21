@@ -1,6 +1,6 @@
 import { H1 } from '@govuk-react/heading';
 import { Fragment, ReactElement, useEffect, useState } from 'react';
-import { AttributeListType, UsersListType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { AttributeListType, UsersListType, UserType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import Table from '@govuk-react/table';
 import { ATTRIBUTE_MAP, MAIN_USER_POOL_PREFIX, STATUS_MAP } from '../constants';
 import { getCognitoClient, getUserPoolList, listUsersInPool } from '../data/cognito';
@@ -16,6 +16,13 @@ const formatAttributes = (attributes: AttributeListType) => {
                 <br />
             </Fragment>
         ));
+};
+
+const sortByEmail = (a: UserType, b: UserType) => {
+    const aEmail = a.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
+    const bEmail = b.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
+
+    return aEmail.localeCompare(bEmail);
 };
 
 const ListUsers = (): ReactElement => {
@@ -38,7 +45,7 @@ const ListUsers = (): ReactElement => {
         };
 
         getUsers()
-            .then((data) => setUsers(data))
+            .then((data) => setUsers(data.sort(sortByEmail)))
             .catch((err) => {
                 console.error(err);
 
