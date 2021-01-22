@@ -14,6 +14,7 @@ import ConfirmationTable, { ConfirmationElement } from '../components/Confirmati
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -108,6 +109,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
         !isArray(salesOfferPackageInfo) ||
         isTicketPeriodAttributeWithErrors(ticketDatingInfo)
     ) {
+        if (ctx.res) {
+            redirectTo(ctx.res, '/home');
+        }
+
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }
 
