@@ -3,7 +3,7 @@ EMAIL=$2
 USER_IDENTIFIER=$3
 USER_ATTRIBUTE=$4
 
-USER_POOL=$(aws cognito-idp list-user-pools --max-results 1 | jq -r '.UserPools[0].Id')
+USER_POOL=$(aws cognito-idp list-user-pools --max-results 2 | jq -r '.UserPools[1].Id')
 
 function get_users_by_noc() {
   NOC=$1
