@@ -172,6 +172,7 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
     </h2>
     <div
       className="govuk-radios__item"
+      key="multiOperator"
     >
       <input
         className="govuk-radios__input"
@@ -189,6 +190,7 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
     </div>
     <div
       className="govuk-radios__item"
+      key="schoolService"
     >
       <input
         className="govuk-radios__input"
