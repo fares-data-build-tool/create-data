@@ -104,24 +104,15 @@ resources:
           - MetricValue: '1'
             MetricNamespace: 'FDBT/Netex-Output'
             MetricName: 'netex-complete-return-${self:provider.stage}'
-    NetexCompletePeriodGeoZoneFilter:
+    NetexCompletePeriodFilter:
       Type: 'AWS::Logs::MetricFilter'
       Properties:
         LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete for type periodGeoZone'
+        FilterPattern: 'NeTEx generation complete for type period'
         MetricTransformations:
           - MetricValue: '1'
             MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-periodgeozone-${self:provider.stage}'
-    NetexCompletePeriodMultipleServicesFilter:
-      Type: 'AWS::Logs::MetricFilter'
-      Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete for type periodMultipleServices'
-        MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-periodmultipleservices-${self:provider.stage}'
+            MetricName: 'netex-complete-period-${self:provider.stage}'
     NetexCompleteFlatFareFilter:
       Type: 'AWS::Logs::MetricFilter'
       Properties:
@@ -131,6 +122,15 @@ resources:
           - MetricValue: '1'
             MetricNamespace: 'FDBT/Netex-Output'
             MetricName: 'netex-complete-flatfare-${self:provider.stage}'
+    NetexCompleteMultiOperatorFilter:
+      Type: 'AWS::Logs::MetricFilter'
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        FilterPattern: 'NeTEx generation complete for type multiOperator'
+        MetricTransformations:
+          - MetricValue: '1'
+            MetricNamespace: 'FDBT/Netex-Output'
+            MetricName: 'netex-complete-multiOperator-${self:provider.stage}'
     NetexCompleteTotalFilter:
       Type: 'AWS::Logs::MetricFilter'
       Properties:
