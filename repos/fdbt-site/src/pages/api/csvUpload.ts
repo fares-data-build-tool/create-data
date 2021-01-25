@@ -6,7 +6,7 @@ import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
 import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
-import { processFileUpload } from './apiUtils/fileUpload';
+import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isJourney } from '../../interfaces/typeGuards';
@@ -15,6 +15,7 @@ const errorId = 'csv-upload';
 
 export interface CsvUploadAttributeWithErrors {
     errors: ErrorInfo[];
+    poundsOrPence?: string;
 }
 
 interface FareTriangleData {
@@ -39,8 +40,9 @@ export const setCsvUploadAttributeAndRedirect = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
     errors: ErrorInfo[],
+    poundsOrPence?: string,
 ): void => {
-    updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors });
+    updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors, poundsOrPence });
     redirectTo(res, '/csvUpload');
 };
 
@@ -58,6 +60,7 @@ export const faresTriangleDataMapper = (
     dataToMap: string,
     req: NextApiRequestWithSession,
     res: NextApiResponse,
+    poundsOrPence: string,
 ): UserFareStages | null => {
     const fareTriangle: FareTriangleData = {
         fareStages: [],
@@ -65,6 +68,7 @@ export const faresTriangleDataMapper = (
 
     const fareStageLines = Papa.parse(dataToMap, { skipEmptyLines: 'greedy' }).data as string[][];
     const fareStageCount = fareStageLines.length;
+    const isPence = poundsOrPence === 'pence';
 
     if (fareStageCount < 2) {
         logger.warn('', {
@@ -72,7 +76,7 @@ export const faresTriangleDataMapper = (
             message: `At least 2 fare stages are needed, only ${fareStageCount} found`,
         });
         const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'At least 2 fare stages are needed' }];
-        setCsvUploadAttributeAndRedirect(req, res, errors);
+        setCsvUploadAttributeAndRedirect(req, res, errors, poundsOrPence);
 
         return null;
     }
@@ -84,7 +88,7 @@ export const faresTriangleDataMapper = (
                 message: `Uploaded CSV does not follow correct template`,
             });
             const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'The selected file must use the template' }];
-            setCsvUploadAttributeAndRedirect(req, res, errors);
+            setCsvUploadAttributeAndRedirect(req, res, errors, poundsOrPence);
 
             return null;
         }
@@ -104,7 +108,7 @@ export const faresTriangleDataMapper = (
                 message: `Empty fare stage name found in uploaded file`,
             });
             const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'Fare stage names must not be empty' }];
-            setCsvUploadAttributeAndRedirect(req, res, errors);
+            setCsvUploadAttributeAndRedirect(req, res, errors, poundsOrPence);
 
             return null;
         }
@@ -133,11 +137,11 @@ export const faresTriangleDataMapper = (
                     const errors: ErrorInfo[] = [
                         { id: errorId, errorMessage: 'The selected file contains an invalid price' },
                     ];
-                    setCsvUploadAttributeAndRedirect(req, res, errors);
+                    setCsvUploadAttributeAndRedirect(req, res, errors, poundsOrPence);
                     return null;
                 }
 
-                if (Number(price) % 1 !== 0) {
+                if (isPence && Number(price) % 1 !== 0) {
                     logger.warn('', {
                         context: 'api.csvUpload',
                         message: `decimal price in CSV upload`,
@@ -148,15 +152,17 @@ export const faresTriangleDataMapper = (
                             errorMessage: 'The selected file contains a decimal price, all prices must be in pence',
                         },
                     ];
-                    setCsvUploadAttributeAndRedirect(req, res, errors);
+                    setCsvUploadAttributeAndRedirect(req, res, errors, poundsOrPence);
                     return null;
                 }
 
-                if (fareTriangle.fareStages?.[colNum].prices?.[price]?.fareZones) {
-                    fareTriangle.fareStages[colNum].prices[price].fareZones.push(stageName);
+                const formattedPrice = isPence ? (parseFloat(price) / 100).toFixed(2) : parseFloat(price).toFixed(2);
+
+                if (fareTriangle.fareStages?.[colNum].prices?.[formattedPrice]?.fareZones) {
+                    fareTriangle.fareStages[colNum].prices[formattedPrice].fareZones.push(stageName);
                 } else {
-                    fareTriangle.fareStages[colNum].prices[price] = {
-                        price: (parseFloat(price) / 100).toFixed(2),
+                    fareTriangle.fareStages[colNum].prices[formattedPrice] = {
+                        price: formattedPrice,
                         fareZones: [stageName],
                     };
                 }
@@ -172,7 +178,7 @@ export const faresTriangleDataMapper = (
         const errors: ErrorInfo[] = [
             { id: errorId, errorMessage: 'At least one price must be set in the uploaded fares triangle' },
         ];
-        setCsvUploadAttributeAndRedirect(req, res, errors);
+        setCsvUploadAttributeAndRedirect(req, res, errors, poundsOrPence);
 
         return null;
     }
@@ -192,7 +198,7 @@ export const faresTriangleDataMapper = (
             message: `Duplicate fare stage names found, fare stage names: ${fareStageNames}`,
         });
         const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'Fare stage names cannot be the same' }];
-        setCsvUploadAttributeAndRedirect(req, res, errors);
+        setCsvUploadAttributeAndRedirect(req, res, errors, poundsOrPence);
         return null;
     }
 
@@ -205,18 +211,32 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('session is invalid.');
         }
 
-        const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
+        const formData = await getFormData(req);
+        const { fields } = formData;
+
+        if (!fields?.['poundsOrPence']) {
+            const errors: ErrorInfo[] = [
+                { id: 'pounds', errorMessage: 'You must select whether the prices are in pounds or pence' },
+            ];
+            setCsvUploadAttributeAndRedirect(req, res, errors);
+
+            return;
+        }
+
+        const { poundsOrPence } = fields;
+
+        const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
 
         if (fileError) {
             const errors: ErrorInfo[] = [{ id: errorId, errorMessage: fileError }];
-            setCsvUploadAttributeAndRedirect(req, res, errors);
+            setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
             return;
         }
 
         if (fileContents) {
             const uuid = getUuidFromCookie(req, res);
             await putDataInS3(fileContents, `${uuid}.csv`, false);
-            const fareTriangleData = faresTriangleDataMapper(fileContents, req, res);
+            const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
             if (!fareTriangleData) {
                 return;
             }

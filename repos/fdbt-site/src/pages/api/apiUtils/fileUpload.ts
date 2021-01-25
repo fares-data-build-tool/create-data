@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/camelcase */
-import formidable, { Files } from 'formidable';
+import formidable from 'formidable';
 import { NextApiRequest } from 'next';
 import fs from 'fs';
 import NodeClam from 'clamscan';
@@ -11,6 +11,12 @@ import logger from '../../../utils/logger';
 interface FileData {
     files: formidable.Files;
     fileContents: string;
+    fields?: formidable.Fields;
+}
+
+interface FilesAndFields {
+    files: formidable.Files;
+    fields?: formidable.Fields;
 }
 
 interface FileUploadResponse {
@@ -20,20 +26,24 @@ interface FileUploadResponse {
 
 const MAX_FILE_SIZE = 5242880;
 
-export const formParse = async (req: NextApiRequest): Promise<Files> => {
-    return new Promise<Files>((resolve, reject) => {
+export const formParse = async (req: NextApiRequest): Promise<FilesAndFields> => {
+    return new Promise<FilesAndFields>((resolve, reject) => {
         const form = new formidable.IncomingForm();
-        form.parse(req, (err, _fields, file) => {
+        form.parse(req, (err, fields, files) => {
             if (err) {
                 return reject(err);
             }
-            return resolve(file);
+
+            return resolve({
+                files,
+                fields,
+            });
         });
     });
 };
 
 export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
-    const files = await formParse(req);
+    const { files, fields } = await formParse(req);
     const { type } = files['csv-upload'];
     let fileContents = '';
 
@@ -48,6 +58,7 @@ export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
     return {
         files,
         fileContents,
+        fields,
     };
 };
 
@@ -113,9 +124,7 @@ export const containsViruses = async (pathToFileToScan: string): Promise<boolean
     return is_infected;
 };
 
-export const processFileUpload = async (req: NextApiRequest, inputName: string): Promise<FileUploadResponse> => {
-    const formData = await getFormData(req);
-
+export const processFileUpload = async (formData: FileData, inputName: string): Promise<FileUploadResponse> => {
     if (!formData.fileContents || formData.fileContents === '') {
         logger.warn('', { context: 'api.utils.processFileUpload', message: 'no file attached' });
         return {

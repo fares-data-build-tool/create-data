@@ -43,7 +43,7 @@ const FareTypeRadios = ({ standardFares, otherFares = [] }: FareTypeRadioProps):
                             Other Fares
                         </h2>
                         {otherFares.map(otherFare => (
-                            <div className="govuk-radios__item">
+                            <div className="govuk-radios__item" key={otherFare.fareType}>
                                 <input
                                     className="govuk-radios__input"
                                     id={`fare-type-${otherFare.fareType}`}

@@ -38,6 +38,7 @@ exports[`pages csvUpload should render correctly 1`] = `
     guidanceDocAttachmentUrl=""
     guidanceDocDisplayName=""
     guidanceDocSize=""
+    showPriceOption={true}
   />
 </Component>
 `;
