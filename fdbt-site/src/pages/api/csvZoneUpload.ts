@@ -6,7 +6,7 @@ import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { isSessionValid } from './apiUtils/validator';
-import { processFileUpload } from './apiUtils/fileUpload';
+import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
@@ -144,7 +144,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('session is invalid.');
         }
 
-        const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
+        const formData = await getFormData(req);
+        const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
 
         if (fileError) {
             const errors: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: fileError }];

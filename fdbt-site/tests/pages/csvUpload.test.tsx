@@ -17,6 +17,7 @@ describe('pages', () => {
                     csvTemplateAttachmentUrl=""
                     csvTemplateSize=""
                     errors={[]}
+                    showPriceOption
                     csrfToken=""
                 />,
             );

@@ -71,13 +71,13 @@ export const nonNumericPricesTestCsv: string =
 
 export const decimalPricesTestCsv: string =
     'Acomb Green Lane,,,,,,,\n' +
-    '110,Mattison Way,,,,,,\n' +
-    '110,110,Nursery Drive,,,,,\n' +
-    '110,1.10,110,Holl Bank/Beech Ave,,,,\n' +
-    '170,110,110,110,Cambridge Street (York),,,\n' +
-    '170,170,120,110,100,Blossom Street,,\n' +
-    '170,170,170,170,100,100,Rail Station (York),\n' +
-    '170,170,170,100,100,100,100,Piccadilly (York)';
+    '1.10,Mattison Way,,,,,,\n' +
+    '1.10,1.10,Nursery Drive,,,,,\n' +
+    '1.10,1.10,1.10,Holl Bank/Beech Ave,,,,\n' +
+    '1.70,1.70,1.10,1.10,Cambridge Street (York),,,\n' +
+    '1.70,1.70,1.10,1.10,1.00,Blossom Street,,\n' +
+    '1.70,1.70,1.70,1.70,1,1.00,Rail Station (York),\n' +
+    '1.70,1.70,1.70,1.70,1.00,1.00,1,Piccadilly (York)';
 
 export const emptyStageNameTestCsv: string =
     'Acomb Green Lane,,,,,,,\n' +
@@ -142,6 +142,21 @@ export const unprocessedObjectWithEmptyCells = {
         '170,170,170,170,100,100,Rail Station (York),\n' +
         ' ,170,170,170,100,100,100, Piccadilly (York)\n' +
         ',,,,,,,\n',
+    ContentType: 'text/csv; charset=utf-8',
+};
+
+export const unprocessedObjectWithDecimalPrices = {
+    Bucket: 'fdbt-raw-user-data',
+    Key: '780e3459-6305-4ae5-9082-b925b92cb46c',
+    Body:
+        'Acomb Green Lane,,,,,,,\n' +
+        '1.10,Mattison Way,,,,,,\n' +
+        '1.10,1.10,Nursery Drive,,,,,\n' +
+        '1.10,1.10,1.10,Holl Bank/Beech Ave,,,,\n' +
+        '1.70,1.70,1.10,1.10,Cambridge Street (York),,,\n' +
+        '1.70,1.70,1.10,1.10,1.00,Blossom Street,,\n' +
+        '1.70,1.70,1.70,1.70,1,1.00,Rail Station (York),\n' +
+        '1.70,1.70,1.70,1.70,1.00,1.00,1,Piccadilly (York)',
     ContentType: 'text/csv; charset=utf-8',
 };
 

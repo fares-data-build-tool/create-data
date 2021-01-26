@@ -5,6 +5,24 @@ exports[`pages createdFiles should render correctly for a classic operator 1`] =
   description="Created Files page for the Create Fares Data Service"
   title="Created Files - Create Fares Data Service"
 >
+  <div
+    className="govuk-breadcrumbs "
+  >
+    <ol
+      className="govuk-breadcrumbs__list"
+    >
+      <li
+        className="govuk-breadcrumbs__list-item"
+      >
+        <a
+          className="govuk-breadcrumbs__link"
+          href="/home"
+        >
+          Home
+        </a>
+      </li>
+    </ol>
+  </div>
   <h1
     className="govuk-heading-l"
   >
@@ -230,6 +248,24 @@ exports[`pages createdFiles should render correctly for a scheme operator 1`] = 
   description="Created Files page for the Create Fares Data Service"
   title="Created Files - Create Fares Data Service"
 >
+  <div
+    className="govuk-breadcrumbs "
+  >
+    <ol
+      className="govuk-breadcrumbs__list"
+    >
+      <li
+        className="govuk-breadcrumbs__list-item"
+      >
+        <a
+          className="govuk-breadcrumbs__link"
+          href="/home"
+        >
+          Home
+        </a>
+      </li>
+    </ol>
+  </div>
   <h1
     className="govuk-heading-l"
   >
