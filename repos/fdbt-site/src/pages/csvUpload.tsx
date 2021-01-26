@@ -35,7 +35,9 @@ const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
     const csvUploadAttribute = getSessionAttribute(ctx.req, CSV_UPLOAD_ATTRIBUTE);
-    const errors: ErrorInfo[] = csvUploadAttribute ? csvUploadAttribute.errors : [];
+    const errors: ErrorInfo[] = csvUploadAttribute?.errors ?? [];
+    const poundsOrPence = csvUploadAttribute?.poundsOrPence ?? null;
+
     return {
         props: {
             csvUploadApiRoute: '/api/csvUpload',
@@ -50,6 +52,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvTemplateSize: '255B',
             errors,
             detailSummary: "My fare triangle won't upload",
+            showPriceOption: true,
+            poundsOrPence,
             csrfToken: getCsrfToken(ctx),
         },
     };

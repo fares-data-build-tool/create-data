@@ -121,6 +121,15 @@ const getCleanFileSize = (fileSize: number): string => {
 
 const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: CreateFilesProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
+        <div className="govuk-breadcrumbs ">
+            <ol className="govuk-breadcrumbs__list">
+                <li className="govuk-breadcrumbs__list-item">
+                    <a className="govuk-breadcrumbs__link" href="/home">
+                        Home
+                    </a>
+                </li>
+            </ol>
+        </div>
         <h1 className="govuk-heading-l">Previously created files</h1>
         <span className="govuk-hint" id="fare-type-operator-hint">
             This page will show any NeTEx files created in the last 60 days
