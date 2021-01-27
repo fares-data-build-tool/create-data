@@ -11,6 +11,7 @@ import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Service - Create Fares Data Service';
 const description = 'Service selection page of the Create Fares Data Service';
@@ -85,11 +86,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const { name } = JSON.parse(operatorCookie);
-
     const services = await getServicesByNocCode(nocCode);
 
     if (services.length === 0) {
-        throw new Error(`No services found for NOC Code: ${nocCode}`);
+        if (ctx.res) {
+            redirectTo(ctx.res, '/noServices');
+        } else {
+            throw new Error(`No services found for NOC Code: ${nocCode}`);
+        }
     }
 
     return {

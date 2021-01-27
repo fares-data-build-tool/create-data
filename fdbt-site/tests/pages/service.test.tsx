@@ -121,7 +121,9 @@ describe('pages', () => {
                 mockEndFn,
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('No services found for NOC Code: TEST');
+            await getServerSideProps(ctx);
+
+            expect(ctx.res?.writeHead).toBeCalledWith(302, { Location: '/noServices' });
         });
 
         it('throws error if noc invalid', async () => {

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages noServices should render correctly 1`] = `
+<Component
+  description="No Services error page of the Create Fares Data Service"
+  title="No Services - Create Fares Data Service"
+>
+  <h1
+    className="govuk-heading-l"
+  >
+    Sorry, there is no service data available for your National Operator Code (NOC)
+  </h1>
+  <p
+    className="govuk-body-m"
+  >
+    This service utilises the Traveline National Dataset (TNDS) to obtain operators' service data in order to help them create fares data.
+  </p>
+  <p
+    className="govuk-body-m"
+  >
+    It appears there is no service data for this operator in the Traveline National Dataset.
+  </p>
+  <p
+    className="govuk-body-m"
+  >
+    You will not be able to continue creating fares data without this.
+  </p>
+  <p
+    className="govuk-body-m"
+  >
+    <a
+      href="/contact"
+    >
+      Contact
+    </a>
+     us if you have further questions.
+  </p>
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/home"
+    id="home-button"
+    role="button"
+  >
+    Home
+  </a>
+</Component>
+`;
