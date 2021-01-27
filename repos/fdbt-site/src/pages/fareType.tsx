@@ -13,6 +13,7 @@ import { setCookieOnServerSide, getAndValidateNoc, getCsrfToken, isSchemeOperato
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
+import { getServicesByNocCode } from '../data/auroradb';
 
 const title = 'Fare Type - Create Fares Data Service ';
 const description = 'Fare Type selection page of the Create Fares Data Service';
@@ -93,12 +94,22 @@ const FareType = ({ operatorName, errors = [], csrfToken }: FareTypeProps): Reac
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareTypeProps } => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: FareTypeProps }> => {
     const cookies = parseCookies(ctx);
     const csrfToken = getCsrfToken(ctx);
 
     const schemeOp = isSchemeOperator(ctx);
     const opIdentifier = getAndValidateNoc(ctx);
+
+    const services = await getServicesByNocCode(opIdentifier);
+
+    if (services.length === 0) {
+        if (ctx.res) {
+            redirectTo(ctx.res, '/noServices');
+        } else {
+            throw new Error(`No services found for NOC Code: ${opIdentifier}`);
+        }
+    }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
