@@ -73,17 +73,17 @@ describe('changePassword', () => {
             const result = collectErrors(inputs);
             expect(result).toStrictEqual([
                 {
-                    errorMessage: 'Time must be in 2400 format',
+                    errorMessage: 'Time must be in 24hr format',
                     id: 'start-time-monday',
                     userInput: '7pm',
                 },
                 {
-                    errorMessage: 'Time must be in 2400 format',
+                    errorMessage: 'Time must be in 24hr format',
                     id: 'end-time-monday',
                     userInput: '8888888',
                 },
                 {
-                    errorMessage: 'Time must be in 2400 format',
+                    errorMessage: 'Time must be in 24hr format',
                     id: 'start-time-tuesday',
                     userInput: '-0730',
                 },
@@ -93,12 +93,12 @@ describe('changePassword', () => {
                     userInput: '2400',
                 },
                 {
-                    errorMessage: 'Time must be in 2400 format',
+                    errorMessage: 'Time must be in 24hr format',
                     id: 'start-time-wednesday',
                     userInput: '0890',
                 },
                 {
-                    errorMessage: 'Time must be in 2400 format',
+                    errorMessage: 'Time must be in 24hr format',
                     id: 'end-time-wednesday',
                     userInput: '0460',
                 },
