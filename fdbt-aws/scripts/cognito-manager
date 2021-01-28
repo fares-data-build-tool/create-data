@@ -100,6 +100,10 @@ function verify_all_emails() {
   done
 }
 
+function get_all_user_emails() {
+  aws cognito-idp list-users --user-pool-id $USER_POOL | jq -rc '.Users[].Attributes[] | select(.Name == "email")' | jq -r ."Value"
+}
+
 if [ -z $USER_POOL ]; then
   echo "You must be authenticated against the target AWS account"
   exit 1
@@ -121,8 +125,10 @@ elif [[ $COMMAND = 'get-user-status' ]]; then
   get_user_status
 elif [[ $COMMAND = 'verify-all-emails' ]]; then
   verify_all_emails
+elif [[ $COMMAND = 'get-all-user-emails' ]]; then
+  get_all_user_emails
 else
-  echo "usage cognito-manager <add-user | add-scheme-operator | delete-user | update-noc | update-scheme-operator-name | update-scheme-operator-region-code | verify-all-emails>"
+  echo "usage cognito-manager <add-user | add-scheme-operator | delete-user | update-noc | update-scheme-operator-name | update-scheme-operator-region-code | verify-all-emails | get-all-user-emails>"
   exit 1
 fi
 
