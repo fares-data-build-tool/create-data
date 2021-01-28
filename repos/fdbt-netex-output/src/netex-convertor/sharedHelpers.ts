@@ -215,7 +215,7 @@ export const getCoreData = (
     ticket: PointToPointTicket | PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
 ): CoreData => {
     if (isPointToPointTicket(ticket)) {
-        const baseOperatorInfo = operators.find(operator => operator.nocCode === ticket.nocCode);
+        const baseOperatorInfo = operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
         if (!baseOperatorInfo) {
             throw new Error('Could not find base operator information for point to point ticket.');
         }
@@ -240,7 +240,7 @@ export const getCoreData = (
     const periodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket = ticket;
     const baseOperatorInfo = isSchemeOperatorTicket(periodTicket)
         ? getBaseSchemeOperatorInfo(periodTicket)
-        : operators.find(operator => operator.nocCode === periodTicket.nocCode);
+        : operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(periodTicket.nocCode));
 
     const operatorIdentifier = isSchemeOperatorTicket(periodTicket)
         ? `${periodTicket.schemeOperatorName}-${periodTicket.schemeOperatorRegionCode}`
