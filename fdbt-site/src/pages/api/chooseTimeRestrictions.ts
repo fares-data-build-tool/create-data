@@ -30,7 +30,7 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
                 });
             } else {
                 errors.push({
-                    errorMessage: 'Time must be in 2400 format',
+                    errorMessage: 'Time must be in 24hr format',
                     id: `start-time-${input.day}`,
                     userInput: input.startTime,
                 });
@@ -46,7 +46,7 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
                 });
             } else {
                 errors.push({
-                    errorMessage: 'Time must be in 2400 format',
+                    errorMessage: 'Time must be in 24hr format',
                     id: `end-time-${input.day}`,
                     userInput: input.endTime,
                 });
