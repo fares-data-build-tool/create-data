@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages confirmRegistration should render correctly 1`] = `
+exports[`pages confirmRegistration should render correctly with no tndsless nocs 1`] = `
 <Component
   description="Confirm Registration page for the Create Fares Data Service"
   title="Registration Successful - Create Fares Data Service"
@@ -10,6 +10,61 @@ exports[`pages confirmRegistration should render correctly 1`] = `
   >
     Your account has been successfully created
   </h1>
+  <p
+    className="govuk-body-l"
+  >
+    Click continue to go to the homepage.
+  </p>
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/"
+    id="continue-button"
+    role="button"
+  >
+    Continue
+  </a>
+</Component>
+`;
+
+exports[`pages confirmRegistration should render correctly with tndsless nocs 1`] = `
+<Component
+  description="Confirm Registration page for the Create Fares Data Service"
+  title="Registration Successful - Create Fares Data Service"
+>
+  <h1
+    className="govuk-heading-l"
+  >
+    Your account has been successfully created
+  </h1>
+  <p
+    className="govuk-body-m"
+  >
+    This service utilises the Traveline National Dataset (TNDS) to obtain operators' service data in order to help them create fares data.
+  </p>
+  <p
+    className="govuk-body-m"
+  >
+    The following National Operator Codes have no service data in TNDS and so cannot be used to create NeTex:
+  </p>
+  <p
+    className="govuk-body-m"
+  >
+    <b>
+      AAAA,ZZZZ
+    </b>
+  </p>
+  <p
+    className="govuk-body-m"
+  >
+    <a
+      href="/contact"
+    >
+      Contact
+    </a>
+     us if you have further questions.
+  </p>
   <p
     className="govuk-body-l"
   >
