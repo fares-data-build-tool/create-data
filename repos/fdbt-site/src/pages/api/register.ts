@@ -4,9 +4,27 @@ import { USER_COOKIE } from '../../constants';
 import { ErrorInfo } from '../../interfaces';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
+import { getServicesByNocCode } from '../../data/auroradb';
+
+export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => {
+    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc));
+
+    const servicesFound = await Promise.all(servicesFoundPromise);
+
+    const nocsWithNoTnds = nocs
+        .map((noc, index) => {
+            if (servicesFound[index].length === 0) {
+                return noc;
+            }
+            return '';
+        })
+        .filter(noc => noc);
+
+    return nocsWithNoTnds;
+};
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookie = (inputChecks: ErrorInfo[], regKey: string): void => {
+    const setErrorsCookieAndRedirect = (inputChecks: ErrorInfo[], regKey: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
         setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
         redirectTo(res, `/register?key=${regKey}`);
@@ -38,7 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (inputChecks.some(el => el.errorMessage !== '')) {
-            setErrorsCookie(inputChecks, regKey);
+            setErrorsCookieAndRedirect(inputChecks, regKey);
             return;
         }
 
@@ -46,6 +64,20 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const { ChallengeName, ChallengeParameters, Session } = await initiateAuth(email, regKey);
 
             if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters?.userAttributes && Session) {
+                const parameters = JSON.parse(ChallengeParameters.userAttributes);
+                const cognitoNocs = (parameters['custom:noc'] as string | undefined)?.split('|');
+
+                if (!cognitoNocs) {
+                    throw new Error('No NOCs returned from cognito');
+                }
+
+                const nocsWithNoTnds = await operatorHasTndsData(cognitoNocs);
+
+                if (!(nocsWithNoTnds.length < cognitoNocs.length)) {
+                    redirectTo(res, '/noServices');
+                    return;
+                }
+
                 await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);
                 await updateUserAttributes(email, [{ Name: 'custom:contactable', Value: contactable }]);
                 await globalSignOut(email);
@@ -54,6 +86,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                     context: 'api.register',
                     message: 'registration successful',
                 });
+
+                if (nocsWithNoTnds.length > 0) {
+                    redirectTo(res, `/confirmRegistration?nocs=${nocsWithNoTnds.join('|')}`);
+                    return;
+                }
 
                 redirectTo(res, '/confirmRegistration');
             } else {
@@ -71,7 +108,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 errorMessage: 'There was a problem creating your account',
             });
 
-            setErrorsCookie(inputChecks, regKey);
+            setErrorsCookieAndRedirect(inputChecks, regKey);
         }
     } catch (error) {
         const message = 'There was a problem with the creation of the account';
