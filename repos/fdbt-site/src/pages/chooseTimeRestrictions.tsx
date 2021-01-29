@@ -38,7 +38,7 @@ const ChooseTimeRestrictions = ({
                         times, leave them blank. You can leave them all blank, if needed.
                     </span>
                     <div className="govuk-inset-text" id="time-restrictions-hint">
-                        Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
+                        Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
                     </div>
                     <TimeRestrictionsTable
                         chosenDays={chosenDays}

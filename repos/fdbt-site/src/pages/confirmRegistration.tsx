@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { NextPage, NextPageContext } from 'next';
+import { NextPageContext } from 'next';
+import isArray from 'lodash/isArray';
 import TwoThirdsLayout from '../layout/Layout';
 import { deleteCookieOnServerSide } from '../utils';
 import { USER_COOKIE } from '../constants';
@@ -7,9 +8,31 @@ import { USER_COOKIE } from '../constants';
 const title = 'Registration Successful - Create Fares Data Service';
 const description = 'Confirm Registration page for the Create Fares Data Service';
 
-const ConfirmRegistration: NextPage = (): ReactElement => (
+interface ConfirmRegistrationProps {
+    tndslessNocs: string[];
+}
+
+const ConfirmRegistration = ({ tndslessNocs }: ConfirmRegistrationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-l">Your account has been successfully created</h1>
+        {tndslessNocs.length > 0 && (
+            <>
+                <p className="govuk-body-m">
+                    This service utilises the Traveline National Dataset (TNDS) to obtain operators&apos; service data
+                    in order to help them create fares data.
+                </p>
+                <p className="govuk-body-m">
+                    The following National Operator Codes have no service data in TNDS and so cannot be used to create
+                    NeTex:
+                </p>
+                <p className="govuk-body-m">
+                    <b>{tndslessNocs.join(',')}</b>
+                </p>
+                <p className="govuk-body-m">
+                    <a href="/contact">Contact</a> us if you have further questions.
+                </p>
+            </>
+        )}
         <p className="govuk-body-l">Click continue to go to the homepage.</p>
         <a
             href="/"
@@ -24,9 +47,18 @@ const ConfirmRegistration: NextPage = (): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: ConfirmRegistrationProps } => {
     deleteCookieOnServerSide(ctx, USER_COOKIE);
-    return { props: {} };
+    const { nocs } = ctx.query;
+    let nocsToDisplay: string[] = [];
+    if (nocs && !isArray(nocs)) {
+        nocsToDisplay = nocsToDisplay.concat(nocs.split('|'));
+    }
+    return {
+        props: {
+            tndslessNocs: nocsToDisplay,
+        },
+    };
 };
 
 export default ConfirmRegistration;

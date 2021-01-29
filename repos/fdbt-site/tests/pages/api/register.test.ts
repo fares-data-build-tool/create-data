@@ -1,10 +1,11 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import register from '../../../src/pages/api/register';
+import register, { operatorHasTndsData } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { USER_COOKIE } from '../../../src/constants';
+import { getServicesByNocCode } from '../../../src/data/auroradb';
 
 jest.mock('../../../src/data/auroradb.ts');
 
@@ -184,6 +185,28 @@ describe('register', () => {
         });
     });
 
+    it('should redirect when there are no services for the noc code', async () => {
+        (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                email: 'test@test.com',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
+                regKey: 'abcdefg',
+            },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await register(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/noServices',
+        });
+    });
+
     it('should error when the sign in fails', async () => {
         authSignInSpy.mockImplementation(() => {
             throw new Error('Auth failed');
@@ -281,5 +304,63 @@ describe('register', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
         });
+    });
+});
+
+describe('operatorHasTndsData', () => {
+    const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
+    afterEach(() => {
+        getServicesByNocCodeSpy.mockReset();
+    });
+    it('returns the correct noc codes if all noc codes have no TNDS data', async () => {
+        getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
+        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        expect(result.length).toBe(2);
+        expect(result).toStrictEqual(['AAA', 'BBB']);
+    });
+
+    it('returns the correct noc codes if some noc codes have no TNDS data', async () => {
+        getServicesByNocCodeSpy
+            .mockImplementationOnce(() =>
+                Promise.resolve([
+                    {
+                        lineName: '2AC',
+                        startDate: '01012020',
+                        description: 'linename for service ',
+                        serviceCode: 'NW_05_BLAC_2C_1',
+                    },
+                ]),
+            )
+            .mockImplementationOnce(() => Promise.resolve([]));
+        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        expect(result.length).toBe(1);
+        expect(result).toStrictEqual(['BBB']);
+    });
+
+    it('returns a result with true if noc codes have TNDS data', async () => {
+        getServicesByNocCodeSpy
+            .mockImplementationOnce(() =>
+                Promise.resolve([
+                    {
+                        lineName: '2AC',
+                        startDate: '01012020',
+                        description: 'linename for service ',
+                        serviceCode: 'NW_05_BLAC_2C_1',
+                    },
+                ]),
+            )
+            .mockImplementationOnce(() =>
+                Promise.resolve([
+                    {
+                        lineName: '2AD',
+                        startDate: '03012020',
+                        description: 'another linename for service ',
+                        serviceCode: 'NW_05_BLAC_2C_1',
+                    },
+                ]),
+            );
+        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        expect(result.length).toBe(0);
+        expect(result).toStrictEqual([]);
     });
 });
