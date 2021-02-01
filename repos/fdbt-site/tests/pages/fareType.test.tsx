@@ -73,10 +73,6 @@ describe('pages', () => {
                 (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
                 const mockContext = getMockContext({
                     mockWriteHeadFn: writeHeadMock,
-                    cookies: {
-                        operator: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION', nocCode: 'TESTSCHEME' },
-                        idToken: mockSchemOpIdToken,
-                    },
                 });
                 await getServerSideProps(mockContext);
                 expect(writeHeadMock).toBeCalledWith(302, { Location: '/noServices' });
