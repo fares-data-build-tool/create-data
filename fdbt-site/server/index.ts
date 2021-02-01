@@ -32,6 +32,7 @@ const unauthenticatedGetRoutes = [
     '/cookieDetails',
     '/accessibility',
     '/privacy',
+    '/noServices',
 ];
 
 const unauthenticatedPostRoutes = [

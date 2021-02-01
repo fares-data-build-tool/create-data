@@ -103,7 +103,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const services = await getServicesByNocCode(opIdentifier);
 
-    if (services.length === 0) {
+    if (!schemeOp && services.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/noServices');
         } else {
