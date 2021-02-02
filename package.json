@@ -5,6 +5,7 @@
     "dependencies": {
         "@aws-amplify/ui-components": "^0.10.0",
         "@aws-amplify/ui-react": "^0.2.34",
+        "@govuk-react/button": "^0.7.1",
         "@govuk-react/heading": "^0.7.1",
         "@govuk-react/page": "^0.7.1",
         "@govuk-react/table": "^0.7.1",
@@ -17,6 +18,7 @@
         "govuk-react": "^0.7.2",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
+        "react-hook-form": "^6.14.2",
         "react-markdown": "^5.0.3",
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.1",

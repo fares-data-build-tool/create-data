@@ -1,12 +1,14 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Auth } from 'aws-amplify';
 import {
+    AdminCreateUserRequest,
     ListUserPoolsRequest,
     ListUsersRequest,
     UserPoolDescriptionType,
     UserType,
 } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { AWS_REGION } from '../constants';
+import { FormUser } from '../pages/AddUser';
 
 export const getCognitoClient = async (): Promise<CognitoIdentityServiceProvider> =>
     new CognitoIdentityServiceProvider({ region: AWS_REGION, credentials: await Auth.currentUserCredentials() });
@@ -45,4 +47,25 @@ export const listUsersInPool = async (
     await getUsersWithPaginationToken(undefined);
 
     return users;
+};
+
+const generateTemporaryPassword = (): string =>
+    Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+export const addUserToPool = async (
+    cognito: CognitoIdentityServiceProvider,
+    userPoolId: string,
+    formUser: FormUser,
+): Promise<void> => {
+    const params: AdminCreateUserRequest = {
+        UserPoolId: userPoolId,
+        Username: formUser.email,
+        UserAttributes: [
+            { Name: 'custom:noc', Value: formUser.nocs },
+            { Name: 'email', Value: formUser.email },
+            { Name: 'email_verified', Value: 'true' },
+        ],
+        TemporaryPassword: generateTemporaryPassword(),
+    };
+    await cognito.adminCreateUser(params).promise();
 };
