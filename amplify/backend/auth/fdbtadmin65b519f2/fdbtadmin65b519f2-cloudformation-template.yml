@@ -169,6 +169,16 @@ Resources:
 
       AdminCreateUserConfig:
         AllowAdminCreateUserOnly: True
+        InviteMessageTemplate:
+          EmailMessage: !Sub >
+              To create an account to access the Create Fares Data Admin Panel click the link below:
+              <br />
+              <br />
+              https://admin.${env}.dft-cfd.infinityworks.com/
+              <br />
+              <br />
+              Your username is {username} and temporary password is {####}
+          EmailSubject: Register for Create Fares Data Admin Panel
 
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
