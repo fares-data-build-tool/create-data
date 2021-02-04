@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import startCase from 'lodash/startCase';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 import { ErrorInfo, TimeInput } from '../interfaces';
+import { sentenceCaseString } from '../utils';
 
 interface TimeRestrictionsTableProps {
     chosenDays: string[];
@@ -24,7 +24,7 @@ const TimeRestrictionsTable = ({
             {chosenDays.map((chosenDay, index) => (
                 <fieldset className="govuk-fieldset flex-container time-restrictions-table" key={chosenDay}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s day-label govuk-grid-column-one-quarter">
-                        {startCase(chosenDay)}
+                        {sentenceCaseString(chosenDay)}
                     </legend>
                     <div className="govuk-grid-column-one-quarter">
                         <FormGroupWrapper errors={errors} errorId={`start-time-${chosenDay}`}>
