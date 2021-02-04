@@ -3,6 +3,8 @@ import { NextPageContext } from 'next';
 import { IncomingMessage, ServerResponse } from 'http';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
+import startCase from 'lodash/startCase';
+import toLower from 'lodash/toLower';
 import {
     OPERATOR_COOKIE,
     ID_TOKEN_COOKIE,
@@ -116,6 +118,22 @@ export const buildTitle = (errors: ErrorInfo[], title: string): string => {
     }
 
     return title;
+};
+
+export const sentenceCaseString = (input: string): string => {
+    const startCasedInput = startCase(input);
+    if (startCasedInput.includes(' ')) {
+        const splitStartCasedInput = startCasedInput.split(' ');
+        return splitStartCasedInput
+            .map((section, index) => {
+                if (index === 0) {
+                    return section;
+                }
+                return toLower(section);
+            })
+            .join(' ');
+    }
+    return startCasedInput;
 };
 
 export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(

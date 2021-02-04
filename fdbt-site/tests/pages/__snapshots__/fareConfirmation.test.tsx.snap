@@ -22,37 +22,37 @@ exports[`pages fareConfirmation should render correctly for non school tickets 1
           Object {
             "content": "Single",
             "href": "fareType",
-            "name": "Fare Type",
+            "name": "Fare type",
           },
           Object {
             "content": "Adult",
             "href": "passengerType",
-            "name": "Passenger Type",
+            "name": "Passenger type",
           },
           Object {
-            "content": "Minimum Age: 18 Maximum Age: 100",
+            "content": "Minimum age: 18 Maximum age: 100",
             "href": "definePassengerType",
-            "name": "Passenger Information - Age Range",
+            "name": "Passenger information - age range",
           },
           Object {
-            "content": "Membership Card",
+            "content": "Membership card",
             "href": "definePassengerType",
-            "name": "Passenger Information - Proof Documents",
+            "name": "Passenger information - proof documents",
           },
           Object {
             "content": "Start time: 0900 End time: 1600",
             "href": "defineTimeRestrictions",
-            "name": "Time Restrictions - Thursday",
+            "name": "Time restrictions - Thursday",
           },
           Object {
             "content": "Start time: N/A End time: 1600",
             "href": "defineTimeRestrictions",
-            "name": "Time Restrictions - Friday",
+            "name": "Time restrictions - Friday",
           },
           Object {
             "content": "Start time: N/A End time: N/A",
             "href": "defineTimeRestrictions",
-            "name": "Time Restrictions - Bank Holiday",
+            "name": "Time restrictions - Bank holiday",
           },
         ]
       }
@@ -88,34 +88,34 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
       confirmationElements={
         Array [
           Object {
-            "content": "School Service",
+            "content": "School service",
             "href": "fareType",
-            "name": "Fare Type",
+            "name": "Fare type",
           },
           Object {
-            "content": "School Pupil",
+            "content": "School pupil",
             "href": "",
-            "name": "Passenger Type",
+            "name": "Passenger type",
           },
           Object {
-            "content": "Minimum Age: No details entered Maximum Age: 18",
+            "content": "Minimum age: N/A Maximum age: 18",
             "href": "definePassengerType",
-            "name": "Passenger Information - Age Range",
+            "name": "Passenger information - age range",
           },
           Object {
-            "content": "Student Card",
+            "content": "Student card",
             "href": "definePassengerType",
-            "name": "Passenger Information - Proof Documents",
+            "name": "Passenger information - proof documents",
           },
           Object {
-            "content": "Yes",
+            "content": "yes",
             "href": "termTime",
-            "name": "Only Valid During Term Times",
+            "name": "Only valid during term times",
           },
           Object {
             "content": "Single",
             "href": "schoolFareType",
-            "name": "School Ticket Fare Type",
+            "name": "School ticket fare type",
           },
         ]
       }

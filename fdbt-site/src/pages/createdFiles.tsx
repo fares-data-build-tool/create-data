@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import startCase from 'lodash/startCase';
 import TwoThirdsLayout from '../layout/Layout';
-import { getNocFromIdToken } from '../utils';
+import { getNocFromIdToken, sentenceCaseString } from '../utils';
 import { retrieveNetexForNocs, getMatchingDataObject, getNetexSignedUrl } from '../data/s3';
 import { S3NetexFile, PeriodTicket, PointToPointTicket, BaseProduct } from '../interfaces';
 import {
@@ -26,7 +25,9 @@ interface CreateFilesProps {
 }
 
 export const buildName = (file: PointToPointTicket | PeriodTicket): string => {
-    let name = `${file.nocCode ? `${file.nocCode} - ` : ''}${startCase(file.type)} - ${startCase(file.passengerType)}`;
+    let name = `${file.nocCode ? `${file.nocCode} - ` : ''}${sentenceCaseString(file.type)} - ${sentenceCaseString(
+        file.passengerType,
+    )}`;
 
     if (isPointToPointTicket(file)) {
         name += ` - Line ${file.lineName}`;
@@ -168,10 +169,10 @@ const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: Cr
                                     </>
                                 )}
                                 <span className="govuk-body govuk-!-font-weight-bold">Fare Type: </span>{' '}
-                                {startCase(file.fareType)}
+                                {sentenceCaseString(file.fareType)}
                                 <br />
                                 <span className="govuk-body govuk-!-font-weight-bold">Passenger Type: </span>{' '}
-                                {startCase(file.passengerType)}
+                                {sentenceCaseString(file.passengerType)}
                                 <br />
                                 <span className="govuk-body govuk-!-font-weight-bold">Sales Offer Package(s): </span>
                                 {file.sopNames}

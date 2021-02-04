@@ -180,7 +180,7 @@ exports[`pages createdFiles should render correctly for a classic operator 1`] =
             Fare Type: 
           </span>
            
-          Flat Fare
+          Flat fare
           <br />
           <span
             className="govuk-body govuk-!-font-weight-bold"
@@ -407,7 +407,7 @@ exports[`pages createdFiles should render correctly for a scheme operator 1`] = 
             Fare Type: 
           </span>
            
-          Flat Fare
+          Flat fare
           <br />
           <span
             className="govuk-body govuk-!-font-weight-bold"

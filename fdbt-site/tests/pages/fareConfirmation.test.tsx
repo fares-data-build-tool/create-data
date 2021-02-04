@@ -16,6 +16,7 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['membership card'],
                     }}
+                    groupPassengerInfo={[]}
                     schoolFareType=""
                     termTime=""
                     fullTimeRestrictions={[
@@ -52,6 +53,7 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['Student Card'],
                     }}
+                    groupPassengerInfo={[]}
                     schoolFareType="single"
                     termTime="true"
                     fullTimeRestrictions={[]}
@@ -73,6 +75,7 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['membership card'],
                     },
+                    [],
                     '',
                     '',
                     [
@@ -94,32 +97,32 @@ describe('pages', () => {
                     ],
                 );
                 expect(result).toStrictEqual([
-                    { content: 'Return', href: 'fareType', name: 'Fare Type' },
-                    { content: 'Adult', href: 'passengerType', name: 'Passenger Type' },
+                    { content: 'Return', href: 'fareType', name: 'Fare type' },
+                    { content: 'Adult', href: 'passengerType', name: 'Passenger type' },
                     {
-                        content: 'Minimum Age: 18 Maximum Age: 100',
+                        content: 'Minimum age: 18 Maximum age: 100',
                         href: 'definePassengerType',
-                        name: 'Passenger Information - Age Range',
+                        name: 'Passenger information - age range',
                     },
                     {
-                        content: 'Membership Card',
+                        content: 'Membership card',
                         href: 'definePassengerType',
-                        name: 'Passenger Information - Proof Documents',
+                        name: 'Passenger information - proof documents',
                     },
                     {
                         content: 'Start time: 0900 End time: 1600',
                         href: 'defineTimeRestrictions',
-                        name: 'Time Restrictions - Wednesday',
+                        name: 'Time restrictions - Wednesday',
                     },
                     {
                         content: 'Start time: N/A End time: 1600',
                         href: 'defineTimeRestrictions',
-                        name: 'Time Restrictions - Thursday',
+                        name: 'Time restrictions - Thursday',
                     },
                     {
                         content: 'Start time: N/A End time: N/A',
                         href: 'defineTimeRestrictions',
-                        name: 'Time Restrictions - Friday',
+                        name: 'Time restrictions - Friday',
                     },
                 ]);
             });
@@ -134,32 +137,33 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['Student Card'],
                     },
+                    [],
                     'single',
                     'true',
                     [],
                 );
                 expect(result).toStrictEqual([
-                    { content: 'School Service', href: 'fareType', name: 'Fare Type' },
-                    { content: 'School Pupil', href: '', name: 'Passenger Type' },
+                    { content: 'School service', href: 'fareType', name: 'Fare type' },
+                    { content: 'School pupil', href: '', name: 'Passenger type' },
                     {
-                        content: 'Minimum Age: No details entered Maximum Age: 18',
+                        content: 'Minimum age: N/A Maximum age: 18',
                         href: 'definePassengerType',
-                        name: 'Passenger Information - Age Range',
+                        name: 'Passenger information - age range',
                     },
                     {
-                        content: 'Student Card',
+                        content: 'Student card',
                         href: 'definePassengerType',
-                        name: 'Passenger Information - Proof Documents',
+                        name: 'Passenger information - proof documents',
                     },
                     {
-                        content: 'Yes',
+                        content: 'yes',
                         href: 'termTime',
-                        name: 'Only Valid During Term Times',
+                        name: 'Only valid during term times',
                     },
                     {
                         content: 'Single',
                         href: 'schoolFareType',
-                        name: 'School Ticket Fare Type',
+                        name: 'School ticket fare type',
                     },
                 ]);
             });

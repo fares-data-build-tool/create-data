@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import isArray from 'lodash/isArray';
-import startCase from 'lodash/startCase';
 import {
     NextPageContextWithSession,
     Journey,
@@ -39,7 +38,7 @@ import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfa
 import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
 import { MultipleProductAttribute, MultiProduct } from './api/multipleProducts';
-import { getCookieValue, getCsrfToken } from '../utils';
+import { getCookieValue, getCsrfToken, sentenceCaseString } from '../utils';
 import { SchoolFareTypeAttribute } from './api/schoolFareType';
 import { MultipleOperatorsAttribute } from './api/searchOperators';
 
@@ -251,7 +250,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             },
             {
                 name: `${product.productName} - Validity`,
-                content: `${startCase(product.productValidity)}${
+                content: `${sentenceCaseString(product.productValidity)}${
                     product.productEndTime ? ` - ${product.productEndTime}` : ''
                 }`,
                 href: numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
