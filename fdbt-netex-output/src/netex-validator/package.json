@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "triggerNetexValidator": "NODE_ENV=development sls invoke local --stage dev -f NetexValidator -d \"$EVENT_DATA\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "serverless-python-requirements": "^5.1.0"
+  },
+  "devDependencies": {
+    "sls": "^0.1.0"
   }
 }
