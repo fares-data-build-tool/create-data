@@ -22,17 +22,17 @@ exports[`pages stageNamesConfirmation should render correctly 1`] = `
           Object {
             "content": "leeds",
             "href": "stageNames",
-            "name": "Fare Stage 1",
+            "name": "Fare stage 1",
           },
           Object {
             "content": "manchester",
             "href": "stageNames",
-            "name": "Fare Stage 2",
+            "name": "Fare stage 2",
           },
           Object {
             "content": "bolton",
             "href": "stageNames",
-            "name": "Fare Stage 3",
+            "name": "Fare stage 3",
           },
         ]
       }
