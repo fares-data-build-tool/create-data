@@ -17,9 +17,9 @@ describe('pages', () => {
         it('builds confirmation elements for an array of fare stages', () => {
             const result = buildFareStageNamesConfirmationElements(['leeds', 'manchester', 'bolton']);
             expect(result).toStrictEqual([
-                { content: 'leeds', href: 'stageNames', name: 'Fare Stage 1' },
-                { content: 'manchester', href: 'stageNames', name: 'Fare Stage 2' },
-                { content: 'bolton', href: 'stageNames', name: 'Fare Stage 3' },
+                { content: 'leeds', href: 'stageNames', name: 'Fare stage 1' },
+                { content: 'manchester', href: 'stageNames', name: 'Fare stage 2' },
+                { content: 'bolton', href: 'stageNames', name: 'Fare stage 3' },
             ]);
         });
     });

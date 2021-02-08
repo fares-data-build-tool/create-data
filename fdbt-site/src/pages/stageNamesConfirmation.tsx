@@ -20,7 +20,7 @@ export const buildFareStageNamesConfirmationElements = (fareStages: string[]): C
     const confirmationElements: ConfirmationElement[] = [];
     fareStages.forEach((fareStage, index) => {
         confirmationElements.push({
-            name: `Fare Stage ${index + 1}`,
+            name: `Fare stage ${index + 1}`,
             content: fareStage,
             href: 'stageNames',
         });
