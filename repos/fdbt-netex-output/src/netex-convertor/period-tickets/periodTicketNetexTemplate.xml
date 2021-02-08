@@ -547,7 +547,7 @@
 							<DistributionChannelType>agency</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
-						<DistributionChannel id="fxc:atStop" version="fxc:v1.0">
+						<DistributionChannel id="fxc:at_stop" version="fxc:v1.0">
 							<ShortName>In station sale by machine, counter or payg</ShortName>
 							<DistributionChannelType>atStop</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
@@ -573,12 +573,12 @@
 							<DistributionChannelType>atStop</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
-						<DistributionChannel id="fxc:onBoard" version="fxc:v1.0">
+						<DistributionChannel id="fxc:on_board" version="fxc:v1.0">
 							<ShortName>on_board</ShortName>
 							<DistributionChannelType>onBoard</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
 						</DistributionChannel>
-						<DistributionChannel id="fxc:mobileDevice" version="fxc:v1.0">
+						<DistributionChannel id="fxc:mobile_device" version="fxc:v1.0">
 							<ShortName>Mobile Device</ShortName>
 							<DistributionChannelType>mobileDevice</DistributionChannelType>
 							<IsObligatory>false</IsObligatory>
