@@ -82,14 +82,14 @@ export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSe
             href: 'service',
         },
         {
-            name: 'Fare Triangle',
+            name: 'Fare triangle',
             content: 'You submitted or created a fare triangle',
             href: 'inputMethod',
         },
     );
     matchedFareStages.forEach(fareStage => {
         confirmationElements.push({
-            name: `Fare Stage - ${fareStage.fareStage}`,
+            name: `Fare stage - ${fareStage.fareStage}`,
             content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
             href: 'matching',
         });
@@ -127,14 +127,14 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
 
         outboundMatchedFareStages.forEach(fareStage => {
             confirmationElements.push({
-                name: `Outbound Fare Stage - ${fareStage.fareStage}`,
+                name: `Outbound fare stage - ${fareStage.fareStage}`,
                 content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
                 href: 'outboundMatching',
             });
         });
         inboundMatchedFareStages.forEach(fareStage => {
             confirmationElements.push({
-                name: `Inbound Fare Stage - ${fareStage.fareStage}`,
+                name: `Inbound fare stage - ${fareStage.fareStage}`,
                 content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
                 href: 'inboundMatching',
             });
@@ -146,7 +146,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
 
         nonCircularMatchedFareStages.forEach(fareStage => {
             confirmationElements.push({
-                name: `Fare Stage - ${fareStage.fareStage}`,
+                name: `Fare stage - ${fareStage.fareStage}`,
                 content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
                 href: 'matching',
             });
@@ -155,7 +155,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
 
     if (validity) {
         confirmationElements.push({
-            name: 'Return Validity',
+            name: 'Return validity',
             content: `${validity.amount} ${validity.typeOfDuration}`,
             href: 'returnValidity',
         });
@@ -191,14 +191,14 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     if (zone) {
         confirmationElements.push({
             name: 'Zone',
-            content: 'You uploaded a Fare Zone CSV file',
+            content: 'You uploaded a fare zone CSV file',
             href: 'csvZoneUpload',
         });
     } else if (!zone) {
         const opInfo = getCookieValue(ctx, OPERATOR_COOKIE);
         const opName = opInfo ? `${JSON.parse(opInfo).name} ` : '';
         confirmationElements.push({
-            name: `${opName}Services`,
+            name: `${opName}${opName ? 's' : 'S'}ervices`,
             content: `${services.map(service => service.split('#')[0]).join(', ')}`,
             href: 'serviceList',
         });
@@ -207,7 +207,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     if (multiOpAttribute) {
         const additionalOperators = multiOpAttribute.selectedOperators;
         confirmationElements.push({
-            name: 'Additional Operators',
+            name: 'Additional operators',
             content: `${additionalOperators.map(operator => operator.name).join(', ')}`,
             href: 'searchOperators',
         });

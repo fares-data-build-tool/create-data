@@ -45,17 +45,17 @@ export const buildSalesConfirmationElements = (
             });
             product.salesOfferPackages.forEach(sop => {
                 confirmationElements.push({
-                    name: `${upperFirst(product.productName)} - Sales Offer Package`,
+                    name: `${upperFirst(product.productName)} - Sales offer package`,
                     content: sop.name,
                     href: 'selectSalesOfferPackages',
                 });
             });
         });
     } else {
-        salesOfferPackages.forEach(sop => {
+        salesOfferPackages.forEach((sop, index) => {
             confirmationElements.push({
-                name: 'Sales Offer Package',
-                content: sop.name,
+                name: `Sales offer package ${index + 1} - ${sop.name}`,
+                content: sop.description || sop.name,
                 href: 'selectSalesOfferPackages',
             });
         });
@@ -65,12 +65,12 @@ export const buildSalesConfirmationElements = (
 
     confirmationElements.push(
         {
-            name: `Ticket Start Date ${ticketDating.startDefault ? '(default)' : ''}`,
+            name: `Ticket start date ${ticketDating.startDefault ? '(default)' : ''}`,
             content: startDate,
             href: 'productDateInformation',
         },
         {
-            name: `Ticket End Date ${ticketDating.endDefault ? '(default)' : ''}`,
+            name: `Ticket end date ${ticketDating.endDefault ? '(default)' : ''}`,
             content: endDate,
             href: 'productDateInformation',
         },
