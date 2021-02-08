@@ -136,23 +136,27 @@ describe('pages', () => {
                 },
             );
             expect(result).toStrictEqual([
-                { content: 'A sales offer package', href: 'selectSalesOfferPackages', name: 'Sales Offer Package' },
                 {
-                    content: 'Another sales offer package',
+                    content: 'my way of selling tickets',
                     href: 'selectSalesOfferPackages',
-                    name: 'Sales Offer Package',
+                    name: 'Sales offer package 1 - A sales offer package',
+                },
+                {
+                    content: 'another way of selling tickets',
+                    href: 'selectSalesOfferPackages',
+                    name: 'Sales offer package 2 - Another sales offer package',
                 },
                 {
                     content: moment().format('DD-MM-YYYY'),
                     href: 'productDateInformation',
-                    name: 'Ticket Start Date (default)',
+                    name: 'Ticket start date (default)',
                 },
                 {
                     content: moment()
                         .add(100, 'years')
                         .format('DD-MM-YYYY'),
                     href: 'productDateInformation',
-                    name: 'Ticket End Date (default)',
+                    name: 'Ticket end date (default)',
                 },
             ]);
         });

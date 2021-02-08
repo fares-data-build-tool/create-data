@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import startCase from 'lodash/startCase';
 import { isSalesOfferPackageWithErrors, isFareType } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
@@ -13,7 +12,7 @@ import {
 } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { MultiProduct } from './api/multipleProducts';
@@ -64,7 +63,8 @@ export interface SelectSalesOfferPackageProps {
     csrfToken: string;
 }
 
-const formatSOPArray = (stringArray: string[]): string => stringArray.map(string => startCase(string)).join(', ');
+const formatSOPArray = (stringArray: string[]): string =>
+    stringArray.map(string => sentenceCaseString(string)).join(', ');
 
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],

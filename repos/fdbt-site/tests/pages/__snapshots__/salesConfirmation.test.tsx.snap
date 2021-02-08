@@ -20,19 +20,19 @@ exports[`pages confirmation should render correctly 1`] = `
       confirmationElements={
         Array [
           Object {
-            "content": "A sales offer package",
+            "content": "my way of selling tickets",
             "href": "selectSalesOfferPackages",
-            "name": "Sales Offer Package",
+            "name": "Sales offer package 1 - A sales offer package",
           },
           Object {
             "content": "13-03-2017",
             "href": "productDateInformation",
-            "name": "Ticket Start Date (default)",
+            "name": "Ticket start date (default)",
           },
           Object {
             "content": "13-03-2057",
             "href": "productDateInformation",
-            "name": "Ticket End Date (default)",
+            "name": "Ticket end date (default)",
           },
         ]
       }

@@ -313,8 +313,21 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     const radioFieldsets = getFieldsets(errors, passengerType, passengerInfo);
 
+    if (numberOfPassengerTypeFieldset) {
+        return {
+            props: {
+                group,
+                errors,
+                fieldsets: radioFieldsets,
+                numberOfPassengerTypeFieldset,
+                passengerType,
+                csrfToken,
+            },
+        };
+    }
+
     return {
-        props: { group, errors, fieldsets: radioFieldsets, numberOfPassengerTypeFieldset, passengerType, csrfToken },
+        props: { group, errors, fieldsets: radioFieldsets, passengerType, csrfToken },
     };
 };
 

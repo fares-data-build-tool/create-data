@@ -24,7 +24,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Name - Product ${index + 1}`}</span>
-                            <span aria-hidden>Product Name</span>
+                            <span aria-hidden>Product name</span>
                         </label>
                         <span className="govuk-hint" id={`product-name-hint-${index}`}>
                             50 characters maximum
@@ -119,7 +119,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                         <label className="govuk-label" htmlFor={`multiple-product-duration-units-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Duration units - Product ${index +
                                 1}`}</span>
-                            <span aria-hidden>Duration Type</span>
+                            <span aria-hidden>Duration type</span>
                         </label>
                         <span className="govuk-hint" id={`product-duration-units-hint-${index}`}>
                             For example, days
