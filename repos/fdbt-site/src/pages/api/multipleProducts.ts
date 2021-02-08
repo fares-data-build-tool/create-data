@@ -14,39 +14,14 @@ import {
     checkPriceIsValid,
     checkDurationIsValid,
 } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import {
+    ErrorInfo,
+    NextApiRequestWithSession,
+    NumberOfProductsAttribute,
+    MultiProductWithErrors,
+    MultiProduct,
+} from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
-import { NumberOfProductsAttribute } from './howManyProducts';
-
-export interface MultipleProductAttribute {
-    products: MultiProduct[];
-}
-
-export interface MultipleProductAttributeWithErrors extends MultipleProductAttribute {
-    errors: ErrorInfo[];
-}
-
-export interface MultiProduct {
-    productName: string;
-    productNameId: string;
-    productPrice: string;
-    productPriceId: string;
-    productDuration: string;
-    productDurationId: string;
-    productDurationUnits: string;
-    productDurationUnitsId: string;
-    productValidity: string;
-    productValidityId: string;
-    productEndTime?: string;
-    productEndTimeId?: string;
-}
-
-export interface MultiProductWithErrors extends MultiProduct {
-    productNameError?: string;
-    productPriceError?: string;
-    productDurationError?: string;
-    productDurationUnitsError?: string;
-}
 
 export const getErrorsForCookie = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];

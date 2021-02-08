@@ -9,7 +9,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -17,7 +17,6 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerType, isWithErrors } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { getCsrfToken } from '../utils';
-import { MultiProduct } from './api/multipleProducts';
 
 const title = 'Multiple Product Validity - Create Fares Data Service';
 const description = 'Multiple Product Validity selection page of the Create Fares Data Service';

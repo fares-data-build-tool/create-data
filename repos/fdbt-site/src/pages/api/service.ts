@@ -6,14 +6,6 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { isFareType } from '../../interfaces/typeGuards';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export interface Service {
-    service: string;
-}
-
-export interface ServiceWithErrors {
-    errors: ErrorInfo[];
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {

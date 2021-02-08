@@ -3,8 +3,8 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
 import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, ID_TOKEN_COOKIE } from '../constants';
-import { DocumentContextWithSession } from '../interfaces';
-import { getCsrfToken, ResponseWithLocals } from '../utils';
+import { DocumentContextWithSession, ResponseWithLocals } from '../interfaces';
+import { getCsrfToken } from '../utils';
 import { CookieBannerMessage } from '../layout/CookieBanner';
 
 interface DocumentProps extends DocumentInitialProps {

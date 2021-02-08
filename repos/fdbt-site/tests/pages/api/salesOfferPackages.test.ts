@@ -1,11 +1,8 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import salesOfferPackages, {
-    SalesOfferPackageInfoWithErrors,
-    SalesOfferPackageInfo,
-} from '../../../src/pages/api/salesOfferPackages';
+import salesOfferPackages from '../../../src/pages/api/salesOfferPackages';
 import * as session from '../../../src/utils/sessions';
 import { SOP_INFO_ATTRIBUTE } from '../../../src/constants';
-import { ErrorInfo } from '../../../src/interfaces';
+import { ErrorInfo, SalesOfferPackageInfoWithErrors, SalesOfferPackageInfo } from '../../../src/interfaces';
 
 jest.mock('../../../src/utils/sessions.ts');
 

@@ -11,14 +11,19 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { SalesOfferPackage, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
+import {
+    SalesOfferPackage,
+    ErrorInfo,
+    NextPageContextWithSession,
+    ProductInfo,
+    MultiProduct,
+    SchoolFareTypeAttribute,
+} from '../interfaces';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { MultiProduct } from './api/multipleProducts';
 import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
-import { SchoolFareTypeAttribute } from './api/schoolFareType';
 
 const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
 const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';

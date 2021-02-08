@@ -3,22 +3,23 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants';
-import { ServiceType, getServicesByNocCode } from '../data/auroradb';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { getServicesByNocCode } from '../data/auroradb';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    ServicesInfo,
+    FareType,
+    ServiceListAttribute,
+    ServiceListAttributeWithErrors,
+} from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { ServiceListAttribute, ServiceListAttributeWithErrors } from './api/serviceList';
-import { FareType } from './api/fareType';
 
 const pageTitle = 'Service List - Create Fares Data Service';
 const pageDescription = 'Service List selection page of the Create Fares Data Service';
 
-export interface ServicesInfo extends ServiceType {
-    checked?: boolean;
-}
-
-export interface ServiceListProps {
+interface ServiceListProps {
     serviceList: ServicesInfo[];
     buttonText: string;
     errors: ErrorInfo[];

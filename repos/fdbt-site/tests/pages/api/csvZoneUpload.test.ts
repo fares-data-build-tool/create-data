@@ -111,9 +111,7 @@ describe('csvZoneUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/howManyProducts',
         });
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, {
-            fareZoneName: 'Town Centre',
-        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, 'Town Centre');
     });
 
     it('should return 302 redirect to /searchOperators if fareType is multiOperator, and when valid file is processed and put in S3', async () => {
@@ -155,9 +153,7 @@ describe('csvZoneUpload', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/searchOperators',
         });
-        expect(updateSessionAttributeSpy).toBeCalledWith(multiOperatorReq, FARE_ZONE_ATTRIBUTE, {
-            fareZoneName: 'Town Centre',
-        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(multiOperatorReq, FARE_ZONE_ATTRIBUTE, 'Town Centre');
     });
 
     it('should redirect to /error when an error is thrown in the default', async () => {

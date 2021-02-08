@@ -5,20 +5,21 @@ import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { ServiceType, getServicesByNocCode } from '../data/auroradb';
-import { ErrorInfo, NextPageContextWithSession, MultiOperatorInfo } from '../interfaces';
+import { getServicesByNocCode } from '../data/auroradb';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    MultiOperatorInfo,
+    ServicesInfo,
+    MultipleOperatorsAttribute,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
-import { MultipleOperatorsAttribute } from './api/searchOperators';
 import { getCsrfToken } from '../utils';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
 const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';
 
-export interface ServicesInfo extends ServiceType {
-    checked?: boolean;
-}
-
-export interface MultipleOperatorsServiceListProps {
+interface MultipleOperatorsServiceListProps {
     serviceList: ServicesInfo[];
     buttonText: string;
     errors: ErrorInfo[];

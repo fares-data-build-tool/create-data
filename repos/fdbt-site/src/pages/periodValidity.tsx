@@ -1,22 +1,28 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
-import { ErrorInfo, NextPageContextWithSession, ProductData, WithErrors } from '../interfaces';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    ProductData,
+    WithErrors,
+    RadioConditionalInputFieldset,
+} from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken, getErrorsByIds } from '../utils';
-import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
+import RadioConditionalInput from '../components/RadioConditionalInput';
 import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Period Validity - Create Fares Data Service';
 const description = 'Period Validity selection page of the Create Fares Data Service';
 
-type PeriodValidityProps = {
+interface PeriodValidityProps {
     errors?: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
-};
+}
 
 export const getFieldset = (
     errors: ErrorInfo[],

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-
-import StageNames, { renderInputFields, InputCheck, getServerSideProps } from '../../src/pages/stageNames';
+import { InputCheck } from '../../src/interfaces';
+import StageNames, { renderInputFields, getServerSideProps } from '../../src/pages/stageNames';
 import { getMockContext } from '../testData/mockData';
 
 describe('pages', () => {

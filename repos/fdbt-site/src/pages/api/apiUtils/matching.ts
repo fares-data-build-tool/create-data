@@ -1,7 +1,6 @@
 import { NextApiRequest } from 'next';
 import isArray from 'lodash/isArray';
-import { UserFareStages } from '../../../data/s3';
-import { Stop } from '../../../data/auroradb';
+import { Stop, UserFareStages } from '../../../interfaces';
 import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
 
 export const getFareZones = (

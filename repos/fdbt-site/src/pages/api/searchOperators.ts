@@ -7,14 +7,6 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { removeExcessWhiteSpace } from './apiUtils/validator';
 import { addOperatorsErrorId, removeOperatorsErrorId, searchInputId } from '../searchOperators';
 
-export interface MultipleOperatorsAttribute {
-    selectedOperators: Operator[];
-}
-
-export interface MultipleOperatorsAttributeWithErrors extends MultipleOperatorsAttribute {
-    errors: ErrorInfo[];
-}
-
 export const removeOperatorsFromPreviouslySelectedOperators = (
     rawList: string[],
     selectedOperators: Operator[],

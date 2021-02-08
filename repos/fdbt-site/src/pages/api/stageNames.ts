@@ -1,10 +1,9 @@
 import { NextApiResponse } from 'next';
-import { NextApiRequestWithSession } from '../../interfaces/index';
+import { NextApiRequestWithSession, InputCheck } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { STAGE_NAMES_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
-import { InputCheck } from '../stageNames';
 
 export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
     let counter = 0;

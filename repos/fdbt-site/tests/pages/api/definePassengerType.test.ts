@@ -12,10 +12,8 @@ import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants';
-import { GroupPassengerTypesCollection } from '../../../src/pages/api/groupPassengerTypes';
 import * as sessions from '../../../src/utils/sessions';
-import { CompanionInfo } from '../../../src/interfaces';
-import { GroupTicketAttribute } from '../../../src/pages/api/groupSize';
+import { CompanionInfo, GroupPassengerTypesCollection, GroupTicketAttribute } from '../../../src/interfaces';
 
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();

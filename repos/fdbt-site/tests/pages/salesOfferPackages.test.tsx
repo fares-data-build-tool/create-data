@@ -6,9 +6,8 @@ import SalesOfferPackages, {
     valuesMap,
 } from '../../src/pages/salesOfferPackages';
 import { getMockContext } from '../testData/mockData';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../src/interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../src/constants';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../src/pages/api/salesOfferPackages';
 
 describe('pages', () => {
     afterEach(() => {

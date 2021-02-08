@@ -12,16 +12,17 @@ import {
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import {
+    CompanionInfo,
+    ErrorInfo,
+    NextApiRequestWithSession,
+    DefinePassengerTypeWithErrors,
+    FareType,
+    GroupPassengerTypesCollection,
+} from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { GroupPassengerTypesCollection } from './groupPassengerTypes';
-import { FareType } from './fareType';
 
-export interface DefinePassengerTypeWithErrors extends CompanionInfo {
-    errors: ErrorInfo[];
-}
-
-export interface FilteredRequestBody {
+interface FilteredRequestBody {
     minNumber?: string;
     maxNumber?: string;
     maxGroupSize?: string;

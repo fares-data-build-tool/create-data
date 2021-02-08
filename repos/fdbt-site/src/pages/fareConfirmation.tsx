@@ -12,21 +12,22 @@ import {
     FullTimeRestriction,
     TermTimeAttribute,
     FullTimeRestrictionAttribute,
+    ConfirmationElement,
+    PassengerType,
+    SchoolFareTypeAttribute,
     CompanionInfo,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
+import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
-import { PassengerType } from './api/passengerType';
 import { getCsrfToken, sentenceCaseString } from '../utils';
-import { SchoolFareTypeAttribute } from './api/schoolFareType';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
 
-type FareConfirmationProps = {
+interface FareConfirmationProps {
     fareType: string;
     passengerType: PassengerType;
     groupPassengerInfo: CompanionInfo[];
@@ -34,7 +35,7 @@ type FareConfirmationProps = {
     termTime: string;
     fullTimeRestrictions: FullTimeRestriction[];
     csrfToken: string;
-};
+}
 
 export const buildFareConfirmationElements = (
     fareType: string,

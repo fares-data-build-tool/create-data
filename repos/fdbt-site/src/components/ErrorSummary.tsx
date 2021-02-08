@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../interfaces';
 
-export interface ErrorSummary {
+interface ErrorSummary {
     errors: ErrorInfo[];
 }
 

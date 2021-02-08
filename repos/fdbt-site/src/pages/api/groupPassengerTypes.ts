@@ -1,16 +1,9 @@
 import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
+import { NextApiRequestWithSession, GroupPassengerTypesCollectionWithErrors } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../../constants/index';
-
-export interface GroupPassengerTypesCollection {
-    passengerTypes: string[];
-}
-export interface GroupPassengerTypesCollectionWithErrors {
-    errors: ErrorInfo[];
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

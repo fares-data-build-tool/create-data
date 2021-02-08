@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import MultipleOperatorsServiceList, {
-    getServerSideProps,
-    ServicesInfo,
-} from '../../src/pages/multipleOperatorsServiceList';
+import MultipleOperatorsServiceList, { getServerSideProps } from '../../src/pages/multipleOperatorsServiceList';
 import { getMockContext } from '../testData/mockData';
-import { getServicesByNocCode, ServiceType } from '../../src/data/auroradb';
+import { getServicesByNocCode } from '../../src/data/auroradb';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../src/constants';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
 

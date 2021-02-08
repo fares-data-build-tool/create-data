@@ -20,13 +20,13 @@ export const searchInputId = 'search-input';
 export const addOperatorsErrorId = 'add-operator-checkbox-0';
 export const removeOperatorsErrorId = 'remove-operator-checkbox-0';
 
-export type SearchOperatorProps = {
+export interface SearchOperatorProps {
     searchText: string;
     errors: ErrorInfo[];
     searchResults: Operator[];
     selectedOperators: Operator[];
     csrfToken: string;
-};
+}
 
 export const showSelectedOperators = (selectedOperators: Operator[], errors: ErrorInfo[]): ReactElement => {
     const removeOperatorsErrors: ErrorInfo[] = [];

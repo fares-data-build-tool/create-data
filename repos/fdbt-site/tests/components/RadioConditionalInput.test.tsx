@@ -10,11 +10,9 @@ import {
     conditionalRadioWithTextWithUnitsInput,
     conditionalRadioWithUncheckedCheckboxInput,
 } from '../testData/mockData';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, RadioWithConditionalInputs, RadioConditionalInputFieldset } from '../../src/interfaces';
 import RadioConditionalInput, {
-    RadioConditionalInputFieldset,
     renderConditionalTextInput,
-    RadioWithConditionalInputs,
     renderConditionalTextWithUnitsInput,
     conditionalRadioInputDefaultExists,
 } from '../../src/components/RadioConditionalInput';

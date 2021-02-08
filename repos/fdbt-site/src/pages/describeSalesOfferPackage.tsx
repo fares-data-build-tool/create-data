@@ -1,14 +1,17 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { NextPageContextWithSession } from '../interfaces';
+import {
+    NextPageContextWithSession,
+    SalesOfferPackageInfo,
+    SalesOfferPackage,
+    SalesOfferPackageWithErrors,
+} from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
-import { SalesOfferPackage, SalesOfferPackageWithErrors } from './api/describeSalesOfferPackage';
 import { getSessionAttribute } from '../utils/sessions';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
-import { SalesOfferPackageInfo } from './api/salesOfferPackages';
 import { getCsrfToken } from '../utils';
 
 const title = 'Sales Offer Package Description - Create Fares Data Service';

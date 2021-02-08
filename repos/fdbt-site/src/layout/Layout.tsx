@@ -10,13 +10,13 @@ import Footer from './Footer';
 import Help from '../components/Help';
 import CookieBanner from './CookieBanner';
 
-type LayoutProps = {
+interface LayoutProps {
     title: string;
     description: string;
     errors?: ErrorInfo[];
     hideCookieBanner?: boolean;
     hideHelp?: boolean;
-};
+}
 
 export const BaseLayout = ({
     title,

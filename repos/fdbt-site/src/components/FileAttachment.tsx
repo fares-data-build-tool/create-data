@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-export interface FileAttachmentProps {
+interface FileAttachmentProps {
     displayName: string;
     attachmentUrl: string;
     imageUrl: string;
