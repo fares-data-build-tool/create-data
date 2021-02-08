@@ -1,7 +1,4 @@
-import { Stop } from '../data/auroradb';
-import { PassengerDetails, BasicService, Product } from '.';
-import { UserFareStages } from '../data/s3';
-import { ServicesInfo } from '../pages/serviceList';
+import { PassengerDetails, BasicService, Product, Stop, UserFareStages, ServicesInfo } from '.';
 
 export interface Price {
     price: string;

@@ -3,7 +3,7 @@ import uniqBy from 'lodash/uniqBy';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_STAGES_ATTRIBUTE, STAGE_NAMES_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, InputCheck } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
@@ -13,19 +13,13 @@ import { getCsrfToken } from '../utils';
 const title = 'Stage Names - Create Fares Data Service';
 const description = 'Stage Names entry page of the Create Fares Data Service';
 
-export interface InputCheck {
-    error: string;
-    input: string;
-    id: string;
-}
-
-type StageNameProps = {
+interface StageNameProps {
     numberOfFareStages: number;
     inputChecks: InputCheck[];
     errors: ErrorInfo[];
     defaults: string[];
     csrfToken: string;
-};
+}
 
 export const renderInputField = (
     index: number,

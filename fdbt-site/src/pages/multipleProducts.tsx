@@ -9,9 +9,8 @@ import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { MultiProduct } from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
@@ -21,7 +20,7 @@ import { getCsrfToken } from '../utils';
 const title = 'Multiple Product - Create Fares Data Service';
 const description = 'Multiple Product entry page of the Create Fares Data Service';
 
-export interface MultipleProductProps {
+interface MultipleProductProps {
     numberOfProductsToDisplay: string;
     operatorName: string;
     passengerType: string;

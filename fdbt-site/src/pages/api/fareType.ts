@@ -6,14 +6,6 @@ import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../constants/i
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export interface FareType {
-    fareType: string;
-}
-
-export interface FareTypeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {

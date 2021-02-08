@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import GroupSize, { getServerSideProps, GroupSizeProps } from '../../src/pages/groupSize';
 import { getMockContext } from '../testData/mockData';
-import { GroupTicketAttributeWithErrors } from '../../src/pages/api/groupSize';
+import { GroupTicketAttributeWithErrors } from '../../src/interfaces';
 import { GROUP_SIZE_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FareTypeRadios, { FareTypeRadioProps } from '../../src/components/FareTypeRadios';
+import { FareTypeRadioProps } from '../../src/interfaces';
+import FareTypeRadios from '../../src/components/FareTypeRadios';
 
 describe('FareTypeRadios', () => {
     const mockStandardFaresRadioProps = {

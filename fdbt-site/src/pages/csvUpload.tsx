@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
+import UserDataUploadComponent from '../components/UserDataUploads';
 import { CSV_UPLOAD_ATTRIBUTE } from '../constants';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
-import { NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
 

@@ -25,7 +25,8 @@ import {
     Ticket,
     WithErrors,
     isSchemeOperatorTicket,
-} from '../../../interfaces/index';
+    MultipleProductAttribute,
+} from '../../../interfaces';
 import {
     TERM_TIME_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
@@ -66,7 +67,6 @@ import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
-import { MultipleProductAttribute } from '../multipleProducts';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -320,7 +320,7 @@ export const getGeoZoneTicketJson = async (
 
     return {
         ...basePeriodTicketAttributes,
-        zoneName: fareZoneAttribute.fareZoneName,
+        zoneName: fareZoneAttribute,
         stops: zoneStops,
         ...(additionalNocs && { additionalNocs }),
     };
@@ -534,7 +534,7 @@ export const getSchemeOperatorTicketJson = async (
                 : [],
         ticketPeriod: ticketPeriodAttribute,
         products: productDetailsList,
-        zoneName: fareZoneAttribute.fareZoneName,
+        zoneName: fareZoneAttribute,
         stops: zoneStops,
         additionalNocs,
     };

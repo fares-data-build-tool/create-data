@@ -9,10 +9,18 @@ import {
     TicketRepresentationAttribute,
     MultiOperatorInfo,
     Product,
+    ConfirmationElement,
+    NumberOfProductsAttribute,
+    MultipleProductAttribute,
+    MultiProduct,
+    SchoolFareTypeAttribute,
+    MultipleOperatorsAttribute,
+    Service,
+    ServiceListAttribute,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
+import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import {
     FARE_TYPE_ATTRIBUTE,
@@ -33,22 +41,16 @@ import {
     OPERATOR_COOKIE,
 } from '../constants';
 import { isFareType } from '../interfaces/typeGuards';
-import { Service } from './api/service';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
-import { ServiceListAttribute } from './api/serviceList';
-import { NumberOfProductsAttribute } from './api/howManyProducts';
-import { MultipleProductAttribute, MultiProduct } from './api/multipleProducts';
 import { getCookieValue, getCsrfToken, sentenceCaseString } from '../utils';
-import { SchoolFareTypeAttribute } from './api/schoolFareType';
-import { MultipleOperatorsAttribute } from './api/searchOperators';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
 
-export type TicketConfirmationProps = {
+export interface TicketConfirmationProps {
     confirmationElements: ConfirmationElement[];
     csrfToken: string;
-};
+}
 
 export interface MatchedFareStages {
     fareStage: string;

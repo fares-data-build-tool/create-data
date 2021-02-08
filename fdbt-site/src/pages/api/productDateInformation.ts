@@ -3,22 +3,8 @@ import * as yup from 'yup';
 import moment from 'moment';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../constants';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, ProductDateInformation } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
-
-export interface TicketPeriodWithErrors {
-    errors: ErrorInfo[];
-    dates: ProductDateInformation;
-}
-
-export interface ProductDateInformation {
-    startDateDay: string;
-    startDateMonth: string;
-    startDateYear: string;
-    endDateDay: string;
-    endDateMonth: string;
-    endDateYear: string;
-}
 
 export const combinedDateSchema = yup.object({
     endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),

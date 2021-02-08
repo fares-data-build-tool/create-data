@@ -1,14 +1,5 @@
 import React, { ReactElement } from 'react';
-
-interface FareTypeRadio {
-    fareType: string;
-    label: string;
-}
-
-export interface FareTypeRadioProps {
-    standardFares: FareTypeRadio[];
-    otherFares?: FareTypeRadio[];
-}
+import { FareTypeRadioProps } from '../interfaces';
 
 const FareTypeRadios = ({ standardFares, otherFares = [] }: FareTypeRadioProps): ReactElement => {
     const showHeadings = standardFares.length > 0 && otherFares.length > 0;

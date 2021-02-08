@@ -3,12 +3,17 @@ import lowercase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, NextPageContextWithSession, TicketRepresentationAttribute } from '../interfaces';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    TicketRepresentationAttribute,
+    FareType,
+    NumberOfProductsAttributeWithErrors,
+    NumberOfProductsAttribute,
+} from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from './api/howManyProducts';
 import { getSessionAttribute } from '../utils/sessions';
-import { FareType } from './api/fareType';
 import { getCsrfToken } from '../utils';
 
 const title = 'How Many Products - Create Fares Data Service';

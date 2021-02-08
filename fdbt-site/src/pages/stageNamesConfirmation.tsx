@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
+import ConfirmationTable from '../components/ConfirmationTable';
 import { STAGE_NAMES_ATTRIBUTE } from '../constants';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession, ConfirmationElement } from '../interfaces';
 import { isInputCheck } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';

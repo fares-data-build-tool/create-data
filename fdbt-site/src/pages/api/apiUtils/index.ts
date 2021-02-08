@@ -12,12 +12,11 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../constants';
-import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
+import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../../utils/sessions';
 import { isFareType } from '../../../interfaces/typeGuards';
-import { SchoolFareTypeAttribute } from '../schoolFareType';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;

@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
 import uniq from 'lodash/uniq';
 import Papa from 'papaparse';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
-import { putDataInS3, UserFareStages } from '../../data/s3';
+import { putDataInS3 } from '../../data/s3';
 import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { getFormData, processFileUpload } from './apiUtils/fileUpload';
@@ -12,11 +12,6 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { isJourney } from '../../interfaces/typeGuards';
 
 const errorId = 'csv-upload';
-
-export interface CsvUploadAttributeWithErrors {
-    errors: ErrorInfo[];
-    poundsOrPence?: string;
-}
 
 interface FareTriangleData {
     fareStages: {

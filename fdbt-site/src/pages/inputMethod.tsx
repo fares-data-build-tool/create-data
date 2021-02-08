@@ -14,10 +14,10 @@ const description = 'Input Method selection page of the Create Fares Data Servic
 
 const errorId = 'csv-upload';
 
-type InputMethodProps = {
+interface InputMethodProps {
     errors: ErrorInfo[];
     csrfToken: string;
-};
+}
 
 const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>

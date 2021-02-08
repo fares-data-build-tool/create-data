@@ -1,23 +1,23 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ErrorInfo, NextPageContextWithSession, ReturnPeriodValidity } from '../interfaces';
+import RadioConditionalInput from '../components/RadioConditionalInput';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    ReturnPeriodValidity,
+    RadioConditionalInputFieldset,
+    ReturnPeriodValidityWithErrors,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../constants';
 import { getCsrfToken, getErrorsByIds } from '../utils';
 
-export interface ReturnPeriodValidityWithErrors {
-    amount?: string;
-    typeOfDuration?: string;
-    errors: ErrorInfo[];
-}
-
 const title = 'Return Validity - Create Fares Data Service';
 const description = 'Return Validity page of the Create Fares Data Service';
 
-export interface ReturnValidityProps {
+interface ReturnValidityProps {
     errors: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;

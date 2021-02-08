@@ -8,17 +8,9 @@ import {
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession, TimeRestriction } from '../../interfaces';
+import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType } from '../../interfaces/typeGuards';
-
-interface TimeRestrictionsDefinition extends TimeRestriction {
-    validDaysSelected?: string;
-}
-
-export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {
-    errors: ErrorInfo[];
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

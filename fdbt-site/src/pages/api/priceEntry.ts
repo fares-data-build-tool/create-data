@@ -1,6 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import isEmpty from 'lodash/isEmpty';
-import { NextApiRequestWithSession } from '../../interfaces/index';
+import {
+    NextApiRequestWithSession,
+    UserFareStages,
+    FaresInput,
+    PriceEntryError,
+    FaresInformation,
+} from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
     JOURNEY_ATTRIBUTE,
@@ -14,38 +20,13 @@ import { putStringInS3 } from '../../data/s3';
 import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { isJourney } from '../../interfaces/typeGuards';
 
-interface UserFareStages {
-    fareStages: {
-        stageName: string;
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
-
-interface FareTriangleData {
+interface ManualFareTriangleData {
     [stageName: string]: {
         [price: string]: {
             price: string;
             fareZones: string[];
         };
     };
-}
-
-export interface FaresInformation {
-    inputs: FaresInput[];
-    errorInformation: PriceEntryError[];
-}
-
-export interface FaresInput {
-    input: string;
-    locator: string;
-}
-
-export interface PriceEntryError {
-    input: string;
-    locator: string;
 }
 
 export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
@@ -73,7 +54,7 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
 
 export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => {
     const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
-    const fareTriangle: FareTriangleData = {};
+    const fareTriangle: ManualFareTriangleData = {};
 
     for (let itemNum = 0; itemNum < arrayOfFareItemArrays.length; itemNum += 1) {
         const cellRef = arrayOfFareItemArrays[itemNum][0];

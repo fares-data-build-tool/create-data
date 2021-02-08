@@ -22,14 +22,14 @@ import { getCsrfToken } from '../utils';
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details entry page of the Create Fares Data Service';
 
-type ProductDetailsProps = {
+interface ProductDetailsProps {
     product: ProductInfo | null;
     operator: string;
     passengerType: string;
     hintText?: string;
     errors: ErrorInfo[];
     csrfToken: string;
-};
+}
 
 export const isProductInfoWithErrors = (
     productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
@@ -158,7 +158,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const { name } = operatorTypeInfo;
 
     if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
-        hintText = fareZoneAttribute.fareZoneName;
+        hintText = fareZoneAttribute;
     } else if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
         const { selectedServices } = serviceListAttribute;
         hintText = selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0];

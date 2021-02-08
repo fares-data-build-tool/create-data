@@ -1,14 +1,12 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import searchOperators, {
-    MultipleOperatorsAttributeWithErrors,
     removeOperatorsFromPreviouslySelectedOperators,
     addOperatorsToPreviouslySelectedOperators,
     isSearchInputValid,
-    MultipleOperatorsAttribute,
 } from '../../../src/pages/api/searchOperators';
 import * as session from '../../../src/utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants';
-import { Operator } from '../../../src/interfaces';
+import { Operator, MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../../../src/interfaces';
 
 describe('searchOperators', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');

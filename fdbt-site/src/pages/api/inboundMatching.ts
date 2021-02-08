@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
-import { NextApiRequestWithSession } from '../../interfaces';
-import { UserFareStages } from '../../data/s3';
+import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
 import { isSessionValid } from './apiUtils/validator';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../../constants';

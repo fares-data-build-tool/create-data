@@ -11,10 +11,10 @@ import { destroySession } from '../utils/sessions';
 const title = 'Thank You - Create Fares Data Service';
 const description = 'Thank you page for the Create Fares Data Service';
 
-type ThankYouProps = {
+interface ThankYouProps {
     uuid: string;
     emailAddress: string;
-};
+}
 
 const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>

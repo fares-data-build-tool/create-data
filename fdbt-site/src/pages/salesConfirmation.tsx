@@ -7,10 +7,11 @@ import {
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     TicketPeriod,
+    ConfirmationElement,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
+import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
@@ -19,11 +20,11 @@ import { redirectTo } from './api/apiUtils';
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
 
-type SalesConfirmationProps = {
+interface SalesConfirmationProps {
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[];
     ticketDating: TicketDating;
     csrfToken: string;
-};
+}
 
 interface TicketDating {
     productDates: TicketPeriod;
