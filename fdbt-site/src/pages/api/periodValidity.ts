@@ -15,10 +15,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         if (req.body.periodValid) {
-            const { periodValid, productEndTime } = req.body;
+            const { periodValid } = req.body;
+            let { productEndTime } = req.body;
 
             const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+
+            if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
+                throw new Error('Necessary session data not found for period validity API');
+            }
+
+            const { productName, productPrice } = productDetailsAttribute;
 
             if (periodValid === 'endOfServiceDay') {
                 if (productEndTime === '') {
@@ -35,17 +42,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 }
 
                 if (errors.length > 0) {
-                    updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, { products: [], errors });
+                    updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, {
+                        products: [{ productEndTime, productName, productPrice }],
+                        errors,
+                    });
                     redirectTo(res, '/periodValidity');
                     return;
                 }
+            } else {
+                productEndTime = '';
             }
 
-            if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
-                throw new Error('Necessary session data not found for period validity API');
-            }
-
-            const { productName, productPrice } = productDetailsAttribute;
             const timePeriodValid = `${daysValidInfo.amount} ${daysValidInfo.duration}${
                 daysValidInfo.amount === '1' ? '' : 's'
             }`;
