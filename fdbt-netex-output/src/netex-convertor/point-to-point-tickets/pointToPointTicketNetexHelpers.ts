@@ -13,7 +13,7 @@ import {
     FareStructureElement,
     isReturnTicket,
 } from '../../types';
-import { NetexObject, getProfileRef, isGroupTicket } from '../sharedHelpers';
+import { NetexObject, getProfileRef, isGroupTicket, getDistributionChannel } from '../sharedHelpers';
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
@@ -253,7 +253,7 @@ export const buildSalesOfferPackage = (
                 id: `Trip@${ticketUserConcat}-SOP@${salesOfferPackageInfo.name}@${purchaseLocation}`,
                 order: `${index + 1}`,
                 DistributionChannelRef: {
-                    ref: `fxc:${purchaseLocation}`,
+                    ref: `fxc:${getDistributionChannel(purchaseLocation)}`,
                     version: 'fxc:v1.0',
                 },
                 DistributionChannelType: { $t: `${purchaseLocation}` },
