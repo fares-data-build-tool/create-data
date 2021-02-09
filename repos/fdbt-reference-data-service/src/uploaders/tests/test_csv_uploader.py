@@ -21,8 +21,3 @@ class TestClass:
         bucket = 'unit-test-bucket'
         result = stops_query(bucket)
         assert result[2].__contains__(bucket)
-
-    def test_service_report_bucket_insertion(self):
-        bucket = 'unit-test-bucket'
-        result = service_report_query(bucket)
-        assert result[2].__contains__(bucket)
