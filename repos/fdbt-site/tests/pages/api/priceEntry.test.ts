@@ -18,19 +18,19 @@ describe('priceEntry', () => {
                     'Crawley-Canning': '120',
                     'Crawley-Acomb Lane': '140',
                     'Crawley-BewBush': '160',
-                    'Crawley-Chorlton': '100',
+                    'Crawley-Chorlton': '',
                     'Cranfield-Canning': '120',
                     'Cranfield-Acomb Lane': '140',
                     'Cranfield-BewBush': '160',
                     'Cranfield-Chorlton': '140',
-                    'Cranfield-Crawley': '120',
+                    'Cranfield-Crawley': '',
                 },
             });
             const result = priceEntryApi.inputsValidityCheck(req);
             expect(result.errorInformation.length).toBe(0);
         });
 
-        it('should return fares information with errors if the inputs contains invalid data', () => {
+        it('should return fares information with errors if the inputs contains invalid data but not for empty prices', () => {
             const { req } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: {
@@ -52,7 +52,7 @@ describe('priceEntry', () => {
                 },
             });
             const result = priceEntryApi.inputsValidityCheck(req);
-            expect(result.errorInformation.length).toBe(4);
+            expect(result.errorInformation.length).toBe(2);
         });
     });
 
