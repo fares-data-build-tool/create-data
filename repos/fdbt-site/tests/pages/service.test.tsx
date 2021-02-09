@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
-import { getServicesByNocCode, ServiceType } from '../../src/data/auroradb';
+import { getServicesByNocCode } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
 import { PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants';
+import { ServiceType } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
 

@@ -13,11 +13,11 @@ const title = 'Multiple Operators - Create Fares Data Service';
 const description = 'Multiple Operators page of the Create Fares Data Service';
 const errorId = 'operators';
 
-type MultipleOperatorsProps = {
+interface MultipleOperatorsProps {
     errors?: ErrorInfo[];
     operatorsAndNocs: Operator[];
     csrfToken: string;
-};
+}
 
 const MultipleOperators = ({ operatorsAndNocs, errors = [], csrfToken }: MultipleOperatorsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>

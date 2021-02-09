@@ -5,19 +5,6 @@ import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export interface PassengerType {
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-}
-
-export interface PassengerTypeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {

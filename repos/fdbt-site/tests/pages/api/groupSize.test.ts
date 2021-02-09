@@ -1,8 +1,5 @@
-import groupSize, {
-    groupSizeSchema,
-    GroupTicketAttributeWithErrors,
-    GroupTicketAttribute,
-} from '../../../src/pages/api/groupSize';
+import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from '../../../src/interfaces';
+import groupSize, { groupSizeSchema } from '../../../src/pages/api/groupSize';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessionUtils from '../../../src/utils/sessions';
 import { GROUP_SIZE_ATTRIBUTE } from '../../../src/constants';

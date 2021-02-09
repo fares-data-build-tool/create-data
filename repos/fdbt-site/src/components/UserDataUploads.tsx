@@ -2,28 +2,10 @@ import React, { ReactElement } from 'react';
 import FileAttachment from './FileAttachment';
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
-import { ErrorInfo } from '../interfaces';
+import { UserDataUploadsProps } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 import ErrorSummary from './ErrorSummary';
 import CsrfForm from './CsrfForm';
-
-export interface UserDataUploadsProps {
-    csvUploadApiRoute: string;
-    csvUploadHintText: string;
-    csvUploadTitle: string;
-    guidanceDocDisplayName: string;
-    guidanceDocAttachmentUrl: string;
-    guidanceDocSize: string;
-    csvTemplateDisplayName: string;
-    csvTemplateAttachmentUrl: string;
-    csvTemplateSize: string;
-    errors: ErrorInfo[];
-    detailSummary?: string;
-    detailBody?: ReactElement;
-    showPriceOption?: boolean;
-    poundsOrPence?: string | null;
-    csrfToken: string;
-}
 
 const UserDataUploadComponent = ({
     csvUploadApiRoute,

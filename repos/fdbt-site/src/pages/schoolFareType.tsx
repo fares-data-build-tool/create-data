@@ -2,12 +2,12 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { SCHOOL_FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import FareTypeRadios, { FareTypeRadioProps } from '../components/FareTypeRadios';
+import FareTypeRadios from '../components/FareTypeRadios';
 import { getCsrfToken } from '../utils/index';
 import { getSessionAttribute } from '../utils/sessions';
 

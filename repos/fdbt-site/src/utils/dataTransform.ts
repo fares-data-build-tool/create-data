@@ -1,5 +1,5 @@
-import { Stop, StopPoint } from '../interfaces';
-import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern, RawService } from '../data/auroradb';
+import { Stop, StopPoint, JourneyPattern, RawJourneyPattern, RawService } from '../interfaces';
+import { batchGetStopsByAtcoCode } from '../data/auroradb';
 
 export const formatStopPoint = (stop: Stop, stopPoint: StopPoint): string =>
     stop?.localityName ? `${stop.localityName} (${stopPoint.commonName})` : `${stopPoint.commonName}`;

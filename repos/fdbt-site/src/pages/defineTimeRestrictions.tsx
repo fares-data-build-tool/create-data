@@ -1,18 +1,23 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ErrorInfo, NextPageContextWithSession, TimeRestriction } from '../interfaces';
+import RadioConditionalInput from '../components/RadioConditionalInput';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    TimeRestriction,
+    RadioConditionalInputFieldset,
+    TimeRestrictionsDefinitionWithErrors,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
-import { TimeRestrictionsDefinitionWithErrors } from './api/defineTimeRestrictions';
 import { getCsrfToken, getErrorsByIds } from '../utils';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
 const description = 'Define Time Restrictions page of the Create Fares Data Service';
 
-export interface DefineTimeRestrictionsProps {
+interface DefineTimeRestrictionsProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
     csrfToken: string;

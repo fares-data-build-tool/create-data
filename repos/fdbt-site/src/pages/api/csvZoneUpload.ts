@@ -2,19 +2,13 @@ import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
 import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
-import { putDataInS3, UserFareZone } from '../../data/s3';
+import { getUuidFromCookie, redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
+import { putDataInS3 } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { isSessionValid } from './apiUtils/validator';
 import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-
-import { FareType } from './fareType';
-
-export interface FareZone {
-    fareZoneName: string;
-}
+import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
@@ -179,8 +173,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
             const fareZoneName = userFareZones[0].FareZoneName;
-            await putDataInS3(userFareZones, `${uuid}.json`, true);
-            updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, { fareZoneName });
+            const nocCode = getAndValidateNoc(req, res);
+            if (!nocCode) {
+                throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
+            }
+            await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
+            updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
             if (fareType === 'multiOperator') {
                 redirectTo(res, '/searchOperators');

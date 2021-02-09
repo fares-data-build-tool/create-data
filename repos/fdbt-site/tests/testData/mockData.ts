@@ -19,7 +19,14 @@ import {
     MultiOperatorGeoZoneTicket,
     MultiOperatorMultipleServicesTicket,
     SchemeOperatorTicket,
-} from '../../src/interfaces/index';
+    RawService,
+    ServiceDB,
+    RadioWithConditionalInputs,
+    RadioConditionalInputFieldset,
+    UserFareStages,
+    MultiProduct,
+    MultiProductWithErrors,
+} from '../../src/interfaces';
 import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -41,13 +48,6 @@ import {
     FARE_STAGES_ATTRIBUTE,
     COOKIES_POLICY_COOKIE,
 } from '../../src/constants/index';
-
-import { RawService, Service } from '../../src/data/auroradb';
-import { UserFareStages } from '../../src/data/s3';
-
-import { MultiProduct, MultiProductWithErrors } from '../../src/pages/api/multipleProducts';
-import { RadioConditionalInputFieldset, RadioWithConditionalInputs } from '../../src/components/RadioConditionalInput';
-
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
@@ -933,7 +933,7 @@ export const service: BasicService = {
     serviceDescription: 'Worthing - Seaham - Crawley',
 };
 
-export const mockService: Service = {
+export const mockService: ServiceDB = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
     journeyPatterns: [

@@ -1,12 +1,15 @@
 import describeSalesOfferPackage, {
     sopInfoSchema,
     checkUserInput,
-    SalesOfferPackage,
-    SalesOfferPackageWithErrors,
 } from '../../../src/pages/api/describeSalesOfferPackage';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
-import { ErrorInfo } from '../../../src/interfaces';
+import {
+    ErrorInfo,
+    SalesOfferPackageInfo,
+    SalesOfferPackageInfoWithErrors,
+    SalesOfferPackage,
+    SalesOfferPackageWithErrors,
+} from '../../../src/interfaces';
 import * as sessionUtils from '../../../src/utils/sessions';
 import * as aurora from '../../../src/data/auroradb';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../../src/constants';

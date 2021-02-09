@@ -1,12 +1,8 @@
 import * as sessions from '../../../src/utils/sessions';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
-import howManyProducts, {
-    getErrors,
-    NumberOfProductsAttributeWithErrors,
-    NumberOfProductsAttribute,
-} from '../../../src/pages/api/howManyProducts';
+import howManyProducts, { getErrors } from '../../../src/pages/api/howManyProducts';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { ErrorInfo } from '../../../src/interfaces';
+import { ErrorInfo, NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from '../../../src/interfaces';
 
 describe('howManyProducts', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

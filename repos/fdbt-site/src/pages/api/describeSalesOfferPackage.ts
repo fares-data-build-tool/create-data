@@ -3,21 +3,11 @@ import * as yup from 'yup';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo, SalesOfferPackage, SalesOfferPackageWithErrors } from '../../interfaces';
 import { isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isSalesOfferPackageInfoWithErrors } from '../salesOfferPackages';
 import { insertSalesOfferPackage } from '../../data/auroradb';
-import { SalesOfferPackageInfo } from './salesOfferPackages';
-
-export interface SalesOfferPackage extends SalesOfferPackageInfo {
-    name: string;
-    description: string;
-}
-
-export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
-    errors: ErrorInfo[];
-}
 
 const noInputError = (input: string): string => `Enter a ${input} for your sales offer package`;
 const inputTooLongError = (input: string, max: number): string => `Enter a ${input} that is ${max} characters or fewer`;

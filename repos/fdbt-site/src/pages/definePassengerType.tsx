@@ -8,24 +8,23 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, {
-    createErrorId,
+import RadioConditionalInput, { createErrorId } from '../components/RadioConditionalInput';
+import {
+    BaseReactElement,
+    CompanionInfo,
+    ErrorInfo,
+    NextPageContextWithSession,
     RadioConditionalInputFieldset,
-} from '../components/RadioConditionalInput';
-import { BaseReactElement, CompanionInfo, ErrorInfo, GroupDefinition, NextPageContextWithSession } from '../interfaces';
+    PassengerType,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getCsrfToken, getErrorsByIds } from '../utils';
 import { isPassengerType, isPassengerTypeAttributeWithErrors, isWithErrors } from '../interfaces/typeGuards';
-import { PassengerType } from './api/passengerType';
 
 const title = 'Define Passenger Type - Create Fares Data Service';
 const description = 'Define Passenger Type page of the Create Fares Data Service';
-
-export interface GroupDefinitionWithErrors extends GroupDefinition {
-    errors: ErrorInfo[];
-}
 
 export interface TextInputFieldset {
     heading: {
@@ -36,7 +35,7 @@ export interface TextInputFieldset {
     inputErrors: ErrorInfo[];
 }
 
-export interface DefinePassengerTypeProps {
+interface DefinePassengerTypeProps {
     group: boolean;
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];

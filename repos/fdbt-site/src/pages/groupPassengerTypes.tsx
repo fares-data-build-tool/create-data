@@ -3,35 +3,33 @@ import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPES_LIST, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    GroupPassengerTypesCollectionWithErrors,
+    GroupPassengerTypesCollection,
+} from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { GroupPassengerTypesCollectionWithErrors, GroupPassengerTypesCollection } from './api/groupPassengerTypes';
 import { getCsrfToken } from '../utils';
 
 const title = 'Define Group Passengers - Create Fares Data Service';
 const description = 'Group Passengers selection page of the Create Fares Data Service';
-
-export type PassengerAttributes = {
-    passengerTypeDisplay: string;
-    passengerTypeValue: string;
-    greyedOut: boolean;
-};
 
 const isGroupPassengerWithErrors = (
     groupPassengerTypesAttribute: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors,
 ): groupPassengerTypesAttribute is GroupPassengerTypesCollectionWithErrors =>
     (groupPassengerTypesAttribute as GroupPassengerTypesCollectionWithErrors).errors !== undefined;
 
-interface PassengerTypeProps {
+interface GroupPassengerTypeProps {
     groupPassengerInfo: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
     csrfToken: string;
 }
 
 const insetText = 'More passenger types will become available soon';
 
-const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypeProps): ReactElement => {
+const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: GroupPassengerTypeProps): ReactElement => {
     const errors: ErrorInfo[] = isGroupPassengerWithErrors(groupPassengerInfo) ? groupPassengerInfo.errors : [];
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -86,7 +84,7 @@ const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypePro
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PassengerTypeProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: GroupPassengerTypeProps } => {
     const csrfToken = getCsrfToken(ctx);
     const groupPassengerTypesAttribute = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
 

@@ -1,6 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import isEmpty from 'lodash/isEmpty';
-import { NextApiRequestWithSession } from '../../interfaces/index';
+import {
+    NextApiRequestWithSession,
+    UserFareStages,
+    FaresInput,
+    PriceEntryError,
+    FaresInformation,
+} from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
     JOURNEY_ATTRIBUTE,
@@ -14,17 +20,7 @@ import { putStringInS3 } from '../../data/s3';
 import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { isJourney } from '../../interfaces/typeGuards';
 
-interface UserFareStages {
-    fareStages: {
-        stageName: string;
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
-
-interface FareTriangleData {
+interface ManualFareTriangleData {
     [stageName: string]: {
         [price: string]: {
             price: string;
@@ -33,29 +29,23 @@ interface FareTriangleData {
     };
 }
 
-export interface FaresInformation {
-    inputs: FaresInput[];
-    errorInformation: PriceEntryError[];
-}
-
-export interface FaresInput {
-    input: string;
-    locator: string;
-}
-
-export interface PriceEntryError {
-    input: string;
-    locator: string;
-}
-
 export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
-    const priceEntries = Object.entries(req.body);
     const errors: PriceEntryError[] = [];
+    const priceEntries = Object.entries(req.body);
+    const allEmpty = !priceEntries.find(priceEntry => priceEntry[1] !== '');
+    if (allEmpty) {
+        priceEntries.forEach(priceEntry => {
+            errors.push({
+                input: 'There must be at least one price entered',
+                locator: removeAllWhiteSpace(priceEntry[0]),
+            });
+        });
+    }
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
         if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
-            if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
+            if (Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
                 errors.push({
-                    input: 'Enter a valid price for each stage',
+                    input: 'Prices must be whole numbers or empty',
                     locator: removeAllWhiteSpace(priceEntry[0]),
                 });
             }
@@ -73,7 +63,7 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
 
 export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => {
     const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
-    const fareTriangle: FareTriangleData = {};
+    const fareTriangle: ManualFareTriangleData = {};
 
     for (let itemNum = 0; itemNum < arrayOfFareItemArrays.length; itemNum += 1) {
         const cellRef = arrayOfFareItemArrays[itemNum][0];
@@ -86,17 +76,19 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
             fareTriangle[originFareStageName] = {};
         }
 
-        if (!fareTriangle[originFareStageName][price]) {
-            fareTriangle[originFareStageName][price] = {
-                price: (parseFloat(price) / 100).toFixed(2),
-                fareZones: [],
-            };
-        }
+        if (price) {
+            if (!fareTriangle[originFareStageName][price]) {
+                fareTriangle[originFareStageName][price] = {
+                    price: (parseFloat(price) / 100).toFixed(2),
+                    fareZones: [],
+                };
+            }
 
-        if (!fareTriangle[destinationFareStageName]) {
-            fareTriangle[destinationFareStageName] = {};
+            if (!fareTriangle[destinationFareStageName]) {
+                fareTriangle[destinationFareStageName] = {};
+            }
+            fareTriangle[originFareStageName][price].fareZones.push(destinationFareStageName);
         }
-        fareTriangle[originFareStageName][price].fareZones.push(destinationFareStageName);
     }
 
     const originStages = Object.entries(fareTriangle);

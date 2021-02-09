@@ -7,9 +7,8 @@ import {
     mockProductRadioErrors,
 } from '../testData/mockData';
 import ProductDateInfo, { getFieldsets, getServerSideProps } from '../../src/pages/productDateInformation';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, ProductDateInformation } from '../../src/interfaces';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants';
-import { ProductDateInformation } from '../../src/pages/api/productDateInformation';
 
 describe('pages', () => {
     describe('productDateInformation', () => {
