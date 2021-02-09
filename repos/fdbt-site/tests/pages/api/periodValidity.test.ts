@@ -2,7 +2,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import periodValidity from '../../../src/pages/api/periodValidity';
 import { ErrorInfo, ProductData } from '../../../src/interfaces';
-import { PERIOD_EXPIRY_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../../src/constants';
+import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants';
 
 describe('periodValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -26,9 +26,6 @@ describe('periodValidity', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({
-            session: {
-                [SERVICE_LIST_ATTRIBUTE]: undefined,
-            },
             body: { periodValid: '24hr' },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -36,6 +33,27 @@ describe('periodValidity', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, mockProductInfo);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
+    });
+
+    it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE with productEndTime empty even if supplied, if end of service day is not selected', () => {
+        const mockProductInfo: ProductData = {
+            products: [
+                {
+                    productName: 'Product A',
+                    productPrice: '1234',
+                    productDuration: '2 days',
+                    productValidity: '24hr',
+                    productEndTime: '',
+                },
+            ],
+        };
+
+        const { req, res } = getMockRequestAndResponse({
+            body: { periodValid: '24hr', productEndTime: '2300' },
+        });
+        periodValidity(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, mockProductInfo);
     });
 
     it('correctly generates period expiry error info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to periodValidity page when there is no period validity info', () => {
@@ -75,7 +93,10 @@ describe('periodValidity', () => {
         });
         periodValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, {
+            errors,
+            products: [{ productName: 'Product A', productEndTime: '', productPrice: '1234' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });
@@ -98,7 +119,10 @@ describe('periodValidity', () => {
         });
         periodValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, {
+            errors,
+            products: [{ productName: 'Product A', productEndTime: '2400', productPrice: '1234' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });
@@ -121,7 +145,10 @@ describe('periodValidity', () => {
         });
         periodValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, {
+            errors,
+            products: [{ productName: 'Product A', productEndTime: 'abcd', productPrice: '1234' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });
