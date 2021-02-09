@@ -39,9 +39,7 @@ def handler(event, context):
 def insert_in_database(key, bucket):
     query_array = None
 
-    if key == "servicereport.csv":
-        query_array = service_report_query(bucket)
-    elif key == "Stops.csv":
+    if key == "Stops.csv":
         query_array = stops_query(bucket)
     elif key == "NOCLines.csv":
         query_array = noc_lines_query(bucket)
