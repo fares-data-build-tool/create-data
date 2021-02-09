@@ -274,3 +274,16 @@ export const getCoreData = (
         ticketType: periodTicket.type,
     };
 };
+
+export const getDistributionChannel = (purchaseLocation: string): string => {
+    switch (purchaseLocation) {
+        case 'onBoard':
+            return 'on_board';
+        case 'atStop':
+            return 'at_stop';
+        case 'mobileDevice':
+            return 'mobile_device';
+        default:
+            return purchaseLocation;
+    }
+};

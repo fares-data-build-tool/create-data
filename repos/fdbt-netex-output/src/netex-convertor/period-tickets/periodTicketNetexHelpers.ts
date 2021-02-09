@@ -35,6 +35,7 @@ import {
     getProfileRef,
     getCleanWebsite,
     replaceIWBusCoNocCode,
+    getDistributionChannel,
 } from '../sharedHelpers';
 
 export const isGeoZoneTicket = (ticket: Ticket): ticket is GeoZoneTicket =>
@@ -478,7 +479,7 @@ export const getSalesOfferPackageList = (
                         id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}@${purchaseLocation}`,
                         order: `${index + 1}`,
                         DistributionChannelRef: {
-                            ref: `fxc:${purchaseLocation}`,
+                            ref: `fxc:${getDistributionChannel(purchaseLocation)}`,
                             version: 'fxc:v1.0',
                         },
                         DistributionChannelType: { $t: `${purchaseLocation}` },
