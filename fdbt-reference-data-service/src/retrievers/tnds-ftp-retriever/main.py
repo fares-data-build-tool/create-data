@@ -71,7 +71,7 @@ def lambda_handler(event, context):
         files = ftp.nlst()
 
         for file in files:
-            if file.endswith('.zip') or file.endswith('servicereport.csv'):
+            if file.endswith('.zip'):
                 ftp.retrbinary("RETR " + file, open(file_dir + file, 'wb').write)
 
         ftp.close()
