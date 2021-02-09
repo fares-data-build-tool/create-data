@@ -1,14 +1,9 @@
 import React, { ReactElement } from 'react';
+import { ConfirmationElement } from '../interfaces';
 
 interface ConfirmationTableProps {
     confirmationElements: ConfirmationElement[];
     header: string;
-}
-
-export interface ConfirmationElement {
-    name: string;
-    content: string;
-    href: string;
 }
 
 const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTableProps): ReactElement => {

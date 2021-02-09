@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
-import { JourneyPattern } from '../data/auroradb';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, JourneyPattern } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
-interface DirectionProps {
+interface DirectionDropdownProps {
     selectName: string;
     selectNameID: string;
     dropdownLabel: string;
@@ -25,7 +24,7 @@ const DirectionDropdown = ({
     className,
     errors,
     hideLabel = false,
-}: DirectionProps): ReactElement => {
+}: DirectionDropdownProps): ReactElement => {
     let selectedValue = '';
 
     if (outboundJourney) {

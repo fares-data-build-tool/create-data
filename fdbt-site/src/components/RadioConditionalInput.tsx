@@ -1,42 +1,17 @@
 import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
 import startCase from 'lodash/startCase';
-import { ErrorInfo, BaseReactElement } from '../interfaces';
+import {
+    ErrorInfo,
+    BaseReactElement,
+    RadioWithoutConditionals,
+    RadioWithConditionalInputs,
+    RadioButton,
+    RadioConditionalInputFieldset,
+} from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
-export interface RadioWithoutConditionals extends BaseReactElement {
-    value: string;
-    radioButtonHint?: {
-        id: string;
-        content: string;
-    };
-}
-
-export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
-    dataAriaControls: string;
-    inputHint: {
-        id: string;
-        content: string;
-        hidden?: boolean;
-    };
-    inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits';
-    inputs: BaseReactElement[];
-    inputErrors: ErrorInfo[];
-}
-
-export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
-
-export interface RadioConditionalInputFieldset {
-    heading: {
-        id: string;
-        content: string;
-        hidden?: boolean;
-    };
-    radios: RadioButton[];
-    radioError: ErrorInfo[];
-}
-
-export interface RadioConditionalInputProps {
+interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
 }
 

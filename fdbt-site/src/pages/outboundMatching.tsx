@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { batchGetStopsByAtcoCode, getServiceByNocCodeAndLineName, Stop } from '../data/auroradb';
+import { batchGetStopsByAtcoCode, getServiceByNocCodeAndLineName } from '../data/auroradb';
 import { JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE, OPERATOR_COOKIE, SERVICE_ATTRIBUTE } from '../constants';
-import { getUserFareStages, UserFareStages } from '../data/s3';
+import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, NextPageContextWithSession } from '../interfaces/index';
+import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { isMatchingWithErrors } from './matching';

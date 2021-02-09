@@ -2,19 +2,14 @@ import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import {
+    ErrorInfo,
+    NextApiRequestWithSession,
+    SalesOfferPackageInfo,
+    SalesOfferPackageInfoWithErrors,
+} from '../../interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../constants';
 import { purchaseLocationsList, paymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
-
-export interface SalesOfferPackageInfo {
-    purchaseLocations: string[];
-    paymentMethods: string[];
-    ticketFormats: string[];
-}
-
-export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
-    errors: ErrorInfo[];
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];

@@ -7,6 +7,7 @@ import {
     ProductData,
     ProductInfoWithErrors,
     GroupDefinition,
+    GroupDefinitionWithErrors,
     TimeRestriction,
     CompanionInfo,
     DurationValidInfo,
@@ -22,9 +23,41 @@ import {
     FullTimeRestrictionAttribute,
     TermTimeAttribute,
     WithErrors,
-} from '../interfaces/index';
-
-import { FaresInformation } from '../pages/api/priceEntry';
+    NumberOfStagesAttributeWithError,
+    ReturnPeriodValidityWithErrors,
+    InputCheck,
+    FareStagesAttribute,
+    FareStagesAttributeWithErrors,
+    CsvUploadAttributeWithErrors,
+    DefinePassengerTypeWithErrors,
+    TimeRestrictionsDefinitionWithErrors,
+    FareType,
+    FareTypeWithErrors,
+    FareZoneWithErrors,
+    GroupPassengerTypesCollection,
+    GroupPassengerTypesCollectionWithErrors,
+    GroupTicketAttribute,
+    GroupTicketAttributeWithErrors,
+    NumberOfProductsAttributeWithErrors,
+    NumberOfProductsAttribute,
+    MultipleProductAttribute,
+    MultipleProductAttributeWithErrors,
+    PassengerTypeWithErrors,
+    PassengerType,
+    FaresInformation,
+    TicketPeriodWithErrors,
+    SchoolFareTypeAttribute,
+    MultipleOperatorsAttribute,
+    MultipleOperatorsAttributeWithErrors,
+    SelectSalesOfferPackageWithError,
+    ServiceWithErrors,
+    Service,
+    ServiceListAttribute,
+    ServiceListAttributeWithErrors,
+    SalesOfferPackageInfo,
+    SalesOfferPackageInfoWithErrors,
+    SalesOfferPackageWithErrors,
+} from '../interfaces';
 import {
     DURATION_VALID_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
@@ -63,36 +96,9 @@ import {
     TERM_TIME_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/index';
-
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
-import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
-import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
-import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
-import {
-    GroupPassengerTypesCollection,
-    GroupPassengerTypesCollectionWithErrors,
-} from '../pages/api/groupPassengerTypes';
-import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
-import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
-import { InputCheck } from '../pages/stageNames';
-import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
-import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
-import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
-import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
-import { MultipleProductAttribute, MultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
-import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
-import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
-import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerType';
-import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
-import { ServiceWithErrors, Service } from '../pages/api/service';
-import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
-import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
-import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
-import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
 
-type SessionAttributeTypes = {
+interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
     [DURATION_VALID_ATTRIBUTE]: DurationValidInfo;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
@@ -113,7 +119,7 @@ type SessionAttributeTypes = {
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
-    [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
+    [FARE_ZONE_ATTRIBUTE]: string | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
     [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
@@ -133,7 +139,7 @@ type SessionAttributeTypes = {
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
     [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | WithErrors<TermTimeAttribute>;
     [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;
-};
+}
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
     ? SessionAttributeTypes[T]

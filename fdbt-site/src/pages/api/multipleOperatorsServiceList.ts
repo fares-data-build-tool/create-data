@@ -1,18 +1,13 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { MultipleOperatorsAttribute } from './searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/index';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession, ErrorInfo, MultiOperatorInfo } from '../../interfaces';
+import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
 
 const errorId = 'checkbox-0';
-
-export interface MultiOperatorInfoWithErrors {
-    errors: ErrorInfo[];
-}
 
 export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
     [key: string]: string | string[];

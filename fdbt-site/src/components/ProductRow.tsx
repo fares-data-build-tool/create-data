@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, MultiProduct } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
-import { MultiProduct } from '../pages/api/multipleProducts';
 
-export interface ProductRowProps {
+interface ProductRowProps {
     numberOfProductsToDisplay: string;
     errors: ErrorInfo[];
     userInput: MultiProduct[];

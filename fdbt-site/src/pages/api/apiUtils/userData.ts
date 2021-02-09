@@ -25,7 +25,8 @@ import {
     Ticket,
     WithErrors,
     isSchemeOperatorTicket,
-} from '../../../interfaces/index';
+    MultipleProductAttribute,
+} from '../../../interfaces';
 import {
     TERM_TIME_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
@@ -66,7 +67,6 @@ import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
-import { MultipleProductAttribute } from '../multipleProducts';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -299,14 +299,16 @@ export const getGeoZoneTicketJson = async (
 ): Promise<GeoZoneTicket> => {
     const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'geo zone');
 
-    const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
+    const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
 
-    if (!fareZoneAttribute || isFareZoneAttributeWithErrors(fareZoneAttribute)) {
+    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
     }
 
-    const atcoCodes: string[] = await getCsvZoneUploadData(basePeriodTicketAttributes.uuid);
+    const atcoCodes: string[] = await getCsvZoneUploadData(
+        `fare-zone/${basePeriodTicketAttributes.nocCode}/${basePeriodTicketAttributes.uuid}.json`,
+    );
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
     const additionalNocs =
@@ -320,7 +322,7 @@ export const getGeoZoneTicketJson = async (
 
     return {
         ...basePeriodTicketAttributes,
-        zoneName: fareZoneAttribute.fareZoneName,
+        zoneName: fareZoneName,
         stops: zoneStops,
         ...(additionalNocs && { additionalNocs }),
     };
@@ -455,7 +457,7 @@ export const getSchemeOperatorTicketJson = async (
     const uuid = getUuidFromCookie(req, res);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
     const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
-    const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
+    const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
@@ -469,8 +471,8 @@ export const getSchemeOperatorTicketJson = async (
         !isTicketPeriodAttribute(ticketPeriodAttribute) ||
         isSalesOfferPackageWithErrors(salesOfferPackages) ||
         !salesOfferPackages ||
-        !fareZoneAttribute ||
-        isFareZoneAttributeWithErrors(fareZoneAttribute) ||
+        !fareZoneName ||
+        isFareZoneAttributeWithErrors(fareZoneName) ||
         !multiOpAttribute
     ) {
         throw new Error('Could not create scheme operator ticket json. BaseTicket attributes could not be found.');
@@ -502,8 +504,8 @@ export const getSchemeOperatorTicketJson = async (
         }
         productDetailsList = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductAttribute);
     }
-
-    const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
+    const nocCode = getAndValidateNoc(req, res);
+    const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${uuid}.json`);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
     if (zoneStops.length === 0) {
@@ -534,7 +536,7 @@ export const getSchemeOperatorTicketJson = async (
                 : [],
         ticketPeriod: ticketPeriodAttribute,
         products: productDetailsList,
-        zoneName: fareZoneAttribute.fareZoneName,
+        zoneName: fareZoneName,
         stops: zoneStops,
         additionalNocs,
     };

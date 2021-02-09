@@ -3,9 +3,7 @@ import React, { ReactElement, useState } from 'react';
 import ErrorSummary from './ErrorSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { FareStage, UserFareStages } from '../data/s3';
-import { Stop } from '../data/auroradb';
-import { BasicService, ErrorInfo } from '../interfaces';
+import { BasicService, ErrorInfo, Stop, FareStage, UserFareStages } from '../interfaces';
 import CsrfForm from './CsrfForm';
 import { formatStopName } from '../utils';
 

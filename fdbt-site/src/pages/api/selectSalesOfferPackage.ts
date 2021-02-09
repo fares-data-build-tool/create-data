@@ -5,18 +5,14 @@ import {
     NextApiRequestWithSession,
     ErrorInfo,
     ProductWithSalesOfferPackages,
+    SelectSalesOfferPackageWithError,
 } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
-export interface SelectSalesOfferPackageWithError {
-    errors: ErrorInfo[];
-    selected: { [key: string]: string[] };
-}
-
-export interface SanitisedBodyAndErrors {
+interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: string[] };
     errors: ErrorInfo[];
 }

@@ -2,11 +2,15 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import { NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import {
+    NextPageContextWithSession,
+    ErrorInfo,
+    GroupTicketAttributeWithErrors,
+    GroupTicketAttribute,
+} from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
 import { GROUP_SIZE_ATTRIBUTE } from '../constants';
-import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from './api/groupSize';
 import { getCsrfToken } from '../utils';
 
 const title = 'Group Size - Create Fares Data Service';

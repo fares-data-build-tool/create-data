@@ -1,23 +1,22 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, FareType } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
-import { FareType } from './api/fareType';
 import { getCsrfToken } from '../utils';
 
 const title = 'Ticket Representation - Create Fares Data Service';
 const description = 'Ticket Representation selection page of the Create Fares Data Service';
 
-type TicketRepresentationProps = {
+interface TicketRepresentationProps {
     fareType: string;
     errors: ErrorInfo[];
     csrfToken: string;
-};
+}
 
 const TicketRepresentation = ({ fareType, errors = [], csrfToken }: TicketRepresentationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>

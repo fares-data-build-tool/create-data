@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import CsrfForm from '../components/CsrfForm';
 
-type HeaderProps = {
+interface HeaderProps {
     isAuthed: boolean;
     csrfToken: string;
-};
+}
 
 const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
     <header className="govuk-header " role="banner" data-module="govuk-header">

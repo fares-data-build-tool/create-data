@@ -1,13 +1,12 @@
 import React, { ReactElement } from 'react';
 import kebabCase from 'lodash/kebabCase';
 import { BaseLayout } from '../layout/Layout';
-import { NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession, SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { SOP_INFO_ATTRIBUTE } from '../constants';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from './api/salesOfferPackages';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 import { getCsrfToken, sentenceCaseString } from '../utils';
 

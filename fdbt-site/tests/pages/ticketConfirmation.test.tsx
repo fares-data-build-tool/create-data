@@ -14,7 +14,6 @@ import TicketConfirmation, {
 } from '../../src/pages/ticketConfirmation';
 import * as ticketConfirmation from '../../src/pages/ticketConfirmation';
 import { getMockContext, mockMatchingFaresZones, service, userFareStages } from '../testData/mockData';
-import { ConfirmationElement } from '../../src/components/ConfirmationTable';
 import {
     FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
@@ -31,7 +30,7 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../src/constants';
-import { MultiOperatorInfo, Operator } from '../../src/interfaces';
+import { MultiOperatorInfo, Operator, ConfirmationElement } from '../../src/interfaces';
 
 describe('pages', () => {
     const confirmationElementStructure: ConfirmationElement = {

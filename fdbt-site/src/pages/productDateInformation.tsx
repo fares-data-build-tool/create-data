@@ -1,21 +1,25 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    RadioConditionalInputFieldset,
+    ProductDateInformation,
+} from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../constants';
 import { isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
+import RadioConditionalInput from '../components/RadioConditionalInput';
 import { getCsrfToken, getErrorsByIds } from '../utils';
-import { ProductDateInformation } from './api/productDateInformation';
 
 const title = 'Product Date Information - Create Fares Data Service';
 const description = 'Product Date Information page of the Create Fares Data Service';
 const productDatingHintText =
     'If not supplied, your start date will default to today and your end date will default to 100 years from today';
 
-export interface ProductDateInformationProps {
+interface ProductDateInformationProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset;
     csrfToken: string;

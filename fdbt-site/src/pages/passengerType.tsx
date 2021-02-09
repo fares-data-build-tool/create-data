@@ -15,10 +15,10 @@ const description = 'Passenger Type selection page of the Create Fares Data Serv
 
 const insetText = 'More passenger types will become available soon';
 
-type PassengerTypeProps = {
+interface PassengerTypeProps {
     errors?: ErrorInfo[];
     csrfToken: string;
-};
+}
 
 const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>

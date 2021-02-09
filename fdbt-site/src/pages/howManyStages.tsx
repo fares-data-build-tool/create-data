@@ -11,10 +11,6 @@ import { getCsrfToken } from '../utils';
 const title = 'How Many Stages - Create Fares Data Service';
 const description = 'How Many Stages selection page of the Create Fares Data Service';
 
-export interface NumberOfStagesAttributeWithError {
-    errors: ErrorInfo[];
-}
-
 interface HowManyStagesProps {
     errors: ErrorInfo[];
     csrfToken: string;

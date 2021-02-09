@@ -1,4 +1,3 @@
-import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import {
     PeriodTicket,
     PointToPointTicket,
@@ -18,16 +17,21 @@ import {
     MultiOperatorInfoWithErrors,
     TermTimeAttribute,
     WithErrors,
-} from './index';
-
-import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
-import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
-import { Service, ServiceWithErrors } from '../pages/api/service';
-import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { InputCheck } from '../pages/stageNames';
-import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
-import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
-import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
+    InputCheck,
+    FareStagesAttribute,
+    FareStagesAttributeWithErrors,
+    FareType,
+    FareTypeWithErrors,
+    PassengerType,
+    PassengerTypeWithErrors,
+    TicketPeriodWithErrors,
+    SchoolFareTypeAttribute,
+    MultipleOperatorsAttribute,
+    MultipleOperatorsAttributeWithErrors,
+    SelectSalesOfferPackageWithError,
+    Service,
+    ServiceWithErrors,
+} from '.';
 import { validFareTypes } from '../constants';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;

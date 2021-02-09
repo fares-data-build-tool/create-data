@@ -12,9 +12,8 @@ import {
     mockTimeRestrictionsRadioAndInputErrors,
     getMockContext,
 } from '../testData/mockData';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, TimeRestrictionsDefinitionWithErrors } from '../../src/interfaces';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants';
-import { TimeRestrictionsDefinitionWithErrors } from '../../src/pages/api/defineTimeRestrictions';
 
 describe('pages', () => {
     describe('defineTimeRestrictions', () => {
