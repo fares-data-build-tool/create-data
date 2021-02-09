@@ -1,6 +1,6 @@
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
-import { Operator, Service } from '../types';
+import { Operator } from '../types';
 import { replaceIWBusCoNocCode } from '../netex-convertor/sharedHelpers';
 
 export const getAuroraDBClient = (): Pool => {
@@ -63,24 +63,5 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
         return operatorData;
     } catch (err) {
         throw new Error(`Could not retrieve operator data from AuroraDB: ${err.stack}`);
-    }
-};
-
-export const getTndsServiceDataByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<Service> => {
-    try {
-        const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-        const queryInput = 'SELECT tndsService.description FROM tndsService WHERE (`nocCode` = ? and `lineName` = ?)';
-
-        const queryResult = await executeQuery<Service[]>(queryInput, [nocCodeParameter, lineName]);
-
-        const tndsServiceData = queryResult[0];
-
-        if (!tndsServiceData) {
-            throw new Error(`No service data found for nocCode: ${nocCode}, lineName: ${lineName}`);
-        }
-
-        return tndsServiceData;
-    } catch (err) {
-        throw new Error(`Could not retrieve tnds service data from AuroraDB: ${err.stack}`);
     }
 };
