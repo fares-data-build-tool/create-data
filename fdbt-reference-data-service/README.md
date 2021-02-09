@@ -40,3 +40,19 @@ cd src/uploaders/handlers
 npm install
 sls deploy --stage={STAGE_TO_DEPLOY_TO}
 ```
+
+## Testing
+
+Install the required dependencies for the tests:
+
+```bash
+cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders
+pip install -r requirements.test.txt
+```
+
+Run the tests:
+
+```bash
+cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders
+python3 -m pytest tests/
+```
