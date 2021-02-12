@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_COOKIE } from '../constants';
-import { ErrorInfo } from '../interfaces';
+import { USER_ATTRIBUTE } from '../constants/attributes';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Reset Password - Create Fares Data Service';
 const description = 'Reset Password page of the Create Fares Data Service';
@@ -97,12 +97,10 @@ const ResetPassword = ({ errors, regKey, username, expiry, csrfToken }: ResetPas
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ResetPasswordProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ResetPasswordProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
+    const userAttribute = getSessionAttribute(ctx.req, USER_ATTRIBUTE);
 
-    const errors: ErrorInfo[] = [];
     const { key, user_name: username, expiry } = ctx.query;
 
     if (!key || !username || !expiry) {
@@ -122,20 +120,14 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ResetPassword
         }
     }
 
-    if (userCookie) {
-        const userCookieParsed = JSON.parse(userCookie);
-        const { inputChecks } = userCookieParsed;
-
-        inputChecks.map((check: ErrorInfo) => {
-            if (check.errorMessage) {
-                errors.push({ id: check.id, errorMessage: check.errorMessage });
-            }
-            return errors;
-        });
-    }
-
     return {
-        props: { errors, regKey: key as string, username: username as string, expiry: expiry as string, csrfToken },
+        props: {
+            errors: isWithErrors(userAttribute) ? userAttribute.errors : [],
+            regKey: key as string,
+            username: username as string,
+            expiry: expiry as string,
+            csrfToken,
+        },
     };
 };
 

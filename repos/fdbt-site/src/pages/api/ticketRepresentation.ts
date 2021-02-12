@@ -1,16 +1,11 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
-import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants';
+import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         if (req.body.ticketType) {
             const { ticketType } = req.body;
             const ticketTypeObject: TicketRepresentationAttribute = { name: ticketType };

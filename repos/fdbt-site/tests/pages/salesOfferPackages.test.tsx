@@ -7,7 +7,7 @@ import SalesOfferPackages, {
 } from '../../src/pages/salesOfferPackages';
 import { getMockContext } from '../testData/mockData';
 import { ErrorInfo, SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../src/interfaces';
-import { SOP_INFO_ATTRIBUTE } from '../../src/constants';
+import { SOP_INFO_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     afterEach(() => {

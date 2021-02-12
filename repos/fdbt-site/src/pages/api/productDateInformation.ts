@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import moment from 'moment';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../constants';
+import { PRODUCT_DATE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession, ProductDateInformation } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 

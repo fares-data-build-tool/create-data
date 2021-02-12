@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import { ErrorInfo, NextPageContextWithSession, Operator } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSearchOperatorsByNocRegion, getSearchOperatorsBySchemeOpRegion } from '../data/auroradb';
 import { getAndValidateNoc, getAndValidateSchemeOpRegion, getCsrfToken, isSchemeOperator } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
@@ -304,10 +303,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         const results = schemeOp
             ? await getSearchOperatorsBySchemeOpRegion(searchText, searchParam)
             : await getSearchOperatorsByNocRegion(searchText, searchParam);
-        const cookies = parseCookies(ctx);
-        const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).name;
+        const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
+
+        if (!operatorAttribute?.name) {
+            throw new Error('Could not extract the necessary operator info for the searchOperators page.');
+        }
+
         results.forEach(operator => {
-            if (operator.name !== operatorName) {
+            if (operator.name !== operatorAttribute.name) {
                 searchResults.push(operator);
             }
         });

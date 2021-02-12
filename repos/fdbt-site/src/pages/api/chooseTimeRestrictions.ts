@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
-import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
+import { removeAllWhiteSpace } from './apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
 
 export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
 
@@ -58,9 +58,6 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
         const chosenDays = (getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE) as TimeRestriction)
             .validDays;
 

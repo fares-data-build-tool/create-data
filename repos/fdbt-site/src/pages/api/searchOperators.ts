@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import uniqBy from 'lodash/uniqBy';
 import { ErrorInfo, NextApiRequestWithSession, Operator, TicketRepresentationAttribute } from '../../interfaces';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from './apiUtils/validator';

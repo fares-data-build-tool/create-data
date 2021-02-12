@@ -57,7 +57,11 @@ import {
     SalesOfferPackageInfo,
     SalesOfferPackageInfoWithErrors,
     SalesOfferPackageWithErrors,
+    UserAttribute,
+    OperatorAttribute,
+    ForgotPasswordAttribute,
 } from '../interfaces';
+
 import {
     DURATION_VALID_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
@@ -95,7 +99,13 @@ import {
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
-} from '../constants/index';
+    FORGOT_PASSWORD_ATTRIBUTE,
+    USER_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../constants/attributes';
+
+import * as attributes from '../constants/attributes';
+
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
 
 interface SessionAttributeTypes {
@@ -139,6 +149,9 @@ interface SessionAttributeTypes {
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
     [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | WithErrors<TermTimeAttribute>;
     [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;
+    [FORGOT_PASSWORD_ATTRIBUTE]: ForgotPasswordAttribute | WithErrors<ForgotPasswordAttribute>;
+    [USER_ATTRIBUTE]: UserAttribute | WithErrors<UserAttribute>;
+    [OPERATOR_ATTRIBUTE]: OperatorAttribute | WithErrors<OperatorAttribute>;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
@@ -158,8 +171,18 @@ export const updateSessionAttribute = <T extends string>(
     req.session[attributeName] = attributeValue;
 };
 
+export const regenerateSession = (req: IncomingMessageWithSession): void => {
+    const attributesList = Object.values(attributes) as string[];
+
+    Object.keys(req.session).forEach(attribute => {
+        if (attributesList.includes(attribute) && attribute !== OPERATOR_ATTRIBUTE) {
+            updateSessionAttribute(req, attribute, undefined);
+        }
+    });
+};
+
 export const destroySession = (req: IncomingMessageWithSession): void => {
-    req.session.destroy(err => {
+    req.session.destroy((err: Error) => {
         if (err) {
             throw new Error('Could not destroy session');
         }

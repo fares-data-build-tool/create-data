@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import uniqBy from 'lodash/uniqBy';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_STAGES_ATTRIBUTE, STAGE_NAMES_ATTRIBUTE } from '../constants';
+import { FARE_STAGES_ATTRIBUTE, STAGE_NAMES_ATTRIBUTE } from '../constants/attributes';
 import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, NextPageContextWithSession, InputCheck } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';

@@ -1,14 +1,13 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { ReactElement, useState } from 'react';
-import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
-    OPERATOR_COOKIE,
+    OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -177,23 +176,20 @@ const MultipleProductValidity = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
-        !operatorCookie ||
+        !operatorAttribute?.name ||
         !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
         !multipleProductAttribute ||
         !isPassengerType(passengerTypeAttribute)
     ) {
-        throw new Error('Necessary cookies/session not found to display the multiple product validity page');
+        throw new Error('Necessary attributes not found to display the multiple product validity page');
     }
-    const { name } = JSON.parse(operatorCookie);
-
     const multipleProducts: MultiProduct[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
 
@@ -205,7 +201,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     return {
         props: {
-            operatorName: name,
+            operatorName: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
             numberOfProducts,
             multipleProducts,

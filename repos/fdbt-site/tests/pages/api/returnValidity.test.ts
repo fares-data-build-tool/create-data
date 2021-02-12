@@ -5,7 +5,7 @@ import returnValidity, {
     formatRequestBody,
 } from '../../../src/pages/api/returnValidity';
 import * as sessions from '../../../src/utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../../../src/constants';
+import { RETURN_VALIDITY_ATTRIBUTE } from '../../../src/constants/attributes';
 import { ErrorInfo } from '../../../src/interfaces';
 
 describe('returnValidity', () => {
@@ -67,17 +67,6 @@ describe('returnValidity', () => {
             });
             const filtered = formatRequestBody(req);
             expect(filtered).toEqual({ amount: '24', ...reqBodyParams });
-        });
-    });
-
-    it('should throw an error and redirect to the error page when the session is invalid', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        await returnValidity(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
         });
     });
 

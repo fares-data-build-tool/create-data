@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
+import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants/attributes';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -78,7 +78,7 @@ export const getFieldset = (
                         id: 'product-end-time',
                         name: 'productEndTime',
                         label: 'End time',
-                        defaultValue: periodExpiryAttribute?.products[0].productEndTime || '',
+                        defaultValue: periodExpiryAttribute?.products?.[0]?.productEndTime || '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),

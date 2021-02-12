@@ -1,6 +1,6 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import serviceList from '../../../src/pages/api/serviceList';
-import { FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('serviceList', () => {
     const selectAllFalseUrl = '/serviceList?selectAll=false';

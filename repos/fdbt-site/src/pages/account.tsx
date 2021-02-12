@@ -66,7 +66,7 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
 export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetailsProps } => {
     const cookies = parseCookies(ctx);
     if (!cookies[ID_TOKEN_COOKIE]) {
-        throw new Error('Necessary cookies not found to show account details');
+        throw new Error('Necessary attributes not found to show account details');
     }
     const noc = getNocFromIdToken(ctx);
     const email = getAttributeFromIdToken(ctx, 'email');

@@ -2,7 +2,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import multipleOperatorsServiceList, {
     getSelectedServicesAndNocCodeFromRequest,
 } from '../../../src/pages/api/multipleOperatorsServiceList';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../../src/constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 
 describe('multipleOperatorsServiceList', () => {

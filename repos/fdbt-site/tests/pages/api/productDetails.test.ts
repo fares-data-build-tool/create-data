@@ -1,6 +1,6 @@
 import { ProductData, Product } from '../../../src/interfaces/index';
 import productDetails from '../../../src/pages/api/productDetails';
-import { FARE_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -44,7 +44,7 @@ describe('productDetails', () => {
     });
 
     it.each([['period'], ['multiOperator']])(
-        'should correctly set PRODUCT_DETAILS_ATTRIBUTE cookie and redirect to chooseValidity when the user input is valid for a %s ticket',
+        'should correctly set PRODUCT_DETAILS_ATTRIBUTE and redirect to chooseValidity when the user input is valid for a %s ticket',
         fareType => {
             const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 

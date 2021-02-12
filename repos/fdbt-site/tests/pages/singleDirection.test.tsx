@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import SingleDirection, { getServerSideProps } from '../../src/pages/singleDirection';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
-import { SERVICE_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 
@@ -65,7 +65,7 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
+            it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
                 (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
 
                 const ctx = getMockContext();
@@ -94,12 +94,12 @@ describe('pages', () => {
             });
 
             it('throws an error if noc invalid', async () => {
-                const ctx = getMockContext({ cookies: { operator: null } });
+                const ctx = getMockContext({ session: { [OPERATOR_ATTRIBUTE]: undefined } });
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
             });
 
-            it('throws an error if the service cookie does not exist', async () => {
+            it('throws an error if the service attribute does not exist', async () => {
                 const ctx = getMockContext({
                     session: {
                         [SERVICE_ATTRIBUTE]: undefined,
@@ -107,7 +107,7 @@ describe('pages', () => {
                 });
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow(
-                    'Necessary cookies not found to show direction page',
+                    'Necessary attributes not found to show direction page',
                 );
             });
         });

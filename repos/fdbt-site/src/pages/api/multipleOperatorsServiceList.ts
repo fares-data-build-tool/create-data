@@ -1,11 +1,10 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/index';
-import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
+import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
 
 const errorId = 'checkbox-0';
 
@@ -41,10 +40,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const selectAllText = 'Select All Services';
 
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const refererUrl = req?.headers?.referer;
         const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
         const { selectAll } = req.body;

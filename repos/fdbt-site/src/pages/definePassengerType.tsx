@@ -6,7 +6,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { createErrorId } from '../components/RadioConditionalInput';
 import {

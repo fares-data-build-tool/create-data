@@ -7,12 +7,12 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-} from '../../constants/index';
+} from '../../constants/attributes';
 
 import {
     redirectTo,
     redirectToError,
-    getUuidFromCookie,
+    getUuidFromSession,
     isSchemeOperator,
     getFareTypeFromFromAttributes,
 } from './apiUtils';
@@ -25,16 +25,11 @@ import {
     putUserDataInS3,
     getSchemeOperatorTicketJson,
 } from './apiUtils/userData';
-import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, TicketPeriod } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
-        }
-
         const fareType = getFareTypeFromFromAttributes(req);
 
         const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as TicketPeriod | undefined;
@@ -49,7 +44,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                           .toISOString(),
         });
 
-        const uuid = getUuidFromCookie(req, res);
+        const uuid = getUuidFromSession(req);
 
         let userDataJson;
 

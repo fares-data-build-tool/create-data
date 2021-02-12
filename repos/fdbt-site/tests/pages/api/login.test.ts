@@ -3,8 +3,8 @@ import * as auth from '../../../src/data/cognito';
 import login from '../../../src/pages/api/login';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { OPERATOR_COOKIE } from '../../../src/constants';
+import * as sessions from '../../../src/utils/sessions';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const mockBaseOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
     AuthenticationResult: {
@@ -25,7 +25,8 @@ const mockSchemeOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuth
 jest.mock('../../../src/data/auroradb.ts');
 
 describe('login', () => {
-    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+
     const getOperatorNameByNocCodeSpy = jest.spyOn(auroradb, 'getOperatorNameByNocCode');
     const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
 
@@ -69,7 +70,7 @@ describe('login', () => {
         ],
     ];
 
-    test.each(cases)('given %p, sets the correct error cookie', async (_, testData, expectedCookieValue) => {
+    test.each(cases)('given %p, sets the correct error attribute', async (_, testData, expectedAttributeValue) => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: testData,
@@ -78,12 +79,12 @@ describe('login', () => {
         });
 
         await login(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(expectedCookieValue), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, OPERATOR_ATTRIBUTE, expectedAttributeValue);
     });
 
     it('should redirect when successfully signed in as an ordinary operator', async () => {
         authSignInSpy.mockImplementation(() => Promise.resolve(mockBaseOpAuthResponse));
-        const mockOperatorCookie = {
+        const mockOperatorAttribute = {
             name: 'DCCL',
             nocCode: 'TEST',
         };
@@ -100,7 +101,7 @@ describe('login', () => {
         await login(req, res);
 
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefghi');
-        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(mockOperatorCookie), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, OPERATOR_ATTRIBUTE, mockOperatorAttribute);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/home',
         });
@@ -108,7 +109,7 @@ describe('login', () => {
 
     it('should redirect when successfully signed in as a scheme operator', async () => {
         authSignInSpy.mockImplementation(() => Promise.resolve(mockSchemeOpAuthResponse));
-        const mockOperatorCookie = {
+        const mockOperatorAttribute = {
             name: 'SCHEME_OPERATOR',
             region: 'SCHEME_REGION',
             nocCode: 'TESTSCHEME',
@@ -126,7 +127,7 @@ describe('login', () => {
         await login(req, res);
 
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefghi');
-        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(mockOperatorCookie), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, OPERATOR_ATTRIBUTE, mockOperatorAttribute);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/home',
         });
@@ -137,7 +138,7 @@ describe('login', () => {
             throw new Error();
         });
 
-        const mockUserCookieValue = {
+        const mockOperatorAttributeValue = {
             errors: [
                 {
                     id: 'login',
@@ -158,6 +159,6 @@ describe('login', () => {
 
         await login(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, OPERATOR_ATTRIBUTE, mockOperatorAttributeValue);
     });
 });

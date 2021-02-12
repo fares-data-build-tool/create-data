@@ -5,7 +5,7 @@ import { NextPageContextWithSession, SalesOfferPackageInfo, SalesOfferPackageInf
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
-import { SOP_INFO_ATTRIBUTE } from '../constants';
+import { SOP_INFO_ATTRIBUTE } from '../constants/attributes';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 import { getCsrfToken, sentenceCaseString } from '../utils';

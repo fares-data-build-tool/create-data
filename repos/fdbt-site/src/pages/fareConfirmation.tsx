@@ -6,7 +6,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import {
     NextPageContextWithSession,
     FullTimeRestriction,

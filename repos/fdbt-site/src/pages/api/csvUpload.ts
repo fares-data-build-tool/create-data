@@ -1,11 +1,10 @@
 import { NextApiResponse } from 'next';
 import uniq from 'lodash/uniq';
 import Papa from 'papaparse';
-import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
-import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3 } from '../../data/s3';
-import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants';
-import { isSessionValid } from './apiUtils/validator';
+import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
+import { redirectToError, redirectTo, getUuidFromSession } from './apiUtils';
+import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants/attributes';
 import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -202,10 +201,6 @@ export const faresTriangleDataMapper = (
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const formData = await getFormData(req);
         const { fields } = formData;
 
@@ -229,7 +224,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (fileContents) {
-            const uuid = getUuidFromCookie(req, res);
+            const uuid = getUuidFromSession(req);
             await putDataInS3(fileContents, `${uuid}.csv`, false);
             const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
             if (!fareTriangleData) {

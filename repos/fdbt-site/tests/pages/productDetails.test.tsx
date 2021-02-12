@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import ProductDetails, { getServerSideProps } from '../../src/pages/productDetails';
 import { ProductInfo } from '../../src/interfaces';
 import { getMockContext } from '../testData/mockData';
-import { FARE_ZONE_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants';
+import { FARE_ZONE_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants/attributes';
 
 const mockproductDetails: ProductInfo = {
     productPrice: '',
@@ -28,7 +28,7 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('should return expected props to the page when the page is first visited by the user', () => {
-                const ctx = getMockContext({ cookies: { productName: null, productPrice: null, fareZoneName: null } });
+                const ctx = getMockContext();
                 const result = getServerSideProps(ctx);
 
                 expect(result.props.operator).toBe('test');
@@ -38,26 +38,21 @@ describe('pages', () => {
 
             it('should throw an error when the FARE_ZONE_ATTRIBUTE and SERVICE_LIST_ATTRIBUTE are missing', () => {
                 const ctx = getMockContext({
-                    cookies: { passengerType: 'Adult' },
                     session: {
                         [SERVICE_LIST_ATTRIBUTE]: null,
                     },
                 });
-                expect(() => getServerSideProps(ctx)).toThrow(
-                    'Failed to retrieve the necessary cookies and/or session objects.',
-                );
+                expect(() => getServerSideProps(ctx)).toThrow('Failed to retrieve the necessary session objects');
             });
 
-            it('should throw an error when the OPERATOR_COOKIE is missing', () => {
+            it('should throw an error when the OPERATOR_ATTRIBUTE is missing', () => {
                 const ctx = getMockContext({
-                    cookies: { operator: null },
                     session: {
+                        [OPERATOR_ATTRIBUTE]: undefined,
                         [FARE_ZONE_ATTRIBUTE]: 'Green Park Shops',
                     },
                 });
-                expect(() => getServerSideProps(ctx)).toThrow(
-                    'Failed to retrieve the necessary cookies and/or session objects.',
-                );
+                expect(() => getServerSideProps(ctx)).toThrow('Failed to retrieve the necessary session objects.');
             });
         });
     });

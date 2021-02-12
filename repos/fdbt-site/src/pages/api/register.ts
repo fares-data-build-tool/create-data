@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid, validatePassword } from './apiUtils';
-import { USER_COOKIE } from '../../constants';
-import { ErrorInfo } from '../../interfaces';
+import { NextApiResponse } from 'next';
+import { redirectTo, redirectToError, checkEmailValid, validatePassword } from './apiUtils';
+import { USER_ATTRIBUTE } from '../../constants/attributes';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
 import { getServicesByNocCode } from '../../data/auroradb';
+import { updateSessionAttribute } from '../../utils/sessions';
 
 export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => {
     const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc));
@@ -23,10 +24,11 @@ export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => 
     return nocsWithNoTnds;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookieAndRedirect = (inputChecks: ErrorInfo[], regKey: string): void => {
-        const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
+    const setErrorsAttributeAndRedirect = (inputChecks: ErrorInfo[], regKey: string): void => {
+        updateSessionAttribute(req, USER_ATTRIBUTE, {
+            errors: inputChecks,
+        });
         redirectTo(res, `/register?key=${regKey}`);
     };
 
@@ -56,7 +58,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (inputChecks.some(el => el.errorMessage !== '')) {
-            setErrorsCookieAndRedirect(inputChecks, regKey);
+            setErrorsAttributeAndRedirect(inputChecks, regKey);
             return;
         }
 
@@ -114,7 +116,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 errorMessage: 'There was a problem creating your account',
             });
 
-            setErrorsCookieAndRedirect(inputChecks, regKey);
+            setErrorsAttributeAndRedirect(inputChecks, regKey);
         }
     } catch (error) {
         const message = 'There was a problem with the creation of the account';

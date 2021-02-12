@@ -11,7 +11,7 @@ import SelectSalesOfferPackage, {
 import { getMockContext } from '../testData/mockData';
 import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
 import { SalesOfferPackage } from '../../src/interfaces';
-import { FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb');
 
@@ -139,7 +139,7 @@ describe('pages', () => {
 
             it('should throw an error when necessary nocCode is invalid, when the user is not a scheme operator', async () => {
                 const ctx = getMockContext({
-                    cookies: { operator: null },
+                    session: { [OPERATOR_ATTRIBUTE]: undefined },
                     body: null,
                     uuid: {},
                     mockWriteHeadFn: jest.fn(),

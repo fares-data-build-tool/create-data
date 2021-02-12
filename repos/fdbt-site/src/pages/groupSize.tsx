@@ -5,12 +5,12 @@ import ErrorSummary from '../components/ErrorSummary';
 import {
     NextPageContextWithSession,
     ErrorInfo,
-    GroupTicketAttributeWithErrors,
     GroupTicketAttribute,
+    GroupTicketAttributeWithErrors,
 } from '../interfaces';
+import { GROUP_SIZE_ATTRIBUTE } from '../constants/attributes';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
-import { GROUP_SIZE_ATTRIBUTE } from '../constants';
 import { getCsrfToken } from '../utils';
 
 const title = 'Group Size - Create Fares Data Service';

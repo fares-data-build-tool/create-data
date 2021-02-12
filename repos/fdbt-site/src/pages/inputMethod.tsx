@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { INPUT_METHOD_ATTRIBUTE } from '../constants';
+import { INPUT_METHOD_ATTRIBUTE } from '../constants/attributes';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';

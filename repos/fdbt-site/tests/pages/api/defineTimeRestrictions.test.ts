@@ -1,6 +1,6 @@
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants/attributes';
 import { TimeRestriction } from '../../../src/interfaces';
 import defineTimeRestrictions from '../../../src/pages/api/defineTimeRestrictions';
 
@@ -9,19 +9,6 @@ describe('defineTimeRestrictions', () => {
 
     afterEach(() => {
         jest.resetAllMocks();
-    });
-
-    it('should throw an error and redirect to the error page when the session is invalid', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: {},
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-        defineTimeRestrictions(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
     });
 
     it('should throw an error and redirect to the error page when the FARE_TYPE_ATTRIBUTE is missing', () => {
@@ -47,7 +34,6 @@ describe('defineTimeRestrictions', () => {
             validDays: ['tuesday'],
         };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'single' },
             body: mockReqBody,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,

@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import isArray from 'lodash/isArray';
 import TwoThirdsLayout from '../layout/Layout';
-import { deleteCookieOnServerSide } from '../utils';
-import { USER_COOKIE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants/attributes';
+import { updateSessionAttribute } from '../utils/sessions';
+import { NextPageContextWithSession } from '../interfaces';
 
 const title = 'Registration Successful - Create Fares Data Service';
 const description = 'Confirm Registration page for the Create Fares Data Service';
@@ -47,8 +47,8 @@ const ConfirmRegistration = ({ tndslessNocs }: ConfirmRegistrationProps): ReactE
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ConfirmRegistrationProps } => {
-    deleteCookieOnServerSide(ctx, USER_COOKIE);
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ConfirmRegistrationProps } => {
+    updateSessionAttribute(ctx.req, USER_ATTRIBUTE, undefined);
     const { nocs } = ctx.query;
     let nocsToDisplay: string[] = [];
     if (nocs && !isArray(nocs)) {

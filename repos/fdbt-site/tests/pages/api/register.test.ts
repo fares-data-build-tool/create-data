@@ -3,9 +3,9 @@ import register, { operatorHasTndsData } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { USER_COOKIE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getServicesByNocCode } from '../../../src/data/auroradb';
+import * as sessions from '../../../src/utils/sessions';
 
 jest.mock('../../../src/data/auroradb.ts');
 
@@ -26,7 +26,7 @@ describe('register', () => {
     const authCompletePasswordSpy = jest.spyOn(auth, 'respondToNewPasswordChallenge');
     const authUpdateAttributesSpy = jest.spyOn(auth, 'updateUserAttributes');
     const authSignOutSpy = jest.spyOn(auth, 'globalSignOut');
-    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     beforeEach(() => {
         authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
@@ -62,7 +62,7 @@ describe('register', () => {
                 checkboxUserResearch: 'checkboxUserResearch',
             },
             {
-                inputChecks: [
+                errors: [
                     {
                         userInput: '',
                         id: 'email',
@@ -81,7 +81,7 @@ describe('register', () => {
                 checkboxUserResearch: 'checkboxUserResearch',
             },
             {
-                inputChecks: [
+                errors: [
                     {
                         userInput: 'test@test.com',
                         id: 'email',
@@ -105,7 +105,7 @@ describe('register', () => {
                 checkboxUserResearch: '',
             },
             {
-                inputChecks: [
+                errors: [
                     {
                         userInput: 'test@test.com',
                         id: 'email',
@@ -129,7 +129,7 @@ describe('register', () => {
                 checkboxUserResearch: '',
             },
             {
-                inputChecks: [
+                errors: [
                     {
                         userInput: 'test@test.com',
                         id: 'email',
@@ -141,7 +141,7 @@ describe('register', () => {
         ],
     ];
 
-    test.each(cases)('given %p, sets the correct error cookie', async (_, testData, expectedCookieValue) => {
+    test.each(cases)('given %p, sets the correct error attribute', async (_, testData, expectedAttributeValue) => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: testData,
@@ -150,7 +150,7 @@ describe('register', () => {
         });
 
         await register(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, USER_ATTRIBUTE, expectedAttributeValue);
     });
 
     it('should redirect when successfully signed in', async () => {
@@ -212,8 +212,8 @@ describe('register', () => {
             throw new Error('Auth failed');
         });
 
-        const mockUserCookieValue = {
-            inputChecks: [
+        const mockUserAttributeValue = {
+            errors: [
                 {
                     userInput: 'test@test.com',
                     id: 'email',
@@ -241,7 +241,7 @@ describe('register', () => {
 
         await register(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, USER_ATTRIBUTE, mockUserAttributeValue);
     });
 
     it('should update user attributes as contactable=yes if yes', async () => {

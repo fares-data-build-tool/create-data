@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants/attributes';
 import { getServiceByNocCodeAndLineName } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import ErrorSummary from '../components/ErrorSummary';
@@ -89,7 +89,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
 
     if (!isService(serviceAttribute) || !fareTypeAttribute || !nocCode) {
-        throw new Error('Necessary cookies not found to show direction page');
+        throw new Error('Necessary attributes not found to show direction page');
     }
 
     const lineName = serviceAttribute.service.split('#')[0];
@@ -119,9 +119,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareTypeAttribute.fareType === 'return'
     ) {
         if (ctx.res) {
-            const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
+            const directionJourneyPattern = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
             updateSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE, {
-                directionJourneyPattern: journeyPatternCookie,
+                directionJourneyPattern,
             });
             redirectTo(ctx.res, '/inputMethod');
         }

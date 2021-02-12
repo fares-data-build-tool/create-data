@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
 import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';
-import { SERVICE_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 
@@ -56,11 +56,10 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
+            it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
                 (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
-                const lineName = 'X6A';
 
-                const ctx = getMockContext({ cookies: { serviceLineName: lineName } });
+                const ctx = getMockContext();
 
                 const result = await getServerSideProps(ctx);
 
@@ -77,9 +76,8 @@ describe('pages', () => {
                 (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
                     () => mockRawServiceWithDuplicates,
                 ));
-                const lineName = 'X6A';
 
-                const ctx = getMockContext({ cookies: { serviceLineName: lineName } });
+                const ctx = getMockContext();
 
                 const result = await getServerSideProps(ctx);
 
@@ -99,7 +97,7 @@ describe('pages', () => {
                 await expect(getServerSideProps(ctx)).rejects.toThrow();
             });
 
-            it('throws an error if the service cookie does not exist', async () => {
+            it('throws an error if the service attribute does not exist', async () => {
                 const ctx = getMockContext({
                     session: {
                         [SERVICE_ATTRIBUTE]: undefined,
@@ -107,12 +105,12 @@ describe('pages', () => {
                 });
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow(
-                    'Necessary cookies not found to show direction page',
+                    'Necessary attributes not found to show direction page',
                 );
             });
 
             it('throws an error if the noc is invalid', async () => {
-                const ctx = getMockContext({ cookies: { operator: null } });
+                const ctx = getMockContext({ session: { [OPERATOR_ATTRIBUTE]: undefined } });
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
             });
