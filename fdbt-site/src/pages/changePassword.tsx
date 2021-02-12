@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { TwoThirdsLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_COOKIE } from '../constants';
-import { ErrorInfo } from '../interfaces';
+import { USER_ATTRIBUTE } from '../constants/attributes';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Change Password - Create Fares Data Service';
 const description = 'Change Password page of the Create Fares Data Service';
@@ -109,21 +109,11 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps): ReactElemen
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ChangePasswordProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ChangePasswordProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
-    const errors: ErrorInfo[] = [];
-    if (userCookie) {
-        const { inputChecks } = JSON.parse(userCookie);
-        inputChecks.map((check: ErrorInfo) => {
-            if (check.errorMessage) {
-                errors.push({ id: check.id, errorMessage: check.errorMessage });
-            }
-            return errors;
-        });
-    }
-    return { props: { errors, csrfToken } };
+    const userAttribute = getSessionAttribute(ctx.req, USER_ATTRIBUTE);
+
+    return { props: { errors: isWithErrors(userAttribute) ? userAttribute.errors : [], csrfToken } };
 };
 
 export default ChangePassword;

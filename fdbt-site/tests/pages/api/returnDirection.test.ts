@@ -1,7 +1,6 @@
-import { getUuidFromCookie, setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
+import { getUuidFromSession, setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import returnDirection from '../../../src/pages/api/returnDirection';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';
 
 describe('returnDirection', () => {
     const writeHeadMock = jest.fn();
@@ -25,9 +24,8 @@ describe('returnDirection', () => {
         });
     });
 
-    it('should return 302 redirect to /inputMethod when session is valid, request body is present with inbound and outbound journeys selected', () => {
-        (isSessionValid as {}) = jest.fn().mockReturnValue(true);
-        (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
+    it('should return 302 redirect to /inputMethod when request body is present with inbound and outbound journeys selected', () => {
+        (getUuidFromSession as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const mockFareTypeCookie = {
             'fdbt-journey': '{errorMessages: [], inboundJourney: "abc", outboundJourney: "def"}',
         };
@@ -44,9 +42,8 @@ describe('returnDirection', () => {
         });
     });
 
-    it('should return 302 redirect to /returnDirection when session is valid, request body is not present', () => {
-        (isSessionValid as {}) = jest.fn().mockReturnValue(true);
-        (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
+    it('should return 302 redirect to /returnDirection when request body is not present', () => {
+        (getUuidFromSession as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "returnSingle"}' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: mockFareTypeCookie,
@@ -58,19 +55,6 @@ describe('returnDirection', () => {
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/returnDirection',
-        });
-    });
-
-    it('should return 302 redirect to /error when session is not valid', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: null,
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-        returnDirection(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
         });
     });
 });

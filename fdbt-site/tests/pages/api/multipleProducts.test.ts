@@ -2,7 +2,7 @@ import multipleProduct, {
     checkProductPricesAreValid,
     checkProductDurationsAreValid,
     containsErrors,
-    getErrorsForCookie,
+    getErrorsForSession,
     checkProductNamesAreValid,
     checkProductDurationTypesAreValid,
 } from '../../../src/pages/api/multipleProducts';
@@ -17,7 +17,7 @@ import {
     multipleProductsWithErrors,
 } from '../../testData/mockData';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('multipleProducts', () => {
     let writeHeadMock: jest.Mock;
@@ -124,14 +124,14 @@ describe('multipleProducts', () => {
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
-    describe('getErrorsForCookie', () => {
+    describe('getErrorsForSession', () => {
         it('returns an empty array if a product list has no errors', () => {
-            const errors = getErrorsForCookie(multipleProducts);
+            const errors = getErrorsForSession(multipleProducts);
             expect(errors).toEqual([]);
         });
 
         it('returns an error info array if a product list has errors', () => {
-            const errors = getErrorsForCookie(multipleProductsWithErrors);
+            const errors = getErrorsForSession(multipleProductsWithErrors);
             expect(errors.length).toBe(2);
         });
     });

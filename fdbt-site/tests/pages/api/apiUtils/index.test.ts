@@ -1,7 +1,7 @@
 import Cookies from 'cookies';
 import {
     setCookieOnResponseObject,
-    getUuidFromCookie,
+    getUuidFromSession,
     redirectOnFareType,
     checkEmailValid,
     getAttributeFromIdToken,
@@ -17,9 +17,10 @@ import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../../testData/mockData';
 import {
     FARE_TYPE_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../../../src/constants';
+} from '../../../../src/constants/attributes';
 import * as sessions from '../../../../src/utils/sessions';
 
 describe('apiUtils', () => {
@@ -72,16 +73,16 @@ describe('apiUtils', () => {
         });
     });
 
-    describe('getUuidFromCookie', () => {
-        it('should get the uuid from the cookie', () => {
-            const { req, res } = getMockRequestAndResponse({
+    describe('getUuidFromSession', () => {
+        it('should get the uuid from the session', () => {
+            const { req } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: null,
                 uuid: {
                     operatorUuid: '780e3459-6305-4ae5-9082-b925b92cb46c',
                 },
             });
-            const result = getUuidFromCookie(req, res);
+            const result = getUuidFromSession(req);
             expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
         });
     });
@@ -257,8 +258,10 @@ describe('apiUtils', () => {
         it('should return the scheme operator region code when the logged in user is a scheme operator', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {
-                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                     idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                 },
             });
             const region = getAndValidateSchemeOpRegion(req, res);
@@ -271,7 +274,7 @@ describe('apiUtils', () => {
             expect(region).toEqual(null);
         });
 
-        it('should throw an error when the idToken and OPERATOR_COOKIE do not match', () => {
+        it('should throw an error when the idToken and OPERATOR_ATTRIBUTE do not match', () => {
             const { req, res } = getMockRequestAndResponse({ cookieValues: { idToken: mockSchemOpIdToken } });
             expect(() => getAndValidateSchemeOpRegion(req, res)).toThrow();
         });
@@ -281,8 +284,10 @@ describe('apiUtils', () => {
         it('should return true when the user logged in is a scheme operator', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {
-                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                     idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                 },
             });
             const result = isSchemeOperator(req, res);

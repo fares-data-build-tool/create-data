@@ -1,6 +1,6 @@
 import passengerType from '../../../src/pages/api/passengerType';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('passengerType', () => {
     const writeHeadMock = jest.fn();

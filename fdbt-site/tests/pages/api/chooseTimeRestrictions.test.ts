@@ -1,4 +1,7 @@
-import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
+import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 import chooseTimeRestrictions, {
     collectErrors,
     isValid24hrTimeFormat,

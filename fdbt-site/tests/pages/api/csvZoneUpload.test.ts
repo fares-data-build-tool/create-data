@@ -6,7 +6,7 @@ import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';
 import * as dynamo from '../../../src/data/auroradb';
-import { FARE_ZONE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { FARE_ZONE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
 jest.mock('../../../src/data/auroradb');

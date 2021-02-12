@@ -9,7 +9,7 @@ import {
 } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
+import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from '../utils/sessions';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 import { getCsrfToken } from '../utils';

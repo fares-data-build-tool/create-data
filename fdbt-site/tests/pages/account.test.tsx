@@ -17,7 +17,7 @@ describe('pages', () => {
         it('throws an error if there is no ID_TOKEN cookie', () => {
             const ctx = getMockContext({ isLoggedin: false });
 
-            expect(() => getServerSideProps(ctx)).toThrow('Necessary cookies not found to show account details');
+            expect(() => getServerSideProps(ctx)).toThrow('Necessary attributes not found to show account details');
         });
 
         it('throws an error when the user email address or noc code is missing from the ID_TOKEN cookie', () => {

@@ -1,12 +1,12 @@
 import resetPassword from '../../../src/pages/api/resetPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { USER_COOKIE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as auth from '../../../src/data/cognito';
+import * as sessions from '../../../src/utils/sessions';
 
 describe('resetPassword', () => {
     const forgotPasswordSubmitSpy = jest.spyOn(auth, 'confirmForgotPassword');
-    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     beforeEach(() => {
         forgotPasswordSubmitSpy.mockImplementation(() => Promise.resolve());
@@ -30,7 +30,7 @@ describe('resetPassword', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [{ id: 'new-password', errorMessage: 'Password must be at least 8 characters long' }],
+                errors: [{ id: 'new-password', errorMessage: 'Password must be at least 8 characters long' }],
             },
         ],
         [
@@ -43,7 +43,7 @@ describe('resetPassword', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [{ id: 'new-password', errorMessage: 'Enter a new password' }],
+                errors: [{ id: 'new-password', errorMessage: 'Enter a new password' }],
             },
         ],
         [
@@ -56,12 +56,12 @@ describe('resetPassword', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [{ id: 'new-password', errorMessage: 'Passwords do not match' }],
+                errors: [{ id: 'new-password', errorMessage: 'Passwords do not match' }],
             },
         ],
     ];
 
-    test.each(cases)('given %p, sets the correct error cookie', async (_case, testData, expectedCookieValue) => {
+    test.each(cases)('given %p, sets the correct error attribute', async (_case, testData, expectedAttributeValue) => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: testData,
@@ -70,7 +70,7 @@ describe('resetPassword', () => {
         });
 
         await resetPassword(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, USER_ATTRIBUTE, expectedAttributeValue);
     });
 
     it('should redirect when successfully resetting password', async () => {
@@ -88,12 +88,8 @@ describe('resetPassword', () => {
         });
 
         await resetPassword(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            USER_COOKIE,
-            JSON.stringify({ redirectFrom: '/resetPassword' }),
-            req,
-            res,
-        );
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, USER_ATTRIBUTE, { redirectFrom: '/resetPassword' });
         expect(forgotPasswordSubmitSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/passwordUpdated',
@@ -130,8 +126,8 @@ describe('resetPassword', () => {
             throw new Error(`Failed to confirm forgotten password`);
         });
 
-        const mockUserCookieValue = {
-            inputChecks: [
+        const mockUserAttributeValue = {
+            errors: [
                 {
                     id: 'new-password',
                     errorMessage: 'There was a problem resetting your password.',
@@ -154,6 +150,6 @@ describe('resetPassword', () => {
 
         await resetPassword(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, USER_ATTRIBUTE, mockUserAttributeValue);
     });
 });

@@ -1,7 +1,7 @@
 import termTime from '../../../src/pages/api/termTime';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { TERM_TIME_ATTRIBUTE } from '../../../src/constants';
+import { TERM_TIME_ATTRIBUTE } from '../../../src/constants/attributes';
 import { ErrorInfo } from '../../../src/interfaces';
 
 describe('termTime', () => {

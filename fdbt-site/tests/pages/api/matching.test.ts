@@ -7,7 +7,7 @@ import {
 } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
-import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const selections = {
     option0: [

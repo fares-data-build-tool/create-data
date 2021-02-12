@@ -2,7 +2,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import periodValidity from '../../../src/pages/api/periodValidity';
 import { ErrorInfo, ProductData } from '../../../src/interfaces';
-import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants';
+import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('periodValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

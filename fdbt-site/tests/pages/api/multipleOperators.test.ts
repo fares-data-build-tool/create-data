@@ -1,27 +1,28 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import multipleOperators from '../../../src/pages/api/multipleOperators';
-import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils';
+import * as sessions from '../../../src/utils/sessions';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('multipleOperators', () => {
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /fareType when an operator is provided, and sets operator cookie', () => {
+    it('should return 302 redirect to /fareType when an operator is provided, and sets operator attribute', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: { operator: 'Infinity Line' },
+            body: { operator: 'Infinity Line|TEST' },
             uuid: {},
-        });
-        const mockSetCookies = jest.fn();
-
-        (setCookieOnResponseObject as {}) = jest.fn().mockImplementation(() => {
-            mockSetCookies();
         });
 
         multipleOperators(req, res);
 
-        expect(mockSetCookies).toBeCalledTimes(1);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, OPERATOR_ATTRIBUTE, {
+            name: 'Infinity Line',
+            nocCode: 'TEST',
+        });
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/fareType',
         });
@@ -32,15 +33,17 @@ describe('multipleOperators', () => {
             cookieValues: {},
             body: null,
         });
-        const mockSetCookies = jest.fn();
-
-        (setCookieOnResponseObject as {}) = jest.fn().mockImplementation(() => {
-            mockSetCookies();
-        });
 
         multipleOperators(req, res);
 
-        expect(mockSetCookies).toBeCalledTimes(1);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, OPERATOR_ATTRIBUTE, {
+            errors: [
+                {
+                    id: 'operators',
+                    errorMessage: 'Choose an operator name and NOC from the options',
+                },
+            ],
+        });
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/multipleOperators',
         });

@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
-import { MATCHING_ATTRIBUTE } from '../../constants';
+import { MATCHING_ATTRIBUTE } from '../../constants/attributes';
 import { MatchingFareZones, MatchingInfo } from '../../interfaces/matchingInterface';
 import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -9,10 +8,6 @@ import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../i
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }

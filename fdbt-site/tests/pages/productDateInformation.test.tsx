@@ -8,7 +8,7 @@ import {
 } from '../testData/mockData';
 import ProductDateInfo, { getFieldsets, getServerSideProps } from '../../src/pages/productDateInformation';
 import { ErrorInfo, ProductDateInformation } from '../../src/interfaces';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants';
+import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('productDateInformation', () => {

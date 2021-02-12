@@ -1,7 +1,7 @@
 import chooseValidity from '../../../src/pages/api/chooseValidity';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { DURATION_VALID_ATTRIBUTE } from '../../../src/constants';
+import { DURATION_VALID_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('chooseValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

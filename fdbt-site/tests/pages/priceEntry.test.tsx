@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
 import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
-import { STAGE_NAMES_ATTRIBUTE } from '../../src/constants';
+import { STAGE_NAMES_ATTRIBUTE } from '../../src/constants/attributes';
 
 const mockFareStages: string[] = [
     'Briggate',

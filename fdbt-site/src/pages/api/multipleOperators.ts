@@ -1,7 +1,8 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
-import { OPERATOR_COOKIE } from '../../constants';
+import { redirectToError, redirectTo } from './apiUtils';
+import { OPERATOR_ATTRIBUTE } from '../../constants/attributes';
+import { updateSessionAttribute } from '../../utils/sessions';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -9,17 +10,20 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const splitOperator = (req.body.operator as string).split('|');
             const noc = splitOperator.slice(-1)[0];
 
-            const operatorCookieValue = JSON.stringify({
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
                 name: splitOperator[0],
                 nocCode: noc,
             });
-            setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
             redirectTo(res, '/fareType');
         } else {
-            const cookieValue = JSON.stringify({
-                errorMessage: 'Choose an operator name and NOC from the options',
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
+                errors: [
+                    {
+                        id: 'operators',
+                        errorMessage: 'Choose an operator name and NOC from the options',
+                    },
+                ],
             });
-            setCookieOnResponseObject(OPERATOR_COOKIE, cookieValue, req, res);
             redirectTo(res, '/multipleOperators');
         }
     } catch (error) {

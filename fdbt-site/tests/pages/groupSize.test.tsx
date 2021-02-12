@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import GroupSize, { getServerSideProps, GroupSizeProps } from '../../src/pages/groupSize';
 import { getMockContext } from '../testData/mockData';
 import { GroupTicketAttributeWithErrors } from '../../src/interfaces';
-import { GROUP_SIZE_ATTRIBUTE } from '../../src/constants';
+import { GROUP_SIZE_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('groupSize', () => {

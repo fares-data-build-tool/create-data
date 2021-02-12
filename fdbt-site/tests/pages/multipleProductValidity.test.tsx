@@ -2,7 +2,11 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import MultiProductValidity, { getServerSideProps } from '../../src/pages/multipleProductValidity';
 import { getMockContext } from '../testData/mockData';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../src/constants';
+import {
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('multipleProductValidity', () => {
@@ -125,7 +129,7 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it('should return number of products to display, name of operator and products if they are set in the cookie', () => {
+            it('should return number of products to display, name of operator and products if they are set in the session', () => {
                 const ctx = getMockContext({
                     session: {
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
@@ -141,15 +145,15 @@ describe('pages', () => {
                 expect(result.props.multipleProducts.length).toBe(3);
             });
 
-            it('should throw an error if the necessary cookies to render the page are not present', () => {
+            it('should throw an error if the necessary attributes to render the page are not present', () => {
                 const ctx = getMockContext({
-                    cookies: {
-                        operator: null,
-                        multipleProduct: null,
+                    session: {
+                        [OPERATOR_ATTRIBUTE]: undefined,
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: undefined,
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Necessary cookies/session not found to display the multiple product validity page',
+                    'Necessary attributes not found to display the multiple product validity page',
                 );
             });
 

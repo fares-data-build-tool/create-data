@@ -29,8 +29,8 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../src/constants';
-import { MultiOperatorInfo, Operator, ConfirmationElement } from '../../src/interfaces';
+} from '../../src/constants/attributes';
+import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
 
 describe('pages', () => {
     const confirmationElementStructure: ConfirmationElement = {

@@ -1,5 +1,5 @@
 import * as sessions from '../../../src/utils/sessions';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants/attributes';
 import howManyProducts, { getErrors } from '../../../src/pages/api/howManyProducts';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { ErrorInfo, NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from '../../../src/interfaces';
@@ -64,20 +64,6 @@ describe('howManyProducts', () => {
         howManyProducts(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
             Location: '/multipleProducts',
-        });
-    });
-
-    it('should return 302 redirect to /error when session is not valid', () => {
-        const mockWriteHeadFn = jest.fn();
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: {},
-            uuid: {},
-            mockWriteHeadFn,
-        });
-        howManyProducts(req, res);
-        expect(mockWriteHeadFn).toBeCalledWith(302, {
-            Location: '/error',
         });
     });
 

@@ -7,11 +7,11 @@ import {
     ID_TOKEN_COOKIE,
     REFRESH_TOKEN_COOKIE,
     DISABLE_AUTH_COOKIE,
-    OPERATOR_COOKIE,
     COOKIE_PREFERENCES_COOKIE,
     COOKIES_POLICY_COOKIE,
     oneYearInSeconds,
 } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { CognitoIdToken, CookiePolicy } from '../../src/interfaces';
 import { globalSignOut, initiateRefreshAuth } from '../../src/data/cognito';
 import logger from '../../src/utils/logger';
@@ -45,14 +45,18 @@ const setCookieOnResponseObject = (
     });
 };
 
-const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
+const signOutUser = async (username: string | null, req: Request, res: Response): Promise<void> => {
     if (username) {
         await globalSignOut(username);
     }
 
     deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
     deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
-    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
+    deleteCookieOnResponseObject('connect.sid', req, res);
+
+    if (req?.session) {
+        req.session[OPERATOR_ATTRIBUTE] = undefined;
+    }
 };
 
 const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
@@ -77,7 +81,7 @@ const verifyOptions: VerifyOptions = {
     algorithms: ['RS256'],
 };
 
-export const setDisableAuthCookies = (server: Express): void => {
+export const setDisableAuthParameters = (server: Express): void => {
     server.use((req, res, next) => {
         const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -104,15 +108,13 @@ export const setDisableAuthCookies = (server: Express): void => {
                     req,
                     res,
                 );
-                setCookieOnResponseObject(
-                    OPERATOR_COOKIE,
-                    JSON.stringify({
+
+                if (req?.session) {
+                    req.session[OPERATOR_ATTRIBUTE] = {
                         name: 'Blackpool Transport',
                         nocCode: 'BLAC',
-                    }),
-                    req,
-                    res,
-                );
+                    };
+                }
             }
         }
 

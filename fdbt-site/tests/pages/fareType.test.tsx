@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import FareType, { buildUuid, getServerSideProps } from '../../src/pages/fareType';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { getServicesByNocCode } from '../../src/data/auroradb';
+import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb');
 
@@ -61,8 +62,14 @@ describe('pages', () => {
                 const mockContext = getMockContext({
                     mockWriteHeadFn: writeHeadMock,
                     cookies: {
-                        operator: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION', nocCode: 'TESTSCHEME' },
                         idToken: mockSchemOpIdToken,
+                    },
+                    session: {
+                        [OPERATOR_ATTRIBUTE]: {
+                            name: 'SCHEME_OPERATOR',
+                            region: 'SCHEME_REGION',
+                            nocCode: 'TESTSCHEME',
+                        },
                     },
                 });
                 await getServerSideProps(mockContext);

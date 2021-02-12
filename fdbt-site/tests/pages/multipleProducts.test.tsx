@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import MultipleProducts, { getServerSideProps } from '../../src/pages/multipleProducts';
 import { getMockContext } from '../testData/mockData';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../src/constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('multipleProduct', () => {
@@ -24,17 +24,13 @@ describe('pages', () => {
             beforeEach(() => {
                 jest.clearAllMocks();
             });
-            it('should return number of products to display, name of operator and passenger type if there is no cookie set', () => {
+            it('should return number of products to display, name of operator and passenger type if there is no attribute set', () => {
                 const ctx = getMockContext({
-                    cookies: {
-                        operator: {
+                    session: {
+                        [OPERATOR_ATTRIBUTE]: {
                             name: 'BLP',
                             nocCode: 'TEST',
                         },
-
-                        passengerType: { passengerType: 'Adult' },
-                    },
-                    session: {
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
                     },
                 });
@@ -45,17 +41,15 @@ describe('pages', () => {
                 expect(result.props.passengerType).toBe('Adult');
             });
 
-            it('should throw an error if the necessary cookies to render the page are not present', () => {
+            it('should throw an error if the necessary attributes to render the page are not present', () => {
                 const ctx = getMockContext({
-                    cookies: {
-                        operator: null,
-                    },
                     session: {
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined,
+                        [OPERATOR_ATTRIBUTE]: undefined,
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Necessary cookies/session not found to show multiple products page',
+                    'Necessary attributes not found to show multiple products page',
                 );
             });
         });
