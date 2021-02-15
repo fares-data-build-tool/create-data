@@ -3,12 +3,12 @@ import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import {
     ErrorInfo,
-    NextPageContextWithSession,
     RadioConditionalInputFieldset,
     ProductDateInformation,
+    NextPageContextWithSession,
 } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
-import { PRODUCT_DATE_ATTRIBUTE } from '../constants';
+import { PRODUCT_DATE_ATTRIBUTE } from '../constants/attributes';
 import { isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput from '../components/RadioConditionalInput';

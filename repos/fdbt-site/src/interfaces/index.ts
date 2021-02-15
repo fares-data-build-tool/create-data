@@ -527,7 +527,6 @@ export interface TimeInput {
     day: string;
 }
 export interface ProductDetails extends Product, BaseProduct {}
-
 export interface FareStage {
     stageName: string;
     prices: {
@@ -734,4 +733,20 @@ export interface RadioConditionalInputFieldset {
     };
     radios: RadioButton[];
     radioError: ErrorInfo[];
+}
+
+export interface UserAttribute {
+    redirectFrom?: string;
+}
+
+export interface OperatorAttribute {
+    name?: string;
+    region?: string;
+    nocCode?: string;
+    uuid?: string;
+    email?: string;
+}
+
+export interface ForgotPasswordAttribute {
+    email: string;
 }

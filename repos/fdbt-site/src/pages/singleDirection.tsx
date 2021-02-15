@@ -1,8 +1,12 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import {
+    OPERATOR_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+} from '../constants/attributes';
 import { getServiceByNocCodeAndLineName } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -73,20 +77,22 @@ const SingleDirection = ({
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SingleDirectionProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
 
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
 
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
-    if (!operatorCookie || !isService(serviceAttribute) || !isPassengerType(passengerTypeAttribute) || !nocCode) {
-        throw new Error('Necessary cookies not found to show direction page');
+    if (
+        !operatorAttribute?.name ||
+        !isService(serviceAttribute) ||
+        !isPassengerType(passengerTypeAttribute) ||
+        !nocCode
+    ) {
+        throw new Error('Necessary attributes not found to show direction page');
     }
-
-    const { name } = JSON.parse(operatorCookie);
 
     const lineName = serviceAttribute.service.split('#')[0];
 
@@ -110,7 +116,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
-            operator: name,
+            operator: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
             lineName,
             service,

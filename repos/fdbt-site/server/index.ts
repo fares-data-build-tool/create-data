@@ -1,6 +1,6 @@
 import express, { Request, Response, Express } from 'express';
 import nextjs from 'next';
-import requireAuth, { setDisableAuthCookies } from './middleware/authentication';
+import requireAuth, { setDisableAuthParameters } from './middleware/authentication';
 import setupCsrfProtection from './middleware/csrf';
 import setSecurityHeaders from './middleware/security';
 import setupLogging from './middleware/logging';
@@ -82,9 +82,9 @@ const setStaticRoutes = (server: Express): void => {
         setupLogging(server);
         setStaticRoutes(server);
         setSecurityHeaders(server);
-        setDisableAuthCookies(server);
         setupCsrfProtection(server);
         setupSessions(server);
+        setDisableAuthParameters(server);
 
         unauthenticatedGetRoutes.forEach(route => {
             server.get(route, (req: Request, res: Response) => {

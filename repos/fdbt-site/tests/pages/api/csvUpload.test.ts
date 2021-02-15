@@ -7,7 +7,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import logger from '../../../src/utils/logger';
 import { containsDuplicateFareStages } from '../../../src/pages/api/csvUpload';
 import { ErrorInfo } from '../../../src/interfaces';
-import { CSV_UPLOAD_ATTRIBUTE, JOURNEY_ATTRIBUTE } from '../../../src/constants';
+import { CSV_UPLOAD_ATTRIBUTE, JOURNEY_ATTRIBUTE } from '../../../src/constants/attributes';
 
 jest.spyOn(s3, 'putStringInS3');
 

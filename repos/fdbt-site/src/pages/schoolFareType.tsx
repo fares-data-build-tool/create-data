@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { SCHOOL_FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
+import { SCHOOL_FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
@@ -69,20 +68,17 @@ const SchoolFareType = ({ operatorName, errors = [], csrfToken }: SchoolFareType
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SchoolFareTypeProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
-    if (!operatorCookie) {
+    if (!operatorAttribute?.name) {
         throw new Error('Could not extract the necessary operator info for the schoolFareType page.');
     }
-
-    const { name } = JSON.parse(operatorCookie);
 
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
 
     const errors: ErrorInfo[] = isWithErrors(schoolFareTypeAttribute) ? schoolFareTypeAttribute.errors : [];
 
-    return { props: { operatorName: name, errors, csrfToken } };
+    return { props: { operatorName: operatorAttribute.name, errors, csrfToken } };
 };
 
 export default SchoolFareType;

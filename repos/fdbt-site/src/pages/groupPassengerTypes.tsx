@@ -2,7 +2,8 @@ import React, { ReactElement } from 'react';
 import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPES_LIST, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
+import { PASSENGER_TYPES_LIST } from '../constants';
+import { GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants/attributes';
 import {
     ErrorInfo,
     NextPageContextWithSession,

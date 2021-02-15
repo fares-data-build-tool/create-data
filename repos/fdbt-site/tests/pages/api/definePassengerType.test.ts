@@ -11,7 +11,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-} from '../../../src/constants';
+} from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 import { CompanionInfo, GroupPassengerTypesCollection, GroupTicketAttribute } from '../../../src/interfaces';
 
@@ -171,19 +171,6 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should throw an error and redirect to the error page when the session is invalid', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: {},
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-        await definePassengerType(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
     it('should set the relevant attributes and redirect to /defineTimeRestrictions when no errors are found', async () => {
         const mockPassengerTypeDetails = {
             passengerType: 'adult',
@@ -283,12 +270,12 @@ describe('definePassengerType', () => {
             },
         ],
     ])(
-        'should set the PASSENGER_TYPE_ERRORS_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
-        async (mockUserInput, errors, mockCookieValue) => {
-            const mockPassengerTypeCookieValue = {
+        'should set the DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
+        async (mockUserInput, errors, mockAttributeValue) => {
+            const mockPassengerTypeAttributeValue = {
                 errors,
                 passengerType: 'adult',
-                ...mockCookieValue,
+                ...mockAttributeValue,
             };
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
@@ -300,7 +287,7 @@ describe('definePassengerType', () => {
             expect(updateSessionAttributeSpy).toBeCalledWith(
                 req,
                 DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-                mockPassengerTypeCookieValue,
+                mockPassengerTypeAttributeValue,
             );
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/definePassengerType',
@@ -323,7 +310,6 @@ describe('definePassengerType', () => {
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'single' },
             body: mockPassengerTypeDetails,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -353,7 +339,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to /defineTimeRestrictions', async () => {
+    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE and redirect to /defineTimeRestrictions', async () => {
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [

@@ -10,8 +10,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-} from '../../constants/index';
-import { isSessionValid } from './apiUtils/validator';
+} from '../../constants/attributes';
 import {
     CompanionInfo,
     ErrorInfo,
@@ -191,10 +190,6 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const { passengerType } = req.body;
 
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;

@@ -1,16 +1,11 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils/index';
-import { NUMBER_OF_STAGES_ATTRIBUTE } from '../../constants/index';
-import { isSessionValid } from './apiUtils/validator';
+import { NUMBER_OF_STAGES_ATTRIBUTE } from '../../constants/attributes';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         if (req.body.howManyStages) {
             switch (req.body.howManyStages) {
                 case 'lessThan20':

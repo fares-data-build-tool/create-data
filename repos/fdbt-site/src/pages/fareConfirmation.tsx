@@ -6,7 +6,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import {
     NextPageContextWithSession,
     FullTimeRestriction,
@@ -60,32 +60,33 @@ export const buildFareConfirmationElements = (
 
     if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
         groupPassengerInfo.forEach(passenger => {
+            const href = `definePassengerType?groupPassengerType=${passenger.passengerType}`;
             if (passenger.ageRangeMin || passenger.ageRangeMax) {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
                     content: `Minimum age: ${passenger.ageRangeMin ? passenger.ageRangeMin : 'N/A'} Maximum age: ${
                         passenger.ageRangeMax ? passenger.ageRangeMax : 'N/A'
                     }`,
-                    href: 'definePassengerType',
+                    href,
                 });
             } else {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
                     content: 'N/A',
-                    href: 'definePassengerType',
+                    href,
                 });
             }
             if (passenger.proofDocuments && passenger.proofDocuments.length > 0) {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
                     content: passenger.proofDocuments.map(proofDoc => sentenceCaseString(proofDoc)).join(', '),
-                    href: 'definePassengerType',
+                    href,
                 });
             } else {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
                     content: 'N/A',
-                    href: 'definePassengerType',
+                    href,
                 });
             }
         });

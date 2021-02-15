@@ -2,6 +2,26 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
+import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
+import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    STAGE_NAMES_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
+} from '../../src/constants/attributes';
+import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
+import { TextInputFieldset } from '../../src/pages/definePassengerType';
 import {
     FullTimeRestrictionAttribute,
     FullTimeRestriction,
@@ -28,28 +48,6 @@ import {
     MultiProductWithErrors,
 } from '../../src/interfaces';
 import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
-import {
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    STAGE_NAMES_ATTRIBUTE,
-    DURATION_VALID_ATTRIBUTE,
-    SERVICE_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    OPERATOR_COOKIE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    ID_TOKEN_COOKIE,
-    USER_COOKIE,
-    FARE_TYPE_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    FARE_STAGES_ATTRIBUTE,
-    COOKIES_POLICY_COOKIE,
-} from '../../src/constants/index';
-import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
-import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
 interface GetMockContextInput {
     session?: { [key: string]: any };
@@ -92,18 +90,16 @@ export const getMockRequestAndResponse = ({
     const defaultUuid = '1e0459b3-082e-4e70-89db-96e8ae173e10';
 
     const {
-        operator = {
-            name: 'test',
-            nocCode: 'TEST',
-        },
         productName = 'Product A',
         productPrice = '1234',
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
-        userCookieValue = null,
         cookiePolicy = null,
     } = cookieValues;
 
+    const { operatorUuid = defaultUuid } = uuid;
+
     const defaultSession = {
+        [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'TEST', uuid: operatorUuid },
         [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
         [SERVICE_ATTRIBUTE]: { service: 'X01#NW_05_BLAC_12A_1' },
         [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
@@ -167,21 +163,13 @@ export const getMockRequestAndResponse = ({
         ...session,
     };
 
-    const { operatorUuid = defaultUuid } = uuid;
-
     let cookieString = '';
-
-    cookieString += operator
-        ? `${OPERATOR_COOKIE}=${encodeURI(JSON.stringify({ ...operator, uuid: operatorUuid }))};`
-        : '';
 
     cookieString += productName
         ? `${PRODUCT_DETAILS_ATTRIBUTE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
         : '';
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
-
-    cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
 
     cookieString += cookiePolicy ? `${COOKIES_POLICY_COOKIE}=${encodeURI(JSON.stringify(cookiePolicy))}` : '';
 

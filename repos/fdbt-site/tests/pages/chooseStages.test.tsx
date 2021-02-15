@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ChooseStages, { getServerSideProps } from '../../src/pages/chooseStages';
 import { getMockContext } from '../testData/mockData';
-import { FARE_STAGES_ATTRIBUTE } from '../../src/constants';
+import { FARE_STAGES_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {

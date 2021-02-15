@@ -2,7 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ChooseValidity, { getServerSideProps } from '../../src/pages/chooseValidity';
 import { getMockContext } from '../testData/mockData';
-import { DURATION_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../src/constants';
+import {
+    DURATION_VALID_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import { DurationValidInfo } from '../../src/interfaces';
 
 describe('Choose Validity Page', () => {
@@ -43,7 +47,7 @@ describe('Choose Validity Page', () => {
         it('should throw an error if the PRODUCT_DETAILS_ATTRIBUTE cannot be found', () => {
             const ctx = getMockContext({ session: { [PRODUCT_DETAILS_ATTRIBUTE]: null } });
             expect(() => getServerSideProps(ctx)).toThrow(
-                'Failed to retrieve productCookie info for choose validity page.',
+                'Failed to retrieve productAttribute info for choose validity page.',
             );
         });
 

@@ -1,10 +1,9 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import { redirectToError, redirectTo } from './apiUtils/index';
-import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../../constants';
+import { RETURN_VALIDITY_ATTRIBUTE } from '../../constants/attributes';
 
 const radioButtonError = 'Choose one of the options below';
 const textInputError = 'Enter a whole number greater than zero';
@@ -106,10 +105,6 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const { amount, duration, validity } = req.body;
 
         if (validity === 'No') {

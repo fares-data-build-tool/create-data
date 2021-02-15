@@ -6,7 +6,7 @@ import { ErrorInfo, NextPageContextWithSession, TimeRestriction, TimeInput } fro
 import TimeRestrictionsTable from '../components/TimeRestrictionsTable';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../constants';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../constants/attributes';
 
 const title = 'Choose time restrictions - Create Fares Data Service ';
 const description = 'Choose time restrictions page of the Create Fares Data Service';

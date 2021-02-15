@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import HowManyProducts, { getServerSideProps } from '../../src/pages/howManyProducts';
 import { ErrorInfo } from '../../src/interfaces';
 import { getMockContext } from '../testData/mockData';
-import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('howManyProducts', () => {

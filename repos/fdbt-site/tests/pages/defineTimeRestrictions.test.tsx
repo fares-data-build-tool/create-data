@@ -13,7 +13,7 @@ import {
     getMockContext,
 } from '../testData/mockData';
 import { ErrorInfo, TimeRestrictionsDefinitionWithErrors } from '../../src/interfaces';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('defineTimeRestrictions', () => {

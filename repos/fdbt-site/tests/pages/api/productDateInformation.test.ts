@@ -1,6 +1,6 @@
 import productDateInformation from '../../../src/pages/api/productDateInformation';
 import * as sessions from '../../../src/utils/sessions';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../../src/constants';
+import { PRODUCT_DATE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('productDataInformation', () => {

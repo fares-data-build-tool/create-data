@@ -6,13 +6,16 @@ import { decode } from 'jsonwebtoken';
 import startCase from 'lodash/startCase';
 import toLower from 'lodash/toLower';
 import {
-    OPERATOR_COOKIE,
     ID_TOKEN_COOKIE,
     REFRESH_TOKEN_COOKIE,
     DISABLE_AUTH_COOKIE,
     COOKIES_POLICY_COOKIE,
     COOKIE_PREFERENCES_COOKIE,
+    CSRF_COOKIE,
+    EXPRESS_SESSION_COOKIE,
 } from '../constants/index';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { getSessionAttribute } from './sessions';
 import {
     ErrorInfo,
     CognitoIdToken,
@@ -61,13 +64,13 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
 export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
     const cookies = parseCookies(ctx);
     const cookieWhitelist = [
-        OPERATOR_COOKIE,
         ID_TOKEN_COOKIE,
         REFRESH_TOKEN_COOKIE,
         DISABLE_AUTH_COOKIE,
         COOKIES_POLICY_COOKIE,
         COOKIE_PREFERENCES_COOKIE,
-        '_csrf',
+        CSRF_COOKIE,
+        EXPRESS_SESSION_COOKIE,
     ];
 
     Object.keys(cookies).forEach(cookie => {
@@ -93,24 +96,10 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     return '';
 };
 
-export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    if (!operatorCookie) {
-        return null;
-    }
-    const operatorInfo = JSON.parse(operatorCookie);
-    return operatorInfo.uuid;
-};
+export const getUuidFromSession = (ctx: NextPageContextWithSession): string | null => {
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
-export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | null => {
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    if (!operatorCookie) {
-        return null;
-    }
-    const operatorInfo = JSON.parse(operatorCookie);
-    return operatorInfo.journeyPattern;
+    return operatorAttribute?.uuid ?? null;
 };
 
 export const formatStopName = (stop: Stop): string =>
@@ -160,14 +149,15 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 
 export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');
 
-export const getAndValidateNoc = (ctx: NextPageContext): string => {
+export const getAndValidateNoc = (ctx: NextPageContextWithSession): string => {
     const idTokenNoc = getNocFromIdToken(ctx);
-    const cookieNoc = getCookieValue(ctx, OPERATOR_COOKIE, 'nocCode');
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
+    const sessionNoc = operatorAttribute?.nocCode;
     const splitNoc = idTokenNoc?.split('|');
 
-    if (cookieNoc && idTokenNoc && splitNoc?.includes(cookieNoc)) {
-        return cookieNoc;
+    if (sessionNoc && idTokenNoc && splitNoc?.includes(sessionNoc)) {
+        return sessionNoc;
     }
 
     throw new Error('invalid NOC set');
@@ -176,23 +166,24 @@ export const getAndValidateNoc = (ctx: NextPageContext): string => {
 export const getSchemeOpRegionFromIdToken = (ctx: NextPageContext): string | null =>
     getAttributeFromIdToken(ctx, 'custom:schemeRegionCode');
 
-export const getAndValidateSchemeOpRegion = (ctx: NextPageContext): string | null => {
+export const getAndValidateSchemeOpRegion = (ctx: NextPageContextWithSession): string | null => {
     const idTokenSchemeOpRegion = getSchemeOpRegionFromIdToken(ctx);
-    const cookieSchemeOpRegion = getCookieValue(ctx, OPERATOR_COOKIE, 'region');
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
+    const sessionRegion = operatorAttribute?.region;
 
-    if (!cookieSchemeOpRegion && !idTokenSchemeOpRegion) {
+    if (!sessionRegion && !idTokenSchemeOpRegion) {
         return null;
     }
 
     if (
-        !cookieSchemeOpRegion ||
+        !sessionRegion ||
         !idTokenSchemeOpRegion ||
-        (cookieSchemeOpRegion && idTokenSchemeOpRegion && cookieSchemeOpRegion !== idTokenSchemeOpRegion)
+        (sessionRegion && idTokenSchemeOpRegion && sessionRegion !== idTokenSchemeOpRegion)
     ) {
         throw new Error('invalid scheme operator region code set');
     }
 
-    return cookieSchemeOpRegion;
+    return sessionRegion;
 };
 
 export const isSchemeOperator = (ctx: NextPageContextWithSession): boolean => !!getAndValidateSchemeOpRegion(ctx);

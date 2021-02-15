@@ -1,7 +1,7 @@
 import groupPassengerTypes from '../../../src/pages/api/groupPassengerTypes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessionUtils from '../../../src/utils/sessions';
-import { GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../../../src/constants';
+import { GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('groupPassengerTypes', () => {
     const writeHeadMock = jest.fn();

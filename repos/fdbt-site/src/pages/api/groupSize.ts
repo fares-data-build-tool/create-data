@@ -1,13 +1,13 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import {
-    NextApiRequestWithSession,
     ErrorInfo,
     GroupTicketAttribute,
     GroupTicketAttributeWithErrors,
+    NextApiRequestWithSession,
 } from '../../interfaces';
-import { GROUP_SIZE_ATTRIBUTE } from '../../constants';
-import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
+import { GROUP_SIZE_ATTRIBUTE } from '../../constants/attributes';
+import { removeAllWhiteSpace } from './apiUtils/validator';
 import { redirectToError, redirectTo } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -22,10 +22,6 @@ export const groupSizeSchema = yup
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const { maxGroupSize } = req.body;
 
         const attributeValue: GroupTicketAttribute = {

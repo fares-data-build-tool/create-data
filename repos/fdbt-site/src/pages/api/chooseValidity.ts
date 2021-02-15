@@ -1,9 +1,8 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { DURATION_VALID_ATTRIBUTE } from '../../constants/index';
+import { DURATION_VALID_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 
 export const isInvalidValidityNumber = (validityInput: number): boolean => {
     if (Number.isNaN(validityInput)) {
@@ -33,10 +32,6 @@ export const isValidInputDuration = (durationInput: string): boolean =>
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const { validityInput, duration } = req.body;
         const errorInfo: ErrorInfo[] = [];
 

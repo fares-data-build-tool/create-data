@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants';
+import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { getServicesByNocCode } from '../data/auroradb';
 import {
     ErrorInfo,
@@ -111,7 +111,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     if (!nocCode) {
-        throw new Error('Necessary cookies not found to show serviceList page');
+        throw new Error('Necessary attributes not found to show serviceList page');
     }
 
     const services = await getServicesByNocCode(nocCode);

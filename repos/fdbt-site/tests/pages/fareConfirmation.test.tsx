@@ -4,7 +4,7 @@ import FareConfirmation, { buildFareConfirmationElements } from '../../src/pages
 
 describe('pages', () => {
     describe('fareConfirmation', () => {
-        it('should render correctly for non school tickets', () => {
+        it('should render correctly for non school single tickets', () => {
             const tree = shallow(
                 <FareConfirmation
                     fareType="single"
@@ -17,6 +17,55 @@ describe('pages', () => {
                         proofDocuments: ['membership card'],
                     }}
                     groupPassengerInfo={[]}
+                    schoolFareType=""
+                    termTime=""
+                    fullTimeRestrictions={[
+                        {
+                            day: 'thursday',
+                            startTime: '0900',
+                            endTime: '1600',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '1600',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ]}
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for group tickets', () => {
+            const tree = shallow(
+                <FareConfirmation
+                    fareType="single"
+                    passengerType={{
+                        passengerType: 'group',
+                    }}
+                    groupPassengerInfo={[
+                        {
+                            passengerType: 'adult',
+                            minNumber: '1',
+                            maxNumber: '1',
+                            ageRangeMin: '16',
+                            ageRangeMax: '65',
+                        },
+                        {
+                            passengerType: 'child',
+                            minNumber: '1',
+                            maxNumber: '1',
+                            ageRangeMin: '0',
+                            ageRangeMax: '16',
+                            proofDocuments: ['Identity Document'],
+                        },
+                    ]}
                     schoolFareType=""
                     termTime=""
                     fullTimeRestrictions={[

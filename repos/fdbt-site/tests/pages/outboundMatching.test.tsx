@@ -13,7 +13,7 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import OutboundMatching, { getServerSideProps } from '../../src/pages/outboundMatching';
-import { JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants';
+import { JOURNEY_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -174,22 +174,24 @@ describe('OutboundMatching Page', () => {
 
         it('throws an error if noc invalid', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    operator: null,
+                session: {
+                    [OPERATOR_ATTRIBUTE]: undefined,
                 },
             });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
         });
 
-        it('throws an error if service cookie not set', async () => {
+        it('throws an error if service attribute not set', async () => {
             const ctx = getMockContext({
                 session: {
                     [SERVICE_ATTRIBUTE]: undefined,
                 },
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
+            await expect(getServerSideProps(ctx)).rejects.toThrow(
+                'Necessary attributes not found to show matching page',
+            );
         });
     });
 });

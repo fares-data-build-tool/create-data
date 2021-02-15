@@ -13,7 +13,7 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import Matching, { getServerSideProps } from '../../src/pages/matching';
-import { JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/index';
+import { JOURNEY_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -173,8 +173,8 @@ describe('Matching Page', () => {
 
         it('throws an error if noc invalid', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    operator: null,
+                session: {
+                    [OPERATOR_ATTRIBUTE]: undefined,
                 },
             });
 
@@ -188,7 +188,9 @@ describe('Matching Page', () => {
                 },
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
+            await expect(getServerSideProps(ctx)).rejects.toThrow(
+                'Necessary attributes not found to show matching page',
+            );
         });
     });
 });

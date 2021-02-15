@@ -1,23 +1,23 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ErrorInfo } from '../../interfaces';
-import {
-    redirectTo,
-    redirectToError,
-    setCookieOnResponseObject,
-    getAttributeFromIdToken,
-    validatePassword,
-} from './apiUtils';
-import { USER_COOKIE } from '../../constants';
+import { NextApiResponse } from 'next';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { redirectTo, redirectToError, getAttributeFromIdToken, validatePassword } from './apiUtils';
+import { USER_ATTRIBUTE } from '../../constants/attributes';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
 import logger from '../../utils/logger';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
-    const cookieContent = JSON.stringify({ inputChecks });
-    setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
+const setAttributeAndRedirect = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+    inputChecks: ErrorInfo[],
+): void => {
+    updateSessionAttribute(req, USER_ATTRIBUTE, {
+        errors: inputChecks,
+    });
     redirectTo(res, '/changePassword');
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const username = getAttributeFromIdToken(req, res, 'email');
         const { oldPassword, newPassword, confirmNewPassword } = req.body;
@@ -37,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (inputChecks.some(el => el.errorMessage !== '')) {
-            setCookieAndRedirect(req, res, inputChecks);
+            setAttributeAndRedirect(req, res, inputChecks);
             return;
         }
         try {
@@ -45,12 +45,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (authResponse?.AuthenticationResult) {
                 try {
                     await updateUserPassword(newPassword, username);
-                    setCookieOnResponseObject(
-                        USER_COOKIE,
-                        JSON.stringify({ redirectFrom: '/changePassword' }),
-                        req,
-                        res,
-                    );
+                    updateSessionAttribute(req, USER_ATTRIBUTE, {
+                        redirectFrom: '/changePassword',
+                    });
                     redirectTo(res, '/passwordUpdated');
                 } catch (error) {
                     logger.warn(error, {
@@ -62,7 +59,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                         id: 'new-password',
                         errorMessage: 'There was a problem resetting your password',
                     });
-                    setCookieAndRedirect(req, res, inputChecks);
+                    setAttributeAndRedirect(req, res, inputChecks);
                 }
             } else {
                 throw new Error('Auth response invalid');
@@ -76,7 +73,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 id: 'old-password',
                 errorMessage: 'Your old password is incorrect',
             });
-            setCookieAndRedirect(req, res, inputChecks);
+            setAttributeAndRedirect(req, res, inputChecks);
         }
     } catch (error) {
         const message = 'there was an error updating the user password';

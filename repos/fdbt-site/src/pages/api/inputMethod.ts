@@ -1,16 +1,11 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils/index';
-import { isSessionValid } from './apiUtils/validator';
-import { INPUT_METHOD_ATTRIBUTE } from '../../constants';
+import { INPUT_METHOD_ATTRIBUTE } from '../../constants/attributes';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         if (req.body.inputMethod) {
             switch (req.body.inputMethod) {
                 case 'csv':

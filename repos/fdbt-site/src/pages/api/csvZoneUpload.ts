@@ -1,11 +1,10 @@
 import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/index';
+import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { getUuidFromCookie, redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
+import { getUuidFromSession, redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { putDataInS3 } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
-import { isSessionValid } from './apiUtils/validator';
 import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
@@ -134,10 +133,6 @@ export const processCsv = async (
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const formData = await getFormData(req);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
 
@@ -148,7 +143,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (fileContents) {
-            const uuid = getUuidFromCookie(req, res);
+            const uuid = getUuidFromSession(req);
             await putDataInS3(fileContents, `${uuid}.csv`, false);
             const userFareZones = await processCsv(fileContents, req, res);
 
@@ -159,7 +154,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 setFareZoneAttributeAndRedirect(req, res, errors);
                 return;
             }
+
             const atcoCodes: string[] = userFareZones.map(fareZone => fareZone.AtcoCodes);
+
             try {
                 await batchGetStopsByAtcoCode(atcoCodes);
             } catch (error) {
@@ -172,18 +169,23 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 setFareZoneAttributeAndRedirect(req, res, errors);
                 return;
             }
+
             const fareZoneName = userFareZones[0].FareZoneName;
             const nocCode = getAndValidateNoc(req, res);
+
             if (!nocCode) {
                 throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
             }
+
             await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
             if (fareType === 'multiOperator') {
                 redirectTo(res, '/searchOperators');
                 return;
             }
+
             redirectTo(res, '/howManyProducts');
             return;
         }

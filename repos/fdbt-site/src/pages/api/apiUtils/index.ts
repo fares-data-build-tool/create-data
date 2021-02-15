@@ -2,30 +2,25 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import zxcvbn from 'zxcvbn';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
-import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../../constants';
 import {
-    OPERATOR_COOKIE,
-    ID_TOKEN_COOKIE,
-    REFRESH_TOKEN_COOKIE,
+    OPERATOR_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../../constants';
+} from '../../../constants/attributes';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
-import { getSessionAttribute, updateSessionAttribute } from '../../../utils/sessions';
+import { destroySession, getSessionAttribute, updateSessionAttribute } from '../../../utils/sessions';
 import { isFareType } from '../../../interfaces/typeGuards';
-
-type Req = NextApiRequest | Request;
-type Res = NextApiResponse | Response;
 
 export const setCookieOnResponseObject = (
     cookieName: string,
     cookieValue: string,
-    req: Req,
-    res: Res,
+    req: NextApiRequest,
+    res: NextApiResponse,
     lifetime?: number,
     httpOnly = true,
 ): void => {
@@ -41,7 +36,7 @@ export const setCookieOnResponseObject = (
     });
 };
 
-export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
+export const deleteCookieOnResponseObject = (cookieName: string, req: NextApiRequest, res: NextApiResponse): void => {
     const cookies = new Cookies(req, res);
 
     cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
@@ -51,11 +46,10 @@ export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string
     return unescape(decodeURI(cookies.get(cookieToDecode) || ''));
 };
 
-export const getUuidFromCookie = (req: NextApiRequest | Request, res: NextApiResponse | Response): string => {
-    const cookies = new Cookies(req, res);
-    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+export const getUuidFromSession = (req: NextApiRequestWithSession): string => {
+    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
-    return operatorCookie ? JSON.parse(operatorCookie).uuid : '';
+    return operatorAttribute?.uuid ?? '';
 };
 
 export const redirectTo = (res: NextApiResponse | ServerResponse, location: string): void => {
@@ -170,16 +164,15 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
     getAttributeFromIdToken(req, res, 'custom:noc');
 
-export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): string => {
+export const getAndValidateNoc = (req: NextApiRequestWithSession, res: NextApiResponse): string => {
     const idTokenNoc = getNocFromIdToken(req, res);
 
-    const operatorCookie = unescapeAndDecodeCookie(new Cookies(req, res), OPERATOR_COOKIE);
-    const cookieNoc = JSON.parse(operatorCookie).nocCode;
+    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
     const splitNoc = idTokenNoc?.split('|');
 
-    if (cookieNoc && idTokenNoc && splitNoc?.includes(cookieNoc)) {
-        return cookieNoc;
+    if (operatorAttribute?.nocCode && idTokenNoc && splitNoc?.includes(operatorAttribute?.nocCode)) {
+        return operatorAttribute.nocCode;
     }
 
     throw new Error('invalid NOC set');
@@ -188,37 +181,40 @@ export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): st
 export const getSchemeOpRegionFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
     getAttributeFromIdToken(req, res, 'custom:schemeRegionCode');
 
-export const getAndValidateSchemeOpRegion = (req: NextApiRequest, res: NextApiResponse): string | null => {
+export const getAndValidateSchemeOpRegion = (req: NextApiRequestWithSession, res: NextApiResponse): string | null => {
     const idTokenSchemeOpRegion = getSchemeOpRegionFromIdToken(req, res);
-    const operatorCookie = unescapeAndDecodeCookie(new Cookies(req, res), OPERATOR_COOKIE);
-    const cookieSchemeOpRegion = JSON.parse(operatorCookie).region;
+    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
-    if (!cookieSchemeOpRegion && !idTokenSchemeOpRegion) {
+    const region = operatorAttribute?.region;
+
+    if (!region && !idTokenSchemeOpRegion) {
         return null;
     }
 
-    if (
-        !cookieSchemeOpRegion ||
-        !idTokenSchemeOpRegion ||
-        (cookieSchemeOpRegion && idTokenSchemeOpRegion && cookieSchemeOpRegion !== idTokenSchemeOpRegion)
-    ) {
+    if (!region || !idTokenSchemeOpRegion || (region && idTokenSchemeOpRegion && region !== idTokenSchemeOpRegion)) {
         throw new Error('invalid scheme operator region code set');
     }
 
-    return cookieSchemeOpRegion;
+    return region;
 };
 
-export const isSchemeOperator = (req: NextApiRequest, res: NextApiResponse): boolean =>
+export const isSchemeOperator = (req: NextApiRequestWithSession, res: NextApiResponse): boolean =>
     !!getAndValidateSchemeOpRegion(req, res);
 
-export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
+export const signOutUser = async (
+    username: string | null,
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<void> => {
     if (username) {
         await globalSignOut(username);
     }
 
     deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
     deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
-    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
+    deleteCookieOnResponseObject(DISABLE_AUTH_COOKIE, req, res);
+
+    destroySession(req);
 };
 
 export const getSelectedStages = (req: NextApiRequest): string[][] => {

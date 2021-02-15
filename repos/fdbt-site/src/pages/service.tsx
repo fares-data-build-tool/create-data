@@ -1,10 +1,9 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import { ErrorInfo, NextPageContextWithSession, ServiceType } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { getServicesByNocCode } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
@@ -69,23 +68,21 @@ const Service = ({ operator, passengerType, services, error, csrfToken }: Servic
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
 
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
     const error: ErrorInfo[] =
         serviceAttribute && isServiceAttributeWithErrors(serviceAttribute) ? serviceAttribute.errors : [];
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
 
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (!operatorCookie || !isPassengerType(passengerTypeAttribute) || !nocCode) {
-        throw new Error('Could not render the service selection page. Necessary cookies not found.');
+    if (!operatorAttribute?.name || !isPassengerType(passengerTypeAttribute) || !nocCode) {
+        throw new Error('Could not render the service selection page. Necessary attributes not found.');
     }
 
-    const { name } = JSON.parse(operatorCookie);
     const services = await getServicesByNocCode(nocCode);
 
     if (services.length === 0) {
@@ -98,7 +95,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
-            operator: name,
+            operator: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
             services,
             error,

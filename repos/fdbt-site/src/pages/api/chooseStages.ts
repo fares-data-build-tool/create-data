@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
-import { FARE_STAGES_ATTRIBUTE } from '../../constants/index';
+import { FARE_STAGES_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession, FareStagesAttributeWithErrors } from '../../interfaces';
 
@@ -24,10 +23,6 @@ export const isInvalidFareStageNumber = (fareStageInput: string): FareStagesAttr
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const { fareStageInput = '' } = req.body;
         const userInputValidity = isInvalidFareStageNumber(fareStageInput);
         if (userInputValidity.errors.length > 0) {

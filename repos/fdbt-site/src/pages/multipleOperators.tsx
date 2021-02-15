@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import { getCsrfToken, getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
@@ -7,11 +6,12 @@ import { ErrorInfo, NextPageContextWithSession, Operator } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { batchGetOperatorNamesByNocCode } from '../data/auroradb';
-import { OPERATOR_COOKIE } from '../constants';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { getSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Multiple Operators - Create Fares Data Service';
 const description = 'Multiple Operators page of the Create Fares Data Service';
-const errorId = 'operators';
 
 interface MultipleOperatorsProps {
     errors?: ErrorInfo[];
@@ -30,7 +30,7 @@ const MultipleOperators = ({ operatorsAndNocs, errors = [], csrfToken }: Multipl
                             Choose an operator name and National Operator Code
                         </h1>
                     </label>
-                    <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-select--error">
+                    <FormElementWrapper errors={errors} errorId="operators" errorClass="govuk-select--error">
                         <select className="govuk-select" id="operators" name="operator" defaultValue="">
                             <option value="" disabled>
                                 Select One
@@ -70,23 +70,15 @@ export const getServerSideProps = async (
 
     const operatorInfo: Operator[] = await batchGetOperatorNamesByNocCode(splitNocs);
 
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
-    if (operatorCookie) {
-        const operatorObject = JSON.parse(operatorCookie);
-        if (operatorObject.errorMessage) {
-            return {
-                props: {
-                    operatorsAndNocs: operatorInfo,
-                    errors: [{ errorMessage: operatorObject.errorMessage, id: errorId }],
-                    csrfToken,
-                },
-            };
-        }
-    }
-
-    return { props: { operatorsAndNocs: operatorInfo, csrfToken } };
+    return {
+        props: {
+            operatorsAndNocs: operatorInfo,
+            csrfToken,
+            errors: isWithErrors(operatorAttribute) ? operatorAttribute.errors : [],
+        },
+    };
 };
 
 export default MultipleOperators;

@@ -1,13 +1,12 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
-    OPERATOR_COOKIE,
+    OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
@@ -62,43 +61,27 @@ const MultipleProducts = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
-        !operatorCookie ||
+        !operatorAttribute?.name ||
         !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
         !isPassengerType(passengerTypeAttribute)
     ) {
-        throw new Error('Necessary cookies/session not found to show multiple products page');
+        throw new Error('Necessary attributes not found to show multiple products page');
     }
 
-    const { name } = JSON.parse(operatorCookie);
     const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
 
     const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-    if (isWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
-        const { errors } = multiProductAttribute;
-        return {
-            props: {
-                numberOfProductsToDisplay,
-                operatorName: name,
-                passengerType: passengerTypeAttribute.passengerType,
-                errors,
-                userInput: multiProductAttribute.products,
-                csrfToken,
-            },
-        };
-    }
-
     return {
         props: {
             numberOfProductsToDisplay,
-            operatorName: name,
+            operatorName: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
             errors: isWithErrors(multiProductAttribute) ? multiProductAttribute.errors : [],
             userInput: multiProductAttribute ? multiProductAttribute.products : [],

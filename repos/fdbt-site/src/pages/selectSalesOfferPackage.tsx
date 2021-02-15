@@ -9,7 +9,7 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import {
     SalesOfferPackage,

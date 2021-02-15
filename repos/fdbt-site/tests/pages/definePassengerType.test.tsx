@@ -25,7 +25,7 @@ import {
     GROUP_DEFINITION_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-} from '../../src/constants';
+} from '../../src/constants/attributes';
 
 describe('pages', () => {
     const defaultPassengerType = 'child';

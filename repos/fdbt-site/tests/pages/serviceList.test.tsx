@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import ServiceList, { getServerSideProps } from '../../src/pages/serviceList';
 import { getMockContext } from '../testData/mockData';
 import { getServicesByNocCode } from '../../src/data/auroradb';
-import { SERVICE_LIST_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
@@ -138,7 +138,7 @@ describe('pages', () => {
 
             it('should throw an error if noc invalid', async () => {
                 const ctx = getMockContext({
-                    cookies: { operator: null },
+                    session: { [OPERATOR_ATTRIBUTE]: undefined },
                     body: null,
                     uuid: {},
                     mockWriteHeadFn: jest.fn(),

@@ -1,8 +1,7 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, InputCheck } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { STAGE_NAMES_ATTRIBUTE } from '../../constants/index';
-import { isSessionValid } from './apiUtils/validator';
+import { STAGE_NAMES_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 
 export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
@@ -40,10 +39,6 @@ export const isStageNameValid = (req: NextApiRequestWithSession): InputCheck[] =
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const stageNames: string[] = req.body.stageNameInput;
 
         if (!stageNames || stageNames.length === 0) {

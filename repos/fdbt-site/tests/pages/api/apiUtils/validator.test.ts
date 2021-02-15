@@ -1,26 +1,6 @@
-import {
-    isSessionValid,
-    removeExcessWhiteSpace,
-    isCurrency,
-    removeAllWhiteSpace,
-} from '../../../../src/pages/api/apiUtils/validator';
-import { getMockRequestAndResponse } from '../../../testData/mockData';
+import { removeExcessWhiteSpace, isCurrency, removeAllWhiteSpace } from '../../../../src/pages/api/apiUtils/validator';
 
 describe('validator', () => {
-    describe('isSessionvalid', () => {
-        it('should return true when there is an operator cookie', () => {
-            const { req, res } = getMockRequestAndResponse();
-            const result = isSessionValid(req, res);
-            expect(result).toBeTruthy();
-        });
-
-        it('should return false when there is no operator cookie', () => {
-            const { req, res } = getMockRequestAndResponse({ cookieValues: { operator: null } });
-            const result = isSessionValid(req, res);
-            expect(result).toBeFalsy();
-        });
-    });
-
     describe('removeExcessWhiteSpace', () => {
         it('should return a product name with no excessive whitespace', () => {
             const input = '   This is     my   product      ';

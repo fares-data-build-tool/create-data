@@ -1,7 +1,11 @@
 import React, { ReactElement } from 'react';
 import lowercase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
+import {
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../constants/attributes';
 import ErrorSummary from '../components/ErrorSummary';
 import {
     ErrorInfo,

@@ -1,14 +1,9 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectOnFareType, isSchemeOperator, redirectTo } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         if (isSchemeOperator(req, res)) {
             redirectTo(res, '/csvZoneUpload');
             return;

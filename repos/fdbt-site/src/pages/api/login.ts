@@ -1,13 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
-import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
-import { ErrorInfo, CognitoIdToken } from '../../interfaces';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
+import { OPERATOR_ATTRIBUTE } from '../../constants/attributes';
+import { ErrorInfo, CognitoIdToken, NextApiRequestWithSession } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 import { initiateAuth } from '../../data/cognito';
 import logger from '../../utils/logger';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { email, password } = req.body;
 
@@ -28,8 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (errors.length > 0) {
-            const cookieContent = JSON.stringify({ errors, email });
-            setCookieOnResponseObject(OPERATOR_COOKIE, cookieContent, req, res);
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, { errors, email });
             redirectTo(res, '/login');
 
             return;
@@ -50,16 +51,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 if (nocCode && !schemeOpName && !schemeOpRegion) {
                     if (nocCode.split('|').length === 1) {
                         const operatorName = await getOperatorNameByNocCode(nocCode);
-                        const operatorCookieValue = JSON.stringify({ name: operatorName, nocCode });
-                        setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
+                        updateSessionAttribute(req, OPERATOR_ATTRIBUTE, { name: operatorName, nocCode });
                     }
                 } else if (schemeOpName && schemeOpRegion) {
-                    const operatorCookieValue = JSON.stringify({
+                    updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
                         name: schemeOpName,
                         region: schemeOpRegion,
                         nocCode,
                     });
-                    setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
                 } else if (!nocCode || (!schemeOpName && !schemeOpRegion)) {
                     throw new Error('Could not extract user info from their ID Token.');
                 }
@@ -83,8 +82,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 id: 'login',
                 errorMessage: 'The email address and/or password are not correct.',
             });
-            const cookieContent = JSON.stringify({ errors });
-            setCookieOnResponseObject(OPERATOR_COOKIE, cookieContent, req, res);
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, { errors });
             redirectTo(res, '/login');
         }
     } catch (error) {
