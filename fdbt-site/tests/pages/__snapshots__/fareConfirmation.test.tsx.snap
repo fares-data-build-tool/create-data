@@ -1,6 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages fareConfirmation should render correctly for non school tickets 1`] = `
+exports[`pages fareConfirmation should render correctly for group tickets 1`] = `
+<Component
+  description="Fare Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Fare Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/fareConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your fares information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "Single",
+            "href": "fareType",
+            "name": "Fare type",
+          },
+          Object {
+            "content": "Group",
+            "href": "passengerType",
+            "name": "Passenger type",
+          },
+          Object {
+            "content": "Minimum age: 16 Maximum age: 65",
+            "href": "definePassengerType?groupPassengerType=adult",
+            "name": "Adult passenger - age range",
+          },
+          Object {
+            "content": "N/A",
+            "href": "definePassengerType?groupPassengerType=adult",
+            "name": "Adult passenger - proof documents",
+          },
+          Object {
+            "content": "Minimum age: 0 Maximum age: 16",
+            "href": "definePassengerType?groupPassengerType=child",
+            "name": "Child passenger - age range",
+          },
+          Object {
+            "content": "Identity document",
+            "href": "definePassengerType?groupPassengerType=child",
+            "name": "Child passenger - proof documents",
+          },
+          Object {
+            "content": "Start time: 0900 End time: 1600",
+            "href": "defineTimeRestrictions",
+            "name": "Time restrictions - Thursday",
+          },
+          Object {
+            "content": "Start time: N/A End time: 1600",
+            "href": "defineTimeRestrictions",
+            "name": "Time restrictions - Friday",
+          },
+          Object {
+            "content": "Start time: N/A End time: N/A",
+            "href": "defineTimeRestrictions",
+            "name": "Time restrictions - Bank holiday",
+          },
+        ]
+      }
+      header="Fare Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages fareConfirmation should render correctly for non school single tickets 1`] = `
 <Component
   description="Fare Confirmation page of the Create Fares Data Service"
   errors={Array []}
