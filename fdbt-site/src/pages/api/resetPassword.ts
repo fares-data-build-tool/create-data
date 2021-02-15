@@ -1,14 +1,16 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, setCookieOnResponseObject, validatePassword } from './apiUtils';
-import { USER_COOKIE } from '../../constants';
-import { ErrorInfo } from '../../interfaces';
+import { NextApiResponse } from 'next';
+import { redirectTo, redirectToError, validatePassword } from './apiUtils';
+import { USER_ATTRIBUTE } from '../../constants/attributes';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { confirmForgotPassword } from '../../data/cognito';
 import logger from '../../utils/logger';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookie = (inputChecks: ErrorInfo[], regKey: string, username: string, expiry: string): void => {
-        const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
+    const setErrorsAttribute = (inputChecks: ErrorInfo[], regKey: string, username: string, expiry: string): void => {
+        updateSessionAttribute(req, USER_ATTRIBUTE, {
+            errors: inputChecks,
+        });
         redirectTo(res, `/resetPassword?key=${regKey}&user_name=${username}&expiry=${expiry}`);
     };
 
@@ -31,13 +33,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (inputChecks.some(el => el.errorMessage !== '')) {
-            setErrorsCookie(inputChecks, regKey, username, expiry);
+            setErrorsAttribute(inputChecks, regKey, username, expiry);
             return;
         }
 
         try {
             await confirmForgotPassword(username, regKey, password);
-            setCookieOnResponseObject(USER_COOKIE, JSON.stringify({ redirectFrom: '/resetPassword' }), req, res);
+            updateSessionAttribute(req, USER_ATTRIBUTE, {
+                redirectFrom: '/resetPassword',
+            });
             redirectTo(res, '/passwordUpdated');
         } catch (error) {
             if (error.message === 'ExpiredCodeException') {
@@ -54,7 +58,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 errorMessage: 'There was a problem resetting your password.',
             });
 
-            setErrorsCookie(inputChecks, regKey, username, expiry);
+            setErrorsAttribute(inputChecks, regKey, username, expiry);
         }
     } catch (error) {
         const message = 'There was an error resetting password.';

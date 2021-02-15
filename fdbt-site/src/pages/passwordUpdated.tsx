@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { deleteCookieOnServerSide } from '../utils';
-import { USER_COOKIE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants/attributes';
+import { NextPageContextWithSession } from '../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Password Updated - Create Fares Data Service';
 const description = 'Password Updated page of the Create Fares Data Service';
@@ -29,15 +28,11 @@ const PasswordUpdated = ({ redirectTo }: PasswordUpdatedProps): ReactElement => 
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
-    let redirectFrom = '';
-    if (userCookie) {
-        redirectFrom = JSON.parse(userCookie).redirectFrom;
-    }
-    const redirectTo = redirectFrom && redirectFrom === '/resetPassword' ? '/login' : '/account';
-    deleteCookieOnServerSide(ctx, USER_COOKIE);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const userAttribute = getSessionAttribute(ctx.req, USER_ATTRIBUTE);
+    const redirectTo = userAttribute?.redirectFrom === '/resetPassword' ? '/login' : '/account';
+
+    updateSessionAttribute(ctx.req, USER_ATTRIBUTE, undefined);
     return { props: { redirectTo } };
 };
 

@@ -2,11 +2,10 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import MultipleOperatorsServiceList, { getServerSideProps } from '../../src/pages/multipleOperatorsServiceList';
 import { getMockContext } from '../testData/mockData';
-import { getServicesByNocCode } from '../../src/data/auroradb';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../src/constants';
+import * as aurora from '../../src/data/auroradb';
 import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
 
-jest.mock('../../src/data/auroradb');
+import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
@@ -62,8 +61,14 @@ describe('pages', () => {
             },
         ];
 
+        const getServicesByNocCodeSpy = jest.spyOn(aurora, 'getServicesByNocCode');
+
         beforeEach(() => {
-            (getServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
+            getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve(mockServices));
+        });
+
+        afterEach(() => {
+            jest.resetAllMocks();
         });
 
         it('should render correctly', () => {

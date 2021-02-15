@@ -17,21 +17,6 @@ describe('ticketRepresentation', () => {
         });
     });
 
-    it('should return 302 redirect to /error when the session is invalid', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: {},
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        ticketRepresentation(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
     it('should return 302 redirect to /csvZoneUpload when the user selects a geo zone', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},

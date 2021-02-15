@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_ATTRIBUTE, PASSENGER_TYPES_WITH_GROUP } from '../constants';
+import { PASSENGER_TYPES_WITH_GROUP } from '../constants';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';

@@ -1,8 +1,8 @@
 import * as auth from '../../../src/data/cognito';
-import { FORGOT_PASSWORD_COOKIE } from '../../../src/constants/index';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
+import * as session from '../../../src/utils/sessions';
 import forgotPassword from '../../../src/pages/api/forgotPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const writeHeadMock = jest.fn();
 const authSignInSpy = jest.spyOn(auth, 'forgotPassword');
@@ -41,12 +41,11 @@ describe('forgotPassword', () => {
         });
     });
 
-    it('should set the FORGOT_PASSWORD_COOKIE when redirecting', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    it('should set the FORGOT_PASSWORD_ATTRIBUTE when redirecting', async () => {
+        const updateSessionSpy = jest.spyOn(session, 'updateSessionAttribute');
         const mockBody = { email: 'test@email.com' };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
-        const mockStringifiedInputCheck = JSON.stringify(mockBody);
         await forgotPassword(req, res);
-        expect(setCookieSpy).toBeCalledWith(FORGOT_PASSWORD_COOKIE, mockStringifiedInputCheck, req, res);
+        expect(updateSessionSpy).toBeCalledWith(req, FORGOT_PASSWORD_ATTRIBUTE, mockBody);
     });
 });

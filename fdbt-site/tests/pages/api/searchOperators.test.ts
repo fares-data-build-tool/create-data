@@ -5,8 +5,8 @@ import searchOperators, {
     isSearchInputValid,
 } from '../../../src/pages/api/searchOperators';
 import * as session from '../../../src/utils/sessions';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants';
 import { Operator, MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../../../src/interfaces';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('searchOperators', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');

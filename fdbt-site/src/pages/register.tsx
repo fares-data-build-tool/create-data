@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_COOKIE } from '../constants';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
+import { USER_ATTRIBUTE } from '../constants/attributes';
+import { isWithErrors } from '../interfaces/typeGuards';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Register - Create Fares Data Service';
 const description = 'Register page of the Create Fares Data Service';
@@ -162,12 +162,9 @@ const Register = ({ errors, regKey, csrfToken }: RegisterProps): ReactElement =>
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: RegisterProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: RegisterProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
-
-    const errors: ErrorInfo[] = [];
+    const userAttribute = getSessionAttribute(ctx.req, USER_ATTRIBUTE);
 
     const { key } = ctx.query;
 
@@ -175,14 +172,9 @@ export const getServerSideProps = (ctx: NextPageContext): { props: RegisterProps
         redirectTo(ctx.res, '/requestAccess');
     }
 
-    if (userCookie) {
-        const userCookieParsed = JSON.parse(userCookie);
-        const { inputChecks } = userCookieParsed;
-
-        return { props: { errors: inputChecks, regKey: key as string, csrfToken } };
-    }
-
-    return { props: { errors, regKey: key as string, csrfToken } };
+    return {
+        props: { errors: isWithErrors(userAttribute) ? userAttribute.errors : [], regKey: key as string, csrfToken },
+    };
 };
 
 export default Register;

@@ -3,10 +3,10 @@ import { parseCookies } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK, ID_TOKEN_COOKIE, INTERNAL_NOC } from '../constants';
-import { getUuidFromCookies, getAttributeFromIdToken, deleteAllCookiesOnServerSide } from '../utils';
+import { getUuidFromSession, getAttributeFromIdToken, deleteAllCookiesOnServerSide } from '../utils';
 import { CognitoIdToken, NextPageContextWithSession } from '../interfaces';
 import logger from '../utils/logger';
-import { destroySession } from '../utils/sessions';
+import { regenerateSession } from '../utils/sessions';
 
 const title = 'Thank You - Create Fares Data Service';
 const description = 'Thank you page for the Create Fares Data Service';
@@ -64,7 +64,7 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
-    const uuid = getUuidFromCookies(ctx);
+    const uuid = getUuidFromSession(ctx);
     const noc = getAttributeFromIdToken(ctx, 'custom:noc');
 
     if (noc !== INTERNAL_NOC) {
@@ -79,7 +79,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     }
 
     if (ctx.req) {
-        destroySession(ctx.req);
+        regenerateSession(ctx.req);
         deleteAllCookiesOnServerSide(ctx);
     }
 

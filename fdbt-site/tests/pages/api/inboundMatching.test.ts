@@ -7,7 +7,7 @@ import {
 } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { InboundMatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
-import { INBOUND_MATCHING_ATTRIBUTE } from '../../../src/constants';
+import { INBOUND_MATCHING_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const selectedOptions = {
     option0: [

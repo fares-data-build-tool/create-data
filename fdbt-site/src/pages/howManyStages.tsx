@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { NUMBER_OF_STAGES_ATTRIBUTE } from '../constants';
+import { NUMBER_OF_STAGES_ATTRIBUTE } from '../constants/attributes';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';

@@ -1,12 +1,11 @@
 import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from '../../../src/interfaces';
 import groupSize, { groupSizeSchema } from '../../../src/pages/api/groupSize';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import * as sessionUtils from '../../../src/utils/sessions';
-import { GROUP_SIZE_ATTRIBUTE } from '../../../src/constants';
+import { GROUP_SIZE_ATTRIBUTE } from '../../../src/constants/attributes';
+import * as sessions from '../../../src/utils/sessions';
 
 describe('groupSize', () => {
-    const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
-
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     afterEach(() => {
         jest.resetAllMocks();
     });

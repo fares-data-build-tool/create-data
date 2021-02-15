@@ -1,6 +1,7 @@
 import fareConfirmation from '../../../src/pages/api/fareConfirmation';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../testData/mockData';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('fareConfirmation', () => {
     const writeHeadMock = jest.fn();
@@ -22,8 +23,10 @@ describe('fareConfirmation', () => {
         const { req, res } = getMockRequestAndResponse({
             mockWriteHeadFn: writeHeadMock,
             cookieValues: {
-                operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                 idToken: mockSchemOpIdToken,
+            },
+            session: {
+                [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
             },
         });
         fareConfirmation(req, res);

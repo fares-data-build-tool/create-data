@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { FARE_STAGES_ATTRIBUTE } from '../constants';
+import { FARE_STAGES_ATTRIBUTE } from '../constants/attributes';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';

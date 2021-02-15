@@ -11,7 +11,7 @@ import {
     getMockContext,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../../src/constants';
+import { RETURN_VALIDITY_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('returnValidity', () => {

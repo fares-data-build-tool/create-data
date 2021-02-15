@@ -2,6 +2,13 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Thankyou, { getServerSideProps } from '../../src/pages/thankyou';
 import { getMockContext } from '../testData/mockData';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+} from '../../src/constants/attributes';
+import { OperatorAttribute } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('thankyou', () => {
@@ -28,6 +35,37 @@ describe('pages', () => {
 
             const results = getServerSideProps(ctx);
             expect(results).toEqual(expectedResults);
+        });
+
+        it('clears all session data except operator data', () => {
+            const operatorData: OperatorAttribute = {
+                name: 'Test Op',
+                nocCode: 'TEST',
+            };
+
+            const ctx = getMockContext({
+                cookies: {},
+                body: null,
+                session: {
+                    [OPERATOR_ATTRIBUTE]: operatorData,
+                    [FARE_TYPE_ATTRIBUTE]: {
+                        fareType: 'single',
+                    },
+                    [SERVICE_ATTRIBUTE]: {
+                        service: 'test',
+                    },
+                    [INPUT_METHOD_ATTRIBUTE]: {
+                        inputMethod: 'csv',
+                    },
+                },
+            });
+
+            getServerSideProps(ctx);
+
+            expect(ctx.req.session[OPERATOR_ATTRIBUTE]).toEqual(operatorData);
+            expect(ctx.req.session[FARE_TYPE_ATTRIBUTE]).toBeUndefined();
+            expect(ctx.req.session[SERVICE_ATTRIBUTE]).toBeUndefined();
+            expect(ctx.req.session[INPUT_METHOD_ATTRIBUTE]).toBeUndefined();
         });
     });
 });

@@ -2,7 +2,10 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ChooseTimeRestrictions, { getServerSideProps } from '../../src/pages/chooseTimeRestrictions';
 import { getMockContext } from '../testData/mockData';
-import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants';
+import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {

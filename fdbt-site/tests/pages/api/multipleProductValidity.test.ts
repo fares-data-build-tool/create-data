@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import multipleProductValidity from '../../../src/pages/api/multipleProductValidity';
 import * as sessions from '../../../src/utils/sessions';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants';
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('multipleProductValidity', () => {
     const writeHeadMock = jest.fn();
@@ -63,20 +63,6 @@ describe('multipleProductValidity', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
             products: mockProducts,
             errors: mockErrors,
-        });
-    });
-
-    it('should redirect to the error page if a required cookie is missing', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: { 'validity-row0': 'endOfCalendarDay' },
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        multipleProductValidity(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
         });
     });
 });

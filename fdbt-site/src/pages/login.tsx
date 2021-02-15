@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo } from '../interfaces';
-import { deleteCookieOnServerSide, getCsrfToken } from '../utils/index';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { getCsrfToken } from '../utils/index';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Login - Create Fares Data Service';
 const description = 'Login page of the Create Fares Data Service';
@@ -105,17 +105,14 @@ const Login = ({ errors = [], csrfToken, email }: LoginProps): ReactElement => (
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: LoginProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: LoginProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
-    if (cookies[OPERATOR_COOKIE]) {
-        const operatorCookie = cookies[OPERATOR_COOKIE];
-        const operatorCookieParsed = JSON.parse(operatorCookie);
-
-        if (operatorCookieParsed.errors) {
-            const { errors, email } = operatorCookieParsed;
-            deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
+    if (operatorAttribute) {
+        if (isWithErrors(operatorAttribute)) {
+            const { errors, email } = operatorAttribute;
+            updateSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE, undefined);
             return { props: { errors, email: email ?? '', csrfToken } };
         }
     }

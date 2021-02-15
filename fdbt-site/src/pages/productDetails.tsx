@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import {
-    OPERATOR_COOKIE,
+    OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, ProductData, ProductInfo, ProductInfoWithErrors } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
@@ -136,9 +135,8 @@ const ProductDetails = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
 
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
     const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
@@ -146,16 +144,13 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
 
     let hintText = '';
 
-    if (!operatorCookie || (!fareZoneAttribute && !serviceListAttribute)) {
-        throw new Error('Failed to retrieve the necessary cookies and/or session objects.');
+    if (!operatorAttribute?.name || (!fareZoneAttribute && !serviceListAttribute)) {
+        throw new Error('Failed to retrieve the necessary session objects.');
     }
 
     if (!isPassengerType(passengerTypeAttribute)) {
-        throw new Error('Failed to retrieve passenger type cookie info for product details page.');
+        throw new Error('Failed to retrieve passenger type attribute for product details page.');
     }
-
-    const operatorTypeInfo = JSON.parse(operatorCookie);
-    const { name } = operatorTypeInfo;
 
     if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
         hintText = fareZoneAttribute;
@@ -167,7 +162,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     return {
         props: {
             product: productDetailsAttribute && isProductInfo(productDetailsAttribute) ? productDetailsAttribute : null,
-            operator: name,
+            operator: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
             errors:
                 productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)

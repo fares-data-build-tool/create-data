@@ -5,13 +5,13 @@ import RadioConditionalInput from '../components/RadioConditionalInput';
 import {
     ErrorInfo,
     NextPageContextWithSession,
-    ReturnPeriodValidity,
     RadioConditionalInputFieldset,
+    ReturnPeriodValidity,
     ReturnPeriodValidityWithErrors,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../constants';
+import { RETURN_VALIDITY_ATTRIBUTE } from '../constants/attributes';
 import { getCsrfToken, getErrorsByIds } from '../utils';
 
 const title = 'Return Validity - Create Fares Data Service';

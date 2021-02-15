@@ -2,6 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ResetPassword, { getServerSideProps } from '../../src/pages/resetPassword';
 import { getMockContext } from '../testData/mockData';
+import { USER_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('resetPassword', () => {
     // gets the time value in seconds and adds one hour
@@ -81,7 +82,11 @@ describe('resetPassword', () => {
         it('should return props with errors when the user enters invalid info', () => {
             const ctx = getMockContext({
                 query: mockQueryParams,
-                cookies: { userCookieValue: { inputChecks: mockErrors } },
+                session: {
+                    [USER_ATTRIBUTE]: {
+                        errors: mockErrors,
+                    },
+                },
             });
             const expectedProps = {
                 errors: mockErrors,

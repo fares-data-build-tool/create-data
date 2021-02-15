@@ -1,5 +1,5 @@
 import * as sessions from '../../../src/utils/sessions';
-import { STAGE_NAMES_ATTRIBUTE } from '../../../src/constants';
+import { STAGE_NAMES_ATTRIBUTE } from '../../../src/constants/attributes';
 import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -102,9 +102,9 @@ describe('stageNames', () => {
         const setUpdateSessionspy = jest.spyOn(sessions, 'updateSessionAttribute');
         const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
-        const mockStageNamesCookieValue = ['a', 'b', 'c', 'd'];
+        const mockStageNamesAttributeValue = ['a', 'b', 'c', 'd'];
         stageNames(req, res);
-        expect(setUpdateSessionspy).toHaveBeenCalledWith(req, STAGE_NAMES_ATTRIBUTE, mockStageNamesCookieValue);
+        expect(setUpdateSessionspy).toHaveBeenCalledWith(req, STAGE_NAMES_ATTRIBUTE, mockStageNamesAttributeValue);
     });
 
     it('should set the STAGE_NAMES_ATTRIBUTE with a value matching the invalid data entered by the user', () => {

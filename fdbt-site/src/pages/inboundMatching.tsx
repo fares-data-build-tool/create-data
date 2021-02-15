@@ -1,7 +1,11 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
+import {
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../constants/attributes';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../data/auroradb';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
@@ -56,23 +60,21 @@ const isMatchingWithErrors = (
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
 
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
 
-    if (!operatorCookie || !isService(serviceAttribute) || !isJourney(journeyAttribute) || !nocCode) {
-        throw new Error('Necessary cookies not found to show matching page');
+    if (!operatorAttribute?.uuid || !isService(serviceAttribute) || !isJourney(journeyAttribute) || !nocCode) {
+        throw new Error('Necessary attributes not found to show matching page');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
     const lineName = serviceAttribute.service.split('#')[0];
     const [selectedStartPoint, selectedEndPoint] =
         (journeyAttribute && journeyAttribute.inboundJourney && journeyAttribute.inboundJourney.split('#')) || [];
     const service = await getServiceByNocCodeAndLineName(nocCode, lineName);
-    const userFareStages = await getUserFareStages(operatorObject.uuid);
+    const userFareStages = await getUserFareStages(operatorAttribute.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
     const masterStopList = getMasterStopList(relevantJourneys);
 

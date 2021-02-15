@@ -1,15 +1,16 @@
 import changePassword from '../../../src/pages/api/changePassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { USER_COOKIE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as auth from '../../../src/data/cognito';
+import * as sessions from '../../../src/utils/sessions';
 
 describe('changePassword', () => {
     const updateUserPasswordSpy = jest.spyOn(auth, 'updateUserPassword');
     const initiateAuthSpy = jest.spyOn(auth, 'initiateAuth');
 
-    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
     const getAttributeSpy = jest.spyOn(apiUtils, 'getAttributeFromIdToken');
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     beforeEach(() => {
         updateUserPasswordSpy.mockImplementation(() => Promise.resolve());
@@ -21,7 +22,7 @@ describe('changePassword', () => {
 
     const writeHeadMock = jest.fn();
 
-    it('should set the USER_COOKIE and redirect to /passwordUpdated when password update is successful', async () => {
+    it('should set the USER_ATTRIBUTE and redirect to /passwordUpdated when password update is successful', async () => {
         getAttributeSpy.mockImplementation(() => 'fake.address@email.com');
         initiateAuthSpy.mockImplementation(() => Promise.resolve({ AuthenticationResult: {} }));
         const { req, res } = getMockRequestAndResponse({
@@ -35,12 +36,9 @@ describe('changePassword', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         await changePassword(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            USER_COOKIE,
-            JSON.stringify({ redirectFrom: '/changePassword' }),
-            req,
-            res,
-        );
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, USER_ATTRIBUTE, {
+            redirectFrom: '/changePassword',
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/passwordUpdated',
         });
@@ -110,7 +108,7 @@ describe('changePassword', () => {
         });
         await changePassword(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify({ inputChecks }), req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, USER_ATTRIBUTE, { errors: inputChecks });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/changePassword',
         });

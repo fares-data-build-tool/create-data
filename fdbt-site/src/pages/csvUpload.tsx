@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent from '../components/UserDataUploads';
-import { CSV_UPLOAD_ATTRIBUTE } from '../constants';
+import { CSV_UPLOAD_ATTRIBUTE } from '../constants/attributes';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
 import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';

@@ -1,20 +1,16 @@
 import { NextApiResponse } from 'next';
-import { isSessionValid, isValid24hrTimeFormat, removeExcessWhiteSpace } from './apiUtils/validator';
+import { isValid24hrTimeFormat, removeExcessWhiteSpace } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
 import { ErrorInfo, NextApiRequestWithSession, MultiProduct } from '../../interfaces';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const multiProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
         if (!multiProductAttribute) {
-            throw new Error('Necessary cookies not found for multiple product validity API');
+            throw new Error('Necessary attributes not found for multiple product validity API');
         }
 
         const rawProducts: MultiProduct[] = multiProductAttribute.products;

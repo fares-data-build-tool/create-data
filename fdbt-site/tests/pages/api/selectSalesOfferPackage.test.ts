@@ -1,6 +1,6 @@
 import { SalesOfferPackage } from '../../../src/interfaces/index';
 import selectSalesOfferPackages, { sanitiseReqBody } from '../../../src/pages/api/selectSalesOfferPackage';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants/index';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as session from '../../../src/utils/sessions';
 

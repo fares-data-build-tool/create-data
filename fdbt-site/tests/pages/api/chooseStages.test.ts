@@ -1,7 +1,7 @@
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import chooseStages, { isInvalidFareStageNumber } from '../../../src/pages/api/chooseStages';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { FARE_STAGES_ATTRIBUTE } from '../../../src/constants';
+import { FARE_STAGES_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 
 describe('chooseStages', () => {
@@ -43,7 +43,7 @@ describe('chooseStages', () => {
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
-    it('should set the fare stages cookie according to the specified number of fare stages', () => {
+    it('should set the fare stages attribute according to the specified number of fare stages', () => {
         const setUpdateSessionspy = jest.spyOn(sessions, 'updateSessionAttribute');
         const mockFareStages = { errors: [], fareStages: '6' };
         const { req, res } = getMockRequestAndResponse({

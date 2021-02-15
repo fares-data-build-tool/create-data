@@ -21,7 +21,7 @@ exports[`pages confirmation should render correctly 1`] = `
         Array [
           Object {
             "content": "my way of selling tickets",
-            "href": "selectSalesOfferPackages",
+            "href": "selectSalesOfferPackage",
             "name": "Sales offer package 1 - A sales offer package",
           },
           Object {

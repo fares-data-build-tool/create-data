@@ -25,7 +25,8 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
-} from '../../../../src/constants/index';
+    OPERATOR_ATTRIBUTE,
+} from '../../../../src/constants/attributes';
 import {
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageTwo,
@@ -513,10 +514,15 @@ describe('userData', () => {
         it('should return a SchemeOperatorTicket object', async () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {
-                    operator: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION', nocCode: 'TESTSCHEME' },
                     idToken: mockSchemOpIdToken,
                 },
                 session: {
+                    [OPERATOR_ATTRIBUTE]: {
+                        name: 'SCHEME_OPERATOR',
+                        region: 'SCHEME_REGION',
+                        nocCode: 'TESTSCHEME',
+                        uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+                    },
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
                     [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',

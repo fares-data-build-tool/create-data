@@ -5,7 +5,7 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-} from '../../../src/constants/index';
+} from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';

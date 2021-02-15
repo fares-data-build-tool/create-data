@@ -1,21 +1,16 @@
 import { NextApiResponse } from 'next';
-import { getUuidFromCookie, redirectTo, redirectToError } from './apiUtils/index';
-import { isSessionValid } from './apiUtils/validator';
-import { JOURNEY_ATTRIBUTE } from '../../constants';
+import { getUuidFromSession, redirectTo, redirectToError } from './apiUtils/index';
+import { JOURNEY_ATTRIBUTE } from '../../constants/attributes';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const { inboundJourney, outboundJourney } = req.body;
 
         if (inboundJourney && outboundJourney) {
-            const uuid = getUuidFromCookie(req, res);
+            const uuid = getUuidFromSession(req);
 
             if (!uuid) {
                 throw new Error('No UUID found');

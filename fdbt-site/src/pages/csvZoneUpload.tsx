@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent from '../components/UserDataUploads';
-import { FARE_ZONE_ATTRIBUTE } from '../constants';
+import { FARE_ZONE_ATTRIBUTE } from '../constants/attributes';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
 import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps, FareZoneWithErrors } from '../interfaces';

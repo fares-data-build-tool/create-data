@@ -1,16 +1,12 @@
 import { NextApiResponse } from 'next';
-import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils/index';
-import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
-import { isSessionValid } from './apiUtils/validator';
+import { getUuidFromSession, redirectToError, redirectTo } from './apiUtils/index';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType } from '../../interfaces/typeGuards';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
         const { service } = req.body;
 
         if (!service) {
@@ -21,7 +17,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        const uuid = getUuidFromCookie(req, res);
+        const uuid = getUuidFromSession(req);
 
         if (!uuid) {
             throw new Error('No UUID found');

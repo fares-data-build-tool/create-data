@@ -3,16 +3,17 @@ import describeSalesOfferPackage, {
     checkUserInput,
 } from '../../../src/pages/api/describeSalesOfferPackage';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import {
-    ErrorInfo,
-    SalesOfferPackageInfo,
-    SalesOfferPackageInfoWithErrors,
-    SalesOfferPackage,
-    SalesOfferPackageWithErrors,
-} from '../../../src/interfaces';
+
+import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessionUtils from '../../../src/utils/sessions';
 import * as aurora from '../../../src/data/auroradb';
-import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../../src/constants';
+import {
+    ErrorInfo,
+    SalesOfferPackage,
+    SalesOfferPackageInfo,
+    SalesOfferPackageInfoWithErrors,
+    SalesOfferPackageWithErrors,
+} from '../../../src/interfaces';
 
 describe('describeSalesOfferPackage', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');

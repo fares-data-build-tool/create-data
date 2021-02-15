@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE, INTERNAL_NOC, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
+import { INTERNAL_NOC } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import FareTypeRadios from '../components/FareTypeRadios';
-import { setCookieOnServerSide, getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/index';
+import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/index';
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
@@ -95,7 +95,6 @@ const FareType = ({ operatorName, errors = [], csrfToken }: FareTypeProps): Reac
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: FareTypeProps }> => {
-    const cookies = parseCookies(ctx);
     const csrfToken = getCsrfToken(ctx);
 
     const schemeOp = isSchemeOperator(ctx);
@@ -111,17 +110,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
     }
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
-    if (!operatorCookie || !opIdentifier) {
+    if (!operatorAttribute || !opIdentifier) {
         throw new Error('Could not extract the necessary operator info for the fareType page.');
     }
-    const operatorInfo = JSON.parse(operatorCookie);
-    const operatorName = operatorInfo.name;
+    const operatorName = operatorAttribute.name || '';
     const uuid = buildUuid(opIdentifier);
-    const cookieValue = JSON.stringify({ ...operatorInfo, uuid });
 
-    setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
+    updateSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE, {
+        ...operatorAttribute,
+        uuid,
+    });
 
     if (schemeOp || opIdentifier !== INTERNAL_NOC) {
         logger.info('', {

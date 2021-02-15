@@ -6,18 +6,13 @@ import {
     FARE_TYPE_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
-} from '../../constants/index';
-import { isSessionValid } from './apiUtils/validator';
+} from '../../constants/attributes';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
         if (!isFareType(fareTypeAttribute)) {

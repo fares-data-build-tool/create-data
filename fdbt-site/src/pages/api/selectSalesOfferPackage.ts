@@ -8,9 +8,9 @@ import {
     SelectSalesOfferPackageWithError,
 } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
-import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { removeAllWhiteSpace } from './apiUtils/validator';
 
 interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: string[] };
@@ -40,10 +40,6 @@ export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAn
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
-        }
-
         const { sanitisedBody, errors } = sanitiseReqBody(req);
 
         if (errors.length > 0) {

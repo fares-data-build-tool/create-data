@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { FORGOT_PASSWORD_COOKIE } from '../constants';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants/attributes';
+import { getSessionAttribute } from '../utils/sessions';
+import { NextPageContextWithSession } from '../interfaces';
 
 const title = 'Reset Email Confirmation - Create Fares Data Service';
 const description = 'Reset Email Confirmation page of the Create Fares Data Service';
@@ -28,18 +28,15 @@ const ResetConfirmation = ({ email }: ResetConfirmationProps): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ResetConfirmationProps } => {
-    const cookies = parseCookies(ctx);
-    const forgotPasswordCookie = cookies[FORGOT_PASSWORD_COOKIE];
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ResetConfirmationProps } => {
+    const forgotPasswordAttribute = getSessionAttribute(ctx.req, FORGOT_PASSWORD_ATTRIBUTE);
 
-    // error in case user navigates to page manually or without cookie
-    if (!forgotPasswordCookie) {
-        throw new Error('No forgotPasswordCookie found.');
+    // error in case user navigates to page manually or without attribute
+    if (!forgotPasswordAttribute) {
+        throw new Error('No forgotPassword attribute found.');
     }
 
-    const forgotPasswordInfo = JSON.parse(forgotPasswordCookie);
-
-    const { email } = forgotPasswordInfo;
+    const { email } = forgotPasswordAttribute;
 
     // error in case user navigates to page manually
     if (!email) {

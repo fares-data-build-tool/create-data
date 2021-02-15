@@ -5,13 +5,13 @@ import RadioConditionalInput from '../components/RadioConditionalInput';
 import {
     ErrorInfo,
     NextPageContextWithSession,
-    TimeRestriction,
     RadioConditionalInputFieldset,
+    TimeRestriction,
     TimeRestrictionsDefinitionWithErrors,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
 import { getCsrfToken, getErrorsByIds } from '../utils';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';

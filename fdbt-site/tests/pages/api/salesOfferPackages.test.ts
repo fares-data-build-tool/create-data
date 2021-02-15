@@ -1,10 +1,8 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import salesOfferPackages from '../../../src/pages/api/salesOfferPackages';
 import * as session from '../../../src/utils/sessions';
-import { SOP_INFO_ATTRIBUTE } from '../../../src/constants';
 import { ErrorInfo, SalesOfferPackageInfoWithErrors, SalesOfferPackageInfo } from '../../../src/interfaces';
-
-jest.mock('../../../src/utils/sessions.ts');
+import { SOP_INFO_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('salesOfferPackages', () => {
     const mockErrorObject: ErrorInfo = { errorMessage: expect.any(String), id: expect.any(String) };

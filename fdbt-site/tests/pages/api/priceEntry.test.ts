@@ -1,7 +1,7 @@
 import * as priceEntryApi from '../../../src/pages/api/priceEntry';
 import priceEntry from '../../../src/pages/api/priceEntry';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { JOURNEY_ATTRIBUTE } from '../../../src/constants';
+import { JOURNEY_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('priceEntry', () => {
     describe('API validation of number of price inputs', () => {

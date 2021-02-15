@@ -1,7 +1,7 @@
 import inputMethod from '../../../src/pages/api/inputMethod';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { INPUT_METHOD_ATTRIBUTE } from '../../../src/constants';
+import { INPUT_METHOD_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('inputMethod', () => {
     const writeHeadMock = jest.fn();
