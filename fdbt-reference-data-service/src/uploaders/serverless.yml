@@ -13,7 +13,7 @@ provider:
       - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
   environment:
     RDS_HOST:
-      Fn::ImportValue: ${self:provider.stage}:RdsHostName
+      Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
   iamRoleStatements:
     - Effect: "Allow"
       Action:
