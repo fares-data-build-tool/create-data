@@ -73,7 +73,7 @@ functions:
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
       UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
       RDS_HOST:
-        Fn::ImportValue: ${self:provider.stage}:RdsHostName
+        Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
 
   NetexEmailer:
     handler: src/netex-emailer/handler.netexEmailerHandler
