@@ -162,7 +162,7 @@ Resources:
               Value: "1"
             - Name: RDS_HOST
               Value:
-                Fn::ImportValue: !Sub ${Stage}:RdsHostName
+                Fn::ImportValue: !Sub ${Stage}:RdsClusterInternalEndpoint
             - Name: FDBT_USER_POOL_CLIENT_ID
               Value:
                 Fn::ImportValue: !Sub ${Stage}:UserPoolClientID

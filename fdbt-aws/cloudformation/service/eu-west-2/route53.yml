@@ -10,18 +10,27 @@ Parameters:
       - prod
   DomainName:
     Type: String
-    Description: Domain name for hosted zone
+    Description: Domain name for private hosted zone
 
 Resources:
-  HostedZone:
+  PrivateHostedZone:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: !Ref DomainName
+      VPCs:
+        - VPCId:
+            Fn::ImportValue: !Sub ${Stage}:VpcId
+          VPCRegion: !Ref AWS::Region
 
 Outputs:
-  HostedZoneId:
-    Value: !Ref HostedZone
+  PrivateHostedZoneId:
+    Value: !Ref PrivateHostedZone
     Export:
-      Name: !Sub ${Stage}:HostedZoneId
+      Name: !Sub ${Stage}:PrivateHostedZoneId
+
+  InternalDomain:
+    Value: !Ref DomainName
+    Export:
+      Name: !Sub ${Stage}:InternalDomain

@@ -96,6 +96,18 @@ Resources:
         - Key: Master
           Value: "true"
 
+  DatabaseSecondaryInstance:
+    Type: AWS::RDS::DBInstance
+    Condition: IsProd
+    Properties:
+      Engine: aurora
+      DBClusterIdentifier: !Ref DatabaseCluster
+      DBInstanceClass: !Ref InstanceType
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      MonitoringInterval: 60
+      MonitoringRoleArn:
+        Fn::ImportValue: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+
   DatabaseMasterCPUAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -178,8 +190,27 @@ Resources:
         - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
         - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
 
+  ClusterEndpointDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId:
+        Fn::ImportValue: !Sub ${Stage}:PrivateHostedZoneId
+      Name:
+        Fn::Sub:
+          - db.${internalDomain}
+          - internalDomain:
+              Fn::ImportValue: !Sub ${Stage}:InternalDomain
+      ResourceRecords:
+        - !GetAtt DatabaseCluster.Endpoint.Address
+      TTL: 300
+      Type: CNAME
+
 Outputs:
   RdsHostName:
     Value: !GetAtt DatabaseMasterInstance.Endpoint.Address
     Export:
       Name: !Sub ${Stage}:RdsHostName
+  RdsClusterInternalEndpoint:
+    Value: !Ref ClusterEndpointDnsRecord
+    Export:
+      Name: !Sub ${Stage}:RdsClusterInternalEndpoint

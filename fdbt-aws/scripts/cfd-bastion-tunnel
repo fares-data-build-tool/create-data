@@ -1,7 +1,7 @@
 set -e
 
 instance=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Bastion,Values=true | jq -r '.Reservations[0].Instances[0]')
-db=$(aws rds describe-db-instances --region eu-west-2 | jq -r '.DBInstances[0].Endpoint.Address')
+db=db.dft-cfd.infinityworks.internal
 
 instanceId=`echo $instance | jq -r '.InstanceId'`
 az=`echo $instance | jq -r '.Placement.AvailabilityZone'`
