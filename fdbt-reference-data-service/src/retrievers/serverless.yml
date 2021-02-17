@@ -121,7 +121,7 @@ functions:
       BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
       ZIPPED_BUCKET_NAME: fdbt-tnds-ref-data-zipped-${self:provider.stage}
       RDS_HOST:
-        Fn::ImportValue: ${self:provider.stage}:RdsHostName
+        Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
     events:
       - schedule:
           rate: cron(15 2 * * ? *)
