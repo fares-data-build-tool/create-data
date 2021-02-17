@@ -19,7 +19,8 @@ import {
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
     MultiOperatorInfo,
-    TicketPeriod,
+    TicketPeriodWithInput,
+    TicketPeriodWithErrors,
     FullTimeRestrictionAttribute,
     TermTimeAttribute,
     WithErrors,
@@ -45,7 +46,6 @@ import {
     PassengerTypeWithErrors,
     PassengerType,
     FaresInformation,
-    TicketPeriodWithErrors,
     SchoolFareTypeAttribute,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
@@ -143,7 +143,7 @@ interface SessionAttributeTypes {
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
-    [PRODUCT_DATE_ATTRIBUTE]: TicketPeriod | TicketPeriodWithErrors;
+    [PRODUCT_DATE_ATTRIBUTE]: TicketPeriodWithInput | TicketPeriodWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;

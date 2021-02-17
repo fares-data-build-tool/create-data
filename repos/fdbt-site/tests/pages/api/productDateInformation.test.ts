@@ -153,6 +153,14 @@ describe('productDataInformation', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: expect.any(String),
             endDate: expect.any(String),
+            dateInput: {
+                startDateDay: '12',
+                startDateMonth: '12',
+                startDateYear: '2020',
+                endDateDay: '15',
+                endDateMonth: '12',
+                endDateYear: '2020',
+            },
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -203,6 +211,14 @@ describe('productDataInformation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             endDate: expect.any(String),
+            dateInput: {
+                startDateDay: '',
+                startDateMonth: '',
+                startDateYear: '',
+                endDateDay: '04',
+                endDateMonth: '11',
+                endDateYear: '4020',
+            },
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -229,6 +245,14 @@ describe('productDataInformation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: expect.any(String),
+            dateInput: {
+                startDateDay: '06',
+                startDateMonth: '08',
+                startDateYear: '2021',
+                endDateDay: '',
+                endDateMonth: '',
+                endDateYear: '',
+            },
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {

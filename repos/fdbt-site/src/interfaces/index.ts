@@ -396,7 +396,7 @@ export interface PassengerDetails {
     email: string;
     uuid: string;
     timeRestriction: FullTimeRestriction[];
-    ticketPeriod: TicketPeriod;
+    ticketPeriod: TicketPeriodWithInput;
     proof?: string[];
 }
 
@@ -487,6 +487,10 @@ export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
 export interface TicketPeriod {
     startDate?: string;
     endDate?: string;
+}
+
+export interface TicketPeriodWithInput extends TicketPeriod {
+    dateInput: ProductDateInformation;
 }
 
 export interface BaseProduct {
