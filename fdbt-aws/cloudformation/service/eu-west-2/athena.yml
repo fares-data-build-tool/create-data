@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for Athena resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
+Resources:
+  BusinessIntelligenceDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: business_intelligence
+
+  MatchingDataTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref BusinessIntelligenceDatabase
+      TableInput:
+        Name: matching_data
+        TableType: EXTERNAL_TABLE
+        StorageDescriptor:
+          Columns:
+            - Name: nocCode
+              Type: string
+            - Name: type
+              Type: string
+            - Name: passengerType
+              Type: string
+            - Name: operatorName
+              Type: string
+            - Name: products
+              Type: "array<struct<productduration:string>>"
+          Location: !Sub s3://fdbt-matching-data-${Stage}/
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat
+          SerdeInfo:
+            SerializationLibrary: org.openx.data.jsonserde.JsonSerDe
+
+  AthenaWorkgroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: fdbt-athena-workgroup
+      WorkGroupConfiguration:
+        ResultConfiguration:
+          OutputLocation:
+            Fn::Sub:
+              - s3://${AthenaBucketName}/
+              - AthenaBucketName:
+                  Fn::ImportValue: !Sub ${Stage}:AthenaQueryResultsBucketName
+          EncryptionConfiguration:
+            EncryptionOption: SSE_S3

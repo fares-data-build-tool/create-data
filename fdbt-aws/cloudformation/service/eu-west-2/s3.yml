@@ -74,6 +74,20 @@ Resources:
             Principal:
               CanonicalUser: !GetAtt ErrorBucketOAI.S3CanonicalUserId
 
+  AthenaQueryResultBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub fdbt-athena-query-results-${Stage}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
 Outputs:
   ErrorPageBucketDomainName:
     Value: !GetAtt ErrorPageBucket.DomainName
@@ -84,3 +98,8 @@ Outputs:
     Value: !Ref ErrorBucketOAI
     Export:
       Name: !Sub ${Stage}:ErrorBucketOAI
+
+  AthenaQueryResultsBucketName:
+    Value: !Ref AthenaQueryResultBucket
+    Export:
+      Name: !Sub ${Stage}:AthenaQueryResultsBucketName
