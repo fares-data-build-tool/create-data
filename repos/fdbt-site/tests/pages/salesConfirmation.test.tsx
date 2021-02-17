@@ -26,6 +26,14 @@ describe('pages', () => {
                         productDates: {
                             startDate: '2017-03-13T18:00:00+00:00',
                             endDate: '2057-03-13T18:00:00+00:00',
+                            dateInput: {
+                                startDateDay: '13',
+                                startDateMonth: '03',
+                                startDateYear: '2017',
+                                endDateDay: '13',
+                                endDateMonth: '03',
+                                endDateYear: '2057',
+                            },
                         },
                         endDefault: true,
                         startDefault: true,
@@ -41,15 +49,29 @@ describe('pages', () => {
         const baseExpectedProps = { salesOfferPackages: expect.any(Array), csrfToken: '' };
         const mockStartDate = '2018-12-30T18:00:00+00:00Z';
         const mockEndDate = '2020-12-30T18:00:00+00:00Z';
+        const mockDateInput = {
+            startDateDay: '30',
+            startDateMonth: '12',
+            startDateYear: '2018',
+            endDateDay: '20',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        };
 
         it('should extract the start date and end date from the PRODUCT_DATE_ATTRIBUTE when the user has entered both', () => {
             const ctx = getMockContext({
-                session: { [PRODUCT_DATE_ATTRIBUTE]: { startDate: mockStartDate, endDate: mockEndDate } },
+                session: {
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: mockStartDate,
+                        endDate: mockEndDate,
+                        dateInput: mockDateInput,
+                    },
+                },
             });
             const expectedProps = {
                 ...baseExpectedProps,
                 ticketDating: {
-                    productDates: { startDate: mockStartDate, endDate: mockEndDate },
+                    productDates: { startDate: mockStartDate, endDate: mockEndDate, dateInput: mockDateInput },
                     startDefault: false,
                     endDefault: false,
                 },
@@ -63,7 +85,18 @@ describe('pages', () => {
             const expectedProps = {
                 ...baseExpectedProps,
                 ticketDating: {
-                    productDates: { startDate: expect.any(String), endDate: expect.any(String) },
+                    productDates: {
+                        startDate: expect.any(String),
+                        endDate: expect.any(String),
+                        dateInput: {
+                            startDateDay: '',
+                            startDateMonth: '',
+                            startDateYear: '',
+                            endDateDay: '',
+                            endDateMonth: '',
+                            endDateYear: '',
+                        },
+                    },
                     startDefault: true,
                     endDefault: true,
                 },
@@ -130,6 +163,14 @@ describe('pages', () => {
                         endDate: moment()
                             .add(100, 'years')
                             .toISOString(),
+                        dateInput: {
+                            startDateDay: '',
+                            startDateMonth: '',
+                            startDateYear: '',
+                            endDateDay: '',
+                            endDateMonth: '',
+                            endDateYear: '',
+                        },
                     },
                     endDefault: true,
                     startDefault: true,

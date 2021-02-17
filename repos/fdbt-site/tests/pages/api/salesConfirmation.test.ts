@@ -223,6 +223,14 @@ describe('salesOfferPackages', () => {
             ticketPeriod: {
                 startDate: 'now',
                 endDate: 'a year later',
+                dateInput: {
+                    startDateDay: '',
+                    startDateMonth: '',
+                    startDateYear: '',
+                    endDateDay: '',
+                    endDateMonth: '',
+                    endDateYear: '',
+                },
             },
             operatorShortName: 'string',
             lineName: 'string',
