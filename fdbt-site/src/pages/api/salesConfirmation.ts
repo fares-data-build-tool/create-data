@@ -25,14 +25,14 @@ import {
     putUserDataInS3,
     getSchemeOperatorTicketJson,
 } from './apiUtils/userData';
-import { NextApiRequestWithSession, TicketPeriod } from '../../interfaces';
+import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const fareType = getFareTypeFromFromAttributes(req);
 
-        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as TicketPeriod | undefined;
+        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as TicketPeriodWithInput | undefined;
 
         updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: productDating && productDating.startDate ? productDating.startDate : moment().toISOString(),
@@ -42,6 +42,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     : moment()
                           .add(100, 'y')
                           .toISOString(),
+            dateInput: productDating
+                ? productDating.dateInput
+                : {
+                      startDateDay: '',
+                      startDateMonth: '',
+                      startDateYear: '',
+                      endDateDay: '',
+                      endDateMonth: '',
+                      endDateYear: '',
+                  },
         });
 
         const uuid = getUuidFromSession(req);

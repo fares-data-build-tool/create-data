@@ -115,22 +115,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
             }
 
-            let dateInfo;
-
-            if (startDate && endDate) {
-                dateInfo = {
-                    startDate: startDate.add(1, 'hours').toISOString(),
-                    endDate: endDate.toISOString(),
-                };
-            } else if (!startDate && endDate) {
-                dateInfo = {
-                    endDate: endDate.toISOString(),
-                };
-            } else if (startDate && !endDate) {
-                dateInfo = {
-                    startDate: startDate.add(1, 'hours').toISOString(),
-                };
-            }
+            const dateInfo = {
+                startDate: startDate?.add(1, 'hours').toISOString(),
+                endDate: endDate?.toISOString(),
+                dateInput,
+            };
 
             updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, dateInfo);
 

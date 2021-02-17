@@ -12,7 +12,8 @@ import {
     TicketRepresentationAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
-    TicketPeriod,
+    TicketPeriodWithInput,
+    TicketPeriodWithErrors,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
     TermTimeAttribute,
@@ -24,7 +25,6 @@ import {
     FareTypeWithErrors,
     PassengerType,
     PassengerTypeWithErrors,
-    TicketPeriodWithErrors,
     SchoolFareTypeAttribute,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
@@ -154,16 +154,16 @@ export const isSalesOfferPackages = (
     (salesOfferPackageInfo as SalesOfferPackage[])[0].ticketFormats !== undefined;
 
 export const isTicketPeriodAttributeWithErrors = (
-    productDates: TicketPeriod | TicketPeriodWithErrors | undefined,
+    productDates: TicketPeriodWithInput | TicketPeriodWithErrors | undefined,
 ): productDates is TicketPeriodWithErrors =>
     productDates !== undefined && (productDates as TicketPeriodWithErrors).errors !== undefined;
 
-export const isTicketPeriodAttribute = (
-    productDates: TicketPeriod | TicketPeriodWithErrors | undefined,
-): productDates is TicketPeriod =>
+export const isTicketPeriodAttributeWithInput = (
+    productDates: TicketPeriodWithInput | TicketPeriodWithErrors | undefined,
+): productDates is TicketPeriodWithInput =>
     productDates !== undefined &&
-    (productDates as TicketPeriod).startDate !== undefined &&
-    (productDates as TicketPeriod).endDate !== undefined;
+    (productDates as TicketPeriodWithInput).startDate !== undefined &&
+    (productDates as TicketPeriodWithInput).endDate !== undefined;
 
 export const isMultipleOperatorAttributeWithErrors = (
     searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,

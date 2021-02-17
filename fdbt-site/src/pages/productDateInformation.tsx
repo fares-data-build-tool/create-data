@@ -112,9 +112,13 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         endDateMonth: '',
         endDateYear: '',
     };
-    if (productDateAttribute && isTicketPeriodAttributeWithErrors(productDateAttribute)) {
-        errors = productDateAttribute.errors;
-        dates = productDateAttribute.dates;
+    if (productDateAttribute) {
+        if (isTicketPeriodAttributeWithErrors(productDateAttribute)) {
+            errors = productDateAttribute.errors;
+            dates = productDateAttribute.dates;
+        } else {
+            dates = productDateAttribute.dateInput;
+        }
     }
 
     const fieldsets: RadioConditionalInputFieldset = getFieldsets(errors, dates);

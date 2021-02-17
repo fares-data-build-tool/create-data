@@ -165,6 +165,14 @@ describe('pages', () => {
                     ticketPeriod: {
                         startDate: '',
                         endDate: '',
+                        dateInput: {
+                            startDateDay: '',
+                            startDateMonth: '',
+                            startDateYear: '',
+                            endDateDay: '',
+                            endDateMonth: '',
+                            endDateYear: '',
+                        },
                     },
                     zoneName: 'The Test Zone',
                     stops: [],
@@ -184,6 +192,14 @@ describe('pages', () => {
                     ticketPeriod: {
                         startDate: '',
                         endDate: '',
+                        dateInput: {
+                            startDateDay: '',
+                            startDateMonth: '',
+                            startDateYear: '',
+                            endDateDay: '',
+                            endDateMonth: '',
+                            endDateYear: '',
+                        },
                     },
                     zoneName: 'The Test Zone',
                     stops: [],

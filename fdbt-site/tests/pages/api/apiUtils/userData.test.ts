@@ -160,6 +160,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
@@ -188,6 +196,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
                 },
@@ -210,6 +226,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
                 },
@@ -303,6 +327,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                     ...(fareType === 'multiOperator' && {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
@@ -366,6 +398,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
                 },
@@ -423,6 +463,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
                         {
@@ -474,6 +522,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                 },
             });
@@ -571,6 +627,14 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
                     },
                     [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
