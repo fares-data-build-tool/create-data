@@ -56,3 +56,217 @@ Resources:
                   Fn::ImportValue: !Sub ${Stage}:AthenaQueryResultsBucketName
           EncryptionConfiguration:
             EncryptionOption: SSE_S3
+
+# Named Queries
+
+## General Queries
+
+  TotalOperators:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: TotalOperators
+      Description: Retrieves the total number of operators who have created NeTEx
+      QueryString: !Sub |
+        SELECT COUNT(DISTINCT nocCode) as total_operators FROM ${MatchingDataTable} WHERE nocCode != 'IWBusCo'
+
+## Period Ticket Queries
+
+  OperatorsWithPeriodTickets:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: OperatorsWithPeriodTickets
+      Description: Retrieves a list of operators who have created period ticket NeTEx
+      QueryString: !Sub |
+        SELECT DISTINCT operatorname, nocCode FROM ${MatchingDataTable}
+        WHERE (type = 'period' OR type = 'multiOperator')
+        AND nocCode != 'IWBusCo'
+
+  TotalOperatorsWithAnnualPeriodTickets:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: TotalOperatorsWithAnnualPeriodTickets
+      Description: Retrieves the total number of operators who have created annual period ticket NeTEx
+      QueryString: !Sub |
+        SELECT COUNT (DISTINCT nocCode) as total FROM ${MatchingDataTable}
+        CROSS JOIN UNNEST(products) AS t(i)
+        WHERE (type = 'period' OR type = 'multiOperator')
+        AND (i.productduration = '1 year' OR i.productduration = '12 months' OR i.productduration = '52 weeks' OR i.productduration = '365 days')
+        AND nocCode != 'IWBusCo'
+
+  OperatorsWithPeriodTicketTypeCounts:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: OperatorsWithPeriodTicketTypeCounts
+      Description: Retrieves counts of the period ticket types created per operator
+      QueryString: !Sub |
+        SELECT nocCode,
+        max(dailyTotal) as dailyTotal,
+        max(weeklyTotal) as weeklyTotal,
+        max(monthlyTotal) as monthlyTotal,
+        max(annualTotal) as annualTotal FROM
+          (SELECT COALESCE(total_daily_tickets.nocCode,
+                  total_weekly_tickets.nocCode,
+                  total_monthly_tickets.nocCode,
+                  total_annual_tickets.nocCode) AS nocCode,
+                  dailyTotal,
+                  weeklyTotal,
+                  monthlyTotal,
+                  annualTotal
+          FROM ${BusinessIntelligenceDatabase}.total_daily_tickets FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_weekly_tickets
+              ON total_daily_tickets.nocCode = total_weekly_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_monthly_tickets
+              ON total_weekly_tickets.nocCode = total_monthly_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_annual_tickets
+              ON total_monthly_tickets.nocCode = total_annual_tickets.nocCode)
+        WHERE nocCode != 'IWBusCo'
+        GROUP BY nocCode
+        ORDER BY nocCode
+
+  OperatorsWithPeriodTicketPassengerTypeCounts:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: OperatorsWithPeriodTicketPassengerTypeCounts
+      Description: Retrieves counts of the period tickets created for different passenger types per operator
+      QueryString: !Sub |
+        SELECT nocCode,
+        max(groupTotal) as groupTotal,
+        max(adultTotal) as adultTotal,
+        max(childTotal) as childTotal,
+        max(infantTotal) as infantTotal,
+        max(seniorTotal) as seniorTotal,
+        max(studentTotal) as studentTotal,
+        max(youngPersonTotal) as youngPersonTotal,
+        max(anyoneTotal) as anyoneTotal,
+        max(schoolPupilTotal) as schoolPupilTotal FROM
+          (SELECT COALESCE(total_group_period_tickets.nocCode,
+                  total_adult_period_tickets.nocCode,
+                  total_child_period_tickets.nocCode,
+                  total_infant_period_tickets.nocCode,
+                  total_senior_period_tickets.nocCode,
+                  total_student_period_tickets.nocCode,
+                  total_young_person_period_tickets.nocCode,
+                  total_anyone_period_tickets.nocCode,
+                  total_school_pupil_period_tickets.nocCode) AS nocCode,
+                  groupTotal,
+                  adultTotal,
+                  childTotal,
+                  infantTotal,
+                  seniorTotal,
+                  studentTotal,
+                  youngPersonTotal,
+                  anyoneTotal,
+                  schoolPupilTotal
+          FROM ${BusinessIntelligenceDatabase}.total_group_period_tickets FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_adult_period_tickets
+              ON total_group_period_tickets.nocCode = total_adult_period_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_child_period_tickets
+              ON total_adult_period_tickets.nocCode = total_child_period_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_infant_period_tickets
+              ON total_child_period_tickets.nocCode = total_infant_period_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_senior_period_tickets
+              ON total_infant_period_tickets.nocCode = total_senior_period_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_student_period_tickets
+              ON total_senior_period_tickets.nocCode = total_student_period_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_young_person_period_tickets
+              ON total_student_period_tickets.nocCode = total_young_person_period_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_anyone_period_tickets
+              ON total_young_person_period_tickets.nocCode = total_anyone_period_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_school_pupil_period_tickets
+              ON total_anyone_period_tickets.nocCode = total_school_pupil_period_tickets.nocCode)
+        WHERE nocCode != 'IWBusCo'
+        GROUP BY nocCode
+        ORDER BY nocCode
+
+## Flat Fare Ticket Queries
+
+  TotalOperatorsWithFlatFareTickets:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: TotalOperatorsWithFlatFareTickets
+      Description: Retrieves the total number of operators who have created flat fare ticket NeTEx
+      QueryString: !Sub |
+        SELECT COUNT (DISTINCT nocCode) AS total FROM ${MatchingDataTable}
+        WHERE type = 'flatFare'
+        AND nocCode != 'IWBusCo'
+  
+  OperatorsWithFlatFareTickets:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: OperatorsWithFlatFareTickets
+      Description: Retrieves a list of operators who have created flat fare ticket NeTEx
+      QueryString: !Sub |
+        SELECT DISTINCT operatorname, nocCode FROM ${MatchingDataTable}
+        WHERE type = 'flatFare'
+        AND nocCode != 'IWBusCo'
+  
+  OperatorsWithFlatFareTicketPassengerTypeCounts:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref BusinessIntelligenceDatabase
+      WorkGroup: !Ref AthenaWorkgroup
+      Name: OperatorsWithFlatFareTicketPassengerTypeCounts
+      Description: Retrieves counts of the flat fare tickets created for different passenger types per operator
+      QueryString: !Sub |
+        SELECT nocCode,
+        max(groupTotal) as groupTotal,
+        max(adultTotal) as adultTotal,
+        max(childTotal) as childTotal,
+        max(infantTotal) as infantTotal,
+        max(seniorTotal) as seniorTotal,
+        max(studentTotal) as studentTotal,
+        max(youngPersonTotal) as youngPersonTotal,
+        max(anyoneTotal) as anyoneTotal,
+        max(schoolPupilTotal) as schoolPupilTotal FROM
+          (SELECT COALESCE(total_group_flat_fare_tickets.nocCode,
+                  total_adult_flat_fare_tickets.nocCode,
+                  total_child_flat_fare_tickets.nocCode,
+                  total_infant_flat_fare_tickets.nocCode,
+                  total_senior_flat_fare_tickets.nocCode,
+                  total_student_flat_fare_tickets.nocCode,
+                  total_young_person_flat_fare_tickets.nocCode,
+                  total_anyone_flat_fare_tickets.nocCode,
+                  total_school_pupil_flat_fare_tickets.nocCode) AS nocCode,
+                  groupTotal,
+                  adultTotal,
+                  childTotal,
+                  infantTotal,
+                  seniorTotal,
+                  studentTotal,
+                  youngPersonTotal,
+                  anyoneTotal,
+                  schoolPupilTotal
+          FROM ${BusinessIntelligenceDatabase}.total_group_flat_fare_tickets FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_adult_flat_fare_tickets
+              ON total_group_flat_fare_tickets.nocCode = total_adult_flat_fare_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_child_flat_fare_tickets
+              ON total_adult_flat_fare_tickets.nocCode = total_child_flat_fare_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_infant_flat_fare_tickets
+              ON total_child_flat_fare_tickets.nocCode = total_infant_flat_fare_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_senior_flat_fare_tickets
+              ON total_infant_flat_fare_tickets.nocCode = total_senior_flat_fare_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_student_flat_fare_tickets
+              ON total_senior_flat_fare_tickets.nocCode = total_student_flat_fare_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_young_person_flat_fare_tickets
+              ON total_student_flat_fare_tickets.nocCode = total_young_person_flat_fare_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_anyone_flat_fare_tickets
+              ON total_young_person_flat_fare_tickets.nocCode = total_anyone_flat_fare_tickets.nocCode FULL OUTER
+          JOIN ${BusinessIntelligenceDatabase}.total_school_pupil_flat_fare_tickets
+              ON total_anyone_flat_fare_tickets.nocCode = total_school_pupil_flat_fare_tickets.nocCode)
+        WHERE nocCode != 'IWBusCo'
+        GROUP BY nocCode
+        ORDER BY nocCode

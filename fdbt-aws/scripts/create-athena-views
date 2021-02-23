@@ -1,0 +1,4 @@
+while IFS= read -r line
+do
+  aws athena start-query-execution --query-string "$line" --work-group fdbt-athena-workgroup
+done < "./files/create-athena-views.sql"
