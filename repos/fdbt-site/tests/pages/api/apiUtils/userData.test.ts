@@ -641,23 +641,39 @@ describe('userData', () => {
                         fullTimeRestrictions: [
                             {
                                 day: 'monday',
-                                startTime: '0900',
-                                endTime: '',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '',
+                                    },
+                                ],
                             },
                             {
                                 day: 'tuesday',
-                                startTime: '',
-                                endTime: '1800',
+                                timeBands: [
+                                    {
+                                        startTime: '',
+                                        endTime: '1800',
+                                    },
+                                ],
                             },
                             {
                                 day: 'bank holiday',
-                                startTime: '0900',
-                                endTime: '1750',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '1750',
+                                    },
+                                ],
                             },
                             {
                                 day: 'friday',
-                                startTime: '',
-                                endTime: '',
+                                timeBands: [
+                                    {
+                                        startTime: '',
+                                        endTime: '',
+                                    },
+                                ],
                             },
                         ],
                         errors: [],
