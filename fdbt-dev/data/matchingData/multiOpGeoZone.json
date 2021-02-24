@@ -12,23 +12,43 @@
   "timeRestriction": [
     {
       "day": "monday",
-      "startTime": "",
-      "endTime": ""
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
     },
     {
       "day": "tuesday",
-      "startTime": "",
-      "endTime": ""
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
     },
     {
       "day": "wednesday",
-      "startTime": "",
-      "endTime": ""
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
     },
     {
       "day": "bankHoliday",
-      "startTime": "0000",
-      "endTime": "2359"
+      "timeBands": [
+        {
+          "startTime": "0000",
+          "endTime": "2359"
+        },
+        {
+          "startTime": "0300",
+          "endTime": "1345"
+        }
+      ]
     }
   ],
   "products": [

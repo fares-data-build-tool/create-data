@@ -56,23 +56,39 @@
   "timeRestriction": [
     {
       "day": "monday",
-      "startTime": "",
-      "endTime": ""
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
     },
     {
       "day": "tuesday",
-      "startTime": "",
-      "endTime": ""
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
     },
     {
       "day": "wednesday",
-      "startTime": "",
-      "endTime": ""
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
     },
     {
       "day": "thursday",
-      "startTime": "",
-      "endTime": ""
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
     }
   ],
   "products": [
