@@ -142,12 +142,20 @@ export const buildFareConfirmationElements = (
 
     if (fullTimeRestrictions.length > 0) {
         fullTimeRestrictions.forEach(fullTimeRestriction => {
-            confirmationElements.push({
-                name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
-                content: `Start time: ${fullTimeRestriction.startTime ||
-                    'N/A'} End time: ${fullTimeRestriction.endTime || 'N/A'}`,
-                href: 'defineTimeRestrictions',
+            fullTimeRestriction.timeBands.forEach(timeBand => {
+                confirmationElements.push({
+                    name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
+                    content: `Start time: ${timeBand.startTime || 'N/A'} End time: ${timeBand.endTime || 'N/A'}`,
+                    href: 'defineTimeRestrictions',
+                });
             });
+            if (!fullTimeRestriction.timeBands || fullTimeRestriction.timeBands.length === 0) {
+                confirmationElements.push({
+                    name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
+                    content: 'N/A',
+                    href: 'defineTimeRestrictions',
+                });
+            }
         });
     }
     return confirmationElements;

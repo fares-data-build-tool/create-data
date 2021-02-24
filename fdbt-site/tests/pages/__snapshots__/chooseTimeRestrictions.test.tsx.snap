@@ -48,7 +48,7 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
     <span
       className="govuk-hint"
     >
-      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed, but you cannot enter an end time without a start time.
     </span>
     <div
       className="govuk-inset-text"
@@ -63,6 +63,7 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
           "tuesday",
         ]
       }
+      dayCounters={Array []}
       endTimeInputs={
         Array [
           Object {
@@ -134,7 +135,7 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
     <span
       className="govuk-hint"
     >
-      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed, but you cannot enter an end time without a start time.
     </span>
     <div
       className="govuk-inset-text"
@@ -149,6 +150,7 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
           "tuesday",
         ]
       }
+      dayCounters={Array []}
       endTimeInputs={Array []}
       errors={Array []}
       startTimeInputs={Array []}
@@ -185,7 +187,7 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
     <span
       className="govuk-hint"
     >
-      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed.
+      Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all times, leave them blank. You can leave them all blank, if needed, but you cannot enter an end time without a start time.
     </span>
     <div
       className="govuk-inset-text"
@@ -200,6 +202,7 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
           "tuesday",
         ]
       }
+      dayCounters={Array []}
       endTimeInputs={
         Array [
           Object {

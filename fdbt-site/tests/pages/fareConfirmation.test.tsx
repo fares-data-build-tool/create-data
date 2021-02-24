@@ -22,18 +22,15 @@ describe('pages', () => {
                     fullTimeRestrictions={[
                         {
                             day: 'thursday',
-                            startTime: '0900',
-                            endTime: '1600',
+                            timeBands: [{ startTime: '0900', endTime: '1600' }],
                         },
                         {
                             day: 'friday',
-                            startTime: '',
-                            endTime: '1600',
+                            timeBands: [{ startTime: '', endTime: '1600' }],
                         },
                         {
                             day: 'bank holiday',
-                            startTime: '',
-                            endTime: '',
+                            timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
                     csrfToken=""
@@ -71,18 +68,18 @@ describe('pages', () => {
                     fullTimeRestrictions={[
                         {
                             day: 'thursday',
-                            startTime: '0900',
-                            endTime: '1600',
+                            timeBands: [
+                                { startTime: '0900', endTime: '1600' },
+                                { startTime: '1400', endTime: '2000' },
+                            ],
                         },
                         {
                             day: 'friday',
-                            startTime: '',
-                            endTime: '1600',
+                            timeBands: [{ startTime: '', endTime: '1600' }],
                         },
                         {
                             day: 'bank holiday',
-                            startTime: '',
-                            endTime: '',
+                            timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
                     csrfToken=""
@@ -130,18 +127,15 @@ describe('pages', () => {
                     [
                         {
                             day: 'wednesday',
-                            startTime: '0900',
-                            endTime: '1600',
+                            timeBands: [{ startTime: '0900', endTime: '1600' }],
                         },
                         {
                             day: 'thursday',
-                            startTime: '',
-                            endTime: '1600',
+                            timeBands: [{ startTime: '', endTime: '1600' }],
                         },
                         {
                             day: 'friday',
-                            startTime: '',
-                            endTime: '',
+                            timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ],
                 );

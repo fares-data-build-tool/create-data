@@ -17,6 +17,10 @@ interface ChooseTimeRestrictionsProps {
     csrfToken: string;
     startTimeInputs: TimeInput[];
     endTimeInputs: TimeInput[];
+    dayCounters: {
+        day: string;
+        counter: number;
+    }[];
 }
 
 const ChooseTimeRestrictions = ({
@@ -24,6 +28,7 @@ const ChooseTimeRestrictions = ({
     errors,
     startTimeInputs,
     endTimeInputs,
+    dayCounters = [],
     csrfToken,
 }: ChooseTimeRestrictionsProps): ReactElement => {
     return (
@@ -35,7 +40,8 @@ const ChooseTimeRestrictions = ({
                     <h1 className="govuk-heading-l">Tell us more about the time restrictions</h1>
                     <span className="govuk-hint">
                         Enter the times at which your ticket(s) start and end, if applicable. If they are valid at all
-                        times, leave them blank. You can leave them all blank, if needed.
+                        times, leave them blank. You can leave them all blank, if needed, but you cannot enter an end
+                        time without a start time.
                     </span>
                     <div className="govuk-inset-text" id="time-restrictions-hint">
                         Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
@@ -45,6 +51,7 @@ const ChooseTimeRestrictions = ({
                         errors={errors}
                         startTimeInputs={startTimeInputs}
                         endTimeInputs={endTimeInputs}
+                        dayCounters={dayCounters}
                     />
                     <input
                         type="submit"
@@ -74,6 +81,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
     const errors: ErrorInfo[] = [];
     const startTimeInputs: TimeInput[] = [];
     const endTimeInputs: TimeInput[] = [];
+    const dayCounters: {
+        day: string;
+        counter: number;
+    }[] = [];
 
     if (fullTimeRestrictionsAttribute) {
         if (fullTimeRestrictionsAttribute.errors.length > 0) {
@@ -82,12 +93,18 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
 
         if (fullTimeRestrictionsAttribute.fullTimeRestrictions.length > 0) {
             fullTimeRestrictionsAttribute.fullTimeRestrictions.forEach(fullTimeRestriction => {
-                startTimeInputs.push({ timeInput: fullTimeRestriction.startTime, day: fullTimeRestriction.day });
-                endTimeInputs.push({ timeInput: fullTimeRestriction.endTime, day: fullTimeRestriction.day });
+                fullTimeRestriction.timeBands.forEach(timeBand => {
+                    startTimeInputs.push({ timeInput: timeBand.startTime, day: fullTimeRestriction.day });
+                    endTimeInputs.push({ timeInput: timeBand.endTime, day: fullTimeRestriction.day });
+                });
+                dayCounters.push({
+                    day: fullTimeRestriction.day,
+                    counter: fullTimeRestriction.timeBands.length > 0 ? fullTimeRestriction.timeBands.length : 1,
+                });
             });
         }
     }
-    return { props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs } };
+    return { props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs, dayCounters } };
 };
 
 export default ChooseTimeRestrictions;
