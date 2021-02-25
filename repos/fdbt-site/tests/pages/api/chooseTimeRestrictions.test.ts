@@ -1,16 +1,19 @@
-import {
-    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
-    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
-} from '../../../src/constants/attributes';
 import chooseTimeRestrictions, {
+    removeDuplicateAndEmptyTimebands,
     collectErrors,
     isValid24hrTimeFormat,
     collectInputsFromRequest,
 } from '../../../src/pages/api/chooseTimeRestrictions';
+
+import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+} from '../../../src/constants/attributes';
+
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-describe('changePassword', () => {
+describe('chooseTimeRestrictions', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     beforeEach(() => {
         jest.resetAllMocks();
@@ -46,10 +49,10 @@ describe('changePassword', () => {
             const validDays = ['monday', 'tuesday', 'bankHoliday', 'friday'];
             const result = collectInputsFromRequest(req, validDays);
             expect(result).toStrictEqual([
-                { day: 'monday', endTime: '2120', startTime: '0200' },
-                { day: 'tuesday', endTime: '2120', startTime: '0200' },
-                { day: 'bankHoliday', endTime: '2120', startTime: '0200' },
-                { day: 'friday', endTime: '2120', startTime: '0200' },
+                { day: 'monday', timeBands: [{ endTime: '2120', startTime: '0200' }] },
+                { day: 'tuesday', timeBands: [{ endTime: '2120', startTime: '0200' }] },
+                { day: 'bankHoliday', timeBands: [{ endTime: '2120', startTime: '0200' }] },
+                { day: 'friday', timeBands: [{ endTime: '2120', startTime: '0200' }] },
             ]);
         });
     });
@@ -59,50 +62,62 @@ describe('changePassword', () => {
             const inputs = [
                 {
                     day: 'monday',
-                    startTime: '7pm',
-                    endTime: '8888888',
+                    timeBands: [
+                        {
+                            startTime: '7pm',
+                            endTime: '8888888',
+                        },
+                    ],
                 },
                 {
                     day: 'tuesday',
-                    startTime: '-0730',
-                    endTime: '2400',
+                    timeBands: [
+                        {
+                            startTime: '-0730',
+                            endTime: '2400',
+                        },
+                    ],
                 },
                 {
                     day: 'wednesday',
-                    startTime: '0890',
-                    endTime: '0460',
+                    timeBands: [
+                        {
+                            startTime: '0890',
+                            endTime: '0460',
+                        },
+                    ],
                 },
             ];
             const result = collectErrors(inputs);
             expect(result).toStrictEqual([
                 {
                     errorMessage: 'Time must be in 24hr format',
-                    id: 'start-time-monday',
+                    id: 'start-time-monday-0',
                     userInput: '7pm',
                 },
                 {
                     errorMessage: 'Time must be in 24hr format',
-                    id: 'end-time-monday',
+                    id: 'end-time-monday-0',
                     userInput: '8888888',
                 },
                 {
                     errorMessage: 'Time must be in 24hr format',
-                    id: 'start-time-tuesday',
+                    id: 'start-time-tuesday-0',
                     userInput: '-0730',
                 },
                 {
                     errorMessage: '2400 is not a valid input. Use 0000.',
-                    id: 'end-time-tuesday',
+                    id: 'end-time-tuesday-0',
                     userInput: '2400',
                 },
                 {
                     errorMessage: 'Time must be in 24hr format',
-                    id: 'start-time-wednesday',
+                    id: 'start-time-wednesday-0',
                     userInput: '0890',
                 },
                 {
                     errorMessage: 'Time must be in 24hr format',
-                    id: 'end-time-wednesday',
+                    id: 'end-time-wednesday-0',
                     userInput: '0460',
                 },
             ]);
@@ -111,13 +126,21 @@ describe('changePassword', () => {
             const inputs = [
                 {
                     day: 'monday',
-                    startTime: '',
-                    endTime: '',
+                    timeBands: [
+                        {
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
                 },
                 {
                     day: 'tuesday',
-                    startTime: '',
-                    endTime: '',
+                    timeBands: [
+                        {
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
                 },
             ];
             const result = collectErrors(inputs);
@@ -127,43 +150,191 @@ describe('changePassword', () => {
             const inputs = [
                 {
                     day: 'monday',
-                    startTime: '2359',
-                    endTime: '0000',
+                    timeBands: [
+                        {
+                            startTime: '2359',
+                            endTime: '0000',
+                        },
+                    ],
                 },
                 {
                     day: 'tuesday',
-                    startTime: '1345',
-                    endTime: '0845',
+                    timeBands: [
+                        {
+                            startTime: '1345',
+                            endTime: '0845',
+                        },
+                    ],
                 },
             ];
             const result = collectErrors(inputs);
             expect(result).toStrictEqual([]);
         });
-        it('should return no errors for a mixture of empty inputs and valid inputs', () => {
+        it('should return errors for a mixture of empty inputs and valid inputs, according to endTime not being the only input', () => {
             const inputs = [
                 {
                     day: 'monday',
-                    startTime: '',
-                    endTime: '',
+                    timeBands: [
+                        {
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
                 },
                 {
                     day: 'tuesday',
-                    startTime: '',
-                    endTime: '2100',
+                    timeBands: [
+                        {
+                            startTime: '',
+                            endTime: '2100',
+                        },
+                    ],
                 },
                 {
                     day: 'bank holiday',
-                    startTime: '0800',
-                    endTime: '',
+                    timeBands: [
+                        {
+                            startTime: '0800',
+                            endTime: '',
+                        },
+                    ],
                 },
                 {
                     day: 'thursday',
-                    startTime: '0400',
-                    endTime: '1300',
+                    timeBands: [
+                        {
+                            startTime: '0400',
+                            endTime: '1300',
+                        },
+                    ],
                 },
             ];
             const result = collectErrors(inputs);
-            expect(result).toStrictEqual([]);
+            expect(result).toStrictEqual([
+                {
+                    errorMessage: 'Start time is required if end time is provided',
+                    id: 'start-time-tuesday-0',
+                    userInput: '',
+                },
+            ]);
+        });
+    });
+
+    describe('removeDuplicateTimebands', () => {
+        it('returns an array of inputs removed of duplicates', () => {
+            const inputs = [
+                {
+                    day: 'monday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '0900',
+                            endTime: '1030',
+                        },
+                    ],
+                },
+                {
+                    day: 'tuesday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                    ],
+                },
+                {
+                    day: 'bank holiday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                },
+                {
+                    day: 'thursday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '0930',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '0930',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                },
+            ];
+            const result = removeDuplicateAndEmptyTimebands(inputs);
+            expect(result).toStrictEqual([
+                {
+                    day: 'monday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '0900',
+                            endTime: '1030',
+                        },
+                    ],
+                },
+                {
+                    day: 'tuesday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                    ],
+                },
+                {
+                    day: 'bank holiday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                    ],
+                },
+                {
+                    day: 'thursday',
+                    timeBands: [
+                        {
+                            startTime: '0900',
+                            endTime: '1000',
+                        },
+                        {
+                            startTime: '0930',
+                            endTime: '1000',
+                        },
+                    ],
+                },
+            ]);
         });
     });
 
@@ -174,7 +345,7 @@ describe('changePassword', () => {
         });
         chooseTimeRestrictions(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
-            fullTimeRestrictions: [{ day: 'monday', startTime: '0900', endTime: '1400' }],
+            fullTimeRestrictions: [{ day: 'monday', timeBands: [{ startTime: '0900', endTime: '1400' }] }],
             errors: [],
         });
         expect(res.writeHead).toBeCalledWith(302, { Location: '/fareConfirmation' });
@@ -185,16 +356,21 @@ describe('changePassword', () => {
             body: { startTimemonday: 'invalid', endTimemonday: '2600' },
             session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
         });
-        const mockErrors = expect.arrayContaining([
-            expect.objectContaining({
+        const mockErrors = [
+            {
                 errorMessage: expect.any(String),
                 id: expect.any(String),
                 userInput: expect.any(String),
-            }),
-        ]);
+            },
+            {
+                errorMessage: expect.any(String),
+                id: expect.any(String),
+                userInput: expect.any(String),
+            },
+        ];
         chooseTimeRestrictions(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
-            fullTimeRestrictions: [{ day: 'monday', startTime: 'invalid', endTime: '2600' }],
+            fullTimeRestrictions: [{ day: 'monday', timeBands: [{ startTime: 'invalid', endTime: '2600' }] }],
             errors: mockErrors,
         });
         expect(res.writeHead).toBeCalledWith(302, { Location: '/chooseTimeRestrictions' });

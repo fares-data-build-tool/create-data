@@ -55,6 +55,11 @@ exports[`pages fareConfirmation should render correctly for group tickets 1`] = 
             "name": "Time restrictions - Thursday",
           },
           Object {
+            "content": "Start time: 1400 End time: 2000",
+            "href": "defineTimeRestrictions",
+            "name": "Time restrictions - Thursday",
+          },
+          Object {
             "content": "Start time: N/A End time: 1600",
             "href": "defineTimeRestrictions",
             "name": "Time restrictions - Friday",

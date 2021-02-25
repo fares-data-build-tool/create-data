@@ -339,3 +339,25 @@ svg:not(:root) {
 .continue-button-placement {
     margin-top: 30px !important;
 }
+
+.time-restrictions-button-placement[class] {
+    display: none;
+}
+
+.js-enabled {
+    .time-restrictions-button-placement[class] {
+        display: block;
+        margin-top: auto;
+        margin-bottom: 0px;
+        max-height: 40px;
+        min-width: 125px;
+    }
+}
+
+.time-restriction-row {
+    display: flex;
+
+    &:not(:last-child) {
+        margin-bottom: 20px;
+    }
+}
