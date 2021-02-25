@@ -150,6 +150,36 @@ describe('definePassengerType', () => {
             const filtered = formatRequestBody(req);
             expect(filtered).toEqual({ proofDocuments: ['membershipCard'], ...reqBodyParams });
         });
+
+        it('should remove age ranges when No is selected for ageRange', () => {
+            const reqBodyParams = { ageRange: 'No', proof: 'Yes' };
+            const { req } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: {
+                    ageRangeMin: '16',
+                    ageRangeMax: '65',
+                    proofDocuments: 'membershipCard',
+                    ...reqBodyParams,
+                },
+            });
+            const filtered = formatRequestBody(req);
+            expect(filtered).toEqual({ proofDocuments: ['membershipCard'], ...reqBodyParams });
+        });
+
+        it('should remove proof documents when No is selected for proof', () => {
+            const reqBodyParams = { ageRange: 'Yes', proof: 'No' };
+            const { req } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: {
+                    ageRangeMin: '16',
+                    ageRangeMax: '65',
+                    proofDocuments: 'membershipCard',
+                    ...reqBodyParams,
+                },
+            });
+            const filtered = formatRequestBody(req);
+            expect(filtered).toEqual({ ageRangeMin: '16', ageRangeMax: '65', ...reqBodyParams });
+        });
     });
 
     describe('getErrorIdFromValidityError', () => {

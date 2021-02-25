@@ -17,6 +17,7 @@ describe('pages', () => {
                     startTimeInputs={[]}
                     endTimeInputs={[]}
                     errors={[]}
+                    dayCounters={[]}
                     csrfToken=""
                 />,
             );
@@ -29,6 +30,7 @@ describe('pages', () => {
                     startTimeInputs={[{ timeInput: '0900', day: 'monday' }]}
                     endTimeInputs={[{ timeInput: '1900', day: 'tuesday' }]}
                     errors={[]}
+                    dayCounters={[]}
                     csrfToken=""
                 />,
             );
@@ -59,6 +61,7 @@ describe('pages', () => {
                             userInput: '7pm',
                         },
                     ]}
+                    dayCounters={[]}
                     csrfToken=""
                 />,
             );
@@ -75,6 +78,7 @@ describe('pages', () => {
                     csrfToken: '',
                     startTimeInputs: [],
                     endTimeInputs: [],
+                    dayCounters: [],
                 };
                 const ctx = getMockContext({
                     session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: mockDays } },
@@ -88,10 +92,10 @@ describe('pages', () => {
                     expect.objectContaining({ timeInput: expect.any(String), day: expect.any(String) }),
                 ]);
                 const mockUserInputs = [
-                    { day: 'monday', startTime: '0900', endTime: 'dad' },
-                    { day: 'tuesday', startTime: 'vveaee', endTime: '2300' },
-                    { day: 'wednesday', startTime: '2400', endTime: '' },
-                    { day: 'thursday', startTime: '', endTime: '' },
+                    { day: 'monday', timeBands: [{ startTime: '0900', endTime: 'dad' }] },
+                    { day: 'tuesday', timeBands: [{ startTime: 'vveaee', endTime: '2300' }] },
+                    { day: 'wednesday', timeBands: [{ startTime: '2400', endTime: '' }] },
+                    { day: 'thursday', timeBands: [{ startTime: '', endTime: '' }] },
                 ];
                 const mockErrors: ErrorInfo[] = [
                     {
@@ -116,6 +120,24 @@ describe('pages', () => {
                     csrfToken: '',
                     startTimeInputs: expectedUserInputStructure,
                     endTimeInputs: expectedUserInputStructure,
+                    dayCounters: [
+                        {
+                            counter: 1,
+                            day: 'monday',
+                        },
+                        {
+                            counter: 1,
+                            day: 'tuesday',
+                        },
+                        {
+                            counter: 1,
+                            day: 'wednesday',
+                        },
+                        {
+                            counter: 1,
+                            day: 'thursday',
+                        },
+                    ],
                 };
                 const ctx = getMockContext({
                     session: {
