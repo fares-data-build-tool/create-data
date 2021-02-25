@@ -107,12 +107,17 @@ Resources:
       Name: OperatorsWithPeriodTicketTypeCounts
       Description: Retrieves counts of the period ticket types created per operator
       QueryString: !Sub |
-        SELECT nocCode,
+        SELECT operatorName,
+        nocCode,
         max(dailyTotal) as dailyTotal,
         max(weeklyTotal) as weeklyTotal,
         max(monthlyTotal) as monthlyTotal,
         max(annualTotal) as annualTotal FROM
-          (SELECT COALESCE(total_daily_tickets.nocCode,
+          (SELECT COALESCE(total_daily_tickets.operatorName,
+                  total_weekly_tickets.operatorName,
+                  total_monthly_tickets.operatorName,
+                  total_annual_tickets.operatorName) AS operatorName,
+                  COALESCE(total_daily_tickets.nocCode,
                   total_weekly_tickets.nocCode,
                   total_monthly_tickets.nocCode,
                   total_annual_tickets.nocCode) AS nocCode,
@@ -128,8 +133,9 @@ Resources:
           JOIN ${BusinessIntelligenceDatabase}.total_annual_tickets
               ON total_monthly_tickets.nocCode = total_annual_tickets.nocCode)
         WHERE nocCode != 'IWBusCo'
-        GROUP BY nocCode
-        ORDER BY nocCode
+        GROUP BY operatorName, nocCode
+        ORDER BY operatorName
+
 
   OperatorsWithPeriodTicketPassengerTypeCounts:
     Type: AWS::Athena::NamedQuery
@@ -139,7 +145,8 @@ Resources:
       Name: OperatorsWithPeriodTicketPassengerTypeCounts
       Description: Retrieves counts of the period tickets created for different passenger types per operator
       QueryString: !Sub |
-        SELECT nocCode,
+        SELECT operatorName,
+        nocCode,
         max(groupTotal) as groupTotal,
         max(adultTotal) as adultTotal,
         max(childTotal) as childTotal,
@@ -149,7 +156,16 @@ Resources:
         max(youngPersonTotal) as youngPersonTotal,
         max(anyoneTotal) as anyoneTotal,
         max(schoolPupilTotal) as schoolPupilTotal FROM
-          (SELECT COALESCE(total_group_period_tickets.nocCode,
+          (SELECT COALESCE(total_group_period_tickets.operatorName,
+                  total_adult_period_tickets.operatorName,
+                  total_child_period_tickets.operatorName,
+                  total_infant_period_tickets.operatorName,
+                  total_senior_period_tickets.operatorName,
+                  total_student_period_tickets.operatorName,
+                  total_young_person_period_tickets.operatorName,
+                  total_anyone_period_tickets.operatorName,
+                  total_school_pupil_period_tickets.operatorName) AS operatorName,
+                  COALESCE(total_group_period_tickets.nocCode,
                   total_adult_period_tickets.nocCode,
                   total_child_period_tickets.nocCode,
                   total_infant_period_tickets.nocCode,
@@ -185,8 +201,8 @@ Resources:
           JOIN ${BusinessIntelligenceDatabase}.total_school_pupil_period_tickets
               ON total_anyone_period_tickets.nocCode = total_school_pupil_period_tickets.nocCode)
         WHERE nocCode != 'IWBusCo'
-        GROUP BY nocCode
-        ORDER BY nocCode
+        GROUP BY operatorName, nocCode
+        ORDER BY operatorName
 
 ## Flat Fare Ticket Queries
 
@@ -222,7 +238,8 @@ Resources:
       Name: OperatorsWithFlatFareTicketPassengerTypeCounts
       Description: Retrieves counts of the flat fare tickets created for different passenger types per operator
       QueryString: !Sub |
-        SELECT nocCode,
+        SELECT operatorName,
+        nocCode,
         max(groupTotal) as groupTotal,
         max(adultTotal) as adultTotal,
         max(childTotal) as childTotal,
@@ -232,7 +249,16 @@ Resources:
         max(youngPersonTotal) as youngPersonTotal,
         max(anyoneTotal) as anyoneTotal,
         max(schoolPupilTotal) as schoolPupilTotal FROM
-          (SELECT COALESCE(total_group_flat_fare_tickets.nocCode,
+          (SELECT COALESCE(total_group_flat_fare_tickets.operatorName,
+                  total_adult_flat_fare_tickets.operatorName,
+                  total_child_flat_fare_tickets.operatorName,
+                  total_infant_flat_fare_tickets.operatorName,
+                  total_senior_flat_fare_tickets.operatorName,
+                  total_student_flat_fare_tickets.operatorName,
+                  total_young_person_flat_fare_tickets.operatorName,
+                  total_anyone_flat_fare_tickets.operatorName,
+                  total_school_pupil_flat_fare_tickets.operatorName) AS operatorName,
+                  COALESCE(total_group_flat_fare_tickets.nocCode,
                   total_adult_flat_fare_tickets.nocCode,
                   total_child_flat_fare_tickets.nocCode,
                   total_infant_flat_fare_tickets.nocCode,
@@ -268,5 +294,5 @@ Resources:
           JOIN ${BusinessIntelligenceDatabase}.total_school_pupil_flat_fare_tickets
               ON total_anyone_flat_fare_tickets.nocCode = total_school_pupil_flat_fare_tickets.nocCode)
         WHERE nocCode != 'IWBusCo'
-        GROUP BY nocCode
-        ORDER BY nocCode
+        GROUP BY operatorName, nocCode
+        ORDER BY operatorName
