@@ -1588,23 +1588,19 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
     timeRestriction: [
         {
             day: 'monday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'tuesday',
-            startTime: '0900',
-            endTime: '1700',
+            timeBands: [{ startTime: '0900', endTime: '1700' }],
         },
         {
             day: 'wednesday',
-            startTime: '',
-            endTime: '1950',
+            timeBands: [{ startTime: '', endTime: '1950' }],
         },
         {
             day: 'thursday',
-            startTime: '0000',
-            endTime: '2359',
+            timeBands: [{ startTime: '0000', endTime: '2359' }],
         },
     ],
 };
@@ -2166,23 +2162,19 @@ export const schemeOperatorTicket: SchemeOperatorTicket = {
     timeRestriction: [
         {
             day: 'bankHoliday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'tuesday',
-            startTime: '0900',
-            endTime: '1700',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'wednesday',
-            startTime: '',
-            endTime: '1950',
+            timeBands: [{ startTime: '', endTime: '1950' }],
         },
         {
             day: 'thursday',
-            startTime: '0000',
-            endTime: '2359',
+            timeBands: [{ startTime: '0000', endTime: '2359' }],
         },
     ],
     products: [
@@ -2555,23 +2547,19 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
     timeRestriction: [
         {
             day: 'monday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'tuesday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'wednesday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'bankHoliday',
-            startTime: '0000',
-            endTime: '2359',
+            timeBands: [{ startTime: '0000', endTime: '2359' }],
         },
     ],
     products: [
@@ -2992,23 +2980,19 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
     timeRestriction: [
         {
             day: 'monday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'tuesday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'wednesday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
         {
             day: 'thursday',
-            startTime: '',
-            endTime: '',
+            timeBands: [{ startTime: '', endTime: '' }],
         },
     ],
     products: [
