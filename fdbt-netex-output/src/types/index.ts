@@ -79,10 +79,14 @@ export interface SalesOfferPackage {
     ticketFormats: string[];
 }
 
-export interface FullTimeRestriction {
-    day: string;
+export interface TimeBand {
     startTime: string;
     endTime: string;
+}
+
+export interface FullTimeRestriction {
+    day: string;
+    timeBands: TimeBand[];
 }
 
 export interface BaseTicket {

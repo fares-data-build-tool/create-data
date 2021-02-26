@@ -136,25 +136,34 @@ export const getGroupElement = (userPeriodTicket: GroupTicket): NetexObject => {
 
 const getTime = (time: string): string => moment(time, 'HHmm').format('HH:mm:ss');
 
-const getDayLength = (startTime: string, endTime: string): string => {
-    const startMoment = moment(startTime, 'HHmm');
-    const endMoment = moment(endTime, 'HHmm');
-    const diff = endMoment.diff(startMoment, 'minute');
-
-    return moment.duration(diff, 'minute').toISOString();
+export const getEarliestTime = (timeRestriction: FullTimeRestriction): string => {
+    const startTimes: string[] = timeRestriction.timeBands
+        .map(timeband => timeband.startTime || '')
+        .filter(startTime => startTime !== '');
+    return startTimes.sort()[0];
 };
+
+export const getAllTimeBands = (timeRestriction: FullTimeRestriction): NetexObject =>
+    timeRestriction.timeBands
+        .filter(timeBand => timeBand.startTime)
+        .map((timeband, index) => {
+            return {
+                version: '1.0',
+                id: `op:timeband_for_${timeRestriction.day}@timeband_${(index + 1).toString()}`,
+                StartTime: {
+                    $t: timeband.startTime ? getTime(timeband.startTime) : null,
+                },
+                EndTime: {
+                    $t: timeband.endTime ? getTime(timeband.endTime) : null,
+                },
+            };
+        });
 
 export const getFareDayTypeElements = (timeRestriction: FullTimeRestriction): NetexObject => ({
     id: `op@Tariff@DayType@${timeRestriction.day}`,
     version: '1.0',
     EarliestTime: {
-        $t: timeRestriction.startTime ? getTime(timeRestriction.startTime) : null,
-    },
-    DayLength: {
-        $t:
-            timeRestriction.startTime && timeRestriction.endTime
-                ? getDayLength(timeRestriction.startTime, timeRestriction.endTime)
-                : null,
+        $t: getEarliestTime(timeRestriction) ? getTime(getEarliestTime(timeRestriction)) : null,
     },
     properties: {
         PropertyOfDay: {
@@ -166,6 +175,7 @@ export const getFareDayTypeElements = (timeRestriction: FullTimeRestriction): Ne
             },
         },
     },
+    timebands: { Timeband: getAllTimeBands(timeRestriction) },
 });
 
 export const getTimeRestrictions = (timeRestrictionData: FullTimeRestriction[]): NetexObject => {
