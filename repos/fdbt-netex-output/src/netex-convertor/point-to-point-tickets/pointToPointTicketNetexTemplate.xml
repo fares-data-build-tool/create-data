@@ -324,9 +324,6 @@
 												<FrequencyOfUseType>none</FrequencyOfUseType>
 												<MaximalFrequency>1</MaximalFrequency>
 											</FrequencyOfUse>
-											<Interchanging version="1.0" id="Trip@single@NoTransfers">
-												<MaximumNumberOfInterchanges>0</MaximumNumberOfInterchanges>
-											</Interchanging>
 										</limitations>
 									</GenericParameterAssignment>
 								</FareStructureElement>

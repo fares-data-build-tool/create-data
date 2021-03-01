@@ -22,7 +22,7 @@ jobs:
       - run:
           command: |
             echo "Starting build"
-            npm install
+            npm ci
             npm run build
       - persist_to_workspace:
           root: ~/project
@@ -132,7 +132,7 @@ jobs:
             sudo apt-get install -y nodejs
             sudo npm i -g serverless
             cd src/netex-validator
-            npm install
+            npm ci
             export SLS_DEBUG="*" && sls deploy --stage=test
             echo "Finished deploy"
 
@@ -150,7 +150,7 @@ jobs:
             sudo apt-get install -y nodejs
             sudo npm i -g serverless
             cd src/netex-validator
-            npm install
+            npm ci
             export SLS_DEBUG="*" && sls deploy --stage=preprod
             echo "Finished deploy"
 
@@ -168,7 +168,7 @@ jobs:
             sudo apt-get install -y nodejs
             sudo npm i -g serverless
             cd src/netex-validator
-            npm install
+            npm ci
             export SLS_DEBUG="*" && sls deploy --stage=prod
             echo "Finished deploy"
 
