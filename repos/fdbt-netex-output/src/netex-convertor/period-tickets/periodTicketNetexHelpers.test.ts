@@ -427,7 +427,9 @@ describe('periodTicketNetexHelpers', () => {
 
             namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
-                    name === 'Available zones' || name === 'Eligible user types' || name === 'Conditions of travel',
+                    name === 'Available lines and/or zones' ||
+                        name === 'Eligible user types' ||
+                        name === 'Conditions of travel',
                 ).toBeTruthy();
             });
 
@@ -443,7 +445,7 @@ describe('periodTicketNetexHelpers', () => {
 
             namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
-                    name === 'Available zones' ||
+                    name === 'Available lines and/or zones' ||
                         name.includes('Available duration combination') ||
                         name === 'Eligible user types' ||
                         name === 'Conditions of travel',
@@ -461,7 +463,7 @@ describe('periodTicketNetexHelpers', () => {
 
             namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
-                    name === 'Available zones' ||
+                    name === 'Available lines and/or zones' ||
                         name.includes('Available duration combination') ||
                         name === 'Eligible user types' ||
                         name === 'Conditions of travel',
@@ -477,7 +479,6 @@ describe('periodTicketNetexHelpers', () => {
                 version: '1.0',
                 id: expect.stringContaining('op:Tariff@'),
                 Name: expect.objectContaining({ $t: expect.any(String) }),
-                Description: expect.objectContaining({ $t: expect.any(String) }),
                 TypeOfFareStructureElementRef: expect.objectContaining({
                     version: expect.any(String),
                     ref: expect.any(String),
@@ -518,7 +519,7 @@ describe('periodTicketNetexHelpers', () => {
             geoResult.forEach(fareStructureElement => {
                 if (fareStructureElement.timeIntervals) {
                     expect(fareStructureElement).toEqual(expectedDurationsFareStructureElement);
-                } else if (fareStructureElement.Description) {
+                } else if (fareStructureElement.qualityStructureFactors === null) {
                     expect(fareStructureElement).toEqual(expectedAccessZonesFareStructureElement);
                 } else if (fareStructureElement.TypeOfFareStructureElementRef) {
                     expect(fareStructureElement).toEqual(expectedEligibilityFareStructureElement);

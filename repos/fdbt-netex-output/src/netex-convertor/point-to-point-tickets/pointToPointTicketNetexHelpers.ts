@@ -434,10 +434,6 @@ export const getConditionsOfTravelFareStructureElement = (matchingData: ReturnTi
                     id: 'Tariff@return@oneTrip',
                     Name: { $t: 'One trip no transfers' },
                 },
-                Interchanging: {
-                    version: '1.0',
-                    id: 'Tariff@return@NoTransfers',
-                },
                 ...usagePeriodValidity,
             },
         },
