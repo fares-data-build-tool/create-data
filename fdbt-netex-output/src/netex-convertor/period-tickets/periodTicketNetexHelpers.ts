@@ -616,7 +616,7 @@ export const getPreassignedFareProducts = (
                     version: '1.0',
                     id: `op:Pass@${product.productName}_${passengerType}@travel`,
                     Name: {
-                        $t: 'Unlimited rides available for specified durations',
+                        $t: 'Rides available for specified durations',
                     },
                     fareStructureElements: { FareStructureElementRef: fareStructureElementRefs },
                 },
@@ -667,8 +667,7 @@ const getAvailabilityElement = (
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
-    Name: { $t: 'Available zones' },
-    Description: { $t: 'single zone.' },
+    Name: { $t: 'Available lines and/or zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: 'fxc:access',
@@ -751,7 +750,10 @@ const getEligibilityElement = (userPeriodTicket: PeriodTicket | SchemeOperatorTi
     }));
 };
 
-const getConditionsElement = (product: ProductDetails): NetexObject => {
+const getConditionsElement = (
+    userPeriodTicket: PeriodTicket | SchemeOperatorTicket,
+    product: ProductDetails,
+): NetexObject => {
     let usagePeriodValidity = {};
 
     if (product.productValidity) {
@@ -785,21 +787,10 @@ const getConditionsElement = (product: ProductDetails): NetexObject => {
             },
             LimitationGroupingType: { $t: 'AND' },
             limitations: {
-                Transferability: {
-                    version: '1.0',
-                    id: `op:Pass@${product.productName}@transferability`,
-                    Name: { $t: 'Ticket is not transferable' },
-                    CanTransfer: { $t: 'false' },
-                },
                 FrequencyOfUse: {
                     version: '1.0',
                     id: `op:Pass@${product.productName}@frequency`,
-                    FrequencyOfUseType: { $t: 'unlimited' },
-                },
-                Interchanging: {
-                    version: '1.0',
-                    id: `op:Pass@${product.productName}@interchanging`,
-                    CanInterchange: { $t: 'true' },
+                    FrequencyOfUseType: { $t: userPeriodTicket.type === 'flatFare' ? 'single' : 'unlimited' },
                 },
                 ...usagePeriodValidity,
             },
@@ -836,13 +827,13 @@ export const getFareStructuresElements = (
             return [
                 getAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
                 getDurationElement(userPeriodTicket, product),
-                getConditionsElement(product),
+                getConditionsElement(userPeriodTicket, product),
             ];
         }
 
         return [
             getAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
-            getConditionsElement(product),
+            getConditionsElement(userPeriodTicket, product),
         ];
     });
 
