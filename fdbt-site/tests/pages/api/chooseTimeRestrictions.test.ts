@@ -4,12 +4,11 @@ import chooseTimeRestrictions, {
     isValid24hrTimeFormat,
     collectInputsFromRequest,
 } from '../../../src/pages/api/chooseTimeRestrictions';
-
+import * as auroradb from '../../../src/data/auroradb';
 import {
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -374,5 +373,71 @@ describe('chooseTimeRestrictions', () => {
             errors: mockErrors,
         });
         expect(res.writeHead).toBeCalledWith(302, { Location: '/chooseTimeRestrictions' });
+    });
+
+    it('should save a new time restriction if name provided', async () => {
+        const insertTimeRestrictionSpy = jest.spyOn(auroradb, 'insertTimeRestriction');
+        const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
+        getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([]);
+        insertTimeRestrictionSpy.mockImplementation().mockResolvedValue();
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                startTimemonday: '1000',
+                endTimemonday: '1200',
+                timeRestrictionName: 'test time restriction',
+            },
+            session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
+        });
+        await chooseTimeRestrictions(req, res);
+        expect(insertTimeRestrictionSpy).toBeCalledTimes(1);
+    });
+
+    it('should redirect back to chooseTimeRestrictions if new time restriction name already exists in db', async () => {
+        const insertTimeRestrictionSpy = jest.spyOn(auroradb, 'insertTimeRestriction');
+        const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
+        getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
+            {
+                name: 'test time restriction',
+                contents: [
+                    {
+                        day: 'monday',
+                        timeBands: [
+                            {
+                                startTime: '1000',
+                                endTime: '1100',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                startTimemonday: '1000',
+                endTimemonday: '1200',
+                timeRestrictionName: 'test time restriction',
+            },
+            session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
+        });
+        await chooseTimeRestrictions(req, res);
+        expect(res.writeHead).toBeCalledWith(302, { Location: '/chooseTimeRestrictions' });
+        expect(insertTimeRestrictionSpy).toBeCalledTimes(0);
+    });
+
+    it('should not create new time restriction if name is only whitespace', async () => {
+        const insertTimeRestrictionSpy = jest.spyOn(auroradb, 'insertTimeRestriction');
+        const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                startTimemonday: '1000',
+                endTimemonday: '1200',
+                timeRestrictionName: '    ',
+            },
+            session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
+        });
+        await chooseTimeRestrictions(req, res);
+        expect(res.writeHead).toBeCalledWith(302, { Location: '/fareConfirmation' });
+        expect(insertTimeRestrictionSpy).toBeCalledTimes(0);
+        expect(getTimeRestrictionByNameAndNocSpy).toBeCalledTimes(0);
     });
 });

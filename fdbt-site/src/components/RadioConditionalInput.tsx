@@ -8,6 +8,7 @@ import {
     RadioWithConditionalInputs,
     RadioButton,
     RadioConditionalInputFieldset,
+    PremadeTimeRestriction,
 } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
@@ -40,7 +41,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
                 >
                     {radio.inputHint.content}
                 </legend>
-                {radio.inputs.map(input => {
+                {(radio.inputs as BaseReactElement[]).map(input => {
                     const errorId = createErrorId(input, radio.inputErrors);
                     return (
                         <div
@@ -95,7 +96,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {radio.inputs.map(input => {
+                            {(radio.inputs as BaseReactElement[]).map(input => {
                                 return (
                                     <div key={input.id} className="govuk-checkboxes__item">
                                         <input
@@ -137,7 +138,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                 >
                     {radio.inputHint.content}
                 </legend>
-                {radio.inputs.map(input => {
+                {(radio.inputs as BaseReactElement[]).map(input => {
                     const errorId = createErrorId(input, radio.inputErrors);
                     return (
                         <div
@@ -196,7 +197,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            {radio.inputs.map(input => {
+            {(radio.inputs as BaseReactElement[]).map(input => {
                 const inputGroupError = radio.inputErrors.find(({ id }) => {
                     return id.includes(input.id);
                 });
@@ -285,15 +286,59 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
     );
 };
 
+const renderConditionalTimeRestrictionDropdown = (radio: RadioWithConditionalInputs): ReactElement => {
+    const error = radio.inputErrors.length > 0;
+
+    return (
+        <div
+            className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
+            id={radio.dataAriaControls}
+        >
+            <div className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}>
+                <fieldset className="govuk-fieldset" aria-describedby={radio.inputHint.id}>
+                    <legend
+                        className={`govuk-fieldset__legend govuk-fieldset__legend--s${
+                            radio.inputHint.hidden ? ' govuk-visually-hidden' : ''
+                        }`}
+                        id={radio.inputHint.id}
+                    >
+                        {radio.inputHint.content}
+                    </legend>
+                    <FormElementWrapper
+                        errors={radio.inputErrors}
+                        errorId={error ? radio.inputErrors[0].id : ''}
+                        errorClass=""
+                    >
+                        <select className="govuk-select" id="time-restriction" name="timeRestriction" defaultValue="">
+                            <option value="" disabled>
+                                Select One
+                            </option>
+                            {(radio.inputs as PremadeTimeRestriction[]).map(timeRestriction => (
+                                <option
+                                    key={`${timeRestriction.name}`}
+                                    value={`${timeRestriction.name}`}
+                                    className="govuk-select"
+                                >
+                                    {timeRestriction.name}
+                                </option>
+                            ))}
+                        </select>
+                    </FormElementWrapper>
+                </fieldset>
+            </div>
+        </div>
+    );
+};
+
 export const conditionalRadioInputDefaultExists = (radio: RadioWithConditionalInputs): boolean => {
     if (radio.inputType === 'text' || radio.inputType === 'textWithUnits') {
-        return radio.inputs.some(input => input.defaultValue !== '');
+        return (radio.inputs as BaseReactElement[]).some(input => input.defaultValue !== '');
     }
     if (radio.inputType === 'date') {
-        return radio.inputs.some(input => input.defaultValue !== '##');
+        return (radio.inputs as BaseReactElement[]).some(input => input.defaultValue !== '##');
     }
     if (radio.inputType === 'checkbox') {
-        return radio.inputs.some(input => input.defaultChecked);
+        return (radio.inputs as BaseReactElement[]).some(input => input.defaultChecked);
     }
     return false;
 };
@@ -321,7 +366,7 @@ const renderConditionalRadioButton = (
             type="radio"
             value={radio.value}
             data-aria-controls={radio.dataAriaControls}
-            checked
+            defaultChecked
         />
     );
 
@@ -330,6 +375,7 @@ const renderConditionalRadioButton = (
         text: renderConditionalTextInput,
         textWithUnits: renderConditionalTextWithUnitsInput,
         date: renderConditionalDateInputs,
+        dropdown: renderConditionalTimeRestrictionDropdown,
     };
 
     return (
@@ -398,7 +444,9 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => renderRadioButtonSet(radio))}
+                        {fieldset.radios.map(radio => {
+                            return renderRadioButtonSet(radio);
+                        })}
                     </div>
                 </FormElementWrapper>
             </fieldset>

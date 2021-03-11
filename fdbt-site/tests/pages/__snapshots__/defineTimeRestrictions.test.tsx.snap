@@ -25,7 +25,7 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
       </span>
       <RadioConditionalInput
         fieldset={
@@ -97,13 +97,42 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
                   },
                 ],
                 "label": "Yes",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "Yes",
+              },
+              Object {
+                "dataAriaControls": "premade-time-restriction",
+                "id": "premade-time-restriction-yes",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select premade time restriction to use",
+                  "id": "choose-time-restriction-hint",
+                },
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "contents": Array [
+                      Object {
+                        "day": "monday",
+                        "timeBands": Array [
+                          Object {
+                            "endTime": "1000",
+                            "startTime": "0900",
+                          },
+                        ],
+                      },
+                    ],
+                    "name": "Test Time restriction",
+                  },
+                ],
+                "label": "Yes - Premade time restriction",
+                "name": "timeRestrictionChoice",
+                "value": "Premade",
               },
               Object {
                 "id": "valid-days-not-required",
                 "label": "No",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "No",
               },
             ],
@@ -177,7 +206,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
       </span>
       <RadioConditionalInput
         fieldset={
@@ -254,13 +283,13 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
                   },
                 ],
                 "label": "Yes",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "Yes",
               },
               Object {
                 "id": "valid-days-not-required",
                 "label": "No",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "No",
               },
             ],
@@ -334,7 +363,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
       </span>
       <RadioConditionalInput
         fieldset={
@@ -411,13 +440,13 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
                   },
                 ],
                 "label": "Yes",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "Yes",
               },
               Object {
                 "id": "valid-days-not-required",
                 "label": "No",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "No",
               },
             ],
@@ -475,7 +504,7 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
         className="govuk-hint"
         id="define-time-restrictions-hint"
       >
-        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
       </span>
       <RadioConditionalInput
         fieldset={
@@ -552,13 +581,13 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
                   },
                 ],
                 "label": "Yes",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "Yes",
               },
               Object {
                 "id": "valid-days-not-required",
                 "label": "No",
-                "name": "validDaysSelected",
+                "name": "timeRestrictionChoice",
                 "value": "No",
               },
             ],
