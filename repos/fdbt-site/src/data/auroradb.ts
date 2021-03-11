@@ -102,8 +102,8 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     try {
         const queryInput = `
             SELECT lineName, startDate, serviceDescription AS description, serviceCode
-            FROM tndsOperatorService
-            WHERE nocCode = ?
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = 'tnds'
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
@@ -243,12 +243,12 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 
     const serviceQuery = `
         SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
-        FROM tndsOperatorService AS os
-        JOIN tndsJourneyPattern AS ps ON ps.operatorServiceId = os.id
-        JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
+        FROM txcOperatorLine AS os
+        JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
+        JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
         LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
         LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
-        WHERE os.nocCode = ? AND os.lineName = ?
+        WHERE os.nocCode = ? AND os.lineName = ? AND os.dataSource = 'tnds'
         ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
@@ -367,8 +367,8 @@ export const getSearchOperatorsByNocRegion = async (searchText: string, nocCode:
 
     const searchQuery = `
         SELECT nocCode, operatorPublicName AS name FROM nocTable WHERE nocCode IN (
-                SELECT DISTINCT nocCode FROM tndsOperatorService WHERE regionCode IN (
-                    SELECT DISTINCT regionCode FROM tndsOperatorService WHERE nocCode = ?
+                SELECT DISTINCT nocCode FROM txcOperatorLine WHERE dataSource = 'tnds' AND regionCode IN (
+                    SELECT DISTINCT regionCode FROM txcOperatorLine WHERE nocCode = ? AND dataSource = 'tnds'
                 )
         ) AND operatorPublicName LIKE ?
     `;
@@ -392,8 +392,8 @@ export const getSearchOperatorsBySchemeOpRegion = async (
     });
 
     const searchQuery = `SELECT nocCode, operatorPublicName AS name FROM nocTable WHERE nocCode IN (
-        SELECT DISTINCT nocCode FROM tndsOperatorService WHERE regionCode = ?
-        ) AND operatorPublicName LIKE ?`;
+        SELECT DISTINCT nocCode FROM txcOperatorLine WHERE regionCode = ?
+        ) AND operatorPublicName LIKE ? AND dataSource = 'tnds'`;
 
     try {
         return await executeQuery<Operator[]>(searchQuery, [regionCode, `%${searchText}%`]);
