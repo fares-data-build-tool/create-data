@@ -35,9 +35,39 @@ Resources:
               Type: string
             - Name: operatorName
               Type: string
+            - Name: lineName
+              Type: string
             - Name: products
               Type: "array<struct<productduration:string>>"
           Location: !Sub s3://fdbt-matching-data-${Stage}/
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat
+          SerdeInfo:
+            SerializationLibrary: org.openx.data.jsonserde.JsonSerDe
+
+  ReprocessingMatchingDataTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref BusinessIntelligenceDatabase
+      TableInput:
+        Name: reprocessing_matching_data
+        TableType: EXTERNAL_TABLE
+        StorageDescriptor:
+          Columns:
+            - Name: nocCode
+              Type: string
+            - Name: type
+              Type: string
+            - Name: passengerType
+              Type: string
+            - Name: operatorName
+              Type: string
+            - Name: lineName
+              Type: string
+            - Name: products
+              Type: "array<struct<productduration:string>>"
+          Location: !Sub s3://fdbt-matching-data-prod-replica/
           InputFormat: org.apache.hadoop.mapred.TextInputFormat
           OutputFormat: org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat
           SerdeInfo:
