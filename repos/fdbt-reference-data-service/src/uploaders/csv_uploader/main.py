@@ -25,7 +25,7 @@ password = ssm.get_parameter(
 db_connection = pymysql.connect(rds_host, user=username, passwd=password, db=db_name, connect_timeout=5)
 
 
-def handler(event, context):
+def lambda_handler(event, context):
     try:
         bucket = event['Records'][0]['s3']['bucket']['name']
         key = unquote_plus(event['Records'][0]['s3']['object']['key'])
