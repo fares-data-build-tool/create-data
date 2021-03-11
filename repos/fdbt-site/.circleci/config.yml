@@ -17,21 +17,6 @@ jobs:
           paths:
             - "*"
 
-  run-ui-tests:
-    docker:
-      - image: circleci/openjdk:13-jdk-buster
-    executor: aws-cli/default
-    steps:
-      - aws-cli/setup:
-          profile-name: default
-      - run:
-          command: |
-            git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
-            cd fdbt-ui-automation
-
-            ./ci_scripts/run_tests_in_browserstack.sh
-          no_output_timeout: 40m
-
   build-site:
     docker:
       - image: circleci/node:12
@@ -145,14 +130,6 @@ workflows:
           container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-test
           verify-revision-is-deployed: true
-          filters:
-            branches:
-              only: develop
-
-      - run-ui-tests:
-          requires:
-            - deploy-site-to-test
-          context: tfn-fdbt-automation-test
           filters:
             branches:
               only: develop
