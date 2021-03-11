@@ -3,7 +3,15 @@ import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
 import logger from '../utils/logger';
 import { INTERNAL_NOC } from '../constants';
-import { Operator, ServiceType, RawService, Stop, SalesOfferPackage } from '../interfaces';
+import {
+    Operator,
+    ServiceType,
+    RawService,
+    Stop,
+    SalesOfferPackage,
+    FullTimeRestriction,
+    PremadeTimeRestriction,
+} from '../interfaces';
 
 interface QueryData {
     operatorShortName: string;
@@ -39,6 +47,12 @@ interface RawSalesOfferPackage {
     purchaseLocations: string;
     paymentMethods: string;
     ticketFormats: string;
+}
+
+interface RawTimeRestriction {
+    nocCode: string;
+    name: string;
+    contents: string;
 }
 
 export const getAuroraDBClient = (): Pool => {
@@ -352,6 +366,85 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
         ]);
     } catch (error) {
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
+    }
+};
+
+export const insertTimeRestriction = async (
+    nocCode: string,
+    timeRestriction: FullTimeRestriction[],
+    name: string,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'inserting time restriction for given noc',
+        noc: nocCode,
+    });
+
+    const contents = JSON.stringify(timeRestriction);
+
+    const insertQuery = `INSERT INTO timeRestriction 
+    (nocCode, name, contents) 
+    VALUES (?, ?, ?)`;
+    try {
+        await executeQuery(insertQuery, [nocCode, name, contents]);
+    } catch (error) {
+        throw new Error(`Could not insert time restriction into the timeRestriction table. ${error.stack}`);
+    }
+};
+
+export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<PremadeTimeRestriction[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving time restrictions for given noc',
+        noc: nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT name, contents
+            FROM timeRestriction
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode]);
+
+        return (
+            queryResults.map(item => ({
+                name: item.name,
+                contents: JSON.parse(item.contents),
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getTimeRestrictionByNameAndNoc = async (
+    name: string,
+    nocCode: string,
+): Promise<PremadeTimeRestriction[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving time restriction for given name',
+        name,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM timeRestriction
+            WHERE name = ?
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<RawTimeRestriction[]>(queryInput, [name, nocCode]);
+
+        return queryResults.map(item => ({
+            name,
+            contents: JSON.parse(item.contents),
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve time restriction by name and nocCode from AuroraDB: ${error.stack}`);
     }
 };
 

@@ -110,10 +110,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
-    if (!nocCode) {
-        throw new Error('Necessary attributes not found to show serviceList page');
-    }
-
     const services = await getServicesByNocCode(nocCode);
 
     const { selectAll } = ctx.query;

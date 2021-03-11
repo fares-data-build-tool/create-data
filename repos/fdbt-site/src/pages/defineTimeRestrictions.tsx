@@ -8,11 +8,13 @@ import {
     RadioConditionalInputFieldset,
     TimeRestriction,
     TimeRestrictionsDefinitionWithErrors,
+    PremadeTimeRestriction,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
-import { getCsrfToken, getErrorsByIds } from '../utils';
+import { getCsrfToken, getErrorsByIds, getNocFromIdToken } from '../utils';
+import { getTimeRestrictionByNocCode } from '../data/auroradb';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
 const description = 'Define Time Restrictions page of the Create Fares Data Service';
@@ -25,6 +27,7 @@ interface DefineTimeRestrictionsProps {
 
 export const getFieldsets = (
     errors: ErrorInfo[],
+    premadeTimeRestrictions: PremadeTimeRestriction[],
     timeRestrictionsDefinition?: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
 ): RadioConditionalInputFieldset[] => {
     const validDaysFieldset: RadioConditionalInputFieldset = {
@@ -36,7 +39,7 @@ export const getFieldsets = (
         radios: [
             {
                 id: 'valid-days-required',
-                name: 'validDaysSelected',
+                name: 'timeRestrictionChoice',
                 value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
                 label: 'Yes',
@@ -99,13 +102,29 @@ export const getFieldsets = (
             },
             {
                 id: 'valid-days-not-required',
-                name: 'validDaysSelected',
+                name: 'timeRestrictionChoice',
                 value: 'No',
                 label: 'No',
             },
         ],
         radioError: getErrorsByIds(['valid-days-required'], errors),
     };
+    if (premadeTimeRestrictions.length > 0) {
+        validDaysFieldset.radios.splice(1, 0, {
+            id: 'premade-time-restriction-yes',
+            name: 'timeRestrictionChoice',
+            value: 'Premade',
+            label: 'Yes - Premade time restriction',
+            inputHint: {
+                id: 'choose-time-restriction-hint',
+                content: 'Select premade time restriction to use',
+            },
+            inputType: 'dropdown',
+            dataAriaControls: 'premade-time-restriction',
+            inputs: premadeTimeRestrictions,
+            inputErrors: errors,
+        });
+    }
     return [validDaysFieldset];
 };
 
@@ -125,7 +144,8 @@ const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTim
                     </h1>
                     <span className="govuk-hint" id="define-time-restrictions-hint">
                         We need to know if your ticket(s) will have any time restrictions, for example select yes if
-                        your ticket(s) can only be used on a certain day or during a certain time period
+                        your ticket(s) can only be used on a certain day or during a certain time period. If you have a
+                        premade time restriction, you can select it here.
                     </span>
                     {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
@@ -137,16 +157,24 @@ const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTim
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefineTimeRestrictionsProps } => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: DefineTimeRestrictionsProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const noc = getNocFromIdToken(ctx);
+    const timeRestrictions = await getTimeRestrictionByNocCode(noc || '');
 
     let errors: ErrorInfo[] = [];
     if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
         errors = timeRestrictionsDefinition.errors;
     }
 
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors, timeRestrictionsDefinition);
+    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(
+        errors,
+        timeRestrictions,
+        timeRestrictionsDefinition,
+    );
     return { props: { errors, fieldsets, csrfToken } };
 };
 

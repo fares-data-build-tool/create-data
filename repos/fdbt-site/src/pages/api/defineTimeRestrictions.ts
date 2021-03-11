@@ -1,34 +1,62 @@
 /* eslint-disable no-else-return */
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { redirectToError, redirectTo } from './apiUtils/index';
-import {
-    FARE_TYPE_ATTRIBUTE,
-    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
-    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
-} from '../../constants/attributes';
+import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils/index';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { getTimeRestrictionByNameAndNoc } from '../../data/auroradb';
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const { timeRestrictionChoice, validDays, timeRestriction } = req.body;
+        if (timeRestrictionChoice === 'Premade') {
+            if (!timeRestriction) {
+                const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
+                    validDays: [],
+                    timeRestrictionChoice,
+                    errors: [{ errorMessage: 'Choose one of the premade time restrictions', id: 'time-restriction' }],
+                };
+                updateSessionAttribute(
+                    req,
+                    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+                    timeRestrictionsDefinitionWithErrors,
+                );
+                redirectTo(res, '/defineTimeRestrictions');
+                return;
+            }
+            const noc = getNocFromIdToken(req, res);
+            if (!noc) {
+                throw new Error('Could not find users NOC code.');
+            }
+            const results = await getTimeRestrictionByNameAndNoc(timeRestriction, noc);
 
-        if (!isFareType(fareTypeAttribute)) {
-            throw new Error('Failed to retrieve the fareType attribute for the defineTimeRestrictions API');
+            if (results.length > 1 || results.length === 0) {
+                throw new Error(
+                    `${results.length} results found - ${
+                        results.length > 0
+                            ? 'Multiple premade time restrictions with same name'
+                            : `No premade time restrictions saved under ${timeRestriction}`
+                    }`,
+                );
+            }
+
+            updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
+                fullTimeRestrictions: results[0].contents,
+                errors: [],
+            });
+            redirectTo(res, '/fareConfirmation');
+            return;
         }
-
-        const { validDaysSelected, validDays } = req.body;
 
         const timeRestrictionsDefinition: TimeRestriction = {
             validDays: [],
         };
 
-        if (!validDaysSelected) {
+        if (!timeRestrictionChoice) {
             const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
                 validDays,
-                validDaysSelected,
+                timeRestrictionChoice,
                 errors: [{ errorMessage: 'Choose one of the options below', id: 'valid-days-required' }],
             };
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
@@ -36,11 +64,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        if (validDaysSelected === 'Yes') {
+        if (timeRestrictionChoice === 'Yes') {
             if (!validDays || validDays.length === 0) {
                 const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
                     validDays,
-                    validDaysSelected,
+                    timeRestrictionChoice,
                     errors: [{ errorMessage: 'Select at least one day', id: 'monday' }],
                 };
                 updateSessionAttribute(
