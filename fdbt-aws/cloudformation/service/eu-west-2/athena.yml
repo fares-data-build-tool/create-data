@@ -9,6 +9,9 @@ Parameters:
       - preprod
       - prod
 
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+
 Resources:
   BusinessIntelligenceDatabase:
     Type: AWS::Glue::Database
@@ -47,6 +50,7 @@ Resources:
 
   ReprocessingMatchingDataTable:
     Type: AWS::Glue::Table
+    Condition: IsTest
     Properties:
       CatalogId: !Ref AWS::AccountId
       DatabaseName: !Ref BusinessIntelligenceDatabase
@@ -67,7 +71,7 @@ Resources:
               Type: string
             - Name: products
               Type: "array<struct<productduration:string>>"
-          Location: !Sub s3://fdbt-matching-data-prod-replica/
+          Location: s3://fdbt-matching-data-prod-replica/
           InputFormat: org.apache.hadoop.mapred.TextInputFormat
           OutputFormat: org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat
           SerdeInfo:
@@ -87,9 +91,9 @@ Resources:
           EncryptionConfiguration:
             EncryptionOption: SSE_S3
 
-# Named Queries
+  # Named Queries
 
-## General Queries
+  ## General Queries
 
   TotalOperators:
     Type: AWS::Athena::NamedQuery
@@ -101,7 +105,7 @@ Resources:
       QueryString: !Sub |
         SELECT COUNT(DISTINCT nocCode) as total_operators FROM ${MatchingDataTable} WHERE nocCode != 'IWBusCo'
 
-## Period Ticket Queries
+  ## Period Ticket Queries
 
   OperatorsWithPeriodTickets:
     Type: AWS::Athena::NamedQuery
@@ -165,7 +169,6 @@ Resources:
         WHERE nocCode != 'IWBusCo'
         GROUP BY operatorName, nocCode
         ORDER BY operatorName
-
 
   OperatorsWithPeriodTicketPassengerTypeCounts:
     Type: AWS::Athena::NamedQuery
@@ -234,7 +237,7 @@ Resources:
         GROUP BY operatorName, nocCode
         ORDER BY operatorName
 
-## Flat Fare Ticket Queries
+  ## Flat Fare Ticket Queries
 
   TotalOperatorsWithFlatFareTickets:
     Type: AWS::Athena::NamedQuery
@@ -247,7 +250,7 @@ Resources:
         SELECT COUNT (DISTINCT nocCode) AS total FROM ${MatchingDataTable}
         WHERE type = 'flatFare'
         AND nocCode != 'IWBusCo'
-  
+
   OperatorsWithFlatFareTickets:
     Type: AWS::Athena::NamedQuery
     Properties:
@@ -259,7 +262,7 @@ Resources:
         SELECT DISTINCT operatorname, nocCode FROM ${MatchingDataTable}
         WHERE type = 'flatFare'
         AND nocCode != 'IWBusCo'
-  
+
   OperatorsWithFlatFareTicketPassengerTypeCounts:
     Type: AWS::Athena::NamedQuery
     Properties:
