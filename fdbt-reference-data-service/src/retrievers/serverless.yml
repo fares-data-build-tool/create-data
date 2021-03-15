@@ -1,171 +1,189 @@
 service: reference-data-service-retrievers
 
 provider:
-  name: aws
-  region: eu-west-2
-  runtime: python3.8
-  stage: ${opt:stage, 'test'}
-  stackName: ${self:service}-${self:provider.stage}
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "ssm:GetParameter"
-      Resource: "*"
-    - Effect: "Allow"
-      Action:
-        - "s3:PutObject"
-        - "s3:GetObject"
-      Resource:
-        - !Sub arn:aws:s3:::fdbt-csv-ref-data-${self:provider.stage}/*
-        - !Sub arn:aws:s3:::fdbt-xml-ref-data-${self:provider.stage}/*
-        - !Sub arn:aws:s3:::fdbt-tnds-ref-data-zipped-${self:provider.stage}/*
-  s3:
-    tndsZippedData:
-      name: fdbt-tnds-ref-data-zipped-${self:provider.stage}
-      publicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      bucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
+    name: aws
+    region: eu-west-2
+    runtime: python3.8
+    stage: ${opt:stage, 'test'}
+    stackName: ${self:service}-${self:provider.stage}
+    lambdaHashingVersion: 20201221
+    iam:
+        role:
+            statements:
+                - Effect: 'Allow'
+                  Action:
+                      - 'ssm:GetParameter'
+                  Resource: '*'
+                - Effect: 'Allow'
+                  Action:
+                      - 's3:PutObject'
+                      - 's3:GetObject'
+                  Resource:
+                      - !Sub arn:aws:s3:::fdbt-csv-ref-data-${self:provider.stage}/*
+                      - !Sub arn:aws:s3:::fdbt-txc-ref-data-${self:provider.stage}/*
+                      - !Sub arn:aws:s3:::fdbt-txc-ref-data-zipped-${self:provider.stage}/*
+                - Effect: 'Allow'
+                  Action:
+                      - 'cloudwatch:PutMetricData'
+                  Resource: '*'
+    s3:
+        txcZippedData:
+            name: fdbt-txc-ref-data-zipped-${self:provider.stage}
+            publicAccessBlockConfiguration:
+                BlockPublicAcls: true
+                BlockPublicPolicy: true
+                IgnorePublicAcls: true
+                RestrictPublicBuckets: true
+            bucketEncryption:
+                ServerSideEncryptionConfiguration:
+                    - ServerSideEncryptionByDefault:
+                          SSEAlgorithm: AES256
+            lifecycleConfiguration:
+                Rules:
+                    - Id: ExpiryRule
+                      Status: Enabled
+                      ExpirationInDays: '5'
 
 plugins:
-  - serverless-python-requirements
-  - serverless-plugin-aws-alerts
+    - serverless-python-requirements
+    - serverless-plugin-aws-alerts
 
 custom:
-  pythonRequirements:
-    dockerizePip: false
-  enableSchedule:
-    test: false
-    preprod: true
-    prod: true
-  alerts:
-    dashboards: false
-    topics:
-      ok:
-        topic: reference-data-service-retrievers-ok-topic
-        notifications:
-          - protocol: lambda
-            endpoint:
-              Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
-      alarm:
-        topic: reference-data-service-retrievers-alarm-topic
-        notifications:
-          - protocol: lambda
-            endpoint:
-              Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
-    alarms:
-      - functionThrottles
-      - functionErrors
-      - functionInvocations
-      - functionDuration
+    pythonRequirements:
+        dockerizePip: false
+    enableSchedule:
+        test: false
+        preprod: true
+        prod: true
+    alerts:
+        dashboards: false
+        topics:
+            ok:
+                topic: reference-data-service-retrievers-ok-topic
+                notifications:
+                    - protocol: lambda
+                      endpoint:
+                          Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
+            alarm:
+                topic: reference-data-service-retrievers-alarm-topic
+                notifications:
+                    - protocol: lambda
+                      endpoint:
+                          Fn::ImportValue: ${self:provider.stage}:SlackAlertsFunctionArn
+        alarms:
+            - functionThrottles
+            - functionErrors
+            - functionInvocations
+            - functionDuration
 
 functions:
-  NocRetriever:
-    handler: csv-retriever/main.lambda_handler
-    timeout: 20
-    memorySize: 256
-    environment:
-      DATA_URL: https://www.travelinedata.org.uk/wp-content/themes/desktop/nocadvanced_download.php?reportFormat=csvFlatFile&allTable%5B%5D=table_noclines&allTable%5B%5D=table_noc_table&allTable%5B%5D=table_public_name&submit=Submit
-      BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
-      CONTENT_TYPE: text/csv
-    events:
-      - schedule:
-          rate: cron(0 2 * * ? *)
-          enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
-    alarms:
-      - name: functionDuration
-        threshold: 15000
-        treatMissingData: notBreaching
-      - name: functionThrottles
-        treatMissingData: notBreaching
-      - name: functionErrors
-        treatMissingData: notBreaching
-      - name: functionInvocations
-        treatMissingData: notBreaching
+    NocRetriever:
+        handler: csv_retriever/main.lambda_handler
+        timeout: 20
+        memorySize: 256
+        environment:
+            DATA_URL: https://www.travelinedata.org.uk/wp-content/themes/desktop/nocadvanced_download.php?reportFormat=csvFlatFile&allTable%5B%5D=table_noclines&allTable%5B%5D=table_noc_table&allTable%5B%5D=table_public_name&submit=Submit
+            BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
+            CONTENT_TYPE: text/csv
+        events:
+            - schedule:
+                  rate: cron(0 2 * * ? *)
+                  enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
+        alarms:
+            - name: functionDuration
+              threshold: 15000
+              treatMissingData: notBreaching
+            - name: functionThrottles
+              treatMissingData: notBreaching
+            - name: functionErrors
+              treatMissingData: notBreaching
+            - name: functionInvocations
+              treatMissingData: notBreaching
 
-  NaptanRetriever:
-    handler: csv-retriever/main.lambda_handler
-    timeout: 30
-    memorySize: 512
-    environment:
-      DATA_URL: http://naptan.app.dft.gov.uk/DataRequest/Naptan.ashx?format=csv
-      BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
-      CONTENT_TYPE: text/csv
-      TARGET_FILE: Stops.csv
-    events:
-      - schedule:
-          rate: cron(0 2 * * ? *)
-          enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
-    alarms:
-      - name: functionDuration
-        threshold: 25000
-        treatMissingData: notBreaching
-      - name: functionThrottles
-        treatMissingData: notBreaching
-      - name: functionErrors
-        treatMissingData: notBreaching
-      - name: functionInvocations
-        treatMissingData: notBreaching
+    NaptanRetriever:
+        handler: csv_retriever/main.lambda_handler
+        timeout: 30
+        memorySize: 512
+        environment:
+            DATA_URL: http://naptan.app.dft.gov.uk/DataRequest/Naptan.ashx?format=csv
+            BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
+            CONTENT_TYPE: text/csv
+            TARGET_FILE: Stops.csv
+        events:
+            - schedule:
+                  rate: cron(0 2 * * ? *)
+                  enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
+        alarms:
+            - name: functionDuration
+              threshold: 25000
+              treatMissingData: notBreaching
+            - name: functionThrottles
+              treatMissingData: notBreaching
+            - name: functionErrors
+              treatMissingData: notBreaching
+            - name: functionInvocations
+              treatMissingData: notBreaching
 
-  TndsRetriever:
-    handler: tnds-ftp-retriever/main.lambda_handler
-    timeout: 480
-    memorySize: 1024
-    environment:
-      FTP_HOST: ftp.tnds.basemap.co.uk
-      BUCKET_NAME: fdbt-csv-ref-data-${self:provider.stage}
-      ZIPPED_BUCKET_NAME: fdbt-tnds-ref-data-zipped-${self:provider.stage}
-      RDS_HOST:
-        Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
-    events:
-      - schedule:
-          rate: cron(15 2 * * ? *)
-          enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
-    vpc:
-      securityGroupIds:
-        - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
-      subnetIds:
-        - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
-        - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
-    alarms:
-      - name: functionDuration
-        threshold: 450000
-        treatMissingData: notBreaching
-      - name: functionThrottles
-        treatMissingData: notBreaching
-      - name: functionErrors
-        treatMissingData: notBreaching
-      - name: functionInvocations
-        treatMissingData: notBreaching
+    TxcRetriever:
+        handler: txc_retriever/main.lambda_handler
+        timeout: 600
+        memorySize: 3072
+        maximumRetryAttempts: 0
+        environment:
+            TNDS_FTP_HOST: ftp.tnds.basemap.co.uk
+            BODS_URL: https://data.bus-data.dft.gov.uk/timetable/download/bulk_archive
+            XML_BUCKET_NAME: fdbt-txc-ref-data-${self:provider.stage}
+            ZIPPED_BUCKET_NAME: fdbt-txc-ref-data-zipped-${self:provider.stage}
+            RDS_HOST:
+                Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
+        events:
+            - schedule:
+                  rate: cron(15 2 * * ? *)
+                  enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
+        vpc:
+            securityGroupIds:
+                - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
+            subnetIds:
+                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
+                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
+        alarms:
+            - name: functionDuration
+              threshold: 540000
+              treatMissingData: notBreaching
+            - name: functionThrottles
+              treatMissingData: notBreaching
+            - name: functionErrors
+              treatMissingData: notBreaching
+            - name: functionInvocations
+              treatMissingData: notBreaching
 
-  TndsUnzipper:
-    handler: tnds-ftp-retriever/unzipper.lambda_handler
-    timeout: 600
-    memorySize: 1024
-    environment:
-      BUCKET_NAME: fdbt-xml-ref-data-${self:provider.stage}
-    events:
-      - s3: tndsZippedData
-        event: s3:ObjectCreated:*
-    alarms:
-      - name: functionDuration
-        threshold: 400000
-        treatMissingData: notBreaching
-      - name: functionThrottles
-        treatMissingData: notBreaching
-      - name: functionErrors
-        treatMissingData: notBreaching
-      - name: functionInvocations
-        treatMissingData: notBreaching
+    TxcUnzipper:
+        handler: txc_unzipper/main.lambda_handler
+        timeout: 400
+        memorySize: 1024
+        maximumRetryAttempts: 0
+        environment:
+            BUCKET_NAME: fdbt-txc-ref-data-${self:provider.stage}
+        events:
+            - s3:
+                  bucket: txcZippedData
+                  event: s3:ObjectCreated:*
+        alarms:
+            - name: functionDuration
+              threshold: 300000
+              treatMissingData: notBreaching
+            - name: functionThrottles
+              treatMissingData: notBreaching
+            - name: functionErrors
+              treatMissingData: notBreaching
+            - name: functionInvocations
+              threshold: 500
+              treatMissingData: notBreaching
 
 package:
-  exclude:
-    - "*"
-  include:
-    - ./csv-retriever/*
-    - ./tnds-ftp-retriever/*
+    exclude:
+        - '*'
+    include:
+        - ./csv_retriever/*
+        - ./txc_retriever/*
+        - ./txc_unzipper/*

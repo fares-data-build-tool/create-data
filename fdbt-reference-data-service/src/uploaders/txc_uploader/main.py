@@ -3,10 +3,11 @@ import boto3
 import pymysql
 import logging
 from urllib.parse import unquote_plus
-from xml_uploader.xml_uploader import download_from_s3_and_write_to_db
+from txc_uploader.txc_processor import download_from_s3_and_write_to_db
 
 ssm_client = boto3.client('ssm')
 s3_client = boto3.client('s3')
+cloudwatch_client = boto3.client('cloudwatch')
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -33,7 +34,7 @@ db_connection = pymysql.connect(
 )
 
 
-def handler(event, context):
+def lambda_handler(event, context):
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = unquote_plus(
         event['Records'][0]['s3']['object']['key'],
@@ -42,7 +43,7 @@ def handler(event, context):
     file_path = '/tmp/' + key.split('/')[-1]
 
     try:
-        download_from_s3_and_write_to_db(s3_client, bucket, key, file_path, db_connection, logger)
+        download_from_s3_and_write_to_db(s3_client, cloudwatch_client, bucket, key, file_path, db_connection, logger)
 
         if os.path.exists(file_path):
             os.remove(file_path)
