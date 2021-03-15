@@ -1,7 +1,7 @@
 import os
 import pytest
 import boto3
-from moto import mock_s3, mock_ssm
+from moto import mock_s3, mock_ssm, mock_cloudwatch
 
 @pytest.fixture(scope='function')
 def aws_credentials():
@@ -21,3 +21,8 @@ def s3(aws_credentials):
 def ssm(aws_credentials):
     with mock_ssm():
         yield boto3.client('ssm', region_name='eu-west-2')
+
+@pytest.fixture(scope='function')
+def cloudwatch(aws_credentials):
+    with mock_cloudwatch():
+        yield boto3.client('cloudwatch', region_name='eu-west-2')

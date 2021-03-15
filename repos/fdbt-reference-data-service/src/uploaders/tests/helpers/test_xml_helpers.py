@@ -3,7 +3,7 @@ import xmltodict
 import xml.etree.ElementTree as eT
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-file_path = dir_path + '/test_data/mock_tnds.xml'
+file_path = dir_path + '/test_data/mock_txc.xml'
 
 
 def generate_mock_data_dict():
