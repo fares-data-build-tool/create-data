@@ -375,7 +375,7 @@ describe('chooseTimeRestrictions', () => {
         expect(res.writeHead).toBeCalledWith(302, { Location: '/chooseTimeRestrictions' });
     });
 
-    it('should save a new time restriction if name provided', async () => {
+    it('should save a new time restriction if name provided and add query string to redirect', async () => {
         const insertTimeRestrictionSpy = jest.spyOn(auroradb, 'insertTimeRestriction');
         const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
         getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([]);
@@ -390,6 +390,9 @@ describe('chooseTimeRestrictions', () => {
         });
         await chooseTimeRestrictions(req, res);
         expect(insertTimeRestrictionSpy).toBeCalledTimes(1);
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/fareConfirmation?createdTimeRestriction=test time restriction',
+        });
     });
 
     it('should redirect back to chooseTimeRestrictions if new time restriction name already exists in db', async () => {

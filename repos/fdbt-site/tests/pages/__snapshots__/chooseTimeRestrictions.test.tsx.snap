@@ -105,10 +105,12 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
     />
     <label
       className="govuk-label"
-      htmlFor="save-time-restriction"
+      htmlFor="time-restrictions-name"
       id="save-time-restriction-label"
     >
-      If you want to save this time restriction for reuse on other products, provide a name below (optional)
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
     </label>
     <FormElementWrapper
       errorClass="govuk-input--error"
@@ -129,7 +131,6 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
       }
     >
       <input
-        aria-describedby="save-time-restriction-label"
         className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
         id="time-restrictions-name"
         maxLength={50}
@@ -191,10 +192,12 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
     />
     <label
       className="govuk-label"
-      htmlFor="save-time-restriction"
+      htmlFor="time-restrictions-name"
       id="save-time-restriction-label"
     >
-      If you want to save this time restriction for reuse on other products, provide a name below (optional)
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
     </label>
     <FormElementWrapper
       errorClass="govuk-input--error"
@@ -202,7 +205,6 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
       errors={Array []}
     >
       <input
-        aria-describedby="save-time-restriction-label"
         className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
         id="time-restrictions-name"
         maxLength={50}
@@ -278,10 +280,12 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
     />
     <label
       className="govuk-label"
-      htmlFor="save-time-restriction"
+      htmlFor="time-restrictions-name"
       id="save-time-restriction-label"
     >
-      If you want to save this time restriction for reuse on other products, provide a name below (optional)
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
     </label>
     <FormElementWrapper
       errorClass="govuk-input--error"
@@ -289,7 +293,6 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
       errors={Array []}
     >
       <input
-        aria-describedby="save-time-restriction-label"
         className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
         id="time-restrictions-name"
         maxLength={50}

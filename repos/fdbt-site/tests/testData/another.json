@@ -1,0 +1,347 @@
+{
+    "nocCode": "FDOR",
+    "type": "period",
+    "passengerType": "group",
+    "email": "FDOR.bods@firstgroup.com",
+    "uuid": "FDOR1786c156",
+    "timeRestriction": [],
+    "ticketPeriod": { "startDate": "2020-12-18T16:40:48.638Z", "endDate": "2120-12-18T16:40:48.638Z" },
+    "operatorName": "First Wessex, Dorset & South Somerset",
+    "products": [
+        {
+            "productName": "Group Dorset FirstDay",
+            "productPrice": "20.00",
+            "productDuration": "1 day",
+            "productValidity": "endOfServiceDay",
+            "salesOfferPackages": [
+                {
+                    "name": "Onboard (cash)",
+                    "description": "",
+                    "purchaseLocations": ["onBoard"],
+                    "paymentMethods": ["cash"],
+                    "ticketFormats": ["paperTicket"]
+                },
+                {
+                    "name": "Onboard (contactless)",
+                    "description": "",
+                    "purchaseLocations": ["onBoard"],
+                    "paymentMethods": ["contactlessPaymentCard"],
+                    "ticketFormats": ["paperTicket"]
+                }
+            ]
+        },
+        {
+            "productName": "Group Dorset FirstWeek",
+            "productPrice": "50.00",
+            "productDuration": "1 week",
+            "productValidity": "endOfServiceDay",
+            "salesOfferPackages": [
+                {
+                    "name": "Onboard (cash)",
+                    "description": "",
+                    "purchaseLocations": ["onBoard"],
+                    "paymentMethods": ["cash"],
+                    "ticketFormats": ["paperTicket"]
+                }
+            ]
+        },
+        {
+            "productName": "Group Dorset FirstWeek M",
+            "productPrice": "45.00",
+            "productDuration": "1 week",
+            "productValidity": "endOfServiceDay",
+            "salesOfferPackages": [
+                {
+                    "name": "Mobile App",
+                    "description": "",
+                    "purchaseLocations": ["mobileDevice"],
+                    "paymentMethods": ["debitCard", "creditCard", "mobilePhone", "directDebit"],
+                    "ticketFormats": ["mobileApp"]
+                }
+            ]
+        }
+    ],
+    "selectedServices": [
+        {
+            "lineName": "1",
+            "serviceCode": "SW_FG_FDOR_1_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Portland"
+        },
+        {
+            "lineName": "1",
+            "serviceCode": "SW_FG_FDOR_1_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Portland"
+        },
+        {
+            "lineName": "2",
+            "serviceCode": "SW_FG_FDOR_2_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Littlemoor"
+        },
+        {
+            "lineName": "2",
+            "serviceCode": "SW_FG_FDOR_2_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Littlemoor"
+        },
+        {
+            "lineName": "3",
+            "serviceCode": "SW_FG_FDOR_3_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Westham"
+        },
+        {
+            "lineName": "3",
+            "serviceCode": "SW_FG_FDOR_3_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Westham"
+        },
+        {
+            "lineName": "4",
+            "serviceCode": "SW_FG_FDOR_4_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Preston"
+        },
+        {
+            "lineName": "4",
+            "serviceCode": "SW_FG_FDOR_4_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Preston"
+        },
+        {
+            "lineName": "6",
+            "serviceCode": "SW_FG_FDOR_6_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Bridport - Yeovil"
+        },
+        {
+            "lineName": "6",
+            "serviceCode": "SW_FG_FDOR_6_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Bridport - Yeovil"
+        },
+        {
+            "lineName": "6A",
+            "serviceCode": "SW_FG_FDOR_6A_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Salwayash - Beaminster"
+        },
+        {
+            "lineName": "6A",
+            "serviceCode": "SW_FG_FDOR_6A_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Salwayash - Beaminster"
+        },
+        {
+            "lineName": "6B",
+            "serviceCode": "SW_FG_FDOR_6B_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Bridport - Crewkerne"
+        },
+        {
+            "lineName": "6B",
+            "serviceCode": "SW_FG_FDOR_6B_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Bridport - Crewkerne"
+        },
+        {
+            "lineName": "8",
+            "serviceCode": "SW_FG_FDOR_8_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Chickerell"
+        },
+        {
+            "lineName": "8",
+            "serviceCode": "SW_FG_FDOR_8_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Chickerell"
+        },
+        {
+            "lineName": "10",
+            "serviceCode": "SW_FG_FDOR_10_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Poundbury"
+        },
+        {
+            "lineName": "10",
+            "serviceCode": "SW_FG_FDOR_10_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Poundbury"
+        },
+        {
+            "lineName": "10A",
+            "serviceCode": "SW_FG_FDOR_10A_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Thomas Hardye School"
+        },
+        {
+            "lineName": "10A",
+            "serviceCode": "SW_FG_FDOR_10A_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Thomas Hardye School"
+        },
+        {
+            "lineName": "A1",
+            "serviceCode": "SW_FG_FDOR_A1_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Broadoak - Lyme Regis"
+        },
+        {
+            "lineName": "A1",
+            "serviceCode": "SW_FG_FDOR_A1_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Broadoak - Lyme Regis"
+        },
+        {
+            "lineName": "A2",
+            "serviceCode": "SW_FG_FDOR_A2_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Holditch - Woodroffe School"
+        },
+        {
+            "lineName": "A2",
+            "serviceCode": "SW_FG_FDOR_A2_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Holditch - Woodroffe School"
+        },
+        {
+            "lineName": "A3",
+            "serviceCode": "SW_FG_FDOR_A3_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Bridport - Woodroffe School"
+        },
+        {
+            "lineName": "A3",
+            "serviceCode": "SW_FG_FDOR_A3_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Bridport - Woodroffe School"
+        },
+        {
+            "lineName": "B1",
+            "serviceCode": "SW_FG_FDOR_B1_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Frampton - Beaminster School"
+        },
+        {
+            "lineName": "B1",
+            "serviceCode": "SW_FG_FDOR_B1_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Frampton - Beaminster School"
+        },
+        {
+            "lineName": "B2",
+            "serviceCode": "SW_FG_FDOR_B2_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Dorchester - Beaminster School"
+        },
+        {
+            "lineName": "B2",
+            "serviceCode": "SW_FG_FDOR_B2_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Dorchester - Beaminster School"
+        },
+        {
+            "lineName": "B4",
+            "serviceCode": "SW_FG_FDOR_B4_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Holywell Cross - Beaminster"
+        },
+        {
+            "lineName": "B4",
+            "serviceCode": "SW_FG_FDOR_B4_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Holywell Cross - Beaminster"
+        },
+        {
+            "lineName": "B5",
+            "serviceCode": "SW_FG_FDOR_B5_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Bridport - Beaminster School"
+        },
+        {
+            "lineName": "B5",
+            "serviceCode": "SW_FG_FDOR_B5_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Bridport - Beaminster School"
+        },
+        {
+            "lineName": "C1",
+            "serviceCode": "SW_FG_FDOR_C1_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Colfox School"
+        },
+        {
+            "lineName": "C1",
+            "serviceCode": "SW_FG_FDOR_C1_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Colfox School"
+        },
+        {
+            "lineName": "C2",
+            "serviceCode": "SW_FG_FDOR_C2_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Dorchester - Colfox School"
+        },
+        {
+            "lineName": "C2",
+            "serviceCode": "SW_FG_FDOR_C2_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Dorchester - Colfox School"
+        },
+        {
+            "lineName": "X51",
+            "serviceCode": "SW_FG_FDOR_X51_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Dorchester  - Axminster"
+        },
+        {
+            "lineName": "X51",
+            "serviceCode": "SW_FG_FDOR_X51_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Dorchester  - Axminster"
+        },
+        {
+            "lineName": "X53",
+            "serviceCode": "SW_FG_FDOR_X53_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Axminster"
+        },
+        {
+            "lineName": "X53",
+            "serviceCode": "SW_FG_FDOR_X53_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Axminster"
+        },
+        {
+            "lineName": "X54",
+            "serviceCode": "SW_FG_FDOR_X54_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Weymouth - Poole"
+        },
+        {
+            "lineName": "X54",
+            "serviceCode": "SW_FG_FDOR_X54_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Weymouth - Poole"
+        },
+        {
+            "lineName": "Y1",
+            "serviceCode": "SW_FG_FDOR_Y1_2",
+            "startDate": "06/12/2020",
+            "serviceDescription": "Bridport - Yeovil"
+        },
+        {
+            "lineName": "Y1",
+            "serviceCode": "SW_FG_FDOR_Y1_1",
+            "startDate": "13/12/2020",
+            "serviceDescription": "Bridport - Yeovil"
+        }
+    ],
+    "termTime": false,
+    "groupDefinition": {
+        "maxPeople": "5",
+        "companions": [{ "minNumber": "", "maxNumber": "5", "passengerType": "anyone" }]
+    }
+}

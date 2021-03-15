@@ -34,6 +34,7 @@ interface FareConfirmationProps {
     schoolFareType: string;
     termTime: string;
     fullTimeRestrictions: FullTimeRestriction[];
+    newTimeRestrictionCreated: string;
     csrfToken: string;
 }
 
@@ -44,6 +45,7 @@ export const buildFareConfirmationElements = (
     schoolFareType: string,
     termTime: string,
     fullTimeRestrictions: FullTimeRestriction[],
+    newTimeRestrictionCreated: string,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -158,6 +160,14 @@ export const buildFareConfirmationElements = (
             }
         });
     }
+
+    if (newTimeRestrictionCreated) {
+        confirmationElements.push({
+            name: 'Time restriction saved for reuse',
+            content: `Name: ${newTimeRestrictionCreated}`,
+            href: '',
+        });
+    }
     return confirmationElements;
 };
 
@@ -168,6 +178,7 @@ const FareConfirmation = ({
     schoolFareType,
     termTime,
     fullTimeRestrictions,
+    newTimeRestrictionCreated,
     csrfToken,
 }: FareConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -183,6 +194,7 @@ const FareConfirmation = ({
                         schoolFareType,
                         termTime,
                         fullTimeRestrictions,
+                        newTimeRestrictionCreated,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -201,7 +213,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
         ctx.req,
         FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     ) as FullTimeRestrictionAttribute;
-
+    const newTimeRestrictionCreated = (ctx.query?.createdTimeRestriction as string) || '';
     if (
         !passengerTypeAttribute ||
         isPassengerTypeAttributeWithErrors(passengerTypeAttribute) ||
@@ -221,6 +233,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
             groupPassengerInfo,
             termTime: termTimeAttribute?.termTime.toString() || '',
             fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
+            newTimeRestrictionCreated,
             csrfToken,
         },
     };
