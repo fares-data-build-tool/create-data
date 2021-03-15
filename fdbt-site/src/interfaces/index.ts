@@ -209,6 +209,11 @@ export interface ResponseWithLocals extends ServerResponse {
     };
 }
 
+export interface PremadeTimeRestriction {
+    name: string;
+    contents: FullTimeRestriction[];
+}
+
 // AWS and Reference Data (e.g. NOC, TNDS, NaPTAN datasets)
 
 export interface Stop {
@@ -558,7 +563,7 @@ export interface DefinePassengerTypeWithErrors extends CompanionInfo {
 }
 
 export interface TimeRestrictionsDefinition extends TimeRestriction {
-    validDaysSelected?: string;
+    timeRestrictionChoice?: string;
 }
 
 export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {
@@ -726,8 +731,8 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
         content: string;
         hidden?: boolean;
     };
-    inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits';
-    inputs: BaseReactElement[];
+    inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits' | 'dropdown';
+    inputs: BaseReactElement[] | PremadeTimeRestriction[];
     inputErrors: ErrorInfo[];
 }
 
