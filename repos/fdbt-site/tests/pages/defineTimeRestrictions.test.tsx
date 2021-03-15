@@ -11,9 +11,13 @@ import {
     mockTimeRestrictionsInputErrors,
     mockTimeRestrictionsRadioAndInputErrors,
     getMockContext,
+    mockDefineTimeRestrictionsFieldsetsWithoutPremade,
 } from '../testData/mockData';
 import { ErrorInfo, TimeRestrictionsDefinitionWithErrors } from '../../src/interfaces';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants/attributes';
+import { getTimeRestrictionByNocCode } from '../../src/data/auroradb';
+
+jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
     describe('defineTimeRestrictions', () => {
@@ -60,13 +64,34 @@ describe('pages', () => {
         describe('getFieldsets', () => {
             it('should return fieldsets with no errors when no errors are passed', () => {
                 const emptyErrors: ErrorInfo[] = [];
-                const fieldsets = getFieldsets(emptyErrors);
-                expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsets);
+                const fieldsets = getFieldsets(emptyErrors, []);
+                expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithoutPremade);
             });
 
             it('should return fieldsets radio errors when errors are passed', () => {
-                const fieldsets = getFieldsets(mockTimeRestrictionsRadioErrors);
+                const fieldsets = getFieldsets(mockTimeRestrictionsRadioErrors, []);
                 expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithRadioErrors);
+            });
+
+            it('should return fieldsets with time restrictions when some are found', () => {
+                const emptyErrors: ErrorInfo[] = [];
+                const fieldsets = getFieldsets(emptyErrors, [
+                    {
+                        name: 'Test Time restriction',
+                        contents: [
+                            {
+                                day: 'monday',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '1000',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ]);
+                expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsets);
             });
         });
 
@@ -75,13 +100,30 @@ describe('pages', () => {
                 jest.resetAllMocks();
             });
 
-            it('should return props containing no errors and valid fieldsets when no errors are present', () => {
+            it('should return props containing a premade time restriction when one is found in the DB', async () => {
+                (getTimeRestrictionByNocCode as jest.Mock).mockImplementation(() => [
+                    {
+                        name: 'Test Time restriction',
+                        contents: [
+                            {
+                                day: 'monday',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '1000',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ]);
                 const ctx = getMockContext();
-                const result = getServerSideProps(ctx);
+                const result = await getServerSideProps(ctx);
                 expect(result.props.errors).toEqual([]);
                 expect(result.props.fieldsets).toEqual(mockDefineTimeRestrictionsFieldsets);
             });
-            it('should return props containing errors and valid fieldsets when errors are present', () => {
+            it('should return props containing errors and valid fieldsets when errors are present', async () => {
+                (getTimeRestrictionByNocCode as jest.Mock).mockImplementation(() => []);
                 const timeRestrictionsDefinition: TimeRestrictionsDefinitionWithErrors = {
                     validDays: ['monday', 'tuesday'],
                     errors: mockTimeRestrictionsInputErrors,
@@ -91,7 +133,7 @@ describe('pages', () => {
                         [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: timeRestrictionsDefinition,
                     },
                 });
-                const result = getServerSideProps(ctx);
+                const result = await getServerSideProps(ctx);
                 expect(result.props.errors).toEqual(mockTimeRestrictionsInputErrors);
                 expect(result.props.fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithInputErrors);
             });

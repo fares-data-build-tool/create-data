@@ -1,8 +1,9 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { removeAllWhiteSpace } from './apiUtils/validator';
+import { getTimeRestrictionByNameAndNoc, insertTimeRestriction } from '../../data/auroradb';
+import { removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
-import { redirectToError, redirectTo } from './apiUtils';
+import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
 
@@ -136,14 +137,37 @@ export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]):
     });
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
+        const { timeRestrictionName } = req.body;
+        const refinedName = removeExcessWhiteSpace(timeRestrictionName || '');
         const chosenDays = (getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE) as TimeRestriction)
             .validDays;
 
         const inputs = collectInputsFromRequest(req, chosenDays);
         const sanitisedInputs = removeDuplicateAndEmptyTimebands(inputs);
         const errors: ErrorInfo[] = collectErrors(sanitisedInputs);
+        let createdANewTimeRestriction = false;
+        if (errors.length === 0 && refinedName) {
+            const noc = getNocFromIdToken(req, res);
+            if (!noc) {
+                throw new Error('Could not find users NOC code.');
+            }
+
+            const results = await getTimeRestrictionByNameAndNoc(refinedName, noc);
+
+            if (results.length > 0) {
+                errors.push({
+                    errorMessage: `You already have a time restriction named ${refinedName}. Choose another name.`,
+                    id: 'time-restrictions-name',
+                    userInput: refinedName,
+                });
+            } else {
+                insertTimeRestriction(noc, sanitisedInputs, refinedName);
+                createdANewTimeRestriction = true;
+            }
+        }
+
         updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
             fullTimeRestrictions: sanitisedInputs,
             errors,
@@ -154,7 +178,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        redirectTo(res, '/fareConfirmation');
+        redirectTo(
+            res,
+            `/fareConfirmation${createdANewTimeRestriction ? `?createdTimeRestriction=${refinedName}` : ''}`,
+        );
+        return;
     } catch (error) {
         const message = 'There was a problem with the user selecting their time restriction times:';
         redirectToError(res, message, 'api.chooseTimeRestrictions', error);

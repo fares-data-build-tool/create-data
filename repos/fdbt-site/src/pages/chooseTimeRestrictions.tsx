@@ -7,6 +7,7 @@ import TimeRestrictionsTable from '../components/TimeRestrictionsTable';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../constants/attributes';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Choose time restrictions - Create Fares Data Service ';
 const description = 'Choose time restrictions page of the Create Fares Data Service';
@@ -53,6 +54,22 @@ const ChooseTimeRestrictions = ({
                         endTimeInputs={endTimeInputs}
                         dayCounters={dayCounters}
                     />
+                    <label id="save-time-restriction-label" className="govuk-label" htmlFor="time-restrictions-name">
+                        <i>
+                            Optional - if you want to save this time restriction for reuse on other products, provide a
+                            name below
+                        </i>
+                    </label>
+                    <FormElementWrapper errors={errors} errorId="product-details-name" errorClass="govuk-input--error">
+                        <input
+                            className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                            id="time-restrictions-name"
+                            name="timeRestrictionName"
+                            type="text"
+                            maxLength={50}
+                        />
+                    </FormElementWrapper>
+
                     <input
                         type="submit"
                         value="Continue"
@@ -104,7 +121,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
             });
         }
     }
-    return { props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs, dayCounters } };
+    return {
+        props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs, dayCounters },
+    };
 };
 
 export default ChooseTimeRestrictions;

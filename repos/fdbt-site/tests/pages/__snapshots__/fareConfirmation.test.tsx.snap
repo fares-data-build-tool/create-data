@@ -1,5 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages fareConfirmation should render correctly for a ticket with a premade time restriction 1`] = `
+<Component
+  description="Fare Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Fare Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/fareConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your fares information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "Single",
+            "href": "fareType",
+            "name": "Fare type",
+          },
+          Object {
+            "content": "Adult",
+            "href": "passengerType",
+            "name": "Passenger type",
+          },
+          Object {
+            "content": "Minimum age: 18 Maximum age: 100",
+            "href": "definePassengerType",
+            "name": "Passenger information - age range",
+          },
+          Object {
+            "content": "Membership card",
+            "href": "definePassengerType",
+            "name": "Passenger information - proof documents",
+          },
+          Object {
+            "content": "Start time: 0900 End time: 1600",
+            "href": "defineTimeRestrictions",
+            "name": "Time restrictions - Thursday",
+          },
+          Object {
+            "content": "Start time: N/A End time: 1600",
+            "href": "defineTimeRestrictions",
+            "name": "Time restrictions - Friday",
+          },
+          Object {
+            "content": "Start time: N/A End time: N/A",
+            "href": "defineTimeRestrictions",
+            "name": "Time restrictions - Bank holiday",
+          },
+          Object {
+            "content": "Name: Week time restrictions",
+            "href": "",
+            "name": "Time restriction saved for reuse",
+          },
+        ]
+      }
+      header="Fare Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
 exports[`pages fareConfirmation should render correctly for group tickets 1`] = `
 <Component
   description="Fare Confirmation page of the Create Fares Data Service"

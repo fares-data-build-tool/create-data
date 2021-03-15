@@ -103,6 +103,41 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
         ]
       }
     />
+    <label
+      className="govuk-label"
+      htmlFor="time-restrictions-name"
+      id="save-time-restriction-label"
+    >
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
+    </label>
+    <FormElementWrapper
+      errorClass="govuk-input--error"
+      errorId="product-details-name"
+      errors={
+        Array [
+          Object {
+            "errorMessage": "2400 is not a valid input. Use 0000.",
+            "id": "end-time-monday",
+            "userInput": "2400",
+          },
+          Object {
+            "errorMessage": "Time must be in 2400 format",
+            "id": "end-time-tuesday",
+            "userInput": "7pm",
+          },
+        ]
+      }
+    >
+      <input
+        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+        id="time-restrictions-name"
+        maxLength={50}
+        name="timeRestrictionName"
+        type="text"
+      />
+    </FormElementWrapper>
     <input
       className="govuk-button continue-button-placement"
       id="continue-button"
@@ -155,6 +190,28 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
       errors={Array []}
       startTimeInputs={Array []}
     />
+    <label
+      className="govuk-label"
+      htmlFor="time-restrictions-name"
+      id="save-time-restriction-label"
+    >
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
+    </label>
+    <FormElementWrapper
+      errorClass="govuk-input--error"
+      errorId="product-details-name"
+      errors={Array []}
+    >
+      <input
+        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+        id="time-restrictions-name"
+        maxLength={50}
+        name="timeRestrictionName"
+        type="text"
+      />
+    </FormElementWrapper>
     <input
       className="govuk-button continue-button-placement"
       id="continue-button"
@@ -221,6 +278,28 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
         ]
       }
     />
+    <label
+      className="govuk-label"
+      htmlFor="time-restrictions-name"
+      id="save-time-restriction-label"
+    >
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
+    </label>
+    <FormElementWrapper
+      errorClass="govuk-input--error"
+      errorId="product-details-name"
+      errors={Array []}
+    >
+      <input
+        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+        id="time-restrictions-name"
+        maxLength={50}
+        name="timeRestrictionName"
+        type="text"
+      />
+    </FormElementWrapper>
     <input
       className="govuk-button continue-button-placement"
       id="continue-button"

@@ -3411,11 +3411,77 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
                     { id: 'sunday', label: 'Sunday', name: 'validDays', defaultChecked: false },
                     { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
-                label: 'Yes',
-                name: 'validDaysSelected',
+                label: 'Yes - define new time restriction',
+                name: 'timeRestrictionChoice',
                 value: 'Yes',
             },
-            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
+            {
+                dataAriaControls: 'premade-time-restriction',
+                id: 'premade-time-restriction-yes',
+                inputErrors: [],
+                inputHint: {
+                    content: 'Select a saved time restriction to use',
+                    id: 'choose-time-restriction-hint',
+                },
+                inputType: 'dropdown',
+                inputs: [
+                    {
+                        contents: [
+                            {
+                                day: 'monday',
+                                timeBands: [
+                                    {
+                                        endTime: '1000',
+                                        startTime: '0900',
+                                    },
+                                ],
+                            },
+                        ],
+                        name: 'Test Time restriction',
+                    },
+                ],
+                label: 'Yes - reuse a saved time restriction',
+                name: 'timeRestrictionChoice',
+                value: 'Premade',
+            },
+            { id: 'valid-days-not-required', label: 'No', name: 'timeRestrictionChoice', value: 'No' },
+        ],
+    },
+];
+
+export const mockDefineTimeRestrictionsFieldsetsWithoutPremade: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
+            id: 'define-valid-days',
+        },
+        radioError: [],
+        radios: [
+            {
+                dataAriaControls: 'valid-days-required-conditional',
+                inputHint: {
+                    content: 'Select the days of the week the ticket is valid for',
+                    id: 'define-valid-days-inputHint',
+                },
+                id: 'valid-days-required',
+                inputErrors: [],
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', label: 'Monday', name: 'validDays', defaultChecked: false },
+                    { id: 'tuesday', label: 'Tuesday', name: 'validDays', defaultChecked: false },
+                    { id: 'wednesday', label: 'Wednesday', name: 'validDays', defaultChecked: false },
+                    { id: 'thursday', label: 'Thursday', name: 'validDays', defaultChecked: false },
+                    { id: 'friday', label: 'Friday', name: 'validDays', defaultChecked: false },
+                    { id: 'saturday', label: 'Saturday', name: 'validDays', defaultChecked: false },
+                    { id: 'sunday', label: 'Sunday', name: 'validDays', defaultChecked: false },
+                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
+                ],
+                label: 'Yes',
+                name: 'timeRestrictionChoice',
+                value: 'Yes',
+            },
+            { id: 'valid-days-not-required', label: 'No', name: 'timeRestrictionChoice', value: 'No' },
         ],
     },
 ];
@@ -3449,10 +3515,10 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
                     { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
                 label: 'Yes',
-                name: 'validDaysSelected',
+                name: 'timeRestrictionChoice',
                 value: 'Yes',
             },
-            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
+            { id: 'valid-days-not-required', label: 'No', name: 'timeRestrictionChoice', value: 'No' },
         ],
     },
 ];
@@ -3490,10 +3556,10 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
                     { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
                 label: 'Yes',
-                name: 'validDaysSelected',
+                name: 'timeRestrictionChoice',
                 value: 'Yes',
             },
-            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
+            { id: 'valid-days-not-required', label: 'No', name: 'timeRestrictionChoice', value: 'No' },
         ],
     },
 ];
@@ -3542,10 +3608,10 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
                     { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
                 ],
                 label: 'Yes',
-                name: 'validDaysSelected',
+                name: 'timeRestrictionChoice',
                 value: 'Yes',
             },
-            { id: 'valid-days-not-required', label: 'No', name: 'validDaysSelected', value: 'No' },
+            { id: 'valid-days-not-required', label: 'No', name: 'timeRestrictionChoice', value: 'No' },
         ],
     },
 ];
