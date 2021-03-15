@@ -42,7 +42,7 @@ export const getFieldsets = (
                 name: 'timeRestrictionChoice',
                 value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
-                label: 'Yes',
+                label: `${premadeTimeRestrictions.length > 0 ? 'Yes - define new time restriction' : 'Yes'}`,
                 inputHint: {
                     id: 'define-valid-days-inputHint',
                     content: 'Select the days of the week the ticket is valid for',
@@ -114,10 +114,10 @@ export const getFieldsets = (
             id: 'premade-time-restriction-yes',
             name: 'timeRestrictionChoice',
             value: 'Premade',
-            label: 'Yes - Premade time restriction',
+            label: 'Yes - reuse a saved time restriction',
             inputHint: {
                 id: 'choose-time-restriction-hint',
-                content: 'Select premade time restriction to use',
+                content: 'Select a saved time restriction to use',
             },
             inputType: 'dropdown',
             dataAriaControls: 'premade-time-restriction',

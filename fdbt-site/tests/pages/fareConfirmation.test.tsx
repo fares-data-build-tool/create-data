@@ -33,6 +33,43 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
+                    newTimeRestrictionCreated=""
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for a ticket with a premade time restriction', () => {
+            const tree = shallow(
+                <FareConfirmation
+                    fareType="single"
+                    passengerType={{
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
+                    }}
+                    groupPassengerInfo={[]}
+                    schoolFareType=""
+                    termTime=""
+                    fullTimeRestrictions={[
+                        {
+                            day: 'thursday',
+                            timeBands: [{ startTime: '0900', endTime: '1600' }],
+                        },
+                        {
+                            day: 'friday',
+                            timeBands: [{ startTime: '', endTime: '1600' }],
+                        },
+                        {
+                            day: 'bank holiday',
+                            timeBands: [{ startTime: '', endTime: '' }],
+                        },
+                    ]}
+                    newTimeRestrictionCreated="Week time restrictions"
                     csrfToken=""
                 />,
             );
@@ -82,6 +119,7 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
+                    newTimeRestrictionCreated=""
                     csrfToken=""
                 />,
             );
@@ -103,6 +141,7 @@ describe('pages', () => {
                     schoolFareType="single"
                     termTime="true"
                     fullTimeRestrictions={[]}
+                    newTimeRestrictionCreated=""
                     csrfToken=""
                 />,
             );
@@ -138,6 +177,7 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ],
+                    '',
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
@@ -170,6 +210,72 @@ describe('pages', () => {
                 ]);
             });
 
+            it('should create confirmation elements for a ticket with a premade time restriction', () => {
+                const result = buildFareConfirmationElements(
+                    'return',
+                    {
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
+                    },
+                    [],
+                    '',
+                    '',
+                    [
+                        {
+                            day: 'wednesday',
+                            timeBands: [{ startTime: '0900', endTime: '1600' }],
+                        },
+                        {
+                            day: 'thursday',
+                            timeBands: [{ startTime: '', endTime: '1600' }],
+                        },
+                        {
+                            day: 'friday',
+                            timeBands: [{ startTime: '', endTime: '' }],
+                        },
+                    ],
+                    'Time restriction',
+                );
+                expect(result).toStrictEqual([
+                    { content: 'Return', href: 'fareType', name: 'Fare type' },
+                    { content: 'Adult', href: 'passengerType', name: 'Passenger type' },
+                    {
+                        content: 'Minimum age: 18 Maximum age: 100',
+                        href: 'definePassengerType',
+                        name: 'Passenger information - age range',
+                    },
+                    {
+                        content: 'Membership card',
+                        href: 'definePassengerType',
+                        name: 'Passenger information - proof documents',
+                    },
+                    {
+                        content: 'Start time: 0900 End time: 1600',
+                        href: 'defineTimeRestrictions',
+                        name: 'Time restrictions - Wednesday',
+                    },
+                    {
+                        content: 'Start time: N/A End time: 1600',
+                        href: 'defineTimeRestrictions',
+                        name: 'Time restrictions - Thursday',
+                    },
+                    {
+                        content: 'Start time: N/A End time: N/A',
+                        href: 'defineTimeRestrictions',
+                        name: 'Time restrictions - Friday',
+                    },
+                    {
+                        name: 'Time restriction saved for reuse',
+                        content: `Name: Time restriction`,
+                        href: '',
+                    },
+                ]);
+            });
+
             it('should create confirmation elements for school tickets', () => {
                 const result = buildFareConfirmationElements(
                     'schoolService',
@@ -184,6 +290,7 @@ describe('pages', () => {
                     'single',
                     'true',
                     [],
+                    '',
                 );
                 expect(result).toStrictEqual([
                     { content: 'School service', href: 'fareType', name: 'Fare type' },

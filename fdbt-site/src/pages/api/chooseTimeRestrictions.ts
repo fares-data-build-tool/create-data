@@ -147,6 +147,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const inputs = collectInputsFromRequest(req, chosenDays);
         const sanitisedInputs = removeDuplicateAndEmptyTimebands(inputs);
         const errors: ErrorInfo[] = collectErrors(sanitisedInputs);
+        let createdANewTimeRestriction = false;
         if (errors.length === 0 && refinedName) {
             const noc = getNocFromIdToken(req, res);
             if (!noc) {
@@ -163,6 +164,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 });
             } else {
                 insertTimeRestriction(noc, sanitisedInputs, refinedName);
+                createdANewTimeRestriction = true;
             }
         }
 
@@ -176,7 +178,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        redirectTo(res, '/fareConfirmation');
+        redirectTo(
+            res,
+            `/fareConfirmation${createdANewTimeRestriction ? `?createdTimeRestriction=${refinedName}` : ''}`,
+        );
         return;
     } catch (error) {
         const message = 'There was a problem with the user selecting their time restriction times:';
