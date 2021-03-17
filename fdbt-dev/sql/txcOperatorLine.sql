@@ -4,11 +4,11 @@ LOCK TABLES `txcOperatorLine` WRITE;
 TRUNCATE TABLE `txcOperatorLine`;
 
 INSERT INTO `txcOperatorLine` (id,nocCode,lineName,startDate,serviceCode,operatorShortName,serviceDescription,regionCode,dataSource) VALUES
-	(9379,'BLAC','2C','2020-04-05','NW_05_BLAC_2C_1','Blackpool Transport','KNOTT END - POULTON - BLACKPOOL','NW','tnds'),
-	(9716,'BLAC','17','2020-04-05','NW_05_BLAC_17_1','Blackpool Transport','BLACKPOOL - ST ANNES - LYTHAM','NW','tnds'),
-	(9798,'BLAC','4','2020-04-05','NW_05_BLAC_4_1','Blackpool Transport','CLEVELEYS - MERESIDE via Blackpool','NW','tnds'),
-	(9956,'BLAC','19','2020-04-05','NW_05_BLAC_19_1','Blackpool Transport','STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)','NW','tnds'),
-	(9989,'BLAC','1','2020-04-05','NW_05_BLAC_1_1','Blackpool Transport','FLEETWOOD - BLACKPOOL via Promenade','NW','tnds'),
+	(9379,'BLAC','2C','2020-04-05','NW_05_BLAC_2C_1','Blackpool Transport','KNOTT END - POULTON - BLACKPOOL','NW','bods'),
+	(9716,'BLAC','17','2020-04-05','NW_05_BLAC_17_1','Blackpool Transport','BLACKPOOL - ST ANNES - LYTHAM','NW','bods'),
+	(9798,'BLAC','4','2020-04-05','NW_05_BLAC_4_1','Blackpool Transport','CLEVELEYS - MERESIDE via Blackpool','NW','bods'),
+	(9956,'BLAC','19','2020-04-05','NW_05_BLAC_19_1','Blackpool Transport','STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)','NW','bods'),
+	(9989,'BLAC','1','2020-04-05','NW_05_BLAC_1_1','Blackpool Transport','FLEETWOOD - BLACKPOOL via Promenade','NW','bods'),
 	(10324,'BLAC','2','2020-04-05','NW_05_BLAC_2_1','Blackpool Transport','POULTON - BLACKPOOL via Victoria Hospital Outpatients','NW','tnds'),
 	(10371,'BLAC','5','2020-04-05','NW_05_BLAC_5_1','Blackpool Transport','VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE','NW','tnds'),
 	(10415,'BLAC','9','2020-04-05','NW_05_BLAC_9_1','Blackpool Transport','CLEVELEYS - BLACKPOOL via Bispham','NW','tnds'),
