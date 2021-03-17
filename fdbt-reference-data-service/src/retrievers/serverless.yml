@@ -55,6 +55,10 @@ custom:
         test: false
         preprod: true
         prod: true
+    txcRetrieverSchedule:
+        test: cron(15 4 * * ? *)
+        preprod: cron(15 3 * * ? *)
+        prod: cron(15 2 * * ? *)
     alerts:
         dashboards: false
         topics:
@@ -128,7 +132,7 @@ functions:
         handler: txc_retriever/main.lambda_handler
         timeout: 600
         memorySize: 3072
-        maximumRetryAttempts: 0
+        maximumRetryAttempts: 2
         environment:
             TNDS_FTP_HOST: ftp.tnds.basemap.co.uk
             BODS_URL: https://data.bus-data.dft.gov.uk/timetable/download/bulk_archive
@@ -138,7 +142,7 @@ functions:
                 Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
         events:
             - schedule:
-                  rate: cron(15 2 * * ? *)
+                  rate: ${self:custom.txcRetrieverSchedule.${self:provider.stage}, cron(15 2 * * ? *)}
                   enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
         vpc:
             securityGroupIds:
