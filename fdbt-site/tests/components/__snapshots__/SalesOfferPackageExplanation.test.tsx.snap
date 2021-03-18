@@ -5,7 +5,7 @@ exports[`SalesOfferPackageExplanation should render the sales offer package expl
   <h1
     className="govuk-heading-s"
   >
-    What is a Sales Offer Package?
+    What is a sales offer package?
   </h1>
   <p
     className="govuk-body"
