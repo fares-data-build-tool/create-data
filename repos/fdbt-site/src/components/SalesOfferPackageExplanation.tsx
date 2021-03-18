@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 export const SalesOfferPackageExplanation = (): ReactElement => (
     <>
-        <h1 className="govuk-heading-s">What is a Sales Offer Package?</h1>
+        <h1 className="govuk-heading-s">What is a sales offer package?</h1>
         <p className="govuk-body">To create NeTEx for your fares, you need to provide the following:</p>
         <ol className="govuk-body">
             <li>Where a ticket can be bought</li>

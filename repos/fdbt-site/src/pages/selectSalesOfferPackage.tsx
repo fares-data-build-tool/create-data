@@ -24,6 +24,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
+import DeleteSOPButton from '../components/DeleteSOPButton';
 
 const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
 const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
@@ -74,6 +75,7 @@ const formatSOPArray = (stringArray: string[]): string =>
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
     productName: string,
+    csrfToken: string,
     selected?: { [key: string]: string[] },
 ): ReactElement[] => {
     return salesOfferPackagesList.map((offer, index) => {
@@ -96,7 +98,7 @@ const generateCheckbox = (
         }
 
         return (
-            <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
+            <div className="govuk-checkboxes__item govuk-!-margin-bottom-6" key={`checkbox-item-${name}`}>
                 <input
                     className="govuk-checkboxes__input"
                     id={`${productNameIds}-checkbox-${index}`}
@@ -117,6 +119,7 @@ const generateCheckbox = (
                 <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
                     Ticket formats: {formatSOPArray(ticketFormats)}
                 </span>
+                {offer.id ? <DeleteSOPButton sopId={offer.id} csrfToken={csrfToken} /> : ''}
             </div>
         );
     });
@@ -125,6 +128,7 @@ const generateCheckbox = (
 const createSalesOffer = (
     salesOfferPackagesList: SalesOfferPackage[],
     productNames: string[],
+    csrfToken: string,
     selected?: { [key: string]: string[] },
     errors: ErrorInfo[] = [],
 ): ReactElement[] =>
@@ -132,14 +136,14 @@ const createSalesOffer = (
         <div className="sop-option">
             <FormGroupWrapper errorId={`${[removeAllWhiteSpace(productName)]}-checkbox-0`} errors={errors}>
                 <fieldset className="govuk-fieldset">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-5">{`Select sales offer packages for ${productName}`}</legend>
                     <FormElementWrapper
                         errors={errors}
                         errorId={`${removeAllWhiteSpace(productName)}-checkbox-0`}
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {generateCheckbox(salesOfferPackagesList, productName, selected)}
+                            {generateCheckbox(salesOfferPackagesList, productName, csrfToken, selected)}
                             <input type="hidden" name={productName} />
                         </div>
                     </FormElementWrapper>
@@ -175,7 +179,7 @@ const SelectSalesOfferPackage = ({
                             choose from one you have already setup or create a new one for these products.
                         </p>
                     </div>
-                    {createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}
+                    {createSalesOffer(salesOfferPackagesList, productNamesList, csrfToken, selected, errors)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href="/salesOfferPackages"
