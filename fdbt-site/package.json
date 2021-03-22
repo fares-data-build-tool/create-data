@@ -15,6 +15,7 @@
         "start": "NODE_ENV=production PORT=80 node dist/server/index.js",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx",
+        "lint:cypress": "cd cypress_tests && npm run lint:fix",
         "postshrinkwrap": "npx --quiet npm-force-resolutions && npm install --no-package-lock --no-audit --no-fund --no-progress --silent && npx prettier --write ./package-lock.json"
     },
     "jest": {
@@ -24,13 +25,18 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && CI=true jest --silent && tsc && tsc --project tsconfig.server.json"
+            "pre-commit": "NODE_ENV=production lint-staged && CI=true jest --silent && tsc && tsc --project tsconfig.server.json && tsc --project cypress_tests"
         }
     },
     "lint-staged": {
-        "./**/*.{ts,tsx}": [
-            "eslint --fix . --ext .ts,.tsx",
+        "./**/*.{ts,tsx}" : [
             "prettier --c './**/*.{ts,tsx}'"
+        ],
+        "./**/*.{ts,tsx},.eslintignore": [
+            "npm run lint:fix"
+        ],
+        "./cypress_tests/**/*.{ts,tsx}": [
+            "npm run lint:cypress"
         ]
     },
     "author": "",

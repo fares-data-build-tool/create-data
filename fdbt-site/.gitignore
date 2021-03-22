@@ -15,3 +15,7 @@ coverage
 .vscode
 
 **/.DS_Store
+
+# Cypress Outputs
+cypress_tests/cypress/videos
+cypress_tests/cypress/screenshots
