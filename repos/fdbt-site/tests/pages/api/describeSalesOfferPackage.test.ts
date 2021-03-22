@@ -1,6 +1,7 @@
 import describeSalesOfferPackage, {
     sopInfoSchema,
     checkUserInput,
+    checkAgainstDefaultNames,
 } from '../../../src/pages/api/describeSalesOfferPackage';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -99,6 +100,24 @@ describe('describeSalesOfferPackage', () => {
         });
     });
 
+    describe('checkAgainstDefaultNames', () => {
+        it('should add an additonal error if the name matches a default SOP name', () => {
+            const result = checkAgainstDefaultNames('Mobile App', []);
+            expect(result).toStrictEqual([
+                {
+                    errorMessage: 'Sales offer package name cannot be the same as a default SOP name',
+                    id: 'sop-name',
+                    userInput: 'Mobile App',
+                },
+            ]);
+        });
+
+        it('should not add an additonal error if the name does not match a default SOP name', () => {
+            const result = checkAgainstDefaultNames('My shiny new SOP', []);
+            expect(result).toStrictEqual([]);
+        });
+    });
+
     it('should throw an error if SOP_INFO_ATTRIBUTE is missing', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -152,12 +171,56 @@ describe('describeSalesOfferPackage', () => {
                 salesOfferPackageDescription: 'This is a sales offer package',
             },
         });
+        jest.spyOn(aurora, 'getSalesOfferPackagesByNocCode').mockImplementation(() => Promise.resolve([]));
         await describeSalesOfferPackage(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, undefined);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, undefined);
         expect(insertSalesOfferPackageSpy).toHaveBeenCalledWith('TEST', mockSopAttribute);
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/selectSalesOfferPackage',
+        });
+    });
+
+    it('should error and redirect back if user inputs a name which they have already used', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            session: {
+                [SOP_INFO_ATTRIBUTE]: mockSopInfoAttribute,
+            },
+            body: {
+                salesOfferPackageName: 'Sales Offer Package',
+                salesOfferPackageDescription: 'This is a sales offer package',
+            },
+        });
+        jest.spyOn(aurora, 'getSalesOfferPackagesByNocCode').mockImplementation(() =>
+            Promise.resolve([
+                {
+                    name: 'Sales Offer Package',
+                    description: '',
+                    paymentMethods: [],
+                    purchaseLocations: [],
+                    ticketFormats: [],
+                },
+            ]),
+        );
+
+        await describeSalesOfferPackage(req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, {
+            description: 'This is a sales offer package',
+            errors: [
+                {
+                    errorMessage: 'There is already a saved sales offer package with this name',
+                    id: 'sop-name',
+                    userInput: 'Sales Offer Package',
+                },
+            ],
+            name: 'Sales Offer Package',
+            paymentMethods: ['Card', 'Cash'],
+            purchaseLocations: ['OnBus', 'Shop', 'Mobile'],
+            ticketFormats: ['Paper', 'Mobile'],
+        });
+        expect(insertSalesOfferPackageSpy).toBeCalledTimes(0);
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/describeSalesOfferPackage',
         });
     });
 });

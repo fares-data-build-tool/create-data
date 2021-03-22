@@ -483,6 +483,7 @@ export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
 export interface SalesOfferPackage extends SalesOfferPackageInfo {
     name: string;
     description: string;
+    id?: string;
 }
 
 export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
