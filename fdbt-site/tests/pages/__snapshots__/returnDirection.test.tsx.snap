@@ -171,7 +171,13 @@ exports[`pages returnDirection should render correctly 1`] = `
           className="govuk-hint hint-text"
           id="traveline-main-hint"
         >
-          This data is taken from the Traveline National Dataset (TNDS) and should include all of your registered routes for this service
+          This data is taken from the
+           
+          <b>
+            Bus Open Data Service (BODS)
+             
+          </b>
+          and should include all of your registered routes for this service
         </span>
         <span
           className="govuk-hint hint-text"
@@ -406,7 +412,13 @@ exports[`pages returnDirection should render errors correctly 1`] = `
           className="govuk-hint hint-text"
           id="traveline-main-hint"
         >
-          This data is taken from the Traveline National Dataset (TNDS) and should include all of your registered routes for this service
+          This data is taken from the
+           
+          <b>
+            Bus Open Data Service (BODS)
+             
+          </b>
+          and should include all of your registered routes for this service
         </span>
         <span
           className="govuk-hint hint-text"

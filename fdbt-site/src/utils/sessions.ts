@@ -60,6 +60,7 @@ import {
     UserAttribute,
     OperatorAttribute,
     ForgotPasswordAttribute,
+    TxcSourceAttribute,
 } from '../interfaces';
 
 import {
@@ -102,6 +103,7 @@ import {
     FORGOT_PASSWORD_ATTRIBUTE,
     USER_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
 
 import * as attributes from '../constants/attributes';
@@ -152,6 +154,7 @@ interface SessionAttributeTypes {
     [FORGOT_PASSWORD_ATTRIBUTE]: ForgotPasswordAttribute | WithErrors<ForgotPasswordAttribute>;
     [USER_ATTRIBUTE]: UserAttribute | WithErrors<UserAttribute>;
     [OPERATOR_ATTRIBUTE]: OperatorAttribute | WithErrors<OperatorAttribute>;
+    [TXC_SOURCE_ATTRIBUTE]: TxcSourceAttribute;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

@@ -5,7 +5,7 @@ import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { getServicesByNocCode } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -144,7 +144,7 @@ export const getServerSideProps = async (
         throw new Error('Necessary operator not found to show multipleOperatorsServiceList page');
     }
 
-    const services = await getServicesByNocCode(operatorToUse.nocCode);
+    const services = await getServicesByNocCodeAndDataSource(operatorToUse.nocCode, 'tnds');
 
     if (!services) {
         throw new Error(`No services found for ${operatorToUse.nocCode}`);

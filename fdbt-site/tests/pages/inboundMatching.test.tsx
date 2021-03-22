@@ -13,23 +13,28 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import InboundMatching, { getServerSideProps } from '../../src/pages/inboundMatching';
-import { JOURNEY_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    JOURNEY_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
 
 describe('Inbound Matching Page', () => {
     let wrapper: any;
-    let getServiceByNocCodeAndLineNameSpy: any;
+    let getServiceByNocCodeLineNameAndDataSourceSpy: any;
     let batchGetStopsByAtcoCodeSpy: any;
     let getUserFareStagesSpy: any;
 
     beforeEach(() => {
-        getServiceByNocCodeAndLineNameSpy = jest.spyOn(auroradb, 'getServiceByNocCodeAndLineName');
+        getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByNocCodeLineNameAndDataSource');
         batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
         getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
-        getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
+        getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
@@ -79,6 +84,11 @@ describe('Inbound Matching Page', () => {
                     [JOURNEY_ATTRIBUTE]: {
                         inboundJourney: '13003921A#13003655B',
                     },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                 },
             });
 
@@ -105,13 +115,18 @@ describe('Inbound Matching Page', () => {
         });
 
         it('preserves the stops order', async () => {
-            getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
+            getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
             batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
 
             const ctx = getMockContext({
                 session: {
                     [JOURNEY_ATTRIBUTE]: {
                         inboundJourney: '13003921A#13003655B',
+                    },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
                     },
                 },
             });
@@ -123,12 +138,19 @@ describe('Inbound Matching Page', () => {
         });
 
         it('generates the correct list of master stops given journeys with duplicate start and end points', async () => {
-            getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawServiceWithDuplicates));
+            getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() =>
+                Promise.resolve(mockRawServiceWithDuplicates),
+            );
 
             const ctx = getMockContext({
                 session: {
                     [JOURNEY_ATTRIBUTE]: {
                         inboundJourney: '13003655B#13003921A',
+                    },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
                     },
                 },
             });
@@ -162,6 +184,11 @@ describe('Inbound Matching Page', () => {
                     [JOURNEY_ATTRIBUTE]: {
                         inboundJourney: '123ZZZ#13003921A',
                     },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                 },
             });
 
@@ -174,6 +201,11 @@ describe('Inbound Matching Page', () => {
             const ctx = getMockContext({
                 session: {
                     [OPERATOR_ATTRIBUTE]: undefined,
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                 },
             });
 
@@ -184,6 +216,23 @@ describe('Inbound Matching Page', () => {
             const ctx = getMockContext({
                 session: {
                     [SERVICE_ATTRIBUTE]: undefined,
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
+                },
+            });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow(
+                'Necessary attributes not found to show matching page',
+            );
+        });
+
+        it('throws an error if txc source attribute not set', async () => {
+            const ctx = getMockContext({
+                session: {
+                    [TXC_SOURCE_ATTRIBUTE]: undefined,
                 },
             });
 

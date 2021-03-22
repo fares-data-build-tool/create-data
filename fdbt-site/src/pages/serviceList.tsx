@@ -3,7 +3,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
-import { getServicesByNocCode } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -110,7 +110,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
-    const services = await getServicesByNocCode(nocCode);
+    const services = await getServicesByNocCodeAndDataSource(nocCode, 'tnds');
 
     const { selectAll } = ctx.query;
 

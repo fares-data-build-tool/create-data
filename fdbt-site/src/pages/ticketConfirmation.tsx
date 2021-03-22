@@ -17,6 +17,7 @@ import {
     MultipleOperatorsAttribute,
     Service,
     ServiceListAttribute,
+    TxcSourceAttribute,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -39,6 +40,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
 import { isFareType } from '../interfaces/typeGuards';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
@@ -76,11 +78,17 @@ export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSe
     const matchedFareStages: MatchedFareStages[] = buildMatchedFareStages(
         (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo).matchingFareZones,
     );
+    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
 
     confirmationElements.push(
         {
             name: 'Service',
-            content: service.split('#')[0],
+            content: `${service.split('#')[0]}`,
+            href: 'service',
+        },
+        {
+            name: 'TransXChange source',
+            content: dataSource.toUpperCase(),
             href: 'service',
         },
         {
@@ -109,12 +117,20 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     const validity = getSessionAttribute(ctx.req, RETURN_VALIDITY_ATTRIBUTE) as ReturnPeriodValidity;
 
     const circular = !outboundJourney && !inboundJourney;
+    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
 
-    confirmationElements.push({
-        name: 'Service',
-        content: service.split('#')[0],
-        href: 'service',
-    });
+    confirmationElements.push(
+        {
+            name: 'Service',
+            content: service.split('#')[0],
+            href: 'service',
+        },
+        {
+            name: 'TransXChange source',
+            content: dataSource.toUpperCase(),
+            href: 'service',
+        },
+    );
 
     if (!circular) {
         const outboundMatchingFareZones = (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo)
