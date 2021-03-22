@@ -1,7 +1,13 @@
 import React, { ReactElement } from 'react';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants/attributes';
-import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../data/auroradb';
-import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
+import {
+    OPERATOR_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    MATCHING_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../constants/attributes';
+import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../data/auroradb';
+import { BasicService, NextPageContextWithSession, Stop, UserFareStages, TxcSourceAttribute } from '../interfaces';
 import { getUserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
@@ -72,8 +78,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             journeyAttribute.directionJourneyPattern &&
             journeyAttribute.directionJourneyPattern.split('#')) ||
         [];
-
-    const service = await getServiceByNocCodeAndLineName(nocCode, lineName);
+    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
+    const service = await getServiceByNocCodeLineNameAndDataSource(nocCode, lineName, dataSource);
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
     const masterStopList = getMasterStopList(relevantJourneys);

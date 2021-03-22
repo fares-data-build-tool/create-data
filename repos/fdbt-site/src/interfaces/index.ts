@@ -663,6 +663,7 @@ export interface ServiceType {
     startDate: string;
     description: string;
     serviceCode: string;
+    dataSource?: string;
 }
 
 export interface ServicesInfo extends ServiceType {
@@ -763,4 +764,10 @@ export interface OperatorAttribute {
 
 export interface ForgotPasswordAttribute {
     email: string;
+}
+
+export interface TxcSourceAttribute {
+    source: 'tnds' | 'bods';
+    hasTnds: boolean;
+    hasBods: boolean;
 }

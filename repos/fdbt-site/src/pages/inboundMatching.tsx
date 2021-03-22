@@ -4,12 +4,13 @@ import {
     JOURNEY_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../data/auroradb';
+import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../data/auroradb';
 import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
+import { BasicService, NextPageContextWithSession, Stop, UserFareStages, TxcSourceAttribute } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { InboundMatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -73,7 +74,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const lineName = serviceAttribute.service.split('#')[0];
     const [selectedStartPoint, selectedEndPoint] =
         (journeyAttribute && journeyAttribute.inboundJourney && journeyAttribute.inboundJourney.split('#')) || [];
-    const service = await getServiceByNocCodeAndLineName(nocCode, lineName);
+    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
+    const service = await getServiceByNocCodeLineNameAndDataSource(nocCode, lineName, dataSource);
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
     const masterStopList = getMasterStopList(relevantJourneys);
