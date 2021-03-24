@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
+import SwitchDataSource from '../components/SwitchDataSource';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
-import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
+import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -11,10 +12,12 @@ import {
     FareType,
     ServiceListAttribute,
     ServiceListAttributeWithErrors,
+    TxcSourceAttribute,
 } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { redirectTo } from './api/apiUtils';
 
 const pageTitle = 'Service List - Create Fares Data Service';
 const pageDescription = 'Service List selection page of the Create Fares Data Service';
@@ -24,26 +27,34 @@ interface ServiceListProps {
     buttonText: string;
     errors: ErrorInfo[];
     multiOperator: boolean;
+    dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
 }
 
-const ServiceList = ({ serviceList, buttonText, csrfToken, errors, multiOperator }: ServiceListProps): ReactElement => (
+const ServiceList = ({
+    serviceList,
+    buttonText,
+    csrfToken,
+    errors,
+    multiOperator,
+    dataSourceAttribute,
+}: ServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
+        <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/serviceList" csrfToken={csrfToken} />
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        <h1 className="govuk-heading-l" id="service-list-page-heading">
+                            Which {multiOperator ? 'of your ' : ''}services is the ticket valid for?
+                        </h1>
+                    </legend>
+
+                    <span className="govuk-heading-s">
+                        Select all {multiOperator ? 'of your ' : ''}services that apply
+                    </span>
                     <fieldset className="govuk-fieldset">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                            <h1 className="govuk-heading-l" id="service-list-page-heading">
-                                Which {multiOperator ? 'of your ' : ''}services is the ticket valid for?
-                            </h1>
-                        </legend>
-
-                        <span className="govuk-heading-s">
-                            Select all {multiOperator ? 'of your ' : ''}services that apply
-                        </span>
-
                         <input
                             type="submit"
                             name="selectAll"
@@ -52,7 +63,14 @@ const ServiceList = ({ serviceList, buttonText, csrfToken, errors, multiOperator
                             className="govuk-button govuk-button--secondary"
                         />
                         <span className="govuk-hint" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset.
+                            This data is taken from the{' '}
+                            <b>
+                                {dataSourceAttribute.source === 'tnds'
+                                    ? 'Traveline National Dataset (TNDS)'
+                                    : 'Bus Open Data Service (BODS)'}
+                            </b>
+                            . If the service you are looking for is not listed, contact the BODS help desk for advice{' '}
+                            <a href="/contact">here</a>.
                         </span>
                         <FormElementWrapper
                             errors={errors}
@@ -110,11 +128,34 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
-    const services = await getServicesByNocCodeAndDataSource(nocCode, 'tnds');
+    const services = await getAllServicesByNocCode(nocCode);
+    const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
+    const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
+
+    if (services.length === 0) {
+        if (ctx.res) {
+            redirectTo(ctx.res, '/noServices');
+        } else {
+            throw new Error(`No services found for NOC Code: ${nocCode}`);
+        }
+    }
+
+    let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
+
+    if (!dataSourceAttribute) {
+        updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
+            source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
+            hasBods: hasBodsServices,
+            hasTnds: hasTndsServices,
+        });
+        dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
+    }
 
     const { selectAll } = ctx.query;
 
-    const serviceList: ServicesInfo[] = services.map(service => {
+    const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute?.source);
+
+    const serviceList: ServicesInfo[] = chosenDataSourceServices.map(service => {
         return {
             ...service,
             checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
@@ -133,6 +174,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     ? serviceListAttribute.errors
                     : [],
             multiOperator,
+            dataSourceAttribute,
             csrfToken,
         },
     };

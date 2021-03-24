@@ -215,11 +215,19 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     } else if (!zone) {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
-        confirmationElements.push({
-            name: `${opName}${opName ? 's' : 'S'}ervices`,
-            content: `${services.map(service => service.split('#')[0]).join(', ')}`,
-            href: 'serviceList',
-        });
+        const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
+        confirmationElements.push(
+            {
+                name: `${opName}${opName ? 's' : 'S'}ervices`,
+                content: `${services.map(service => service.split('#')[0]).join(', ')}`,
+                href: 'serviceList',
+            },
+            {
+                name: 'TransXChange source',
+                content: dataSource.toUpperCase(),
+                href: 'serviceList',
+            },
+        );
     }
 
     if (multiOpAttribute) {
@@ -294,11 +302,17 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const productInfo = (getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE) as ProductData).products;
     const { productName, productPrice } = productInfo[0];
+    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
 
     confirmationElements.push(
         {
             name: 'Services',
             content: `${services.map(service => service.split('#')[0]).join(', ')}`,
+            href: 'serviceList',
+        },
+        {
+            name: 'TransXChange source',
+            content: dataSource.toUpperCase(),
             href: 'serviceList',
         },
         {
