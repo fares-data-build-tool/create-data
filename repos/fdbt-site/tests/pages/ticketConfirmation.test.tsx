@@ -209,10 +209,15 @@ describe('pages', () => {
                         [PERIOD_EXPIRY_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
                 const numberOfElementsDueToProducts = mockSingleProduct.length * 3;
-                const totalExpectedLength = 1 + numberOfElementsDueToProducts;
+                const totalExpectedLength = 2 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -226,12 +231,17 @@ describe('pages', () => {
                             selectedOperators: mockAdditionalOperators,
                         },
                         [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: mockAdditionalOperatorsServices,
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
                 const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length * 3;
                 const numberOfElementsDueToAdditionalOperators = mockAdditionalOperators.length;
                 const totalExpectedLength =
-                    2 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
+                    3 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -250,9 +260,14 @@ describe('pages', () => {
                                 },
                             ],
                         },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
-                const totalExpectedLength = 2;
+                const totalExpectedLength = 3;
                 const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);

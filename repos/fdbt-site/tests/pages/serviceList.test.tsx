@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ServiceList, { getServerSideProps } from '../../src/pages/serviceList';
 import { getMockContext } from '../testData/mockData';
-import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
+import { getServicesByNocCodeAndDataSource, getAllServicesByNocCode } from '../../src/data/auroradb';
 import { OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
 
@@ -64,6 +64,7 @@ describe('pages', () => {
 
         beforeEach(() => {
             (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
+            (getAllServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
         });
 
         it('should render correctly', () => {
@@ -74,6 +75,11 @@ describe('pages', () => {
                     errors={[]}
                     csrfToken=""
                     multiOperator={false}
+                    dataSourceAttribute={{
+                        source: 'tnds',
+                        hasTnds: true,
+                        hasBods: false,
+                    }}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -87,6 +93,11 @@ describe('pages', () => {
                     errors={[]}
                     csrfToken=""
                     multiOperator
+                    dataSourceAttribute={{
+                        source: 'tnds',
+                        hasTnds: true,
+                        hasBods: false,
+                    }}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -100,6 +111,11 @@ describe('pages', () => {
                     buttonText="Select All"
                     csrfToken=""
                     multiOperator={false}
+                    dataSourceAttribute={{
+                        source: 'bods',
+                        hasTnds: true,
+                        hasBods: true,
+                    }}
                 />,
             );
             expect(tree).toMatchSnapshot();
