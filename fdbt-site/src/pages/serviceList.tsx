@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import SwitchDataSource from '../components/SwitchDataSource';
+// import SwitchDataSource from '../components/SwitchDataSource';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -40,7 +40,7 @@ const ServiceList = ({
     dataSourceAttribute,
 }: ServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
-        <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/serviceList" csrfToken={csrfToken} />
+        {/* <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/serviceList" csrfToken={csrfToken} /> */}
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />

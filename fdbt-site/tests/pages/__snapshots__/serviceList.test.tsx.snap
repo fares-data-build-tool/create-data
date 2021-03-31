@@ -5,17 +5,6 @@ exports[`pages serviceList should render an error when the error flag is set to 
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
-  <SwitchDataSource
-    csrfToken=""
-    dataSourceAttribute={
-      Object {
-        "hasBods": true,
-        "hasTnds": true,
-        "source": "bods",
-      }
-    }
-    pageUrl="/serviceList"
-  />
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""
@@ -113,17 +102,6 @@ exports[`pages serviceList should render correctly 1`] = `
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
-  <SwitchDataSource
-    csrfToken=""
-    dataSourceAttribute={
-      Object {
-        "hasBods": false,
-        "hasTnds": true,
-        "source": "tnds",
-      }
-    }
-    pageUrl="/serviceList"
-  />
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""
@@ -265,17 +243,6 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
-  <SwitchDataSource
-    csrfToken=""
-    dataSourceAttribute={
-      Object {
-        "hasBods": false,
-        "hasTnds": true,
-        "source": "tnds",
-      }
-    }
-    pageUrl="/serviceList"
-  />
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""

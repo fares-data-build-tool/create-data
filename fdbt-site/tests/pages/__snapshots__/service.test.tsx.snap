@@ -106,16 +106,5 @@ exports[`pages service should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-  <SwitchDataSource
-    csrfToken=""
-    dataSourceAttribute={
-      Object {
-        "hasBods": false,
-        "hasTnds": true,
-        "source": "tnds",
-      }
-    }
-    pageUrl="/service"
-  />
 </Component>
 `;

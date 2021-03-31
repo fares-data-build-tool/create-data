@@ -29,7 +29,7 @@
         }
     },
     "lint-staged": {
-        "./**/*.{ts,tsx}" : [
+        "./**/*.{ts,tsx}": [
             "prettier --c './**/*.{ts,tsx}'"
         ],
         "./**/*.{ts,tsx},.eslintignore": [
