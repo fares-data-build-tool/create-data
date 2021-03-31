@@ -16,7 +16,7 @@ import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
-import SwitchDataSource from '../components/SwitchDataSource';
+// import SwitchDataSource from '../components/SwitchDataSource';
 
 const title = 'Service - Create Fares Data Service';
 const description = 'Service selection page of the Create Fares Data Service';
@@ -82,7 +82,7 @@ const Service = ({
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
-        <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/service" csrfToken={csrfToken} />
+        {/* <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/service" csrfToken={csrfToken} /> */}
     </TwoThirdsLayout>
 );
 
