@@ -1,10 +1,10 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import register, { operatorHasTndsData } from '../../../src/pages/api/register';
+import register, { nocsWithNoServices } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { USER_ATTRIBUTE } from '../../../src/constants/attributes';
-import { getServicesByNocCode } from '../../../src/data/auroradb';
+import { getAllServicesByNocCode } from '../../../src/data/auroradb';
 import * as sessions from '../../../src/utils/sessions';
 
 jest.mock('../../../src/data/auroradb.ts');
@@ -21,7 +21,7 @@ describe('register', () => {
         Session: 'session',
     };
 
-    const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
+    const getAllServicesByNocCodeSpy = jest.spyOn(auroradb, 'getAllServicesByNocCode');
     const authSignInSpy = jest.spyOn(auth, 'initiateAuth');
     const authCompletePasswordSpy = jest.spyOn(auth, 'respondToNewPasswordChallenge');
     const authUpdateAttributesSpy = jest.spyOn(auth, 'updateUserAttributes');
@@ -33,7 +33,7 @@ describe('register', () => {
         authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
         authSignOutSpy.mockImplementation(() => Promise.resolve());
         authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
-        getServicesByNocCodeSpy.mockImplementation(() =>
+        getAllServicesByNocCodeSpy.mockImplementation(() =>
             Promise.resolve([
                 {
                     lineName: '2AC',
@@ -186,7 +186,7 @@ describe('register', () => {
     });
 
     it('should redirect when there are no services for the noc code', async () => {
-        (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
+        (getAllServicesByNocCode as jest.Mock).mockImplementation(() => []);
 
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
@@ -307,20 +307,20 @@ describe('register', () => {
     });
 });
 
-describe('operatorHasTndsData', () => {
-    const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
+describe('nocsWithNoServices', () => {
+    const getAllServicesByNocCodeSpy = jest.spyOn(auroradb, 'getAllServicesByNocCode');
     afterEach(() => {
-        getServicesByNocCodeSpy.mockReset();
+        getAllServicesByNocCodeSpy.mockReset();
     });
     it('returns the correct noc codes if all noc codes have no TNDS data', async () => {
-        getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
-        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        getAllServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
+        const result = await nocsWithNoServices(['AAA', 'BBB']);
         expect(result.length).toBe(2);
         expect(result).toStrictEqual(['AAA', 'BBB']);
     });
 
     it('returns the correct noc codes if some noc codes have no TNDS data', async () => {
-        getServicesByNocCodeSpy
+        getAllServicesByNocCodeSpy
             .mockImplementationOnce(() =>
                 Promise.resolve([
                     {
@@ -332,13 +332,13 @@ describe('operatorHasTndsData', () => {
                 ]),
             )
             .mockImplementationOnce(() => Promise.resolve([]));
-        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        const result = await nocsWithNoServices(['AAA', 'BBB']);
         expect(result.length).toBe(1);
         expect(result).toStrictEqual(['BBB']);
     });
 
     it('returns a result with true if noc codes have TNDS data', async () => {
-        getServicesByNocCodeSpy
+        getAllServicesByNocCodeSpy
             .mockImplementationOnce(() =>
                 Promise.resolve([
                     {
@@ -359,7 +359,7 @@ describe('operatorHasTndsData', () => {
                     },
                 ]),
             );
-        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        const result = await nocsWithNoServices(['AAA', 'BBB']);
         expect(result.length).toBe(0);
         expect(result).toStrictEqual([]);
     });

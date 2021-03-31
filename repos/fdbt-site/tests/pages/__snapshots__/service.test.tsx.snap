@@ -11,30 +11,30 @@ exports[`pages service should render correctly 1`] = `
     csrfToken=""
     method="post"
   >
+    <label
+      htmlFor="service"
+    >
+      <h1
+        className="govuk-heading-l"
+        id="service-page-heading"
+      >
+        Select a service
+      </h1>
+    </label>
+    <span
+      className="govuk-hint"
+      id="service-operator-passenger-type-hint"
+    >
+      Connexions Buses
+       - 
+      Adult
+    </span>
     <ErrorSummary
       errors={Array []}
     />
     <div
       className="govuk-form-group "
     >
-      <label
-        htmlFor="service"
-      >
-        <h1
-          className="govuk-heading-l"
-          id="service-page-heading"
-        >
-          Select a service
-        </h1>
-      </label>
-      <span
-        className="govuk-hint"
-        id="service-operator-passenger-type-hint"
-      >
-        Connexions Buses
-         - 
-        Adult
-      </span>
       <FormElementWrapper
         errorClass="govuk-select--error"
         errorId="service"
@@ -85,7 +85,18 @@ exports[`pages service should render correctly 1`] = `
         className="govuk-hint hint-text"
         id="traveline-hint"
       >
-        This data is taken from the Traveline National Dataset (TNDS). If any of your services are not listed, contact your local transport authority for further advice.
+        This data is taken from the
+         
+        <b>
+          Traveline National Dataset (TNDS)
+        </b>
+        . If the service you are looking for is not listed, contact the BODS help desk for advice
+         
+        <a
+          href="/contact"
+        >
+          here
+        </a>
       </span>
     </div>
     <input

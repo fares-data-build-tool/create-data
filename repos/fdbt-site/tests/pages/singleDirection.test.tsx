@@ -2,16 +2,16 @@ import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import SingleDirection, { getServerSideProps } from '../../src/pages/singleDirection';
-import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
+import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 
 describe('pages', () => {
     describe('singleDirection', () => {
         beforeEach(() => {
-            (getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
+            (getServiceByNocCodeLineNameAndDataSource as jest.Mock).mockImplementation(() => mockRawService);
             (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
@@ -23,6 +23,7 @@ describe('pages', () => {
                     lineName="X6A"
                     service={mockService}
                     error={[]}
+                    dataSource="bods"
                     csrfToken=""
                 />,
             );
@@ -37,6 +38,7 @@ describe('pages', () => {
                     lineName="X6A"
                     service={mockService}
                     error={[]}
+                    dataSource="tnds"
                     csrfToken=""
                 />,
             );
@@ -53,6 +55,7 @@ describe('pages', () => {
                     lineName="X6A"
                     service={mockService}
                     error={[]}
+                    dataSource="bods"
                     csrfToken=""
                 />,
             );
@@ -66,9 +69,19 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
-                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
+                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
+                    () => mockRawService,
+                ));
 
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 const result = await getServerSideProps(ctx);
 
@@ -76,18 +89,28 @@ describe('pages', () => {
             });
 
             it('removes journeys that have the same start and end points before rendering', async () => {
-                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
+                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
                     () => mockRawServiceWithDuplicates,
                 ));
 
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 const result = await getServerSideProps(ctx);
                 expect(result.props.service).toEqual(mockService);
             });
 
             it('throws an error if no journey patterns can be found', async () => {
-                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
+                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(() =>
+                    Promise.resolve(null),
+                ));
                 const ctx = getMockContext();
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow();

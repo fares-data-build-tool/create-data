@@ -4,11 +4,11 @@ import { USER_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
-import { getServicesByNocCode } from '../../data/auroradb';
+import { getAllServicesByNocCode } from '../../data/auroradb';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => {
-    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc));
+export const nocsWithNoServices = async (nocs: string[]): Promise<string[]> => {
+    const servicesFoundPromise = nocs.map((noc: string) => getAllServicesByNocCode(noc));
 
     const servicesFound = await Promise.all(servicesFoundPromise);
 
@@ -74,7 +74,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 const isSchemeOperator = !!parameters['custom:schemeOperator'];
-                const nocsWithNoTnds = await operatorHasTndsData(cognitoNocs);
+                const nocsWithNoTnds = await nocsWithNoServices(cognitoNocs);
 
                 if (!isSchemeOperator && !(nocsWithNoTnds.length < cognitoNocs.length)) {
                     logger.warn('', {

@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
-import { getUuidFromSession, redirectToError, redirectTo } from './apiUtils/index';
 import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/attributes';
+import { getUuidFromSession, redirectToError, redirectTo } from './apiUtils/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType } from '../../interfaces/typeGuards';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
@@ -11,7 +11,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (!service) {
             const errors: ErrorInfo[] = [{ id: 'service', errorMessage: 'Choose a service from the options' }];
-
             updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
             redirectTo(res, '/service');
             return;

@@ -77,3 +77,5 @@ export const FORGOT_PASSWORD_ATTRIBUTE = 'fdbt-reset-password';
 export const USER_ATTRIBUTE = 'fdbt-user';
 
 export const OPERATOR_ATTRIBUTE = 'fdbt-operator';
+
+export const TXC_SOURCE_ATTRIBUTE = 'fdbt-txc-source';
