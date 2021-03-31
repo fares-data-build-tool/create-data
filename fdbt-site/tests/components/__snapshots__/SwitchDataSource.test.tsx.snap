@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SwitchDataSource should render the button disabled 1`] = `
+<CsrfForm
+  action="/api/switchDataSource"
+  csrfToken="token"
+  method="post"
+>
+  <input
+    name="referer"
+    type="hidden"
+    value="/service"
+  />
+  <button
+    className="govuk-button govuk-button--secondary"
+    disabled={true}
+    id="change-data-source"
+    type="submit"
+  >
+    Change TransXChange datasource to 
+    TNDS
+  </button>
+</CsrfForm>
+`;
+
+exports[`SwitchDataSource should render the button not disabled 1`] = `
+<CsrfForm
+  action="/api/switchDataSource"
+  csrfToken="token"
+  method="post"
+>
+  <input
+    name="referer"
+    type="hidden"
+    value="/service"
+  />
+  <button
+    className="govuk-button govuk-button--secondary"
+    disabled={false}
+    id="change-data-source"
+    type="submit"
+  >
+    Change TransXChange datasource to 
+    TNDS
+  </button>
+</CsrfForm>
+`;

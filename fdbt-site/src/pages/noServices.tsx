@@ -10,11 +10,12 @@ const NoServices = (): ReactElement => (
             Sorry, there is no service data available for your National Operator Code (NOC)
         </h1>
         <p className="govuk-body-m">
-            This service utilises the Traveline National Dataset (TNDS) to obtain operators&apos; service data in order
-            to help them create fares data.
+            This service utilises the Traveline National Dataset (TNDS) and the Bus Open Data Service (BODS) to obtain
+            operators&apos; service data in order to help them create fares data.
         </p>
         <p className="govuk-body-m">
-            It appears there is no service data for this operator in the Traveline National Dataset.
+            It appears there is no service data for this operator in the Traveline National Dataset or in the Bus Open
+            Data Service.
         </p>
         <p className="govuk-body-m">You will not be able to continue creating fares data without this.</p>
         <p className="govuk-body-m">

@@ -29,6 +29,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
 
@@ -60,9 +61,14 @@ describe('pages', () => {
                             userFareStages,
                             matchingFareZones: mockMatchingFaresZones,
                         },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
-                const expectedConfirmationElementsLength = 2 + Object.entries(mockMatchingFaresZones).length;
+                const expectedConfirmationElementsLength = 3 + Object.entries(mockMatchingFaresZones).length;
                 const confirmationElements = buildSingleTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(expectedConfirmationElementsLength);
@@ -91,10 +97,15 @@ describe('pages', () => {
                             amount: '5',
                             typeOfDuration: 'day',
                         },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
                 const totalNumberOfMatchingFareZones = Object.entries(mockMatchingFaresZones).length * 2;
-                const totalExpectedLength = 2 + totalNumberOfMatchingFareZones;
+                const totalExpectedLength = 3 + totalNumberOfMatchingFareZones;
                 const confirmationElements = buildReturnTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -110,10 +121,15 @@ describe('pages', () => {
                             matchingFareZones: mockMatchingFaresZones,
                         },
                         [JOURNEY_ATTRIBUTE]: { directionJourneyPattern: '0690WNA02857#0690WNA02856' },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
                 const totalNumberOfMatchingFareZones = Object.entries(mockMatchingFaresZones).length;
-                const totalExpectedLength = 1 + totalNumberOfMatchingFareZones;
+                const totalExpectedLength = 2 + totalNumberOfMatchingFareZones;
                 const confirmationElements = buildReturnTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -193,10 +209,15 @@ describe('pages', () => {
                         [PERIOD_EXPIRY_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
                 const numberOfElementsDueToProducts = mockSingleProduct.length * 3;
-                const totalExpectedLength = 1 + numberOfElementsDueToProducts;
+                const totalExpectedLength = 2 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -210,12 +231,17 @@ describe('pages', () => {
                             selectedOperators: mockAdditionalOperators,
                         },
                         [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: mockAdditionalOperatorsServices,
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
                 const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length * 3;
                 const numberOfElementsDueToAdditionalOperators = mockAdditionalOperators.length;
                 const totalExpectedLength =
-                    2 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
+                    3 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -234,9 +260,14 @@ describe('pages', () => {
                                 },
                             ],
                         },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
-                const totalExpectedLength = 2;
+                const totalExpectedLength = 3;
                 const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);

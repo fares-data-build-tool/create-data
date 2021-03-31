@@ -1,10 +1,15 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants/attributes';
-import { getServiceByNocCodeAndLineName } from '../data/auroradb';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../constants/attributes';
+import { getServiceByNocCodeLineNameAndDataSource } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, NextPageContextWithSession, ServiceDB, RawService } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ServiceDB, RawService, TxcSourceAttribute } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
@@ -24,6 +29,7 @@ interface ReturnDirectionProps {
     outboundJourney?: string;
     inboundJourney?: string;
     csrfToken: string;
+    dataSource: string;
 }
 
 const ReturnDirection = ({
@@ -32,6 +38,7 @@ const ReturnDirection = ({
     outboundJourney,
     inboundJourney,
     csrfToken,
+    dataSource,
 }: ReturnDirectionProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/returnDirection" method="post" csrfToken={csrfToken}>
@@ -65,8 +72,13 @@ const ReturnDirection = ({
                             />
                         </div>
                         <span className="govuk-hint hint-text" id="traveline-main-hint">
-                            This data is taken from the Traveline National Dataset (TNDS) and should include all of your
-                            registered routes for this service
+                            This data is taken from the{' '}
+                            <b>
+                                {dataSource === 'bods'
+                                    ? 'Bus Open Data Service (BODS)'
+                                    : 'Traveline National Dataset (TNDS)'}{' '}
+                            </b>
+                            and should include all of your registered routes for this service
                         </span>
                         <span className="govuk-hint hint-text" id="traveline-sub-hint">
                             If you have route variations within your fares triangle, you are only required to upload one
@@ -93,8 +105,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const lineName = serviceAttribute.service.split('#')[0];
-
-    const rawService: RawService = await getServiceByNocCodeAndLineName(nocCode, lineName);
+    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
+    const rawService: RawService = await getServiceByNocCodeLineNameAndDataSource(nocCode, lineName, dataSource);
     const service: ServiceDB = {
         ...rawService,
         journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),
@@ -137,6 +149,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 outboundJourney,
                 inboundJourney,
                 csrfToken,
+                dataSource,
             },
         };
     }
@@ -146,6 +159,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             service,
             errors: [],
             csrfToken,
+            dataSource,
         },
     };
 };

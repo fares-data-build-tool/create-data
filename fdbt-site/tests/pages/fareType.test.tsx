@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import FareType, { buildUuid, getServerSideProps } from '../../src/pages/fareType';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
-import { getServicesByNocCode } from '../../src/data/auroradb';
+import { getAllServicesByNocCode } from '../../src/data/auroradb';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb');
@@ -29,7 +29,7 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             beforeEach(() => {
-                (getServicesByNocCode as jest.Mock).mockImplementation(() => [
+                (getAllServicesByNocCode as jest.Mock).mockImplementation(() => [
                     {
                         lineName: '123',
                         startDate: '05/02/2020',
@@ -77,7 +77,7 @@ describe('pages', () => {
             });
 
             it('should redirect to /noServices when the chosen NOC has no services', async () => {
-                (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
+                (getAllServicesByNocCode as jest.Mock).mockImplementation(() => []);
                 const mockContext = getMockContext({
                     mockWriteHeadFn: writeHeadMock,
                 });

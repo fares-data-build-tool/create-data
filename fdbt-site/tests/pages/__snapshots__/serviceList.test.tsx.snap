@@ -23,26 +23,26 @@ exports[`pages serviceList should render an error when the error flag is set to 
     <div
       className="govuk-form-group govuk-form-group--error"
     >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--s"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="service-list-page-heading"
+        >
+          Which 
+          services is the ticket valid for?
+        </h1>
+      </legend>
+      <span
+        className="govuk-heading-s"
+      >
+        Select all 
+        services that apply
+      </span>
       <fieldset
         className="govuk-fieldset"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--s"
-        >
-          <h1
-            className="govuk-heading-l"
-            id="service-list-page-heading"
-          >
-            Which 
-            services is the ticket valid for?
-          </h1>
-        </legend>
-        <span
-          className="govuk-heading-s"
-        >
-          Select all 
-          services that apply
-        </span>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -54,7 +54,19 @@ exports[`pages serviceList should render an error when the error flag is set to 
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data is taken from the Traveline National Dataset.
+          This data is taken from the
+           
+          <b>
+            Bus Open Data Service (BODS)
+          </b>
+          . If the service you are looking for is not listed, contact the BODS help desk for advice
+           
+          <a
+            href="/contact"
+          >
+            here
+          </a>
+          .
         </span>
         <FormElementWrapper
           addFormGroupError={false}
@@ -101,26 +113,26 @@ exports[`pages serviceList should render correctly 1`] = `
     <div
       className="govuk-form-group "
     >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--s"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="service-list-page-heading"
+        >
+          Which 
+          services is the ticket valid for?
+        </h1>
+      </legend>
+      <span
+        className="govuk-heading-s"
+      >
+        Select all 
+        services that apply
+      </span>
       <fieldset
         className="govuk-fieldset"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--s"
-        >
-          <h1
-            className="govuk-heading-l"
-            id="service-list-page-heading"
-          >
-            Which 
-            services is the ticket valid for?
-          </h1>
-        </legend>
-        <span
-          className="govuk-heading-s"
-        >
-          Select all 
-          services that apply
-        </span>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -132,7 +144,19 @@ exports[`pages serviceList should render correctly 1`] = `
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data is taken from the Traveline National Dataset.
+          This data is taken from the
+           
+          <b>
+            Traveline National Dataset (TNDS)
+          </b>
+          . If the service you are looking for is not listed, contact the BODS help desk for advice
+           
+          <a
+            href="/contact"
+          >
+            here
+          </a>
+          .
         </span>
         <FormElementWrapper
           addFormGroupError={false}
@@ -230,28 +254,28 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
     <div
       className="govuk-form-group "
     >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--s"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="service-list-page-heading"
+        >
+          Which 
+          of your 
+          services is the ticket valid for?
+        </h1>
+      </legend>
+      <span
+        className="govuk-heading-s"
+      >
+        Select all 
+        of your 
+        services that apply
+      </span>
       <fieldset
         className="govuk-fieldset"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--s"
-        >
-          <h1
-            className="govuk-heading-l"
-            id="service-list-page-heading"
-          >
-            Which 
-            of your 
-            services is the ticket valid for?
-          </h1>
-        </legend>
-        <span
-          className="govuk-heading-s"
-        >
-          Select all 
-          of your 
-          services that apply
-        </span>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -263,7 +287,19 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data is taken from the Traveline National Dataset.
+          This data is taken from the
+           
+          <b>
+            Traveline National Dataset (TNDS)
+          </b>
+          . If the service you are looking for is not listed, contact the BODS help desk for advice
+           
+          <a
+            href="/contact"
+          >
+            here
+          </a>
+          .
         </span>
         <FormElementWrapper
           addFormGroupError={false}

@@ -61,10 +61,10 @@ describe('pages', () => {
             },
         ];
 
-        const getServicesByNocCodeSpy = jest.spyOn(aurora, 'getServicesByNocCode');
+        const getServicesByNocCodeAndDataSourceSpy = jest.spyOn(aurora, 'getServicesByNocCodeAndDataSource');
 
         beforeEach(() => {
-            getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve(mockServices));
+            getServicesByNocCodeAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockServices));
         });
 
         afterEach(() => {
