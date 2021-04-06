@@ -1,9 +1,8 @@
 import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
-import logger from '../utils/logger';
-import { INTERNAL_NOC } from '../constants';
 import {
+    OperatorGroup,
     Operator,
     ServiceType,
     RawService,
@@ -11,7 +10,9 @@ import {
     SalesOfferPackage,
     FullTimeRestriction,
     PremadeTimeRestriction,
-} from '../interfaces';
+} from '../interfaces/index';
+import logger from '../utils/logger';
+import { INTERNAL_NOC } from '../constants';
 
 interface QueryData {
     operatorShortName: string;
@@ -51,6 +52,12 @@ interface RawSalesOfferPackage {
 }
 
 interface RawTimeRestriction {
+    nocCode: string;
+    name: string;
+    contents: string;
+}
+
+interface RawOperatorGroup {
     nocCode: string;
     name: string;
     contents: string;
@@ -425,6 +432,79 @@ export const deleteSalesOfferPackageByNocCodeAndName = async (sopId: string, noc
     }
 };
 
+export const insertOperatorGroup = async (nocCode: string, operators: Operator[], name: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'inserting operator group for given name and nocCode',
+        nocCode,
+        name,
+    });
+
+    const contents = JSON.stringify(operators);
+
+    const insertQuery = `INSERT INTO operatorGroup 
+    (nocCode, name, contents) 
+    VALUES (?, ?, ?)`;
+    try {
+        await executeQuery(insertQuery, [nocCode, name, contents]);
+    } catch (error) {
+        throw new Error(`Could not insert operator group into the operatorGroup table. ${error.stack}`);
+    }
+};
+
+export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorGroup[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator groups for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents, name
+            FROM operatorGroup
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [nocCode]);
+
+        return queryResults.map(item => ({
+            name: item.name,
+            operators: JSON.parse(item.contents),
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve operator group by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: string): Promise<OperatorGroup[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator groups for given name and nocCode',
+        name,
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM operatorGroup
+            WHERE name = ?
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [name, nocCode]);
+
+        return queryResults.map(item => ({
+            name,
+            nocCode,
+            operators: JSON.parse(item.contents),
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve operator group by name and nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const insertTimeRestriction = async (
     nocCode: string,
     timeRestriction: FullTimeRestriction[],
@@ -432,8 +512,9 @@ export const insertTimeRestriction = async (
 ): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'inserting time restriction for given noc',
-        noc: nocCode,
+        message: 'inserting time restriction for given noc and name',
+        nocCode,
+        name,
     });
 
     const contents = JSON.stringify(timeRestriction);
@@ -452,7 +533,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving time restrictions for given noc',
-        noc: nocCode,
+        nocCode,
     });
 
     try {
@@ -481,8 +562,9 @@ export const getTimeRestrictionByNameAndNoc = async (
 ): Promise<PremadeTimeRestriction[]> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving time restriction for given name',
+        message: 'retrieving time restriction for given name and nocCode',
         name,
+        nocCode,
     });
 
     try {

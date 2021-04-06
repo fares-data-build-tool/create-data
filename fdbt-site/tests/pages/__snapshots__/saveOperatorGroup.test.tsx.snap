@@ -1,0 +1,315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages saveOperatorGroup should render correctly 1`] = `
+<Component
+  description="Save Operator Group selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Save Operator Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/saveOperatorGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="save-group-operator-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="save-group-operator-page-heading"
+          >
+            Do you want to save this group of operators for later use?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="save-group-operator-page-hint"
+        >
+          If you save the group, you can reuse them rather than searching next time
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Do you want to save your group of operators for later use?",
+                "hidden": true,
+                "id": "save-operators-hidden-heading",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "save-operators-required-conditional",
+                  "id": "yes-save",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "Provide a name to remember your group of operators by",
+                    "hidden": true,
+                    "id": "save-group-name-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "operator-group-name-input",
+                      "label": "Operator group name",
+                      "name": "groupName",
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "saveGroup",
+                  "value": "yes",
+                },
+                Object {
+                  "id": "no-save",
+                  "label": "No",
+                  "name": "saveGroup",
+                  "value": "no",
+                },
+              ],
+            }
+          }
+          key="save-operators-hidden-heading"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages saveOperatorGroup should render errors when user does not provide a group name 1`] = `
+<Component
+  description="Save Operator Group selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Provide a name for the operator group",
+        "id": "operator-group-name-input",
+      },
+    ]
+  }
+  title="Save Operator Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/saveOperatorGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Provide a name for the operator group",
+            "id": "operator-group-name-input",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="save-group-operator-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="save-group-operator-page-heading"
+          >
+            Do you want to save this group of operators for later use?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="save-group-operator-page-hint"
+        >
+          If you save the group, you can reuse them rather than searching next time
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Do you want to save your group of operators for later use?",
+                "hidden": true,
+                "id": "save-operators-hidden-heading",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "save-operators-required-conditional",
+                  "id": "yes-save",
+                  "inputErrors": Array [
+                    Object {
+                      "errorMessage": "Provide a name for the operator group",
+                      "id": "operator-group-name-input",
+                    },
+                  ],
+                  "inputHint": Object {
+                    "content": "Provide a name to remember your group of operators by",
+                    "hidden": true,
+                    "id": "save-group-name-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "operator-group-name-input",
+                      "label": "Operator group name",
+                      "name": "groupName",
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "saveGroup",
+                  "value": "yes",
+                },
+                Object {
+                  "id": "no-save",
+                  "label": "No",
+                  "name": "saveGroup",
+                  "value": "no",
+                },
+              ],
+            }
+          }
+          key="save-operators-hidden-heading"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages saveOperatorGroup should render errors when user does not select a radio button 1`] = `
+<Component
+  description="Save Operator Group selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose one of the options below",
+        "id": "yes-save",
+      },
+    ]
+  }
+  title="Save Operator Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/saveOperatorGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one of the options below",
+            "id": "yes-save",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="save-group-operator-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="save-group-operator-page-heading"
+          >
+            Do you want to save this group of operators for later use?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="save-group-operator-page-hint"
+        >
+          If you save the group, you can reuse them rather than searching next time
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": "Do you want to save your group of operators for later use?",
+                "hidden": true,
+                "id": "save-operators-hidden-heading",
+              },
+              "radioError": Array [
+                Object {
+                  "errorMessage": "Choose one of the options below",
+                  "id": "yes-save",
+                },
+              ],
+              "radios": Array [
+                Object {
+                  "dataAriaControls": "save-operators-required-conditional",
+                  "id": "yes-save",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "Provide a name to remember your group of operators by",
+                    "hidden": true,
+                    "id": "save-group-name-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "id": "operator-group-name-input",
+                      "label": "Operator group name",
+                      "name": "groupName",
+                    },
+                  ],
+                  "label": "Yes",
+                  "name": "saveGroup",
+                  "value": "yes",
+                },
+                Object {
+                  "id": "no-save",
+                  "label": "No",
+                  "name": "saveGroup",
+                  "value": "no",
+                },
+              ],
+            }
+          }
+          key="save-operators-hidden-heading"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

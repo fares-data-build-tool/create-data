@@ -1,0 +1,282 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages reuseOperatorGroup should render correctly 1`] = `
+<Component
+  description="Reuse Operator Group page of the Create Fares Data Service"
+  errors={Array []}
+  title="Reuse Operator Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/reuseOperatorGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="reuse-operator-group-page-heading"
+      >
+        Would you like to reuse a saved list of operators that this ticket covers?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="reuse-operator-group-hint"
+      >
+        You can reuse a saved operator group to save yourself time searching for each operator individually
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Do you want to reuse a saved operator group?",
+              "hidden": true,
+              "id": "reuse-operator-group-heading",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "reuse-operator-group",
+                "id": "reuse-operator-group-yes",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select an operator group from the dropdown",
+                  "hidden": true,
+                  "id": "choose-time-restriction-hint",
+                },
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "id": "operator-group-0",
+                    "label": "Best Ops",
+                    "name": "Best Ops",
+                  },
+                ],
+                "label": "Yes",
+                "name": "reuseGroupChoice",
+                "selectIdentifier": "premadeOperatorGroup",
+                "value": "Yes",
+              },
+              Object {
+                "id": "reuse-operator-group-no",
+                "label": "No",
+                "name": "reuseGroupChoice",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="reuse-operator-group-heading"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages reuseOperatorGroup should render errors when user does not provide a group name 1`] = `
+<Component
+  description="Reuse Operator Group page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose a premade operator group from the options below",
+        "id": "premadeOperatorGroup",
+      },
+    ]
+  }
+  title="Reuse Operator Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/reuseOperatorGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose a premade operator group from the options below",
+            "id": "premadeOperatorGroup",
+          },
+        ]
+      }
+    />
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="reuse-operator-group-page-heading"
+      >
+        Would you like to reuse a saved list of operators that this ticket covers?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="reuse-operator-group-hint"
+      >
+        You can reuse a saved operator group to save yourself time searching for each operator individually
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Do you want to reuse a saved operator group?",
+              "hidden": true,
+              "id": "reuse-operator-group-heading",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "reuse-operator-group",
+                "id": "reuse-operator-group-yes",
+                "inputErrors": Array [
+                  Object {
+                    "errorMessage": "Choose a premade operator group from the options below",
+                    "id": "premadeOperatorGroup",
+                  },
+                ],
+                "inputHint": Object {
+                  "content": "Select an operator group from the dropdown",
+                  "hidden": true,
+                  "id": "choose-time-restriction-hint",
+                },
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "id": "operator-group-0",
+                    "label": "Best Ops",
+                    "name": "Best Ops",
+                  },
+                ],
+                "label": "Yes",
+                "name": "reuseGroupChoice",
+                "selectIdentifier": "premadeOperatorGroup",
+                "value": "Yes",
+              },
+              Object {
+                "id": "reuse-operator-group-no",
+                "label": "No",
+                "name": "reuseGroupChoice",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="reuse-operator-group-heading"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages reuseOperatorGroup should render errors when user does not select a radio button 1`] = `
+<Component
+  description="Reuse Operator Group page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose one of the options below",
+        "id": "conditional-form-group",
+      },
+    ]
+  }
+  title="Reuse Operator Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/reuseOperatorGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one of the options below",
+            "id": "conditional-form-group",
+          },
+        ]
+      }
+    />
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="reuse-operator-group-page-heading"
+      >
+        Would you like to reuse a saved list of operators that this ticket covers?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="reuse-operator-group-hint"
+      >
+        You can reuse a saved operator group to save yourself time searching for each operator individually
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Do you want to reuse a saved operator group?",
+              "hidden": true,
+              "id": "reuse-operator-group-heading",
+            },
+            "radioError": Array [
+              Object {
+                "errorMessage": "Choose one of the options below",
+                "id": "conditional-form-group",
+              },
+            ],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "reuse-operator-group",
+                "id": "reuse-operator-group-yes",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select an operator group from the dropdown",
+                  "hidden": true,
+                  "id": "choose-time-restriction-hint",
+                },
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "id": "operator-group-0",
+                    "label": "Best Ops",
+                    "name": "Best Ops",
+                  },
+                ],
+                "label": "Yes",
+                "name": "reuseGroupChoice",
+                "selectIdentifier": "premadeOperatorGroup",
+                "value": "Yes",
+              },
+              Object {
+                "id": "reuse-operator-group-no",
+                "label": "No",
+                "name": "reuseGroupChoice",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="reuse-operator-group-heading"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
