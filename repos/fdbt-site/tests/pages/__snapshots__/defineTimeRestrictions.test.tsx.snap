@@ -111,22 +111,14 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
                 "inputType": "dropdown",
                 "inputs": Array [
                   Object {
-                    "contents": Array [
-                      Object {
-                        "day": "monday",
-                        "timeBands": Array [
-                          Object {
-                            "endTime": "1000",
-                            "startTime": "0900",
-                          },
-                        ],
-                      },
-                    ],
+                    "id": "premade-time-restriction-0",
+                    "label": "Test Time restriction",
                     "name": "Test Time restriction",
                   },
                 ],
                 "label": "Yes - reuse a saved time restriction",
                 "name": "timeRestrictionChoice",
+                "selectIdentifier": "timeRestriction",
                 "value": "Premade",
               },
               Object {

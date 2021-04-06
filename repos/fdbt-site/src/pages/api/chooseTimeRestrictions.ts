@@ -3,7 +3,7 @@ import { NextApiResponse } from 'next';
 import { getTimeRestrictionByNameAndNoc, insertTimeRestriction } from '../../data/auroradb';
 import { removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
-import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils';
+import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
 
@@ -149,10 +149,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const errors: ErrorInfo[] = collectErrors(sanitisedInputs);
         let createdANewTimeRestriction = false;
         if (errors.length === 0 && refinedName) {
-            const noc = getNocFromIdToken(req, res);
-            if (!noc) {
-                throw new Error('Could not find users NOC code.');
-            }
+            const noc = getAndValidateNoc(req, res);
 
             const results = await getTimeRestrictionByNameAndNoc(refinedName, noc);
 

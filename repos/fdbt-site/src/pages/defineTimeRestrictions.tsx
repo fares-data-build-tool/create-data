@@ -8,7 +8,6 @@ import {
     RadioConditionalInputFieldset,
     TimeRestriction,
     TimeRestrictionsDefinitionWithErrors,
-    PremadeTimeRestriction,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
@@ -27,7 +26,7 @@ interface DefineTimeRestrictionsProps {
 
 export const getFieldsets = (
     errors: ErrorInfo[],
-    premadeTimeRestrictions: PremadeTimeRestriction[],
+    timeRestrictionNames: string[],
     timeRestrictionsDefinition?: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
 ): RadioConditionalInputFieldset[] => {
     const validDaysFieldset: RadioConditionalInputFieldset = {
@@ -42,7 +41,7 @@ export const getFieldsets = (
                 name: 'timeRestrictionChoice',
                 value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
-                label: `${premadeTimeRestrictions.length > 0 ? 'Yes - define new time restriction' : 'Yes'}`,
+                label: `${timeRestrictionNames.length > 0 ? 'Yes - define new time restriction' : 'Yes'}`,
                 inputHint: {
                     id: 'define-valid-days-inputHint',
                     content: 'Select the days of the week the ticket is valid for',
@@ -109,7 +108,7 @@ export const getFieldsets = (
         ],
         radioError: getErrorsByIds(['valid-days-required'], errors),
     };
-    if (premadeTimeRestrictions.length > 0) {
+    if (timeRestrictionNames.length > 0) {
         validDaysFieldset.radios.splice(1, 0, {
             id: 'premade-time-restriction-yes',
             name: 'timeRestrictionChoice',
@@ -121,8 +120,13 @@ export const getFieldsets = (
             },
             inputType: 'dropdown',
             dataAriaControls: 'premade-time-restriction',
-            inputs: premadeTimeRestrictions,
+            inputs: timeRestrictionNames.map((timeRestrictionName, index) => ({
+                id: `premade-time-restriction-${index}`,
+                name: timeRestrictionName,
+                label: timeRestrictionName,
+            })),
             inputErrors: errors,
+            selectIdentifier: 'timeRestriction',
         });
     }
     return [validDaysFieldset];
@@ -169,10 +173,10 @@ export const getServerSideProps = async (
     if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
         errors = timeRestrictionsDefinition.errors;
     }
-
+    const timeRestrictionNames = timeRestrictions.map(timeRestriction => timeRestriction.name);
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(
         errors,
-        timeRestrictions,
+        timeRestrictionNames,
         timeRestrictionsDefinition,
     );
     return { props: { errors, fieldsets, csrfToken } };

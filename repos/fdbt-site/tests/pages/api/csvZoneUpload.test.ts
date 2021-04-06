@@ -151,7 +151,7 @@ describe('csvZoneUpload', () => {
         await csvZoneUpload.default(multiOperatorReq, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/searchOperators',
+            Location: '/reuseOperatorGroup',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(multiOperatorReq, FARE_ZONE_ATTRIBUTE, 'Town Centre');
     });
