@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-// import SwitchDataSource from '../components/SwitchDataSource';
+import SwitchDataSource from '../components/SwitchDataSource';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -40,7 +40,7 @@ const ServiceList = ({
     dataSourceAttribute,
 }: ServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
-        {/* <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/serviceList" csrfToken={csrfToken} /> */}
+        <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/serviceList" csrfToken={csrfToken} />
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
@@ -82,7 +82,11 @@ const ServiceList = ({
                                 {serviceList.map((service, index) => {
                                     const { lineName, startDate, serviceCode, description, checked } = service;
 
-                                    let checkboxTitles = `${lineName} - ${description} (Start Date ${startDate})`;
+                                    let checkboxTitles =
+                                        dataSourceAttribute.source === 'tnds'
+                                            ? `${lineName} - ${description} (Start Date ${startDate})`
+                                            : `${service.lineName} ${service.origin || 'N/A'} - ${service.destination ||
+                                                  'N/A'} (Start date ${service.startDate})`;
 
                                     if (checkboxTitles.length > 110) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;

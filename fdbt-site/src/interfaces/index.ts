@@ -667,6 +667,8 @@ export interface ServiceType {
     lineName: string;
     startDate: string;
     description: string;
+    origin?: string;
+    destination?: string;
     serviceCode: string;
     dataSource?: string;
 }
