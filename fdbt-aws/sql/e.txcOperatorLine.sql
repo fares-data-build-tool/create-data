@@ -12,6 +12,8 @@ CREATE TABLE txcOperatorLine(
     `serviceCode` varchar(255) DEFAULT NULL,
     `regionCode` varchar(10) DEFAULT NULL,
     `dataSource` enum('tnds', 'bods') NOT NULL,
+    `origin` varchar(255) DEFAULT NULL,
+    `destination` varchar(255) DEFAULT NULL,
     INDEX idx_nocCode (nocCode),
     INDEX idx_lineName (lineName),
     INDEX idx_startDate (startDate),
