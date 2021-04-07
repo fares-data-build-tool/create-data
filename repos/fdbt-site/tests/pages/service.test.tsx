@@ -13,13 +13,22 @@ const mockServices: ServiceType[] = [
         lineName: '123',
         startDate: '05/02/2020',
         description: 'this bus service is 123',
+        origin: 'Manchester',
+        destination: 'Leeds',
         serviceCode: 'NW_05_BLAC_123_1',
     },
-    { lineName: 'X1', startDate: '06/02/2020', description: 'this bus service is X1', serviceCode: 'NW_05_BLAC_X1_1' },
+    {
+        lineName: 'X1',
+        startDate: '06/02/2020',
+        description: 'this bus service is X1',
+        origin: 'Edinburgh',
+        serviceCode: 'NW_05_BLAC_X1_1',
+    },
     {
         lineName: 'Infinity Line',
         startDate: '07/02/2020',
         description: 'this bus service is Infinity Line',
+        destination: 'London',
         serviceCode: 'WY_13_IWBT_07_1',
     },
 ];
@@ -30,7 +39,7 @@ describe('pages', () => {
             (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
         });
 
-        it('should render correctly', () => {
+        it('should render correctly when data source is tnds', () => {
             const tree = shallow(
                 <Service
                     operator="Connexions Buses"
@@ -41,6 +50,24 @@ describe('pages', () => {
                         source: 'tnds',
                         hasTnds: true,
                         hasBods: false,
+                    }}
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly when data source is bods', () => {
+            const tree = shallow(
+                <Service
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    services={mockServices}
+                    error={[]}
+                    dataSourceAttribute={{
+                        source: 'bods',
+                        hasTnds: true,
+                        hasBods: true,
                     }}
                     csrfToken=""
                 />,
@@ -68,7 +95,7 @@ describe('pages', () => {
             expect(operatorWelcome.text()).toBe('Connexions Buses - Adult');
         });
 
-        it('shows a list of services for the operator in the select box', () => {
+        it('shows a list of services for the operator in the select box with tnds data source', () => {
             const wrapper = shallow(
                 <Service
                     operator="Connexions Buses"
@@ -89,6 +116,29 @@ describe('pages', () => {
             expect(operatorServices.first().text()).toBe('123 - Start date 05/02/2020');
             expect(operatorServices.at(1).text()).toBe('X1 - Start date 06/02/2020');
             expect(operatorServices.at(2).text()).toBe('Infinity Line - Start date 07/02/2020');
+        });
+
+        it('shows a list of services for the operator in the select box with bods data source', () => {
+            const wrapper = shallow(
+                <Service
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    services={mockServices}
+                    error={[]}
+                    dataSourceAttribute={{
+                        source: 'bods',
+                        hasTnds: false,
+                        hasBods: true,
+                    }}
+                    csrfToken=""
+                />,
+            );
+            const operatorServices = wrapper.find('.service-option');
+
+            expect(operatorServices).toHaveLength(3);
+            expect(operatorServices.first().text()).toBe('123 Manchester - Leeds (Start date 05/02/2020)');
+            expect(operatorServices.at(1).text()).toBe('X1 Edinburgh - N/A (Start date 06/02/2020)');
+            expect(operatorServices.at(2).text()).toBe('Infinity Line N/A - London (Start date 07/02/2020)');
         });
 
         it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
@@ -112,18 +162,22 @@ describe('pages', () => {
                             lineName: '123',
                             startDate: '05/02/2020',
                             description: 'this bus service is 123',
+                            origin: 'Manchester',
+                            destination: 'Leeds',
                             serviceCode: 'NW_05_BLAC_123_1',
                         },
                         {
                             lineName: 'X1',
                             startDate: '06/02/2020',
                             description: 'this bus service is X1',
+                            origin: 'Edinburgh',
                             serviceCode: 'NW_05_BLAC_X1_1',
                         },
                         {
                             lineName: 'Infinity Line',
                             startDate: '07/02/2020',
                             description: 'this bus service is Infinity Line',
+                            destination: 'London',
                             serviceCode: 'WY_13_IWBT_07_1',
                         },
                     ],
