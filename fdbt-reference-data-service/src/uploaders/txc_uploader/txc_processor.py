@@ -61,8 +61,11 @@ def extract_data_for_txc_operator_service_table(operator, service):
     operator_short_name = operator['OperatorShortName']
     service_description = service['Description'] if 'Description' in service else ''
     service_code = service['ServiceCode'] if 'ServiceCode' in service else None
+    standard_service = service['StandardService'] if 'StandardService' in service else None
+    origin = standard_service['Origin'] if standard_service and 'Origin' in standard_service else None
+    destination = standard_service['Destination'] if standard_service and 'Destination' in standard_service else None
 
-    return noc_code, start_date, operator_short_name, service_description, service_code
+    return noc_code, start_date, operator_short_name, service_description, service_code, origin, destination
 
 
 def collect_journey_pattern_section_refs_and_info(raw_journey_patterns):
@@ -207,11 +210,13 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
         start_date,
         operator_short_name,
         service_description,
-        service_code
+        service_code,
+        origin,
+        destination
     ) = extract_data_for_txc_operator_service_table(operator, service)
 
-    query = f"""INSERT INTO txcOperatorLine (nocCode, lineName, startDate, operatorShortName, serviceDescription, serviceCode, regionCode, dataSource)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+    query = f"""INSERT INTO txcOperatorLine (nocCode, lineName, startDate, operatorShortName, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
     line_name = line.get('LineName', '')
 
@@ -226,7 +231,9 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
                 service_description,
                 service_code,
                 region_code,
-                data_source
+                data_source,
+                origin,
+                destination
             ]
         )
         operator_service_id = cursor.lastrowid
@@ -249,7 +256,9 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
         start_date,
         operator_short_name,
         service_description,
-        service_code
+        service_code,
+        origin,
+        destination
     ) = extract_data_for_txc_operator_service_table(operator, service)
 
     query = f"""
