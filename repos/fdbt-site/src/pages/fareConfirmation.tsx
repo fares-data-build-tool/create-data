@@ -105,7 +105,7 @@ export const buildFareConfirmationElements = (
             confirmationElements.push({
                 name: 'Passenger information - age range',
                 content: 'N/A',
-                href: 'definePassengerType',
+                href: `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`,
             });
         }
 
@@ -119,7 +119,7 @@ export const buildFareConfirmationElements = (
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
                 content: 'N/A',
-                href: 'definePassengerType',
+                href: `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`,
             });
         }
     }
