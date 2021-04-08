@@ -182,7 +182,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
             if (fareType === 'multiOperator') {
-                redirectTo(res, '/searchOperators');
+                redirectTo(res, '/reuseOperatorGroup');
                 return;
             }
 

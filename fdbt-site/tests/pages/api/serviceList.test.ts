@@ -95,7 +95,7 @@ describe('serviceList', () => {
         serviceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/searchOperators',
+            Location: '/reuseOperatorGroup',
         });
     });
 

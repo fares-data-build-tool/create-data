@@ -314,55 +314,95 @@ describe('searchOperators', () => {
         });
     });
 
-    it.each([
-        ['/howManyProducts', 'geoZone'],
-        ['/multipleOperatorsServiceList', 'multipleServices'],
-    ])(
-        'should redirect to %s when the user has successfully selected operators for a %s multi op ticket',
-        (redirect, ticketType) => {
-            const mockSelectedOperators: Operator[] = [
-                {
-                    nocCode: 'MCTR',
-                    name: 'Manchester Community Transport',
+    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a geoZone multi op ticket', () => {
+        const mockSelectedOperators: Operator[] = [
+            {
+                nocCode: 'MCTR',
+                name: 'Manchester Community Transport',
+            },
+            {
+                nocCode: 'MCTR2',
+                name: 'Manchester Community Transport 2',
+            },
+            {
+                nocCode: 'MCTR3',
+                name: 'Manchester Community Transport 3',
+            },
+        ];
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                continueButtonClick: 'Continue',
+                searchText: '',
+            },
+            session: {
+                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                    selectedOperators: mockSelectedOperators,
                 },
-                {
-                    nocCode: 'MCTR2',
-                    name: 'Manchester Community Transport 2',
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'geoZone',
                 },
-                {
-                    nocCode: 'MCTR3',
-                    name: 'Manchester Community Transport 3',
-                },
-            ];
-            const { req, res } = getMockRequestAndResponse({
-                body: {
-                    continueButtonClick: 'Continue',
-                    searchText: '',
-                },
-                session: {
-                    [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                        selectedOperators: mockSelectedOperators,
-                    },
-                    [TICKET_REPRESENTATION_ATTRIBUTE]: {
-                        name: ticketType,
-                    },
-                },
-            });
+            },
+        });
 
-            const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
-                selectedOperators: mockSelectedOperators,
-            };
+        const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
+            selectedOperators: mockSelectedOperators,
+        };
 
-            searchOperators(req, res);
+        searchOperators(req, res);
 
-            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-                req,
-                MULTIPLE_OPERATOR_ATTRIBUTE,
-                expectedSessionAttributeCall,
-            );
-            expect(res.writeHead).toBeCalledWith(302, {
-                Location: redirect,
-            });
-        },
-    );
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            MULTIPLE_OPERATOR_ATTRIBUTE,
+            expectedSessionAttributeCall,
+        );
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/saveOperatorGroup',
+        });
+    });
+
+    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a multipleServices multi op ticket', () => {
+        const mockSelectedOperators: Operator[] = [
+            {
+                nocCode: 'MCTR',
+                name: 'Manchester Community Transport',
+            },
+            {
+                nocCode: 'MCTR2',
+                name: 'Manchester Community Transport 2',
+            },
+            {
+                nocCode: 'MCTR3',
+                name: 'Manchester Community Transport 3',
+            },
+        ];
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                continueButtonClick: 'Continue',
+                searchText: '',
+            },
+            session: {
+                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                    selectedOperators: mockSelectedOperators,
+                },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'multipleServices',
+                },
+            },
+        });
+
+        const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
+            selectedOperators: mockSelectedOperators,
+        };
+
+        searchOperators(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            MULTIPLE_OPERATOR_ATTRIBUTE,
+            expectedSessionAttributeCall,
+        );
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/saveOperatorGroup',
+        });
+    });
 });
