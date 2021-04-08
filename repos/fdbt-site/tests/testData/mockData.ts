@@ -2,7 +2,6 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     STAGE_NAMES_ATTRIBUTE,
@@ -20,6 +19,8 @@ import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
 } from '../../src/constants/attributes';
+import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
+
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 import {
@@ -3393,58 +3394,96 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
         radioError: [],
         radios: [
             {
-                dataAriaControls: 'valid-days-required-conditional',
-                inputHint: {
-                    content: 'Select the days of the week the ticket is valid for',
-                    id: 'define-valid-days-inputHint',
-                },
                 id: 'valid-days-required',
-                inputErrors: [],
-                inputType: 'checkbox',
-                inputs: [
-                    { id: 'monday', label: 'Monday', name: 'validDays', defaultChecked: false },
-                    { id: 'tuesday', label: 'Tuesday', name: 'validDays', defaultChecked: false },
-                    { id: 'wednesday', label: 'Wednesday', name: 'validDays', defaultChecked: false },
-                    { id: 'thursday', label: 'Thursday', name: 'validDays', defaultChecked: false },
-                    { id: 'friday', label: 'Friday', name: 'validDays', defaultChecked: false },
-                    { id: 'saturday', label: 'Saturday', name: 'validDays', defaultChecked: false },
-                    { id: 'sunday', label: 'Sunday', name: 'validDays', defaultChecked: false },
-                    { id: 'bankHoliday', label: 'Bank holiday', name: 'validDays', defaultChecked: false },
-                ],
-                label: 'Yes - define new time restriction',
                 name: 'timeRestrictionChoice',
                 value: 'Yes',
-            },
-            {
-                dataAriaControls: 'premade-time-restriction',
-                id: 'premade-time-restriction-yes',
-                inputErrors: [],
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes - define new time restriction',
                 inputHint: {
-                    content: 'Select a saved time restriction to use',
-                    id: 'choose-time-restriction-hint',
+                    id: 'define-valid-days-inputHint',
+                    content: 'Select the days of the week the ticket is valid for',
                 },
-                inputType: 'dropdown',
+                inputType: 'checkbox',
                 inputs: [
                     {
-                        contents: [
-                            {
-                                day: 'monday',
-                                timeBands: [
-                                    {
-                                        endTime: '1000',
-                                        startTime: '0900',
-                                    },
-                                ],
-                            },
-                        ],
-                        name: 'Test Time restriction',
+                        id: 'monday',
+                        name: 'validDays',
+                        label: 'Monday',
+                        defaultChecked: false,
+                    },
+                    {
+                        id: 'tuesday',
+                        name: 'validDays',
+                        label: 'Tuesday',
+                        defaultChecked: false,
+                    },
+                    {
+                        id: 'wednesday',
+                        name: 'validDays',
+                        label: 'Wednesday',
+                        defaultChecked: false,
+                    },
+                    {
+                        id: 'thursday',
+                        name: 'validDays',
+                        label: 'Thursday',
+                        defaultChecked: false,
+                    },
+                    {
+                        id: 'friday',
+                        name: 'validDays',
+                        label: 'Friday',
+                        defaultChecked: false,
+                    },
+                    {
+                        id: 'saturday',
+                        name: 'validDays',
+                        label: 'Saturday',
+                        defaultChecked: false,
+                    },
+                    {
+                        id: 'sunday',
+                        name: 'validDays',
+                        label: 'Sunday',
+                        defaultChecked: false,
+                    },
+                    {
+                        id: 'bankHoliday',
+                        name: 'validDays',
+                        label: 'Bank holiday',
+                        defaultChecked: false,
                     },
                 ],
-                label: 'Yes - reuse a saved time restriction',
+                inputErrors: [],
+            },
+
+            {
+                id: 'premade-time-restriction-yes',
                 name: 'timeRestrictionChoice',
                 value: 'Premade',
+                label: 'Yes - reuse a saved time restriction',
+                inputHint: {
+                    id: 'choose-time-restriction-hint',
+                    content: 'Select a saved time restriction to use',
+                },
+                inputType: 'dropdown',
+                dataAriaControls: 'premade-time-restriction',
+                inputs: [
+                    {
+                        id: 'premade-time-restriction-0',
+                        name: 'Test Time restriction',
+                        label: 'Test Time restriction',
+                    },
+                ],
+                inputErrors: [],
+                selectIdentifier: 'timeRestriction',
             },
-            { id: 'valid-days-not-required', label: 'No', name: 'timeRestrictionChoice', value: 'No' },
+            {
+                id: 'valid-days-not-required',
+                name: 'timeRestrictionChoice',
+                value: 'No',
+                label: 'No',
+            },
         ],
     },
 ];
@@ -3901,4 +3940,225 @@ export const mockFullTimeRestrictions: FullTimeRestrictionAttribute = {
         },
     ],
     errors: [],
+};
+
+export const mockFieldSetForSaveOperatorGroup: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'save-operators-hidden-heading',
+        content: 'Do you want to save your group of operators for later use?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'yes-save',
+            name: 'saveGroup',
+            value: 'yes',
+            dataAriaControls: 'save-operators-required-conditional',
+            label: 'Yes',
+            inputHint: {
+                id: 'save-group-name-hint',
+                content: 'Provide a name to remember your group of operators by',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'operator-group-name-input',
+                    name: 'groupName',
+                    label: 'Operator group name',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+        { id: 'no-save', name: 'saveGroup', value: 'no', label: 'No' },
+    ],
+    radioError: [],
+};
+
+export const mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'save-operators-hidden-heading',
+        content: 'Do you want to save your group of operators for later use?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'yes-save',
+            name: 'saveGroup',
+            value: 'yes',
+            dataAriaControls: 'save-operators-required-conditional',
+            label: 'Yes',
+            inputHint: {
+                id: 'save-group-name-hint',
+                content: 'Provide a name to remember your group of operators by',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'operator-group-name-input',
+                    name: 'groupName',
+                    label: 'Operator group name',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+        { id: 'no-save', name: 'saveGroup', value: 'no', label: 'No' },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the options below',
+            id: 'yes-save',
+        },
+    ],
+};
+
+export const mockFieldSetForSaveOperatorGroupWithErrorsIfNameMissing: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'save-operators-hidden-heading',
+        content: 'Do you want to save your group of operators for later use?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'yes-save',
+            name: 'saveGroup',
+            value: 'yes',
+            dataAriaControls: 'save-operators-required-conditional',
+            label: 'Yes',
+            inputHint: {
+                id: 'save-group-name-hint',
+                content: 'Provide a name to remember your group of operators by',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'operator-group-name-input',
+                    name: 'groupName',
+                    label: 'Operator group name',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Provide a name for the operator group',
+                    id: 'operator-group-name-input',
+                },
+            ],
+        },
+        { id: 'no-save', name: 'saveGroup', value: 'no', label: 'No' },
+    ],
+    radioError: [],
+};
+
+export const mockFieldSetForReuseOperatorGroup: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operator-group-heading',
+        content: 'Do you want to reuse a saved operator group?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'reuse-operator-group-yes',
+            name: 'reuseGroupChoice',
+            value: 'Yes',
+            label: 'Yes',
+            inputHint: {
+                id: 'choose-time-restriction-hint',
+                content: 'Select an operator group from the dropdown',
+                hidden: true,
+            },
+            inputType: 'dropdown',
+            dataAriaControls: 'reuse-operator-group',
+            inputs: [{ id: 'operator-group-0', name: 'Best Ops', label: 'Best Ops' }],
+            inputErrors: [],
+            selectIdentifier: 'premadeOperatorGroup',
+        },
+        {
+            id: 'reuse-operator-group-no',
+            name: 'reuseGroupChoice',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockFieldSetForReuseOperatorGroupWithErrorsIfRadioNotSelected: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operator-group-heading',
+        content: 'Do you want to reuse a saved operator group?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'reuse-operator-group-yes',
+            name: 'reuseGroupChoice',
+            value: 'Yes',
+            label: 'Yes',
+            inputHint: {
+                id: 'choose-time-restriction-hint',
+                content: 'Select an operator group from the dropdown',
+                hidden: true,
+            },
+            inputType: 'dropdown',
+            dataAriaControls: 'reuse-operator-group',
+            inputs: [{ id: 'operator-group-0', name: 'Best Ops', label: 'Best Ops' }],
+            inputErrors: [],
+            selectIdentifier: 'premadeOperatorGroup',
+        },
+        {
+            id: 'reuse-operator-group-no',
+            name: 'reuseGroupChoice',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the options below',
+            id: 'conditional-form-group',
+        },
+    ],
+};
+
+export const mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operator-group-heading',
+        content: 'Do you want to reuse a saved operator group?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'reuse-operator-group-yes',
+            name: 'reuseGroupChoice',
+            value: 'Yes',
+            label: 'Yes',
+            inputHint: {
+                id: 'choose-time-restriction-hint',
+                content: 'Select an operator group from the dropdown',
+                hidden: true,
+            },
+            inputType: 'dropdown',
+            dataAriaControls: 'reuse-operator-group',
+            inputs: [{ id: 'operator-group-0', name: 'Best Ops', label: 'Best Ops' }],
+            inputErrors: [
+                {
+                    errorMessage: 'Choose a premade operator group from the options below',
+                    id: 'premadeOperatorGroup',
+                },
+            ],
+            selectIdentifier: 'premadeOperatorGroup',
+        },
+        {
+            id: 'reuse-operator-group-no',
+            name: 'reuseGroupChoice',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
 };

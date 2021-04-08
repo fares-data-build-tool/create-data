@@ -47,11 +47,11 @@ exports[`pages fareType should render correctly 1`] = `
               Array [
                 Object {
                   "fareType": "multiOperator",
-                  "label": "Multi-operator - A ticket that covers more than one operator",
+                  "label": "Multi-operator - a ticket that covers more than one operator",
                 },
                 Object {
                   "fareType": "schoolService",
-                  "label": "School Service - A ticket available to pupils in full-time education",
+                  "label": "School service - a ticket available to pupils in full-time education",
                 },
               ]
             }
@@ -59,19 +59,19 @@ exports[`pages fareType should render correctly 1`] = `
               Array [
                 Object {
                   "fareType": "single",
-                  "label": "Single Ticket - Point to Point",
+                  "label": "Single ticket - point to point",
                 },
                 Object {
                   "fareType": "period",
-                  "label": "Period Ticket (Day, Week, Month and Annual)",
+                  "label": "Period ticket (day, week, month and annual)",
                 },
                 Object {
                   "fareType": "return",
-                  "label": "Return Ticket - Single Service",
+                  "label": "Return ticket - single service",
                 },
                 Object {
                   "fareType": "flatFare",
-                  "label": "Flat Fare Ticket - Single Journey",
+                  "label": "Flat fare ticket - single journey",
                 },
               ]
             }
@@ -157,11 +157,11 @@ exports[`pages fareType should render error messaging when errors are passed to 
               Array [
                 Object {
                   "fareType": "multiOperator",
-                  "label": "Multi-operator - A ticket that covers more than one operator",
+                  "label": "Multi-operator - a ticket that covers more than one operator",
                 },
                 Object {
                   "fareType": "schoolService",
-                  "label": "School Service - A ticket available to pupils in full-time education",
+                  "label": "School service - a ticket available to pupils in full-time education",
                 },
               ]
             }
@@ -169,19 +169,19 @@ exports[`pages fareType should render error messaging when errors are passed to 
               Array [
                 Object {
                   "fareType": "single",
-                  "label": "Single Ticket - Point to Point",
+                  "label": "Single ticket - point to point",
                 },
                 Object {
                   "fareType": "period",
-                  "label": "Period Ticket (Day, Week, Month and Annual)",
+                  "label": "Period ticket (day, week, month and annual)",
                 },
                 Object {
                   "fareType": "return",
-                  "label": "Return Ticket - Single Service",
+                  "label": "Return ticket - single service",
                 },
                 Object {
                   "fareType": "flatFare",
-                  "label": "Flat Fare Ticket - Single Journey",
+                  "label": "Flat fare ticket - single journey",
                 },
               ]
             }

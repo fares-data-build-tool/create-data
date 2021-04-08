@@ -68,6 +68,11 @@ export interface Operator {
     nocCode: string;
 }
 
+export interface OperatorGroup {
+    name: string;
+    operators: Operator[];
+}
+
 export interface MultiOperatorInfo {
     nocCode: string;
     services: string[];
@@ -662,6 +667,8 @@ export interface ServiceType {
     lineName: string;
     startDate: string;
     description: string;
+    origin?: string;
+    destination?: string;
     serviceCode: string;
     dataSource?: string;
 }
@@ -736,6 +743,7 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
     inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits' | 'dropdown';
     inputs: BaseReactElement[] | PremadeTimeRestriction[];
     inputErrors: ErrorInfo[];
+    selectIdentifier?: string;
 }
 
 export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;

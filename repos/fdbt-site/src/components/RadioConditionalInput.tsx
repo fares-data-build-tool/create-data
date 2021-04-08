@@ -8,7 +8,6 @@ import {
     RadioWithConditionalInputs,
     RadioButton,
     RadioConditionalInputFieldset,
-    PremadeTimeRestriction,
 } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
@@ -286,7 +285,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
     );
 };
 
-const renderConditionalTimeRestrictionDropdown = (radio: RadioWithConditionalInputs): ReactElement => {
+const renderConditionalDropdown = (radio: RadioWithConditionalInputs): ReactElement => {
     const error = radio.inputErrors.length > 0;
 
     return (
@@ -309,17 +308,18 @@ const renderConditionalTimeRestrictionDropdown = (radio: RadioWithConditionalInp
                         errorId={error ? radio.inputErrors[0].id : ''}
                         errorClass=""
                     >
-                        <select className="govuk-select" id="time-restriction" name="timeRestriction" defaultValue="">
+                        <select
+                            className="govuk-select"
+                            id={radio.selectIdentifier || 'conditional-dropdown'}
+                            name={radio.selectIdentifier || 'conditional-dropdown'}
+                            defaultValue=""
+                        >
                             <option value="" disabled>
                                 Select One
                             </option>
-                            {(radio.inputs as PremadeTimeRestriction[]).map(timeRestriction => (
-                                <option
-                                    key={`${timeRestriction.name}`}
-                                    value={`${timeRestriction.name}`}
-                                    className="govuk-select"
-                                >
-                                    {timeRestriction.name}
+                            {(radio.inputs as BaseReactElement[]).map(input => (
+                                <option key={`${input.name}`} value={`${input.name}`} className="govuk-select">
+                                    {input.name}
                                 </option>
                             ))}
                         </select>
@@ -375,7 +375,7 @@ const renderConditionalRadioButton = (
         text: renderConditionalTextInput,
         textWithUnits: renderConditionalTextWithUnitsInput,
         date: renderConditionalDateInputs,
-        dropdown: renderConditionalTimeRestrictionDropdown,
+        dropdown: renderConditionalDropdown,
     };
 
     return (
@@ -428,7 +428,7 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
     const radioError = fieldset.radioError.length > 0;
 
     return (
-        <div className={`govuk-form-group ${radioError ? 'govuk-form-group--error' : ''}`}>
+        <div className={`govuk-form-group ${radioError ? 'govuk-form-group--error' : ''}`} id="conditional-form-group">
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>
                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2

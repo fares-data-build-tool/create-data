@@ -41,29 +41,29 @@ const radioProps: FareTypeRadioProps = {
     standardFares: [
         {
             fareType: 'single',
-            label: 'Single Ticket - Point to Point',
+            label: 'Single ticket - point to point',
         },
         {
             fareType: 'period',
-            label: 'Period Ticket (Day, Week, Month and Annual)',
+            label: 'Period ticket (day, week, month and annual)',
         },
         {
             fareType: 'return',
-            label: 'Return Ticket - Single Service',
+            label: 'Return ticket - single service',
         },
         {
             fareType: 'flatFare',
-            label: 'Flat Fare Ticket - Single Journey',
+            label: 'Flat fare ticket - single journey',
         },
     ],
     otherFares: [
         {
             fareType: 'multiOperator',
-            label: 'Multi-operator - A ticket that covers more than one operator',
+            label: 'Multi-operator - a ticket that covers more than one operator',
         },
         {
             fareType: 'schoolService',
-            label: 'School Service - A ticket available to pupils in full-time education',
+            label: 'School service - a ticket available to pupils in full-time education',
         },
     ],
 };

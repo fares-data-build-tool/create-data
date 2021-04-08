@@ -57,7 +57,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
         if (fareType === 'multiOperator') {
-            redirectTo(res, '/searchOperators');
+            redirectTo(res, '/reuseOperatorGroup');
             return;
         }
 

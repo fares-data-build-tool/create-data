@@ -75,22 +75,7 @@ describe('pages', () => {
 
             it('should return fieldsets with time restrictions when some are found', () => {
                 const emptyErrors: ErrorInfo[] = [];
-                const fieldsets = getFieldsets(emptyErrors, [
-                    {
-                        name: 'Test Time restriction',
-                        contents: [
-                            {
-                                day: 'monday',
-                                timeBands: [
-                                    {
-                                        startTime: '0900',
-                                        endTime: '1000',
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ]);
+                const fieldsets = getFieldsets(emptyErrors, ['Test Time restriction']);
                 expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsets);
             });
         });

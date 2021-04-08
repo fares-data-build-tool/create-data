@@ -3,6 +3,7 @@
 exports[`RadioConditionalInput should hide the radio button heading when the fieldset has a hidden flag set 1`] = `
 <div
   className="govuk-form-group "
+  id="conditional-form-group"
 >
   <fieldset
     aria-describedby="define-passenger-age-range"
@@ -74,6 +75,7 @@ exports[`RadioConditionalInput should hide the radio button heading when the fie
 exports[`RadioConditionalInput should render a set of radio buttons with conditional inputs when given a fieldset referencing inputs 1`] = `
 <div
   className="govuk-form-group "
+  id="conditional-form-group"
 >
   <fieldset
     aria-describedby="define-passenger-age-range"
@@ -189,6 +191,7 @@ exports[`RadioConditionalInput should render a set of radio buttons with conditi
 exports[`RadioConditionalInput should render an ordinary set of radio buttons when given a base fieldset 1`] = `
 <div
   className="govuk-form-group "
+  id="conditional-form-group"
 >
   <fieldset
     aria-describedby="define-passenger-age-range"
