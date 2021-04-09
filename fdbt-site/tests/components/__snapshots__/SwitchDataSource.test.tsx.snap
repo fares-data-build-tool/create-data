@@ -11,6 +11,11 @@ exports[`SwitchDataSource should render the button disabled 1`] = `
     type="hidden"
     value="/service"
   />
+  <input
+    name="attributeVersion"
+    type="hidden"
+    value="baseOperator"
+  />
   <button
     className="govuk-button govuk-button--secondary"
     disabled={true}
@@ -33,6 +38,11 @@ exports[`SwitchDataSource should render the button not disabled 1`] = `
     name="referer"
     type="hidden"
     value="/service"
+  />
+  <input
+    name="attributeVersion"
+    type="hidden"
+    value="baseOperator"
   />
   <button
     className="govuk-button govuk-button--secondary"

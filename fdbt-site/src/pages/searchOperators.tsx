@@ -6,8 +6,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
-import { getSearchOperatorsByNocRegion, getSearchOperatorsBySchemeOpRegion } from '../data/auroradb';
-import { getAndValidateNoc, getAndValidateSchemeOpRegion, getCsrfToken, isSchemeOperator } from '../utils';
+import { getSearchOperatorsBySearchText } from '../data/auroradb';
+import { getCsrfToken } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
@@ -265,9 +265,6 @@ const SearchOperators = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SearchOperatorProps }> => {
     const csrfToken = getCsrfToken(ctx);
 
-    const schemeOp = isSchemeOperator(ctx);
-    const searchParam = getAndValidateSchemeOpRegion(ctx) || getAndValidateNoc(ctx);
-
     let errors: ErrorInfo[] = [];
     let searchText = '';
     const searchResults: Operator[] = [];
@@ -300,16 +297,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 id: searchInputId,
             });
         }
-        const results = schemeOp
-            ? await getSearchOperatorsBySchemeOpRegion(searchText, searchParam)
-            : await getSearchOperatorsByNocRegion(searchText, searchParam);
+        const results = await getSearchOperatorsBySearchText(searchText);
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
         if (!operatorAttribute?.name) {
             throw new Error('Could not extract the necessary operator info for the searchOperators page.');
         }
 
-        results.forEach(operator => {
+        results.forEach((operator: Operator) => {
             if (operator.name !== operatorAttribute.name) {
                 searchResults.push(operator);
             }
