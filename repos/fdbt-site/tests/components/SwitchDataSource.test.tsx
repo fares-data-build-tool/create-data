@@ -8,6 +8,7 @@ describe('SwitchDataSource', () => {
             <SwitchDataSource
                 dataSourceAttribute={{ source: 'bods', hasTnds: true, hasBods: true }}
                 pageUrl="/service"
+                attributeVersion="baseOperator"
                 csrfToken="token"
             />,
         );
@@ -20,6 +21,7 @@ describe('SwitchDataSource', () => {
             <SwitchDataSource
                 dataSourceAttribute={{ source: 'bods', hasTnds: false, hasBods: true }}
                 pageUrl="/service"
+                attributeVersion="baseOperator"
                 csrfToken="token"
             />,
         );

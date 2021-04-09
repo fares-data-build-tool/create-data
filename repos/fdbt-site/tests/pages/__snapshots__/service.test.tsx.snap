@@ -101,6 +101,7 @@ exports[`pages service should render correctly when data source is bods 1`] = `
     />
   </CsrfForm>
   <SwitchDataSource
+    attributeVersion="baseOperator"
     csrfToken=""
     dataSourceAttribute={
       Object {
@@ -215,6 +216,7 @@ exports[`pages service should render correctly when data source is tnds 1`] = `
     />
   </CsrfForm>
   <SwitchDataSource
+    attributeVersion="baseOperator"
     csrfToken=""
     dataSourceAttribute={
       Object {

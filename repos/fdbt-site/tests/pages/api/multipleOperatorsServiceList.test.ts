@@ -1,8 +1,13 @@
+import {
+    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import multipleOperatorsServiceList, {
     getSelectedServicesAndNocCodeFromRequest,
 } from '../../../src/pages/api/multipleOperatorsServiceList';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../../src/constants/attributes';
+
 import * as sessions from '../../../src/utils/sessions';
 
 describe('multipleOperatorsServiceList', () => {
@@ -73,7 +78,7 @@ describe('multipleOperatorsServiceList', () => {
         });
     });
 
-    it('redirects to /howManyProducts if input is valid and the user is entering details for a period ticket, and the user has completed all of their multiple operators services', () => {
+    it('redirects to /howManyProducts if input is valid with no errors, and deletes TXC multiOp session attribute', () => {
         const serviceInfo = {
             'MCTR#237#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
             'MCTR#391#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
@@ -126,6 +131,7 @@ describe('multipleOperatorsServiceList', () => {
             { nocCode: 'N1', services: ['service one', 'service two'] },
             { nocCode: 'N2', services: ['service one', 'service two'] },
         ]);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, undefined);
     });
     describe('getSelectedServicesAndNocCodeFromRequest', () => {
         it('returns an object with services and nocCode from a request', () => {
