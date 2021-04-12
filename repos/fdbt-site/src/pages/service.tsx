@@ -85,7 +85,12 @@ const Service = ({
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
-        <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/service" csrfToken={csrfToken} />
+        <SwitchDataSource
+            dataSourceAttribute={dataSourceAttribute}
+            pageUrl="/service"
+            attributeVersion="baseOperator"
+            csrfToken={csrfToken}
+        />
     </TwoThirdsLayout>
 );
 

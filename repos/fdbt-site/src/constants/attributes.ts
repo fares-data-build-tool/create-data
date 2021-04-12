@@ -80,6 +80,8 @@ export const OPERATOR_ATTRIBUTE = 'fdbt-operator';
 
 export const TXC_SOURCE_ATTRIBUTE = 'fdbt-txc-source';
 
+export const MULTI_OP_TXC_SOURCE_ATTRIBUTE = 'fdbt-multi-op-txc-source';
+
 export const REUSE_OPERATOR_GROUP_ATTRIBUTE = 'fdbt-reuse-operator-group';
 
 export const SAVE_OPERATOR_GROUP_ATTRIBUTE = 'fdbt-save-operator-group';

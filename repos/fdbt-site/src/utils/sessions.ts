@@ -106,6 +106,7 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     REUSE_OPERATOR_GROUP_ATTRIBUTE,
     SAVE_OPERATOR_GROUP_ATTRIBUTE,
+    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
 
 import * as attributes from '../constants/attributes';
@@ -157,6 +158,7 @@ interface SessionAttributeTypes {
     [USER_ATTRIBUTE]: UserAttribute | WithErrors<UserAttribute>;
     [OPERATOR_ATTRIBUTE]: OperatorAttribute | WithErrors<OperatorAttribute>;
     [TXC_SOURCE_ATTRIBUTE]: TxcSourceAttribute;
+    [MULTI_OP_TXC_SOURCE_ATTRIBUTE]: TxcSourceAttribute;
     [REUSE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [SAVE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
 }

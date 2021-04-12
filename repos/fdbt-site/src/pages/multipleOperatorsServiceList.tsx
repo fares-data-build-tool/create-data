@@ -1,20 +1,27 @@
 import React, { ReactElement } from 'react';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../constants/attributes';
+import {
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
+} from '../constants/attributes';
 import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource, getAllServicesByNocCode } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
     MultiOperatorInfo,
     ServicesInfo,
     MultipleOperatorsAttribute,
+    TxcSourceAttribute,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
+import { redirectTo } from './api/apiUtils';
+import SwitchDataSource from '../components/SwitchDataSource';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
 const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';
@@ -25,6 +32,7 @@ interface MultipleOperatorsServiceListProps {
     errors: ErrorInfo[];
     operatorName: string;
     nocCode: string;
+    dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
 }
 
@@ -35,8 +43,15 @@ const MultipleOperatorsServiceList = ({
     errors,
     operatorName,
     nocCode,
+    dataSourceAttribute,
 }: MultipleOperatorsServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
+        <SwitchDataSource
+            dataSourceAttribute={dataSourceAttribute}
+            pageUrl="/multipleOperatorsServiceList"
+            attributeVersion="multiOperator"
+            csrfToken={csrfToken}
+        />
         <CsrfForm action="/api/multipleOperatorsServiceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
@@ -57,8 +72,15 @@ const MultipleOperatorsServiceList = ({
                             id="select-all-button"
                             className="govuk-button govuk-button--secondary"
                         />
-                        <span className="govuk-hint" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset.
+                        <span className="govuk-hint" id="txc-hint">
+                            This data is taken from the{' '}
+                            <b>
+                                {dataSourceAttribute.source === 'tnds'
+                                    ? 'Traveline National Dataset (TNDS)'
+                                    : 'Bus Open Data Service (BODS)'}
+                            </b>
+                            . If the service you are looking for is not listed, contact the BODS help desk for advice{' '}
+                            <a href="/contact">here</a>.
                         </span>
                         <FormElementWrapper
                             errors={errors}
@@ -70,11 +92,7 @@ const MultipleOperatorsServiceList = ({
                                 {serviceList.map((service, index) => {
                                     const { lineName, startDate, serviceCode, description, checked } = service;
 
-                                    let checkboxTitles = `${lineName} - ${description} (Start Date ${startDate})`;
-
-                                    if (checkboxTitles.length > 110) {
-                                        checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
-                                    }
+                                    const checkboxTitles = `${lineName} - ${description} (Start Date ${startDate})`;
                                     const checkBoxValues = `${description}`;
 
                                     return (
@@ -144,15 +162,39 @@ export const getServerSideProps = async (
         throw new Error('Necessary operator not found to show multipleOperatorsServiceList page');
     }
 
-    const services = await getServicesByNocCodeAndDataSource(operatorToUse.nocCode, 'tnds');
+    let dataSourceAttribute = getSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE);
 
-    if (!services) {
+    if (!dataSourceAttribute) {
+        const services = await getAllServicesByNocCode(operatorToUse.nocCode);
+        if (services.length === 0) {
+            if (ctx.res) {
+                redirectTo(ctx.res, '/noServices');
+            } else {
+                throw new Error(`No services found for NOC Code: ${operatorToUse.nocCode}`);
+            }
+        }
+        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
+        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
+        updateSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
+            source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
+            hasBods: hasBodsServices,
+            hasTnds: hasTndsServices,
+        });
+        dataSourceAttribute = getSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
+    }
+
+    const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(
+        operatorToUse.nocCode,
+        dataSourceAttribute.source,
+    );
+
+    if (!chosenDataSourceServices) {
         throw new Error(`No services found for ${operatorToUse.nocCode}`);
     }
 
     const { selectAll } = ctx.query;
 
-    const serviceList: ServicesInfo[] = services.map(service => {
+    const serviceList: ServicesInfo[] = chosenDataSourceServices.map(service => {
         return {
             ...service,
             checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
@@ -166,6 +208,7 @@ export const getServerSideProps = async (
             errors: isMultiOperatorInfoWithErrors(completedOperatorInfo) ? completedOperatorInfo.errors : [],
             operatorName: operatorToUse.name,
             nocCode: operatorToUse.nocCode,
+            dataSourceAttribute,
             csrfToken,
         },
     };

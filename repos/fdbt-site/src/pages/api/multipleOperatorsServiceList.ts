@@ -1,6 +1,10 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/attributes';
+import {
+    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+} from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
@@ -86,6 +90,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, newListOfMultiOperatorsData);
         const numberOfOperators = (getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
             .selectedOperators.length;
+        // below update to session attribute is to reset it for the next operator in the list
+        updateSessionAttribute(req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, undefined);
         if (newListOfMultiOperatorsData.length !== numberOfOperators) {
             redirectTo(res, '/multipleOperatorsServiceList');
             return;
