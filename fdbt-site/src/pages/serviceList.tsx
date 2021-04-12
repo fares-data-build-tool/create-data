@@ -85,13 +85,21 @@ const ServiceList = ({
                         >
                             <div className="govuk-checkboxes">
                                 {serviceList.map((service, index) => {
-                                    const { lineName, startDate, serviceCode, description, checked } = service;
+                                    const {
+                                        lineName,
+                                        startDate,
+                                        serviceCode,
+                                        description,
+                                        checked,
+                                        origin,
+                                        destination,
+                                    } = service;
 
                                     const checkboxTitles =
                                         dataSourceAttribute.source === 'tnds'
                                             ? `${lineName} - ${description} (Start Date ${startDate})`
-                                            : `${service.lineName} ${service.origin || 'N/A'} - ${service.destination ||
-                                                  'N/A'} (Start date ${service.startDate})`;
+                                            : `${lineName} ${origin || 'N/A'} - ${destination ||
+                                                  'N/A'} (Start date ${startDate})`;
 
                                     const checkBoxValues = `${description}`;
 

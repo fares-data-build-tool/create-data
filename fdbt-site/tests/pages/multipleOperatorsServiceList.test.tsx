@@ -86,7 +86,7 @@ describe('pages', () => {
             jest.resetAllMocks();
         });
 
-        it('should render correctly', () => {
+        it('should render correctly with tnds data source', () => {
             const tree = shallow(
                 <MultipleOperatorsServiceList
                     serviceList={mockServiceList}
@@ -97,6 +97,25 @@ describe('pages', () => {
                     dataSourceAttribute={{
                         source: 'tnds',
                         hasTnds: true,
+                        hasBods: true,
+                    }}
+                    nocCode="TO"
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly with bods data source', () => {
+            const tree = shallow(
+                <MultipleOperatorsServiceList
+                    serviceList={mockServiceList}
+                    buttonText="Select All"
+                    errors={[]}
+                    csrfToken=""
+                    operatorName="Test Operator"
+                    dataSourceAttribute={{
+                        source: 'bods',
+                        hasTnds: false,
                         hasBods: true,
                     }}
                     nocCode="TO"
