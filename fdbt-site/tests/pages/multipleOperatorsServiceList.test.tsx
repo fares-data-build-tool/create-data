@@ -3,9 +3,13 @@ import { shallow } from 'enzyme';
 import MultipleOperatorsServiceList, { getServerSideProps } from '../../src/pages/multipleOperatorsServiceList';
 import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
+import * as sessions from '../../src/utils/sessions';
 import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
-
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
+} from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
@@ -46,25 +50,36 @@ describe('pages', () => {
                 startDate: '05/02/2020',
                 description: 'IW Bus Service 123',
                 serviceCode: 'NW_05_BLAC_123_1',
+                origin: 'Manchester',
+                destination: 'Leeds',
+                dataSource: 'tnds',
             },
             {
                 lineName: 'X1',
                 startDate: '06/02/2020',
                 description: 'Big Blue Bus Service X1',
                 serviceCode: 'NW_05_BLAC_X1_1',
+                origin: 'Bolton',
+                destination: 'Wigan',
+                dataSource: 'tnds',
             },
             {
                 lineName: 'Infinity Line',
                 startDate: '07/02/2020',
                 description: 'This is some kind of bus service',
                 serviceCode: 'WY_13_IWBT_07_1',
+                origin: 'Manchester',
+                destination: 'York',
+                dataSource: 'tnds',
             },
         ];
 
         const getServicesByNocCodeAndDataSourceSpy = jest.spyOn(aurora, 'getServicesByNocCodeAndDataSource');
+        const getAllServicesByNocCodeSpy = jest.spyOn(aurora, 'getAllServicesByNocCode');
 
         beforeEach(() => {
             getServicesByNocCodeAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockServices));
+            getAllServicesByNocCodeSpy.mockImplementation(() => Promise.resolve(mockServices));
         });
 
         afterEach(() => {
@@ -79,6 +94,11 @@ describe('pages', () => {
                     errors={[]}
                     csrfToken=""
                     operatorName="Test Operator"
+                    dataSourceAttribute={{
+                        source: 'tnds',
+                        hasTnds: true,
+                        hasBods: true,
+                    }}
                     nocCode="TO"
                 />,
             );
@@ -94,6 +114,11 @@ describe('pages', () => {
                     csrfToken=""
                     operatorName="Test Operator"
                     nocCode="TO"
+                    dataSourceAttribute={{
+                        source: 'tnds',
+                        hasTnds: true,
+                        hasBods: false,
+                    }}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -249,6 +274,27 @@ describe('pages', () => {
                 });
                 const result = await getServerSideProps(ctx);
                 expect(result.props.errors).toStrictEqual(mockError);
+            });
+
+            it('should create a multi op TXC attribute according to whether the chosen operators NOC has services', async () => {
+                const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+                const ctx = getMockContext({
+                    session: {
+                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                            selectedOperators: [
+                                { name: 'Test1', nocCode: 'N1' },
+                                { name: 'Test2', nocCode: 'N2' },
+                                { name: 'Test3', nocCode: 'N3' },
+                            ],
+                        },
+                    },
+                });
+                await getServerSideProps(ctx);
+                expect(updateSessionAttributeSpy).toBeCalledWith(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
+                    source: 'tnds',
+                    hasBods: false,
+                    hasTnds: true,
+                });
             });
         });
     });

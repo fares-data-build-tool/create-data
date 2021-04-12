@@ -53,6 +53,7 @@ describe('pages', () => {
                 origin: 'Manchester',
                 destination: 'Leeds',
                 serviceCode: 'NW_05_BLAC_123_1',
+                dataSource: 'tnds',
             },
             {
                 lineName: 'X1',
@@ -60,6 +61,7 @@ describe('pages', () => {
                 description: 'Big Blue Bus Service X1',
                 origin: 'Edinburgh',
                 serviceCode: 'NW_05_BLAC_X1_1',
+                dataSource: 'tnds',
             },
             {
                 lineName: 'Infinity Line',
@@ -67,6 +69,7 @@ describe('pages', () => {
                 description: 'This is some kind of bus service',
                 destination: 'London',
                 serviceCode: 'WY_13_IWBT_07_1',
+                dataSource: 'tnds',
             },
         ];
 

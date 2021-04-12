@@ -588,48 +588,21 @@ export const getTimeRestrictionByNameAndNoc = async (
     }
 };
 
-export const getSearchOperatorsByNocRegion = async (searchText: string, nocCode: string): Promise<Operator[]> => {
+export const getSearchOperatorsBySearchText = async (searchText: string): Promise<Operator[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operators for given search text and noc',
-        nocCode,
         search: searchText,
     });
 
-    const nocCodeParameter = replaceInternalNocCode(nocCode);
-
     const searchQuery = `
         SELECT nocCode, operatorPublicName AS name FROM nocTable WHERE nocCode IN (
-                SELECT DISTINCT nocCode FROM txcOperatorLine WHERE dataSource = 'tnds' AND regionCode IN (
-                    SELECT DISTINCT regionCode FROM txcOperatorLine WHERE nocCode = ? AND dataSource = 'tnds'
-                )
+            SELECT DISTINCT nocCode FROM txcOperatorLine
         ) AND operatorPublicName LIKE ?
     `;
 
     try {
-        return await executeQuery<Operator[]>(searchQuery, [nocCodeParameter, `%${searchText}%`]);
-    } catch (error) {
-        throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
-    }
-};
-
-export const getSearchOperatorsBySchemeOpRegion = async (
-    searchText: string,
-    regionCode: string,
-): Promise<Operator[]> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving operators for given search text and noc',
-        regionCode,
-        search: searchText,
-    });
-
-    const searchQuery = `SELECT nocCode, operatorPublicName AS name FROM nocTable WHERE nocCode IN (
-        SELECT DISTINCT nocCode FROM txcOperatorLine WHERE regionCode = ?
-        ) AND operatorPublicName LIKE ? AND dataSource = 'tnds'`;
-
-    try {
-        return await executeQuery<Operator[]>(searchQuery, [regionCode, `%${searchText}%`]);
+        return await executeQuery<Operator[]>(searchQuery, [`%${searchText}%`]);
     } catch (error) {
         throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
     }
