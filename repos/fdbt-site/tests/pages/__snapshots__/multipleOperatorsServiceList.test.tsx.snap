@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages multipleOperatorsServiceList should render correctly 1`] = `
+exports[`pages multipleOperatorsServiceList should render correctly with bods data source 1`] = `
 <Component
   description="Multiple Operators Service List selection page of the Create Fares Data Service"
   title="Multiple Operators Service List - Create Fares Data Service"
@@ -11,8 +11,8 @@ exports[`pages multipleOperatorsServiceList should render correctly 1`] = `
     dataSourceAttribute={
       Object {
         "hasBods": true,
-        "hasTnds": true,
-        "source": "tnds",
+        "hasTnds": false,
+        "source": "bods",
       }
     }
     pageUrl="/multipleOperatorsServiceList"
@@ -62,7 +62,7 @@ exports[`pages multipleOperatorsServiceList should render correctly 1`] = `
           This data is taken from the
            
           <b>
-            Traveline National Dataset (TNDS)
+            Bus Open Data Service (BODS)
           </b>
           . If the service you are looking for is not listed, contact the BODS help desk for advice
            
@@ -98,7 +98,7 @@ exports[`pages multipleOperatorsServiceList should render correctly 1`] = `
                 className="govuk-label govuk-checkboxes__label"
                 htmlFor="checkbox-0"
               >
-                123 - IW Bus Service 123 (Start Date 05/02/2020)
+                123 N/A - N/A (Start date 05/02/2020)
               </label>
             </div>
             <div
@@ -117,7 +117,7 @@ exports[`pages multipleOperatorsServiceList should render correctly 1`] = `
                 className="govuk-label govuk-checkboxes__label"
                 htmlFor="checkbox-1"
               >
-                X1 - Big Blue Bus Service X1 (Start Date 06/02/2020)
+                X1 N/A - N/A (Start date 06/02/2020)
               </label>
             </div>
             <div
@@ -136,7 +136,7 @@ exports[`pages multipleOperatorsServiceList should render correctly 1`] = `
                 className="govuk-label govuk-checkboxes__label"
                 htmlFor="checkbox-2"
               >
-                Infinity Line - This is some kind of bus service (Start Date 07/02/2020)
+                Infinity Line N/A - N/A (Start date 07/02/2020)
               </label>
             </div>
           </div>
@@ -245,6 +245,159 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
               },
             ]
           }
+        >
+          <div
+            className="govuk-checkboxes"
+          >
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-123"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-0"
+                name="TO#123#NW_05_BLAC_123_1#05/02/2020"
+                type="checkbox"
+                value="IW Bus Service 123"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-0"
+              >
+                123 - IW Bus Service 123 (Start Date 05/02/2020)
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-X1"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-1"
+                name="TO#X1#NW_05_BLAC_X1_1#06/02/2020"
+                type="checkbox"
+                value="Big Blue Bus Service X1"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-1"
+              >
+                X1 - Big Blue Bus Service X1 (Start Date 06/02/2020)
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-Infinity Line"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-2"
+                name="TO#Infinity Line#WY_13_IWBT_07_1#07/02/2020"
+                type="checkbox"
+                value="This is some kind of bus service"
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-2"
+              >
+                Infinity Line - This is some kind of bus service (Start Date 07/02/2020)
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages multipleOperatorsServiceList should render correctly with tnds data source 1`] = `
+<Component
+  description="Multiple Operators Service List selection page of the Create Fares Data Service"
+  title="Multiple Operators Service List - Create Fares Data Service"
+>
+  <SwitchDataSource
+    attributeVersion="multiOperator"
+    csrfToken=""
+    dataSourceAttribute={
+      Object {
+        "hasBods": true,
+        "hasTnds": true,
+        "source": "tnds",
+      }
+    }
+    pageUrl="/multipleOperatorsServiceList"
+  />
+  <CsrfForm
+    action="/api/multipleOperatorsServiceList"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--s"
+        >
+          <h1
+            className="govuk-heading-l"
+            id="service-list-page-heading"
+          >
+            Which services on 
+            Test Operator
+             is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-heading-s"
+        >
+          Select all services that apply
+        </span>
+        <input
+          className="govuk-button govuk-button--secondary"
+          id="select-all-button"
+          name="selectAll"
+          type="submit"
+          value="Select All"
+        />
+        <span
+          className="govuk-hint"
+          id="txc-hint"
+        >
+          This data is taken from the
+           
+          <b>
+            Traveline National Dataset (TNDS)
+          </b>
+          . If the service you are looking for is not listed, contact the BODS help desk for advice
+           
+          <a
+            href="/contact"
+          >
+            here
+          </a>
+          .
+        </span>
+        <FormElementWrapper
+          addFormGroupError={false}
+          errorClass=""
+          errorId="checkbox-0"
+          errors={Array []}
         >
           <div
             className="govuk-checkboxes"

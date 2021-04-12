@@ -90,9 +90,21 @@ const MultipleOperatorsServiceList = ({
                         >
                             <div className="govuk-checkboxes">
                                 {serviceList.map((service, index) => {
-                                    const { lineName, startDate, serviceCode, description, checked } = service;
+                                    const {
+                                        lineName,
+                                        startDate,
+                                        serviceCode,
+                                        description,
+                                        checked,
+                                        origin,
+                                        destination,
+                                    } = service;
 
-                                    const checkboxTitles = `${lineName} - ${description} (Start Date ${startDate})`;
+                                    const checkboxTitles =
+                                        dataSourceAttribute.source === 'tnds'
+                                            ? `${lineName} - ${description} (Start Date ${startDate})`
+                                            : `${lineName} ${origin || 'N/A'} - ${destination ||
+                                                  'N/A'} (Start date ${startDate})`;
                                     const checkBoxValues = `${description}`;
 
                                     return (
