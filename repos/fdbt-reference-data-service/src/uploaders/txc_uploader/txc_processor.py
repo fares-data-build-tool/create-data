@@ -419,10 +419,7 @@ def download_from_s3_and_write_to_db(s3, cloudwatch, bucket, key, file_path, db_
             f"SUCCESS! Succesfully wrote contents of '{key}' from '{bucket}' bucket to database."
         )
 
-        put_metric_data_by_data_source(cloudwatch, data_source, 'FilesProcessedWithData', 1)
     else:
         logger.info(
             f"No data written to database for file '{key}' from '{bucket}' bucket."
         )
-
-        put_metric_data_by_data_source(cloudwatch, data_source, 'FilesProcessedNoData', 1)
