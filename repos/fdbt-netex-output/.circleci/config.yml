@@ -108,15 +108,19 @@ jobs:
 
   audit-netex-validator:
     docker:
-      - image: circleci/node:12
+      - image: circleci/python:3.8
     working_directory: ~/project
     steps:
       - attach_workspace:
           at: ~/project
       - run:
           command: |
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            pip install safety
             cd src/netex-validator
             npx audit-ci --moderate
+            safety check -r requirements.txt
 
   deploy-netex-validator-to-test:
     docker:
