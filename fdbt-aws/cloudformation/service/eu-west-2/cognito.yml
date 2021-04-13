@@ -107,9 +107,11 @@ Resources:
     Properties:
       AccessTokenValidity: 20
       IdTokenValidity: 20
+      RefreshTokenValidity: 1
       TokenValidityUnits:
         IdToken: minutes
         AccessToken: minutes
+        RefreshToken: days
       ClientName: !Sub fdbt-site-client-${Stage}
       UserPoolId: !Ref UserPool
       ExplicitAuthFlows:
