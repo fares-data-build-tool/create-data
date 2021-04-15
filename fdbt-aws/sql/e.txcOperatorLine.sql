@@ -6,6 +6,7 @@ CREATE TABLE txcOperatorLine(
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nocCode` varchar(255) DEFAULT NULL,
     `lineName` varchar(255) DEFAULT NULL,
+    `lineId` varchar(255) DEFAULT NULL,
     `startDate` date DEFAULT NULL,
     `operatorShortName` varchar(255) DEFAULT NULL,
     `serviceDescription` varchar(255) DEFAULT NULL,
