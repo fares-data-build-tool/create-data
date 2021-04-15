@@ -51,6 +51,19 @@ const completeFareTrianglePages = (csvUpload: boolean): void => {
         clickElementById('pence');
         uploadFile('csv-upload', 'fareTriangle.csv');
         submitButtonClick();
+    } else {
+        clickElementById('less-than-20-fare-stages');
+        continueButtonClick();
+        getElementById('fare-stages').type('3');
+        continueButtonClick();
+        getElementById('fare-stage-name-1').type('Shott Drive');
+        getElementById('fare-stage-name-2').type('The Stag pub');
+        getElementById('fare-stage-name-3').type('Frederick Drive');
+        continueButtonClick();
+        continueButtonClick();
+        getElementById('TheStagpub-ShottDrive').type('100');
+        getElementById('FrederickDrive-TheStagpub').type('150');
+        continueButtonClick();
     }
 };
 
