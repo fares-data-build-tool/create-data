@@ -14,4 +14,12 @@ describe('The single faretype product journey', () => {
         completeSalesPages();
         isUuidStringValid();
     });
+
+    it('completes successfully for manual upload', () => {
+        selectFareType('single');
+        defineUserTypeAndTimeRestrictions();
+        completeSinglePages(false);
+        completeSalesPages();
+        isUuidStringValid();
+    });
 });
