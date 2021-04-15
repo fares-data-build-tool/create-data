@@ -3,7 +3,7 @@ LOCK TABLES `txcOperatorLine` WRITE;
 
 TRUNCATE TABLE `txcOperatorLine`;
 
-INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,operatorShortName,serviceDescription,regionCode,dataSource, origin, destination) VALUES
+INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,operatorShortName,serviceDescription,regionCode,dataSource,origin,destination) VALUES
 (9379,"BLAC","2C","ivuAlu","2020-04-05","NW_05_BLAC_2C_1","Blackpool Transport","KNOTT END - POULTON - BLACKPOOL","NW","bods","Zhaishi Miaozu Dongzuxiang","Bimbaletes Aguascalientes (El Álamo)"),
 (9716,"BLAC","17","vySmf0","2020-04-05","NW_05_BLAC_17_1","Blackpool Transport","BLACKPOOL - ST ANNES - LYTHAM","NW","bods","Warcq","Carrión de los Céspedes"),
 (9798,"BLAC","4","dPWnHm","2020-04-05","NW_05_BLAC_4_1","Blackpool Transport","CLEVELEYS - MERESIDE via Blackpool","NW","bods","Saint-Aubin-Routot","La Manzanilla de la Paz"),
@@ -297,7 +297,7 @@ INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,
 (9784,"WBTR","48","79sIWv","2020-04-06","NW_07_NW_48_1","Network Warrington","Frodsham - Northwich","NW","tnds","Wardha","Tobermory"),
 (11560,"WBTR","48","q8TOE0","2020-04-13","NW_07_NW_48_2","Warrington''s Own Buses","Frodsham - Northwich","NW","tnds","Melilla","Chandra"),
 (11766,"WBTR","H20","zMR1aZ","2020-04-13","NW_07_NW_H20_2","Warrington''s Own Buses","Murdishaw - Murdishaw","NW","tnds","Aschau im Zillertal","Genaro Estrada"),
-(11871,"WBTR","H20A","U5oPWj","2020-04-13","NW_07_NW_H20A_2","Warrington''s Own Buses","Murdishaw - Murdishaw","NW","tnds","Dukinfield","Trzebnica")
+(11871,"WBTR","H20A","U5oPWj","2020-04-13","NW_07_NW_H20A_2","Warrington''s Own Buses","Murdishaw - Murdishaw","NW","tnds","Dukinfield","Trzebnica");
 
 
 UNLOCK TABLES;
