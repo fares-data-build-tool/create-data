@@ -87,6 +87,7 @@ const ServiceList = ({
                                 {serviceList.map((service, index) => {
                                     const {
                                         lineName,
+                                        lineId,
                                         startDate,
                                         serviceCode,
                                         description,
@@ -108,7 +109,7 @@ const ServiceList = ({
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
-                                                name={`${lineName}#${serviceCode}#${startDate}`}
+                                                name={`${lineName}#${lineId}#${serviceCode}#${startDate}`}
                                                 type="checkbox"
                                                 value={checkBoxValues}
                                                 defaultChecked={checked}

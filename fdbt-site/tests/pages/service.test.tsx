@@ -11,6 +11,7 @@ jest.mock('../../src/data/auroradb');
 const mockServices: ServiceType[] = [
     {
         lineName: '123',
+        lineId: '3h3vb32ik',
         startDate: '05/02/2020',
         description: 'this bus service is 123',
         origin: 'Manchester',
@@ -19,6 +20,7 @@ const mockServices: ServiceType[] = [
     },
     {
         lineName: 'X1',
+        lineId: '3h3vb32ik',
         startDate: '06/02/2020',
         description: 'this bus service is X1',
         origin: 'Edinburgh',
@@ -26,6 +28,7 @@ const mockServices: ServiceType[] = [
     },
     {
         lineName: 'Infinity Line',
+        lineId: '3h3vb32ik',
         startDate: '07/02/2020',
         description: 'this bus service is Infinity Line',
         destination: 'London',
@@ -160,6 +163,7 @@ describe('pages', () => {
                     services: [
                         {
                             lineName: '123',
+                            lineId: '3h3vb32ik',
                             startDate: '05/02/2020',
                             description: 'this bus service is 123',
                             origin: 'Manchester',
@@ -168,6 +172,7 @@ describe('pages', () => {
                         },
                         {
                             lineName: 'X1',
+                            lineId: '3h3vb32ik',
                             startDate: '06/02/2020',
                             description: 'this bus service is X1',
                             origin: 'Edinburgh',
@@ -175,6 +180,7 @@ describe('pages', () => {
                         },
                         {
                             lineName: 'Infinity Line',
+                            lineId: '3h3vb32ik',
                             startDate: '07/02/2020',
                             description: 'this bus service is Infinity Line',
                             destination: 'London',

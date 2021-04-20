@@ -234,6 +234,7 @@ describe('salesOfferPackages', () => {
             },
             operatorShortName: 'string',
             lineName: 'string',
+            lineId: '3h3vb32ik',
             serviceDescription: 'string',
             products: [],
             fareZones: [],
