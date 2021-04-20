@@ -572,7 +572,7 @@ describe('Netex Helpers', () => {
             ['return non-circular ticket', returnNonCircularTicket],
             ['return circular ticket', returnCircularTicket],
         ])('should return a fare table object array for each sales offer package for a %s', (_ticketType, ticket) => {
-            const actualFareTable = netexHelpers.getFareTables(ticket);
+            const actualFareTable = netexHelpers.getFareTables(ticket, lineIdName);
             expect(actualFareTable.length).toEqual(ticket.products[0].salesOfferPackages.length);
         });
     });

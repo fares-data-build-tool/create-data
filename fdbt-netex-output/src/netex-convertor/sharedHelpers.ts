@@ -241,7 +241,7 @@ export const getCoreData = (
             ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
             operatorPublicNameLineNameFormat: `${operators[0].operatorPublicName} ${ticket.lineName}`,
             nocCodeLineNameFormat: `${ticket.nocCode}_${ticket.lineName}`,
-            lineIdName: `Line_${ticket.lineName}`,
+            lineIdName: ticket.lineId ?? `Line_${ticket.lineName}`,
             lineName: ticket.lineName,
             operatorName: ticket.operatorShortName,
             ticketType: ticket.type,
