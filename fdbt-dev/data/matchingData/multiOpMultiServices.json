@@ -6,18 +6,21 @@
       "selectedServices": [
         {
           "lineName": "5",
+          "lineId": "AD1146649_RJ1_Outbound",
           "serviceCode": "NW_05_WBTR_3_1",
           "startDate": "05/04/2020",
           "serviceDescription": "LONDON - ESSEX - BIRMINGHAM"
         },
         {
           "lineName": "4",
+          "lineId": "FD1146649_RJ1_Outbound",
           "serviceCode": "NW_05_WBTR_7_1",
           "startDate": "05/04/2020",
           "serviceDescription": "EDINBURGH - GLASGOW - LEEDS"
         },
         {
           "lineName": "7",
+          "lineId": "XC1146649_RJ1_Outbound",
           "serviceCode": "NW_05_WBTR_6_1",
           "startDate": "05/04/2020",
           "serviceDescription": "HULL - WIGAN - BOLTON"
@@ -29,18 +32,21 @@
       "selectedServices": [
         {
           "lineName": "663",
+          "lineId": "PK1146639_RJ1_Outbound",
           "serviceCode": "NW_05_DCCL_3_1",
           "startDate": "05/04/2020",
           "serviceDescription": "LEEDS - WAKEFIELD - YORK"
         },
         {
           "lineName": "77",
+          "lineId": "PK133146649_RJ1_Outbound",
           "serviceCode": "NW_05_DCCL_7_1",
           "startDate": "05/04/2020",
           "serviceDescription": "BEESTON - HUNSLET - CITY CENTRE"
         },
         {
           "lineName": "65",
+          "lineId": "PK121146649_RJ1_Outbound",
           "serviceCode": "NW_05_DCCL_6_1",
           "startDate": "05/04/2020",
           "serviceDescription": "LIVERPOOL - MANCHESTER - BOLTON"
@@ -262,84 +268,98 @@
   "selectedServices": [
     {
       "lineName": "25",
+      "lineId": "AD11466334_RJ1_Outbound",
       "serviceCode": "NW_07_BLAC_25_1",
       "startDate": "06/04/2020",
       "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
     },
     {
       "lineName": "25",
+      "lineId": "AD1146567_RJ1_Outbound",
       "serviceCode": "NW_07_BLAC_25_2",
       "startDate": "13/04/2020",
       "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM"
     },
     {
       "lineName": "4",
+      "lineId": "AD114878_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_4_1",
       "startDate": "05/04/2020",
       "serviceDescription": "CLEVELEYS - MERESIDE via Blackpool"
     },
     {
       "lineName": "19",
+      "lineId": "AG245453_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_19_1",
       "startDate": "05/04/2020",
       "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
     },
     {
       "lineName": "1",
+      "lineId": "AA2454563_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_1_1",
       "startDate": "05/04/2020",
       "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
     },
     {
       "lineName": "2",
+      "lineId": "AZ2451113_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_2_1",
       "startDate": "05/04/2020",
       "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
     },
     {
       "lineName": "5",
+      "lineId": "AW245466666_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_5_1",
       "startDate": "05/04/2020",
       "serviceDescription": "VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE"
     },
     {
       "lineName": "9",
+      "lineId": "SG2423D3_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_9_1",
       "startDate": "05/04/2020",
       "serviceDescription": "CLEVELEYS - BLACKPOOL via Bispham"
     },
     {
       "lineName": "14",
+      "lineId": "AG24D5G3_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_14_1",
       "startDate": "05/04/2020",
       "serviceDescription": "FLEETWOOD - BLACKPOOL via Layton"
     },
     {
       "lineName": "18",
+      "lineId": "SSSG24453_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_18_1",
       "startDate": "05/04/2020",
       "serviceDescription": "BLACKPOOL - MERESIDE via South Shore"
     },
     {
       "lineName": "11",
+      "lineId": "SSSG2321453_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_11_1",
       "startDate": "05/04/2020",
       "serviceDescription": "LYTHAM - BLACKPOOL via St Annes"
     },
     {
       "lineName": "3",
+      "lineId": "SSSG24467H_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_3_1",
       "startDate": "05/04/2020",
       "serviceDescription": "MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK"
     },
     {
       "lineName": "7",
+      "lineId": "SSSG251D67H_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_7_1",
       "startDate": "05/04/2020",
       "serviceDescription": "CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL"
     },
     {
       "lineName": "6",
+      "lineId": "SDDSG24447H_RJ1_Outbound",
       "serviceCode": "NW_05_BLAC_6_1",
       "startDate": "05/04/2020",
       "serviceDescription": "MERESIDE - BLACKPOOL - GRANGE PARK"
