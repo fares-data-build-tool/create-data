@@ -92,6 +92,7 @@ const MultipleOperatorsServiceList = ({
                                 {serviceList.map((service, index) => {
                                     const {
                                         lineName,
+                                        lineId,
                                         startDate,
                                         serviceCode,
                                         description,
@@ -112,7 +113,7 @@ const MultipleOperatorsServiceList = ({
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
-                                                name={`${nocCode}#${lineName}#${serviceCode}#${startDate}`}
+                                                name={`${nocCode}#${lineName}#${lineId}#${serviceCode}#${startDate}`}
                                                 type="checkbox"
                                                 value={checkBoxValues}
                                                 defaultChecked={checked}

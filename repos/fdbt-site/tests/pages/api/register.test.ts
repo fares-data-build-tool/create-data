@@ -37,6 +37,7 @@ describe('register', () => {
             Promise.resolve([
                 {
                     lineName: '2AC',
+                    lineId: '3h3vb32ik',
                     startDate: '01012020',
                     description: 'linename for service ',
                     serviceCode: 'NW_05_BLAC_2C_1',
@@ -325,6 +326,7 @@ describe('nocsWithNoServices', () => {
                 Promise.resolve([
                     {
                         lineName: '2AC',
+                        lineId: '3h3vb32ik',
                         startDate: '01012020',
                         description: 'linename for service ',
                         serviceCode: 'NW_05_BLAC_2C_1',
@@ -343,6 +345,7 @@ describe('nocsWithNoServices', () => {
                 Promise.resolve([
                     {
                         lineName: '2AC',
+                        lineId: '3h3vb32ik',
                         startDate: '01012020',
                         description: 'linename for service ',
                         serviceCode: 'NW_05_BLAC_2C_1',
@@ -353,6 +356,7 @@ describe('nocsWithNoServices', () => {
                 Promise.resolve([
                     {
                         lineName: '2AD',
+                        lineId: '3h3vb32ik',
                         startDate: '03012020',
                         description: 'another linename for service ',
                         serviceCode: 'NW_05_BLAC_2C_1',

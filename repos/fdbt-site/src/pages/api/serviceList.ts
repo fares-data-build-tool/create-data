@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
+import { SelectedService, NextApiRequestWithSession } from '../../interfaces/index';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { SERVICE_LIST_ATTRIBUTE } from '../../constants/attributes';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession } from '../../interfaces';
 
 const errorId = 'checkbox-0';
 
@@ -33,12 +33,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        const selectedServices: string[] = [];
+        const selectedServices: SelectedService[] = [];
 
         const requestBody: { [key: string]: string | string[] } = req.body;
 
         Object.entries(requestBody).forEach(entry => {
-            const lineNameServiceCodeStartDate = entry[0];
+            const lineNameLineIdServiceCodeStartDate = entry[0];
             const description = entry[1];
             let serviceDescription: string;
             if (isArray(description)) {
@@ -46,8 +46,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             } else {
                 serviceDescription = description;
             }
-            const data = `${lineNameServiceCodeStartDate}#${serviceDescription}`;
-            selectedServices.push(data);
+            const splitData = lineNameLineIdServiceCodeStartDate.split('#');
+            selectedServices.push({
+                lineName: splitData[0],
+                lineId: splitData[1],
+                serviceCode: splitData[2],
+                startDate: splitData[3],
+                serviceDescription,
+            });
         });
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });

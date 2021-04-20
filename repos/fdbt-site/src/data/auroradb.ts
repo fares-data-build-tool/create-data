@@ -14,10 +14,11 @@ import {
 import logger from '../utils/logger';
 import { INTERNAL_NOC } from '../constants';
 
-interface QueryData {
+interface ServiceQueryData {
     operatorShortName: string;
     serviceDescription: string;
     lineName: string;
+    lineId: string;
     fromAtcoCode: string;
     toAtcoCode: string;
     fromCommonName: string;
@@ -123,7 +124,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
 
     try {
         const queryInput = `
-            SELECT lineName, startDate, serviceDescription AS description, origin, destination, serviceCode
+            SELECT lineName, lineId, startDate, serviceDescription AS description, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ?
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
@@ -134,6 +135,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
         return (
             queryResults.map(item => ({
                 lineName: item.lineName,
+                lineId: item.lineId,
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
                 origin: item.origin,
@@ -156,7 +158,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
 
     try {
         const queryInput = `
-            SELECT lineName, startDate, serviceDescription AS description, serviceCode, dataSource
+            SELECT lineName, lineId, startDate, serviceDescription AS description, serviceCode, dataSource
             FROM txcOperatorLine
             WHERE nocCode = ?
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
@@ -167,6 +169,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
         return (
             queryResults.map(item => ({
                 lineName: item.lineName,
+                lineId: item.lineId,
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
                 serviceCode: item.serviceCode,
@@ -302,7 +305,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
     });
 
     const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
+        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -312,7 +315,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
         ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
-    let queryResult: QueryData[];
+    let queryResult: ServiceQueryData[];
 
     try {
         queryResult = await executeQuery(serviceQuery, [nocCodeParameter, lineName, dataSource]);
@@ -338,7 +341,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
                     stopPointRef: filteredJourney[0].fromAtcoCode,
                     commonName: filteredJourney[0].fromCommonName,
                 },
-                ...filteredJourney.map((data: QueryData) => ({
+                ...filteredJourney.map((data: ServiceQueryData) => ({
                     stopPointRef: data.toAtcoCode,
                     commonName: data.toCommonName,
                 })),
@@ -354,6 +357,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
         serviceDescription: service.serviceDescription,
         operatorShortName: service.operatorShortName,
         journeyPatterns: rawPatternService,
+        lineId: service.lineId,
     };
 };
 

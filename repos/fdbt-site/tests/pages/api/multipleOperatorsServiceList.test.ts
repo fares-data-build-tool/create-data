@@ -80,9 +80,9 @@ describe('multipleOperatorsServiceList', () => {
 
     it('redirects to /howManyProducts if input is valid with no errors, and deletes TXC multiOp session attribute', () => {
         const serviceInfo = {
-            'MCTR#237#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
-            'MCTR#391#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
-            'MCTR#232#NW_04_MCTR_232_1#06/04/2020': 'Ashton - Hurst Cross - Broadoak Circular',
+            'MCTR#237#dsdwgwe223#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
+            'MCTR#391#dsdwgwe223#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
+            'MCTR#232#dsdwgwe223#NW_04_MCTR_232_1#06/04/2020': 'Ashton - Hurst Cross - Broadoak Circular',
         };
 
         const { req, res } = getMockRequestAndResponse({
@@ -123,9 +123,27 @@ describe('multipleOperatorsServiceList', () => {
             {
                 nocCode: 'MCTR',
                 services: [
-                    '237#11-237-_-y08-1#07/04/2020#Ashton Under Lyne - Glossop',
-                    '391#NW_01_MCT_391_1#23/04/2019#Macclesfield - Bollington - Poynton - Stockport',
-                    '232#NW_04_MCTR_232_1#06/04/2020#Ashton - Hurst Cross - Broadoak Circular',
+                    {
+                        lineName: '237',
+                        lineId: 'dsdwgwe223',
+                        serviceCode: '11-237-_-y08-1',
+                        serviceDescription: 'Ashton Under Lyne - Glossop',
+                        startDate: '07/04/2020',
+                    },
+                    {
+                        lineName: '391',
+                        lineId: 'dsdwgwe223',
+                        serviceCode: 'NW_01_MCT_391_1',
+                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        startDate: '23/04/2019',
+                    },
+                    {
+                        lineName: '232',
+                        lineId: 'dsdwgwe223',
+                        serviceCode: 'NW_04_MCTR_232_1',
+                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        startDate: '06/04/2020',
+                    },
                 ],
             },
             { nocCode: 'N1', services: ['service one', 'service two'] },
@@ -136,17 +154,35 @@ describe('multipleOperatorsServiceList', () => {
     describe('getSelectedServicesAndNocCodeFromRequest', () => {
         it('returns an object with services and nocCode from a request', () => {
             const serviceInfo = {
-                'MCTR#237#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
-                'MCTR#391#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
-                'MCTR#232#NW_04_MCTR_232_1#06/04/2020': 'Ashton - Hurst Cross - Broadoak Circular',
+                'MCTR#237#strfg323#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
+                'MCTR#391#strfg323#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
+                'MCTR#232#strfg323#NW_04_MCTR_232_1#06/04/2020': 'Ashton - Hurst Cross - Broadoak Circular',
             };
             const result = getSelectedServicesAndNocCodeFromRequest(serviceInfo);
 
             expect(result.nocCode).toBe('MCTR');
             expect(result.selectedServices).toStrictEqual([
-                '237#11-237-_-y08-1#07/04/2020#Ashton Under Lyne - Glossop',
-                '391#NW_01_MCT_391_1#23/04/2019#Macclesfield - Bollington - Poynton - Stockport',
-                '232#NW_04_MCTR_232_1#06/04/2020#Ashton - Hurst Cross - Broadoak Circular',
+                {
+                    lineName: '237',
+                    lineId: 'strfg323',
+                    serviceCode: '11-237-_-y08-1',
+                    startDate: '07/04/2020',
+                    serviceDescription: 'Ashton Under Lyne - Glossop',
+                },
+                {
+                    lineName: '391',
+                    lineId: 'strfg323',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    startDate: '23/04/2019',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                },
+                {
+                    lineName: '232',
+                    lineId: 'strfg323',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    startDate: '06/04/2020',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                },
             ]);
         });
     });
