@@ -466,7 +466,7 @@ const netexGenerator = (
 
         if (isPointToPointTicket(ticket)) {
             fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(ticket);
-            fareTableFareFrameToUpdate.fareTables.FareTable = getFareTables(ticket);
+            fareTableFareFrameToUpdate.fareTables.FareTable = getFareTables(ticket, coreData.lineIdName);
 
             return fareTableFareFrameToUpdate;
         }
