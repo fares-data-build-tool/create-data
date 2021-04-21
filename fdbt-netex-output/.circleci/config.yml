@@ -74,7 +74,7 @@ jobs:
       - run:
           command: |
             echo "Deploying..."
-            sudo npm i -g serverless
+            sudo npm i -g serverless@2.35.0
             export SLS_DEBUG="*" && sls deploy --stage=test
             echo "Finished deploy"
 
@@ -88,7 +88,7 @@ jobs:
       - run:
           command: |
             echo "Deploying..."
-            sudo npm i -g serverless
+            sudo npm i -g serverless@2.35.0
             export SLS_DEBUG="*" && sls deploy --stage=preprod
             echo "Finished deploy"
 
@@ -102,7 +102,7 @@ jobs:
       - run:
           command: |
             echo "Deploying..."
-            sudo npm i -g serverless
+            sudo npm i -g serverless@2.35.0
             export SLS_DEBUG="*" && sls deploy --stage=prod
             echo "Finished deploy"
 
@@ -134,7 +134,7 @@ jobs:
             echo "Deploying..."
             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
             sudo apt-get install -y nodejs
-            sudo npm i -g serverless
+            sudo npm i -g serverless@2.35.0
             cd src/netex-validator
             npm ci
             export SLS_DEBUG="*" && sls deploy --stage=test
@@ -152,7 +152,7 @@ jobs:
             echo "Deploying..."
             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
             sudo apt-get install -y nodejs
-            sudo npm i -g serverless
+            sudo npm i -g serverless@2.35.0
             cd src/netex-validator
             npm ci
             export SLS_DEBUG="*" && sls deploy --stage=preprod
@@ -170,7 +170,7 @@ jobs:
             echo "Deploying..."
             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
             sudo apt-get install -y nodejs
-            sudo npm i -g serverless
+            sudo npm i -g serverless@2.35.0
             cd src/netex-validator
             npm ci
             export SLS_DEBUG="*" && sls deploy --stage=prod
