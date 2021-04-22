@@ -20,6 +20,9 @@ run-local:
 
 # Cypress
 
+install-cypress-deps-ci:
+	cd cypress_tests && npm ci
+
 open-cypress:
 	cd cypress_tests && npm run openCypress
 
@@ -33,3 +36,6 @@ run-cypress-edge:
 	cd cypress_tests && BROWSER=edge npm run runCypress
 
 run-cypress-all: run-cypress-chrome run-cypress-firefox run-cypress-edge
+
+run-cypress-browserstack:
+	cd cypress_tests && npm run runBrowserstack

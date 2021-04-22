@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as csvUpload from '../../../src/pages/api/csvUpload';
 import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
 import * as csvData from '../../testData/csvFareTriangleData';
@@ -33,7 +34,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -75,7 +76,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'string',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -120,7 +121,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -170,7 +171,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/pdf',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -216,7 +217,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -263,7 +264,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -310,7 +311,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -362,7 +363,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -405,7 +406,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -446,7 +447,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -493,7 +494,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -534,7 +535,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -580,7 +581,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -627,7 +628,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -668,7 +669,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
@@ -708,7 +709,7 @@ describe('csvUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
+                toJSON(): any {
                     return '';
                 },
             },
