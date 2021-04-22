@@ -21,7 +21,7 @@ jobs:
                   at: ~/project
             - run:
                   command: |
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
                       pip install safety
                       cd src/uploaders
@@ -53,12 +53,11 @@ jobs:
             - run:
                   command: |
                       echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
                       cd src/uploaders
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=test
+                      npm ci
+                      npm run deploy:test
                       echo "Finished deploy"
 
     deploy-reference-data-uploaders-to-preprod:
@@ -71,12 +70,11 @@ jobs:
             - run:
                   command: |
                       echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
                       cd src/uploaders
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=preprod
+                      npm ci
+                      npm run deploy:preprod
                       echo "Finished deploy"
 
     deploy-reference-data-uploaders-to-prod:
@@ -89,12 +87,11 @@ jobs:
             - run:
                   command: |
                       echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
                       cd src/uploaders
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=prod
+                      npm ci
+                      npm run deploy:prod
                       echo "Finished deploy"
 
     audit-reference-data-retrievers:
@@ -106,7 +103,7 @@ jobs:
                   at: ~/project
             - run:
                   command: |
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
                       pip install safety
                       cd src/retrievers
@@ -123,12 +120,11 @@ jobs:
             - run:
                   command: |
                       echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
                       cd src/retrievers
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=test
+                      npm ci
+                      npm run deploy:test
                       echo "Finished deploy"
 
     deploy-reference-data-retrievers-to-preprod:
@@ -141,12 +137,11 @@ jobs:
             - run:
                   command: |
                       echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
                       cd src/retrievers
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=preprod
+                      npm ci
+                      npm run deploy:preprod
                       echo "Finished deploy"
 
     deploy-reference-data-retrievers-to-prod:
@@ -159,12 +154,11 @@ jobs:
             - run:
                   command: |
                       echo "Deploying..."
-                      curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                      curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
                       sudo apt-get install -y nodejs
-                      sudo npm i -g serverless
                       cd src/retrievers
-                      npm install
-                      export SLS_DEBUG="*" && sls deploy --stage=prod
+                      npm ci
+                      npm run deploy:prod
                       echo "Finished deploy"
 
 workflows:
