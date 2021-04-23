@@ -15,6 +15,9 @@ import {
     completeProductDateInformationPage,
     getRandomNumber,
     assertElementNotVisibleById,
+    randomlyChooseSingleProductPeriodValidity,
+    randomlyChooseMultipleProductPeriodValidity,
+    completeSalesOfferPackagesForMultipleProducts,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -113,9 +116,46 @@ export const completeReturnPages = (csvUpload: boolean): void => {
     continueButtonClick();
 };
 
-export const completeSalesPages = (): void => {
-    clickSelectedNumberOfCheckboxes(false);
+export const completeSalesPages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+    if (numberOfProducts && multiProductNamePrefix) {
+        completeSalesOfferPackagesForMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    } else {
+        clickSelectedNumberOfCheckboxes(false);
+    }
     continueButtonClick();
     completeProductDateInformationPage();
     continueButtonClick();
+};
+
+export const completePeriodGeoZonePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+    clickElementById('geo-zone');
+    continueButtonClick();
+    uploadFile('csv-upload', 'fareZone.csv');
+    submitButtonClick();
+    if (!numberOfProducts || !multiProductNamePrefix) {
+        getElementById('number-of-products').type('1');
+        continueButtonClick();
+        getElementById('product-details-name').type('Cypress period product');
+        getElementById('product-details-price').type('4.95');
+        continueButtonClick();
+        getElementById('validity').type('10');
+        selectRandomOptionFromDropDown('validity-units');
+        continueButtonClick();
+        randomlyChooseSingleProductPeriodValidity();
+        continueButtonClick();
+        continueButtonClick();
+    } else {
+        getElementById('number-of-products').type(numberOfProducts.toString());
+        continueButtonClick();
+        for (let i = 0; i < numberOfProducts; i += 1) {
+            getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix}${i + 1}`);
+            getElementById(`multiple-product-price-${i}`).type(`1${i}`);
+            getElementById(`multiple-product-duration-${i}`).type(`2${i}`);
+            selectRandomOptionFromDropDown(`multiple-product-duration-units-${i}`);
+        }
+        continueButtonClick();
+        randomlyChooseMultipleProductPeriodValidity(numberOfProducts);
+        continueButtonClick();
+        continueButtonClick();
+    }
 };
