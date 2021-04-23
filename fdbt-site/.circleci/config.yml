@@ -29,6 +29,10 @@ jobs:
           at: ~/project
       - run:
           command: |
+            sudo apt-get install jq
+            cd cypress_tests
+            cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
+            cd ..
             ~/project/run_tests_in_browserstack.sh
           no_output_timeout: 40m
   
