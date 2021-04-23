@@ -7,7 +7,7 @@
         "runCypress": "cypress run -b $BROWSER",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts",
-        "runBrowserstack": "browserstack-cypress run --sync --env CYPRESS_BASE_URL=https://test.dft-cfd.infinityworks.com"
+        "runBrowserstack": "browserstack-cypress run --sync"
     },
     "devDependencies": {
         "@cypress/webpack-preprocessor": "^5.7.0",
