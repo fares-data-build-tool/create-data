@@ -1,8 +1,0 @@
-FROM node:12-alpine
-
-WORKDIR /home/node/app
-
-COPY package*.json ./
-RUN apk add --no-cache git && npm install --ignore-scripts
-
-CMD ["npm", "run", "dev"]
