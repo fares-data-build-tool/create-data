@@ -29,7 +29,7 @@ const SwitchDataSource = ({
                     className="govuk-button govuk-button--secondary"
                     disabled={buttonDisabled}
                 >
-                    Change TransXChange datasource to {source === 'bods' ? 'TNDS' : 'BODS'}
+                    Change TransXChange data source to {source === 'bods' ? 'TNDS' : 'BODS'}
                 </button>
             </>
         </CsrfForm>
