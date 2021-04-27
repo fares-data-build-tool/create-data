@@ -99,6 +99,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 nocCode,
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
+                lineId: service.lineId,
             },
             error: matchingAttribute && isMatchingWithErrors(matchingAttribute) ? matchingAttribute.error : false,
             selectedFareStages:

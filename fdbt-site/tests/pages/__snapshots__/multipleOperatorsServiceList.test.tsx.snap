@@ -90,7 +90,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with bods da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
-                name="TO#123#NW_05_BLAC_123_1#05/02/2020"
+                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1#05/02/2020"
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -109,7 +109,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with bods da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-1"
-                name="TO#X1#NW_05_BLAC_X1_1#06/02/2020"
+                name="TO#X1#3h3vb32ik#NW_05_BLAC_X1_1#06/02/2020"
                 type="checkbox"
                 value="Big Blue Bus Service X1"
               />
@@ -128,7 +128,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with bods da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-2"
-                name="TO#Infinity Line#WY_13_IWBT_07_1#07/02/2020"
+                name="TO#Infinity Line#3h3vb32ik#WY_13_IWBT_07_1#07/02/2020"
                 type="checkbox"
                 value="This is some kind of bus service"
               />
@@ -257,7 +257,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
-                name="TO#123#NW_05_BLAC_123_1#05/02/2020"
+                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1#05/02/2020"
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -276,7 +276,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-1"
-                name="TO#X1#NW_05_BLAC_X1_1#06/02/2020"
+                name="TO#X1#3h3vb32ik#NW_05_BLAC_X1_1#06/02/2020"
                 type="checkbox"
                 value="Big Blue Bus Service X1"
               />
@@ -295,7 +295,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-2"
-                name="TO#Infinity Line#WY_13_IWBT_07_1#07/02/2020"
+                name="TO#Infinity Line#3h3vb32ik#WY_13_IWBT_07_1#07/02/2020"
                 type="checkbox"
                 value="This is some kind of bus service"
               />
@@ -410,7 +410,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with tnds da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
-                name="TO#123#NW_05_BLAC_123_1#05/02/2020"
+                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1#05/02/2020"
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -429,7 +429,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with tnds da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-1"
-                name="TO#X1#NW_05_BLAC_X1_1#06/02/2020"
+                name="TO#X1#3h3vb32ik#NW_05_BLAC_X1_1#06/02/2020"
                 type="checkbox"
                 value="Big Blue Bus Service X1"
               />
@@ -448,7 +448,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with tnds da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-2"
-                name="TO#Infinity Line#WY_13_IWBT_07_1#07/02/2020"
+                name="TO#Infinity Line#3h3vb32ik#WY_13_IWBT_07_1#07/02/2020"
                 type="checkbox"
                 value="This is some kind of bus service"
               />

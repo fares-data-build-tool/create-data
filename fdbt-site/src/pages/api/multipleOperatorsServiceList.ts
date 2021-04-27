@@ -7,18 +7,23 @@ import {
 } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
+import {
+    NextApiRequestWithSession,
+    MultiOperatorInfo,
+    MultipleOperatorsAttribute,
+    SelectedService,
+} from '../../interfaces';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
 
 const errorId = 'checkbox-0';
 
 export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
     [key: string]: string | string[];
-}): { selectedServices: string[]; nocCode: string } => {
+}): { selectedServices: SelectedService[]; nocCode: string } => {
     let nocCode = '';
-    const selectedServices: string[] = [];
+    const selectedServices: SelectedService[] = [];
     Object.entries(requestBody).forEach(entry => {
-        const nocCodeLineNameServiceCodeStartDate = entry[0];
+        const nocCodeLineNameLineIdServiceCodeStartDate = entry[0];
         const description = entry[1];
         let serviceDescription: string;
         if (isArray(description)) {
@@ -26,12 +31,15 @@ export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
         } else {
             serviceDescription = description;
         }
-        [nocCode] = nocCodeLineNameServiceCodeStartDate.split('#');
-        const splitStrings = nocCodeLineNameServiceCodeStartDate.split('#');
-        delete splitStrings[0];
-        const lineNameServiceCodeStartDate = splitStrings.join('#').substring(1);
-        const servicesData = `${lineNameServiceCodeStartDate}#${serviceDescription}`;
-        selectedServices.push(servicesData);
+        let splitStrings = [];
+        [nocCode, ...splitStrings] = nocCodeLineNameLineIdServiceCodeStartDate.split('#');
+        selectedServices.push({
+            lineName: splitStrings[0],
+            lineId: splitStrings[1],
+            serviceCode: splitStrings[2],
+            startDate: splitStrings[3],
+            serviceDescription,
+        });
     });
     return {
         selectedServices,

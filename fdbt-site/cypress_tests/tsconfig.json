@@ -1,9 +1,14 @@
 {
-    "extends": "../tsconfig.json",
     "compilerOptions": {
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "module": "es6",
         "target": "es5",
-        "lib": ["es5", "dom", "esnext"],
-        "types": ["cypress"]
+        "jsx": "react",
+        "allowJs": true,
+        "types": ["cypress", "cypress-file-upload"],
+        "lib": ["ES5", "ES6", "DOM"],
+        "moduleResolution": "node"
     },
-    "include": ["**/*.ts"]
+    "exclude": ["./node_modules/*", "./dist/*"]
 }

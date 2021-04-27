@@ -75,7 +75,7 @@ export interface OperatorGroup {
 
 export interface MultiOperatorInfo {
     nocCode: string;
-    services: string[];
+    services: SelectedService[];
 }
 
 export interface TermTimeAttribute {
@@ -162,7 +162,7 @@ export interface MultipleOperatorsAttributeWithErrors extends MultipleOperatorsA
 }
 
 export interface ServiceListAttribute {
-    selectedServices: string[];
+    selectedServices: SelectedService[];
 }
 
 export interface ServiceListAttributeWithErrors {
@@ -302,6 +302,7 @@ export interface BaseTicket {
 export interface BasePointToPointTicket extends BaseTicket {
     operatorShortName: string;
     lineName: string;
+    lineId: string;
     serviceDescription: string;
     products: BaseProduct[];
 }
@@ -463,6 +464,7 @@ export interface FareZonePrices {
 
 export interface SelectedService {
     lineName: string;
+    lineId: string;
     serviceCode: string;
     startDate: string;
     serviceDescription: string;
@@ -470,6 +472,7 @@ export interface SelectedService {
 
 export interface BasicService {
     lineName: string;
+    lineId: string;
     nocCode: string;
     operatorShortName: string;
     serviceDescription: string;
@@ -665,6 +668,7 @@ export interface ServiceWithErrors {
 
 export interface ServiceType {
     lineName: string;
+    lineId: string;
     startDate: string;
     description: string;
     origin?: string;
@@ -681,12 +685,14 @@ export interface ServiceDB {
     serviceDescription: string;
     operatorShortName: string;
     journeyPatterns: JourneyPattern[];
+    lineId: string;
 }
 
 export interface RawService {
     serviceDescription: string;
     operatorShortName: string;
     journeyPatterns: RawJourneyPattern[];
+    lineId: string;
 }
 
 export interface JourneyPattern {
