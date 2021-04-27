@@ -133,6 +133,7 @@ export type PointToPointTicket = SingleTicket | ReturnTicket;
 export interface BasePointToPointTicket extends BaseTicket {
     operatorShortName: string;
     lineName: string;
+    lineId: string;
     serviceDescription: string;
     products: BaseProduct[];
 }
