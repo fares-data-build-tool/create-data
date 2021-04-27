@@ -19,24 +19,29 @@ describe('_document', () => {
         ampPath: '',
         inAmpMode: false,
         hybridAmp: false,
-        staticMarkup: false,
         isDevelopment: false,
-        devFiles: [''],
-        files: [''],
-        polyfillFiles: [''],
         dynamicImports: [
             {
                 id: '',
                 name: '',
                 file: '',
-                publicPath: '',
             },
         ],
         canonicalBase: '',
-        htmlProps: {},
-        bodyTags: [{}],
         headTags: [{}],
-        lowPriorityFiles: [],
+        buildManifest: {
+            ampDevFiles: [''],
+            ampFirstPages: [''],
+            devFiles: [''],
+            lowPriorityFiles: [''],
+            pages: {
+                '/_app': [''],
+            },
+            polyfillFiles: [''],
+        },
+        devOnlyCacheBusterQueryString: '',
+        docComponentsRendered: {},
+        scriptLoader: {},
     };
 
     it('should render correctly', () => {

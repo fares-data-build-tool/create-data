@@ -112,9 +112,27 @@ export const getMockRequestAndResponse = ({
         [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
         [SERVICE_LIST_ATTRIBUTE]: {
             selectedServices: [
-                '12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
-                '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
-                '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+                {
+                    lineId: '3h3vb32ik',
+                    lineName: '12A',
+                    serviceCode: 'NW_05_BLAC_12A_1',
+                    serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+                    startDate: '13/05/2020',
+                },
+                {
+                    lineName: '6',
+                    lineId: '3h3vb32ik',
+                    serviceCode: 'NW_05_BLAC_6_1',
+                    serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+                    startDate: '08/05/2020',
+                },
+                {
+                    lineId: '3h3vb32ik',
+                    lineName: '101',
+                    serviceCode: 'NW_05_BLAC_101_1',
+                    serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+                    startDate: '06/05/2020',
+                },
             ],
         },
         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
@@ -496,6 +514,7 @@ export const mockRawService: RawService = {
             ],
         },
     ],
+    lineId: 'q2gv2ve',
 };
 
 export const mockRawServiceWithDuplicates: RawService = {
@@ -651,6 +670,7 @@ export const mockRawServiceWithDuplicates: RawService = {
             ],
         },
     ],
+    lineId: 'q2gv2ve',
 };
 
 export const userFareStages: UserFareStages = {
@@ -920,6 +940,7 @@ export const service: BasicService = {
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
+    lineId: 'q2gv2ve',
 };
 
 export const mockService: ServiceDB = {
@@ -968,6 +989,7 @@ export const mockService: ServiceDB = {
             ],
         },
     ],
+    lineId: 'q2gv2ve',
 };
 
 export const mockMatchingUserFareStagesWithUnassignedStages: UserFareStages = {
@@ -1211,6 +1233,7 @@ export const mockTimeRestriction: FullTimeRestriction[] = [
 export const expectedSingleTicket: SingleTicket = {
     type: 'single',
     lineName: '215',
+    lineId: 'q2gv2ve',
     nocCode: 'DCCL',
     passengerType: 'Adult',
     operatorShortName: 'DCC',
@@ -1346,6 +1369,7 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
     type: 'return',
     passengerType: 'Adult',
     lineName: '215',
+    lineId: 'q2gv2ve',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
@@ -1508,6 +1532,7 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
 export const expectedCircularReturnTicket: ReturnTicket = {
     type: 'return',
     lineName: '215',
+    lineId: 'q2gv2ve',
     passengerType: 'Adult',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
@@ -1757,18 +1782,21 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
     selectedServices: [
         {
             lineName: '12A',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_12A_1',
             startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
         },
         {
             lineName: '6',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_6_1',
             startDate: '08/05/2020',
             serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
         },
         {
             lineName: '101',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_101_1',
             startDate: '06/05/2020',
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
@@ -1815,18 +1843,21 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
     selectedServices: [
         {
             lineName: '12A',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_12A_1',
             startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
         },
         {
             lineName: '6',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_6_1',
             startDate: '08/05/2020',
             serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
         },
         {
             lineName: '101',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_101_1',
             startDate: '06/05/2020',
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
@@ -1837,19 +1868,22 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             nocCode: 'WBTR',
             selectedServices: [
                 {
-                    lineName: '237',
-                    serviceCode: '11-237-_-y08-1',
-                    serviceDescription: 'Ashton Under Lyne - Glossop',
+                    lineName: '343',
+                    lineId: '3h3vsergesrhg',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
                 },
                 {
-                    lineName: '391',
+                    lineName: '444',
+                    lineId: '3h3vtrhtherhed',
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
                 },
                 {
-                    lineName: '232',
+                    lineName: '543',
+                    lineId: '3h3vb32ik',
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
@@ -1860,19 +1894,22 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             nocCode: 'BLAC',
             selectedServices: [
                 {
-                    lineName: '343',
+                    lineName: '100',
+                    lineId: '3h3rthsrty56y5',
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
                 },
                 {
-                    lineName: '444',
+                    lineName: '101',
+                    lineId: '3h34t43deefsf',
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
                 },
                 {
-                    lineName: '543',
+                    lineName: '102',
+                    lineId: '34tvwevdsvb32ik',
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
@@ -1883,19 +1920,22 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             nocCode: 'LEDS',
             selectedServices: [
                 {
-                    lineName: '342',
-                    serviceCode: '11-237-_-y08-1',
-                    serviceDescription: 'Another Test Under Lyne - Glossop',
+                    lineName: '63',
+                    lineId: '45t34gvfdx2ik',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
                 },
                 {
-                    lineName: '221',
+                    lineName: '64',
+                    lineId: 'q45g4rgergik',
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
                 },
                 {
-                    lineName: '247',
+                    lineName: '65',
+                    lineId: 'q34ttfwerfsxfc',
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
@@ -1927,18 +1967,21 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     selectedServices: [
         {
             lineName: '12A',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_12A_1',
             startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
         },
         {
             lineName: '6',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_6_1',
             startDate: '08/05/2020',
             serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
         },
         {
             lineName: '101',
+            lineId: '3h3vb32ik',
             serviceCode: 'NW_05_BLAC_101_1',
             startDate: '06/05/2020',
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',

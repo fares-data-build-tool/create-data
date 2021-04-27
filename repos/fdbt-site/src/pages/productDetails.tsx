@@ -156,7 +156,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         hintText = fareZoneAttribute;
     } else if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
         const { selectedServices } = serviceListAttribute;
-        hintText = selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0];
+        hintText = selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName;
     }
 
     return {

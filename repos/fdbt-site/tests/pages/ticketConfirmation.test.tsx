@@ -153,13 +153,54 @@ describe('pages', () => {
             const mockAdditionalOperatorsServices: MultiOperatorInfo[] = [
                 {
                     nocCode: 'BLAC',
-                    services: ['12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester'],
+                    services: [
+                        {
+                            lineName: '237',
+                            lineId: 'strfg323',
+                            serviceCode: '11-237-_-y08-1',
+                            startDate: '07/04/2020',
+                            serviceDescription: 'Ashton Under Lyne - Glossop',
+                        },
+                        {
+                            lineName: '391',
+                            lineId: 'strfg323',
+                            serviceCode: 'NW_01_MCT_391_1',
+                            startDate: '23/04/2019',
+                            serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        },
+                        {
+                            lineName: '232',
+                            lineId: 'strfg323',
+                            serviceCode: 'NW_04_MCTR_232_1',
+                            startDate: '06/04/2020',
+                            serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        },
+                    ],
                 },
                 {
                     nocCode: 'MCT',
                     services: [
-                        '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
-                        '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+                        {
+                            lineId: '3h3vb32ik',
+                            lineName: '12A',
+                            serviceCode: 'NW_05_BLAC_12A_1',
+                            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+                            startDate: '13/05/2020',
+                        },
+                        {
+                            lineName: '6',
+                            lineId: '3h3vb32ik',
+                            serviceCode: 'NW_05_BLAC_6_1',
+                            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+                            startDate: '08/05/2020',
+                        },
+                        {
+                            lineId: '3h3v22ik',
+                            lineName: '101',
+                            serviceCode: 'NW_05_BLAC_101_1',
+                            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+                            startDate: '06/05/2020',
+                        },
                     ],
                 },
             ];

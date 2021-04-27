@@ -14,7 +14,6 @@ import {
     ProductDetails,
     ProductInfo,
     ReturnTicket,
-    SelectedService,
     SingleTicket,
     Stop,
     BaseTicket,
@@ -348,15 +347,6 @@ export const getMultipleServicesTicketJson = (
     }
 
     const { selectedServices } = serviceListAttribute;
-    const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
-        const service = selectedService.split('#');
-        return {
-            lineName: service[0],
-            serviceCode: service[1],
-            startDate: service[2],
-            serviceDescription: service[3],
-        };
-    });
 
     if (basePeriodTicketAttributes.type === 'multiOperator') {
         const multipleOperatorsServices = getSessionAttribute(
@@ -366,20 +356,12 @@ export const getMultipleServicesTicketJson = (
         const additionalOperatorsInfo = {
             additionalOperators: multipleOperatorsServices.map(operator => ({
                 nocCode: operator.nocCode,
-                selectedServices: operator.services.map((selectedService: string) => {
-                    const service = selectedService.split('#');
-                    return {
-                        lineName: service[0],
-                        serviceCode: service[1],
-                        startDate: service[2],
-                        serviceDescription: service[3],
-                    };
-                }),
+                selectedServices: operator.services,
             })),
         };
         return {
             ...basePeriodTicketAttributes,
-            selectedServices: formattedServiceInfo,
+            selectedServices,
             additionalOperators: additionalOperatorsInfo.additionalOperators,
             termTime: isTermTime(req),
         };
@@ -387,7 +369,7 @@ export const getMultipleServicesTicketJson = (
 
     return {
         ...basePeriodTicketAttributes,
-        selectedServices: formattedServiceInfo,
+        selectedServices,
         termTime: isTermTime(req),
     };
 };
@@ -417,15 +399,6 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     }
 
     const { selectedServices } = serviceListAttribute;
-    const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
-        const service = selectedService.split('#');
-        return {
-            lineName: service[0],
-            serviceCode: service[1],
-            startDate: service[2],
-            serviceDescription: service[3],
-        };
-    });
 
     const { products } = productDetailsAttributeInfo;
 
@@ -439,7 +412,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         ...baseTicketAttributes,
         operatorName: operatorAttribute?.name || '',
         products: productDetailsList,
-        selectedServices: formattedServiceInfo,
+        selectedServices,
         termTime: isTermTime(req),
     };
 };

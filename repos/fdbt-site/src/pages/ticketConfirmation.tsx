@@ -219,7 +219,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         confirmationElements.push(
             {
                 name: `${opName}${opName ? 's' : 'S'}ervices`,
-                content: `${services.map(service => service.split('#')[0]).join(', ')}`,
+                content: `${services.map(service => service.lineName).join(', ')}`,
                 href: 'serviceList',
             },
             {
@@ -244,7 +244,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
                     name: `${
                         additionalOperators.find(operator => operator.nocCode === serviceInfo.nocCode)?.name
                     } Services`,
-                    content: `${serviceInfo.services.map(service => service.split('#')[0]).join(', ')}`,
+                    content: `${serviceInfo.services.map(service => service.lineName).join(', ')}`,
                     href: 'searchOperators',
                 });
             });
@@ -307,7 +307,7 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
     confirmationElements.push(
         {
             name: 'Services',
-            content: `${services.map(service => service.split('#')[0]).join(', ')}`,
+            content: `${services.map(service => service.lineName).join(', ')}`,
             href: 'serviceList',
         },
         {
