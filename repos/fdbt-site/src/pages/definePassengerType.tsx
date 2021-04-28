@@ -143,9 +143,11 @@ export const getFieldsets = (
         radioError: getErrorsByIds(['proof-required'], errors),
     };
 
-    fieldsets.push(ageRangeFieldset);
+    if (passengerType !== 'anyone') {
+        fieldsets.push(ageRangeFieldset);
+    }
 
-    if (!passengerType || (passengerType && passengerType !== 'adult')) {
+    if (!passengerType || (passengerType && passengerType !== 'adult' && passengerType !== 'anyone')) {
         fieldsets.push(proofRequiredFieldset);
     }
 
@@ -159,7 +161,9 @@ export const getNumberOfPassengerTypeFieldset = (
 ): TextInputFieldset => ({
     heading: {
         id: 'number-of-passenger-type-heading',
-        content: `How many ${lowerCase(passengerType)} passengers can be in the group?`,
+        content: `How many ${
+            passengerType === 'anyone' ? `'anyone'` : lowerCase(passengerType)
+        } passengers can be in the group?`,
     },
     inputs: [
         {

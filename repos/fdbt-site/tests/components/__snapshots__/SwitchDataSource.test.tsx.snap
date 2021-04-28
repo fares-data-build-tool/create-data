@@ -22,7 +22,7 @@ exports[`SwitchDataSource should render the button disabled 1`] = `
     id="change-data-source"
     type="submit"
   >
-    Change TransXChange datasource to 
+    Change TransXChange data source to 
     TNDS
   </button>
 </CsrfForm>
@@ -50,7 +50,7 @@ exports[`SwitchDataSource should render the button not disabled 1`] = `
     id="change-data-source"
     type="submit"
   >
-    Change TransXChange datasource to 
+    Change TransXChange data source to 
     TNDS
   </button>
 </CsrfForm>
