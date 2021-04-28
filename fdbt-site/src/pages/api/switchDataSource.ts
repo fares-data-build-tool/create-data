@@ -19,7 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, attributeToUse, { ...dataSource, source: newDataSource });
         redirectTo(res, referer);
     } catch (error) {
-        const message = 'There was a problem switching the TXC datasource:';
+        const message = 'There was a problem switching the TXC data source:';
         redirectToError(res, message, 'api.switchDataSource', error);
     }
 };

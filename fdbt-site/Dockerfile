@@ -1,4 +1,4 @@
-FROM node:12-alpine AS build
+FROM node:14-alpine AS build
 
 WORKDIR /tmp
 
@@ -8,7 +8,7 @@ RUN apk add --no-cache git && npm install --ignore-scripts
 COPY . .
 RUN npm run build
 
-FROM node:12-alpine
+FROM node:14-alpine
 
 ENV NODE_ENV production
 

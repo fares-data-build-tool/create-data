@@ -101,12 +101,15 @@ export const passengerTypeDetailsSchema = yup
                     then: maxNumberOfPassengersSchema.min(0, numberOfPassengersError).required(numberOfPassengersError),
                 }),
         }),
-        ageRange: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
+        ageRange: yup.string().when('passengerType', {
+            is: passengerTypeValue => passengerTypeValue !== 'anyone',
+            then: yup
+                .string()
+                .oneOf(['Yes', 'No'])
+                .required(radioButtonError),
+        }),
         proof: yup.string().when('passengerType', {
-            is: passengerTypeValue => passengerTypeValue !== 'adult',
+            is: passengerTypeValue => !(passengerTypeValue === 'adult' || passengerTypeValue === 'anyone'),
             then: yup
                 .string()
                 .oneOf(['Yes', 'No'])
