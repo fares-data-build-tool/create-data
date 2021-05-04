@@ -217,7 +217,12 @@ const netexGenerator = (
             serviceFrameToUpdate.lines.Line.id = coreData.lineName;
             serviceFrameToUpdate.lines.Line.Name.$t = coreData.operatorPublicNameLineNameFormat;
             serviceFrameToUpdate.lines.Line.PublicCode.$t = coreData.lineName;
-            serviceFrameToUpdate.lines.Line.PrivateCode.$t = coreData.nocCodeLineNameFormat;
+            if (coreData.lineIdName) {
+                serviceFrameToUpdate.lines.Line.PrivateCode.type = 'txc:Line@id';
+                serviceFrameToUpdate.lines.Line.PrivateCode.$t = coreData.lineIdName;
+            } else {
+                delete serviceFrameToUpdate.lines.Line.PrivateCode;
+            }
             serviceFrameToUpdate.lines.Line.OperatorRef.ref = coreData.nocCodeFormat;
             serviceFrameToUpdate.lines.Line.OperatorRef.$t = coreData.opIdNocFormat;
             serviceFrameToUpdate.lines.Line.Description.$t = ticket.serviceDescription;
