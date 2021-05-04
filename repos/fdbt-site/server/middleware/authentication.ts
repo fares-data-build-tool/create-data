@@ -1,6 +1,6 @@
 import Cookies from 'cookies';
 import jwksClient from 'jwks-rsa';
-import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
+import { verify, sign, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
@@ -84,8 +84,9 @@ const verifyOptions: VerifyOptions = {
 export const setDisableAuthParameters = (server: Express): void => {
     server.use((req, res, next) => {
         const isDevelopment = process.env.NODE_ENV === 'development';
+        const disableAuthQuery = req.query.disableAuth as string;
 
-        if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && req.query.disableAuth === 'true') {
+        if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && disableAuthQuery) {
             const cookies = new Cookies(req, res);
             const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
 
@@ -102,19 +103,46 @@ export const setDisableAuthParameters = (server: Express): void => {
                     false,
                 );
                 setCookieOnResponseObject(DISABLE_AUTH_COOKIE, 'true', req, res);
-                setCookieOnResponseObject(
-                    ID_TOKEN_COOKIE,
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
-                    req,
-                    res,
-                );
 
-                if (req?.session) {
-                    req.session[OPERATOR_ATTRIBUTE] = {
-                        name: 'Blackpool Transport',
-                        nocCode: 'BLAC',
-                    };
+                if (disableAuthQuery === 'scheme') {
+                    const jwtToken = sign(
+                        {
+                            'custom:noc': 'TESTSE',
+                            'custom:schemeOperator': 'Test Scheme Op',
+                            'custom:schemeRegionCode': 'SE',
+                            email: 'test@example.com',
+                        },
+                        'test',
+                    );
+
+                    setCookieOnResponseObject(ID_TOKEN_COOKIE, jwtToken, req, res);
+                    if (req?.session) {
+                        req.session[OPERATOR_ATTRIBUTE] = {
+                            name: 'Test Scheme Op',
+                            region: 'SE',
+                            nocCode: 'TESTSE',
+                        };
+                    }
+                } else {
+                    const nocs: string[] = disableAuthQuery.split('_');
+                    const jwtToken = sign(
+                        {
+                            'custom:noc': nocs.join('|'),
+                            email: 'test@example.com',
+                        },
+                        'test',
+                    );
+                    setCookieOnResponseObject(ID_TOKEN_COOKIE, jwtToken, req, res);
+
+                    if (req?.session && nocs.length === 1) {
+                        req.session[OPERATOR_ATTRIBUTE] = {
+                            name: 'Test Operator',
+                            nocCode: nocs[0],
+                        };
+                    }
                 }
+
+                res.redirect('/home');
             }
         }
 
@@ -140,7 +168,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
 
     if (
         (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
-        (disableAuthCookie === 'true' || req.query.disableAuth === 'true')
+        (disableAuthCookie === 'true' || req.query.disableAuth)
     ) {
         next();
         return;
