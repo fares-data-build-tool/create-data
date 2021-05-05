@@ -1,5 +1,5 @@
 import {
-    startPageButtonClick,
+    startPageLinkClick,
     clickElementById,
     continueButtonClick,
     randomlyDetermineUserType,
@@ -30,7 +30,7 @@ export const selectFareType = (
     fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
 ): void => {
     getHomePage();
-    startPageButtonClick();
+    startPageLinkClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
 };
