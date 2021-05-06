@@ -135,7 +135,7 @@
 							<Name></Name>
 							<Description></Description>
 							<PublicCode></PublicCode>
-							<PrivateCode type="noc"></PrivateCode>
+							<PrivateCode></PrivateCode>
 							<OperatorRef version="1.0" ref=""></OperatorRef>
 							<LineType>local</LineType>
 						</Line>
