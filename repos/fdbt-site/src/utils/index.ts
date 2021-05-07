@@ -200,7 +200,7 @@ export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] 
 
 export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boolean => {
     const databaseNocs = getNocFromIdToken(ctx);
-    let nocs = [];
+    let nocs: string[] = [];
     if (databaseNocs) {
         nocs = databaseNocs.split('|');
     }
