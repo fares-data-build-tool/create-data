@@ -128,7 +128,12 @@ export const getLinesList = (
                   Description: { $t: service.serviceDescription },
                   Url: { $t: website },
                   PublicCode: { $t: service.lineName },
-                  PrivateCode: { type: 'noc', $t: `${userPeriodTicket.nocCode}_${service.lineName}` },
+                  PrivateCode: service.lineId
+                      ? {
+                            type: 'txc:Line@id',
+                            $t: service.lineId,
+                        }
+                      : {},
                   OperatorRef: {
                       version: '1.0',
                       ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
