@@ -3,26 +3,27 @@
         {
             "browser": "chrome",
             "os": "Windows 10",
-            "versions": [
-                "latest",
-                "latest-1"
-            ]
+            "versions": ["latest"]
         },
         {
             "browser": "firefox",
             "os": "Windows 10",
-            "versions": [
-                "latest",
-                "latest-1"
-            ]
+            "versions": ["latest"]
+        },
+        {
+            "browser": "chrome",
+            "os": "OS X Catalina",
+            "versions": ["latest"]
+        },
+        {
+            "browser": "firefox",
+            "os": "OS X Catalina",
+            "versions": ["latest"]
         },
         {
             "browser": "edge",
             "os": "Windows 10",
-            "versions": [
-                "latest",
-                "latest-1"
-            ]
+            "versions": ["latest"]
         }
     ],
     "run_settings": {
@@ -31,6 +32,7 @@
         "build_name": "build-name",
         "exclude": [],
         "parallels": "3",
+        "cypress_version": "6",
         "npm_dependencies": {
             "@cypress/webpack-preprocessor": "^5.7.0",
             "@typescript-eslint/eslint-plugin": "^2.33.0",
