@@ -144,7 +144,7 @@ describe('periodTicketNetexHelpers', () => {
                 Description: { $t: expect.any(String) },
                 Url: expect.objectContaining({ $t: expect.any(String) }),
                 PublicCode: expect.objectContaining({ $t: expect.any(String) }),
-                PrivateCode: expect.objectContaining({ type: 'noc', $t: expect.any(String) }),
+                PrivateCode: expect.objectContaining({ type: 'txc:Line@id', $t: expect.any(String) }),
                 OperatorRef: { version: '1.0', ref: expect.stringContaining('noc:') },
                 LineType: { $t: 'local' },
             };
