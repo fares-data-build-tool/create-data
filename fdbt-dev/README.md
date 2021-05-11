@@ -21,7 +21,6 @@ In order to use the scripts in this repo, the FDBT repos need to be in a particu
 ├── repos
 │   ├── fdbt-site
 │   ├── fdbt-reference-data-service
-│   ├── fdbt-ui-automation
 │   └── fdbt-netex-output
 ```
 
