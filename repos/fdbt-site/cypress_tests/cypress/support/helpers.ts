@@ -11,9 +11,9 @@ export const clickElementById = (id: string): Cypress.Chainable<JQuery<HTMLEleme
 
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
-export const getHomePage = (): void => {
+export const getHomePage = (isScheme: boolean): void => {
     cy.clearCookies();
-    cy.visit('?disableAuth=BLAC');
+    cy.visit(`?disableAuth=${isScheme ? 'scheme' : 'BLAC'}`);
 };
 
 export const fareTypeToFareTypeIdMapper = (
@@ -175,6 +175,8 @@ export const completeDefineGroupPassengersPages = (groupSize: string): void => {
 };
 
 export const randomlyChooseSingleProductPeriodValidity = (): void => {
+    assertElementNotVisibleById('period-validity-end-of-service-required-conditional');
+
     const randomSelector = getRandomNumber(1, 3);
     switch (randomSelector) {
         case 1:
@@ -302,15 +304,25 @@ export const randomlyDecideTimeRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const clickSelectedNumberOfCheckboxes = (clickAll: boolean): void => {
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
-        if (clickAll || index === 0) {
+export const clickAllCheckboxes = (): void => {
+    cy.get('[class=govuk-checkboxes__input]').each(checkbox => {
+        cy.wrap(checkbox).click();
+    });
+};
+
+export const clickSomeCheckboxes = (): void => {
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
+        const numberOfCheckboxes = checkboxes.length;
+        if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
             cy.wrap(checkbox).click();
-        } else {
-            const randomSelector = getRandomNumber(0, 1);
-            if (randomSelector === 0) {
-                cy.wrap(checkbox).click();
-            }
+        }
+    });
+};
+
+export const clickFirstCheckboxIfMultiple = (): void => {
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
+        if (checkboxes.length > 1 && index === 0) {
+            cy.wrap(checkbox).click();
         }
     });
 };
@@ -337,7 +349,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 };
 
 export const randomlyChooseAndSelectServices = (): void => {
-    const randomSelector = getRandomNumber(1, 5);
+    const randomSelector = getRandomNumber(1, 4);
     switch (randomSelector) {
         case 1: {
             cy.log('Click Select All button and continue');
@@ -346,24 +358,18 @@ export const randomlyChooseAndSelectServices = (): void => {
         }
         case 2: {
             cy.log('Loop through checkboxes and click all, then continue');
-            clickSelectedNumberOfCheckboxes(true);
+            clickAllCheckboxes();
             break;
         }
         case 3: {
             cy.log('Loop through checkboxes and click random ones, then continue');
-            clickSelectedNumberOfCheckboxes(false);
+            clickSomeCheckboxes();
             break;
         }
         case 4: {
-            cy.log('Click Select All button and then click random checkboxes to deselect, then continue');
+            cy.log('Click Select All button and then click first checkbox to deselect, then continue');
             clickElementById('select-all-button');
-            clickSelectedNumberOfCheckboxes(false);
-            break;
-        }
-        case 5: {
-            cy.log('Loop through checkboxes and click all and then click random checkboxes to deselect, then continue');
-            clickSelectedNumberOfCheckboxes(true);
-            clickSelectedNumberOfCheckboxes(false);
+            clickFirstCheckboxIfMultiple();
             break;
         }
         default: {
@@ -410,16 +416,79 @@ export const completeProductDateInformationPage = (): void => {
     continueButtonClick();
 };
 
-export const isUuidStringValid = (): void => {
+export const isUuidStringValid = (isScheme = false): void => {
     getElementById('uuid-ref-number')
         .invoke('text')
         .then(rawUuid => {
             const uuid = rawUuid.replace('Your reference number', '');
-            expect(uuid).to.contain('BLAC');
-            expect(uuid.length).to.equal(12);
+
+            if (isScheme) {
+                expect(uuid).to.contain('TESTSE');
+                expect(uuid.length).to.equal(14);
+            } else {
+                expect(uuid).to.contain('BLAC');
+                expect(uuid.length).to.equal(12);
+            }
         });
 };
 
 export const uploadFile = (elementId: string, fileName: string): void => {
     getElementById(elementId).attachFile(fileName);
+};
+
+export const completeSingleProduct = (): void => {
+    getElementById('number-of-products').type('1');
+    continueButtonClick();
+    getElementById('product-details-name').type('Cypress period product');
+    getElementById('product-details-price').type('4.95');
+    continueButtonClick();
+    getElementById('validity').type('10');
+    selectRandomOptionFromDropDown('validity-units');
+    continueButtonClick();
+    randomlyChooseSingleProductPeriodValidity();
+    continueButtonClick();
+    continueButtonClick();
+};
+
+export const completeMultipleProducts = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+    getElementById('number-of-products').type(numberOfProducts.toString());
+    continueButtonClick();
+
+    for (let i = 0; i < numberOfProducts; i += 1) {
+        getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix}${i + 1}`);
+        getElementById(`multiple-product-price-${i}`).type(`1${i}`);
+        getElementById(`multiple-product-duration-${i}`).type(`2${i}`);
+        selectRandomOptionFromDropDown(`multiple-product-duration-units-${i}`);
+    }
+
+    continueButtonClick();
+    randomlyChooseMultipleProductPeriodValidity(numberOfProducts);
+    continueButtonClick();
+    continueButtonClick();
+};
+
+export const completeOperatorSearch = (isMultiService: boolean): void => {
+    getElementById(`search-input`).type('bus');
+    clickElementById('search-button');
+
+    getElementById('add-operator-checkbox-0').click();
+    getElementById('add-operator-checkbox-1').click();
+    getElementById('add-operator-checkbox-2').click();
+    getElementById('add-operator-checkbox-3').click();
+
+    clickElementById('add-operator-button');
+
+    getElementById('remove-operator-checkbox-3').click();
+    clickElementById('remove-operators-button');
+    continueButtonClick();
+
+    clickElementById('no-save');
+    continueButtonClick();
+
+    if (isMultiService) {
+        for (let i = 0; i < 3; i += 1) {
+            randomlyChooseAndSelectServices();
+            continueButtonClick();
+        }
+    }
 };
