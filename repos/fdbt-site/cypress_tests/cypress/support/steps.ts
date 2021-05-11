@@ -11,13 +11,14 @@ import {
     selectRandomOptionFromDropDown,
     uploadFile,
     submitButtonClick,
-    clickSelectedNumberOfCheckboxes,
     completeProductDateInformationPage,
     getRandomNumber,
     assertElementNotVisibleById,
-    randomlyChooseSingleProductPeriodValidity,
-    randomlyChooseMultipleProductPeriodValidity,
     completeSalesOfferPackagesForMultipleProducts,
+    completeSingleProduct,
+    completeMultipleProducts,
+    completeOperatorSearch,
+    clickSomeCheckboxes,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -29,10 +30,15 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
 export const selectFareType = (
     fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
 ): void => {
-    getHomePage();
+    getHomePage(false);
     startPageLinkClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
+};
+
+export const startSchemeJourney = (): void => {
+    getHomePage(true);
+    startPageLinkClick();
 };
 
 export const completeFlatFarePages = (productName: string): void => {
@@ -120,7 +126,7 @@ export const completeSalesPages = (numberOfProducts?: number, multiProductNamePr
     if (numberOfProducts && multiProductNamePrefix) {
         completeSalesOfferPackagesForMultipleProducts(numberOfProducts, multiProductNamePrefix);
     } else {
-        clickSelectedNumberOfCheckboxes(false);
+        clickSomeCheckboxes();
     }
     continueButtonClick();
     completeProductDateInformationPage();
@@ -132,30 +138,60 @@ export const completePeriodGeoZonePages = (numberOfProducts?: number, multiProdu
     continueButtonClick();
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
+
     if (!numberOfProducts || !multiProductNamePrefix) {
-        getElementById('number-of-products').type('1');
-        continueButtonClick();
-        getElementById('product-details-name').type('Cypress period product');
-        getElementById('product-details-price').type('4.95');
-        continueButtonClick();
-        getElementById('validity').type('10');
-        selectRandomOptionFromDropDown('validity-units');
-        continueButtonClick();
-        randomlyChooseSingleProductPeriodValidity();
-        continueButtonClick();
-        continueButtonClick();
+        completeSingleProduct();
     } else {
-        getElementById('number-of-products').type(numberOfProducts.toString());
+        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    }
+};
+
+export const completePeriodMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+    clickElementById('set-of-services');
+    continueButtonClick();
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+
+    if (!numberOfProducts || !multiProductNamePrefix) {
+        completeSingleProduct();
+    } else {
+        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    }
+};
+
+export const completeMultiOpGeoZonePages = (
+    isScheme: boolean,
+    numberOfProducts?: number,
+    multiProductNamePrefix?: string,
+): void => {
+    if (!isScheme) {
+        clickElementById('geo-zone');
         continueButtonClick();
-        for (let i = 0; i < numberOfProducts; i += 1) {
-            getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix}${i + 1}`);
-            getElementById(`multiple-product-price-${i}`).type(`1${i}`);
-            getElementById(`multiple-product-duration-${i}`).type(`2${i}`);
-            selectRandomOptionFromDropDown(`multiple-product-duration-units-${i}`);
-        }
-        continueButtonClick();
-        randomlyChooseMultipleProductPeriodValidity(numberOfProducts);
-        continueButtonClick();
-        continueButtonClick();
+    }
+
+    uploadFile('csv-upload', 'fareZone.csv');
+    submitButtonClick();
+
+    completeOperatorSearch(false);
+
+    if (!numberOfProducts || !multiProductNamePrefix) {
+        completeSingleProduct();
+    } else {
+        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    }
+};
+
+export const completeMultiOpMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+    clickElementById('set-of-services');
+    continueButtonClick();
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+
+    completeOperatorSearch(true);
+
+    if (!numberOfProducts || !multiProductNamePrefix) {
+        completeSingleProduct();
+    } else {
+        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
     }
 };
