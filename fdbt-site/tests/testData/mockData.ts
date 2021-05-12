@@ -251,6 +251,10 @@ export const getMockContext = ({
 export const mockSchemOpIdToken =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVFNDSEVNRSJ9.jaTbkwPmrf00_MnH1WMJmFfKWVjwr4U64N_HWy2Lojs';
 
+// 'TEST|HELLO' for the NOC code
+export const mockIdTokenMultiple =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVHxIRUxMTyJ9.O-E8cNzF8X0DVoUnKVKsg0ZSx88Yc3peOIpha7-BOWc';
+
 export const mockMatchingFaresZones: MatchingFareZones = {
     'Acomb Green Lane': {
         name: 'Acomb Green Lane',

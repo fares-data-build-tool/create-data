@@ -1,11 +1,10 @@
-/* eslint-disable no-else-return */
-import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils/index';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
+import { NextApiResponse } from 'next';
+import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
+import { getTimeRestrictionByNameAndNoc } from '../../data/auroradb';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getTimeRestrictionByNameAndNoc } from '../../data/auroradb';
+import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -25,7 +24,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 redirectTo(res, '/defineTimeRestrictions');
                 return;
             }
-            const noc = getNocFromIdToken(req, res);
+            const noc = getAndValidateNoc(req, res);
             if (!noc) {
                 throw new Error('Could not find users NOC code.');
             }
@@ -87,9 +86,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
             redirectTo(res, '/chooseTimeRestrictions');
             return;
-        } else {
-            updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, { fullTimeRestrictions: [], errors: [] });
         }
+
+        updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, { fullTimeRestrictions: [], errors: [] });
         updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
         redirectTo(res, '/fareConfirmation');
         return;

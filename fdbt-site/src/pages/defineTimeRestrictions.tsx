@@ -12,7 +12,7 @@ import {
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
-import { getCsrfToken, getErrorsByIds, getNocFromIdToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
@@ -166,7 +166,7 @@ export const getServerSideProps = async (
 ): Promise<{ props: DefineTimeRestrictionsProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
-    const noc = getNocFromIdToken(ctx);
+    const noc = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(noc || '');
 
     let errors: ErrorInfo[] = [];
