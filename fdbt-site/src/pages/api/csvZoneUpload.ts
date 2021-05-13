@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
 import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { getUuidFromSession, redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
+import { getUuidFromSession, redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from './apiUtils';
 import { putDataInS3 } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getFormData, processFileUpload } from './apiUtils/fileUpload';
@@ -181,7 +181,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
-            if (fareType === 'multiOperator') {
+            if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
                 redirectTo(res, '/reuseOperatorGroup');
                 return;
             }

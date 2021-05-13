@@ -24,6 +24,7 @@ import {
     getFlatFareTicketJson,
     putUserDataInS3,
     getSchemeOperatorTicketJson,
+    adjustSchemeOperatorJson,
 } from './apiUtils/userData';
 import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -59,7 +60,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         let userDataJson;
 
         if (isSchemeOperator(req, res)) {
-            userDataJson = await getSchemeOperatorTicketJson(req, res);
+            const baseSchemeOperatorJson = getSchemeOperatorTicketJson(req, res);
+            userDataJson = await adjustSchemeOperatorJson(req, res, baseSchemeOperatorJson);
         } else if (fareType === 'single') {
             userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {

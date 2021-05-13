@@ -1,7 +1,7 @@
 import fareConfirmation from '../../../src/pages/api/fareConfirmation';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../testData/mockData';
-import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
+import { OPERATOR_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('fareConfirmation', () => {
     const writeHeadMock = jest.fn();
@@ -27,6 +27,7 @@ describe('fareConfirmation', () => {
             },
             session: {
                 [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
             },
         });
         fareConfirmation(req, res);

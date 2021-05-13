@@ -43,6 +43,7 @@ exports[`pages fareType should render correctly 1`] = `
           errors={Array []}
         >
           <FareTypeRadios
+            otherFares={Array []}
             standardFares={
               Array [
                 Object {
@@ -137,6 +138,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
           }
         >
           <FareTypeRadios
+            otherFares={Array []}
             standardFares={
               Array [
                 Object {

@@ -1,12 +1,13 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
+import { getAndValidateNoc, isSchemeOperator, redirectTo, redirectToError } from './apiUtils/index';
 import { getOperatorGroupsByNameAndNoc } from '../../data/auroradb';
 import {
+    FARE_TYPE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     REUSE_OPERATOR_GROUP_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
-import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
+import { NextApiRequestWithSession, TicketRepresentationAttribute, FareType } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -39,6 +40,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
         updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
 
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
+        if (isSchemeOperator(req, res) && fareType === 'flatFare') {
+            redirectTo(res, '/multipleOperatorsServiceList');
+            return;
+        }
         const ticketRepresentation = (getSessionAttribute(
             req,
             TICKET_REPRESENTATION_ATTRIBUTE,

@@ -2,11 +2,13 @@ import {
     SAVE_OPERATOR_GROUP_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import saveOperatorGroup from '../../../src/pages/api/saveOperatorGroup';
 import * as auroradb from '../../../src/data/auroradb';
+import * as index from '../../../src/pages/api/apiUtils/index';
 
 describe('saveOperatorGroup', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -168,6 +170,28 @@ describe('saveOperatorGroup', () => {
             session: {
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServices',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await saveOperatorGroup(req, res);
+
+        expect(insertOperatorGroupSpy).toBeCalledTimes(0);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleOperatorsServiceList' });
+    });
+
+    it('should do nothing but redirect on /multipleOperatorsServiceList if scheme operator and fareType is flat fare', async () => {
+        const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
+        isSchemeOperatorSpy.mockImplementation(() => true);
+        const { req, res } = getMockRequestAndResponse({
+            body: { saveGroup: 'no' },
+            session: {
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'multipleServices',
+                },
+                [FARE_TYPE_ATTRIBUTE]: {
+                    fareType: 'flatFare',
                 },
             },
             mockWriteHeadFn: writeHeadMock,

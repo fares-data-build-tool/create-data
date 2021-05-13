@@ -300,6 +300,17 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
 
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const services = serviceInformation ? serviceInformation.selectedServices : [];
+    if (services.length === 0) {
+        const multiOpServicesAttribute = getSessionAttribute(
+            ctx.req,
+            MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+        ) as MultiOperatorInfo[];
+        multiOpServicesAttribute.forEach(additionalOperator => {
+            additionalOperator.services.forEach(service => {
+                services.push(service);
+            });
+        });
+    }
     const productInfo = (getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE) as ProductData).products;
     const { productName, productPrice } = productInfo[0];
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;

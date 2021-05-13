@@ -7,8 +7,16 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
 } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, ProductData, ProductInfo, ProductInfoWithErrors } from '../interfaces';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    ProductData,
+    ProductInfo,
+    ProductInfoWithErrors,
+    MultiOperatorInfo,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
@@ -139,12 +147,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
+    const multipleOperatorsServicesAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
     const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
     const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     let hintText = '';
 
-    if (!operatorAttribute?.name || (!fareZoneAttribute && !serviceListAttribute)) {
+    if (
+        !operatorAttribute?.name ||
+        (!fareZoneAttribute && !serviceListAttribute && !multipleOperatorsServicesAttribute)
+    ) {
         throw new Error('Failed to retrieve the necessary session objects.');
     }
 
@@ -156,7 +168,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         hintText = fareZoneAttribute;
     } else if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
         const { selectedServices } = serviceListAttribute;
-        hintText = selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName;
+        hintText = selectedServices.length > 1 ? 'Multiple services' : selectedServices[0].lineName;
+    } else if (multipleOperatorsServicesAttribute) {
+        hintText = `Multiple services across ${
+            (multipleOperatorsServicesAttribute as MultiOperatorInfo[]).length
+        } operators`;
     }
 
     return {

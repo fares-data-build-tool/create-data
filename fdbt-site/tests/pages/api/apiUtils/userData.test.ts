@@ -8,6 +8,7 @@ import {
     getProductsAndSalesOfferPackages,
     getSchemeOperatorTicketJson,
     getBaseTicketAttributes,
+    adjustSchemeOperatorJson,
 } from '../../../../src/pages/api/apiUtils/userData';
 import {
     TERM_TIME_ATTRIBUTE,
@@ -51,6 +52,8 @@ import {
     mockSchemOpIdToken,
     expectedSchemeOperatorTicket,
     mockFullTimeRestrictions,
+    expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
+    expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
@@ -621,7 +624,7 @@ describe('userData', () => {
             batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
         });
 
-        it('should return a SchemeOperatorTicket object', async () => {
+        it('should return a SchemeOperatorTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {
                     idToken: mockSchemOpIdToken,
@@ -735,8 +738,316 @@ describe('userData', () => {
                 },
             });
             batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
-            const result = await getSchemeOperatorTicketJson(req, res);
-            expect(result).toEqual(expectedSchemeOperatorTicket);
+            const result = getSchemeOperatorTicketJson(req, res);
+            expect(result).toEqual(expectedSchemeOperatorTicket('multiOperator'));
+        });
+    });
+
+    describe('adjustSchemeOperatorTicketJson', () => {
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
+
+        const mockMultiOpSelectedOperators: Operator[] = [
+            {
+                nocCode: 'MCTR',
+                name: 'Manchester Community Transport',
+            },
+            {
+                nocCode: 'WBTR',
+                name: "Warrington's Own Buses",
+            },
+            {
+                nocCode: 'BLAC',
+                name: 'Blackpool Transport',
+            },
+        ];
+
+        const atcoCodes: string[] = ['13003305E', '13003622B', '13003655B'];
+        let batchGetStopsByAtcoCodeSpy: jest.SpyInstance;
+
+        beforeEach(() => {
+            jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
+
+            batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
+        });
+
+        it('should adjust SchemeOperatorTicket json for a period geozone ticket', async () => {
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {
+                    idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: {
+                        name: 'SCHEME_OPERATOR',
+                        region: 'SCHEME_REGION',
+                        nocCode: 'TESTSCHEME',
+                        uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+                    },
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                    [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                        products: [
+                            {
+                                productName: 'Weekly Ticket',
+                                productPrice: '50',
+                                productDuration: '5',
+                                productDurationUnits: 'week',
+                                productValidity: '24hr',
+                            },
+                            {
+                                productName: 'Day Ticket',
+                                productPrice: '2.50',
+                                productDuration: '1',
+                                productDurationUnits: 'month',
+                                productValidity: '24hr',
+                            },
+                            {
+                                productName: 'Monthly Ticket',
+                                productPrice: '200',
+                                productDuration: '28',
+                                productDurationUnits: 'year',
+                                productValidity: 'endOfCalendarDay',
+                            },
+                        ],
+                    },
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'Weekly Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Day Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Monthly Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                    ],
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                        fullTimeRestrictions: [
+                            {
+                                day: 'monday',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '',
+                                    },
+                                ],
+                            },
+                            {
+                                day: 'tuesday',
+                                timeBands: [
+                                    {
+                                        startTime: '',
+                                        endTime: '1800',
+                                    },
+                                ],
+                            },
+                            {
+                                day: 'bank holiday',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '1750',
+                                    },
+                                ],
+                            },
+                            {
+                                day: 'friday',
+                                timeBands: [
+                                    {
+                                        startTime: '',
+                                        endTime: '',
+                                    },
+                                ],
+                            },
+                        ],
+                        errors: [],
+                    },
+                },
+            });
+            batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
+            const result = await adjustSchemeOperatorJson(req, res, expectedSchemeOperatorTicket('period'));
+            expect(result).toEqual(expectedSchemeOperatorTicketAfterGeoZoneAdjustment);
+        });
+        it('should adjust SchemeOperatorTicket json for a flat fare ticket', async () => {
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {
+                    idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: {
+                        name: 'SCHEME_OPERATOR',
+                        region: 'SCHEME_REGION',
+                        nocCode: 'TESTSCHEME',
+                        uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+                    },
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+                    [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                        fullTimeRestrictions: [
+                            {
+                                day: 'monday',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '',
+                                    },
+                                ],
+                            },
+                            {
+                                day: 'tuesday',
+                                timeBands: [
+                                    {
+                                        startTime: '',
+                                        endTime: '1800',
+                                    },
+                                ],
+                            },
+                            {
+                                day: 'bank holiday',
+                                timeBands: [
+                                    {
+                                        startTime: '0900',
+                                        endTime: '1750',
+                                    },
+                                ],
+                            },
+                            {
+                                day: 'friday',
+                                timeBands: [
+                                    {
+                                        startTime: '',
+                                        endTime: '',
+                                    },
+                                ],
+                            },
+                        ],
+                        errors: [],
+                    },
+                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                        products: [
+                            {
+                                productName: 'Weekly Ticket',
+                                productPrice: '50',
+                            },
+                        ],
+                    },
+                    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
+                        {
+                            nocCode: 'WBTR',
+                            services: [
+                                {
+                                    lineName: '343',
+                                    lineId: '3h3vsergesrhg',
+                                    serviceCode: '11-444-_-y08-1',
+                                    serviceDescription: 'Test Under Lyne - Glossop',
+                                    startDate: '07/04/2020',
+                                },
+                                {
+                                    lineName: '444',
+                                    lineId: '3h3vtrhtherhed',
+                                    serviceCode: 'NW_01_MCT_391_1',
+                                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                                    startDate: '23/04/2019',
+                                },
+                                {
+                                    lineName: '543',
+                                    lineId: '3h3vb32ik',
+                                    serviceCode: 'NW_04_MCTR_232_1',
+                                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                                    startDate: '06/04/2020',
+                                },
+                            ],
+                        },
+                        {
+                            nocCode: 'BLAC',
+                            services: [
+                                {
+                                    lineName: '100',
+                                    lineId: '3h3rthsrty56y5',
+                                    serviceCode: '11-444-_-y08-1',
+                                    serviceDescription: 'Test Under Lyne - Glossop',
+                                    startDate: '07/04/2020',
+                                },
+                                {
+                                    lineName: '101',
+                                    lineId: '3h34t43deefsf',
+                                    serviceCode: 'NW_01_MCT_391_1',
+                                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                                    startDate: '23/04/2019',
+                                },
+                                {
+                                    lineName: '102',
+                                    lineId: '34tvwevdsvb32ik',
+                                    serviceCode: 'NW_04_MCTR_232_1',
+                                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                                    startDate: '06/04/2020',
+                                },
+                            ],
+                        },
+                        {
+                            nocCode: 'LEDS',
+                            services: [
+                                {
+                                    lineName: '63',
+                                    lineId: '45t34gvfdx2ik',
+                                    serviceCode: '11-444-_-y08-1',
+                                    serviceDescription: 'Test Under Lyne - Glossop',
+                                    startDate: '07/04/2020',
+                                },
+                                {
+                                    lineName: '64',
+                                    lineId: 'q45g4rgergik',
+                                    serviceCode: 'NW_01_MCT_391_1',
+                                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                                    startDate: '23/04/2019',
+                                },
+                                {
+                                    lineName: '65',
+                                    lineId: 'q34ttfwerfsxfc',
+                                    serviceCode: 'NW_04_MCTR_232_1',
+                                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                                    startDate: '06/04/2020',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            });
+            const result = await adjustSchemeOperatorJson(req, res, expectedSchemeOperatorTicket('flatFare'));
+            expect(result).toEqual(expectedSchemeOperatorAfterFlatFareAdjustmentTicket);
         });
     });
 });
