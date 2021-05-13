@@ -23,6 +23,7 @@ describe('FareTypeRadios', () => {
                 label: 'Flat Fare Ticket - Single Journey',
             },
         ],
+        otherFares: [],
     };
 
     const mockOtherFaresRadioProps = {
@@ -48,7 +49,7 @@ describe('FareTypeRadios', () => {
 
     it('should render a set of radio buttons for just standard fares when no other fares are provided', () => {
         const mockProps: FareTypeRadioProps = { ...mockStandardFaresRadioProps };
-        const wrapper = shallow(<FareTypeRadios standardFares={mockProps.standardFares} />);
+        const wrapper = shallow(<FareTypeRadios standardFares={mockProps.standardFares} otherFares={[]} />);
         expect(wrapper).toMatchSnapshot();
     });
 });
