@@ -1,12 +1,13 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 
-DROP TABLE IF EXISTS timeRestriction;
+DROP TABLE IF EXISTS passengerType;
 
-CREATE TABLE timeRestriction(
+CREATE TABLE passengerType(
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nocCode` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL,
     `contents` text NOT NULL,
+    `isGroup` boolean NOT NULL,
     INDEX idx_nocCode (nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;

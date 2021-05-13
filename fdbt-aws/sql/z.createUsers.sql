@@ -11,6 +11,7 @@ GRANT SELECT ON fdbt.* TO 'fdbt_site'@'%';
 GRANT INSERT, DELETE ON fdbt.salesOfferPackage TO 'fdbt_site'@'%';
 GRANT INSERT ON fdbt.timeRestriction TO 'fdbt_site'@'%';
 GRANT INSERT ON fdbt.operatorGroup TO 'fdbt_site'@'%';
+GRANT INSERT, UPDATE ON fdbt.passengerType TO 'fdbt_site'@'%';
 
 GRANT USAGE ON fdbt.* TO 'fdbt_netex'@'%' IDENTIFIED BY 'password';
 DROP USER 'fdbt_netex'@'%';
