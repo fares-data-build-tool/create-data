@@ -1,8 +1,9 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
+import { upsertPassengerType } from '../../data/auroradb';
 import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
-import { redirectTo, redirectToError } from './apiUtils/index';
+import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
@@ -238,8 +239,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (errors.length === 0) {
             if (!group) {
-                updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType, ...filteredReqBody });
+                const filteredPassengerType = { passengerType, ...filteredReqBody };
+                updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, filteredPassengerType);
                 updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+
+                const noc = getAndValidateNoc(req, res);
+                await upsertPassengerType(noc, filteredPassengerType, filteredPassengerType.passengerType);
+
                 const redirectLocation =
                     passengerType === 'schoolPupil' && fareType === 'schoolService'
                         ? '/termTime'
