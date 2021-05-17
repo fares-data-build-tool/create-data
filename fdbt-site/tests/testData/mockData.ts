@@ -3,27 +3,7 @@ import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import {
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    STAGE_NAMES_ATTRIBUTE,
-    DURATION_VALID_ATTRIBUTE,
-    SERVICE_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    OPERATOR_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    FARE_STAGES_ATTRIBUTE,
-} from '../../src/constants/attributes';
-import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
-
-import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
-import { TextInputFieldset } from '../../src/pages/definePassengerType';
-import {
+    SchemeOperatorGeoZoneTicket,
     FullTimeRestrictionAttribute,
     FullTimeRestriction,
     ErrorInfo,
@@ -47,7 +27,30 @@ import {
     UserFareStages,
     MultiProduct,
     MultiProductWithErrors,
-} from '../../src/interfaces';
+    SchemeOperatorFlatFareTicket,
+} from '../../src/interfaces/index';
+import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    STAGE_NAMES_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
+} from '../../src/constants/attributes';
+import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
+
+import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
+import { TextInputFieldset } from '../../src/pages/definePassengerType';
+
 import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 
 interface GetMockContextInput {
@@ -250,6 +253,10 @@ export const getMockContext = ({
 
 export const mockSchemOpIdToken =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVFNDSEVNRSJ9.jaTbkwPmrf00_MnH1WMJmFfKWVjwr4U64N_HWy2Lojs';
+
+// 'TEST|HELLO' for the NOC code
+export const mockIdTokenMultiple =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVHxIRUxMTyJ9.O-E8cNzF8X0DVoUnKVKsg0ZSx88Yc3peOIpha7-BOWc';
 
 export const mockMatchingFaresZones: MatchingFareZones = {
     'Acomb Green Lane': {
@@ -1990,15 +1997,30 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     timeRestriction: [],
 };
 
-export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
+export const expectedSchemeOperatorTicket = (type: string): SchemeOperatorTicket => {
+    return {
+        schemeOperatorName: expect.any(String),
+        schemeOperatorRegionCode: expect.any(String),
+        nocCode: expect.any(String),
+        type,
+        uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+        email: 'test@example.com',
+        passengerType: 'Adult',
+        timeRestriction: mockTimeRestriction,
+        ticketPeriod: {
+            startDate: '2020-12-17T09:30:46.0Z',
+            endDate: '2020-12-18T09:30:46.0Z',
+        },
+    };
+};
+
+export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperatorFlatFareTicket = {
     schemeOperatorName: expect.any(String),
     schemeOperatorRegionCode: expect.any(String),
     nocCode: expect.any(String),
-    type: 'multiOperator',
+    type: 'flatFare',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    zoneName: 'Green Lane Shops',
-    stops: zoneStops,
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
     ticketPeriod: {
@@ -2009,26 +2031,341 @@ export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5 weeks',
-            productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
-        },
-        {
-            productName: 'Day Ticket',
-            productPrice: '2.50',
-            productDuration: '1 month',
-            productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
-        },
-        {
-            productName: 'Monthly Ticket',
-            productPrice: '200',
-            productDuration: '28 years',
-            productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    description: '',
+                    name: 'Onboard (cash)',
+                    paymentMethods: ['cash'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+                {
+                    description: '',
+                    name: 'Onboard (contactless)',
+                    paymentMethods: ['contactlessPaymentCard'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+            ],
         },
     ],
+    additionalOperators: [
+        {
+            nocCode: 'WBTR',
+            selectedServices: [
+                {
+                    lineId: '3h3vsergesrhg',
+                    lineName: '343',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineId: '3h3vtrhtherhed',
+                    lineName: '444',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineId: '3h3vb32ik',
+                    lineName: '543',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+        {
+            nocCode: 'BLAC',
+            selectedServices: [
+                {
+                    lineId: '3h3rthsrty56y5',
+                    lineName: '100',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineId: '3h34t43deefsf',
+                    lineName: '101',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineId: '34tvwevdsvb32ik',
+                    lineName: '102',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+        {
+            nocCode: 'LEDS',
+            selectedServices: [
+                {
+                    lineId: '45t34gvfdx2ik',
+                    lineName: '63',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineId: 'q45g4rgergik',
+                    lineName: '64',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineId: 'q34ttfwerfsxfc',
+                    lineName: '65',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+    ],
+};
+
+export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorGeoZoneTicket = {
+    schemeOperatorName: expect.any(String),
+    schemeOperatorRegionCode: expect.any(String),
+    nocCode: expect.any(String),
     additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
+    type: 'period',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    zoneName: 'Green Lane Shops',
+    stops: [
+        {
+            atcoCode: '13003305E',
+            indicator: 'S-bound',
+            localityCode: 'N0077347',
+            localityName: 'New Seaham',
+            naptanCode: 'durapmja',
+            parentLocalityName: 'IW Test',
+            stopName: 'Westlea shops',
+            street: 'B1285 Stockton Road',
+        },
+        {
+            atcoCode: '13003622B',
+            indicator: 'NE-bound',
+            localityCode: 'E0010170',
+            localityName: 'Deneside',
+            naptanCode: 'duratgtm',
+            parentLocalityName: 'IW Test',
+            stopName: 'The Avenue Shops',
+            street: 'The Avenue',
+        },
+        {
+            atcoCode: '13003655B',
+            indicator: 'B',
+            localityCode: 'E0045957',
+            localityName: 'Seaham',
+            naptanCode: 'duratjwd',
+            parentLocalityName: 'IW Test',
+            stopName: 'Interchange Stand B',
+            street: 'South Crescent',
+        },
+        {
+            atcoCode: '13003635B',
+            indicator: 'NE-bound',
+            localityCode: 'E0045957',
+            localityName: 'Seaham',
+            naptanCode: 'duratjga',
+            parentLocalityName: 'IW Test',
+            stopName: 'Adolphus Place',
+            street: 'South Terrace',
+        },
+        {
+            atcoCode: '13003618B',
+            indicator: 'NE-bound',
+            localityCode: 'E0010170',
+            localityName: 'Deneside',
+            naptanCode: 'duratgpt',
+            parentLocalityName: 'IW Test',
+            stopName: 'The Avenue - Essex Crescent',
+            street: 'The Avenue',
+        },
+        {
+            atcoCode: '13003612D',
+            indicator: 'SE-bound',
+            localityCode: 'E0045957',
+            localityName: 'Seaham',
+            naptanCode: 'duratgma',
+            parentLocalityName: 'IW Test',
+            stopName: 'New Strangford Road',
+            street: 'New Stranford Road',
+        },
+        {
+            atcoCode: '13003611B',
+            indicator: 'NE-bound',
+            localityCode: 'E0045957',
+            localityName: 'Seaham',
+            naptanCode: 'duratgjt',
+            parentLocalityName: 'IW Test',
+            stopName: 'New Tempest Road - York House',
+            street: 'Tempest Road',
+        },
+        {
+            atcoCode: '13003306B',
+            indicator: 'NE-bound',
+            localityCode: 'N0077347',
+            localityName: 'New Seaham',
+            naptanCode: 'durapmjg',
+            parentLocalityName: 'IW Test',
+            stopName: 'Mount Pleasant',
+            street: 'The Avenue',
+        },
+        {
+            atcoCode: '13003949C',
+            indicator: 'E-bound',
+            localityCode: 'E0045957',
+            localityName: 'Seaham',
+            naptanCode: 'durgawmt',
+            parentLocalityName: 'IW Test',
+            stopName: 'Viceroy Street',
+            street: 'Viceroy street',
+        },
+        {
+            atcoCode: '13003609E',
+            indicator: 'S-bound',
+            localityCode: 'E0045957',
+            localityName: 'Seaham',
+            naptanCode: 'duratgdt',
+            parentLocalityName: 'IW Test',
+            stopName: 'Vane Terrace - Castlereagh',
+            street: 'Vane Terrace',
+        },
+        {
+            atcoCode: '13003921A',
+            indicator: 'N-bound',
+            localityCode: 'N0077347',
+            localityName: 'New Seaham',
+            naptanCode: 'durgawjp',
+            parentLocalityName: 'IW Test',
+            stopName: 'Estate Hail and Ride',
+            street: 'Windermere Road',
+        },
+        {
+            atcoCode: '13003923B',
+            indicator: 'NE-bound',
+            localityCode: 'E0010170',
+            localityName: 'Deneside',
+            naptanCode: 'durawagw',
+            parentLocalityName: 'IW Test',
+            stopName: 'Kingston Avenue',
+            street: 'Kingston Avenue',
+        },
+        {
+            atcoCode: '13003625C',
+            indicator: 'E-bound',
+            localityCode: 'E0010170',
+            localityName: 'Deneside',
+            naptanCode: 'duratgwg',
+            parentLocalityName: 'IW Test',
+            stopName: 'Park',
+            street: 'The Avenue',
+        },
+        {
+            atcoCode: '13003939H',
+            indicator: 'NW-bound',
+            localityCode: 'E0010170',
+            localityName: 'Deneside',
+            naptanCode: 'durawamp',
+            parentLocalityName: 'IW Test',
+            stopName: 'Laurel Avenue',
+            street: 'Laurel Avenue',
+        },
+        {
+            atcoCode: '13003661E',
+            indicator: 'S-bound',
+            localityCode: 'E0045957',
+            localityName: 'Seaham',
+            naptanCode: 'durgapwp',
+            parentLocalityName: 'IW Test',
+            stopName: 'Sophia Street',
+            street: 'Sophia Street',
+        },
+    ],
+    products: [
+        {
+            productDuration: '5 weeks',
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    description: '',
+                    name: 'Onboard (cash)',
+                    paymentMethods: ['cash'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+                {
+                    description: '',
+                    name: 'Onboard (contactless)',
+                    paymentMethods: ['contactlessPaymentCard'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+            ],
+        },
+        {
+            productDuration: '1 month',
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    description: '',
+                    name: 'Onboard (cash)',
+                    paymentMethods: ['cash'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+                {
+                    description: '',
+                    name: 'Onboard (contactless)',
+                    paymentMethods: ['contactlessPaymentCard'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+            ],
+        },
+        {
+            productDuration: '28 years',
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productValidity: 'endOfCalendarDay',
+            salesOfferPackages: [
+                {
+                    description: '',
+                    name: 'Onboard (cash)',
+                    paymentMethods: ['cash'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+                {
+                    description: '',
+                    name: 'Onboard (contactless)',
+                    paymentMethods: ['contactlessPaymentCard'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                },
+            ],
+        },
+    ],
 };
 
 export const multipleProducts: MultiProduct[] = [

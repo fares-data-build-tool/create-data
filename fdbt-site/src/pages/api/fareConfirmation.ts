@@ -1,11 +1,20 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectOnFareType, isSchemeOperator, redirectTo } from './apiUtils';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, FareType, TicketRepresentationAttribute } from '../../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         if (isSchemeOperator(req, res)) {
-            redirectTo(res, '/csvZoneUpload');
+            if (fareType === 'period') {
+                const ticketTypeObject: TicketRepresentationAttribute = { name: 'geoZone' };
+                updateSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE, ticketTypeObject);
+                redirectTo(res, '/csvZoneUpload');
+                return;
+            }
+            redirectTo(res, '/reuseOperatorGroup');
             return;
         }
 

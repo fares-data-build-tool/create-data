@@ -387,10 +387,21 @@ export interface SchemeOperatorTicket {
     uuid: string;
     timeRestriction: FullTimeRestriction[];
     ticketPeriod: TicketPeriod;
-    products: ProductDetails[];
+}
+
+export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
     zoneName: string;
     stops: Stop[];
+    products: ProductDetails[];
     additionalNocs: string[];
+}
+
+export interface SchemeOperatorFlatFareTicket extends SchemeOperatorTicket {
+    products: FlatFareProductDetails[];
+    additionalOperators: {
+        nocCode: string;
+        selectedServices: SelectedService[];
+    }[];
 }
 
 export const isSchemeOperatorTicket = (data: Ticket): data is SchemeOperatorTicket =>
@@ -728,7 +739,7 @@ export interface FareTypeRadio {
 }
 export interface FareTypeRadioProps {
     standardFares: FareTypeRadio[];
-    otherFares?: FareTypeRadio[];
+    otherFares: FareTypeRadio[];
 }
 
 export interface RadioWithoutConditionals extends BaseReactElement {

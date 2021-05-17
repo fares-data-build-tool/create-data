@@ -2,12 +2,7 @@ import React, { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
 import { INTERNAL_NOC } from '../constants';
-import {
-    FARE_TYPE_ATTRIBUTE,
-    OPERATOR_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
-    TXC_SOURCE_ATTRIBUTE,
-} from '../constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
@@ -27,6 +22,7 @@ const errorId = 'fare-type-single';
 
 interface FareTypeProps {
     operatorName: string;
+    schemeOp: boolean;
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -37,38 +33,55 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const radioProps: FareTypeRadioProps = {
-    standardFares: [
-        {
-            fareType: 'single',
-            label: 'Single ticket - point to point',
-        },
-        {
-            fareType: 'period',
-            label: 'Period ticket (day, week, month and annual)',
-        },
-        {
-            fareType: 'return',
-            label: 'Return ticket - single service',
-        },
-        {
-            fareType: 'flatFare',
-            label: 'Flat fare ticket - single journey',
-        },
-    ],
-    otherFares: [
-        {
-            fareType: 'multiOperator',
-            label: 'Multi-operator - a ticket that covers more than one operator',
-        },
-        {
-            fareType: 'schoolService',
-            label: 'School service - a ticket available to pupils in full-time education',
-        },
-    ],
+const buildRadioProps = (schemeOp: boolean): FareTypeRadioProps => {
+    if (schemeOp) {
+        return {
+            standardFares: [
+                {
+                    fareType: 'period',
+                    label: 'Period geozone ticket (day, week, month and annual in a zone)',
+                },
+                {
+                    fareType: 'flatFare',
+                    label: 'Flat fare ticket - single journey',
+                },
+            ],
+            otherFares: [],
+        };
+    }
+    return {
+        standardFares: [
+            {
+                fareType: 'single',
+                label: 'Single ticket - point to point',
+            },
+            {
+                fareType: 'period',
+                label: 'Period ticket (day, week, month and annual)',
+            },
+            {
+                fareType: 'return',
+                label: 'Return ticket - single service',
+            },
+            {
+                fareType: 'flatFare',
+                label: 'Flat fare ticket - single journey',
+            },
+        ],
+        otherFares: [
+            {
+                fareType: 'multiOperator',
+                label: 'Multi-operator - a ticket that covers more than one operator',
+            },
+            {
+                fareType: 'schoolService',
+                label: 'School service - a ticket available to pupils in full-time education',
+            },
+        ],
+    };
 };
 
-const FareType = ({ operatorName, errors = [], csrfToken }: FareTypeProps): ReactElement => {
+const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypeProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -86,8 +99,8 @@ const FareType = ({ operatorName, errors = [], csrfToken }: FareTypeProps): Reac
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                 <FareTypeRadios
-                                    standardFares={radioProps.standardFares}
-                                    otherFares={radioProps.otherFares}
+                                    standardFares={buildRadioProps(schemeOp).standardFares}
+                                    otherFares={buildRadioProps(schemeOp).otherFares}
                                 />
                             </FormElementWrapper>
                         </fieldset>
@@ -147,10 +160,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    if (schemeOp && ctx.res) {
+    if (schemeOp) {
         updateSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE, { fareType: 'multiOperator' });
-        updateSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE, { name: 'geoZone' });
-        redirectTo(ctx.res, '/passengerType');
     }
 
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
@@ -158,7 +169,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operatorName, errors, csrfToken } };
+    return { props: { operatorName, schemeOp, errors, csrfToken } };
 };
 
 export default FareType;

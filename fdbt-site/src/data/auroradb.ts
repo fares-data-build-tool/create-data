@@ -1,18 +1,20 @@
-import dateFormat from 'dateformat';
-import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
+import dateFormat from 'dateformat';
+import { ResultSetHeader } from 'mysql2';
+import { createPool, Pool } from 'mysql2/promise';
+import { INTERNAL_NOC } from '../constants';
 import {
-    OperatorGroup,
-    Operator,
-    ServiceType,
-    RawService,
-    Stop,
-    SalesOfferPackage,
     FullTimeRestriction,
+    Operator,
+    OperatorGroup,
+    PassengerType,
     PremadeTimeRestriction,
+    RawService,
+    SalesOfferPackage,
+    ServiceType,
+    Stop,
 } from '../interfaces/index';
 import logger from '../utils/logger';
-import { INTERNAL_NOC } from '../constants';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -106,7 +108,7 @@ export const replaceInternalNocCode = (nocCode: string): string => {
 
 let connectionPool: Pool;
 
-const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
+const executeQuery = async <T>(query: string, values: (string | boolean)[]): Promise<T> => {
     if (!connectionPool) {
         connectionPool = getAuroraDBClient();
     }
@@ -609,5 +611,41 @@ export const getSearchOperatorsBySearchText = async (searchText: string): Promis
         return await executeQuery<Operator[]>(searchQuery, [`%${searchText}%`]);
     } catch (error) {
         throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const upsertPassengerType = async (
+    nocCode: string,
+    passengerType: PassengerType,
+    name: string,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'upserting passenger type for given noc and name',
+        nocCode,
+        name,
+    });
+
+    const contents = JSON.stringify(passengerType);
+
+    try {
+        const updateQuery = `UPDATE passengerType
+                             SET contents = ?,
+                                 isGroup  = ?
+                             WHERE name = ?
+                               AND nocCode = ?`;
+        const values = [contents, false, name, nocCode];
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, values);
+        if (meta.affectedRows > 1) {
+            throw Error(`Updated too many rows when updating passenger type ${meta}`);
+        } else if (meta.affectedRows === 0) {
+            const insertQuery = `INSERT INTO passengerType
+                                     (contents, isGroup, name, nocCode)
+                                 VALUES (?, ?, ?, ?)`;
+
+            await executeQuery(insertQuery, values);
+        }
+    } catch (error) {
+        throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
     }
 };

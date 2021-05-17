@@ -63,9 +63,9 @@ export const redirectToError = (
     res: NextApiResponse | ServerResponse,
     message: string,
     context: string,
-    error: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    error: Error,
 ): void => {
-    logger.error(error, { context, message });
+    logger.error(error.toString(), { context, message });
     redirectTo(res, '/error');
 };
 
@@ -260,14 +260,4 @@ export const validatePassword = (
     }
 
     return null;
-};
-
-export const checkIfMultipleOperators = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    const idTokenNocs = getNocFromIdToken(req, res);
-    let nocs = [];
-    if (idTokenNocs) {
-        nocs = idTokenNocs.split('|');
-    }
-
-    return nocs.length > 1;
 };

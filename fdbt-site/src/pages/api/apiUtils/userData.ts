@@ -2,6 +2,9 @@ import Cookies from 'cookies';
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import {
+    SchemeOperatorFlatFareTicket,
+    SchemeOperatorTicket,
+    FlatFareProductDetails,
     TermTimeAttribute,
     ProductWithSalesOfferPackages,
     CognitoIdToken,
@@ -20,14 +23,16 @@ import {
     BasePeriodTicket,
     MultiOperatorMultipleServicesTicket,
     MultiOperatorInfo,
-    SchemeOperatorTicket,
     Ticket,
     WithErrors,
     isSchemeOperatorTicket,
     MultipleProductAttribute,
     TicketPeriod,
     TicketPeriodWithInput,
-} from '../../../interfaces';
+    SchemeOperatorGeoZoneTicket,
+    SalesOfferPackage,
+} from '../../../interfaces/index';
+
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
 import {
     TERM_TIME_ATTRIBUTE,
@@ -73,6 +78,14 @@ export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
     return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
 };
+
+const isProductDataWithoutErrors = (
+    periodExpiryAttributeInfo: ProductData | WithErrors<ProductData>,
+): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
+
+const isProductData = (
+    productDetailsAttributeInfo: ProductData | ProductInfo,
+): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
 
 export const getProductsAndSalesOfferPackages = (
     salesOfferPackagesInfo: ProductWithSalesOfferPackages[],
@@ -177,10 +190,6 @@ export const getBasePeriodTicketAttributes = (
     res: NextApiResponse,
     ticketType: string,
 ): BasePeriodTicket => {
-    const isProductData = (
-        periodExpiryAttributeInfo: ProductData | WithErrors<ProductData>,
-    ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
-
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, ticketType);
@@ -198,7 +207,7 @@ export const getBasePeriodTicketAttributes = (
     let productDetailsList: ProductDetails[];
 
     if (!multipleProductAttribute) {
-        if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
+        if (!periodExpiryAttributeInfo || !isProductDataWithoutErrors(periodExpiryAttributeInfo)) {
             throw new Error('Could not create geo zone ticket json. Period expiry attribute data problem.');
         }
 
@@ -375,10 +384,6 @@ export const getMultipleServicesTicketJson = (
 };
 
 export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): FlatFareTicket => {
-    const isProductData = (
-        productDetailsAttributeInfo: ProductData | ProductInfo,
-    ): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
-
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'flat fare');
@@ -402,7 +407,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     const { products } = productDetailsAttributeInfo;
 
-    const productDetailsList = products.map(product => ({
+    const productDetailsList: FlatFareProductDetails[] = products.map(product => ({
         productName: product.productName,
         productPrice: product.productPrice,
         salesOfferPackages,
@@ -417,14 +422,10 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     };
 };
 
-export const getSchemeOperatorTicketJson = async (
+export const getSchemeOperatorTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): Promise<SchemeOperatorTicket> => {
-    const isProductData = (
-        periodExpiryAttributeInfo: ProductData | WithErrors<ProductData>,
-    ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
-
+): SchemeOperatorTicket => {
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -433,28 +434,91 @@ export const getSchemeOperatorTicketJson = async (
     const uuid = getUuidFromSession(req);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
     const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
-    const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
-    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-    const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
-    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
-    const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
 
     if (
         !isFareType(fareTypeAttribute) ||
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
-        isSalesOfferPackageWithErrors(salesOfferPackages) ||
-        !salesOfferPackages ||
-        !fareZoneName ||
-        isFareZoneAttributeWithErrors(fareZoneName) ||
-        !multiOpAttribute
+        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute)
     ) {
         throw new Error('Could not create scheme operator ticket json. BaseTicket attributes could not be found.');
     }
+    const { fareType } = fareTypeAttribute;
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+    const { email } = decodedIdToken;
+    const schemeOperatorName = decodedIdToken['custom:schemeOperator'];
+    const schemeOperatorRegionCode = decodedIdToken['custom:schemeRegionCode'];
+    const noc = getAndValidateNoc(req, res);
 
+    return {
+        schemeOperatorName,
+        schemeOperatorRegionCode,
+        nocCode: noc,
+        type: fareType,
+        ...passengerTypeAttribute,
+        email,
+        uuid,
+        timeRestriction:
+            fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
+                ? fullTimeRestriction.fullTimeRestrictions
+                : [],
+        ticketPeriod: getTicketPeriod(ticketPeriodAttribute),
+    };
+};
+
+export const adjustSchemeOperatorJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+    matchingJson: SchemeOperatorTicket,
+): Promise<SchemeOperatorFlatFareTicket | SchemeOperatorGeoZoneTicket> => {
+    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+
+    if (isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
+        throw new Error('Sales offer packages not found for scheme operator ticket matching json');
+    }
+
+    if (matchingJson.type === 'flatFare') {
+        const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+        if (!productDetailsAttributeInfo || !isProductData(productDetailsAttributeInfo)) {
+            throw new Error(
+                'Could not create scheme operator flat fare ticket json. Necessary cookies and session objects not found.',
+            );
+        }
+        const { products } = productDetailsAttributeInfo;
+
+        const productDetailsList: FlatFareProductDetails[] = products.map(product => ({
+            productName: product.productName,
+            productPrice: product.productPrice,
+            salesOfferPackages: salesOfferPackages as SalesOfferPackage[],
+        }));
+        const multipleOperatorsServices = getSessionAttribute(
+            req,
+            MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+        ) as MultiOperatorInfo[];
+        const additionalOperatorsInfo = {
+            additionalOperators: multipleOperatorsServices.map(operator => ({
+                nocCode: operator.nocCode,
+                selectedServices: operator.services,
+            })),
+        };
+        return {
+            ...matchingJson,
+            products: productDetailsList,
+            additionalOperators: additionalOperatorsInfo.additionalOperators,
+        };
+    }
     let productDetailsList: ProductDetails[];
+    const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+    const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
+    const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
+
+    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName) || !multiOpAttribute) {
+        throw new Error(
+            'Fare zone name or multi operator attribute not found for scheme operator ticket matching json',
+        );
+    }
 
     if (!multipleProductAttribute) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
@@ -481,36 +545,15 @@ export const getSchemeOperatorTicketJson = async (
         productDetailsList = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductAttribute);
     }
     const nocCode = getAndValidateNoc(req, res);
-    const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${uuid}.json`);
+    const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${matchingJson.uuid}.json`);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+    const additionalNocs = multiOpAttribute.selectedOperators.map(operator => operator.nocCode);
 
     if (zoneStops.length === 0) {
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
-
-    const additionalNocs = multiOpAttribute.selectedOperators.map(operator => operator.nocCode);
-
-    const { fareType } = fareTypeAttribute;
-
-    const decodedIdToken = decode(idToken) as CognitoIdToken;
-    const { email } = decodedIdToken;
-    const schemeOperatorName = decodedIdToken['custom:schemeOperator'];
-    const schemeOperatorRegionCode = decodedIdToken['custom:schemeRegionCode'];
-    const noc = getAndValidateNoc(req, res);
-
     return {
-        schemeOperatorName,
-        schemeOperatorRegionCode,
-        nocCode: noc,
-        type: fareType,
-        ...passengerTypeAttribute,
-        email,
-        uuid,
-        timeRestriction:
-            fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
-                ? fullTimeRestriction.fullTimeRestrictions
-                : [],
-        ticketPeriod: getTicketPeriod(ticketPeriodAttribute),
+        ...matchingJson,
         products: productDetailsList,
         zoneName: fareZoneName,
         stops: zoneStops,

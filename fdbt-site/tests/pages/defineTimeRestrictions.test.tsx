@@ -12,9 +12,10 @@ import {
     mockTimeRestrictionsRadioAndInputErrors,
     getMockContext,
     mockDefineTimeRestrictionsFieldsetsWithoutPremade,
+    mockIdTokenMultiple,
 } from '../testData/mockData';
 import { ErrorInfo, TimeRestrictionsDefinitionWithErrors } from '../../src/interfaces';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants/attributes';
+import { OPERATOR_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants/attributes';
 import { getTimeRestrictionByNocCode } from '../../src/data/auroradb';
 
 jest.mock('../../src/data/auroradb');
@@ -102,10 +103,19 @@ describe('pages', () => {
                         ],
                     },
                 ]);
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    cookies: {
+                        idToken: mockIdTokenMultiple,
+                    },
+                    session: {
+                        [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'HELLO', uuid: 'blah' },
+                    },
+                });
                 const result = await getServerSideProps(ctx);
                 expect(result.props.errors).toEqual([]);
                 expect(result.props.fieldsets).toEqual(mockDefineTimeRestrictionsFieldsets);
+
+                expect(getTimeRestrictionByNocCode).toBeCalledWith('HELLO');
             });
             it('should return props containing errors and valid fieldsets when errors are present', async () => {
                 (getTimeRestrictionByNocCode as jest.Mock).mockImplementation(() => []);
