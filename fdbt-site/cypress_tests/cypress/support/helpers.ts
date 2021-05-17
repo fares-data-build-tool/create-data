@@ -83,70 +83,81 @@ export const randomlyChooseAgeLimits = (): void => {
 };
 
 export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, passengerType: string): void => {
-    if (group) {
-        getElementById('min-number-of-passengers').type('1');
-        getElementById('max-number-of-passengers').type(maxGroupNumber);
-        if (passengerType === 'anyone') {
-            continueButtonClick();
-            return;
-        }
-    }
+    // Once we leave the passenger types page,
+    // check if we have skipped the defining passenger types page due to a saved config
+    cy.url()
+        .should('not.match', /\/passengerType/)
+        .then((url: string) => {
+            if (!url.includes('definePassengerType')) {
+                cy.log(`Skipped defining passenger types as probably reusing a saved one ${url}`);
+                return;
+            }
 
-    assertElementNotVisibleById('age-range-required-conditional');
+            if (group) {
+                getElementById('min-number-of-passengers').type('1');
+                getElementById('max-number-of-passengers').type(maxGroupNumber);
+                if (passengerType === 'anyone') {
+                    continueButtonClick();
+                    return;
+                }
+            }
 
-    const firstRandomSelector = getRandomNumber(1, 2);
-    const secondRandomSelector = getRandomNumber(1, 4);
+            assertElementNotVisibleById('age-range-required-conditional');
 
-    if (passengerType === 'adult') {
-        switch (firstRandomSelector) {
-            case 1:
-                cy.log('No to age range');
-                clickElementById('age-range-not-required');
-                continueButtonClick();
-                break;
-            case 2:
-                cy.log('Yes to age range');
-                clickElementById('age-range-required');
-                randomlyChooseAgeLimits();
-                continueButtonClick();
-                break;
-            default:
-                throwInvalidRandomSelectorError();
-        }
-    } else {
-        switch (secondRandomSelector) {
-            case 1:
-                cy.log('No to both questions');
-                clickElementById('age-range-not-required');
-                clickElementById('proof-not-required');
-                continueButtonClick();
-                break;
-            case 2:
-                cy.log('No to age limit, Yes to Proof');
-                clickElementById('age-range-not-required');
-                clickElementById('proof-required');
-                randomlyChooseAProof();
-                continueButtonClick();
-                break;
-            case 3:
-                cy.log('Yes to age limit, Yes to Proof');
-                clickElementById('age-range-required');
-                randomlyChooseAgeLimits();
-                clickElementById('proof-required');
-                randomlyChooseAProof();
-                continueButtonClick();
-                break;
-            case 4:
-                cy.log('Yes to age limit, No to Proof');
-                clickElementById('age-range-required');
-                randomlyChooseAgeLimits();
-                clickElementById('proof-not-required');
-                continueButtonClick();
-                break;
-            default:
-                throwInvalidRandomSelectorError();
-        }
-    }
+            const firstRandomSelector = getRandomNumber(1, 2);
+            const secondRandomSelector = getRandomNumber(1, 4);
+
+            if (passengerType === 'adult') {
+                switch (firstRandomSelector) {
+                    case 1:
+                        cy.log('No to age range');
+                        clickElementById('age-range-not-required');
+                        continueButtonClick();
+                        break;
+                    case 2:
+                        cy.log('Yes to age range');
+                        clickElementById('age-range-required');
+                        randomlyChooseAgeLimits();
+                        continueButtonClick();
+                        break;
+                    default:
+                        throwInvalidRandomSelectorError();
+                }
+            } else {
+                switch (secondRandomSelector) {
+                    case 1:
+                        cy.log('No to both questions');
+                        clickElementById('age-range-not-required');
+                        clickElementById('proof-not-required');
+                        continueButtonClick();
+                        break;
+                    case 2:
+                        cy.log('No to age limit, Yes to Proof');
+                        clickElementById('age-range-not-required');
+                        clickElementById('proof-required');
+                        randomlyChooseAProof();
+                        continueButtonClick();
+                        break;
+                    case 3:
+                        cy.log('Yes to age limit, Yes to Proof');
+                        clickElementById('age-range-required');
+                        randomlyChooseAgeLimits();
+                        clickElementById('proof-required');
+                        randomlyChooseAProof();
+                        continueButtonClick();
+                        break;
+                    case 4:
+                        cy.log('Yes to age limit, No to Proof');
+                        clickElementById('age-range-required');
+                        randomlyChooseAgeLimits();
+                        clickElementById('proof-not-required');
+                        continueButtonClick();
+                        break;
+                    default:
+                        throwInvalidRandomSelectorError();
+                }
+            }
+        });
 };
 
 export const completeDefineGroupPassengersPages = (groupSize: string): void => {

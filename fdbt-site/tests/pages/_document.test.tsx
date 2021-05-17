@@ -20,13 +20,7 @@ describe('_document', () => {
         inAmpMode: false,
         hybridAmp: false,
         isDevelopment: false,
-        dynamicImports: [
-            {
-                id: '',
-                name: '',
-                file: '',
-            },
-        ],
+        dynamicImports: [],
         canonicalBase: '',
         headTags: [{}],
         buildManifest: {
