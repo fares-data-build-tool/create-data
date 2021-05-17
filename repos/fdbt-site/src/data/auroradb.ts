@@ -649,3 +649,34 @@ export const upsertPassengerType = async (
         throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
     }
 };
+
+export const getPassengerTypeByNameAndNocCode = async (
+    nocCode: string,
+    name: string,
+): Promise<PassengerType | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger types for given noc and name',
+        nocCode,
+        name,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM passengerType
+            WHERE nocCode = ?
+            AND name = ?
+            AND isGroup = false
+        `;
+
+        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode, name]);
+        if (queryResults.length > 1) {
+            throw new Error("Didn't expect more than one passenger type with same name and NOC");
+        }
+
+        return queryResults[0] ? JSON.parse(queryResults[0].contents) : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
+    }
+};

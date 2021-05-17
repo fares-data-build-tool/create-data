@@ -201,10 +201,15 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
     }
 };
 
+export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession, passengerType: string) => {
+    const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
+    return passengerType === 'schoolPupil' && fareType === 'schoolService' ? '/termTime' : '/defineTimeRestrictions';
+};
+
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { passengerType } = req.body;
-        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         const passengerInfo = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
@@ -246,10 +251,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 const noc = getAndValidateNoc(req, res);
                 await upsertPassengerType(noc, filteredPassengerType, filteredPassengerType.passengerType);
 
-                const redirectLocation =
-                    passengerType === 'schoolPupil' && fareType === 'schoolService'
-                        ? '/termTime'
-                        : '/defineTimeRestrictions';
+                const redirectLocation = getPassengerTypeRedirectLocation(req, passengerType);
                 redirectTo(res, redirectLocation);
             } else {
                 const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
