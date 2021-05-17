@@ -33,7 +33,7 @@ describe('pages', () => {
 
                 expect(result.props.operator).toBe('test');
                 expect(result.props.passengerType).toBe('Adult');
-                expect(result.props.hintText).toBe('Multiple Services');
+                expect(result.props.hintText).toBe('Multiple services');
             });
 
             it('should throw an error when the FARE_ZONE_ATTRIBUTE and SERVICE_LIST_ATTRIBUTE are missing', () => {

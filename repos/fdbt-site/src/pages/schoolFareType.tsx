@@ -36,6 +36,7 @@ const radioProps: FareTypeRadioProps = {
             label: 'Flat Fare Ticket - Single Journey',
         },
     ],
+    otherFares: [],
 };
 
 const SchoolFareType = ({ operatorName, errors = [], csrfToken }: SchoolFareTypeProps): ReactElement => {
@@ -55,7 +56,7 @@ const SchoolFareType = ({ operatorName, errors = [], csrfToken }: SchoolFareType
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <FareTypeRadios standardFares={radioProps.standardFares} />
+                                <FareTypeRadios standardFares={radioProps.standardFares} otherFares={[]} />
                             </FormElementWrapper>
                         </fieldset>
                     </div>

@@ -18,12 +18,17 @@ describe('pages', () => {
 
     describe('fareType', () => {
         it('should render correctly', () => {
-            const tree = shallow(<FareType operatorName={' '} errors={[]} csrfToken="" />);
+            const tree = shallow(<FareType operatorName={' '} schemeOp={false} errors={[]} csrfToken="" />);
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for a scheme operator', () => {
+            const tree = shallow(<FareType operatorName={' '} schemeOp errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed to the page', () => {
-            const tree = shallow(<FareType operatorName={' '} errors={mockErrors} csrfToken="" />);
+            const tree = shallow(<FareType operatorName={' '} schemeOp={false} errors={mockErrors} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -52,13 +57,15 @@ describe('pages', () => {
             });
 
             it('should return expected props when a the user logged in is not a scheme operator', async () => {
-                const expectedProps = { props: { operatorName: expect.any(String), errors: [], csrfToken: '' } };
+                const expectedProps = {
+                    props: { operatorName: expect.any(String), schemeOp: false, errors: [], csrfToken: '' },
+                };
                 const mockContext = getMockContext();
                 const actualProps = await getServerSideProps(mockContext);
                 expect(actualProps).toEqual(expectedProps);
             });
 
-            it('should redirect to /passengerType when the user logged in is a scheme operator', async () => {
+            it('should not redirect to /passengerType when the user logged in is a scheme operator', async () => {
                 const mockContext = getMockContext({
                     mockWriteHeadFn: writeHeadMock,
                     cookies: {
@@ -73,7 +80,7 @@ describe('pages', () => {
                     },
                 });
                 await getServerSideProps(mockContext);
-                expect(writeHeadMock).toBeCalledWith(302, { Location: '/passengerType' });
+                expect(writeHeadMock).toBeCalledTimes(0);
             });
 
             it('should redirect to /noServices when the chosen NOC has no services', async () => {

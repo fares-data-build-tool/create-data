@@ -160,7 +160,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     userInput: refinedName,
                 });
             } else {
-                insertTimeRestriction(noc, sanitisedInputs, refinedName);
+                await insertTimeRestriction(noc, sanitisedInputs, refinedName);
                 createdANewTimeRestriction = true;
             }
         }
