@@ -97,7 +97,7 @@ describe('passengerType', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/defineTimeRestrictions',
         });
-        expect(spyGetPassengerTypeByNameAndNocCode).toBeCalledWith('TEST', 'child');
+        expect(spyGetPassengerTypeByNameAndNocCode).toBeCalledWith('TEST', 'child', false);
     });
 
     it('should return 302 redirect to /definePassengerType when the user has NOT got a pre-saved passenger type', async () => {
@@ -119,6 +119,6 @@ describe('passengerType', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/definePassengerType',
         });
-        expect(spyGetPassengerTypeByNameAndNocCode).toBeCalledWith('TEST', 'child');
+        expect(spyGetPassengerTypeByNameAndNocCode).toBeCalledWith('TEST', 'child', false);
     });
 });

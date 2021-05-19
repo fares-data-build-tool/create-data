@@ -1,27 +1,27 @@
+import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
-import isArray from 'lodash/isArray';
-import { upsertPassengerType } from '../../data/auroradb';
-import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
 import {
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
+import { getPassengerTypeByNameAndNocCode, insertPassengerType, upsertPassengerType } from '../../data/auroradb';
 import {
     CompanionInfo,
-    ErrorInfo,
-    NextApiRequestWithSession,
     DefinePassengerTypeWithErrors,
+    ErrorInfo,
     FareType,
     GroupPassengerTypesCollection,
+    NextApiRequestWithSession,
 } from '../../interfaces';
+import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { removeAllWhiteSpace } from './apiUtils/validator';
+import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
+import { removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
 
 interface FilteredRequestBody {
     minNumber?: string;
@@ -201,7 +201,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
     }
 };
 
-export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession, passengerType: string) => {
+export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession, passengerType: string): string => {
     const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
     return passengerType === 'schoolPupil' && fareType === 'schoolService' ? '/termTime' : '/defineTimeRestrictions';
@@ -209,7 +209,7 @@ export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession,
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { passengerType } = req.body;
+        const { passengerType, passengerTypeName } = req.body;
         const passengerInfo = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
@@ -243,71 +243,91 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length === 0) {
+            const noc = getAndValidateNoc(req, res);
             if (!group) {
                 const filteredPassengerType = { passengerType, ...filteredReqBody };
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, filteredPassengerType);
                 updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
-                const noc = getAndValidateNoc(req, res);
                 await upsertPassengerType(noc, filteredPassengerType, filteredPassengerType.passengerType);
 
                 const redirectLocation = getPassengerTypeRedirectLocation(req, passengerType);
                 redirectTo(res, redirectLocation);
-            } else {
-                const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-                const submittedPassengerType = passengerType;
+                return;
+            }
 
-                if (selectedPassengerTypes) {
-                    const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
-                        type => type === filteredReqBody.groupPassengerType,
+            const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+            const submittedPassengerType = passengerType;
+
+            if (selectedPassengerTypes) {
+                const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
+                    type => type === filteredReqBody.groupPassengerType,
+                );
+
+                const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
+                const { minNumber, maxNumber } = req.body;
+
+                const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+
+                const companions: CompanionInfo[] = [];
+
+                if (sessionGroup) {
+                    sessionGroup.forEach(companion => {
+                        companions.push(companion);
+                    });
+                }
+
+                const companionToAdd: CompanionInfo = {
+                    minNumber,
+                    maxNumber,
+                    passengerTypeName,
+                    passengerType: submittedPassengerType,
+                };
+
+                if (filteredReqBody.ageRange === 'Yes') {
+                    companionToAdd.ageRangeMax = ageRangeMax;
+                    companionToAdd.ageRangeMin = ageRangeMin;
+                }
+
+                if (filteredReqBody.proof === 'Yes') {
+                    companionToAdd.proofDocuments = proofDocuments;
+                }
+
+                companions[index] = companionToAdd;
+
+                updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
+                updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+
+                if (index < (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length - 1) {
+                    redirectTo(
+                        res,
+                        `/definePassengerType?groupPassengerType=${
+                            (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[index + 1]
+                        }`,
                     );
+                    return;
+                }
 
-                    const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
-                    const { minNumber, maxNumber } = req.body;
+                const trimmedName = removeExcessWhiteSpace(passengerTypeName);
+                if (trimmedName) {
+                    const existingType = await getPassengerTypeByNameAndNocCode(noc, trimmedName, true);
 
-                    const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
-
-                    const companions: CompanionInfo[] = [];
-
-                    if (sessionGroup) {
-                        sessionGroup.forEach(companion => {
-                            companions.push(companion);
+                    if (existingType) {
+                        errors.push({
+                            errorMessage: `You already have a passenger type named ${trimmedName}. Choose another name.`,
+                            id: 'passenger-type-name',
+                            userInput: trimmedName,
                         });
-                    }
-
-                    const companionToAdd: CompanionInfo = {
-                        minNumber,
-                        maxNumber,
-                        passengerType: submittedPassengerType,
-                    };
-
-                    if (filteredReqBody.ageRange === 'Yes') {
-                        companionToAdd.ageRangeMax = ageRangeMax;
-                        companionToAdd.ageRangeMin = ageRangeMin;
-                    }
-
-                    if (filteredReqBody.proof === 'Yes') {
-                        companionToAdd.proofDocuments = proofDocuments;
-                    }
-
-                    companions[index] = companionToAdd;
-
-                    updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
-                    updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-
-                    if (index < (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length - 1) {
-                        redirectTo(
-                            res,
-                            `/definePassengerType?groupPassengerType=${
-                                (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[index + 1]
-                            }`,
-                        );
                     } else {
-                        redirectTo(res, '/defineTimeRestrictions');
+                        await insertPassengerType(noc, companions, trimmedName, true);
                     }
                 }
+
+                if (!errors.length) {
+                    redirectTo(res, '/defineTimeRestrictions');
+                    return;
+                }
             }
-            return;
         }
 
         const sessionInfo: DefinePassengerTypeWithErrors = {

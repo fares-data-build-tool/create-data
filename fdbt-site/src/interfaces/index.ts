@@ -424,6 +424,7 @@ export interface PassengerDetails {
 
 export interface CompanionInfo {
     passengerType: string;
+    passengerTypeName?: string;
     minNumber?: string;
     maxNumber: string;
     ageRangeMin?: string;

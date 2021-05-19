@@ -23,6 +23,7 @@ describe('definePassengerType', () => {
     afterEach(jest.resetAllMocks);
 
     beforeEach(() => jest.spyOn(auroradb, 'upsertPassengerType'));
+    beforeEach(() => jest.spyOn(auroradb, 'getPassengerTypeByNameAndNocCode'));
 
     describe('passengerTypeDetailsSchema', () => {
         it.each([
@@ -455,8 +456,9 @@ describe('definePassengerType', () => {
         expect(upsertPassengerTypeSpy).toBeCalledWith('TEST', mockPassengerTypeDetails, 'adult');
     });
 
-    it('should not save the passenger types for groups', async () => {
+    it('should not save the passenger types for groups if no name is provided', async () => {
         const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
+        const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
@@ -493,6 +495,119 @@ describe('definePassengerType', () => {
         });
         await definePassengerType(req, res);
         expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(insertPassengerTypeSpy).not.toBeCalled();
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, expect.anything());
+    });
+
+    it('should save the passenger types for groups if a name is provided', async () => {
+        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
+        const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
+        const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
+            {
+                minNumber: '2',
+                maxNumber: '10',
+                ageRangeMin: '5',
+                ageRangeMax: '10',
+                passengerType: 'adult',
+            },
+        ];
+
+        const mockPassengerTypeDetails = {
+            passengerType: 'child',
+            ageRange: 'Yes',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
+            minNumber: '2',
+            maxNumber: '10',
+            proof: 'Yes',
+            proofDocuments: ['Membership Card'],
+            passengerTypeName: 'A Name',
+        };
+
+        const savedGroupInfo = [
+            ...mockPreviousPassengerTypeDetails,
+            { ...mockPassengerTypeDetails, ageRange: undefined, proof: undefined },
+        ];
+
+        const { req, res } = getMockRequestAndResponse({
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
+                [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
+                [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
+                [GROUP_PASSENGER_INFO_ATTRIBUTE]: mockPreviousPassengerTypeDetails,
+            },
+        });
+        await definePassengerType(req, res);
+        expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(insertPassengerTypeSpy).toBeCalledWith('TEST', savedGroupInfo, 'A Name', true);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
+    });
+
+    it('should show an error for groups if a name is provided that already exists', async () => {
+        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
+        const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
+        const getPassengerTypeSpy = jest
+            .spyOn(auroradb, 'getPassengerTypeByNameAndNocCode')
+            .mockResolvedValueOnce({ passengerType: 'hello' });
+
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
+        const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
+            {
+                minNumber: '2',
+                maxNumber: '10',
+                ageRangeMin: '5',
+                ageRangeMax: '10',
+                passengerType: 'adult',
+            },
+        ];
+
+        const mockPassengerTypeDetails = {
+            passengerType: 'child',
+            ageRange: 'Yes',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
+            minNumber: '2',
+            maxNumber: '10',
+            proof: 'Yes',
+            proofDocuments: ['Membership Card'],
+            passengerTypeName: 'A Name',
+        };
+
+        const errorInfo = {
+            ...mockPassengerTypeDetails,
+            ageRange: undefined,
+            proof: undefined,
+            passengerTypeName: undefined,
+            errors: [
+                {
+                    errorMessage: 'You already have a passenger type named A Name. Choose another name.',
+                    id: 'passenger-type-name',
+                    userInput: 'A Name',
+                },
+            ],
+        };
+
+        const { req, res } = getMockRequestAndResponse({
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
+                [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
+                [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
+                [GROUP_PASSENGER_INFO_ATTRIBUTE]: mockPreviousPassengerTypeDetails,
+            },
+        });
+        await definePassengerType(req, res);
+        expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
+        expect(insertPassengerTypeSpy).not.toBeCalled();
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, errorInfo);
     });
 });

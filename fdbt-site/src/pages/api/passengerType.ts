@@ -15,7 +15,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { passengerType } = req.body;
 
             const noc = getAndValidateNoc(req, res);
-            const storedPassengerType = await getPassengerTypeByNameAndNocCode(noc, passengerType);
+            const storedPassengerType = await getPassengerTypeByNameAndNocCode(noc, passengerType, false);
             if (storedPassengerType) {
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, storedPassengerType);
                 redirectTo(res, getPassengerTypeRedirectLocation(req, passengerType));
