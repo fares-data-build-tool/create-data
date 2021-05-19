@@ -25,6 +25,7 @@ import {
     GROUP_DEFINITION_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../../src/constants/attributes';
 
 describe('pages', () => {
@@ -193,7 +194,7 @@ describe('pages', () => {
                         cookies: {},
                         session: {
                             [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
-                            [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
+                            [GROUP_PASSENGER_TYPES_ATTRIBUTE]: { passengerTypes: ['adult', 'child'] },
                         },
                         query: {
                             groupPassengerType: 'child',
@@ -224,6 +225,54 @@ describe('pages', () => {
 
                 const result = getServerSideProps(ctx);
                 expect(result.props.fieldsets).toEqual(mockAdultServerSideProps);
+            });
+            it('should not render the last group page section if not a group', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'adult' },
+                    },
+                });
+
+                const result = getServerSideProps(ctx);
+                expect(result.props.isLast).toBe(false);
+            });
+            it('should render the last group page section if a group on the last page', () => {
+                const ctx = getMockContext({
+                    url: '/definePassengerType?groupPassengerType=child',
+                    session: {
+                        [GROUP_PASSENGER_TYPES_ATTRIBUTE]: { passengerTypes: ['adult', 'child'] },
+                        [GROUP_PASSENGER_INFO_ATTRIBUTE]: [{ passengerType: 'adult' }, { passengerType: 'child' }],
+                        [GROUP_DEFINITION_ATTRIBUTE]: {
+                            maxGroupSize: 2,
+                        },
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
+                    },
+                    query: {
+                        groupPassengerType: 'child',
+                    },
+                });
+
+                const result = getServerSideProps(ctx);
+                expect(result.props.isLast).toBe(true);
+            });
+            it('should not render the last group page section if a group on a page other than the last', () => {
+                const ctx = getMockContext({
+                    url: '/definePassengerType?groupPassengerType=adult',
+                    session: {
+                        [GROUP_PASSENGER_TYPES_ATTRIBUTE]: { passengerTypes: ['adult', 'child'] },
+                        [GROUP_PASSENGER_INFO_ATTRIBUTE]: [{ passengerType: 'adult' }, { passengerType: 'child' }],
+                        [GROUP_DEFINITION_ATTRIBUTE]: {
+                            maxGroupSize: 2,
+                        },
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
+                    },
+                    query: {
+                        groupPassengerType: 'adult',
+                    },
+                });
+
+                const result = getServerSideProps(ctx);
+                expect(result.props.isLast).toBe(false);
             });
             it('should return props containing errors and valid fieldsets when radio and input errors are present on a non-group ticket user journey', () => {
                 const errors: ErrorInfo[] = [
@@ -258,7 +307,7 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     url: '/definePassengerType?groupPassengerType=adult',
                     session: {
-                        [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
+                        [GROUP_PASSENGER_TYPES_ATTRIBUTE]: { passengerTypes: ['adult', 'child'] },
                         [GROUP_DEFINITION_ATTRIBUTE]: {
                             maxGroupSize: 2,
                             companions: {
