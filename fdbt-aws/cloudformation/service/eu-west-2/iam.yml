@@ -401,6 +401,31 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
 
+  BastionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyName: allow-shared-s3-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:ListBucket"
+                Resource:
+                  - "arn:aws:s3:::cfd-shared-content"
+                  - "arn:aws:s3:::cfd-shared-content/*"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
   CiPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
@@ -501,3 +526,7 @@ Outputs:
     Value: !Ref BastionSsmRole
     Export:
       Name: !Sub ${Stage}:BastionSsmRoleName
+  BastionRoleName:
+    Value: !Ref BastionRole
+    Export:
+      Name: !Sub ${Stage}:BastionRoleName

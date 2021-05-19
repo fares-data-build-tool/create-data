@@ -11,6 +11,32 @@ Parameters:
     Type: String
 
 Resources:
+  SharedContentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: cfd-shared-content
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: false
+
+  SharedContentBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref SharedContentBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource: !Sub arn:aws:s3:::${SharedContentBucket}/*
+            Principal:
+              AWS:
+                - !Sub arn:aws:iam::${TestAccountId}:root
+                - !Sub arn:aws:iam::${PreProdAccountId}:root
+                - !Sub arn:aws:iam::${ProdAccountId}:root
+
   SlackAlertsCodeBucket:
     Type: AWS::S3::Bucket
     Properties:

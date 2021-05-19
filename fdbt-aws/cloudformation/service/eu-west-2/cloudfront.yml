@@ -24,6 +24,8 @@ Parameters:
     Type: String
     Default: X-Origin-Verify
     Description: Header name for origin secret
+  SecurityHeadersEdgeLambdaARN:
+    Type: String
 
 Conditions:
   HasWaf: !Not [!Equals ["", !Ref WebAclArn]]
@@ -93,6 +95,9 @@ Resources:
             PathPattern: /error/*
             CachePolicyId: !Ref ErrorCachePolicy
             Compress: true
+            LambdaFunctionAssociations:
+              - LambdaFunctionARN: !Ref SecurityHeadersEdgeLambdaARN
+                EventType: origin-response
           - TargetOriginId: AlbOrigin
             ViewerProtocolPolicy: redirect-to-https
             PathPattern: /assets/*
