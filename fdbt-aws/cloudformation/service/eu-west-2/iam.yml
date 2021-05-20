@@ -388,19 +388,6 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-  BastionSsmRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: [ec2.amazonaws.com]
-            Action: ["sts:AssumeRole"]
-      Path: /
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-
   BastionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -522,10 +509,6 @@ Outputs:
     Value: !GetAtt RdsAuroraS3Role.Arn
     Export:
       Name: !Sub ${Stage}:RdsAuroraS3RoleArn
-  BastionSsmRoleName:
-    Value: !Ref BastionSsmRole
-    Export:
-      Name: !Sub ${Stage}:BastionSsmRoleName
   BastionRoleName:
     Value: !Ref BastionRole
     Export:
