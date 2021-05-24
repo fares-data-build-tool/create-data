@@ -2,6 +2,8 @@
 
 export const FARE_TYPE_ATTRIBUTE = 'fdbt-fare-type';
 
+export const CARNET_FARE_TYPE_ATTRIBUTE = 'fdbt-carnet-fare-type';
+
 export const PASSENGER_TYPE_ATTRIBUTE = 'fdbt-passenger-type';
 
 export const DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-passenger-type-errors';

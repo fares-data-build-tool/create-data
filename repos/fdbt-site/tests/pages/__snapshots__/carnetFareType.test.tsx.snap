@@ -1,0 +1,204 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages carnetFareType should render correctly 1`] = `
+<Component
+  description="Carnet Fare Type selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Carnet Fare Type - Create Fares Data Service "
+>
+  <CsrfForm
+    action="/api/carnetFareType"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="carnet-fare-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="carnet-fare-type-page-heading"
+          >
+            Select a carnet fare type
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="carnet-fare-type-operator-hint"
+        >
+          Blackpool Transport
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="fare-type-single"
+          errors={Array []}
+        >
+          <FareTypeRadios
+            fares={
+              Array [
+                Object {
+                  "fareType": "single",
+                  "hint": "A ticket bundle of various point to point journeys",
+                  "label": "Single, point to point carnet",
+                },
+                Object {
+                  "fareType": "return",
+                  "hint": "A ticket bundle of inbound and outbound journeys",
+                  "label": "Return carnet",
+                },
+                Object {
+                  "fareType": "flatFare",
+                  "hint": "A ticket bundle of flat fare journeys",
+                  "label": "Flat fare carnet",
+                },
+                Object {
+                  "fareType": "period",
+                  "hint": "A ticket bundle where each ticket is valid for a number of days, weeks, months or years",
+                  "label": "Period carnet",
+                },
+                Object {
+                  "fareType": "multiOperator",
+                  "hint": "A ticket bundle that covers more than one operator",
+                  "label": "Multi-operator carnet",
+                },
+                Object {
+                  "fareType": "schoolService",
+                  "hint": "A ticket bundle available to pupils in full-time education",
+                  "label": "School service carnet",
+                },
+              ]
+            }
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages carnetFareType should render error messaging when errors are passed to the page 1`] = `
+<Component
+  description="Carnet Fare Type selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose a fare type from the options",
+        "id": "fare-type-single",
+      },
+    ]
+  }
+  title="Carnet Fare Type - Create Fares Data Service "
+>
+  <CsrfForm
+    action="/api/carnetFareType"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose a fare type from the options",
+            "id": "fare-type-single",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="carnet-fare-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="carnet-fare-type-page-heading"
+          >
+            Select a carnet fare type
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="carnet-fare-type-operator-hint"
+        >
+          Blackpool Transport
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="fare-type-single"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Choose a fare type from the options",
+                "id": "fare-type-single",
+              },
+            ]
+          }
+        >
+          <FareTypeRadios
+            fares={
+              Array [
+                Object {
+                  "fareType": "single",
+                  "hint": "A ticket bundle of various point to point journeys",
+                  "label": "Single, point to point carnet",
+                },
+                Object {
+                  "fareType": "return",
+                  "hint": "A ticket bundle of inbound and outbound journeys",
+                  "label": "Return carnet",
+                },
+                Object {
+                  "fareType": "flatFare",
+                  "hint": "A ticket bundle of flat fare journeys",
+                  "label": "Flat fare carnet",
+                },
+                Object {
+                  "fareType": "period",
+                  "hint": "A ticket bundle where each ticket is valid for a number of days, weeks, months or years",
+                  "label": "Period carnet",
+                },
+                Object {
+                  "fareType": "multiOperator",
+                  "hint": "A ticket bundle that covers more than one operator",
+                  "label": "Multi-operator carnet",
+                },
+                Object {
+                  "fareType": "schoolService",
+                  "hint": "A ticket bundle available to pupils in full-time education",
+                  "label": "School service carnet",
+                },
+              ]
+            }
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

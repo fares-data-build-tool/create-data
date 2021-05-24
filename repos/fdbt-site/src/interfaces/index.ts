@@ -737,10 +737,10 @@ export interface ConfirmationElement {
 export interface FareTypeRadio {
     fareType: string;
     label: string;
+    hint: string;
 }
 export interface FareTypeRadioProps {
-    standardFares: FareTypeRadio[];
-    otherFares: FareTypeRadio[];
+    fares: FareTypeRadio[];
 }
 
 export interface RadioWithoutConditionals extends BaseReactElement {
