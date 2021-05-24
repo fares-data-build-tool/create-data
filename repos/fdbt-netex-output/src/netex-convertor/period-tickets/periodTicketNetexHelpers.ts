@@ -31,6 +31,7 @@ import {
     isGeoZoneTicket,
     isMultiServiceTicket,
     isProductDetails,
+    isFlatFareTicket,
 } from '../../types/index';
 
 import {
@@ -624,7 +625,9 @@ export const getPreassignedFareProducts = (
             typesOfFareProduct: {
                 TypeOfFareProductRef: {
                     version: 'fxc:v1.0',
-                    ref: 'fxc:standard_product@pass@period',
+                    ref: isFlatFareTicket(userPeriodTicket)
+                        ? 'fxc:standard_product@trip@single'
+                        : 'fxc:standard_product@pass@period',
                 },
             },
             OperatorRef: {
@@ -654,7 +657,7 @@ export const getPreassignedFareProducts = (
                 },
             },
             ProductType: {
-                $t: 'periodPass',
+                $t: isFlatFareTicket(userPeriodTicket) ? 'singleTrip' : 'periodPass',
             },
         };
     });
