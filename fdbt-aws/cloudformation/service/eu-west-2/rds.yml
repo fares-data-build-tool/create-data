@@ -52,7 +52,6 @@ Parameters:
 
 Conditions:
   IsProd: !Equals [!Ref Stage, "prod"]
-  IsNotProd: !Not [!Equals [!Ref Stage, "prod"]]
 
 Resources:
   DatabaseSubnetGroup:
@@ -84,8 +83,8 @@ Resources:
   DatabaseCluster:
     Type: AWS::RDS::DBCluster
     Properties:
-      Engine: !If [IsNotProd, aurora-mysql, aurora]
-      EngineVersion: !If [IsNotProd, 5.7.mysql_aurora.2.09.2, 5.6.10a]
+      Engine: aurora-mysql
+      EngineVersion: 5.7.mysql_aurora.2.09.2
       DatabaseName: !Sub ${ProductName}
       MasterUsername: !Ref DatabaseUsername
       MasterUserPassword: !Ref DatabasePassword
@@ -95,12 +94,7 @@ Resources:
       DBSubnetGroupName: !Ref DatabaseSubnetGroup
       StorageEncrypted: true
       DeletionProtection: !If [IsProd, true, false]
-      DBClusterParameterGroupName:
-        !If [
-          IsNotProd,
-          !Ref DatabaseClusterParameterGroup5dot7,
-          !Ref DatabaseClusterParameterGroup,
-        ]
+      DBClusterParameterGroupName: !Ref DatabaseClusterParameterGroup5dot7
       AssociatedRoles:
         - RoleArn:
             Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
