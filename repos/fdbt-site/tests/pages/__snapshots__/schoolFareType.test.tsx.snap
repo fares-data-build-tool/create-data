@@ -43,20 +43,22 @@ exports[`pages fareType should render correctly 1`] = `
           errors={Array []}
         >
           <FareTypeRadios
-            otherFares={Array []}
-            standardFares={
+            fares={
               Array [
                 Object {
                   "fareType": "single",
-                  "label": "Single Ticket - Point to Point",
-                },
-                Object {
-                  "fareType": "period",
-                  "label": "Period Ticket (Day, Week, Month and Annual)",
+                  "hint": "A ticket for a point to point journey",
+                  "label": "Single ticket",
                 },
                 Object {
                   "fareType": "flatFare",
-                  "label": "Flat Fare Ticket - Single Journey",
+                  "hint": "A fixed fee ticket for a single journey",
+                  "label": "Flat fare ticket",
+                },
+                Object {
+                  "fareType": "period",
+                  "hint": "A ticket valid for a number of days, weeks, months or years",
+                  "label": "Period ticket",
                 },
               ]
             }
@@ -138,20 +140,22 @@ exports[`pages fareType should render error messaging when errors are passed to 
           }
         >
           <FareTypeRadios
-            otherFares={Array []}
-            standardFares={
+            fares={
               Array [
                 Object {
                   "fareType": "single",
-                  "label": "Single Ticket - Point to Point",
-                },
-                Object {
-                  "fareType": "period",
-                  "label": "Period Ticket (Day, Week, Month and Annual)",
+                  "hint": "A ticket for a point to point journey",
+                  "label": "Single ticket",
                 },
                 Object {
                   "fareType": "flatFare",
-                  "label": "Flat Fare Ticket - Single Journey",
+                  "hint": "A fixed fee ticket for a single journey",
+                  "label": "Flat fare ticket",
+                },
+                Object {
+                  "fareType": "period",
+                  "hint": "A ticket valid for a number of days, weeks, months or years",
+                  "label": "Period ticket",
                 },
               ]
             }

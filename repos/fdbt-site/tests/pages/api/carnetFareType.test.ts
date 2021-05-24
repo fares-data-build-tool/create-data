@@ -1,5 +1,5 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import fareType from '../../../src/pages/api/fareType';
+import carnetFareType from '../../../src/pages/api/carnetFareType';
 import * as sessions from '../../../src/utils/sessions';
 import {
     FARE_TYPE_ATTRIBUTE,
@@ -16,12 +16,21 @@ describe('fareType', () => {
         jest.resetAllMocks();
     });
 
+    it('sets the carnet session attribute if it is not currently set', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'schoolService' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        carnetFareType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
+    });
+
     it('should return 302 redirect to /definePassengerType when schoolService is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: { fareType: 'schoolService' },
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        carnetFareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, {
             fareType: req.body.fareType,
         });
@@ -38,7 +47,7 @@ describe('fareType', () => {
             body: { fareType: 'single' },
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        carnetFareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, {
             fareType: req.body.fareType,
         });
@@ -47,31 +56,21 @@ describe('fareType', () => {
         });
     });
 
-    it('should return 302 redirect to /fareType with errors when no option is selected', () => {
+    it('should return 302 redirect to /carnetFareType with errors when no option is selected', () => {
         const mockError: ErrorInfo[] = [
-            { id: 'fare-type-single', errorMessage: 'Choose a fare type from the options' },
+            { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options' },
         ];
         const { req, res } = getMockRequestAndResponse({
             body: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [CARNET_FARE_TYPE_ATTRIBUTE]: true,
+            },
         });
-        fareType(req, res);
+        carnetFareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, {
             errors: mockError,
         });
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/fareType',
-        });
-    });
-
-    it('should return 302 redirect to /carnetFareType when carnet is selected, set carnet to true, and clear the fareType attribute', () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: { fareType: 'carnet' },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        fareType(req, res);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, undefined);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/carnetFareType',
         });

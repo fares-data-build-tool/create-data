@@ -29,21 +29,21 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
 
 export const selectFareType = (
     fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
+    isScheme: boolean,
 ): void => {
-    getHomePage(false);
+    getHomePage(isScheme);
     startPageLinkClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
 };
 
-export const startSchemeJourney = (): void => {
-    getHomePage(true);
-    startPageLinkClick();
-};
-
-export const completeFlatFarePages = (productName: string): void => {
-    randomlyChooseAndSelectServices();
-    continueButtonClick();
+export const completeFlatFarePages = (productName: string, isScheme: boolean): void => {
+    if (isScheme) {
+        completeOperatorSearch(true);
+    } else {
+        randomlyChooseAndSelectServices();
+        continueButtonClick();
+    }
     getElementById('product-details-name').type(productName);
     getElementById('product-details-price').type('50.50');
     continueButtonClick();

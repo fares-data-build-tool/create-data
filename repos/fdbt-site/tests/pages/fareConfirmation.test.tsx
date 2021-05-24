@@ -8,6 +8,44 @@ describe('pages', () => {
             const tree = shallow(
                 <FareConfirmation
                     fareType="single"
+                    carnet={false}
+                    passengerType={{
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
+                    }}
+                    groupPassengerInfo={[]}
+                    schoolFareType=""
+                    termTime=""
+                    fullTimeRestrictions={[
+                        {
+                            day: 'thursday',
+                            timeBands: [{ startTime: '0900', endTime: '1600' }],
+                        },
+                        {
+                            day: 'friday',
+                            timeBands: [{ startTime: '', endTime: '1600' }],
+                        },
+                        {
+                            day: 'bank holiday',
+                            timeBands: [{ startTime: '', endTime: '' }],
+                        },
+                    ]}
+                    newTimeRestrictionCreated=""
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for a carnet ticket', () => {
+            const tree = shallow(
+                <FareConfirmation
+                    fareType="single"
+                    carnet
                     passengerType={{
                         passengerType: 'adult',
                         ageRange: 'yes',
@@ -44,6 +82,7 @@ describe('pages', () => {
             const tree = shallow(
                 <FareConfirmation
                     fareType="single"
+                    carnet={false}
                     passengerType={{
                         passengerType: 'adult',
                         ageRange: 'yes',
@@ -80,6 +119,7 @@ describe('pages', () => {
             const tree = shallow(
                 <FareConfirmation
                     fareType="single"
+                    carnet={false}
                     passengerType={{
                         passengerType: 'group',
                     }}
@@ -130,6 +170,7 @@ describe('pages', () => {
             const tree = shallow(
                 <FareConfirmation
                     fareType="schoolService"
+                    carnet={false}
                     passengerType={{
                         passengerType: 'schoolPupil',
                         ageRange: 'yes',
@@ -152,6 +193,7 @@ describe('pages', () => {
             it('should create confirmation elements for non school tickets', () => {
                 const result = buildFareConfirmationElements(
                     'return',
+                    false,
                     {
                         passengerType: 'adult',
                         ageRange: 'yes',
@@ -213,6 +255,7 @@ describe('pages', () => {
             it('should create confirmation elements for a ticket with a premade time restriction', () => {
                 const result = buildFareConfirmationElements(
                     'return',
+                    false,
                     {
                         passengerType: 'adult',
                         ageRange: 'yes',
@@ -279,6 +322,7 @@ describe('pages', () => {
             it('should create confirmation elements for school tickets', () => {
                 const result = buildFareConfirmationElements(
                     'schoolService',
+                    false,
                     {
                         passengerType: 'schoolPupil',
                         ageRange: 'yes',

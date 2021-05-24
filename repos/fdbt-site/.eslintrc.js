@@ -27,8 +27,11 @@ module.exports = {
         sourceType: 'module',
         project: `./tsconfig.json`,
     },
-    plugins: ['react', '@typescript-eslint', 'jsx-a11y'],
+    plugins: ['react', '@typescript-eslint', 'jsx-a11y', 'jest'],
     rules: {
+        'jest/no-disabled-tests': 'error',
+        'jest/no-identical-title': 'error',
+        'jest/valid-expect': 'error',
         indent: [
             0,
             4,

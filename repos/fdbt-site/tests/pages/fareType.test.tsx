@@ -18,17 +18,21 @@ describe('pages', () => {
 
     describe('fareType', () => {
         it('should render correctly', () => {
-            const tree = shallow(<FareType operatorName={' '} schemeOp={false} errors={[]} csrfToken="" />);
+            const tree = shallow(
+                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={[]} csrfToken="" />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly for a scheme operator', () => {
-            const tree = shallow(<FareType operatorName={' '} schemeOp errors={[]} csrfToken="" />);
+            const tree = shallow(<FareType operatorName="Blackpool Transport" schemeOp errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed to the page', () => {
-            const tree = shallow(<FareType operatorName={' '} schemeOp={false} errors={mockErrors} csrfToken="" />);
+            const tree = shallow(
+                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={mockErrors} csrfToken="" />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
