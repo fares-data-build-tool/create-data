@@ -1,27 +1,27 @@
-import React, { ReactElement } from 'react';
 import lowerCase from 'lodash/lowerCase';
-import TwoThirdsLayout from '../layout/Layout';
+import React, { ReactElement } from 'react';
+import CsrfForm from '../components/CsrfForm';
+import ErrorSummary from '../components/ErrorSummary';
+import FormElementWrapper from '../components/FormElementWrapper';
+import RadioConditionalInput, { createErrorId } from '../components/RadioConditionalInput';
 import {
-    GROUP_PASSENGER_TYPES_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
-import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, { createErrorId } from '../components/RadioConditionalInput';
 import {
     BaseReactElement,
     CompanionInfo,
     ErrorInfo,
     NextPageContextWithSession,
-    RadioConditionalInputFieldset,
     PassengerType,
+    RadioConditionalInputFieldset,
 } from '../interfaces';
-import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from '../utils/sessions';
-import FormElementWrapper from '../components/FormElementWrapper';
-import { getCsrfToken, getErrorsByIds } from '../utils';
 import { isPassengerType, isPassengerTypeAttributeWithErrors, isWithErrors } from '../interfaces/typeGuards';
+import TwoThirdsLayout from '../layout/Layout';
+import { getCsrfToken, getErrorsByIds } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Define Passenger Type - Create Fares Data Service';
 const description = 'Define Passenger Type page of the Create Fares Data Service';
@@ -39,9 +39,10 @@ interface DefinePassengerTypeProps {
     group: boolean;
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
-    numberOfPassengerTypeFieldset?: TextInputFieldset;
     passengerType: string;
     csrfToken: string;
+    isLast?: boolean;
+    numberOfPassengerTypeFieldset?: TextInputFieldset;
 }
 
 export const getFieldsets = (
@@ -236,6 +237,7 @@ const DefinePassengerType = ({
     numberOfPassengerTypeFieldset,
     csrfToken,
     passengerType,
+    isLast,
 }: DefinePassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
@@ -260,7 +262,35 @@ const DefinePassengerType = ({
                     {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
+                    {isLast && (
+                        <div className="govuk-form-group">
+                            <label
+                                id="save-time-restriction-label"
+                                className="govuk-label"
+                                htmlFor="time-restrictions-name"
+                            >
+                                <i>
+                                    Optional - if you want to save this passenger group for reuse on other products,
+                                    provide a name below
+                                </i>
+                            </label>
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId="passenger-type-name"
+                                errorClass="govuk-input--error"
+                            >
+                                <input
+                                    className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                    id="passenger-type-name"
+                                    name="passengerTypeName"
+                                    type="text"
+                                    maxLength={50}
+                                />
+                            </FormElementWrapper>
+                        </div>
+                    )}
                 </div>
+
                 <input value={passengerType} type="hidden" name="passengerType" />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
@@ -283,7 +313,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     const errors: ErrorInfo[] = isWithErrors(passengerTypeErrorsAttribute) ? passengerTypeErrorsAttribute.errors : [];
 
-    let passengerType = ctx?.query?.groupPassengerType as string;
+    let passengerType = ctx?.query?.groupPassengerType as string | undefined;
 
     const group =
         !!groupPassengerTypes &&
@@ -316,21 +346,25 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     const radioFieldsets = getFieldsets(errors, passengerType, passengerInfo);
 
-    if (numberOfPassengerTypeFieldset) {
-        return {
-            props: {
-                group,
-                errors,
-                fieldsets: radioFieldsets,
-                numberOfPassengerTypeFieldset,
-                passengerType,
-                csrfToken,
-            },
-        };
-    }
+    const selectedPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+
+    const isLast =
+        group &&
+        selectedPassengerTypes &&
+        'passengerTypes' in selectedPassengerTypes &&
+        selectedPassengerTypes.passengerTypes.indexOf(passengerType) ===
+            selectedPassengerTypes.passengerTypes.length - 1;
 
     return {
-        props: { group, errors, fieldsets: radioFieldsets, passengerType, csrfToken },
+        props: {
+            group,
+            errors,
+            fieldsets: radioFieldsets,
+            passengerType,
+            csrfToken,
+            ...(numberOfPassengerTypeFieldset !== undefined ? { numberOfPassengerTypeFieldset } : {}),
+            ...(isLast !== undefined ? { isLast } : {}),
+        },
     };
 };
 

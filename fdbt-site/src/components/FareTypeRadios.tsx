@@ -1,57 +1,27 @@
 import React, { ReactElement } from 'react';
 import { FareTypeRadioProps } from '../interfaces';
 
-const FareTypeRadios = ({ standardFares, otherFares = [] }: FareTypeRadioProps): ReactElement => {
-    const showHeadings = standardFares.length > 0 && otherFares.length > 0;
+const FareTypeRadios = ({ fares = [] }: FareTypeRadioProps): ReactElement => {
     return (
         <>
-            {showHeadings ? (
-                <h2 className="govuk-heading-m govuk-!-margin-top-5" id="standard-fares-heading">
-                    Standard Fares
-                </h2>
-            ) : null}
             <div className="govuk-radios">
-                {standardFares.map(standardFare => (
-                    <div className="govuk-radios__item" key={standardFare.fareType}>
+                {fares.map(fare => (
+                    <div className="govuk-radios__item" key={fare.fareType}>
                         <input
                             className="govuk-radios__input"
-                            id={`fare-type-${standardFare.fareType}`}
+                            id={`fare-type-${fare.fareType}`}
                             name="fareType"
                             type="radio"
-                            value={standardFare.fareType}
+                            value={fare.fareType}
                         />
-                        <label
-                            className="govuk-label govuk-radios__label"
-                            htmlFor={`fare-type-${standardFare.fareType}`}
-                        >
-                            {standardFare.label}
+                        <label className="govuk-label govuk-radios__label" htmlFor={`fare-type-${fare.fareType}`}>
+                            <b>{fare.label}</b>
                         </label>
+                        <div id={`${fare.fareType}-hint`} className="govuk-hint govuk-radios__hint">
+                            {fare.hint}
+                        </div>
                     </div>
                 ))}
-                {showHeadings ? (
-                    <>
-                        <h2 className="govuk-heading-m govuk-!-margin-top-5" id="other-fares-heading">
-                            Other Fares
-                        </h2>
-                        {otherFares.map(otherFare => (
-                            <div className="govuk-radios__item" key={otherFare.fareType}>
-                                <input
-                                    className="govuk-radios__input"
-                                    id={`fare-type-${otherFare.fareType}`}
-                                    name="fareType"
-                                    type="radio"
-                                    value={otherFare.fareType}
-                                />
-                                <label
-                                    className="govuk-label govuk-radios__label"
-                                    htmlFor={`fare-type-${otherFare.fareType}`}
-                                >
-                                    {otherFare.label}
-                                </label>
-                            </div>
-                        ))}
-                    </>
-                ) : null}
             </div>
         </>
     );

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FareTypeRadios should render a set of radio buttons for just standard fares when no other fares are provided 1`] = `
+exports[`FareTypeRadios should render a set of radio buttons the fares provided 1`] = `
 <Fragment>
   <div
     className="govuk-radios"
@@ -20,26 +20,16 @@ exports[`FareTypeRadios should render a set of radio buttons for just standard f
         className="govuk-label govuk-radios__label"
         htmlFor="fare-type-single"
       >
-        Single Ticket - Point to Point
+        <b>
+          Single ticket
+        </b>
       </label>
-    </div>
-    <div
-      className="govuk-radios__item"
-      key="period"
-    >
-      <input
-        className="govuk-radios__input"
-        id="fare-type-period"
-        name="fareType"
-        type="radio"
-        value="period"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-period"
+      <div
+        className="govuk-hint govuk-radios__hint"
+        id="single-hint"
       >
-        Period Ticket (Day, Week, Month and Annual)
-      </label>
+        A ticket for a point to point journey
+      </div>
     </div>
     <div
       className="govuk-radios__item"
@@ -56,8 +46,16 @@ exports[`FareTypeRadios should render a set of radio buttons for just standard f
         className="govuk-label govuk-radios__label"
         htmlFor="fare-type-return"
       >
-        Return Ticket - Single Service
+        <b>
+          Return ticket
+        </b>
       </label>
+      <div
+        className="govuk-hint govuk-radios__hint"
+        id="return-hint"
+      >
+        An inbound and outbound ticket for the same service
+      </div>
     </div>
     <div
       className="govuk-radios__item"
@@ -74,41 +72,16 @@ exports[`FareTypeRadios should render a set of radio buttons for just standard f
         className="govuk-label govuk-radios__label"
         htmlFor="fare-type-flatFare"
       >
-        Flat Fare Ticket - Single Journey
+        <b>
+          Flat fare ticket
+        </b>
       </label>
-    </div>
-  </div>
-</Fragment>
-`;
-
-exports[`FareTypeRadios should render a set of radio buttons with standard fares and other fares separated under their respective headings 1`] = `
-<Fragment>
-  <h2
-    className="govuk-heading-m govuk-!-margin-top-5"
-    id="standard-fares-heading"
-  >
-    Standard Fares
-  </h2>
-  <div
-    className="govuk-radios"
-  >
-    <div
-      className="govuk-radios__item"
-      key="single"
-    >
-      <input
-        className="govuk-radios__input"
-        id="fare-type-single"
-        name="fareType"
-        type="radio"
-        value="single"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-single"
+      <div
+        className="govuk-hint govuk-radios__hint"
+        id="flatFare-hint"
       >
-        Single Ticket - Point to Point
-      </label>
+        A fixed fee ticket for a single journey
+      </div>
     </div>
     <div
       className="govuk-radios__item"
@@ -125,51 +98,43 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
         className="govuk-label govuk-radios__label"
         htmlFor="fare-type-period"
       >
-        Period Ticket (Day, Week, Month and Annual)
+        <b>
+          Period ticket
+        </b>
       </label>
+      <div
+        className="govuk-hint govuk-radios__hint"
+        id="period-hint"
+      >
+        A ticket valid for a number of days, weeks, months or years
+      </div>
     </div>
     <div
       className="govuk-radios__item"
-      key="return"
+      key="carnet"
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-return"
+        id="fare-type-carnet"
         name="fareType"
         type="radio"
-        value="return"
+        value="carnet"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-return"
+        htmlFor="fare-type-carnet"
       >
-        Return Ticket - Single Service
+        <b>
+          Carnet ticket
+        </b>
       </label>
-    </div>
-    <div
-      className="govuk-radios__item"
-      key="flatFare"
-    >
-      <input
-        className="govuk-radios__input"
-        id="fare-type-flatFare"
-        name="fareType"
-        type="radio"
-        value="flatFare"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-flatFare"
+      <div
+        className="govuk-hint govuk-radios__hint"
+        id="carnet-hint"
       >
-        Flat Fare Ticket - Single Journey
-      </label>
+        A bundle of pre-paid tickets
+      </div>
     </div>
-    <h2
-      className="govuk-heading-m govuk-!-margin-top-5"
-      id="other-fares-heading"
-    >
-      Other Fares
-    </h2>
     <div
       className="govuk-radios__item"
       key="multiOperator"
@@ -185,8 +150,16 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
         className="govuk-label govuk-radios__label"
         htmlFor="fare-type-multiOperator"
       >
-        Multi-operator - A ticket that covers more than one operator
+        <b>
+          Multi-operator
+        </b>
       </label>
+      <div
+        className="govuk-hint govuk-radios__hint"
+        id="multiOperator-hint"
+      >
+        A ticket that covers more than one operator
+      </div>
     </div>
     <div
       className="govuk-radios__item"
@@ -203,8 +176,16 @@ exports[`FareTypeRadios should render a set of radio buttons with standard fares
         className="govuk-label govuk-radios__label"
         htmlFor="fare-type-schoolService"
       >
-        School Service - A ticket available to pupils in full-time education
+        <b>
+          School service
+        </b>
       </label>
+      <div
+        className="govuk-hint govuk-radios__hint"
+        id="schoolService-hint"
+      >
+        A ticket available to pupils in full-time education
+      </div>
     </div>
   </div>
 </Fragment>

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
 import { INTERNAL_NOC } from '../constants';
 import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, FareTypeRadio } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
@@ -33,52 +33,63 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const buildRadioProps = (schemeOp: boolean): FareTypeRadioProps => {
+const buildRadioProps = (schemeOp: boolean): FareTypeRadio[] => {
     if (schemeOp) {
-        return {
-            standardFares: [
-                {
-                    fareType: 'period',
-                    label: 'Period geozone ticket (day, week, month and annual in a zone)',
-                },
-                {
-                    fareType: 'flatFare',
-                    label: 'Flat fare ticket - single journey',
-                },
-            ],
-            otherFares: [],
-        };
-    }
-    return {
-        standardFares: [
-            {
-                fareType: 'single',
-                label: 'Single ticket - point to point',
-            },
+        return [
             {
                 fareType: 'period',
-                label: 'Period ticket (day, week, month and annual)',
-            },
-            {
-                fareType: 'return',
-                label: 'Return ticket - single service',
+                label: 'Period ticket',
+                hint: 'A zonal ticket valid for a number of days, weeks, months or years',
             },
             {
                 fareType: 'flatFare',
-                label: 'Flat fare ticket - single journey',
+                label: 'Flat fare ticket',
+                hint: 'A fixed fee ticket for a single journey',
             },
-        ],
-        otherFares: [
-            {
-                fareType: 'multiOperator',
-                label: 'Multi-operator - a ticket that covers more than one operator',
-            },
-            {
-                fareType: 'schoolService',
-                label: 'School service - a ticket available to pupils in full-time education',
-            },
-        ],
-    };
+        ];
+    }
+    const radios = [
+        {
+            fareType: 'single',
+            label: 'Single ticket',
+            hint: 'A ticket for a point to point journey',
+        },
+        {
+            fareType: 'return',
+            label: 'Return ticket',
+            hint: 'An inbound and outbound ticket for the same service',
+        },
+        {
+            fareType: 'flatFare',
+            label: 'Flat fare ticket',
+            hint: 'A fixed fee ticket for a single journey',
+        },
+        {
+            fareType: 'period',
+            label: 'Period ticket',
+            hint: 'A ticket valid for a number of days, weeks, months or years',
+        },
+        {
+            fareType: 'multiOperator',
+            label: 'Multi-operator',
+            hint: 'A ticket that covers more than one operator',
+        },
+        {
+            fareType: 'schoolService',
+            label: 'School service',
+            hint: 'A ticket available to pupils in full-time education',
+        },
+    ];
+
+    if (process.env.STAGE !== 'prod') {
+        radios.splice(4, 0, {
+            fareType: 'carnet',
+            label: 'Carnet ticket',
+            hint: 'A bundle of pre-paid tickets',
+        });
+    }
+
+    return radios;
 };
 
 const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypeProps): ReactElement => {
@@ -98,10 +109,7 @@ const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypePr
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <FareTypeRadios
-                                    standardFares={buildRadioProps(schemeOp).standardFares}
-                                    otherFares={buildRadioProps(schemeOp).otherFares}
-                                />
+                                <FareTypeRadios fares={buildRadioProps(schemeOp)} />
                             </FormElementWrapper>
                         </fieldset>
                     </div>
@@ -114,10 +122,8 @@ const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypePr
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: FareTypeProps }> => {
     const csrfToken = getCsrfToken(ctx);
-
     const schemeOp = isSchemeOperator(ctx);
     const nocCode = getAndValidateNoc(ctx);
-
     const services = await getAllServicesByNocCode(nocCode);
     const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
     const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');

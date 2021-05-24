@@ -6,6 +6,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     NextPageContextWithSession,
@@ -29,6 +30,7 @@ const description = 'Fare Confirmation page of the Create Fares Data Service';
 
 interface FareConfirmationProps {
     fareType: string;
+    carnet: boolean;
     passengerType: PassengerType;
     groupPassengerInfo: CompanionInfo[];
     schoolFareType: string;
@@ -40,6 +42,7 @@ interface FareConfirmationProps {
 
 export const buildFareConfirmationElements = (
     fareType: string,
+    carnet: boolean,
     passengerType: PassengerType,
     groupPassengerInfo: CompanionInfo[],
     schoolFareType: string,
@@ -50,7 +53,7 @@ export const buildFareConfirmationElements = (
     const confirmationElements: ConfirmationElement[] = [
         {
             name: 'Fare type',
-            content: sentenceCaseString(fareType),
+            content: carnet ? 'Carnet' : sentenceCaseString(fareType),
             href: 'fareType',
         },
         {
@@ -59,6 +62,14 @@ export const buildFareConfirmationElements = (
             href: fareType === 'schoolService' ? '' : 'passengerType',
         },
     ];
+
+    if (carnet) {
+        confirmationElements.splice(1, 0, {
+            name: 'Carnet type',
+            content: sentenceCaseString(fareType),
+            href: 'carnetFareType',
+        });
+    }
 
     if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
         groupPassengerInfo.forEach(passenger => {
@@ -173,6 +184,7 @@ export const buildFareConfirmationElements = (
 
 const FareConfirmation = ({
     fareType,
+    carnet,
     passengerType,
     groupPassengerInfo,
     schoolFareType,
@@ -189,6 +201,7 @@ const FareConfirmation = ({
                     header="Fare Information"
                     confirmationElements={buildFareConfirmationElements(
                         fareType,
+                        carnet,
                         passengerType,
                         groupPassengerInfo,
                         schoolFareType,
@@ -206,6 +219,8 @@ const FareConfirmation = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareConfirmationProps } => {
     const csrfToken = getCsrfToken(ctx);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const carnetAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
+    const carnet = !!carnetAttribute;
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
     const termTimeAttribute = getSessionAttribute(ctx.req, TERM_TIME_ATTRIBUTE) as TermTimeAttribute;
@@ -228,6 +243,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     return {
         props: {
             fareType: fareTypeAttribute.fareType,
+            carnet,
             passengerType: passengerTypeAttribute,
             schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
             groupPassengerInfo,

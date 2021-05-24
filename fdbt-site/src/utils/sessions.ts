@@ -107,6 +107,7 @@ import {
     REUSE_OPERATOR_GROUP_ATTRIBUTE,
     SAVE_OPERATOR_GROUP_ATTRIBUTE,
     MULTI_OP_TXC_SOURCE_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 
 import * as attributes from '../constants/attributes';
@@ -161,6 +162,7 @@ interface SessionAttributeTypes {
     [MULTI_OP_TXC_SOURCE_ATTRIBUTE]: TxcSourceAttribute;
     [REUSE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [SAVE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
+    [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
