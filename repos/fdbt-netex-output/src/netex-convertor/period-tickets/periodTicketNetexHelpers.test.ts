@@ -1,4 +1,10 @@
-import { PeriodMultipleServicesTicket, GeoZoneTicket, PeriodTicket, SchemeOperator } from '../../types/index';
+import {
+    PeriodMultipleServicesTicket,
+    GeoZoneTicket,
+    PeriodTicket,
+    SchemeOperator,
+    isGeoZoneTicket,
+} from '../../types/index';
 
 import * as netexHelpers from './periodTicketNetexHelpers';
 import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../../test-data/matchingData';
@@ -38,13 +44,13 @@ describe('periodTicketNetexHelpers', () => {
         version: '1.0',
         id: opString,
         Name: expect.objectContaining({ $t: expect.any(String) }),
-        specifics: netexHelpers.isGeoZoneTicket(matchingData)
+        specifics: isGeoZoneTicket(matchingData)
             ? {
                   TariffZoneRef: { ref: opString, version: '1.0' },
               }
             : null,
         columns: expect.objectContaining({
-            FareTableColumn: netexHelpers.isGeoZoneTicket(matchingData)
+            FareTableColumn: isGeoZoneTicket(matchingData)
                 ? getExpectedFareTableColumn({
                       TariffZoneRef: { ref: opString, version: '1.0' },
                   })

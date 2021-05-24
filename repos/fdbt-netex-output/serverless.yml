@@ -8,25 +8,28 @@ provider:
   stackName: ${self:service}-${self:provider.stage}
   timeout: 30
   memorySize: 512
-  iamRoleStatements:
-    - Effect: 'Allow'
-      Action:
-        - 'ssm:GetParameter'
-      Resource: '*'
-    - Effect: 'Allow'
-      Action:
-        - 's3:GetObject'
-        - 's3:PutObject'
-      Resource:
-        - !Sub arn:aws:s3:::fdbt-matching-data-${self:provider.stage}/*
-        - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*
-        - !Sub arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*
-    - Effect: 'Allow'
-      Action:
-        - ses:SendEmail
-        - ses:SendRawEmail
-      Resource:
-        - '*'
+  lambdaHashingVersion: 20201221
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'ssm:GetParameter'
+          Resource: '*'
+        - Effect: 'Allow'
+          Action:
+            - 's3:GetObject'
+            - 's3:PutObject'
+          Resource:
+            - !Sub arn:aws:s3:::fdbt-matching-data-${self:provider.stage}/*
+            - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*
+            - !Sub arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*
+        - Effect: 'Allow'
+          Action:
+            - ses:SendEmail
+            - ses:SendRawEmail
+          Resource:
+            - '*'
   s3:
     matchingDataBucket:
       name: fdbt-matching-data-${self:provider.stage}
@@ -61,8 +64,9 @@ functions:
   NetexConvertor:
     handler: src/netex-convertor/handler.netexConvertorHandler
     events:
-      - s3: matchingDataBucket
-        event: s3:ObjectCreated:*
+      - s3:
+          bucket: matchingDataBucket
+          event: s3:ObjectCreated:*
     vpc:
       securityGroupIds:
         - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
@@ -78,8 +82,9 @@ functions:
   NetexEmailer:
     handler: src/netex-emailer/handler.netexEmailerHandler
     events:
-      - s3: netexDataBucket
-        event: s3:ObjectCreated:*
+      - s3:
+          bucket: netexDataBucket
+          event: s3:ObjectCreated:*
     environment:
       MATCHING_DATA_BUCKET: fdbt-matching-data-${self:provider.stage}
       SERVICE_EMAIL_ADDRESS: create-fares-data@infinityworks.com

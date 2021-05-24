@@ -7,19 +7,22 @@ provider:
   stage: ${opt:stage, 'test'}
   timeout: 180
   memorySize: 512
-  iamRoleStatements:
-    - Effect: 'Allow'
-      Action:
-        - 's3:GetObject'
-        - 's3:PutObject'
-      Resource:
-        - !Sub 'arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*'
-        - !Sub 'arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*'
-    - Effect: 'Allow'
-      Action:
-        - 'sns:Publish'
-      Resource:
-        - Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
+  lambdaHashingVersion: 20201221
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 's3:GetObject'
+            - 's3:PutObject'
+          Resource:
+            - !Sub 'arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*'
+            - !Sub 'arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*'
+        - Effect: 'Allow'
+          Action:
+            - 'sns:Publish'
+          Resource:
+            - Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
 
   environment:
     VALIDATED_NETEX_BUCKET: fdbt-netex-data-${self:provider.stage}
@@ -64,8 +67,9 @@ functions:
   NetexValidator:
     handler: main.lambda_handler
     events:
-      - s3: unvalidatedNetexDataBucket
-        event: s3:ObjectCreated:*
+      - s3:
+          bucket: unvalidatedNetexDataBucket
+          event: s3:ObjectCreated:*
 
 resources:
   Resources:
