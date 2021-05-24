@@ -37,7 +37,7 @@ describe('apiUtils', () => {
         jest.resetAllMocks();
     });
 
-    describe('checkEmailValid', () => {
+    describe('checkEmailisInvalid', () => {
         it.each([
             ['@email.com'],
             ['test@email'],

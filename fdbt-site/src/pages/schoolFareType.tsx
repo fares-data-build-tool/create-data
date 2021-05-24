@@ -22,21 +22,23 @@ interface SchoolFareTypeProps {
 }
 
 const radioProps: FareTypeRadioProps = {
-    standardFares: [
+    fares: [
         {
             fareType: 'single',
-            label: 'Single Ticket - Point to Point',
-        },
-        {
-            fareType: 'period',
-            label: 'Period Ticket (Day, Week, Month and Annual)',
+            label: 'Single ticket',
+            hint: 'A ticket for a point to point journey',
         },
         {
             fareType: 'flatFare',
-            label: 'Flat Fare Ticket - Single Journey',
+            label: 'Flat fare ticket',
+            hint: 'A fixed fee ticket for a single journey',
+        },
+        {
+            fareType: 'period',
+            label: 'Period ticket',
+            hint: 'A ticket valid for a number of days, weeks, months or years',
         },
     ],
-    otherFares: [],
 };
 
 const SchoolFareType = ({ operatorName, errors = [], csrfToken }: SchoolFareTypeProps): ReactElement => {
@@ -56,7 +58,7 @@ const SchoolFareType = ({ operatorName, errors = [], csrfToken }: SchoolFareType
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <FareTypeRadios standardFares={radioProps.standardFares} otherFares={[]} />
+                                <FareTypeRadios fares={radioProps.fares} />
                             </FormElementWrapper>
                         </fieldset>
                     </div>

@@ -91,7 +91,7 @@ describe('reuseOperatorGroup', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/searchOperators' });
     });
 
-    it.only('should redirect to /multipleOperatorsServiceList if operator group reused, is scheme operator, and fareType is flat fare', async () => {
+    it('should redirect to /multipleOperatorsServiceList if operator group reused, is scheme operator, and fareType is flat fare', async () => {
         const getOperatorGroupsByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc');
         const testOperators = [
             {

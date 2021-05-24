@@ -1,20 +1,17 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils/index';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { fareType } = req.body;
+        const carnet = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
+        if (!carnet) {
+            updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
+        }
         if (fareType) {
-            if (fareType === 'carnet') {
-                updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
-                updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, undefined);
-                redirectTo(res, '/carnetFareType');
-                return;
-            }
-            updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, false);
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
@@ -26,15 +23,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/passengerType');
         } else {
             const errors: ErrorInfo[] = [
-                { id: 'fare-type-single', errorMessage: 'Choose a fare type from the options' },
+                { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options' },
             ];
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 errors,
             });
-            redirectTo(res, '/fareType');
+            redirectTo(res, '/carnetFareType');
         }
     } catch (error) {
         const message = 'There was a problem selecting the fare type.';
-        redirectToError(res, message, 'api.fareType', error);
+        redirectToError(res, message, 'api.carnetFareType', error);
     }
 };

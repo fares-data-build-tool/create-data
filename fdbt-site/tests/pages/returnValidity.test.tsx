@@ -71,7 +71,7 @@ describe('pages', () => {
                 expect(result.props.fieldset).toEqual(mockReturnValidityFieldset);
             });
 
-            it('should return no errors and a base fieldset when the user first visits the page', () => {
+            it('should return errors and a fieldset whith errors when the user has dropdown errors', () => {
                 const ctx = getMockContext({
                     session: {
                         [RETURN_VALIDITY_ATTRIBUTE]: {

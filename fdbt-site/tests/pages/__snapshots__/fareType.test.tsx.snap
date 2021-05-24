@@ -35,7 +35,7 @@ exports[`pages fareType should render correctly 1`] = `
           className="govuk-hint"
           id="fare-type-operator-hint"
         >
-           
+          Blackpool Transport
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
@@ -43,35 +43,42 @@ exports[`pages fareType should render correctly 1`] = `
           errors={Array []}
         >
           <FareTypeRadios
-            otherFares={
-              Array [
-                Object {
-                  "fareType": "multiOperator",
-                  "label": "Multi-operator - a ticket that covers more than one operator",
-                },
-                Object {
-                  "fareType": "schoolService",
-                  "label": "School service - a ticket available to pupils in full-time education",
-                },
-              ]
-            }
-            standardFares={
+            fares={
               Array [
                 Object {
                   "fareType": "single",
-                  "label": "Single ticket - point to point",
-                },
-                Object {
-                  "fareType": "period",
-                  "label": "Period ticket (day, week, month and annual)",
+                  "hint": "A ticket for a point to point journey",
+                  "label": "Single ticket",
                 },
                 Object {
                   "fareType": "return",
-                  "label": "Return ticket - single service",
+                  "hint": "An inbound and outbound ticket for the same service",
+                  "label": "Return ticket",
                 },
                 Object {
                   "fareType": "flatFare",
-                  "label": "Flat fare ticket - single journey",
+                  "hint": "A fixed fee ticket for a single journey",
+                  "label": "Flat fare ticket",
+                },
+                Object {
+                  "fareType": "period",
+                  "hint": "A ticket valid for a number of days, weeks, months or years",
+                  "label": "Period ticket",
+                },
+                Object {
+                  "fareType": "carnet",
+                  "hint": "A bundle of pre-paid tickets",
+                  "label": "Carnet ticket",
+                },
+                Object {
+                  "fareType": "multiOperator",
+                  "hint": "A ticket that covers more than one operator",
+                  "label": "Multi-operator",
+                },
+                Object {
+                  "fareType": "schoolService",
+                  "hint": "A ticket available to pupils in full-time education",
+                  "label": "School service",
                 },
               ]
             }
@@ -124,7 +131,7 @@ exports[`pages fareType should render correctly for a scheme operator 1`] = `
           className="govuk-hint"
           id="fare-type-operator-hint"
         >
-           
+          Blackpool Transport
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
@@ -132,16 +139,17 @@ exports[`pages fareType should render correctly for a scheme operator 1`] = `
           errors={Array []}
         >
           <FareTypeRadios
-            otherFares={Array []}
-            standardFares={
+            fares={
               Array [
                 Object {
                   "fareType": "period",
-                  "label": "Period geozone ticket (day, week, month and annual in a zone)",
+                  "hint": "A zonal ticket valid for a number of days, weeks, months or years",
+                  "label": "Period ticket",
                 },
                 Object {
                   "fareType": "flatFare",
-                  "label": "Flat fare ticket - single journey",
+                  "hint": "A fixed fee ticket for a single journey",
+                  "label": "Flat fare ticket",
                 },
               ]
             }
@@ -208,7 +216,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
           className="govuk-hint"
           id="fare-type-operator-hint"
         >
-           
+          Blackpool Transport
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
@@ -223,35 +231,42 @@ exports[`pages fareType should render error messaging when errors are passed to 
           }
         >
           <FareTypeRadios
-            otherFares={
-              Array [
-                Object {
-                  "fareType": "multiOperator",
-                  "label": "Multi-operator - a ticket that covers more than one operator",
-                },
-                Object {
-                  "fareType": "schoolService",
-                  "label": "School service - a ticket available to pupils in full-time education",
-                },
-              ]
-            }
-            standardFares={
+            fares={
               Array [
                 Object {
                   "fareType": "single",
-                  "label": "Single ticket - point to point",
-                },
-                Object {
-                  "fareType": "period",
-                  "label": "Period ticket (day, week, month and annual)",
+                  "hint": "A ticket for a point to point journey",
+                  "label": "Single ticket",
                 },
                 Object {
                   "fareType": "return",
-                  "label": "Return ticket - single service",
+                  "hint": "An inbound and outbound ticket for the same service",
+                  "label": "Return ticket",
                 },
                 Object {
                   "fareType": "flatFare",
-                  "label": "Flat fare ticket - single journey",
+                  "hint": "A fixed fee ticket for a single journey",
+                  "label": "Flat fare ticket",
+                },
+                Object {
+                  "fareType": "period",
+                  "hint": "A ticket valid for a number of days, weeks, months or years",
+                  "label": "Period ticket",
+                },
+                Object {
+                  "fareType": "carnet",
+                  "hint": "A bundle of pre-paid tickets",
+                  "label": "Carnet ticket",
+                },
+                Object {
+                  "fareType": "multiOperator",
+                  "hint": "A ticket that covers more than one operator",
+                  "label": "Multi-operator",
+                },
+                Object {
+                  "fareType": "schoolService",
+                  "hint": "A ticket available to pupils in full-time education",
+                  "label": "School service",
                 },
               ]
             }
