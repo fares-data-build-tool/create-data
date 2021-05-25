@@ -504,6 +504,9 @@ describe('definePassengerType', () => {
         const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const getPassengerTypeSpy = jest
+            .spyOn(auroradb, 'getPassengerTypeByNameAndNocCode')
+            .mockResolvedValue(undefined);
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
             {
                 minNumber: '2',
@@ -523,7 +526,6 @@ describe('definePassengerType', () => {
             maxNumber: '10',
             proof: 'Yes',
             proofDocuments: ['Membership Card'],
-            passengerTypeName: 'A Name',
         };
 
         const savedGroupInfo = [
@@ -532,7 +534,7 @@ describe('definePassengerType', () => {
         ];
 
         const { req, res } = getMockRequestAndResponse({
-            body: mockPassengerTypeDetails,
+            body: { ...mockPassengerTypeDetails, passengerTypeName: 'A Name' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
@@ -544,6 +546,7 @@ describe('definePassengerType', () => {
         });
         await definePassengerType(req, res);
         expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
         expect(insertPassengerTypeSpy).toBeCalledWith('TEST', savedGroupInfo, 'A Name', true);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
     });
@@ -553,7 +556,7 @@ describe('definePassengerType', () => {
         const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
         const getPassengerTypeSpy = jest
             .spyOn(auroradb, 'getPassengerTypeByNameAndNocCode')
-            .mockResolvedValueOnce({ passengerType: 'hello' });
+            .mockResolvedValueOnce({ passengerType: 'A Name' });
 
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
@@ -576,7 +579,6 @@ describe('definePassengerType', () => {
             maxNumber: '10',
             proof: 'Yes',
             proofDocuments: ['Membership Card'],
-            passengerTypeName: 'A Name',
         };
 
         const errorInfo = {
@@ -594,7 +596,7 @@ describe('definePassengerType', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({
-            body: mockPassengerTypeDetails,
+            body: { ...mockPassengerTypeDetails, passengerTypeName: 'A Name' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
