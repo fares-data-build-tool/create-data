@@ -1,6 +1,7 @@
 import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE } from '../../../src/constants';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../../src/constants/attributes';
@@ -93,7 +94,10 @@ describe('passengerType', () => {
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
                 [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: [
                     { name: 'Hello Name', companions: [{ passengerType: 'child' }] },
-                    { name: 'Hi Name', companions: [{ passengerType: 'adult' }] },
+                    {
+                        name: 'Hi Name',
+                        companions: [{ passengerType: 'adult' }, { passengerType: 'senior', ageRangeMax: 100 }],
+                    },
                 ],
             },
         });
@@ -105,7 +109,11 @@ describe('passengerType', () => {
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, [
             { passengerType: 'adult' },
+            { passengerType: 'senior', ageRangeMax: 100 },
         ]);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, {
+            passengerTypes: ['adult', 'senior'],
+        });
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/defineTimeRestrictions',
