@@ -1,9 +1,13 @@
 import { NextApiResponse } from 'next';
-import { PASSENGER_TYPE_ATTRIBUTE } from '../../constants/attributes';
-import { PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
+import {
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
+} from '../../constants/attributes';
+import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
 import { getPassengerTypeByNameAndNocCode } from '../../data/auroradb';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
 import { getPassengerTypeRedirectLocation } from './definePassengerType';
 
@@ -14,6 +18,38 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (req.body.passengerType && passengerTypeValues.includes(req.body.passengerType)) {
             const { passengerType } = req.body;
 
+            if (passengerType === GROUP_REUSE_PASSENGER_TYPE) {
+                const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE);
+                if (!savedGroups) {
+                    throw new Error("Didn't have any saved groups but they should have been loaded on render");
+                }
+
+                const { reuseGroup } = req.body;
+                const reusedGroup = savedGroups.find(group => group.name === reuseGroup);
+                if (!reusedGroup || !reuseGroup) {
+                    const errors = [
+                        { errorMessage: 'Select a group to reuse', id: `passenger-type-${GROUP_PASSENGER_TYPE}` },
+                    ];
+                    updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
+                        errors,
+                    });
+                    redirectTo(res, '/passengerType');
+                    return;
+                }
+
+                updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: GROUP_PASSENGER_TYPE });
+                updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, reusedGroup.companions);
+                redirectTo(res, '/defineTimeRestrictions');
+                return;
+            }
+
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType });
+
+            if (passengerType === GROUP_PASSENGER_TYPE) {
+                redirectTo(res, '/groupSize');
+                return;
+            }
+
             const noc = getAndValidateNoc(req, res);
             const storedPassengerType = await getPassengerTypeByNameAndNocCode(noc, passengerType, false);
             if (storedPassengerType) {
@@ -22,15 +58,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType });
-
             if (passengerType === 'anyone') {
                 redirectTo(res, '/defineTimeRestrictions');
-                return;
-            }
-
-            if (passengerType === 'group') {
-                redirectTo(res, '/groupSize');
                 return;
             }
 
@@ -40,7 +69,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const errors: ErrorInfo[] = [
             {
-                id: `passenger-type-${PASSENGER_TYPES_WITH_GROUP[0].passengerTypeValue}`,
+                id: `passenger-type-${GROUP_PASSENGER_TYPE}`,
                 errorMessage: 'Choose a passenger type from the options',
             },
         ];

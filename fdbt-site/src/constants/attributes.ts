@@ -87,3 +87,5 @@ export const MULTI_OP_TXC_SOURCE_ATTRIBUTE = 'fdbt-multi-op-txc-source';
 export const REUSE_OPERATOR_GROUP_ATTRIBUTE = 'fdbt-reuse-operator-group';
 
 export const SAVE_OPERATOR_GROUP_ATTRIBUTE = 'fdbt-save-operator-group';
+
+export const SAVED_PASSENGER_GROUPS_ATTRIBUTE = 'fdbt-saved-passenger-groups';
