@@ -19,19 +19,40 @@ describe('pages', () => {
     describe('fareType', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={[]} csrfToken="" />,
+                <FareType operatorName="Blackpool Transport" schemeOp={false} displayCarnet errors={[]} csrfToken="" />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly for a scheme operator', () => {
-            const tree = shallow(<FareType operatorName="Blackpool Transport" schemeOp errors={[]} csrfToken="" />);
+            const tree = shallow(
+                <FareType operatorName="Blackpool Transport" schemeOp displayCarnet errors={[]} csrfToken="" />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed to the page', () => {
             const tree = shallow(
-                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={mockErrors} csrfToken="" />,
+                <FareType
+                    operatorName="Blackpool Transport"
+                    schemeOp={false}
+                    displayCarnet
+                    errors={mockErrors}
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly when displayCarnet is false', () => {
+            const tree = shallow(
+                <FareType
+                    operatorName="Blackpool Transport"
+                    schemeOp={false}
+                    displayCarnet={false}
+                    errors={[]}
+                    csrfToken=""
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -62,7 +83,13 @@ describe('pages', () => {
 
             it('should return expected props when a the user logged in is not a scheme operator', async () => {
                 const expectedProps = {
-                    props: { operatorName: expect.any(String), schemeOp: false, errors: [], csrfToken: '' },
+                    props: {
+                        operatorName: expect.any(String),
+                        schemeOp: false,
+                        displayCarnet: true,
+                        errors: [],
+                        csrfToken: '',
+                    },
                 };
                 const mockContext = getMockContext();
                 const actualProps = await getServerSideProps(mockContext);

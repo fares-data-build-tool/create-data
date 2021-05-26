@@ -23,6 +23,7 @@ const errorId = 'fare-type-single';
 interface FareTypeProps {
     operatorName: string;
     schemeOp: boolean;
+    displayCarnet: boolean;
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -33,7 +34,7 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const buildRadioProps = (schemeOp: boolean): FareTypeRadio[] => {
+const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): FareTypeRadio[] => {
     if (schemeOp) {
         return [
             {
@@ -81,7 +82,7 @@ const buildRadioProps = (schemeOp: boolean): FareTypeRadio[] => {
         },
     ];
 
-    if (process.env.STAGE !== 'prod') {
+    if (displayCarnet) {
         radios.splice(4, 0, {
             fareType: 'carnet',
             label: 'Carnet ticket',
@@ -92,7 +93,7 @@ const buildRadioProps = (schemeOp: boolean): FareTypeRadio[] => {
     return radios;
 };
 
-const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypeProps): ReactElement => {
+const FareType = ({ operatorName, schemeOp, displayCarnet, errors = [], csrfToken }: FareTypeProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -109,7 +110,7 @@ const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypePr
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <FareTypeRadios fares={buildRadioProps(schemeOp)} />
+                                <FareTypeRadios fares={buildRadioProps(schemeOp, displayCarnet)} />
                             </FormElementWrapper>
                         </fieldset>
                     </div>
@@ -175,7 +176,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operatorName, schemeOp, errors, csrfToken } };
+    const displayCarnet = process.env.STAGE !== 'prod';
+
+    return { props: { operatorName, schemeOp, displayCarnet, errors, csrfToken } };
 };
 
 export default FareType;
