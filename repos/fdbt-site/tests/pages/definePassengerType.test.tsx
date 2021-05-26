@@ -310,14 +310,16 @@ describe('pages', () => {
                         [GROUP_PASSENGER_TYPES_ATTRIBUTE]: { passengerTypes: ['adult', 'child'] },
                         [GROUP_DEFINITION_ATTRIBUTE]: {
                             maxGroupSize: 2,
-                            companions: {
-                                passengerType: 'child',
-                                minNumber: 0,
-                                maxNumber: 2,
-                                minAge: 16,
-                                maxAge: 150,
-                                proofDocuments: [],
-                            },
+                            companions: [
+                                {
+                                    passengerType: 'child',
+                                    minNumber: 0,
+                                    maxNumber: 2,
+                                    minAge: 16,
+                                    maxAge: 150,
+                                    proofDocuments: [],
+                                },
+                            ],
                         },
                         [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
                         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { errors, passengerType: 'child' },

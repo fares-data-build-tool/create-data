@@ -424,17 +424,11 @@ export interface PassengerDetails {
 
 export interface CompanionInfo {
     passengerType: string;
-    passengerTypeName?: string;
     minNumber?: string;
     maxNumber: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
     proofDocuments?: string[];
-}
-
-export interface GroupPassengerInfo extends CompanionInfo {
-    ageRange: string;
-    proof: string;
 }
 
 export interface GroupDefinition {
