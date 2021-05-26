@@ -82,6 +82,39 @@ export const randomlyChooseAgeLimits = (): void => {
     }
 };
 
+export const randomlyChooseSchoolAgeLimits = (): void => {
+    const randomSelector = getRandomNumber(1, 2);
+    switch (randomSelector) {
+        case 1:
+            cy.log('age-range-required');
+            clickElementById('age-range-required');
+            randomlyChooseAgeLimits();
+            break;
+        case 2:
+            cy.log('age-range-not-required');
+            clickElementById('age-range-not-required');
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+};
+export const randomlyChooseASchoolProof = (): void => {
+    const randomSelector = getRandomNumber(1, 2);
+    switch (randomSelector) {
+        case 1:
+            cy.log('proof-not-required');
+            clickElementById('proof-required');
+            randomlyChooseAProof();
+            break;
+        case 2:
+            cy.log('proof-not-required');
+            clickElementById('proof-not-required');
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+};
+
 export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, passengerType: string): void => {
     // Once we leave the passenger types page,
     // check if we have skipped the defining passenger types page due to a saved config
@@ -311,6 +344,15 @@ export const randomlyDecideTimeRestrictions = (): void => {
         cy.get('[id^=end-time-]').each(input => {
             cy.wrap(input).type(endTimes[getRandomNumber(0, 2)]);
         });
+    }
+    continueButtonClick();
+};
+
+export const randomlyDecideTermRestrictions = (): void => {
+    if (getRandomNumber(0, 1) === 0) {
+        clickElementById('term-time-no');
+    } else {
+        clickElementById('term-time-yes');
     }
     continueButtonClick();
 };
