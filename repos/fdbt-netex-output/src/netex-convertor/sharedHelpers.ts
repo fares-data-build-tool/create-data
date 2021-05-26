@@ -5,7 +5,6 @@ import fs from 'fs';
 import moment from 'moment';
 import {
     CoreData,
-    SchemeOperatorTicket,
     isSchemeOperatorTicket,
     FlatFareTicket,
     PeriodTicket,
@@ -16,6 +15,11 @@ import {
     FullTimeRestriction,
     Operator,
     isPointToPointTicket,
+    SchemeOperatorGeoZoneTicket,
+    SchemeOperatorFlatFareTicket,
+    SchemeOperatorTicket,
+    isGroupTicket,
+    Ticket,
 } from '../types/index';
 
 import { getBaseSchemeOperatorInfo } from './period-tickets/periodTicketNetexHelpers';
@@ -51,10 +55,9 @@ export const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => 
     return netexFileAsXmlString;
 };
 
-export const isGroupTicket = (ticket: PeriodTicket | PointToPointTicket | FlatFareTicket): ticket is GroupTicket =>
-    (ticket as GroupTicket).groupDefinition !== undefined;
-
-export const getProfileRef = (ticket: PeriodTicket | PointToPointTicket | FlatFareTicket): NetexObject => {
+export const getProfileRef = (
+    ticket: PeriodTicket | PointToPointTicket | FlatFareTicket | SchemeOperatorTicket,
+): NetexObject => {
     if (isGroupTicket(ticket)) {
         return {
             GroupTicketRef: {
@@ -222,7 +225,12 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
 
 export const getCoreData = (
     operators: Operator[],
-    ticket: PointToPointTicket | PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
+    ticket:
+        | PointToPointTicket
+        | PeriodTicket
+        | FlatFareTicket
+        | SchemeOperatorGeoZoneTicket
+        | SchemeOperatorFlatFareTicket,
 ): CoreData => {
     if (isPointToPointTicket(ticket)) {
         const baseOperatorInfo = operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
@@ -247,21 +255,20 @@ export const getCoreData = (
             ticketType: ticket.type,
         };
     }
-    const periodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket = ticket;
-    const baseOperatorInfo = isSchemeOperatorTicket(periodTicket)
-        ? getBaseSchemeOperatorInfo(periodTicket)
-        : operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(periodTicket.nocCode));
+    const baseOperatorInfo = isSchemeOperatorTicket(ticket)
+        ? getBaseSchemeOperatorInfo(ticket)
+        : operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
 
-    const operatorIdentifier = isSchemeOperatorTicket(periodTicket)
-        ? `${periodTicket.schemeOperatorName}-${periodTicket.schemeOperatorRegionCode}`
-        : periodTicket.nocCode;
+    const operatorIdentifier = isSchemeOperatorTicket(ticket)
+        ? `${ticket.schemeOperatorName}-${ticket.schemeOperatorRegionCode}`
+        : ticket.nocCode;
 
     if (!baseOperatorInfo) {
         throw new Error('Could not find base operator');
     }
 
     const nocCodeFormat = `noc:${
-        isSchemeOperatorTicket(periodTicket) ? operatorIdentifier : replaceIWBusCoNocCode(periodTicket.nocCode)
+        isSchemeOperatorTicket(ticket) ? operatorIdentifier : replaceIWBusCoNocCode(ticket.nocCode)
     }`;
 
     return {
@@ -273,15 +280,13 @@ export const getCoreData = (
         operatorIdentifier,
         baseOperatorInfo: [baseOperatorInfo],
         placeholderGroupOfProductsName: `${operatorIdentifier}_products`,
-        ticketUserConcat: `${periodTicket.type}_${periodTicket.passengerType}`,
+        ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
         operatorPublicNameLineNameFormat: '',
         nocCodeLineNameFormat: '',
         lineIdName: '',
         lineName: '',
-        operatorName: isSchemeOperatorTicket(periodTicket)
-            ? periodTicket.schemeOperatorName
-            : periodTicket.operatorName,
-        ticketType: periodTicket.type,
+        operatorName: isSchemeOperatorTicket(ticket) ? ticket.schemeOperatorName : ticket.operatorName,
+        ticketType: ticket.type,
     };
 };
 
@@ -297,3 +302,5 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
             return purchaseLocation;
     }
 };
+
+export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';

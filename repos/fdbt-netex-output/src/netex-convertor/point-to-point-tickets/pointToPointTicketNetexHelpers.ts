@@ -12,8 +12,9 @@ import {
     NetexSalesOfferPackage,
     FareStructureElement,
     isReturnTicket,
+    isGroupTicket,
 } from '../../types';
-import { NetexObject, getProfileRef, isGroupTicket, getDistributionChannel } from '../sharedHelpers';
+import { NetexObject, getProfileRef, getDistributionChannel } from '../sharedHelpers';
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
