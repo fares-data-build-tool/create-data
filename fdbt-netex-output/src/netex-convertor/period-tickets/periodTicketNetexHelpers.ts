@@ -31,7 +31,6 @@ import {
     isGeoZoneTicket,
     isMultiServiceTicket,
     isProductDetails,
-    isFlatFareTicket,
 } from '../../types/index';
 
 import {
@@ -43,6 +42,7 @@ import {
     getCleanWebsite,
     replaceIWBusCoNocCode,
     getDistributionChannel,
+    isFlatFareType,
 } from '../sharedHelpers';
 
 export const getBaseSchemeOperatorInfo = (userPeriodTicket: SchemeOperatorTicket): SchemeOperator => ({
@@ -625,7 +625,7 @@ export const getPreassignedFareProducts = (
             typesOfFareProduct: {
                 TypeOfFareProductRef: {
                     version: 'fxc:v1.0',
-                    ref: isFlatFareTicket(userPeriodTicket)
+                    ref: isFlatFareType(userPeriodTicket)
                         ? 'fxc:standard_product@trip@single'
                         : 'fxc:standard_product@pass@period',
                 },
@@ -657,7 +657,7 @@ export const getPreassignedFareProducts = (
                 },
             },
             ProductType: {
-                $t: isFlatFareTicket(userPeriodTicket) ? 'singleTrip' : 'periodPass',
+                $t: isFlatFareType(userPeriodTicket) ? 'singleTrip' : 'periodPass',
             },
         };
     });
