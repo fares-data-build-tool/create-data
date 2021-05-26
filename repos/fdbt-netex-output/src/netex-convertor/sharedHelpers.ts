@@ -19,6 +19,7 @@ import {
     SchemeOperatorFlatFareTicket,
     SchemeOperatorTicket,
     isGroupTicket,
+    Ticket,
 } from '../types/index';
 
 import { getBaseSchemeOperatorInfo } from './period-tickets/periodTicketNetexHelpers';
@@ -301,3 +302,5 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
             return purchaseLocation;
     }
 };
+
+export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';

@@ -19,6 +19,7 @@ import {
     getNetexMode,
     getUserProfile,
     getGroupElement,
+    isFlatFareType,
 } from './sharedHelpers';
 import {
     Operator,
@@ -46,7 +47,6 @@ import {
     isMultiServiceTicket,
     isGroupTicket,
     isProductDetails,
-    isFlatFareTicket,
 } from '../types/index';
 
 import {
@@ -119,7 +119,7 @@ const netexGenerator = (
 
             publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.TypeOfFareProductRef = {
                 version: 'fxc:v1.0',
-                ref: isFlatFareTicket(ticket) ? 'fxc:standard_product@trip@single' : 'fxc:standard_product@pass@period',
+                ref: isFlatFareType(ticket) ? 'fxc:standard_product@trip@single' : 'fxc:standard_product@pass@period',
             };
 
             // check if multiOperator and delete as required
@@ -158,7 +158,7 @@ const netexGenerator = (
             }_FARE_OFFER:Pass@${coreData.placeholderGroupOfProductsName}:op`;
             compositeFrameToUpdate.Name.$t = `Fares for ${operatorName}`;
 
-            compositeFrameToUpdate.Description.$t = isFlatFareTicket(ticket)
+            compositeFrameToUpdate.Description.$t = isFlatFareType(ticket)
                 ? `Flat fare ticket for ${operatorName}`
                 : `Period ticket for ${operatorName}`;
         }
