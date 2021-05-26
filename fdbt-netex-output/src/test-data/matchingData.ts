@@ -4,9 +4,10 @@ import {
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
     FlatFareTicket,
-    SchemeOperatorTicket,
     MultiOperatorGeoZoneTicket,
     MultiOperatorMultipleServicesTicket,
+    SchemeOperatorGeoZoneTicket,
+    SchemeOperatorFlatFareTicket,
 } from '../types';
 
 export const singleTicket: SingleTicket = {
@@ -2264,7 +2265,7 @@ export const periodGeoZoneTicketWithNoType = {
     },
 };
 
-export const schemeOperatorTicket: SchemeOperatorTicket = {
+export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
     schemeOperatorName: 'IW Buses',
     schemeOperatorRegionCode: 'Y',
     additionalNocs: ['WBTR', 'DCCL', 'HCTY'],
@@ -2643,6 +2644,130 @@ export const schemeOperatorTicket: SchemeOperatorTicket = {
             street: 'Midgley Road',
         },
     ],
+    ticketPeriod: {
+        startDate: '2010-12-17T09:30:46.0Z',
+        endDate: '2028-12-17T09:30:46.0Z',
+    },
+};
+
+export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
+    schemeOperatorName: 'IW Buses',
+    schemeOperatorRegionCode: 'Y',
+    type: 'flatFare',
+    email: 'test@example.com',
+    uuid: 'BLACc1363964',
+    timeRestriction: [],
+    products: [
+        {
+            productName: 'Weekly Rider',
+            productPrice: '14',
+            salesOfferPackages: [
+                {
+                    name: 'Onboard (cash)',
+                    description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+                    purchaseLocations: ['onBoard', 'postal', 'agency'],
+                    paymentMethods: ['contactlessTravelCard', 'cash'],
+                    ticketFormats: ['paperTicket'],
+                },
+                {
+                    name: 'Onboard (contactless)',
+                    description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
+                    purchaseLocations: ['onBoard'],
+                    paymentMethods: ['contactlessPaymentCard'],
+                    ticketFormats: ['paperTicket'],
+                },
+                {
+                    name: 'Online (smart card)',
+                    description:
+                        'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
+                    purchaseLocations: ['online'],
+                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                    ticketFormats: ['smartCard'],
+                },
+                {
+                    name: 'Mobile App',
+                    description:
+                        'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
+                    purchaseLocations: ['mobileDevice'],
+                    paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
+                    ticketFormats: ['mobileApp'],
+                },
+                {
+                    name: 'All Encompassing',
+                    description: 'All currently available options selected',
+                    purchaseLocations: ['onBoard', 'online', 'mobileDevice'],
+                    paymentMethods: ['cash', 'debitCard', 'creditCard', 'mobilePhone'],
+                    ticketFormats: ['paperTicket', 'mobileApp', 'smartCard'],
+                },
+                {
+                    name: 'School Service Payment Methods',
+                    description: 'Additional payment methods provided for school service tickets',
+                    purchaseLocations: ['online', 'mobileDevice'],
+                    paymentMethods: ['cheque', 'directDebit'],
+                    ticketFormats: ['paperTicket'],
+                },
+            ],
+        },
+    ],
+    additionalOperators: [
+        {
+            nocCode: 'WBTR',
+            selectedServices: [
+                {
+                    lineName: '5',
+                    lineId: 'AD1146649_RJ1_Outbound',
+                    serviceCode: 'NW_05_WBTR_3_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'LONDON - ESSEX - BIRMINGHAM',
+                },
+                {
+                    lineName: '4',
+                    lineId: 'FD1146649_RJ1_Outbound',
+                    serviceCode: 'NW_05_WBTR_7_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'EDINBURGH - GLASGOW - LEEDS',
+                },
+                {
+                    lineName: '7',
+                    lineId: 'XC1146649_RJ1_Outbound',
+                    serviceCode: 'NW_05_WBTR_6_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'HULL - WIGAN - BOLTON',
+                },
+            ],
+        },
+        {
+            nocCode: 'DCCL',
+            selectedServices: [
+                {
+                    lineName: '663',
+                    lineId: 'PK1146639_RJ1_Outbound',
+                    serviceCode: 'NW_05_DCCL_3_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'LEEDS - WAKEFIELD - YORK',
+                },
+                {
+                    lineName: '77',
+                    lineId: 'PK133146649_RJ1_Outbound',
+                    serviceCode: 'NW_05_DCCL_7_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'BEESTON - HUNSLET - CITY CENTRE',
+                },
+                {
+                    lineName: '65',
+                    lineId: 'PK121146649_RJ1_Outbound',
+                    serviceCode: 'NW_05_DCCL_6_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'LIVERPOOL - MANCHESTER - BOLTON',
+                },
+            ],
+        },
+    ],
+    passengerType: 'senior',
+    ageRange: 'Yes',
+    ageRangeMin: '65',
+    proof: 'Yes',
+    proofDocuments: ['identityDocument'],
     ticketPeriod: {
         startDate: '2010-12-17T09:30:46.0Z',
         endDate: '2028-12-17T09:30:46.0Z',
