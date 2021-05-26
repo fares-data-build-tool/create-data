@@ -710,7 +710,7 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
 
     try {
         const queryInput = `
-            SELECT contents
+            SELECT contents, name
             FROM passengerType
             WHERE nocCode = ?
             AND isGroup = ?
