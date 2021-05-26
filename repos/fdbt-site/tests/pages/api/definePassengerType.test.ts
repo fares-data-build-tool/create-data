@@ -5,6 +5,7 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as auroradb from '../../../src/data/auroradb';
 import { CompanionInfo, GroupPassengerTypesCollection, GroupTicketAttribute } from '../../../src/interfaces';
@@ -16,14 +17,13 @@ import definePassengerType, {
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
+jest.mock('../../../src/data/auroradb');
+
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     afterEach(jest.resetAllMocks);
-
-    beforeEach(() => jest.spyOn(auroradb, 'upsertPassengerType'));
-    beforeEach(() => jest.spyOn(auroradb, 'getPassengerTypeByNameAndNocCode'));
 
     describe('passengerTypeDetailsSchema', () => {
         it.each([
@@ -549,6 +549,9 @@ describe('definePassengerType', () => {
         expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
         expect(insertPassengerTypeSpy).toBeCalledWith('TEST', savedGroupInfo, 'A Name', true);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, [
+            { companions: savedGroupInfo, name: 'A Name' },
+        ]);
     });
 
     it('should show an error for groups if a name is provided that already exists', async () => {

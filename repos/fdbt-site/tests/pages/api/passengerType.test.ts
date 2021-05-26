@@ -1,7 +1,13 @@
-import passengerType from '../../../src/pages/api/passengerType';
+import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE } from '../../../src/constants';
+import {
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 import * as aurora from '../../../src/data/auroradb';
+import passengerType from '../../../src/pages/api/passengerType';
+import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('passengerType', () => {
     const writeHeadMock = jest.fn();
@@ -72,6 +78,61 @@ describe('passengerType', () => {
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/groupSize',
+        });
+    });
+
+    it('should select the appropriate group config when user is reusing a group', async () => {
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: GROUP_REUSE_PASSENGER_TYPE, reuseGroup: 'Hi Name' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
+                [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: [
+                    { name: 'Hello Name', companions: [{ passengerType: 'child' }] },
+                    { name: 'Hi Name', companions: [{ passengerType: 'adult' }] },
+                ],
+            },
+        });
+
+        await passengerType(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
+            passengerType: GROUP_PASSENGER_TYPE,
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, [
+            { passengerType: 'adult' },
+        ]);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/defineTimeRestrictions',
+        });
+    });
+
+    it('should return an error when reusing a group with no group selected', async () => {
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { passengerType: GROUP_REUSE_PASSENGER_TYPE, reuseGroup: '' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
+                [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: [{}],
+            },
+        });
+
+        await passengerType(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
+            errors: [{ errorMessage: 'Select a group to reuse', id: `passenger-type-${GROUP_PASSENGER_TYPE}` }],
+        });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/passengerType',
         });
     });
 
