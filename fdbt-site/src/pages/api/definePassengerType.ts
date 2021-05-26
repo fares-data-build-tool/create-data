@@ -280,7 +280,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 const companionToAdd: CompanionInfo = {
                     minNumber,
                     maxNumber,
-                    passengerTypeName,
                     passengerType: submittedPassengerType,
                 };
 
