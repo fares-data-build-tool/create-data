@@ -45,150 +45,101 @@ exports[`pages operator should render correctly 1`] = `
           <div
             className="govuk-radios"
           >
-            <div
-              className="govuk-radios__item"
-              key="group"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-group"
-                name="passengerType"
-                type="radio"
-                value="group"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-group"
-              >
-                Group (more than one passenger)
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-              key="adult"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-adult"
-                name="passengerType"
-                type="radio"
-                value="adult"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-adult"
-              >
-                Adult
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-              key="child"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-child"
-                name="passengerType"
-                type="radio"
-                value="child"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-child"
-              >
-                Child
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-              key="infant"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-infant"
-                name="passengerType"
-                type="radio"
-                value="infant"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-infant"
-              >
-                Infant
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-              key="senior"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-senior"
-                name="passengerType"
-                type="radio"
-                value="senior"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-senior"
-              >
-                Senior
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-              key="student"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-student"
-                name="passengerType"
-                type="radio"
-                value="student"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-student"
-              >
-                Student
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-              key="youngPerson"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-youngPerson"
-                name="passengerType"
-                type="radio"
-                value="youngPerson"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-youngPerson"
-              >
-                Young Person
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-              key="anyone"
-            >
-              <input
-                className="govuk-radios__input"
-                id="passenger-type-anyone"
-                name="passengerType"
-                type="radio"
-                value="anyone"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="passenger-type-anyone"
-              >
-                Anyone
-              </label>
-            </div>
+            <RadioConditionalInput
+              fieldset={
+                Object {
+                  "heading": Object {
+                    "content": "",
+                    "hidden": true,
+                    "id": "passenger-types-fieldset",
+                  },
+                  "radioError": Array [],
+                  "radios": Array [
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-adult",
+                      "inputType": "dropdown",
+                      "key": "adult",
+                      "label": "Adult",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "adult",
+                    },
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-child",
+                      "inputType": "dropdown",
+                      "key": "child",
+                      "label": "Child",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "child",
+                    },
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-infant",
+                      "inputType": "dropdown",
+                      "key": "infant",
+                      "label": "Infant",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "infant",
+                    },
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-senior",
+                      "inputType": "dropdown",
+                      "key": "senior",
+                      "label": "Senior",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "senior",
+                    },
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-student",
+                      "inputType": "dropdown",
+                      "key": "student",
+                      "label": "Student",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "student",
+                    },
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-youngPerson",
+                      "inputType": "dropdown",
+                      "key": "youngPerson",
+                      "label": "Young Person",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "youngPerson",
+                    },
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-anyone",
+                      "inputType": "dropdown",
+                      "key": "anyone",
+                      "label": "Anyone",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "anyone",
+                    },
+                    Object {
+                      "dataAriaControls": "passenger-type-required-conditional",
+                      "id": "passenger-type-group",
+                      "inputType": "dropdown",
+                      "key": "group",
+                      "label": "Group - define new group",
+                      "name": "passengerType",
+                      "type": "radio",
+                      "value": "group",
+                    },
+                  ],
+                }
+              }
+              key="passenger-types-fieldset"
+            />
           </div>
         </FormElementWrapper>
       </fieldset>

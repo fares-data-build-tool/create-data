@@ -67,9 +67,12 @@ export const solveFeedbackQuestion = 'Did we solve your problem?';
 export const hearAboutUsFeedbackQuestion = 'How did you hear about our service?';
 export const generalFeedbackQuestion = 'Please let us know any feedback or suggestions for improvements you may have';
 
+export const GROUP_PASSENGER_TYPE = 'group';
+export const GROUP_REUSE_PASSENGER_TYPE = 'group-reuse';
 export const PASSENGER_TYPES_WITH_GROUP: PassengerAttributes[] = [
-    { passengerTypeDisplay: 'Group (more than one passenger)', passengerTypeValue: 'group' },
     ...PASSENGER_TYPES_LIST,
+    { passengerTypeDisplay: 'Group - define new group', passengerTypeValue: GROUP_PASSENGER_TYPE },
+    { passengerTypeDisplay: 'Group - reuse saved group', passengerTypeValue: GROUP_REUSE_PASSENGER_TYPE },
 ];
 
 export const INTERNAL_NOC = 'IWBusCo';
