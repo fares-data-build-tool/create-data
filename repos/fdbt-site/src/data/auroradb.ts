@@ -6,6 +6,7 @@ import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
     FullTimeRestriction,
+    GroupPassengerType,
     Operator,
     OperatorGroup,
     PassengerType,
@@ -687,6 +688,46 @@ export const getPassengerTypeByNameAndNocCode = async (
         }
 
         return queryResults[0] ? JSON.parse(queryResults[0].contents) : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
+    }
+};
+
+interface SavedPassengerType {
+    group: GroupPassengerType[];
+    single: PassengerType[];
+}
+
+export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerType>(
+    nocCode: string,
+    type: T,
+): Promise<SavedPassengerType[T]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger types for given noc',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents, name
+            FROM passengerType
+            WHERE nocCode = ?
+            AND isGroup = ?
+        `;
+
+        const queryResults = await executeQuery<{ contents: string; name: string }[]>(queryInput, [
+            nocCode,
+            type === 'group',
+        ]);
+        return queryResults.map(row =>
+            type === 'group'
+                ? {
+                      companions: JSON.parse(row.contents),
+                      name: row.name,
+                  }
+                : JSON.parse(row.contents),
+        );
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }

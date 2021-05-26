@@ -167,6 +167,97 @@ exports[`pages fareType should render correctly for a scheme operator 1`] = `
 </Component>
 `;
 
+exports[`pages fareType should render correctly when displayCarnet is false 1`] = `
+<Component
+  description="Fare Type selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Fare Type - Create Fares Data Service "
+>
+  <CsrfForm
+    action="/api/fareType"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="fare-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="fare-type-page-heading"
+          >
+            Select a fare type
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="fare-type-operator-hint"
+        >
+          Blackpool Transport
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="fare-type-single"
+          errors={Array []}
+        >
+          <FareTypeRadios
+            fares={
+              Array [
+                Object {
+                  "fareType": "single",
+                  "hint": "A ticket for a point to point journey",
+                  "label": "Single ticket",
+                },
+                Object {
+                  "fareType": "return",
+                  "hint": "An inbound and outbound ticket for the same service",
+                  "label": "Return ticket",
+                },
+                Object {
+                  "fareType": "flatFare",
+                  "hint": "A fixed fee ticket for a single journey",
+                  "label": "Flat fare ticket",
+                },
+                Object {
+                  "fareType": "period",
+                  "hint": "A ticket valid for a number of days, weeks, months or years",
+                  "label": "Period ticket",
+                },
+                Object {
+                  "fareType": "multiOperator",
+                  "hint": "A ticket that covers more than one operator",
+                  "label": "Multi-operator",
+                },
+                Object {
+                  "fareType": "schoolService",
+                  "hint": "A ticket available to pupils in full-time education",
+                  "label": "School service",
+                },
+              ]
+            }
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
 exports[`pages fareType should render error messaging when errors are passed to the page 1`] = `
 <Component
   description="Fare Type selection page of the Create Fares Data Service"
