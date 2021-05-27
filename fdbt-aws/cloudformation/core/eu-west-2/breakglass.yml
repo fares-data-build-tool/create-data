@@ -1,0 +1,290 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for breakglass resources
+
+Parameters:
+  SlackWorkspaceId:
+    Type: String
+  SlackChannelId:
+    Type: String
+
+Resources:
+  BreakglassAssumeAdminLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:AddUserToGroup"
+                Resource:
+                  - !ImportValue ServiceAdminGroupArn
+              - Effect: Allow
+                Action:
+                  - "sns:Publish"
+                Resource:
+                  - !ImportValue SlackAlertsTopicArn
+          PolicyName: allow-add-to-group
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "AllowLambdaServiceToAssumeRole"
+            Effect: "Allow"
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+
+  BreakglassRemoveAdminLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:RemoveUserFromGroup"
+                Resource:
+                  - !ImportValue ServiceAdminGroupArn
+              - Effect: Allow
+                Action:
+                  - "sns:Publish"
+                Resource:
+                  - !ImportValue SlackAlertsTopicArn
+          PolicyName: allow-add-to-group
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "AllowLambdaServiceToAssumeRole"
+            Effect: "Allow"
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+
+  BreakglassCleardownLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:RemoveUserFromGroup"
+                  - "iam:GetGroup"
+                Resource:
+                  - !ImportValue ServiceAdminGroupArn
+              - Effect: Allow
+                Action:
+                  - "sns:Publish"
+                Resource:
+                  - !ImportValue SlackAlertsTopicArn
+          PolicyName: allow-add-to-group
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "AllowLambdaServiceToAssumeRole"
+            Effect: "Allow"
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+
+  BreakglassAssumeAdminFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: breakglass-assume-admin
+      Role: !GetAtt BreakglassAssumeAdminLambdaRole.Arn
+      Runtime: nodejs12.x
+      Handler: index.handler
+      Timeout: 5
+      Code:
+        ZipFile: |
+          const AWS = require("aws-sdk");
+          const iam = new AWS.IAM({
+              region: process.env.REGION
+          });
+          const sns = new AWS.SNS({
+            region: process.env.REGION
+          });
+
+          exports.handler = async (event) => {
+              await iam.addUserToGroup({
+                  GroupName: process.env.GROUP_NAME,
+                  UserName: event.username
+              }).promise();
+
+              await sns.publish({
+                TopicArn: process.env.SLACK_ALERTS_TOPIC_ARN,
+                Subject: 'User added to admin group',
+                Message: `The following user has been added to the admin group in production: ${event.username}`,
+                MessageAttributes: {
+                  NewStateValue: {
+                    DataType: 'String',
+                    StringValue: 'ALARM'
+                  }
+                }
+              }).promise();
+          };
+      Environment:
+        Variables:
+          REGION: !Ref AWS::Region
+          GROUP_NAME: !ImportValue ServiceAdminGroupName
+          SLACK_ALERTS_TOPIC_ARN: !ImportValue SlackAlertsTopicArn
+
+  BreakglassRemoveAdminFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: breakglass-remove-admin
+      Role: !GetAtt BreakglassRemoveAdminLambdaRole.Arn
+      Runtime: nodejs12.x
+      Handler: index.handler
+      Timeout: 5
+      Code:
+        ZipFile: |
+          const AWS = require("aws-sdk");
+          const iam = new AWS.IAM({
+              region: process.env.REGION
+          });
+          const sns = new AWS.SNS({
+            region: process.env.REGION
+          });
+
+          exports.handler = async (event) => {
+              await iam.removeUserFromGroup({
+                  GroupName: process.env.GROUP_NAME,
+                  UserName: event.username
+              }).promise();
+
+              await sns.publish({
+                TopicArn: process.env.SLACK_ALERTS_TOPIC_ARN,
+                Subject: 'User removed from admin group',
+                Message: `The following user has been removed from the admin group in production: ${event.username}`,
+                MessageAttributes: {
+                  NewStateValue: {
+                    DataType: 'String',
+                    StringValue: 'OK'
+                  }
+                }
+              }).promise();
+          };
+      Environment:
+        Variables:
+          REGION: !Ref AWS::Region
+          GROUP_NAME: !ImportValue ServiceAdminGroupName
+          SLACK_ALERTS_TOPIC_ARN: !ImportValue SlackAlertsTopicArn
+
+  BreakglassCleardownFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: breakglass-cleardown
+      Role: !GetAtt BreakglassCleardownLambdaRole.Arn
+      Runtime: nodejs12.x
+      Handler: index.handler
+      Timeout: 5
+      Code:
+        ZipFile: |
+          const AWS = require("aws-sdk");
+          const iam = new AWS.IAM({
+              region: process.env.REGION
+          });
+          const sns = new AWS.SNS({
+            region: process.env.REGION
+          });
+
+          exports.handler = async (event) => {
+              const users = await iam.getGroup({
+                  GroupName: process.env.GROUP_NAME
+              }).promise();
+
+              if (users.Users && users.Users.length > 0) {
+                const promiseList = users.Users.map(user => iam.removeUserFromGroup({
+                  GroupName: process.env.GROUP_NAME,
+                  UserName: user.UserName
+                }).promise());
+              
+                await Promise.all(promiseList);
+
+                const userNameList = users.Users.map(user => user.UserName).join(', ');
+
+                await sns.publish({
+                  TopicArn: process.env.SLACK_ALERTS_TOPIC_ARN,
+                  Subject: 'Admin cleardown in production',
+                  Message: `The following users have been removed from the admin group: ${userNameList}`,
+                  MessageAttributes: {
+                    NewStateValue: {
+                      DataType: 'String',
+                      StringValue: 'OK'
+                    }
+                  }
+                }).promise();
+              }
+          };
+      Environment:
+        Variables:
+          REGION: !Ref AWS::Region
+          GROUP_NAME: !ImportValue ServiceAdminGroupName
+          SLACK_ALERTS_TOPIC_ARN: !ImportValue SlackAlertsTopicArn
+
+  ScheduledCleardownRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: ScheduledCleardownRule
+      ScheduleExpression: cron(0 0 * * ? *)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt BreakglassCleardownFunction.Arn
+          Id: BreakglassFunction
+
+  PermissionForEventsToInvokeLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref BreakglassCleardownFunction
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt ScheduledCleardownRule.Arn
+
+  ChatbotIamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:invokeAsync"
+                  - "lambda:invokeFunction"
+                Resource:
+                  - !GetAtt BreakglassAssumeAdminFunction.Arn
+                  - !GetAtt BreakglassRemoveAdminFunction.Arn
+                  - !GetAtt BreakglassCleardownFunction.Arn
+          PolicyName: allow-invoke-lambdas
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "AllowChatbotToAssumeRole"
+            Effect: "Allow"
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - "chatbot.amazonaws.com"
+
+  ChatbotSlackConfig:
+    Type: AWS::Chatbot::SlackChannelConfiguration
+    Properties:
+      SlackWorkspaceId: !Ref SlackWorkspaceId
+      SlackChannelId: !Ref SlackChannelId
+      ConfigurationName: cfd-chatbot-slack-config
+      IamRoleArn: !GetAtt ChatbotIamRole.Arn

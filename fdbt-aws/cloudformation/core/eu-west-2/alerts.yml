@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for alert resources
+
+Parameters:
+  HookUrl:
+    Type: String
+
+Resources:
+  SlackAlertsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Slack Alerts Topic
+
+  SlackLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [lambda.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                Resource:
+                  - arn:aws:s3:::cfd-slack-alerts-code/*
+          PolicyName: allow-slack-alerts-code-access
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  SlackAlertsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: cfd-slack-alerts-code
+        S3Key: v4/index.zip
+      Description: Lambda to send CloudWatch alerts to Slack
+      Environment:
+        Variables:
+          HOOK_URL: !Ref HookUrl
+      FunctionName: slack-alert
+      Handler: slackAlerts.handler
+      Role: !GetAtt SlackLambdaRole.Arn
+      Runtime: nodejs12.x
+
+  SnsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt SlackAlertsFunction.Arn
+      Principal: sns.amazonaws.com
+      SourceArn: !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:*
+
+  SnsLambdaSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt SlackAlertsFunction.Arn
+      Protocol: lambda
+      TopicArn: !Ref SlackAlertsTopic
+
+  SlackAlertsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/slack-alert
+      RetentionInDays: 60
+
+Outputs:
+  SlackAlertsTopicArn:
+    Value: !Ref SlackAlertsTopic
+    Export:
+      Name: SlackAlertsTopicArn
+
+  SlackAlertsFunctionArn:
+    Value: !GetAtt SlackAlertsFunction.Arn
+    Export:
+      Name: SlackAlertsFunctionArn

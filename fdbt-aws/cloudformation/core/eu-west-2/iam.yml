@@ -179,3 +179,14 @@ Resources:
       UserName: fdbt-core-circleci-user
       Groups:
         - !Ref CircleCiGroup
+
+Outputs:
+  ServiceAdminGroupArn:
+    Value: !GetAtt ServiceAdminGroup.Arn
+    Export:
+      Name: ServiceAdminGroupArn
+
+  ServiceAdminGroupName:
+    Value: !Ref ServiceAdminGroup
+    Export:
+      Name: ServiceAdminGroupName
