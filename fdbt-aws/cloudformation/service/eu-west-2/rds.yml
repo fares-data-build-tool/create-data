@@ -136,7 +136,7 @@ Resources:
       Unit: Percent
       Statistic: Average
       Period: 300
-      EvaluationPeriods: 2
+      EvaluationPeriods: 3
       Threshold: 80
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Dimensions:
