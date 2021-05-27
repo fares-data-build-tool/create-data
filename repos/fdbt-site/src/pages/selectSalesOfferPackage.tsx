@@ -134,7 +134,7 @@ const createSalesOffer = (
 ): ReactElement[] =>
     productNames.map(productName => (
         <div className="sop-option">
-            <FormGroupWrapper errorId={`${[removeAllWhiteSpace(productName)]}-checkbox-0`} errors={errors}>
+            <FormGroupWrapper errorIds={[`${[removeAllWhiteSpace(productName)]}-checkbox-0`]} errors={errors}>
                 <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-5">{`Select sales offer packages for ${productName}`}</legend>
                     <FormElementWrapper

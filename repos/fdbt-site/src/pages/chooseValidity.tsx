@@ -47,7 +47,7 @@ const ChooseValidity = ({
                     <div className="govuk-hint" id="choose-validity-page-hint">
                         Enter a whole number, and select a duration type. For example, 7 months.
                     </div>
-                    <FormGroupWrapper errorId="validity" errors={errors}>
+                    <FormGroupWrapper errorIds={['validity']} errors={errors}>
                         <>
                             <label className="govuk-label" htmlFor="validity">
                                 Number
@@ -64,7 +64,7 @@ const ChooseValidity = ({
                             </FormElementWrapper>
                         </>
                     </FormGroupWrapper>
-                    <FormGroupWrapper errorId="validity-units" errors={errors}>
+                    <FormGroupWrapper errorIds={['validity-units']} errors={errors}>
                         <>
                             <label className="govuk-label" htmlFor="validity-units">
                                 Duration

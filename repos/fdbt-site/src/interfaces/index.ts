@@ -21,14 +21,39 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
+export enum ExpiryUnit {
+    HOUR = 'hour',
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    YEAR = 'year',
+    NO_EXPIRY = 'no expiry',
+}
+
 export interface CookiePolicy {
     essential: boolean;
     usage: boolean;
 }
 
+interface CarnetDetails {
+    quantity: string;
+    expiryTime: string;
+    expiryUnit: ExpiryUnit;
+}
+
 export interface ProductInfo {
     productName: string;
     productPrice: string;
+    carnetDetails?: CarnetDetails;
+}
+
+export interface PointToPointProductInfo {
+    productName: string;
+    carnetDetails: CarnetDetails;
+}
+
+export interface PointToPointProductInfoWithSOP extends PointToPointProductInfo {
+    salesOfferPackages: SalesOfferPackage[];
 }
 
 export interface ProductInfoWithErrors extends ProductInfo {
@@ -300,7 +325,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     lineName: string;
     lineId: string;
     serviceDescription: string;
-    products: BaseProduct[];
+    products: (BaseProduct | PointToPointProductInfo)[];
 }
 
 export interface SingleTicket extends BasePointToPointTicket {

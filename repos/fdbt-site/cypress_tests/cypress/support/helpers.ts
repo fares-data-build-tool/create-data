@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cypress-file-upload';
+import { FareType } from './steps';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -16,9 +17,7 @@ export const getHomePage = (isScheme: boolean): void => {
     cy.visit(`?disableAuth=${isScheme ? 'scheme' : 'BLAC'}`);
 };
 
-export const fareTypeToFareTypeIdMapper = (
-    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
-): string => `fare-type-${fareType}`;
+export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `fare-type-${fareType}`;
 
 export const startPageLinkClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('faretype-link');
 

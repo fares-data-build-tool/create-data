@@ -54,10 +54,12 @@ import {
     mockFullTimeRestrictions,
     expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
     expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
+    expectedCarnetSingleTicket,
+    expectedCarnetReturnTicket,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
-import { Operator, MultipleProductAttribute } from '../../../../src/interfaces';
+import { Operator, MultipleProductAttribute, ExpiryUnit } from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -174,10 +176,49 @@ describe('userData', () => {
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
+                    [PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
             const result = getSingleTicketJson(req, res);
             expect(result).toStrictEqual(expectedSingleTicket);
+        });
+
+        it('should correctly add carnet detail', () => {
+            const { req, res } = getMockRequestAndResponse({
+                session: {
+                    [MATCHING_ATTRIBUTE]: {
+                        service,
+                        userFareStages,
+                        matchingFareZones: mockMatchingFaresZones,
+                    },
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [TERM_TIME_ATTRIBUTE]: { termTime: true },
+                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                        productName: 'Test Product',
+                        carnetDetails: {
+                            quantity: '5',
+                            expiryTime: '10',
+                            expiryUnit: ExpiryUnit.DAY,
+                        },
+                    },
+                },
+            });
+            const result = getSingleTicketJson(req, res);
+            expect(result).toStrictEqual(expectedCarnetSingleTicket);
         });
     });
 
@@ -209,6 +250,7 @@ describe('userData', () => {
                         },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
             const result = getReturnTicketJson(req, res);
@@ -239,10 +281,52 @@ describe('userData', () => {
                         },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
             const result = getReturnTicketJson(req, res);
             expect(result).toStrictEqual(expectedCircularReturnTicket);
+        });
+
+        it('should correctly add carnet detail', () => {
+            const { req, res } = getMockRequestAndResponse({
+                session: {
+                    [MATCHING_ATTRIBUTE]: {
+                        service,
+                        userFareStages,
+                        matchingFareZones: mockOutboundMatchingFaresZones,
+                    },
+                    [INBOUND_MATCHING_ATTRIBUTE]: {
+                        inboundUserFareStages: userFareStages,
+                        inboundMatchingFareZones: mockMatchingFaresZones,
+                    },
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                        productName: 'Test Return Product',
+                        carnetDetails: {
+                            quantity: '10',
+                            expiryTime: '',
+                            expiryUnit: ExpiryUnit.NO_EXPIRY,
+                        },
+                    },
+                },
+            });
+            const result = getReturnTicketJson(req, res);
+            expect(result).toStrictEqual(expectedCarnetReturnTicket);
         });
     });
 

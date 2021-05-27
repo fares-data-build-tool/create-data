@@ -18,6 +18,7 @@ import {
     Service,
     ServiceListAttribute,
     TxcSourceAttribute,
+    ExpiryUnit,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -42,7 +43,7 @@ import {
     OPERATOR_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { isFareType } from '../interfaces/typeGuards';
+import { isFareType, isPointToPointProductInfo } from '../interfaces/typeGuards';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import { getCsrfToken, sentenceCaseString } from '../utils';
 
@@ -70,6 +71,32 @@ export const buildMatchedFareStages = (matchingFareZones: MatchingFareZones): Ma
         }
     });
     return matchedFareStages;
+};
+
+export const getPointToPointProductElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
+    const productInfo = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+
+    if (isPointToPointProductInfo(productInfo)) {
+        return [
+            {
+                name: `${productInfo.productName} - Carnet Quantity`,
+                content: productInfo.carnetDetails.quantity,
+                href: 'carnetProductDetails',
+            },
+            {
+                name: `${productInfo.productName} - Carnet Expiry`,
+                content:
+                    productInfo.carnetDetails.expiryUnit === ExpiryUnit.NO_EXPIRY
+                        ? '-'
+                        : `${productInfo.carnetDetails.expiryTime} ${upperFirst(
+                              productInfo.carnetDetails.expiryUnit,
+                          )}s`,
+                href: 'carnetProductDetails',
+            },
+        ];
+    }
+
+    return [];
 };
 
 export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
@@ -104,6 +131,10 @@ export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSe
             href: 'matching',
         });
     });
+
+    const productElements = getPointToPointProductElements(ctx);
+
+    productElements.forEach(el => confirmationElements.push(el));
 
     return confirmationElements;
 };
@@ -170,6 +201,10 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
             });
         });
     }
+
+    const productElements = getPointToPointProductElements(ctx);
+
+    productElements.forEach(el => confirmationElements.push(el));
 
     if (validity) {
         confirmationElements.push({

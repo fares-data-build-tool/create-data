@@ -29,10 +29,10 @@ export const checkProductNameIsValid = (inputtedProductName: string): string => 
     return '';
 };
 
-export const checkPriceIsValid = (inputtedPrice: string): string => {
+export const checkPriceIsValid = (inputtedPrice: string | undefined): string => {
     let productPriceError;
 
-    if (inputtedPrice === '') {
+    if (!inputtedPrice) {
         productPriceError = `This field cannot be empty`;
     } else if (Math.sign(Number(inputtedPrice)) === -1) {
         productPriceError = `This must be a positive number`;
@@ -60,6 +60,28 @@ export const checkDurationIsValid = (inputtedDuration: string): string => {
 
     if (productDurationError) {
         return productDurationError;
+    }
+
+    return '';
+};
+
+export const checkIntegerIsValid = (input: string, inputName: string, min: number, max: number): string => {
+    if (input === '') {
+        return `${inputName} cannot be empty`;
+    }
+
+    const numberInput = Number(input);
+
+    if (Number.isNaN(numberInput)) {
+        return `${inputName} must be a whole, positive number`;
+    }
+
+    if (numberInput < min) {
+        return `${inputName} cannot be less than ${min}`;
+    }
+
+    if (numberInput > max) {
+        return `${inputName} cannot be greater than ${max}`;
     }
 
     return '';

@@ -19,7 +19,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
         </legend>
         <div className="flex-container">
             <div className="govuk-grid-column-one-half">
-                <FormGroupWrapper errors={errors} errorId={`multiple-product-name-${index}`}>
+                <FormGroupWrapper errors={errors} errorIds={[`multiple-product-name-${index}`]}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Name - Product ${index + 1}`}</span>
@@ -48,7 +48,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 </FormGroupWrapper>
             </div>
             <div className="govuk-grid-column-one-quarter">
-                <FormGroupWrapper errors={errors} errorId={`multiple-product-price-${index}`}>
+                <FormGroupWrapper errors={errors} errorIds={[`multiple-product-price-${index}`]}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${index +
@@ -83,7 +83,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 </FormGroupWrapper>
             </div>
             <div className="govuk-grid-column-one-quarter">
-                <FormGroupWrapper errors={errors} errorId={`multiple-product-duration-${index}`}>
+                <FormGroupWrapper errors={errors} errorIds={[`multiple-product-duration-${index}`]}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Duration amount - Product ${index +
@@ -113,7 +113,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 </FormGroupWrapper>
             </div>
             <div className="govuk-grid-column-one-quarter">
-                <FormGroupWrapper errorId={`multiple-product-duration-units-${index}`} errors={errors}>
+                <FormGroupWrapper errorIds={[`multiple-product-duration-units-${index}`]} errors={errors}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-duration-units-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Duration units - Product ${index +

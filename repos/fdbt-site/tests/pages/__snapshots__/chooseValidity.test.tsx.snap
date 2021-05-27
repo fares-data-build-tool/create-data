@@ -42,7 +42,11 @@ exports[`Choose Validity Page should render correctly 1`] = `
         Enter a whole number, and select a duration type. For example, 7 months.
       </div>
       <Component
-        errorId="validity"
+        errorIds={
+          Array [
+            "validity",
+          ]
+        }
         errors={Array []}
       >
         <label
@@ -67,7 +71,11 @@ exports[`Choose Validity Page should render correctly 1`] = `
         </FormElementWrapper>
       </Component>
       <Component
-        errorId="validity-units"
+        errorIds={
+          Array [
+            "validity-units",
+          ]
+        }
         errors={Array []}
       >
         <label
@@ -175,7 +183,11 @@ exports[`Choose Validity Page should render correctly with defaults when provide
         Enter a whole number, and select a duration type. For example, 7 months.
       </div>
       <Component
-        errorId="validity"
+        errorIds={
+          Array [
+            "validity",
+          ]
+        }
         errors={Array []}
       >
         <label
@@ -200,7 +212,11 @@ exports[`Choose Validity Page should render correctly with defaults when provide
         </FormElementWrapper>
       </Component>
       <Component
-        errorId="validity-units"
+        errorIds={
+          Array [
+            "validity-units",
+          ]
+        }
         errors={Array []}
       >
         <label

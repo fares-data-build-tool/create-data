@@ -38,7 +38,11 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
           Select all that apply from the lists below
         </span>
         <Component
-          errorId="checkbox-0-on-board"
+          errorIds={
+            Array [
+              "checkbox-0-on-board",
+            ]
+          }
           errors={
             Array [
               Object {
@@ -169,7 +173,11 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
           </fieldset>
         </Component>
         <Component
-          errorId="checkbox-0-cash"
+          errorIds={
+            Array [
+              "checkbox-0-cash",
+            ]
+          }
           errors={
             Array [
               Object {
@@ -338,7 +346,11 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
           </fieldset>
         </Component>
         <Component
-          errorId="checkbox-0-paper-ticket"
+          errorIds={
+            Array [
+              "checkbox-0-paper-ticket",
+            ]
+          }
           errors={
             Array [
               Object {
@@ -478,7 +490,11 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
           Select all that apply from the lists below
         </span>
         <Component
-          errorId="checkbox-0-on-board"
+          errorIds={
+            Array [
+              "checkbox-0-on-board",
+            ]
+          }
           errors={Array []}
         >
           <fieldset
@@ -595,7 +611,11 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
           </fieldset>
         </Component>
         <Component
-          errorId="checkbox-0-cash"
+          errorIds={
+            Array [
+              "checkbox-0-cash",
+            ]
+          }
           errors={Array []}
         >
           <fieldset
@@ -750,7 +770,11 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
           </fieldset>
         </Component>
         <Component
-          errorId="checkbox-0-paper-ticket"
+          errorIds={
+            Array [
+              "checkbox-0-paper-ticket",
+            ]
+          }
           errors={Array []}
         >
           <fieldset
@@ -876,7 +900,11 @@ exports[`pages salesOfferPackage should render mapped values correctly 1`] = `
           Select all that apply from the lists below
         </span>
         <Component
-          errorId="checkbox-0-on-board"
+          errorIds={
+            Array [
+              "checkbox-0-on-board",
+            ]
+          }
           errors={Array []}
         >
           <fieldset
@@ -993,7 +1021,11 @@ exports[`pages salesOfferPackage should render mapped values correctly 1`] = `
           </fieldset>
         </Component>
         <Component
-          errorId="checkbox-0-cash"
+          errorIds={
+            Array [
+              "checkbox-0-cash",
+            ]
+          }
           errors={Array []}
         >
           <fieldset
@@ -1148,7 +1180,11 @@ exports[`pages salesOfferPackage should render mapped values correctly 1`] = `
           </fieldset>
         </Component>
         <Component
-          errorId="checkbox-0-paper-ticket"
+          errorIds={
+            Array [
+              "checkbox-0-paper-ticket",
+            ]
+          }
           errors={Array []}
         >
           <fieldset

@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { BasicService, NextApiRequestWithSession, UserFareStages } from '../../interfaces';
-import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
+import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { MatchingWithErrors, MatchingInfo } from '../../interfaces/matchingInterface';
 import { isFareType } from '../../interfaces/typeGuards';
@@ -14,6 +14,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         const fareTypeInfo = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const carnetFareType = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
 
         if (!fareTypeInfo || !isFareType(fareTypeInfo)) {
             throw new Error('Could not extract a fare type from the session');
@@ -41,6 +42,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (fareTypeInfo.fareType === 'return') {
             redirectTo(res, '/returnValidity');
+            return;
+        }
+
+        if (carnetFareType) {
+            redirectTo(res, '/carnetProductDetails');
             return;
         }
 
