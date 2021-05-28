@@ -35,7 +35,7 @@ jobs:
   checkout-repo:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
+    working_directory: ~/project
     steps:
       - checkout
       - persist_to_workspace:
@@ -44,6 +44,9 @@ jobs:
             - '*'
 
   build-netex-output-resources:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/node:12
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -61,6 +64,9 @@ jobs:
             - './node_modules'
 
   audit-netex-output-resources:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/node:12
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -72,6 +78,9 @@ jobs:
             npx audit-ci --moderate
 
   test-netex-output-resources:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/node:12
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -84,6 +93,9 @@ jobs:
             npm run test:ci
 
   lint-netex-output-resources:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/node:12
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -96,6 +108,9 @@ jobs:
             npm run lint
 
   deploy-netex-output-resources-to-test:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/node:12
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -110,6 +125,9 @@ jobs:
             echo "Finished deploy"
 
   deploy-netex-output-resources-to-preprod:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/node:12
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -124,6 +142,9 @@ jobs:
             echo "Finished deploy"
 
   deploy-netex-output-resources-to-prod:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/node:12
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -138,6 +159,9 @@ jobs:
             echo "Finished deploy"
 
   audit-netex-validator:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/python:3.8
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -154,6 +178,9 @@ jobs:
             safety check -r requirements.txt
 
   deploy-netex-validator-to-test:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/python:3.8
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -172,6 +199,9 @@ jobs:
             echo "Finished deploy"
 
   deploy-netex-validator-to-preprod:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/python:3.8
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -190,6 +220,9 @@ jobs:
             echo "Finished deploy"
 
   deploy-netex-validator-to-prod:
+    parameters:
+      package_name:
+        type: string
     docker:
       - image: circleci/python:3.8
     working_directory: ~/project/repos/<< parameters.package_name >>
@@ -229,6 +262,7 @@ workflows:
               only: /^v.*/
 
       - audit-netex-output-resources:
+          package_name: fdbt-netex-output
           requires:
             - checkout-repo
           filters:
@@ -236,6 +270,7 @@ workflows:
               only: /^v.*/
 
       - audit-netex-validator:
+          package_name: fdbt-netex-output
           requires:
             - checkout-repo
           filters:
@@ -243,6 +278,7 @@ workflows:
               only: /^v.*/
 
       - deploy-netex-validator-to-test:
+          package_name: fdbt-netex-output
           requires:
             - audit-netex-validator
           context: tfn-fdbt-test
@@ -252,6 +288,7 @@ workflows:
                 - develop
 
       - deploy-netex-validator-to-preprod:
+          package_name: fdbt-netex-output
           requires:
             - audit-netex-validator
           context: tfn-fdbt-preprod
@@ -261,6 +298,7 @@ workflows:
                 - master
 
       - hold-netex-validator-prod-deployment:
+          package_name: fdbt-netex-output
           type: approval
           requires:
             - audit-netex-validator
@@ -271,6 +309,7 @@ workflows:
               ignore: /.*/
 
       - deploy-netex-validator-to-prod:
+          package_name: fdbt-netex-output
           requires:
             - hold-netex-validator-prod-deployment
           context: tfn-fdbt-prod
@@ -281,6 +320,7 @@ workflows:
               ignore: /.*/
 
       - build-netex-output-resources:
+          package_name: fdbt-netex-output
           requires:
             - audit-netex-output-resources
           filters:
@@ -288,6 +328,7 @@ workflows:
               only: /^v.*/
 
       - test-netex-output-resources:
+          package_name: fdbt-netex-output
           requires:
             - build-netex-output-resources
           filters:
@@ -295,6 +336,7 @@ workflows:
               only: /^v.*/
 
       - lint-netex-output-resources:
+          package_name: fdbt-netex-output
           requires:
             - build-netex-output-resources
           filters:
@@ -302,6 +344,7 @@ workflows:
               only: /^v.*/
 
       - deploy-netex-output-resources-to-test:
+          package_name: fdbt-netex-output
           requires:
             - test-netex-output-resources
             - lint-netex-output-resources
@@ -312,6 +355,7 @@ workflows:
                 - develop
 
       - deploy-netex-output-resources-to-preprod:
+          package_name: fdbt-netex-output
           requires:
             - test-netex-output-resources
             - lint-netex-output-resources
@@ -321,6 +365,7 @@ workflows:
               only: master
 
       - hold-prod-deployment:
+          package_name: fdbt-netex-output
           type: approval
           requires:
             - test-netex-output-resources
@@ -332,6 +377,7 @@ workflows:
               ignore: /.*/
 
       - deploy-netex-output-resources-to-prod:
+          package_name: fdbt-netex-output
           requires:
             - hold-prod-deployment
           context: tfn-fdbt-prod
