@@ -38,3 +38,4 @@ cd src/netex-validator
 npm install
 sls deploy --stage={STAGE_TO_DEPLOY_TO}
 ```
+CHANGING
