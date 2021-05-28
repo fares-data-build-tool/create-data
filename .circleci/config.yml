@@ -1,6 +1,37 @@
 version: 2.1
 
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  # A parameter per package
+  fdbt-netex-output:
+    type: boolean
+    default: false
+  fdbt-reference-data-service:
+    type: boolean
+    default: false
+  fdbt-site:
+    type: boolean
+    default: false
+
+executors:
+  node:
+    docker:
+      - image: circleci/node
+
 jobs:
+  trigger-workflows:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Trigger workflows
+          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
+
+#  fdbt-netex-output
   checkout-repo:
     docker:
       - image: circleci/node:12
@@ -178,23 +209,27 @@ jobs:
 
 workflows:
   version: 2
-  build-test-and-deploy-netex-output-lambdas:
+
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
     jobs:
-      - checkout-repo:
-          filters:
-            tags:
-              only: /^v.*/
+      - trigger-workflows
+
+
+  # Workflows defined for each package.
+
+  fdbt-netex-output:
+    when: << pipeline.parameters.fdbt-netex-output >>
+    jobs:
 
       - audit-netex-output-resources:
-          requires:
-            - checkout-repo
           filters:
             tags:
               only: /^v.*/
 
       - audit-netex-validator:
-          requires:
-            - checkout-repo
           filters:
             tags:
               only: /^v.*/
