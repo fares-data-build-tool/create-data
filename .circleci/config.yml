@@ -223,13 +223,21 @@ workflows:
   fdbt-netex-output:
     when: << pipeline.parameters.fdbt-netex-output >>
     jobs:
+      - checkout-repo:
+          filters:
+            tags:
+              only: /^v.*/
 
       - audit-netex-output-resources:
+          requires:
+            - checkout-repo
           filters:
             tags:
               only: /^v.*/
 
       - audit-netex-validator:
+          requires:
+            - checkout-repo
           filters:
             tags:
               only: /^v.*/
