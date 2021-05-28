@@ -35,7 +35,7 @@ jobs:
   checkout-repo:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - checkout
       - persist_to_workspace:
@@ -46,7 +46,7 @@ jobs:
   build-netex-output-resources:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -63,7 +63,7 @@ jobs:
   audit-netex-output-resources:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -74,7 +74,7 @@ jobs:
   test-netex-output-resources:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -86,7 +86,7 @@ jobs:
   lint-netex-output-resources:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -98,7 +98,7 @@ jobs:
   deploy-netex-output-resources-to-test:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -112,7 +112,7 @@ jobs:
   deploy-netex-output-resources-to-preprod:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -126,7 +126,7 @@ jobs:
   deploy-netex-output-resources-to-prod:
     docker:
       - image: circleci/node:12
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -140,7 +140,7 @@ jobs:
   audit-netex-validator:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -156,7 +156,7 @@ jobs:
   deploy-netex-validator-to-test:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -174,7 +174,7 @@ jobs:
   deploy-netex-validator-to-preprod:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
@@ -192,7 +192,7 @@ jobs:
   deploy-netex-validator-to-prod:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/project
+    working_directory: ~/project/repos/<< parameters.package_name >>
     steps:
       - attach_workspace:
           at: ~/project
