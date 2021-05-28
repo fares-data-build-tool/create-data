@@ -204,6 +204,19 @@ export const completePeriodMultiServicePages = (numberOfProducts?: number, multi
     }
 };
 
+export const completeSchoolPeriodMultiServicePages = (
+    numberOfProducts?: number,
+    multiProductNamePrefix?: string,
+): void => {
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+    if (!numberOfProducts || !multiProductNamePrefix) {
+        completeSingleProduct();
+    } else {
+        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    }
+};
+
 export const completeMultiOpGeoZonePages = (
     isScheme: boolean,
     numberOfProducts?: number,
