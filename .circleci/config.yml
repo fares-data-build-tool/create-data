@@ -61,7 +61,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - './node_modules'
+            - './repos/<< parameters.package_name >>/node_modules'
 
   audit-netex-output-resources:
     parameters:
