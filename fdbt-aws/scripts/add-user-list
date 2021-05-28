@@ -1,0 +1,5 @@
+IFS=','
+
+while read email noc; do
+    ./cognito-manager add-user $email $noc
+done < users.csv

@@ -1,0 +1,6 @@
+IFS=','
+
+while read email noc; do
+    echo $email
+    ./cognito-manager get-user-status $email
+done < users.csv

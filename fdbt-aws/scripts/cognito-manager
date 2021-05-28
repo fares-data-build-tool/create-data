@@ -1,0 +1,134 @@
+COMMAND=$1
+EMAIL=$2
+USER_IDENTIFIER=$3
+USER_ATTRIBUTE=$4
+
+USER_POOL=$(aws cognito-idp list-user-pools --max-results 2 | jq -r '.UserPools[]|select(.Name | startswith("fdbt-user-pool")).Id')
+
+function get_users_by_noc() {
+  NOC=$1
+
+  echo $(aws cognito-idp list-users --user-pool-id $USER_POOL | jq --arg noc "$NOC" -c '.Users[] | select(.Attributes[].Value | contains($noc))')
+}
+
+function add_user() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ]; then
+    echo "usage: cognito-manager add-user <email> <noc>"
+    exit 1
+  fi
+
+  TEMP_PASSWORD=$(cat /dev/urandom | env LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$USER_IDENTIFIER --temporary-password $TEMP_PASSWORD --region eu-west-2
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=email_verified,Value=true
+
+  echo "https://fares-data.dft.gov.uk/register?key=$TEMP_PASSWORD"
+}
+
+function add_scheme_operator() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ] || [ -z $USER_ATTRIBUTE ]; then
+    echo "usage: cognito-manager add-scheme-operator <email> <name> <region_code>"
+    exit 1
+  fi
+
+  TEMP_PASSWORD=$(cat /dev/urandom | env LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+  NAME_ABBR=$(echo $USER_IDENTIFIER | cut -c1-5 | tr '[:lower:]' '[:upper:]')
+  REGION_UPPER=$(echo $USER_ATTRIBUTE | tr '[:lower:]' '[:upper:]')
+  SCHEME_NOC="$NAME_ABBR$REGION_UPPER"
+  USERS=$(get_users_by_noc $SCHEME_NOC)
+
+  if [ -n "$USERS" ]; then
+    echo "NOC already exists"
+    exit 1
+  fi
+
+  aws cognito-idp admin-create-user --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$SCHEME_NOC Name=custom:schemeOperator,Value=$USER_IDENTIFIER Name=custom:schemeRegionCode,Value=$USER_ATTRIBUTE --temporary-password $TEMP_PASSWORD --region eu-west-2
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=email_verified,Value=true
+
+  echo "https://fares-data.dft.gov.uk/register?key=$TEMP_PASSWORD"
+}
+
+function delete_user() {
+  if [ -z $EMAIL ]; then
+    echo "usage: cognito-manager delete-user <email>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-delete-user --user-pool-id $USER_POOL --username $EMAIL --region eu-west-2
+}
+
+function update_noc() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ]; then
+    echo "usage: cognito-manager update-noc <email> <noc>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:noc,Value=$USER_IDENTIFIER --region eu-west-2
+}
+
+function update_scheme_operator_name() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ]; then
+    echo "usage: cognito-manager update-scheme-operator-name <email> <name>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:schemeOperator,Value=$USER_IDENTIFIER --region eu-west-2
+}
+
+function update_scheme_operator_region_code() {
+  if [ -z $EMAIL ] || [ -z $USER_IDENTIFIER ] || [ -z $USER_ATTRIBUTE ]; then
+    echo "usage: cognito-manager update-scheme-operator-region-code <email> <name> <region_code>"
+    exit 1
+  fi
+
+  aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $EMAIL --user-attributes Name=custom:schemeRegionCode,Value=$USER_ATTRIBUTE --region eu-west-2
+}
+
+function get_user_status() {
+  if [ -z $EMAIL ]; then
+    echo "usage: cognito-manager get-user-status <email>"
+    exit 1
+  fi
+
+  STATUS=$(aws cognito-idp admin-get-user --user-pool-id $USER_POOL --username $EMAIL --region eu-west-2 | jq .UserStatus)
+  echo $STATUS
+}
+
+function verify_all_emails() {
+  aws cognito-idp list-users --user-pool-id $USER_POOL | jq -rc '.Users[].Username' | while read i; do
+    echo $i
+    aws cognito-idp admin-update-user-attributes --user-pool-id $USER_POOL --username $i --user-attributes Name=email_verified,Value=true
+  done
+}
+
+function get_all_user_emails() {
+  aws cognito-idp list-users --user-pool-id $USER_POOL | jq -rc '.Users[].Attributes[] | select(.Name == "email")' | jq -r ."Value"
+}
+
+if [ -z $USER_POOL ]; then
+  echo "You must be authenticated against the target AWS account"
+  exit 1
+fi
+
+if [[ $COMMAND = 'add-user' ]]; then
+  add_user
+elif [[ $COMMAND = 'add-scheme-operator' ]]; then
+  add_scheme_operator
+elif [[ $COMMAND = 'delete-user' ]]; then
+  delete_user
+elif [[ $COMMAND = 'update-noc' ]]; then
+  update_noc
+elif [[ $COMMAND = 'update-scheme-operator-name' ]]; then
+  update_scheme_operator_name
+elif [[ $COMMAND = 'update-scheme-operator-region-code' ]]; then
+  update_scheme_operator_region_code
+elif [[ $COMMAND = 'get-user-status' ]]; then
+  get_user_status
+elif [[ $COMMAND = 'verify-all-emails' ]]; then
+  verify_all_emails
+elif [[ $COMMAND = 'get-all-user-emails' ]]; then
+  get_all_user_emails
+else
+  echo "usage cognito-manager <add-user | add-scheme-operator | delete-user | update-noc | update-scheme-operator-name | update-scheme-operator-region-code | verify-all-emails | get-all-user-emails>"
+  exit 1
+fi
+

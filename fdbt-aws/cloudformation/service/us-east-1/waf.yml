@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for WAF resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
+  ProductName:
+    Type: String
+    Default: fdbt
+
+  IwIpSetList:
+    Type: CommaDelimitedList
+    Default: ""
+
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+
+Resources:
+  IwIpSet:
+    Type: AWS::WAFv2::IPSet
+    Condition: IsTest
+    Properties:
+      Description: IP Set for Infinity Works office
+      Name: IwIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses: !Ref IwIpSetList
+
+  CiIpSet:
+    Type: AWS::WAFv2::IPSet
+    Condition: IsTest
+    Properties:
+      Description: IP Set for CI
+      Name: CiIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses: []
+
+  PersonalUserIpSet:
+    Type: AWS::WAFv2::IPSet
+    Condition: IsTest
+    Properties:
+      Description: Personal IPs for IW and DFT users of the tool
+      Name: PersonalUserIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses: []
+
+  RestrictIPAccessAcl:
+    Type: AWS::WAFv2::WebACL
+    Condition: IsTest
+    Properties:
+      Name: !Sub ${ProductName}-waf-restrictaccess-${Stage}
+      Scope: CLOUDFRONT
+      Description: Restricts access to Infinity Works and DFT
+      DefaultAction:
+        Block: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: RestrictAccessMetric
+      Rules:
+        - Name: AllowIw
+          Action:
+            Allow: {}
+          Priority: 0
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowIwRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt IwIpSet.Arn
+        - Name: AllowCi
+          Action:
+            Allow: {}
+          Priority: 3
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowCiRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt CiIpSet.Arn
+        - Name: AllowPersonalUserIP
+          Action:
+            Allow: {}
+          Priority: 4
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowPersonalUserIPRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt PersonalUserIpSet.Arn
+
+Outputs:
+  WafAclArn:
+    Condition: IsTest
+    Value: !GetAtt RestrictIPAccessAcl.Arn

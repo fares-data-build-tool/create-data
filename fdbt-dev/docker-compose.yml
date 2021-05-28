@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  mysql:
+    container_name: fdbt_mysql
+    image: mysql:5.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fdbt
+    ports:
+      - "3306:3306"
+
+  localstack:
+    container_name: fdbt_localstack
+    image: localstack/localstack:0.10.9
+    tty: true
+    stdin_open: true
+    environment:
+      SERVICES: s3,s3api,sns,dynamodb
+      DATA_DIR: /tmp/localstack/data
+    ports:
+      - "4572:4572"
+      - "4575:4575"
+      - "4569:4569"
+      - "4566:4566"

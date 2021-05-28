@@ -1,0 +1,18 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless/Typescript/IDE directories
+.serverless
+.build
+buckets
+.idea
+
+# VSCode settings
+.vscode
+**/.DS_Store
+
+# NeTEX output directory
+src/netex-convertor/output
+
+__pycache__

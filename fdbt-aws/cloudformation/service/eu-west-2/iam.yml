@@ -1,0 +1,515 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for IAM resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+  CoreAccountId:
+    Type: String
+
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+
+Resources:
+  CognitoManagerPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Permissions to manage users in Cognito User Pool
+      ManagedPolicyName: CognitoManager
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              [
+                "cognito-idp:AdminGetDevice",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:AddCustomAttributes",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:ListIdentityProviders",
+                "cognito-idp:AdminSetUserSettings",
+                "cognito-idp:GetIdentityProviderByIdentifier",
+                "cognito-idp:AdminAddUserToGroup",
+                "cognito-idp:AdminRespondToAuthChallenge",
+                "cognito-idp:GetUICustomization",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:ListUserPoolClients",
+                "cognito-idp:AdminConfirmSignUp",
+                "cognito-idp:ListUsersInGroup",
+                "cognito-idp:DescribeUserPool",
+                "cognito-idp:AdminEnableUser",
+                "cognito-idp:AdminListUserAuthEvents",
+                "cognito-idp:ListGroups",
+                "cognito-idp:ListResourceServers",
+                "cognito-idp:AdminListDevices",
+                "cognito-idp:DescribeIdentityProvider",
+                "cognito-idp:DescribeResourceServer",
+                "cognito-idp:AdminDisableUser",
+                "cognito-idp:AdminRemoveUserFromGroup",
+                "cognito-idp:DescribeUserImportJob",
+                "cognito-idp:DescribeUserPoolClient",
+                "cognito-idp:AdminDeleteUser",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminDeleteUserAttributes",
+                "cognito-idp:GetSigningCertificate",
+                "cognito-idp:GetCSVHeader",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:ListTagsForResource",
+                "cognito-idp:GetUserPoolMfaConfig",
+                "cognito-idp:GetGroup",
+                "cognito-idp:DescribeRiskConfiguration",
+                "cognito-idp:AdminUpdateUserAttributes",
+                "cognito-idp:AdminListGroupsForUser",
+                "cognito-idp:AdminResetUserPassword",
+                "cognito-idp:ListUserImportJobs",
+                "cognito-idp:ListUsers",
+              ]
+            Resource: !Sub arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/*
+          - Effect: Allow
+            Action:
+              [
+                "cognito-idp:GetDevice",
+                "cognito-idp:GetUser",
+                "cognito-idp:DescribeUserPoolDomain",
+                "cognito-idp:ListDevices",
+                "cognito-idp:GetUserAttributeVerificationCode",
+                "cognito-idp:ListUserPools",
+              ]
+            Resource: "*"
+
+  AdminRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Ref CoreAccountId
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: true
+      RoleName: !Sub cfd-admin-${Stage}-${AWS::Region}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  ReadOnlyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Ref CoreAccountId
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: true
+      RoleName: !Sub cfd-readonly-${Stage}-${AWS::Region}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+
+  CognitoManagerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Ref CoreAccountId
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: true
+      RoleName: !Sub cfd-cognito-manager-${Stage}-${AWS::Region}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - !Ref CognitoManagerPolicy
+
+  BillingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Ref CoreAccountId
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: true
+      RoleName: !Sub cfd-billing-${Stage}-${AWS::Region}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/Billing
+
+  EcsSiteTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-user-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}/*
+              - Effect: Allow
+                Action:
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-raw-user-data-${Stage}/*
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}/*
+              - Effect: Allow
+                Action:
+                  - "s3:ListBucket"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}
+              - Effect: Allow
+                Action:
+                  - "ssm:GetParameter"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "cognito-idp:ForgotPassword"
+                  - "cognito-idp:ConfirmForgotPassword"
+                  - "cognito-idp:ChangePassword"
+                  - "cognito-idp:ListUserPools"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "cognito-idp:AdminInitiateAuth"
+                  - "cognito-idp:AdminUserGlobalSignOut"
+                  - "cognito-idp:DescribeUserPool"
+                  - "cognito-idp:AdminRespondToAuthChallenge"
+                  - "cognito-idp:AdminUpdateUserAttributes"
+                  - "cognito-idp:AdminGetUser"
+                  - "cognito-idp:AdminSetUserPassword"
+                  - "cognito-idp:ListUserPoolClients"
+                  - "cognito-idp:DescribeUserPoolClient"
+                  - "cognito-idp:ListUsers"
+                Resource: !Sub arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/*
+              - Effect: Allow
+                Action:
+                  - "dynamodb:DeleteItem"
+                  - "dynamodb:GetItem"
+                  - "dynamodb:PutItem"
+                  - "dynamodb:UpdateItem"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - ses:SendEmail
+                  - ses:SendRawEmail
+                Resource:
+                  - "*"
+          PolicyName: ecs-site-task-policy
+
+  EcsSiteScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
+
+  EcsMonitoringTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "cloudwatch:DescribeAlarmsForMetric"
+                  - "cloudwatch:DescribeAlarmHistory"
+                  - "cloudwatch:DescribeAlarms"
+                  - "cloudwatch:ListMetrics"
+                  - "cloudwatch:GetMetricStatistics"
+                  - "cloudwatch:GetMetricData"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "logs:DescribeLogGroups"
+                  - "logs:GetLogGroupFields"
+                  - "logs:StartQuery"
+                  - "logs:StopQuery"
+                  - "logs:GetQueryResults"
+                  - "logs:GetLogEvents"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "ec2:DescribeTags"
+                  - "ec2:DescribeInstances"
+                  - "ec2:DescribeRegions"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "tag:GetResources"
+                Resource: "*"
+          PolicyName: ecs-monitoring-task-policy
+
+  EcsTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  RdsEnhancedMonitoringRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [monitoring.rds.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole
+
+  RdsAuroraS3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [rds.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-csv-ref-data-${Stage}/*
+              - Effect: Allow
+                Action:
+                  - "s3:ListBucket"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-csv-ref-data-${Stage}
+          PolicyName: allow-aurora-s3-access
+
+  SlackLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [lambda.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                Resource:
+                  - arn:aws:s3:::cfd-slack-alerts-code/*
+          PolicyName: allow-slack-alerts-code-access
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  CognitoCustomTriggersLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [lambda.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                Resource:
+                  - arn:aws:s3:::cfd-cognito-custom-triggers/*
+          PolicyName: allow-cognito-custom-triggers
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  BastionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyName: allow-shared-s3-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:ListBucket"
+                Resource:
+                  - "arn:aws:s3:::cfd-shared-content"
+                  - "arn:aws:s3:::cfd-shared-content/*"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  CiPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Policy for cicd accounts
+      Path: /
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - "s3:*"
+              - "logs:*"
+              - "cloudformation:*"
+              - "iam:*"
+              - "cloudwatch:*"
+              - "lambda:*"
+              - "acm:DescribeCertificate"
+              - "acm:GetCertificate"
+              - "acm:ListTagsForCertificate"
+              - "acm:ListCertificates"
+              - "events:*"
+              - "ecs:*"
+              - "ec2:*"
+              - "sns:*"
+            Resource: "*"
+
+  CiGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: fdbt-ci-group
+      ManagedPolicyArns:
+        - !Ref CiPolicy
+
+  CiUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: fdbt-ci-user
+      Groups:
+        - !Ref CiGroup
+
+  UiTestsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Condition: IsTest
+    Properties:
+      Description: Policy for ui tests user
+      Path: /
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - "wafv2:UpdateIPSet"
+              - "wafv2:GetIPSet"
+            Resource: "*"
+
+  UiTestsUser:
+    Type: AWS::IAM::User
+    Condition: IsTest
+    Properties:
+      ManagedPolicyArns:
+        - !Ref UiTestsPolicy
+      UserName: fdbt-ui-tests-user
+
+Outputs:
+  EcsSiteTaskRoleArn:
+    Value: !GetAtt EcsSiteTaskRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsSiteTaskRoleArn
+  EcsSiteScalingRoleArn:
+    Value: !GetAtt EcsSiteScalingRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsSiteScalingRoleArn
+  EcsMonitoringTaskRoleArn:
+    Value: !GetAtt EcsMonitoringTaskRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsMonitoringTaskRoleArn
+  EcsTaskExecutionRoleArn:
+    Value: !GetAtt EcsTaskExecutionRole.Arn
+    Export:
+      Name: !Sub ${Stage}:EcsTaskExecutionRoleArn
+  RdsEnhancedMonitoringRoleArn:
+    Value: !GetAtt RdsEnhancedMonitoringRole.Arn
+    Export:
+      Name: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+  SlackLambdaRoleArn:
+    Value: !GetAtt SlackLambdaRole.Arn
+    Export:
+      Name: !Sub ${Stage}:SlackLambdaRoleArn
+  CognitoCustomTriggersLambdaRoleArn:
+    Value: !GetAtt CognitoCustomTriggersLambdaRole.Arn
+    Export:
+      Name: !Sub ${Stage}:CognitoCustomTriggersLambdaRoleArn
+  RdsAuroraS3RoleArn:
+    Value: !GetAtt RdsAuroraS3Role.Arn
+    Export:
+      Name: !Sub ${Stage}:RdsAuroraS3RoleArn
+  BastionRoleName:
+    Value: !Ref BastionRole
+    Export:
+      Name: !Sub ${Stage}:BastionRoleName
