@@ -31,6 +31,9 @@ import {
     SelectSalesOfferPackageWithError,
     Service,
     ServiceWithErrors,
+    PointToPointProductInfo,
+    ProductInfo,
+    ProductData,
 } from '.';
 import { validFareTypes } from '../constants';
 
@@ -179,6 +182,17 @@ export const isTermTimeAttributeWithErrors = (
     termTime: undefined | TermTimeAttribute | WithErrors<TermTimeAttribute>,
 ): termTime is WithErrors<TermTimeAttribute> =>
     !!termTime && (termTime as WithErrors<TermTimeAttribute>).errors !== undefined;
+
+export const isPointToPointProductInfo = (
+    productDetailsAttribute:
+        | PointToPointProductInfo
+        | ProductInfo
+        | ProductData
+        | WithErrors<ProductInfo>
+        | WithErrors<PointToPointProductInfo>
+        | undefined,
+): productDetailsAttribute is PointToPointProductInfo =>
+    !!productDetailsAttribute && (productDetailsAttribute as PointToPointProductInfo).carnetDetails !== undefined;
 
 export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
     !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;

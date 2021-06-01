@@ -19,6 +19,9 @@ import {
     completeMultipleProducts,
     completeOperatorSearch,
     clickSomeCheckboxes,
+    randomlyChooseASchoolProof,
+    randomlyDecideTermRestrictions,
+    randomlyChooseSchoolAgeLimits,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -27,14 +30,38 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const selectFareType = (
-    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
-    isScheme: boolean,
-): void => {
+export type FareType = 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService' | 'carnet';
+
+export const defineSchoolUserAndTimeRestrictions = (): void => {
+    randomlyChooseSchoolAgeLimits();
+    randomlyChooseASchoolProof();
+    continueButtonClick();
+    randomlyDecideTermRestrictions();
+};
+
+export const selectFareType = (fareType: FareType, isScheme: boolean): void => {
     getHomePage(isScheme);
     startPageLinkClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
+};
+
+export const selectCarnetFareType = (fareType: FareType): void => {
+    selectFareType('carnet', false);
+    clickElementById(fareTypeToFareTypeIdMapper(fareType));
+    continueButtonClick();
+};
+
+export const selectSchoolFareType = (
+    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
+): void => {
+    clickElementById(fareTypeToFareTypeIdMapper(fareType));
+    continueButtonClick();
+    continueButtonClick();
+};
+export const startSchemeJourney = (): void => {
+    getHomePage(true);
+    startPageLinkClick();
 };
 
 export const completeFlatFarePages = (productName: string, isScheme: boolean): void => {
@@ -91,16 +118,30 @@ const completeMatchingPage = (): void => {
     submitButtonClick();
 };
 
-export const completeSinglePages = (csvUpload: boolean): void => {
+const completePointToPointProductDetail = (): void => {
+    getElementById('product-details-name').type('Product Test');
+    getElementById('product-details-carnet-quantity').type('5');
+    getElementById('product-details-carnet-expiry-quantity').type('10');
+    getElementById('product-details-carnet-expiry-unit').select('Days');
+
+    continueButtonClick();
+};
+
+export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
     selectRandomOptionFromDropDown('direction-journey-pattern');
     continueButtonClick();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
+
+    if (isCarnet) {
+        completePointToPointProductDetail();
+    }
+
     continueButtonClick();
 };
 
-export const completeReturnPages = (csvUpload: boolean): void => {
+export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
     selectRandomOptionFromDropDown('outbound-journey');
     selectRandomOptionFromDropDown('inbound-journey');
@@ -108,6 +149,10 @@ export const completeReturnPages = (csvUpload: boolean): void => {
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
     completeMatchingPage();
+
+    if (isCarnet) {
+        completePointToPointProductDetail();
+    }
 
     assertElementNotVisibleById('return-validity-defined-conditional');
     if (getRandomNumber(0, 1) === 0) {
@@ -152,6 +197,19 @@ export const completePeriodMultiServicePages = (numberOfProducts?: number, multi
     randomlyChooseAndSelectServices();
     continueButtonClick();
 
+    if (!numberOfProducts || !multiProductNamePrefix) {
+        completeSingleProduct();
+    } else {
+        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    }
+};
+
+export const completeSchoolPeriodMultiServicePages = (
+    numberOfProducts?: number,
+    multiProductNamePrefix?: string,
+): void => {
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
     if (!numberOfProducts || !multiProductNamePrefix) {
         completeSingleProduct();
     } else {

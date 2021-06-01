@@ -99,7 +99,7 @@
     padding: 20px;
     margin-bottom: 50px;
     border: 5px solid;
-    border-color: govuk-colour("green");
+    border-color: govuk-colour('green');
 }
 
 .information_box__warning {
@@ -107,5 +107,13 @@
     padding: 20px;
     margin-bottom: 50px;
     border: 5px solid;
-    border-color: govuk-colour("red");
+    border-color: govuk-colour('red');
+}
+
+.expiry-selector-units {
+    border-left: 0;
+}
+
+.expiry-selector-wrapper {
+    display: flex;
 }

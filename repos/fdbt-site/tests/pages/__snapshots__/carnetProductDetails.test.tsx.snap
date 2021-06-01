@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages productDetails should render correctly 1`] = `
+exports[`pages carnetProductDetails should render correctly 1`] = `
 <Component
   description="Product Details entry page of the Create Fares Data Service"
   title="Product Details - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/productDetails"
+    action="/api/carnetProductDetails"
     csrfToken=""
     method="post"
   >
@@ -34,11 +34,7 @@ exports[`pages productDetails should render correctly 1`] = `
           className="govuk-hint"
           id="service-operator-hint"
         >
-          bus company
-           - 
-          Test Zone
-           - 
-          Adult
+          Test Hint
         </span>
         <Component
           errorIds={
@@ -79,51 +75,79 @@ exports[`pages productDetails should render correctly 1`] = `
         <Component
           errorIds={
             Array [
-              "product-details-price",
+              "product-details-carnet-quantity",
             ]
           }
           errors={Array []}
         >
           <label
             className="govuk-label"
-            htmlFor="product-details-price"
+            htmlFor="product-details-carnet-quantity"
           >
-            Product Price, in pounds
+            Quantity in bundle
           </label>
           <span
             className="govuk-hint"
-            id="product-price-hint"
+            id="product-quantity-hint"
           >
-            For example, 2.99
+            Must be 2 or more
           </span>
-          <div
-            className="govuk-currency-input"
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="product-details-carnet-quantity"
+            errors={Array []}
           >
-            <div
-              className="govuk-currency-input__inner"
-            >
-              <span
-                className="govuk-currency-input__inner__unit"
-              >
-                £
-              </span>
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId="product-details-price"
-                errors={Array []}
-              >
-                <input
-                  aria-describedby="product-price-hint"
-                  className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
-                  data-non-numeric={true}
-                  defaultValue=""
-                  id="product-details-price"
-                  name="productDetailsPriceInput"
-                  type="text"
-                />
-              </FormElementWrapper>
-            </div>
-          </div>
+            <input
+              aria-describedby="product-quantity-hint"
+              className="govuk-input govuk-input--width-5"
+              data-non-numeric={true}
+              defaultValue="5"
+              id="product-details-carnet-quantity"
+              name="productDetailsQuantityInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </Component>
+        <Component
+          errorIds={
+            Array [
+              "product-details-carnet-expiry-quantity",
+              "product-details-carnet-expiry-unit",
+            ]
+          }
+          errors={Array []}
+        >
+          <label
+            className="govuk-label"
+            htmlFor="product-details-carnet-expiry"
+          >
+            Carnet expiry
+          </label>
+          <span
+            className="govuk-hint"
+            id="product-carnet-expiry-hint"
+          >
+            For example, 2 months
+          </span>
+          <Component
+            errorIds={
+              Array [
+                "product-details-carnet-expiry-quantity",
+                "product-details-carnet-expiry-unit",
+              ]
+            }
+            errors={Array []}
+          />
+          <ExpirySelector
+            defaultDuration="2"
+            defaultUnit="day"
+            errors={Array []}
+            hintId="product-carnet-expiry-hint"
+            quantityId="product-details-carnet-expiry-quantity"
+            quantityName="productDetailsExpiryDurationInput"
+            unitId="product-details-carnet-expiry-unit"
+            unitName="productDetailsExpiryUnitInput"
+          />
         </Component>
       </fieldset>
     </div>

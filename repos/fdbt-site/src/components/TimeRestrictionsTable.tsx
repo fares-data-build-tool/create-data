@@ -64,7 +64,7 @@ const TimeRestrictionsTable = ({
             rows.push(
                 <div className="time-restriction-row" key={i}>
                     <div>
-                        <FormGroupWrapper errors={errors} errorId={`start-time-${chosenDay}-${i}`}>
+                        <FormGroupWrapper errors={errors} errorIds={[`start-time-${chosenDay}-${i}`]}>
                             <>
                                 <label className="govuk-label" htmlFor={`start-time-${chosenDay}-${i}`}>
                                     Start time <span className="govuk-visually-hidden">for {chosenDay}</span>
@@ -87,7 +87,7 @@ const TimeRestrictionsTable = ({
                         </FormGroupWrapper>
                     </div>
                     <div>
-                        <FormGroupWrapper errors={errors} errorId={`end-time-${chosenDay}-${i}`}>
+                        <FormGroupWrapper errors={errors} errorIds={[`end-time-${chosenDay}-${i}`]}>
                             <>
                                 <label className="govuk-label" htmlFor={`end-time-${chosenDay}-${i}`}>
                                     End time <span className="govuk-visually-hidden">for {chosenDay}</span>

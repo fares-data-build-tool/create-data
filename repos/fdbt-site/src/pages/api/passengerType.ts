@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../constants/attributes';
@@ -37,8 +38,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     return;
                 }
 
+                const passengerTypes = reusedGroup.companions.map(companion => companion.passengerType);
+
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: GROUP_PASSENGER_TYPE });
                 updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, reusedGroup.companions);
+                updateSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, { passengerTypes });
+
                 redirectTo(res, '/defineTimeRestrictions');
                 return;
             }

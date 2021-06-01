@@ -41,7 +41,7 @@ const UserDataUploadComponent = ({
                             {csvUploadHintText}
                         </span>
                         {showPriceOption && (
-                            <FormGroupWrapper errors={errors} errorId="pounds">
+                            <FormGroupWrapper errors={errors} errorIds={['pounds']}>
                                 <fieldset className="govuk-fieldset">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                         <h2 className="govuk-fieldset__heading" id="passenger-type-page-heading">
@@ -86,7 +86,7 @@ const UserDataUploadComponent = ({
                                 </fieldset>
                             </FormGroupWrapper>
                         )}
-                        <FormGroupWrapper errors={errors} errorId="csv-upload">
+                        <FormGroupWrapper errors={errors} errorIds={['csv-upload']}>
                             <fieldset className="govuk-fieldset">
                                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     <h2

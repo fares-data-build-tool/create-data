@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExpirySelector should render the selector 1`] = `
+<div
+  className="govuk-input__wrapper expiry-selector-wrapper"
+>
+  <FormElementWrapper
+    errorClass="govuk-input--error"
+    errorId="test-quantity-id"
+    errors={Array []}
+    hideText={true}
+  >
+    <input
+      aria-describedby=""
+      className="govuk-input govuk-input--width-3"
+      data-non-numeric={true}
+      defaultValue=""
+      id="test-quantity-id"
+      name="testQuantityName"
+      type="text"
+    />
+  </FormElementWrapper>
+  <FormElementWrapper
+    errorClass="govuk-select--error"
+    errorId="test-unit-id"
+    errors={Array []}
+    hideText={true}
+  >
+    <select
+      className="govuk-select govuk-select--width-3 expiry-selector-units"
+      defaultValue=""
+      id="test-unit-id"
+      name="testUnitName"
+    >
+      <option
+        disabled={true}
+        value=""
+      >
+        Select One
+      </option>
+      <option
+        value="hour"
+      >
+        Hours
+      </option>
+      <option
+        value="day"
+      >
+        Days
+      </option>
+      <option
+        value="week"
+      >
+        Weeks
+      </option>
+      <option
+        value="month"
+      >
+        Months
+      </option>
+      <option
+        value="year"
+      >
+        Years
+      </option>
+      <option
+        value="no expiry"
+      >
+        No expiry
+      </option>
+    </select>
+  </FormElementWrapper>
+</div>
+`;

@@ -28,6 +28,7 @@ import {
     MultiProduct,
     MultiProductWithErrors,
     SchemeOperatorFlatFareTicket,
+    ExpiryUnit,
 } from '../../src/interfaces/index';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -1372,6 +1373,147 @@ export const expectedSingleTicket: SingleTicket = {
     ],
 };
 
+export const expectedCarnetSingleTicket: SingleTicket = {
+    type: 'single',
+    lineName: '215',
+    lineId: 'q2gv2ve',
+    nocCode: 'DCCL',
+    passengerType: 'Adult',
+    operatorShortName: 'DCC',
+    termTime: true,
+    serviceDescription: 'Worthing - Seaham - Crawley',
+    email: 'test@example.com',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Test Product',
+            carnetDetails: {
+                expiryTime: '10',
+                expiryUnit: ExpiryUnit.DAY,
+                quantity: '5',
+            },
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+    ],
+    fareZones: [
+        {
+            name: 'Acomb Green Lane',
+            stops: [
+                {
+                    stopName: 'Yoden Way - Chapel Hill Road',
+                    naptanCode: 'duratdmj',
+                    atcoCode: '13003521G',
+                    localityCode: 'E0045956',
+                    localityName: 'Peterlee',
+                    parentLocalityName: '',
+                    indicator: 'W-bound',
+                    street: 'Yodan Way',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'] },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            name: 'Mattison Way',
+            stops: [
+                {
+                    stopName: 'Yoden Way',
+                    naptanCode: 'duratdmt',
+                    atcoCode: '13003522F',
+                    localityCode: 'E0010183',
+                    localityName: 'Horden',
+                    parentLocalityName: '',
+                    indicator: 'SW-bound',
+                    street: 'Yoden Way',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'] },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            name: 'Holl Bank/Beech Ave',
+            stops: [
+                {
+                    stopName: 'Surtees Rd-Edenhill Rd',
+                    naptanCode: 'durapgdw',
+                    atcoCode: '13003219H',
+                    localityCode: 'E0045956',
+                    localityName: 'Peterlee',
+                    parentLocalityName: '',
+                    indicator: 'NW-bound',
+                    street: 'Surtees Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Cambridge Street (York)', 'Blossom Street'] },
+                { price: '1.70', fareZones: ['Rail Station (York)', 'Piccadilly (York)'] },
+            ],
+        },
+        {
+            name: 'Blossom Street',
+            stops: [
+                {
+                    stopName: 'Bus Station',
+                    naptanCode: 'duratdma',
+                    atcoCode: '13003519H',
+                    localityCode: 'E0045956',
+                    localityName: 'Peterlee',
+                    parentLocalityName: '',
+                    indicator: 'H',
+                    street: 'Bede Way',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Rail Station (York)', 'Piccadilly (York)'] }],
+        },
+        {
+            name: 'Piccadilly (York)',
+            stops: [
+                {
+                    stopName: 'Kell Road',
+                    naptanCode: 'duraptwp',
+                    atcoCode: '13003345D',
+                    localityCode: 'E0010183',
+                    localityName: 'Horden',
+                    parentLocalityName: '',
+                    indicator: 'SE-bound',
+                    street: 'Kell Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [],
+        },
+    ],
+};
+
 export const expectedNonCircularReturnTicket: ReturnTicket = {
     type: 'return',
     passengerType: 'Adult',
@@ -1667,6 +1809,176 @@ export const expectedCircularReturnTicket: ReturnTicket = {
                 },
             ],
             prices: [],
+        },
+    ],
+};
+
+export const expectedCarnetReturnTicket: ReturnTicket = {
+    type: 'return',
+    passengerType: 'Adult',
+    lineName: '215',
+    lineId: 'q2gv2ve',
+    nocCode: 'DCCL',
+    operatorShortName: 'DCC',
+    serviceDescription: 'Worthing - Seaham - Crawley',
+    email: 'test@example.com',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Test Return Product',
+            carnetDetails: {
+                quantity: '10',
+                expiryTime: '',
+                expiryUnit: ExpiryUnit.NO_EXPIRY,
+            },
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+    ],
+    inboundFareZones: [
+        {
+            name: 'Acomb Green Lane',
+            stops: [
+                {
+                    stopName: 'Yoden Way - Chapel Hill Road',
+                    naptanCode: 'duratdmj',
+                    atcoCode: '13003521G',
+                    localityCode: 'E0045956',
+                    parentLocalityName: '',
+                    localityName: 'Peterlee',
+                    indicator: 'W-bound',
+                    street: 'Yodan Way',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'] },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            name: 'Mattison Way',
+            stops: [
+                {
+                    stopName: 'Yoden Way',
+                    naptanCode: 'duratdmt',
+                    atcoCode: '13003522F',
+                    localityCode: 'E0010183',
+                    parentLocalityName: '',
+                    localityName: 'Horden',
+                    indicator: 'SW-bound',
+                    street: 'Yoden Way',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'] },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            name: 'Holl Bank/Beech Ave',
+            stops: [
+                {
+                    stopName: 'Surtees Rd-Edenhill Rd',
+                    naptanCode: 'durapgdw',
+                    atcoCode: '13003219H',
+                    localityCode: 'E0045956',
+                    parentLocalityName: '',
+                    localityName: 'Peterlee',
+                    indicator: 'NW-bound',
+                    street: 'Surtees Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Cambridge Street (York)', 'Blossom Street'] },
+                { price: '1.70', fareZones: ['Rail Station (York)', 'Piccadilly (York)'] },
+            ],
+        },
+        {
+            name: 'Blossom Street',
+            stops: [
+                {
+                    stopName: 'Bus Station',
+                    naptanCode: 'duratdma',
+                    atcoCode: '13003519H',
+                    localityCode: 'E0045956',
+                    parentLocalityName: '',
+                    localityName: 'Peterlee',
+                    indicator: 'H',
+                    street: 'Bede Way',
+                    qualifierName: '',
+                },
+            ],
+            prices: [{ price: '1.00', fareZones: ['Rail Station (York)', 'Piccadilly (York)'] }],
+        },
+        {
+            name: 'Piccadilly (York)',
+            stops: [
+                {
+                    stopName: 'Kell Road',
+                    naptanCode: 'duraptwp',
+                    atcoCode: '13003345D',
+                    localityCode: 'E0010183',
+                    parentLocalityName: '',
+                    localityName: 'Horden',
+                    indicator: 'SE-bound',
+                    street: 'Kell Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [],
+        },
+    ],
+    outboundFareZones: [
+        {
+            name: 'Acomb Green Lane',
+            stops: [
+                {
+                    stopName: 'Yoden Way - Chapel Hill Road',
+                    atcoCode: '13003521G',
+                    localityCode: 'E0045956',
+                    naptanCode: 'duratdmj',
+                    parentLocalityName: '',
+                    localityName: 'Peterlee',
+                    indicator: 'W-bound',
+                    street: 'Yodan Way',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                { price: '1.10', fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'] },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
         },
     ],
 };

@@ -12,8 +12,13 @@ interface FormElementWrapperProps {
 
 interface FormGroupWrapperProps {
     errors: ErrorInfo[];
-    errorId: string;
+    errorIds: string[];
     children: ReactElement;
+}
+
+interface FormErrorBlockProps {
+    errors: ErrorInfo[];
+    errorIds: string[];
 }
 
 const addErrorClasses = (child: ReactElement, errorClass: string, errorId: string): ReactElement =>
@@ -22,8 +27,21 @@ const addErrorClasses = (child: ReactElement, errorClass: string, errorId: strin
         'aria-describedby': `${errorId}-error`,
     });
 
-export const FormGroupWrapper = ({ errors, errorId, children }: FormGroupWrapperProps): ReactElement => {
-    const errorForElement = errors.find(err => err.id === errorId);
+export const FormErrorBlock = ({ errors, errorIds }: FormErrorBlockProps): ReactElement => (
+    <div>
+        {errors
+            .filter(error => errorIds.includes(error.id))
+            .map(error => (
+                <span className="govuk-error-message">
+                    <span className="govuk-visually-hidden">Error: </span>
+                    {error.errorMessage}
+                </span>
+            ))}
+    </div>
+);
+
+export const FormGroupWrapper = ({ errors, errorIds, children }: FormGroupWrapperProps): ReactElement => {
+    const errorForElement = errors.find(err => errorIds.includes(err.id));
 
     return <div className={`govuk-form-group ${errorForElement ? 'govuk-form-group--error' : ''}`}>{children}</div>;
 };

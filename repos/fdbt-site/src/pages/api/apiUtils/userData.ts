@@ -31,6 +31,9 @@ import {
     TicketPeriodWithInput,
     SchemeOperatorGeoZoneTicket,
     SalesOfferPackage,
+    PointToPointProductInfo,
+    PointToPointProductInfoWithSOP,
+    BaseProduct,
 } from '../../../interfaces/index';
 
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
@@ -62,6 +65,7 @@ import {
     isFareType,
     isPassengerType,
     isTicketPeriodAttributeWithInput,
+    isPointToPointProductInfo,
 } from '../../../interfaces/typeGuards';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -84,7 +88,7 @@ const isProductDataWithoutErrors = (
 ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
 const isProductData = (
-    productDetailsAttributeInfo: ProductData | ProductInfo,
+    productDetailsAttributeInfo: ProductData | ProductInfo | PointToPointProductInfo,
 ): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
 
 export const getProductsAndSalesOfferPackages = (
@@ -238,17 +242,44 @@ export const getBasePeriodTicketAttributes = (
     };
 };
 
+const getPointToPointProducts = (req: NextApiRequestWithSession): PointToPointProductInfoWithSOP[] | BaseProduct[] => {
+    const productDetail = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+
+    if (!isSalesOfferPackages(salesOfferPackages)) {
+        throw new Error('No Sales Offer Packages data found');
+    }
+
+    if (productDetail && !isPointToPointProductInfo(productDetail)) {
+        throw new Error('Invalid product detail found for point to point ticket');
+    }
+
+    if (isPointToPointProductInfo(productDetail)) {
+        return [
+            {
+                ...productDetail,
+                salesOfferPackages,
+            },
+        ];
+    }
+
+    return [
+        {
+            salesOfferPackages,
+        },
+    ];
+};
+
 export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): SingleTicket => {
     const isMatchingInfo = (
         matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
 
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'single');
-
-    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
+    const products = getPointToPointProducts(req);
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !isSalesOfferPackages(salesOfferPackages)) {
+    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -258,7 +289,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...baseTicketAttributes,
         ...service,
         fareZones: getFareZones(userFareStages, matchingFareZones),
-        products: [{ salesOfferPackages }],
+        products,
         termTime: isTermTime(req),
     };
 };
@@ -274,15 +305,14 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
 
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'return');
 
-    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const returnPeriodValidity = getSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE);
+    const products = getPointToPointProducts(req);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
-        !isSalesOfferPackages(salesOfferPackages) ||
         isReturnPeriodValidityWithErrors(returnPeriodValidity)
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
@@ -302,7 +332,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
                   )
                 : [],
         ...(returnPeriodValidity && { returnPeriodValidity }),
-        products: [{ salesOfferPackages }],
+        products,
     };
 };
 

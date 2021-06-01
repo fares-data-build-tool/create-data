@@ -2,8 +2,8 @@ import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
-import { INBOUND_MATCHING_ATTRIBUTE } from '../../constants/attributes';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { CARNET_FARE_TYPE_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE } from '../../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -29,6 +29,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
         const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
+
+        const carnetFareType = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
+
+        if (carnetFareType) {
+            redirectTo(res, '/carnetProductDetails');
+            return;
+        }
+
         redirectTo(res, '/returnValidity');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';

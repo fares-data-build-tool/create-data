@@ -69,7 +69,7 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                 Select all that apply from the lists below
                             </span>
 
-                            <FormGroupWrapper errorId={purchaseLocationsList.id} errors={errors}>
+                            <FormGroupWrapper errorIds={[purchaseLocationsList.id]} errors={errors}>
                                 <fieldset className="govuk-fieldset" aria-describedby="sop-purchase-locations">
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"
@@ -114,7 +114,7 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                     </FormElementWrapper>
                                 </fieldset>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errorId={paymentMethodsList.id} errors={errors}>
+                            <FormGroupWrapper errorIds={[paymentMethodsList.id]} errors={errors}>
                                 <fieldset className="govuk-fieldset" aria-describedby="sop-payment-methods">
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"
@@ -159,7 +159,7 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                     </FormElementWrapper>
                                 </fieldset>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errorId={ticketFormatsList.id} errors={errors}>
+                            <FormGroupWrapper errorIds={[ticketFormatsList.id]} errors={errors}>
                                 <fieldset className="govuk-fieldset" aria-describedby="sop-ticket-formats">
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"

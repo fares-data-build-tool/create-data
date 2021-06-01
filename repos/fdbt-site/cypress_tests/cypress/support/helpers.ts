@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cypress-file-upload';
+import { FareType } from './steps';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -16,9 +17,7 @@ export const getHomePage = (isScheme: boolean): void => {
     cy.visit(`?disableAuth=${isScheme ? 'scheme' : 'BLAC'}`);
 };
 
-export const fareTypeToFareTypeIdMapper = (
-    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
-): string => `fare-type-${fareType}`;
+export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `fare-type-${fareType}`;
 
 export const startPageLinkClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('faretype-link');
 
@@ -76,6 +75,39 @@ export const randomlyChooseAgeLimits = (): void => {
             cy.log('Max and min age, same values');
             getElementById('age-range-min').type('50');
             getElementById('age-range-max').type('50');
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+};
+
+export const randomlyChooseSchoolAgeLimits = (): void => {
+    const randomSelector = getRandomNumber(1, 2);
+    switch (randomSelector) {
+        case 1:
+            cy.log('age-range-required');
+            clickElementById('age-range-required');
+            randomlyChooseAgeLimits();
+            break;
+        case 2:
+            cy.log('age-range-not-required');
+            clickElementById('age-range-not-required');
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+};
+export const randomlyChooseASchoolProof = (): void => {
+    const randomSelector = getRandomNumber(1, 2);
+    switch (randomSelector) {
+        case 1:
+            cy.log('proof-not-required');
+            clickElementById('proof-required');
+            randomlyChooseAProof();
+            break;
+        case 2:
+            cy.log('proof-not-required');
+            clickElementById('proof-not-required');
             break;
         default:
             throwInvalidRandomSelectorError();
@@ -311,6 +343,15 @@ export const randomlyDecideTimeRestrictions = (): void => {
         cy.get('[id^=end-time-]').each(input => {
             cy.wrap(input).type(endTimes[getRandomNumber(0, 2)]);
         });
+    }
+    continueButtonClick();
+};
+
+export const randomlyDecideTermRestrictions = (): void => {
+    if (getRandomNumber(0, 1) === 0) {
+        clickElementById('term-time-no');
+    } else {
+        clickElementById('term-time-yes');
     }
     continueButtonClick();
 };
