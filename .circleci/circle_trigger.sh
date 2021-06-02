@@ -80,6 +80,7 @@ echo "Workflows currently in failed status: (${FAILED_WORKFLOWS[@]})."
 for PACKAGE in ${PACKAGES[@]}
 do
   PACKAGE_PATH=${ROOT#.}/$PACKAGE
+  # If we can't find a match in the commit history, then just build them all
   LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff ${PACKAGE_PATH#/} || echo "CHANGED")
   CIRCLE_CI_FOLDER_CHANGED=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff .circleci || echo "CHANGED")
 
