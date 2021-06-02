@@ -31,7 +31,7 @@ if  [[ -z ${LAST_COMPLETED_BUILD_SHA} ]]; then
     | uniq)
 
   REMOTE_BRANCHES=$(git branch -r | sed 's/\s*origin\///' | tr '\n' ' ')
-  PARENT_BRANCH=master
+  PARENT_BRANCH=develop
   for BRANCH in ${TREE[@]}
   do
     BRANCH=${BRANCH#"origin/"}
@@ -80,8 +80,8 @@ echo "Workflows currently in failed status: (${FAILED_WORKFLOWS[@]})."
 for PACKAGE in ${PACKAGES[@]}
 do
   PACKAGE_PATH=${ROOT#.}/$PACKAGE
-  LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff ${PACKAGE_PATH#/})
-  CIRCLE_CI_FOLDER_CHANGED=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff .circleci)
+  LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff ${PACKAGE_PATH#/} || echo "CHANGED")
+  CIRCLE_CI_FOLDER_CHANGED=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff .circleci || echo "CHANGED")
 
 # Always run for Tags at the moment so the Prod releases work
   if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]] && [[ -z "$CIRCLE_CI_FOLDER_CHANGED" ]] && [[ -z "$CIRCLE_TAG" ]]; then
