@@ -81,8 +81,9 @@ for PACKAGE in ${PACKAGES[@]}
 do
   PACKAGE_PATH=${ROOT#.}/$PACKAGE
   LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff ${PACKAGE_PATH#/})
+  CIRCLE_CI_FOLDER_CHANGED=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff .circleci)
 
-  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
+  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]] && [[ -z "$CIRCLE_CI_FOLDER_CHANGED" ]]; then
     INCLUDED=0
     for FAILED_BUILD in ${FAILED_WORKFLOWS[@]}
     do
