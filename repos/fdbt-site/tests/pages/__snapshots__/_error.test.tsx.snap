@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages error page should render 404 page correctly 1`] = `
+<Component
+  description="Error page of the Create Fares Data Service"
+  title="Error - Create Fares Data Service"
+>
+  <div>
+    <h1
+      className="govuk-heading-l"
+    >
+      Page not found
+    </h1>
+    <p
+      className="govuk-body"
+    >
+      If you typed the web address, check it is correct.
+    </p>
+    <p
+      className="govuk-body"
+    >
+      If you pasted the web address, check you copied the entire address.
+    </p>
+    <p
+      className="govuk-body"
+    >
+      If the web address is correct or you selected a link or button,
+       
+      <a
+        className="govuk-link"
+        href="/feedback"
+        id="feedback-link"
+      >
+        contact
+      </a>
+       
+      us about your fares data.
+    </p>
+  </div>
+  <br />
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/"
+    role="button"
+  >
+    Start again
+  </a>
+</Component>
+`;
+
+exports[`pages error page should render error page correctly 1`] = `
+<Component
+  description="Error page of the Create Fares Data Service"
+  title="Error - Create Fares Data Service"
+>
+  <div>
+    <h1
+      className="govuk-heading-l"
+    >
+      Sorry, there is a problem with the service.
+    </h1>
+    <p
+      className="govuk-body"
+    >
+      Try again later.
+    </p>
+    <p
+      className="govuk-body"
+    >
+      Your answers have not been saved, use the button below to start again.
+    </p>
+    <p
+      className="govuk-body"
+    >
+       
+      <a
+        className="govuk-link"
+        href="/feedback"
+        id="feedback-link"
+      >
+        Contact
+      </a>
+       
+      us for assistance.
+    </p>
+  </div>
+  <br />
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/"
+    role="button"
+  >
+    Start again
+  </a>
+</Component>
+`;

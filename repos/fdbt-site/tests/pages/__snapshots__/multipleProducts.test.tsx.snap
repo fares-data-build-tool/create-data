@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages multipleProduct should render correctly 1`] = `
+<Component
+  description="Multiple Product entry page of the Create Fares Data Service"
+  errors={Array []}
+  title="Multiple Product - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/multipleProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="multiple-product-page-heading"
+    >
+      Enter your product details
+    </h1>
+    <span
+      className="govuk-hint"
+      id="service-operator-hint"
+    >
+      Infinity Line
+       - 
+      2
+       Products - 
+      Adult
+    </span>
+    <div
+      className="govuk-inset-text"
+    >
+      For example, Super Saver ticket - 4.95 - 2 - Days
+    </div>
+    <div
+      className="govuk-grid-row"
+    >
+      <ProductRow
+        errors={Array []}
+        numberOfProductsToDisplay="2"
+        userInput={Array []}
+      />
+    </div>
+  </CsrfForm>
+</Component>
+`;

@@ -1,0 +1,263 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for an RDS resources
+
+Parameters:
+  DatabaseUsername:
+    AllowedPattern: "[a-zA-Z0-9]+"
+    ConstraintDescription: must be between 1 to 16 alphanumeric characters.
+    Description: The database admin account user name, between 1 to 16 alphanumeric characters.
+    MaxLength: "16"
+    MinLength: "1"
+    Default: admin
+    Type: String
+
+  DatabasePassword:
+    AllowedPattern: "[a-zA-Z0-9]+"
+    ConstraintDescription: must be between 8 to 41 alphanumeric characters.
+    Description: The database admin account password, between 8 to 41 alphanumeric characters.
+    MaxLength: "41"
+    MinLength: "8"
+    NoEcho: "true"
+    Type: String
+
+  InstanceType:
+    AllowedValues:
+      - db.t3.small
+      - db.t3.medium
+    Type: String
+
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+
+  ProductName:
+    Type: String
+    Default: fdbt
+
+  LatestAmiId:
+    Type: "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
+    Default: "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+
+  QualysActivationId:
+    Type: String
+
+  QualysCustomerId:
+    Type: String
+
+  TaniumServerList:
+    Type: String
+
+Conditions:
+  IsProd: !Equals [!Ref Stage, "prod"]
+
+Resources:
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: !Sub Subnet Group for ${ProductName} Aurora
+      SubnetIds:
+        - Fn::ImportValue: !Sub ${Stage}:DataSubnetA
+        - Fn::ImportValue: !Sub ${Stage}:DataSubnetB
+
+  DatabaseClusterParameterGroup:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Description: Parameter Group for master DB
+      Family: aurora5.6
+      Parameters:
+        aurora_load_from_s3_role:
+          Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
+
+  DatabaseClusterParameterGroup5dot7:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Description: Parameter Group for master DB
+      Family: aurora-mysql5.7
+      Parameters:
+        aurora_load_from_s3_role:
+          Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
+
+  DatabaseCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-mysql
+      EngineVersion: 5.7.mysql_aurora.2.09.2
+      DatabaseName: !Sub ${ProductName}
+      MasterUsername: !Ref DatabaseUsername
+      MasterUserPassword: !Ref DatabasePassword
+      PreferredBackupWindow: 01:00-02:00
+      BackupRetentionPeriod: !If [IsProd, 3, 1]
+      PreferredMaintenanceWindow: mon:03:00-mon:04:00
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      StorageEncrypted: true
+      DeletionProtection: !If [IsProd, true, false]
+      DBClusterParameterGroupName: !Ref DatabaseClusterParameterGroup5dot7
+      AssociatedRoles:
+        - RoleArn:
+            Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
+      VpcSecurityGroupIds:
+        - Fn::ImportValue: !Sub ${Stage}:DatabaseSecurityGroup
+
+  DatabaseMasterInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora
+      DBClusterIdentifier: !Ref DatabaseCluster
+      DBInstanceClass: !Ref InstanceType
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      MonitoringInterval: 60
+      MonitoringRoleArn:
+        Fn::ImportValue: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+      Tags:
+        - Key: Master
+          Value: "true"
+
+  DatabaseSecondaryInstance:
+    Type: AWS::RDS::DBInstance
+    Condition: IsProd
+    Properties:
+      Engine: aurora
+      DBClusterIdentifier: !Ref DatabaseCluster
+      DBInstanceClass: !Ref InstanceType
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      MonitoringInterval: 60
+      MonitoringRoleArn:
+        Fn::ImportValue: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+
+  DatabaseMasterCPUAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Master database CPU utilization is over 80%.
+      Namespace: AWS/RDS
+      MetricName: CPUUtilization
+      Unit: Percent
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 3
+      Threshold: 80
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: DBInstanceIdentifier
+          Value: !Ref DatabaseMasterInstance
+      AlarmActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      InsufficientDataActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      OKActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+
+  DatabaseMasterMemoryAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Master database freeable memory is under 300MB.
+      Namespace: AWS/RDS
+      MetricName: FreeableMemory
+      Unit: Bytes
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 300000000
+      ComparisonOperator: LessThanOrEqualToThreshold
+      Dimensions:
+        - Name: DBInstanceIdentifier
+          Value: !Ref DatabaseMasterInstance
+      AlarmActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      InsufficientDataActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+      OKActions:
+        - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+
+  BastionInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub ${ProductName}-bastion-instance-profile-${Stage}
+      Path: /
+      Roles:
+        - Fn::ImportValue: !Sub ${Stage}:BastionRoleName
+
+  BastionLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub ${ProductName}-bastion-launch-template-${Stage}
+      LaunchTemplateData:
+        IamInstanceProfile:
+          Arn: !GetAtt BastionInstanceProfile.Arn
+        ImageId: !Ref LatestAmiId
+        InstanceType: t3.micro
+        SecurityGroupIds:
+          - Fn::ImportValue: !Sub ${Stage}:BastionSecurityGroup
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: Name
+                Value: Bastion
+              - Key: Bastion
+                Value: "true"
+        UserData:
+          Fn::Base64: !Sub |
+            #!/bin/bash
+
+            sudo su
+
+            aws s3 cp s3://cfd-shared-content/Linux_RPM_QualysCloudAgent.x86_64.rpm /tmp
+            aws s3 cp s3://cfd-shared-content/TaniumClient-7.4.2.2073-1.amzn2.x86_64.rpm /tmp
+            aws s3 cp s3://cfd-shared-content/tanium-init.dat /tmp
+
+            rpm -ivh /tmp/Linux_RPM_QualysCloudAgent.x86_64.rpm
+            /usr/local/qualys/cloud-agent/bin/qualys-cloud-agent.sh ActivationId=${QualysActivationId} CustomerId=${QualysCustomerId} ProviderName=AWS
+
+            rpm -i /tmp/TaniumClient-7.4.2.2073-1.amzn2.x86_64.rpm
+
+            cd /opt/Tanium/TaniumClient/
+
+            ./TaniumClient config set ServerNameList ${TaniumServerList}
+            ./TaniumClient config set LogVerbosityLevel 1
+            ./TaniumClient config set ServerPort 443
+            ./TaniumClient config set ListenPort 17472
+            ./TaniumClient config set Resolver nslookup
+
+            cp -a /tmp/tanium-init.dat /opt/Tanium/TaniumClient/
+
+            service taniumclient start
+
+  BastionAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      DesiredCapacity: "1"
+      LaunchTemplate:
+        LaunchTemplateId: !Ref BastionLaunchTemplate
+        Version: !GetAtt BastionLaunchTemplate.LatestVersionNumber
+      MaxSize: "1"
+      MinSize: "1"
+      VPCZoneIdentifier:
+        - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
+        - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
+
+  ClusterEndpointDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId:
+        Fn::ImportValue: !Sub ${Stage}:PrivateHostedZoneId
+      Name:
+        Fn::Sub:
+          - db.${internalDomain}
+          - internalDomain:
+              Fn::ImportValue: !Sub ${Stage}:InternalDomain
+      ResourceRecords:
+        - !GetAtt DatabaseCluster.Endpoint.Address
+      TTL: 300
+      Type: CNAME
+
+Outputs:
+  RdsHostName:
+    Value: !GetAtt DatabaseMasterInstance.Endpoint.Address
+    Export:
+      Name: !Sub ${Stage}:RdsHostName
+  RdsClusterInternalEndpoint:
+    Value: !Ref ClusterEndpointDnsRecord
+    Export:
+      Name: !Sub ${Stage}:RdsClusterInternalEndpoint

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Help should render the Help component 1`] = `
+<div>
+  <h2
+    className="govuk-heading-s"
+  >
+    Help and Support
+  </h2>
+  <p
+    className="govuk-body"
+  >
+    If you are having problems, please contact the Create Fares Data Service via this link:
+     
+    <span>
+      <a
+        className="govuk-link govuk-!-font-size-19"
+        href="/contact"
+      >
+        Contact Us
+      </a>
+    </span>
+  </p>
+</div>
+`;

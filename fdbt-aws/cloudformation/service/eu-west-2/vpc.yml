@@ -1,0 +1,403 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for VPC resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+  ProductName:
+    Type: String
+    Default: fdbt
+
+Mappings:
+  SubnetConfig:
+    VPC:
+      CIDR: 10.0.0.0/16
+    PublicA:
+      CIDR: 10.0.0.0/24
+    PublicB:
+      CIDR: 10.0.1.0/24
+    PrivateA:
+      CIDR: 10.0.2.0/24
+    PrivateB:
+      CIDR: 10.0.3.0/24
+    DataA:
+      CIDR: 10.0.4.0/24
+    DataB:
+      CIDR: 10.0.5.0/24
+
+Conditions:
+  IsTest: !Equals [!Ref Stage, "test"]
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      CidrBlock: !FindInMap ["SubnetConfig", "VPC", "CIDR"]
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-vpc-${Stage}
+
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref AWS::Region
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap ["SubnetConfig", "PublicA", "CIDR"]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-publicSubnetA-${Stage}
+
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 1
+        - Fn::GetAZs: !Ref AWS::Region
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap ["SubnetConfig", "PublicB", "CIDR"]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-publicSubnetB-${Stage}
+
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref AWS::Region
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap ["SubnetConfig", "PrivateA", "CIDR"]
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-privateSubnetA-${Stage}
+
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 1
+        - Fn::GetAZs: !Ref AWS::Region
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap ["SubnetConfig", "PrivateB", "CIDR"]
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-privateSubnetB-${Stage}
+
+  DataSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref AWS::Region
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap ["SubnetConfig", "DataA", "CIDR"]
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-dataSubnetA-${Stage}
+
+  DataSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 1
+        - Fn::GetAZs: !Ref AWS::Region
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap ["SubnetConfig", "DataB", "CIDR"]
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-dataSubnetB-${Stage}
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-internetGateway
+
+  GatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-publicRouteTable-${Stage}
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      RouteTableId: !Ref PublicRouteTable
+
+  NatGatewayAttachment:
+    Type: AWS::EC2::EIP
+    DependsOn: GatewayAttachment
+    Properties:
+      Domain: vpc
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGatewayAttachment.AllocationId
+      SubnetId: !Ref PublicSubnetA
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-natGateway-${Stage}
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-privateRouteTable-${Stage}
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  PrivateRouteTableAAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetA
+
+  PrivateRouteTableBAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetB
+
+  DataRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-dataRouteTable-${Stage}
+
+  DataRouteTableAAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref DataRouteTable
+      SubnetId: !Ref DataSubnetA
+
+  DataRouteTableBAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref DataRouteTable
+      SubnetId: !Ref DataSubnetB
+
+  S3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: "*"
+            Principal: "*"
+            Resource: "*"
+      RouteTableIds:
+        - !Ref PrivateRouteTable
+        - !Ref DataRouteTable
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
+      VpcId: !Ref VPC
+
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the DB
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref BastionSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref UploaderSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref FargateSiteContainerSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-db-sg-${Stage}
+
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Bastion
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-bastion-sg-${Stage}
+
+  UploaderSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow all outbound traffic, no inbound
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProductName}-ref-data-uploader-sg-${Stage}
+
+  FargateSiteContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Fargate Site containers
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+      VpcId: !Ref VPC
+
+  FargateMonitoringContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Fargate Monitoring containers
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+          IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+      VpcId: !Ref VPC
+
+  FargatePrototypeContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Condition: IsTest
+    Properties:
+      GroupDescription: Access to the Fargate Prototype containers
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+          IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+      VpcId: !Ref VPC
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Public access to the load balancer
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+      VpcId: !Ref VPC
+
+  EFSMonitoringMountTargetSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to EFS from Monitoring ECS Tasks
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref FargateMonitoringContainerSecurityGroup
+          IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+      VpcId: !Ref VPC
+
+Outputs:
+  VpcId:
+    Value: !Ref VPC
+    Export:
+      Name: !Sub ${Stage}:VpcId
+  PublicSubnetA:
+    Value: !Ref PublicSubnetA
+    Export:
+      Name: !Sub ${Stage}:PublicSubnetA
+  PublicSubnetB:
+    Value: !Ref PublicSubnetB
+    Export:
+      Name: !Sub ${Stage}:PublicSubnetB
+  PrivateSubnetA:
+    Value: !Ref PrivateSubnetA
+    Export:
+      Name: !Sub ${Stage}:PrivateSubnetA
+  PrivateSubnetB:
+    Value: !Ref PrivateSubnetB
+    Export:
+      Name: !Sub ${Stage}:PrivateSubnetB
+  DataSubnetA:
+    Value: !Ref DataSubnetA
+    Export:
+      Name: !Sub ${Stage}:DataSubnetA
+  DataSubnetB:
+    Value: !Ref DataSubnetB
+    Export:
+      Name: !Sub ${Stage}:DataSubnetB
+  BastionSecurityGroup:
+    Value: !Ref BastionSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:BastionSecurityGroup
+  DatabaseSecurityGroup:
+    Value: !Ref DatabaseSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:DatabaseSecurityGroup
+  ReferenceDataUploaderLambdaSG:
+    Value: !Ref UploaderSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:ReferenceDataUploaderLambdaSG
+  FargateSiteContainerSecurityGroup:
+    Value: !Ref FargateSiteContainerSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:FargateSiteContainerSecurityGroup
+  FargateMonitoringContainerSecurityGroup:
+    Value: !Ref FargateMonitoringContainerSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:FargateMonitoringContainerSecurityGroup
+  FargatePrototypeContainerSecurityGroup:
+    Condition: IsTest
+    Value: !Ref FargatePrototypeContainerSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:FargatePrototypeContainerSecurityGroup
+  LoadBalancerSecurityGroup:
+    Value: !Ref LoadBalancerSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:LoadBalancerSecurityGroup
+  EFSMonitoringMountTargetSecurityGroup:
+    Value: !Ref EFSMonitoringMountTargetSecurityGroup
+    Export:
+      Name: !Sub ${Stage}:EFSMonitoringMountTargetSecurityGroup

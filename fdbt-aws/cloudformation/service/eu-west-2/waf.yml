@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for WAF resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+  ProductName:
+    Type: String
+    Default: fdbt
+  HeaderName:
+    Type: String
+    Default: X-Origin-Verify
+    Description: Header name for origin secret
+
+Resources:
+  OriginVerifySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      GenerateSecretString:
+        SecretStringTemplate: '{"HEADERVALUE": "RandomPassword"}'
+        GenerateStringKey: "HEADERVALUE"
+        ExcludePunctuation: true
+
+  RestrictToCloudfrontAccessAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: !Sub ${ProductName}-waf-restrict-cloudfront-access-${Stage}
+      Scope: REGIONAL
+      Description: Restricts access to CloudFront
+      DefaultAction:
+        Block: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: RestrictCloudfrontAccessMetric
+      Rules:
+        - Name: AllowCloudfrontHeader
+          Priority: 0
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowCloudfrontHeaderMetric
+          Action:
+            Allow: {}
+          Statement:
+            ByteMatchStatement:
+              PositionalConstraint: EXACTLY
+              FieldToMatch:
+                SingleHeader:
+                  Name: !Ref HeaderName
+              SearchString:
+                !Join [
+                  "",
+                  [
+                    "{{resolve:secretsmanager:",
+                    !Ref OriginVerifySecret,
+                    ":SecretString:HEADERVALUE}}",
+                  ],
+                ]
+              TextTransformations:
+                - Priority: 0
+                  Type: NONE
+
+  WafAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn:
+        Fn::ImportValue: !Sub ${Stage}:LoadbalancerArn
+      WebACLArn: !GetAtt RestrictToCloudfrontAccessAcl.Arn
+
+Outputs:
+  OriginVerifySecret:
+    Value: !Ref OriginVerifySecret
+    Export:
+      Name: !Sub ${Stage}:OriginVerifySecret

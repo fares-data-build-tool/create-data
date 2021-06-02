@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages csvUpload should render correctly 1`] = `
+<Component
+  description="CSV Upload page of the Create Fares Data Service"
+  errors={Array []}
+  title="CSV Upload - Create Fares Data Service"
+>
+  <UserDataUploadComponent
+    csrfToken=""
+    csvTemplateAttachmentUrl=""
+    csvTemplateDisplayName=""
+    csvTemplateSize=""
+    csvUploadApiRoute=""
+    csvUploadHintText=""
+    csvUploadTitle="Upload fares triangle as CSV"
+    detailBody={
+      <React.Fragment>
+        <p>
+          Some common issues with fares triangle uploads include:
+        </p>
+        <ul
+          className="govuk-list govuk-list--bullet"
+        >
+          <li>
+            Commas in fare stage names
+          </li>
+          <li>
+            Not filling in every fare stage on the diagonal row
+          </li>
+        </ul>
+        <p>
+          Use the help file for a more detailed guide on constructing a fares triangle in the required format or download the fares triangle template to create a new file.
+        </p>
+      </React.Fragment>
+    }
+    errors={Array []}
+    guidanceDocAttachmentUrl=""
+    guidanceDocDisplayName=""
+    guidanceDocSize=""
+    showPriceOption={true}
+  />
+</Component>
+`;

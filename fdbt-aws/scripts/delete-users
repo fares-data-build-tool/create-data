@@ -1,0 +1,12 @@
+PATH_TO_USER_EMAILS_FILE=$1
+
+if [ -z $PATH_TO_USER_EMAILS_FILE ]; then
+  echo "usage: delete-users <path_to_user_emails_file>"
+  exit 1
+fi
+
+while read -r email
+do
+  ./cognito-manager delete-user $email
+  echo "Deleted $email"
+done < "$PATH_TO_USER_EMAILS_FILE"

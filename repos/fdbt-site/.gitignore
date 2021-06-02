@@ -1,0 +1,24 @@
+# package directories
+node_modules
+jspm_packages
+dist
+
+# Serverless directories
+.build
+buckets
+.idea
+.next
+.serverless_nextjs
+deploy
+
+coverage
+.vscode
+
+**/.DS_Store
+
+# Cypress Outputs
+cypress_tests/cypress/videos
+cypress_tests/cypress/screenshots
+cypress_tests/local.log
+cypress_tests/log
+cypress_tests/results

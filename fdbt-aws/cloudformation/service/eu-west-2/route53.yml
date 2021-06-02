@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation template for Route53 resources
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - test
+      - preprod
+      - prod
+  DomainName:
+    Type: String
+    Description: Domain name for private hosted zone
+
+Resources:
+  PrivateHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Ref DomainName
+      VPCs:
+        - VPCId:
+            Fn::ImportValue: !Sub ${Stage}:VpcId
+          VPCRegion: !Ref AWS::Region
+
+Outputs:
+  PrivateHostedZoneId:
+    Value: !Ref PrivateHostedZone
+    Export:
+      Name: !Sub ${Stage}:PrivateHostedZoneId
+
+  InternalDomain:
+    Value: !Ref DomainName
+    Export:
+      Name: !Sub ${Stage}:InternalDomain

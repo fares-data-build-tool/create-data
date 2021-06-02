@@ -1,0 +1,363 @@
+@import '../../node_modules/govuk-frontend/govuk/all';
+
+main {
+    border: none;
+    outline: none;
+}
+
+.skip {
+    position: absolute;
+    overflow: hidden;
+    top: -1px;
+    width: 1px;
+    height: 1px;
+
+    &:focus {
+        position: relative;
+        top: auto;
+        width: auto;
+        height: auto;
+        overflow: auto;
+    }
+}
+
+.crownPadding {
+    padding-left: 5px;
+}
+
+.dftlogo {
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.govuk-grid-row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.govuk-grid-column-two-thirds {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 15px;
+}
+
+@media (min-width: 40.0625em) {
+    .govuk-grid-column-two-thirds {
+        width: 16%;
+        float: left;
+    }
+}
+
+.gem-c-organisation-logo {
+    font-size: 13px;
+    line-height: 1.1538461538;
+    font-weight: 400;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-organisation-logo {
+        font-size: 18px;
+        line-height: 20px;
+    }
+}
+
+.brand--department-for-transport .brand__color {
+    color: #398373;
+}
+
+.brand--department-for-transport .brand__color:link,
+.brand--department-for-transport .brand__color:visited,
+.brand--department-for-transport .brand__color:active {
+    color: #398373;
+}
+
+.brand--department-for-transport .brand__color:hover,
+.brand--department-for-transport .brand__color:focus {
+    color: #0b0c0c;
+}
+
+.brand--department-for-transport.brand__border-color,
+.brand--department-for-transport .brand__border-color {
+    border-color: #006c56;
+}
+
+.gem-c-organisation-logo__container {
+    text-transform: none;
+    text-decoration: none;
+    display: block;
+    color: #0b0c0c;
+    height: auto;
+    width: auto;
+    direction: ltr;
+}
+
+.gem-c-organisation-logo__crest {
+    border-left: 2px solid #0b0c0c;
+    padding-top: 20px;
+    padding-left: 6px;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-organisation-logo__crest {
+        padding-top: 25px;
+        padding-left: 7px;
+    }
+}
+
+.brand--executive-office .gem-c-organisation-logo__crest {
+    border-left-width: 0;
+    padding-left: 0;
+    background-position: 0 0;
+}
+
+.gem-c-organisation-logo__crest--single-identity,
+.gem-c-organisation-logo__crest--eo,
+.gem-c-organisation-logo__crest--org {
+    background: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_13px-3b807e54b8b177b209fc8d880ffc3687f7a634991d74038faaca9e4b4b487424.png)
+        no-repeat 5px 0;
+    background-size: auto 20px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (min-device-pixel-ratio: 2),
+    only screen and (min-resolution: 192dpi),
+    only screen and (min-resolution: 2dppx) {
+    .gem-c-organisation-logo__crest--single-identity,
+    .gem-c-organisation-logo__crest--eo,
+    .gem-c-organisation-logo__crest--org {
+        background-image: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_13px_x2-24eb94ac833fa04e95dc43b876e6e78e502d1b8fdc4476f253faf8ea74ce1670.png);
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-organisation-logo__crest--single-identity,
+    .gem-c-organisation-logo__crest--eo,
+    .gem-c-organisation-logo__crest--org {
+        background: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px-7026afebba9918a0830ebf68cf496cbb0b81f3514b884dc2c32904780baa3368.png)
+            no-repeat 6px 0;
+        background-size: auto 26px;
+    }
+}
+
+@media only screen and (min-width: 40.0625em) and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (min-width: 40.0625em) and (min-device-pixel-ratio: 2),
+    only screen and (min-width: 40.0625em) and (min-resolution: 192dpi),
+    only screen and (min-width: 40.0625em) and (min-resolution: 2dppx) {
+    .gem-c-organisation-logo__crest--single-identity,
+    .gem-c-organisation-logo__crest--eo,
+    .gem-c-organisation-logo__crest--org {
+        background-image: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px_x2-b4af7a6d71fbd9bfb3b9550bc0e1d856e01e5b388ad8e18717b4ad60e73705ff.png);
+    }
+}
+
+.brand--department-for-transport.brand__border-color,
+.brand--department-for-transport .brand__border-color {
+    border-color: #006c56;
+}
+
+.gem-c-organisation-logo__name {
+    position: relative;
+    top: 3px;
+    font-family: 'HelveticaNeue', 'Helvetica Neue', 'Arial', 'Helvetica', sans-serif;
+}
+
+.cls-1 {
+    fill: #49499e;
+}
+
+.cls-2 {
+    fill: #00bdd0;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+.logo {
+    width: 20%;
+    max-width: 160px;
+    min-width: 120px;
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: top;
+    padding-top: 10px;
+    display: inline-block;
+}
+
+.no-background-image {
+    background-image: none;
+    padding-top: 0px;
+}
+
+.hint-text {
+    padding-top: 15px;
+}
+
+.error-message-padding {
+    padding-top: 10px;
+}
+
+.govuk-footer__copyright-logo {
+    background-image: url('https://assets.publishing.service.gov.uk/static/images/govuk-crest-2x-c6548884b516041752fc4156a50f084ca387b1e37e4f4668cd109058d924b197.png') !important;
+}
+
+.govuk-header__account-link {
+    @media (min-width: 401px) {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 220px;
+        text-align: right;
+    }
+
+    @media (max-width: 400px) {
+        margin: 10px 0 20px;
+    }
+
+    a {
+        margin-right: 6px;
+    }
+}
+
+.govuk-header__signout {
+    font-size: 16px;
+    font-family: 'GDS Transport', Arial, sans-serif;
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+
+    @media (max-width: 640px) {
+        font-size: 14px;
+    }
+}
+
+.govuk-header__form {
+    display: inline;
+}
+
+.govuk-header__person-icon {
+    margin: 0 5px -5px 0;
+}
+
+.cookie-banner {
+    background-color: #f3f2f1;
+    box-sizing: border-box;
+    display: block;
+    font-family: 'GDS Transport', Arial, sans-serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 20px 0 20px 0;
+    -webkit-font-smoothing: antialiased;
+
+    .govuk-width-container {
+        position: relative;
+    }
+
+    .cookie-banner__message {
+        display: inline-block;
+        line-height: 25px;
+        padding-bottom: 10px;
+        margin-bottom: 0;
+    }
+
+    .cookie-banner__button {
+        display: inline-block;
+        padding: 0;
+
+        .cookie-banner__button--inline {
+            margin-bottom: 5px;
+            margin-right: 10px;
+        }
+    }
+
+    .cookie-banner__hide {
+        outline: 0;
+        border: 0;
+        background: none;
+        text-decoration: underline;
+        color: #1d70b8;
+        padding: 0;
+        font-size: 19px;
+        position: absolute;
+        right: 0;
+        top: -1px;
+
+        &:hover {
+            color: #003078;
+            cursor: pointer;
+        }
+
+        &:focus {
+            outline: 3px solid transparent;
+            color: #0b0c0c;
+            background-color: #fd0;
+            box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+            text-decoration: none;
+        }
+
+        @media (max-width: 769px) {
+            position: static;
+        }
+    }
+}
+
+.js-enabled {
+    .no-js-cookie-banner {
+        display: none;
+    }
+
+    .inputVisible {
+        display: block;
+    }
+
+    .inputHidden {
+        display: none;
+    }
+}
+
+.text-input-margin {
+    margin-right: 10px;
+}
+
+.time-restrictions-table {
+    &.flex-container {
+        margin-bottom: 20px;
+    }
+
+    .day-label {
+        margin-bottom: 8px !important;
+    }
+
+    .govuk-form-group {
+        margin-bottom: 0;
+    }
+}
+
+.continue-button-placement {
+    margin-top: 30px !important;
+}
+
+.time-restrictions-button-placement[class] {
+    display: none;
+}
+
+.js-enabled {
+    .time-restrictions-button-placement[class] {
+        display: block;
+        margin-top: auto;
+        margin-bottom: 0px;
+        max-height: 40px;
+        min-width: 125px;
+    }
+}
+
+.time-restriction-row {
+    display: flex;
+
+    &:not(:last-child) {
+        margin-bottom: 20px;
+    }
+}

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages fareType should render correctly 1`] = `
+<Component
+  description="Reset Email Confirmation page of the Create Fares Data Service"
+  title="Reset Email Confirmation - Create Fares Data Service"
+>
+  <h1
+    className="govuk-heading-l"
+    id="reset-confirmation-page-heading"
+  >
+    Reset password link has been sent
+  </h1>
+  <p
+    className="govuk-body"
+  >
+    If this email address exists in our system, we will send a password reset email to
+    <b>
+       test@email.com
+    </b>
+    .
+  </p>
+  <p
+    className="govuk-body"
+  >
+    Check your email and follow the link within 1 hour to reset your password.
+  </p>
+  <p
+    className="govuk-body"
+  >
+    If you cannot find the email then look in your spam or junk email folder.
+  </p>
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/"
+    role="button"
+  >
+    Home
+  </a>
+</Component>
+`;

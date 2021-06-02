@@ -1,0 +1,599 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages defineTimeRestrictions should render correctly when no errors are passed 1`] = `
+<Component
+  description="Define Time Restrictions page of the Create Fares Data Service"
+  errors={Array []}
+  title="Define Time Restrictions - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/defineTimeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
+      >
+        Are there time restrictions on your ticket?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="define-time-restrictions-hint"
+      >
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
+              "id": "define-valid-days",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "valid-days-required-conditional",
+                "id": "valid-days-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
+                "inputType": "checkbox",
+                "inputs": Array [
+                  Object {
+                    "defaultChecked": false,
+                    "id": "monday",
+                    "label": "Monday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "tuesday",
+                    "label": "Tuesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "wednesday",
+                    "label": "Wednesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "thursday",
+                    "label": "Thursday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "friday",
+                    "label": "Friday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "saturday",
+                    "label": "Saturday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "sunday",
+                    "label": "Sunday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
+                    "name": "validDays",
+                  },
+                ],
+                "label": "Yes - define new time restriction",
+                "name": "timeRestrictionChoice",
+                "value": "Yes",
+              },
+              Object {
+                "dataAriaControls": "premade-time-restriction",
+                "id": "premade-time-restriction-yes",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select a saved time restriction to use",
+                  "id": "choose-time-restriction-hint",
+                },
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "id": "premade-time-restriction-0",
+                    "label": "Test Time restriction",
+                    "name": "Test Time restriction",
+                  },
+                ],
+                "label": "Yes - reuse a saved time restriction",
+                "name": "timeRestrictionChoice",
+                "selectIdentifier": "timeRestriction",
+                "value": "Premade",
+              },
+              Object {
+                "id": "valid-days-not-required",
+                "label": "No",
+                "name": "timeRestrictionChoice",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="define-valid-days"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages defineTimeRestrictions should render errors correctly when both radio and input errors are passed to the page 1`] = `
+<Component
+  description="Define Time Restrictions page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose one of the options below",
+        "id": "valid-days-required",
+      },
+      Object {
+        "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
+        "id": "start-time",
+      },
+      Object {
+        "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
+        "id": "end-time",
+      },
+    ]
+  }
+  title="Define Time Restrictions - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/defineTimeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one of the options below",
+            "id": "valid-days-required",
+          },
+          Object {
+            "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
+            "id": "start-time",
+          },
+          Object {
+            "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
+            "id": "end-time",
+          },
+        ]
+      }
+    />
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
+      >
+        Are there time restrictions on your ticket?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="define-time-restrictions-hint"
+      >
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
+              "id": "define-valid-days",
+            },
+            "radioError": Array [
+              Object {
+                "errorMessage": "Choose one of the options below",
+                "id": "valid-days-required",
+              },
+            ],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "valid-days-required-conditional",
+                "id": "valid-days-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
+                "inputType": "checkbox",
+                "inputs": Array [
+                  Object {
+                    "defaultChecked": false,
+                    "id": "monday",
+                    "label": "Monday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "tuesday",
+                    "label": "Tuesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "wednesday",
+                    "label": "Wednesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "thursday",
+                    "label": "Thursday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "friday",
+                    "label": "Friday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "saturday",
+                    "label": "Saturday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "sunday",
+                    "label": "Sunday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
+                    "name": "validDays",
+                  },
+                ],
+                "label": "Yes",
+                "name": "timeRestrictionChoice",
+                "value": "Yes",
+              },
+              Object {
+                "id": "valid-days-not-required",
+                "label": "No",
+                "name": "timeRestrictionChoice",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="define-valid-days"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages defineTimeRestrictions should render errors correctly when input errors are passed to the page 1`] = `
+<Component
+  description="Define Time Restrictions page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
+        "id": "start-time",
+      },
+      Object {
+        "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
+        "id": "end-time",
+      },
+      Object {
+        "errorMessage": "Select at least one day",
+        "id": "monday",
+      },
+    ]
+  }
+  title="Define Time Restrictions - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/defineTimeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Enter a start time in a valid 24 hour format between 0000 - 2300",
+            "id": "start-time",
+          },
+          Object {
+            "errorMessage": "Enter an end time in a valid 24 hour format between 0000 - 2300",
+            "id": "end-time",
+          },
+          Object {
+            "errorMessage": "Select at least one day",
+            "id": "monday",
+          },
+        ]
+      }
+    />
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
+      >
+        Are there time restrictions on your ticket?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="define-time-restrictions-hint"
+      >
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
+              "id": "define-valid-days",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "valid-days-required-conditional",
+                "id": "valid-days-required",
+                "inputErrors": Array [
+                  Object {
+                    "errorMessage": "Select at least one day",
+                    "id": "monday",
+                  },
+                ],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
+                "inputType": "checkbox",
+                "inputs": Array [
+                  Object {
+                    "defaultChecked": true,
+                    "id": "monday",
+                    "label": "Monday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": true,
+                    "id": "tuesday",
+                    "label": "Tuesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "wednesday",
+                    "label": "Wednesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "thursday",
+                    "label": "Thursday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "friday",
+                    "label": "Friday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "saturday",
+                    "label": "Saturday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "sunday",
+                    "label": "Sunday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
+                    "name": "validDays",
+                  },
+                ],
+                "label": "Yes",
+                "name": "timeRestrictionChoice",
+                "value": "Yes",
+              },
+              Object {
+                "id": "valid-days-not-required",
+                "label": "No",
+                "name": "timeRestrictionChoice",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="define-valid-days"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages defineTimeRestrictions should render errors correctly when radio errors are passed to the page 1`] = `
+<Component
+  description="Define Time Restrictions page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose one of the options below",
+        "id": "valid-days-required",
+      },
+    ]
+  }
+  title="Define Time Restrictions - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/defineTimeRestrictions"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose one of the options below",
+            "id": "valid-days-required",
+          },
+        ]
+      }
+    />
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="define-time-restrictions-page-heading"
+      >
+        Are there time restrictions on your ticket?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="define-time-restrictions-hint"
+      >
+        We need to know if your ticket(s) will have any time restrictions, for example select yes if your ticket(s) can only be used on a certain day or during a certain time period. If you have a premade time restriction, you can select it here.
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is this ticket only valid on certain days or times?",
+              "hidden": true,
+              "id": "define-valid-days",
+            },
+            "radioError": Array [
+              Object {
+                "errorMessage": "Choose one of the options below",
+                "id": "valid-days-required",
+              },
+            ],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "valid-days-required-conditional",
+                "id": "valid-days-required",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select the days of the week the ticket is valid for",
+                  "id": "define-valid-days-inputHint",
+                },
+                "inputType": "checkbox",
+                "inputs": Array [
+                  Object {
+                    "defaultChecked": false,
+                    "id": "monday",
+                    "label": "Monday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "tuesday",
+                    "label": "Tuesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "wednesday",
+                    "label": "Wednesday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "thursday",
+                    "label": "Thursday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "friday",
+                    "label": "Friday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "saturday",
+                    "label": "Saturday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "sunday",
+                    "label": "Sunday",
+                    "name": "validDays",
+                  },
+                  Object {
+                    "defaultChecked": false,
+                    "id": "bankHoliday",
+                    "label": "Bank holiday",
+                    "name": "validDays",
+                  },
+                ],
+                "label": "Yes",
+                "name": "timeRestrictionChoice",
+                "value": "Yes",
+              },
+              Object {
+                "id": "valid-days-not-required",
+                "label": "No",
+                "name": "timeRestrictionChoice",
+                "value": "No",
+              },
+            ],
+          }
+        }
+        key="define-valid-days"
+      />
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

@@ -1,0 +1,4 @@
+boto3==1.12.37
+botocore==1.15.37
+PyMySQL==0.9.3
+xmltodict==0.12.0

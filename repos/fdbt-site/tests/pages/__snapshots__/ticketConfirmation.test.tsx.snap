@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages ticketConfirmation should render correctly for flat fare tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Ticket Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "12A, 6, 101",
+            "href": "serviceList",
+            "name": "Services",
+          },
+          Object {
+            "content": "Price - £12",
+            "href": "productDetails",
+            "name": "Product - Some Product",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketConfirmation should render correctly for period and multiOperator tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Ticket Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "12A, 6, 101",
+            "href": "serviceList",
+            "name": "Services",
+          },
+          Object {
+            "content": "Price - £50",
+            "href": "productDetails",
+            "name": "Product - Weekly Ticket",
+          },
+          Object {
+            "content": "Duration - 5 weekss",
+            "href": "chooseValidity",
+            "name": "Product - Weekly Ticket",
+          },
+          Object {
+            "content": "Validity - 24 Hr",
+            "href": "periodValidity",
+            "name": "Product - Weekly Ticket",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketConfirmation should render correctly for return tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Ticket Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "X01",
+            "href": "service",
+            "name": "Service",
+          },
+          Object {
+            "content": "Stops - Yoden Way - Chapel Hill Road",
+            "href": "outboundMatching",
+            "name": "Outbound Fare Stage - Acomb Green Lane",
+          },
+          Object {
+            "content": "Stops - Yoden Way - Chapel Hill Road",
+            "href": "inboundMatching",
+            "name": "Inbound Fare Stage - Acomb Green Lane",
+          },
+          Object {
+            "content": "5 day",
+            "href": "returnValidity",
+            "name": "Return Validity",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages ticketConfirmation should render correctly for single tickets 1`] = `
+<Component
+  description="Ticket Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Ticket Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/ticketConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "X01",
+            "href": "service",
+            "name": "Service",
+          },
+          Object {
+            "content": "You submitted or created a fare triangle",
+            "href": "inputMethod",
+            "name": "Fare Triangle",
+          },
+          Object {
+            "content": "Stops - Yoden Way - Chapel Hill Road",
+            "href": "matching",
+            "name": "Fare Stage - Acomb Green Lane",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

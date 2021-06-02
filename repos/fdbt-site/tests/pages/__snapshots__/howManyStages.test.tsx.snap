@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages howManyStages should render correctly 1`] = `
+<Component
+  description="How Many Stages selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="How Many Stages - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/howManyStages"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="number-of-stages-hint"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            How many fare stages does the service have?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="number-of-stages-hint"
+        >
+          If the service has more than 20 fare stages you will be required to upload a CSV file. A template file is available if required.
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="less-than-20-fare-stages"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
+            id="radio-buttons"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="less-than-20-fare-stages"
+                name="howManyStages"
+                type="radio"
+                value="lessThan20"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="less-than-20-fare-stages"
+              >
+                20 fare stages or fewer
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input  "
+                id="more-than-20-fare-stages"
+                name="howManyStages"
+                type="radio"
+                value="moreThan20"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="more-than-20-fare-stages"
+              >
+                Greater than 20 fare stages
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages howManyStages should render errors correctly 1`] = `
+<Component
+  description="How Many Stages selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose an option regarding how many fare stages you have",
+        "id": "how-many-stages-error",
+      },
+    ]
+  }
+  title="How Many Stages - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/howManyStages"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose an option regarding how many fare stages you have",
+            "id": "how-many-stages-error",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="number-of-stages-hint"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            How many fare stages does the service have?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="number-of-stages-hint"
+        >
+          If the service has more than 20 fare stages you will be required to upload a CSV file. A template file is available if required.
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="less-than-20-fare-stages"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Choose an option regarding how many fare stages you have",
+                "id": "how-many-stages-error",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-radios"
+            id="radio-buttons"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input govuk-input--error "
+                id="less-than-20-fare-stages"
+                name="howManyStages"
+                type="radio"
+                value="lessThan20"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="less-than-20-fare-stages"
+              >
+                20 fare stages or fewer
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input govuk-input--error "
+                id="more-than-20-fare-stages"
+                name="howManyStages"
+                type="radio"
+                value="moreThan20"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="more-than-20-fare-stages"
+              >
+                Greater than 20 fare stages
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

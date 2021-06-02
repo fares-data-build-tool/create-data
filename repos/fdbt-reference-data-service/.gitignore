@@ -1,0 +1,18 @@
+# package directories
+__pycache__
+.pytest_cache
+node_modules
+
+# settings directories
+.vscode
+
+# Serverless directories
+.serverless
+
+**/coverage/
+node_modules
+
+.idea
+
+.DS_Store
+ .dynamodb
