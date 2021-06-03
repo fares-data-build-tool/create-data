@@ -19,7 +19,7 @@ LAST_COMPLETED_BUILD_URL="${CIRCLE_API}/v1.1/project/${REPOSITORY_TYPE}/${CIRCLE
 curl -Ss -u ${CIRCLE_TOKEN}: ${LAST_COMPLETED_BUILD_URL} > circle.json
 LAST_COMPLETED_BUILD_SHA=`cat circle.json | jq -r 'map(select(.status == "success") | select(.workflows.workflow_name != "ci")) | .[0]["vcs_revision"]'`
 
-if  [[ ${LAST_COMPLETED_BUILD_SHA} == "null" ]] || [[ $(git cat-file -t $LAST_COMPLETED_BUILD_SHA) != "commit" ]]; then
+if  [[ -z ${LAST_COMPLETED_BUILD_SHA} ]]; then
   echo -e "\e[93mThere are no completed CI builds in branch ${CIRCLE_BRANCH}.\e[0m"
 
   # Adapted from https://gist.github.com/joechrysler/6073741
@@ -31,7 +31,7 @@ if  [[ ${LAST_COMPLETED_BUILD_SHA} == "null" ]] || [[ $(git cat-file -t $LAST_CO
     | uniq)
 
   REMOTE_BRANCHES=$(git branch -r | sed 's/\s*origin\///' | tr '\n' ' ')
-  PARENT_BRANCH=master
+  PARENT_BRANCH=develop
   for BRANCH in ${TREE[@]}
   do
     BRANCH=${BRANCH#"origin/"}
@@ -51,7 +51,7 @@ if  [[ ${LAST_COMPLETED_BUILD_SHA} == "null" ]] || [[ $(git cat-file -t $LAST_CO
     | .[0][\"vcs_revision\"]"`
 fi
 
-if [[ ${LAST_COMPLETED_BUILD_SHA} == "null" ]] || [[ $(git cat-file -t $LAST_COMPLETED_BUILD_SHA) != "commit" ]]; then
+if [[ -z ${LAST_COMPLETED_BUILD_SHA} ]]; then
   echo -e "\e[93mNo CI builds for branch ${PARENT_BRANCH}. Using master.\e[0m"
   LAST_COMPLETED_BUILD_SHA=$(git rev-parse origin/master)
 fi
@@ -59,7 +59,7 @@ fi
 ############################################
 ## 2. Changed packages
 ############################################
-PACKAGES=$(ls ${ROOT} -l | grep ^d | awk '{print $9}')
+PACKAGES=$(ls -l ${ROOT} | grep ^d | awk '{print $9}')
 echo "Searching for changes since commit [${LAST_COMPLETED_BUILD_SHA:0:7}] ..."
 
 ## The CircleCI API parameters object
@@ -80,9 +80,12 @@ echo "Workflows currently in failed status: (${FAILED_WORKFLOWS[@]})."
 for PACKAGE in ${PACKAGES[@]}
 do
   PACKAGE_PATH=${ROOT#.}/$PACKAGE
-  LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff ${PACKAGE_PATH#/})
+  # If we can't find a match in the commit history, then just build them all
+  LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff ${PACKAGE_PATH#/} || echo "UNMATCHED COMMIT")
+  CIRCLE_CI_FOLDER_CHANGED=$(git log -1 $LAST_COMPLETED_BUILD_SHA..$CIRCLE_SHA1 --format=format:%H --full-diff .circleci || echo)
 
-  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
+# Always run for Tags at the moment so the Prod releases work
+  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]] && [[ -z "$CIRCLE_CI_FOLDER_CHANGED" ]] && [[ -z "$CIRCLE_TAG" ]]; then
     INCLUDED=0
     for FAILED_BUILD in ${FAILED_WORKFLOWS[@]}
     do
@@ -116,6 +119,10 @@ echo "Changes detected in ${COUNT} package(s)."
 ## 3. CicleCI REST API call
 ############################################
 DATA="{ \"branch\": \"$CIRCLE_BRANCH\", \"parameters\": { $PARAMETERS } }"
+if [[ -n $CIRCLE_TAG ]]; then
+  DATA="{ \"tag\": \"$CIRCLE_TAG\", \"parameters\": { $PARAMETERS } }"
+fi
+
 echo "Triggering pipeline with data:"
 echo -e "  $DATA"
 

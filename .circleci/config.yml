@@ -429,7 +429,10 @@ workflows:
   ci:
     when: << pipeline.parameters.trigger >>
     jobs:
-      - trigger-workflows
+      - trigger-workflows:
+          filters:
+            tags:
+              only: /^v.*/
 
 
   # Workflows defined for each package.
