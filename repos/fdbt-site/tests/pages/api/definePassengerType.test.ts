@@ -547,10 +547,16 @@ describe('definePassengerType', () => {
         await definePassengerType(req, res);
         expect(upsertPassengerTypeSpy).not.toBeCalled();
         expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
-        expect(insertPassengerTypeSpy).toBeCalledWith('TEST', savedGroupInfo, 'A Name', true);
+        expect(insertPassengerTypeSpy).toBeCalledWith(
+            'TEST',
+            savedGroupInfo,
+            'A Name',
+            true,
+            groupSizeAttribute.maxGroupSize,
+        );
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, [
-            { companions: savedGroupInfo, name: 'A Name' },
+            { companions: savedGroupInfo, name: 'A Name', maxGroupSize: groupSizeAttribute.maxGroupSize },
         ]);
     });
 

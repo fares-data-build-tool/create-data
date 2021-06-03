@@ -257,6 +257,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
+            if (!groupSize) {
+                throw new Error('Could not retrieve group size');
+            }
+
             const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
             const submittedPassengerType = passengerType;
 
@@ -319,9 +323,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             userInput: trimmedName,
                         });
                     } else {
-                        await insertPassengerType(noc, companions, trimmedName, true);
+                        await insertPassengerType(noc, companions, trimmedName, true, groupSize.maxGroupSize);
                         const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE) ?? [];
-                        savedGroups.push({ companions, name: trimmedName });
+                        savedGroups.push({ companions, name: trimmedName, maxGroupSize: groupSize.maxGroupSize });
                         updateSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, savedGroups);
                     }
                 }

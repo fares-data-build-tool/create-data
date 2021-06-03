@@ -621,8 +621,9 @@ export const insertPassengerType = async (
     passengerType: PassengerType | CompanionInfo[],
     name: string,
     isGroup: boolean,
+    maxGroupSize?: string,
 ): Promise<void> => {
-    const contents = JSON.stringify(passengerType);
+    const contents = maxGroupSize ? JSON.stringify({ maxGroupSize, passengerType }) : JSON.stringify(passengerType);
 
     const insertQuery = `INSERT INTO passengerType (contents, isGroup, name, nocCode)
                          VALUES (?, ?, ?, ?)`;
