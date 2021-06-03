@@ -1,17 +1,18 @@
 import React, { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
-import { NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession, RadioOption } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { getCsrfToken } from '../utils/index';
+import RadioButtons from '../components/RadioButtons';
 
 const title = 'test title ';
 const description = 'test desc';
 
 // const errorId = 'fare-type-single';
 
-interface FareTypeProps {
+interface ProductExpiryProps {
     csrfToken: string;
 }
 
@@ -21,59 +22,47 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-// const buildRadioProps = (): FareTypeRadio[] => {
-//     const radios = [
-//         {
-//             fareType: 'single',
-//             label: 'Single ticket',
-//             hint: 'A ticket for a point to point journey',
-//         },
-//         {
-//             fareType: 'return',
-//             label: 'Return ticket',
-//             hint: 'An inbound and outbound ticket for the same service',
-//         },
-//         {
-//             fareType: 'flatFare',
-//             label: 'Flat fare ticket',
-//             hint: 'A fixed fee ticket for a single journey',
-//         },
-//         {
-//             fareType: 'period',
-//             label: 'Period ticket',
-//             hint: 'A ticket valid for a number of days, weeks, months or years',
-//         },
-//         {
-//             fareType: 'multiOperator',
-//             label: 'Multi-operator',
-//             hint: 'A ticket that covers more than one operator',
-//         },
-//         {
-//             fareType: 'schoolService',
-//             label: 'School service',
-//             hint: 'A ticket available to pupils in full-time education',
-//         },
-//     ];
+const buildRadioProps = (): RadioOption[] => {
+    const radios = [
+        {
+            value: '24hrs',
+            label: 'After 24 hrs after purchase',
+            hint: 'For Example, a ticket purchased at 3pm will be valid until 3pm the next day',
+        },
+        {
+            value: 'endOfCalDay',
+            label: 'End of calendar day',
+            hint: 'For Example, a ticket purchased at 3pm will be valid untill midnight',
+        },
+        {
+            value: 'endOfServDay',
+            label: 'End of service day',
+            hint:
+                'For Example, a ticket purchased at 3pm will be valid through midnight and inline with the end of your service day',
+        },
+    ];
 
-//     return radios;
-// };
+    return radios;
+};
 
-const ProductExpiry = ({ csrfToken }: FareTypeProps): ReactElement => {
+const ProductExpiry = ({ csrfToken }: ProductExpiryProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={[]}>
-            <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
+            <CsrfForm action="/api/NEWAPI" method="post" csrfToken={csrfToken}>
+                {/* TODO ^^ LATER */}
                 <>
                     <ErrorSummary errors={[]} />
                     <div className={`govuk-form-group ${[].length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="fare-type-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="product-expiry-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 className="govuk-fieldset__heading" id="fare-type-page-heading">
-                                    Select a fare type
+                                <h1 className="govuk-fieldset__heading" id="product-expiry-page-heading">
+                                    When does the ticket day end?
                                 </h1>
                             </legend>
-                            <span className="govuk-hint" id="fare-type-operator-hint">
-                                Hello
+                            <span className="govuk-hint" id="product-expiry-operator-hint">
+                                Carnet Period
                             </span>
+                            <RadioButtons options={buildRadioProps()} inputName="productExpiry" />
                         </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -83,7 +72,7 @@ const ProductExpiry = ({ csrfToken }: FareTypeProps): ReactElement => {
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareTypeProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductExpiryProps } => {
     const csrfToken = getCsrfToken(ctx);
     console.log('hello');
     return { props: { csrfToken } };

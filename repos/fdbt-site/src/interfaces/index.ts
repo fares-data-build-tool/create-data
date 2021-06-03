@@ -741,13 +741,14 @@ export interface ConfirmationElement {
     href: string;
 }
 
-export interface FareTypeRadio {
-    fareType: string;
+export interface RadioOption {
+    value: string;
     label: string;
     hint: string;
 }
-export interface FareTypeRadioProps {
-    fares: FareTypeRadio[];
+export interface RadioButtonsProps {
+    options: RadioOption[];
+    inputName: string;
 }
 
 export interface RadioWithoutConditionals extends BaseReactElement {
