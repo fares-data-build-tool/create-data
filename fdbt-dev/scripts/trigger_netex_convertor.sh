@@ -2,9 +2,6 @@
 
 set -e
 
-# initiate nvm
-. "$NVM_DIR/nvm.sh"
-
 FILE_NAME=$1
 BUCKET_NAME=fdbt-matching-data-dev
 UNVALIDATED_NETEX_BUCKET=fdbt-unvalidated-netex-data-dev
