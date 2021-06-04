@@ -2,9 +2,6 @@
 
 set -e
 
-# initiate nvm
-. "$NVM_DIR/nvm.sh"
-
 FILE_NAME=$1
 BUCKET_NAME=fdbt-unvalidated-netex-data-dev
 
@@ -14,4 +11,8 @@ EVENT_DATA=$(cat $FDBT_ROOT/fdbt-dev/data/s3Events/putEvent.json | sed s:KEY_HER
 
 cd $FDBT_ROOT/repos/fdbt-netex-output/src/netex-validator
 
-nvm use && EVENT_DATA=$EVENT_DATA npm run triggerNetexValidator
+# initiate nvm
+. "$NVM_DIR/nvm.sh"
+nvm use
+
+EVENT_DATA=$EVENT_DATA npm run triggerNetexValidator
