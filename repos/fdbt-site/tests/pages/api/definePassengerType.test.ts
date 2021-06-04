@@ -437,7 +437,7 @@ describe('definePassengerType', () => {
     });
 
     it('should save the passenger types for non-groups', async () => {
-        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
+        const upsertSinglePassengerTypeSpy = jest.spyOn(auroradb, 'upsertSinglePassengerType');
 
         const mockPassengerTypeDetails = {
             passengerType: 'adult',
@@ -453,12 +453,12 @@ describe('definePassengerType', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         await definePassengerType(req, res);
-        expect(upsertPassengerTypeSpy).toBeCalledWith('TEST', mockPassengerTypeDetails, 'adult');
+        expect(upsertSinglePassengerTypeSpy).toBeCalledWith('TEST', mockPassengerTypeDetails, 'adult');
     });
 
     it('should not save the passenger types for groups if no name is provided', async () => {
-        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
-        const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
+        const upsertSinglePassengerTypeSpy = jest.spyOn(auroradb, 'upsertSinglePassengerType');
+        const insertGroupPassengerTypeSpy = jest.spyOn(auroradb, 'insertGroupPassengerType');
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
@@ -494,14 +494,14 @@ describe('definePassengerType', () => {
             },
         });
         await definePassengerType(req, res);
-        expect(upsertPassengerTypeSpy).not.toBeCalled();
-        expect(insertPassengerTypeSpy).not.toBeCalled();
+        expect(upsertSinglePassengerTypeSpy).not.toBeCalled();
+        expect(insertGroupPassengerTypeSpy).not.toBeCalled();
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, expect.anything());
     });
 
     it('should save the passenger types for groups if a name is provided', async () => {
-        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
-        const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
+        const upsertSinglePassengerTypeSpy = jest.spyOn(auroradb, 'upsertSinglePassengerType');
+        const insertGroupPassengerTypeSpy = jest.spyOn(auroradb, 'insertGroupPassengerType');
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const getPassengerTypeSpy = jest
@@ -545,18 +545,23 @@ describe('definePassengerType', () => {
             },
         });
         await definePassengerType(req, res);
-        expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(upsertSinglePassengerTypeSpy).not.toBeCalled();
         expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
-        expect(insertPassengerTypeSpy).toBeCalledWith('TEST', savedGroupInfo, 'A Name', true);
+        expect(insertGroupPassengerTypeSpy).toBeCalledWith(
+            'TEST',
+            savedGroupInfo,
+            'A Name',
+            groupSizeAttribute.maxGroupSize,
+        );
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, [
-            { companions: savedGroupInfo, name: 'A Name' },
+            { companions: savedGroupInfo, name: 'A Name', maxGroupSize: groupSizeAttribute.maxGroupSize },
         ]);
     });
 
     it('should show an error for groups if a name is provided that already exists', async () => {
-        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
-        const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
+        const upsertSinglePassengerTypeSpy = jest.spyOn(auroradb, 'upsertSinglePassengerType');
+        const insertGroupPassengerTypeSpy = jest.spyOn(auroradb, 'insertSinglePassengerType');
         const getPassengerTypeSpy = jest
             .spyOn(auroradb, 'getPassengerTypeByNameAndNocCode')
             .mockResolvedValueOnce({ passengerType: 'A Name' });
@@ -610,9 +615,9 @@ describe('definePassengerType', () => {
             },
         });
         await definePassengerType(req, res);
-        expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(upsertSinglePassengerTypeSpy).not.toBeCalled();
         expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
-        expect(insertPassengerTypeSpy).not.toBeCalled();
+        expect(insertGroupPassengerTypeSpy).not.toBeCalled();
         expect(updateSessionAttributeSpy).toBeCalledWith(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, errorInfo);
     });
 });
