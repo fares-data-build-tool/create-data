@@ -59,7 +59,7 @@ import {
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
-import { Operator, MultipleProductAttribute, ExpiryUnit } from '../../../../src/interfaces';
+import { Operator, MultipleProductAttribute, ExpiryUnit, CarnetExpiryUnit } from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -92,7 +92,7 @@ describe('userData', () => {
                         productPriceId: '',
                         productDuration: '1',
                         productDurationId: '',
-                        productDurationUnits: 'week',
+                        productDurationUnits: ExpiryUnit.DAY,
                         productDurationUnitsId: '',
                         productValidity: '24hr',
                         productValidityId: '',
@@ -104,7 +104,7 @@ describe('userData', () => {
                         productPriceId: '',
                         productDuration: '7',
                         productDurationId: '',
-                        productDurationUnits: 'day',
+                        productDurationUnits: ExpiryUnit.DAY,
                         productDurationUnitsId: '',
                         productValidity: '24hr',
                         productValidityId: '',
@@ -121,7 +121,7 @@ describe('userData', () => {
                     salesOfferPackages: [defaultSalesOfferPackageTwo],
                 },
             ];
-            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute);
+            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, false);
             expect(result).toEqual(expectedProductDetailsArray);
         });
     });
@@ -320,7 +320,7 @@ describe('userData', () => {
                         carnetDetails: {
                             quantity: '10',
                             expiryTime: '',
-                            expiryUnit: ExpiryUnit.NO_EXPIRY,
+                            expiryUnit: CarnetExpiryUnit.NO_EXPIRY,
                         },
                     },
                 },
@@ -651,7 +651,7 @@ describe('userData', () => {
         it('should return a FlatFareTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
-                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {
                                 productName: 'Weekly Rider',
@@ -672,6 +672,12 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'Weekly Rider',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                    ],
                 },
             });
             const result = getFlatFareTicketJson(req, res);
@@ -985,7 +991,39 @@ describe('userData', () => {
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
                     [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
-                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'product one',
+                            salesOfferPackages: [
+                                {
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
+                        },
+                        {
+                            productName: 'product two',
+                            salesOfferPackages: [
+                                {
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    name: 'Online (smart card)',
+                                    description: '',
+                                    purchaseLocations: ['online'],
+                                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                                    ticketFormats: ['smartCard'],
+                                },
+                            ],
+                        },
+                    ],
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
@@ -1040,11 +1078,15 @@ describe('userData', () => {
                         ],
                         errors: [],
                     },
-                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {
-                                productName: 'Weekly Ticket',
+                                productName: 'product one',
                                 productPrice: '50',
+                            },
+                            {
+                                productName: 'product two',
+                                productPrice: '502',
                             },
                         ],
                     },

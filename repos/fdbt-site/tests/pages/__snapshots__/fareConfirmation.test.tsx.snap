@@ -337,7 +337,7 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
             "name": "Passenger information - proof documents",
           },
           Object {
-            "content": "yes",
+            "content": "Yes",
             "href": "termTime",
             "name": "Only valid during term times",
           },

@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
-import { ErrorInfo, ExpiryUnit, NextApiRequestWithSession, PointToPointProductInfo } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, PointToPointProductInfo, CarnetExpiryUnit } from '../../interfaces';
 import { PRODUCT_DETAILS_ATTRIBUTE } from '../../constants/attributes';
 import { removeExcessWhiteSpace, checkIntegerIsValid, checkProductNameIsValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -47,7 +47,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             });
         }
 
-        if (productDetails.carnetDetails.expiryUnit === ExpiryUnit.NO_EXPIRY) {
+        if (productDetails.carnetDetails.expiryUnit === CarnetExpiryUnit.NO_EXPIRY) {
             productDetails.carnetDetails.expiryTime = '';
         } else {
             const expiryTimeError = checkIntegerIsValid(productDetails.carnetDetails.expiryTime, 'Expiry time', 1, 999);
@@ -60,7 +60,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             }
         }
 
-        const expiryUnitError = !Object.values(ExpiryUnit).includes(productDetails.carnetDetails.expiryUnit)
+        const expiryUnitError = !Object.values(CarnetExpiryUnit).includes(productDetails.carnetDetails.expiryUnit)
             ? 'Select a valid expiry unit'
             : '';
 

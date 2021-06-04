@@ -33,7 +33,7 @@ export const checkPriceIsValid = (inputtedPrice: string | undefined): string => 
     let productPriceError;
 
     if (!inputtedPrice) {
-        productPriceError = `This field cannot be empty`;
+        productPriceError = 'Product price cannot be empty';
     } else if (Math.sign(Number(inputtedPrice)) === -1) {
         productPriceError = `This must be a positive number`;
     } else if (!isCurrency(inputtedPrice)) {
@@ -51,7 +51,7 @@ export const checkDurationIsValid = (inputtedDuration: string): string => {
     let productDurationError;
 
     if (inputtedDuration === '') {
-        productDurationError = `This field cannot be empty`;
+        productDurationError = `Product duration cannot be empty`;
     } else if (Number.isNaN(Number(inputtedDuration))) {
         productDurationError = `Product duration must be a whole, positive number`;
     } else if (Number(inputtedDuration) <= 0) {

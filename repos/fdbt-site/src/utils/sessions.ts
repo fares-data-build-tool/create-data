@@ -36,8 +36,6 @@ import {
     GroupPassengerTypesCollectionWithErrors,
     GroupTicketAttribute,
     GroupTicketAttributeWithErrors,
-    NumberOfProductsAttributeWithErrors,
-    NumberOfProductsAttribute,
     MultipleProductAttribute,
     MultipleProductAttributeWithErrors,
     PassengerTypeWithErrors,
@@ -143,7 +141,7 @@ interface SessionAttributeTypes {
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
     [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
     [MULTIPLE_PRODUCT_ATTRIBUTE]: MultipleProductAttribute | MultipleProductAttributeWithErrors;
-    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: number;
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;

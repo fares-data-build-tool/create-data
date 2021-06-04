@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { isSalesOfferPackageWithErrors, isFareType } from '../interfaces/typeGuards';
+import { isSalesOfferPackageWithErrors, isFareType, isProductData, isProductInfo } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -22,7 +22,6 @@ import {
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
 import DeleteSOPButton from '../components/DeleteSOPButton';
 
@@ -134,7 +133,11 @@ const createSalesOffer = (
 ): ReactElement[] =>
     productNames.map(productName => (
         <div className="sop-option">
-            <FormGroupWrapper errorIds={[`${[removeAllWhiteSpace(productName)]}-checkbox-0`]} errors={errors}>
+            <FormGroupWrapper
+                errorIds={[`${[removeAllWhiteSpace(productName)]}-checkbox-0`]}
+                errors={errors}
+                hideErrorBar={false}
+            >
                 <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-5">{`Select sales offer packages for ${productName}`}</legend>
                     <FormElementWrapper

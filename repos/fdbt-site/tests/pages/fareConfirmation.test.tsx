@@ -350,7 +350,7 @@ describe('pages', () => {
                         name: 'Passenger information - proof documents',
                     },
                     {
-                        content: 'yes',
+                        content: 'Yes',
                         href: 'termTime',
                         name: 'Only valid during term times',
                     },

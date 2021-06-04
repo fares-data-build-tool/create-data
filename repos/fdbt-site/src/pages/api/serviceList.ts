@@ -58,16 +58,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
-        if (fareType === 'flatFare') {
-            redirectTo(res, '/productDetails');
-            return;
-        }
         if (fareType === 'multiOperator') {
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }
 
-        redirectTo(res, '/howManyProducts');
+        redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {
         const message = 'There was a problem processing the selected services from the servicesList page:';

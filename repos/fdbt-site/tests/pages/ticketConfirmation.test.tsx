@@ -222,9 +222,7 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     session: {
                         [SERVICE_LIST_ATTRIBUTE]: undefined,
-                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                            numberOfProductsInput: '1',
-                        },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
                         [PERIOD_EXPIRY_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
@@ -244,9 +242,7 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     session: {
                         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
-                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                            numberOfProductsInput: '1',
-                        },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
                         [PERIOD_EXPIRY_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
@@ -308,7 +304,7 @@ describe('pages', () => {
                         },
                     },
                 });
-                const totalExpectedLength = 3;
+                const totalExpectedLength = 11;
                 const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);

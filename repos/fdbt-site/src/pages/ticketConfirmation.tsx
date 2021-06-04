@@ -10,7 +10,6 @@ import {
     MultiOperatorInfo,
     Product,
     ConfirmationElement,
-    NumberOfProductsAttribute,
     MultipleProductAttribute,
     MultiProduct,
     SchoolFareTypeAttribute,
@@ -18,7 +17,7 @@ import {
     Service,
     ServiceListAttribute,
     TxcSourceAttribute,
-    ExpiryUnit,
+    CarnetExpiryUnit,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -86,8 +85,8 @@ export const getPointToPointProductElements = (ctx: NextPageContextWithSession):
             {
                 name: `${productInfo.productName} - Carnet Expiry`,
                 content:
-                    productInfo.carnetDetails.expiryUnit === ExpiryUnit.NO_EXPIRY
-                        ? '-'
+                    productInfo.carnetDetails.expiryUnit === CarnetExpiryUnit.NO_EXPIRY
+                        ? upperFirst(CarnetExpiryUnit.NO_EXPIRY)
                         : `${productInfo.carnetDetails.expiryTime} ${upperFirst(
                               productInfo.carnetDetails.expiryUnit,
                           )}s`,
@@ -217,10 +216,48 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     return confirmationElements;
 };
 
+const addProduct = (
+    product: Product | MultiProduct,
+    confirmationElements: ConfirmationElement[],
+): ConfirmationElement[] => {
+    confirmationElements.push({
+        name: `${product.productName} - Price`,
+        content: `£${product.productPrice}`,
+        href: 'multipleProducts',
+    });
+
+    if (product.productDuration) {
+        const productDurationText = `${
+            product.productDurationUnits
+                ? `${product.productDuration} ${product.productDurationUnits}${
+                      product.productDuration === '1' ? '' : 's'
+                  }`
+                : `${product.productDuration}`
+        }`;
+        confirmationElements.push({
+            name: `${product.productName} - Duration`,
+            content: productDurationText,
+            href: 'multipleProducts',
+        });
+    }
+
+    if (product.productValidity) {
+        confirmationElements.push({
+            name: `${product.productName} - Validity`,
+            content: `${sentenceCaseString(product.productValidity)}${
+                product.productEndTime ? ` - ${product.productEndTime}` : ''
+            }`,
+            href: 'periodValidity',
+        });
+    }
+
+    return confirmationElements;
+};
+
 export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
-    const confirmationElements: ConfirmationElement[] = [];
+    let confirmationElements: ConfirmationElement[] = [];
 
     const ticketRepresentation = (getSessionAttribute(
         ctx.req,
@@ -229,9 +266,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as MultiOperatorInfo[];
-    const numberOfProducts = Number(
-        (getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute).numberOfProductsInput,
-    );
+    const numberOfProducts = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
 
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
@@ -286,52 +321,19 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
     }
 
-    const addProduct = (product: Product | MultiProduct): void => {
-        const productDurationText = `${
-            product.productDurationUnits
-                ? `${product.productDuration} ${product.productDurationUnits}${
-                      product.productDuration === '1' ? '' : 's'
-                  }`
-                : `${product.productDuration}`
-        }`;
-
-        if (!product.productDuration || !product.productValidity) {
-            throw new Error('User has no product duration and/or validity information.');
-        }
-        confirmationElements.push(
-            {
-                name: `${product.productName} - Price`,
-                content: `£${product.productPrice}`,
-                href: numberOfProducts > 1 ? 'multipleProducts' : 'productDetails',
-            },
-            {
-                name: `${product.productName} - Duration`,
-                content: productDurationText,
-                href: numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
-            },
-            {
-                name: `${product.productName} - Validity`,
-                content: `${sentenceCaseString(product.productValidity)}${
-                    product.productEndTime ? ` - ${product.productEndTime}` : ''
-                }`,
-                href: numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
-            },
-        );
-    };
-
     if (isArray(products)) {
         products.forEach(product => {
-            addProduct(product);
+            confirmationElements = addProduct(product, confirmationElements);
         });
     } else if (!isArray(products)) {
-        addProduct(products);
+        confirmationElements = addProduct(products, confirmationElements);
     }
 
     return confirmationElements;
 };
 
 export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
-    const confirmationElements: ConfirmationElement[] = [];
+    let confirmationElements: ConfirmationElement[] = [];
 
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const services = serviceInformation ? serviceInformation.selectedServices : [];
@@ -346,8 +348,7 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
             });
         });
     }
-    const productInfo = (getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE) as ProductData).products;
-    const { productName, productPrice } = productInfo[0];
+    const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
 
     confirmationElements.push(
@@ -361,12 +362,11 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
             content: dataSource.toUpperCase(),
             href: 'serviceList',
         },
-        {
-            name: `Product - ${productName}`,
-            content: `Price - £${productPrice}`,
-            href: 'productDetails',
-        },
     );
+
+    products.forEach(product => {
+        confirmationElements = addProduct(product, confirmationElements);
+    });
 
     return confirmationElements;
 };

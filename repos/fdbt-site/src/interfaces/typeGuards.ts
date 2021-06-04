@@ -34,6 +34,7 @@ import {
     PointToPointProductInfo,
     ProductInfo,
     ProductData,
+    ProductInfoWithErrors,
 } from '.';
 import { validFareTypes } from '../constants';
 
@@ -196,3 +197,11 @@ export const isPointToPointProductInfo = (
 
 export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
     !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;
+
+export const isProductData = (
+    productDetailsAttribute: ProductInfo | ProductData | PointToPointProductInfo | ProductInfoWithErrors | undefined,
+): productDetailsAttribute is ProductData => (productDetailsAttribute as ProductData).products !== undefined;
+
+export const isProductInfo = (
+    productDetailsAttribute: ProductInfo | ProductData | PointToPointProductInfo | ProductInfoWithErrors | undefined,
+): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;

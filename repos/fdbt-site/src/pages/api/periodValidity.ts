@@ -8,7 +8,7 @@ import {
 import { redirectToError, redirectTo } from './apiUtils';
 import { isValid24hrTimeFormat } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, ProductData } from '../../interfaces';
-import { isProductInfo } from '../productDetails';
+import { isProductInfo } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

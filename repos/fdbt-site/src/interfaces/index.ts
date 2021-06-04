@@ -21,13 +21,21 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
-export enum ExpiryUnit {
+export enum CarnetExpiryUnit {
     HOUR = 'hour',
     DAY = 'day',
     WEEK = 'week',
     MONTH = 'month',
     YEAR = 'year',
     NO_EXPIRY = 'no expiry',
+}
+
+export enum ExpiryUnit {
+    HOUR = 'hour',
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    YEAR = 'year',
 }
 
 export interface CookiePolicy {
@@ -38,7 +46,7 @@ export interface CookiePolicy {
 interface CarnetDetails {
     quantity: string;
     expiryTime: string;
-    expiryUnit: ExpiryUnit;
+    expiryUnit: CarnetExpiryUnit;
 }
 
 export interface ProductInfo {
@@ -155,7 +163,7 @@ export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
 }
 
 export interface NumberOfProductsAttribute {
-    numberOfProductsInput: string;
+    numberOfProducts: number;
 }
 
 export interface NumberOfProductsAttributeWithErrors {
@@ -358,6 +366,7 @@ export interface Product {
     productValidity?: string;
     productDurationUnits?: string;
     productEndTime?: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
@@ -537,6 +546,7 @@ export interface ProductWithSalesOfferPackages extends BaseProduct {
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface ProductData {
@@ -618,14 +628,20 @@ export interface MultiProduct {
     productNameId: string;
     productPrice: string;
     productPriceId: string;
-    productDuration: string;
-    productDurationId: string;
-    productDurationUnits: string;
-    productDurationUnitsId: string;
-    productValidity: string;
-    productValidityId: string;
+    productDuration?: string;
+    productDurationId?: string;
+    productDurationUnits?: ExpiryUnit;
+    productDurationUnitsId?: string;
+    productValidity?: string;
+    productValidityId?: string;
     productEndTime?: string;
     productEndTimeId?: string;
+    productCarnetQuantity?: string;
+    productCarnetQuantityId?: string;
+    productCarnetExpiryDuration?: string;
+    productCarnetExpiryDurationId?: string;
+    productCarnetExpiryUnits?: CarnetExpiryUnit;
+    productCarnetExpiryUnitsId?: string;
 }
 
 export interface MultiProductWithErrors extends MultiProduct {
@@ -633,6 +649,9 @@ export interface MultiProductWithErrors extends MultiProduct {
     productPriceError?: string;
     productDurationError?: string;
     productDurationUnitsError?: string;
+    productCarnetQuantityError?: string;
+    productCarnetExpiryDurationError?: string;
+    productCarnetExpiryUnitsError?: string;
 }
 
 export interface PassengerType {

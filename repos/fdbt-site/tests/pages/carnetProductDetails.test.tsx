@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import CarnetProductDetails, { getServerSideProps } from '../../src/pages/carnetProductDetails';
-import { ExpiryUnit, PointToPointProductInfo } from '../../src/interfaces';
+import { CarnetExpiryUnit, PointToPointProductInfo } from '../../src/interfaces';
 import { getMockContext } from '../testData/mockData';
 import { FARE_ZONE_ATTRIBUTE, OPERATOR_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants/attributes';
 
@@ -10,7 +10,7 @@ const mockProductDetails: PointToPointProductInfo = {
     carnetDetails: {
         quantity: '5',
         expiryTime: '2',
-        expiryUnit: ExpiryUnit.DAY,
+        expiryUnit: CarnetExpiryUnit.DAY,
     },
 };
 

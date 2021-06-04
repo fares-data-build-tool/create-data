@@ -6,9 +6,8 @@ import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { isPassengerType } from '../interfaces/typeGuards';
+import { isPassengerType, isProductInfo } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
-import { isProductInfo } from './productDetails';
 import { getCsrfToken } from '../utils';
 
 const title = 'Choose Validity - Create Fares Data Service';
@@ -47,7 +46,7 @@ const ChooseValidity = ({
                     <div className="govuk-hint" id="choose-validity-page-hint">
                         Enter a whole number, and select a duration type. For example, 7 months.
                     </div>
-                    <FormGroupWrapper errorIds={['validity']} errors={errors}>
+                    <FormGroupWrapper errorIds={['validity']} errors={errors} hideErrorBar={false}>
                         <>
                             <label className="govuk-label" htmlFor="validity">
                                 Number
@@ -64,7 +63,7 @@ const ChooseValidity = ({
                             </FormElementWrapper>
                         </>
                     </FormGroupWrapper>
-                    <FormGroupWrapper errorIds={['validity-units']} errors={errors}>
+                    <FormGroupWrapper errorIds={['validity-units']} errors={errors} hideErrorBar={false}>
                         <>
                             <label className="govuk-label" htmlFor="validity-units">
                                 Duration
