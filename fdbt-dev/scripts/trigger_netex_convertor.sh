@@ -2,6 +2,9 @@
 
 set -e
 
+# initiate nvm
+. "$NVM_DIR/nvm.sh"
+
 FILE_NAME=$1
 BUCKET_NAME=fdbt-matching-data-dev
 UNVALIDATED_NETEX_BUCKET=fdbt-unvalidated-netex-data-dev
@@ -12,4 +15,4 @@ cd $FDBT_ROOT/repos/fdbt-netex-output
 
 rm -rf src/netex-convertor/build
 
-EVENT_DATA=$EVENT_DATA UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET nvm use && npm run netexConvert
+nvm use && EVENT_DATA=$EVENT_DATA UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET npm run netexConvert

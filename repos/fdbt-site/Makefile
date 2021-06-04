@@ -1,4 +1,5 @@
 STAGE?=dev
+NVM_INITIATE=. ${NVM_DIR}/nvm.sh &&
 
 dev: start-localstack create-local-buckets run-local
 
@@ -16,7 +17,7 @@ create-local-buckets:
 	awslocal s3 mb s3://fdbt-netex-data-dev
 
 run-local:
-	export STAGE=dev && npm run dev
+	${NVM_INITIATE} export STAGE=dev && npm run dev
 
 # Cypress
 
