@@ -98,7 +98,7 @@ exports[`pages account should render correctly 1`] = `
       <p
         className="govuk-body content-three-quarters"
       >
-        FaBusCo
+        FaBusCo, foo, bar
       </p>
     </div>
   </div>

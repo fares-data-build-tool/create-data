@@ -46,7 +46,7 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                 </div>
                 <div className="content-wrapper">
                     <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Operator</p>
-                    <p className="govuk-body content-three-quarters">{nocCode.replace('|', ', ')}</p>
+                    <p className="govuk-body content-three-quarters">{nocCode.replace(/\|/g, ', ')}</p>
                 </div>
             </div>
             <a
