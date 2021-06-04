@@ -189,7 +189,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
         updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, undefined);
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
-        redirectTo(res, '/multipleProductValidity');
+        redirectTo(res, '/productValidity');
     } catch (error) {
         const message = 'There was a problem inputting the product name, price and/or duration:';
         redirectToError(res, message, 'api.multipleProducts', error);

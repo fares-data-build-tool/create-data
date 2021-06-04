@@ -805,3 +805,7 @@ export interface TxcSourceAttribute {
     hasTnds: boolean;
     hasBods: boolean;
 }
+export interface PeriodExpiry {
+    productValidity: string;
+    productEndTime: string;
+}
