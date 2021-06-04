@@ -11,4 +11,4 @@ EVENT_DATA=$(cat $FDBT_ROOT/fdbt-dev/data/s3Events/putEvent.json | sed s:KEY_HER
 
 cd $FDBT_ROOT/repos/fdbt-netex-output/src/netex-validator
 
-EVENT_DATA=$EVENT_DATA npm run triggerNetexValidator
+EVENT_DATA=$EVENT_DATA nvm use && npm run triggerNetexValidator

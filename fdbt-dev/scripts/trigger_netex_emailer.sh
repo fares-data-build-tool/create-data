@@ -12,5 +12,5 @@ cd $FDBT_ROOT/repos/fdbt-netex-output
 
 rm -rf src/netex-emailer/build
 
-EVENT_DATA=$EVENT_DATA MATCHING_DATA_BUCKET=$MATCHING_DATA_BUCKET npm run netexEmail
+EVENT_DATA=$EVENT_DATA MATCHING_DATA_BUCKET=$MATCHING_DATA_BUCKET nvm use && npm run netexEmail
 

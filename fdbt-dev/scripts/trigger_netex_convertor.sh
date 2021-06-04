@@ -12,4 +12,4 @@ cd $FDBT_ROOT/repos/fdbt-netex-output
 
 rm -rf src/netex-convertor/build
 
-EVENT_DATA=$EVENT_DATA UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET npm run netexConvert
+EVENT_DATA=$EVENT_DATA UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET nvm use && npm run netexConvert
