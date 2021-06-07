@@ -2,6 +2,7 @@ import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { IncomingMessage, ServerResponse } from 'http';
 import { ReactElement } from 'react';
+import { StringArray } from 'aws-sdk/clients/rdsdataservice';
 
 // Session Attributes and Cookies
 
@@ -737,7 +738,7 @@ export interface RawJourneyPattern {
 
 export interface ConfirmationElement {
     name: string;
-    content: string;
+    content: string | string[];
     href: string;
 }
 

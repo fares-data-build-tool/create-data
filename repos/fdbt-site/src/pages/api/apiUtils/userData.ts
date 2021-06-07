@@ -66,6 +66,7 @@ import {
     isPassengerType,
     isTicketPeriodAttributeWithInput,
     isPointToPointProductInfo,
+    isPeriodExpiry,
 } from '../../../interfaces/typeGuards';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -82,10 +83,6 @@ export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
     return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
 };
-
-const isProductDataWithoutErrors = (
-    periodExpiryAttributeInfo: ProductData | WithErrors<ProductData>,
-): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
 const isProductData = (
     productDetailsAttributeInfo: ProductData | ProductInfo | PointToPointProductInfo,
@@ -211,11 +208,18 @@ export const getBasePeriodTicketAttributes = (
     let productDetailsList: ProductDetails[];
 
     if (!multipleProductAttribute) {
-        if (!periodExpiryAttributeInfo || !isProductDataWithoutErrors(periodExpiryAttributeInfo)) {
+        if (!periodExpiryAttributeInfo || !isPeriodExpiry(periodExpiryAttributeInfo)) {
             throw new Error('Could not create geo zone ticket json. Period expiry attribute data problem.');
         }
 
-        const { products } = periodExpiryAttributeInfo;
+        const productsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+        if (!productsAttribute || (productsAttribute && !isProductData(productsAttribute))) {
+            throw new Error('productsAttribute was not product data');
+        }
+
+        const { products } = productsAttribute;
+
+        const { productValidity, productEndTime } = periodExpiryAttributeInfo;
 
         if (isProductWithSalesOfferPackages(salesOfferPackages)) {
             throw new Error('Could not create geo zone ticket json. Sales offer package info incorrect type.');
@@ -224,8 +228,9 @@ export const getBasePeriodTicketAttributes = (
         productDetailsList = products.map(product => ({
             productName: product.productName,
             productPrice: product.productPrice,
-            productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
-            productValidity: isPeriodProductDetails(product) ? product.productValidity : '',
+            productDuration: product.productDuration,
+            productValidity,
+            productEndTime,
             salesOfferPackages,
         }));
     } else {

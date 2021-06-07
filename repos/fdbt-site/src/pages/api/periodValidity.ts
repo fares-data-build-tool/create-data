@@ -1,14 +1,9 @@
 import { NextApiResponse } from 'next';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import {
-    PRODUCT_DETAILS_ATTRIBUTE,
-    PERIOD_EXPIRY_ATTRIBUTE,
-    DURATION_VALID_ATTRIBUTE,
-} from '../../constants/attributes';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { PERIOD_EXPIRY_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isValid24hrTimeFormat } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, PeriodExpiry } from '../../interfaces';
-import { isProductInfo } from '../productDetails';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
