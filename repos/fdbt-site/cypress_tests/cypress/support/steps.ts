@@ -71,8 +71,8 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean): v
         randomlyChooseAndSelectServices();
         continueButtonClick();
     }
-    getElementById('product-details-name').type(productName);
-    getElementById('product-details-price').type('50.50');
+    getElementById('multiple-product-name-0').type(productName);
+    getElementById('multiple-product-price-0').type('50.50');
     continueButtonClick();
     continueButtonClick();
 };

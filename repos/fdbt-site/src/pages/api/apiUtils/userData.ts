@@ -97,9 +97,9 @@ export const getProductsAndSalesOfferPackages = (
     const productSOPList: ProductDetails[] = [];
 
     salesOfferPackagesInfo.forEach(sopInfo => {
-        const matchedProduct: Product | undefined = multipleProductAttribute.products.find(
-            product => product.productName === sopInfo.productName,
-        );
+        const matchedProduct: Product | undefined = isFlatFare
+            ? multipleProductAttribute.products[0]
+            : multipleProductAttribute.products.find(product => product.productName === sopInfo.productName);
         if (!matchedProduct) {
             throw new Error('No products could be found that matched the sales offer packages');
         }
