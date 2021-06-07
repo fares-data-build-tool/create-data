@@ -447,6 +447,7 @@ export interface CompanionInfo {
 
 export interface GroupPassengerType {
     name: string;
+    maxGroupSize: string;
     companions: CompanionInfo[];
 }
 

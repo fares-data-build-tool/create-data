@@ -10,7 +10,11 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../constants/attributes';
-import { getPassengerTypeByNameAndNocCode, insertPassengerType, upsertPassengerType } from '../../data/auroradb';
+import {
+    getPassengerTypeByNameAndNocCode,
+    insertGroupPassengerType,
+    upsertSinglePassengerType,
+} from '../../data/auroradb';
 import {
     CompanionInfo,
     DefinePassengerTypeWithErrors,
@@ -250,11 +254,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, filteredPassengerType);
                 updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
-                await upsertPassengerType(noc, filteredPassengerType, filteredPassengerType.passengerType);
+                await upsertSinglePassengerType(noc, filteredPassengerType, filteredPassengerType.passengerType);
 
                 const redirectLocation = getPassengerTypeRedirectLocation(req, passengerType);
                 redirectTo(res, redirectLocation);
                 return;
+            }
+
+            if (!groupSize) {
+                throw new Error('Could not retrieve group size');
             }
 
             const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
@@ -319,9 +327,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             userInput: trimmedName,
                         });
                     } else {
-                        await insertPassengerType(noc, companions, trimmedName, true);
+                        await insertGroupPassengerType(noc, companions, trimmedName, groupSize.maxGroupSize);
                         const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE) ?? [];
-                        savedGroups.push({ companions, name: trimmedName });
+                        savedGroups.push({ companions, name: trimmedName, maxGroupSize: groupSize.maxGroupSize });
                         updateSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, savedGroups);
                     }
                 }

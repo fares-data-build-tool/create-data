@@ -1,0 +1,789 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@2.0.0
+  aws-ecr: circleci/aws-ecr@6.15.3
+  aws-ecs: circleci/aws-ecs@2.1.0
+
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  # A parameter per package
+  fdbt-netex-output:
+    type: boolean
+    default: false
+  fdbt-reference-data-service:
+    type: boolean
+    default: false
+  fdbt-site:
+    type: boolean
+    default: false
+
+executors:
+  node:
+    docker:
+      - image: circleci/node
+
+jobs:
+  trigger-workflows:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Trigger workflows
+          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
+
+  checkout-repo:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - '*'
+
+  build:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Starting build"
+            npm ci
+            npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - './repos/<< parameters.package_name >>/node_modules'
+
+  audit:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            npx audit-ci --moderate
+
+  test:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Running tests"
+            npm run test:ci
+
+  lint:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Linting"
+            npm run lint
+
+    # fdbt-site
+
+  run-ui-tests:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    executor: aws-cli/default
+    steps:
+      - aws-cli/setup:
+          profile-name: default
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            sudo apt-get install jq
+            cd cypress_tests
+            cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
+            cd ..
+            ~/project/repos/<< parameters.package_name >>/run_tests_in_browserstack.sh
+          no_output_timeout: 40m
+
+  #  fdbt-netex-output
+
+  deploy-netex-output-resources-to-test:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            sudo npm i -g serverless@2.35.0
+            export SLS_DEBUG="*" && sls deploy --stage=test
+            echo "Finished deploy"
+
+  deploy-netex-output-resources-to-preprod:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            sudo npm i -g serverless@2.35.0
+            export SLS_DEBUG="*" && sls deploy --stage=preprod
+            echo "Finished deploy"
+
+  deploy-netex-output-resources-to-prod:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            sudo npm i -g serverless@2.35.0
+            export SLS_DEBUG="*" && sls deploy --stage=prod
+            echo "Finished deploy"
+
+  audit-netex-validator:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            pip install safety
+            cd src/netex-validator
+            npx audit-ci --moderate
+            safety check -r requirements.txt
+
+  deploy-netex-validator-to-test:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless@2.35.0
+            cd src/netex-validator
+            npm ci
+            export SLS_DEBUG="*" && sls deploy --stage=test
+            echo "Finished deploy"
+
+  deploy-netex-validator-to-preprod:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless@2.35.0
+            cd src/netex-validator
+            npm ci
+            export SLS_DEBUG="*" && sls deploy --stage=preprod
+            echo "Finished deploy"
+
+  deploy-netex-validator-to-prod:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm i -g serverless@2.35.0
+            cd src/netex-validator
+            npm ci
+            export SLS_DEBUG="*" && sls deploy --stage=prod
+            echo "Finished deploy"
+
+# fdbt-reference-data-service
+
+  audit-reference-data-uploaders:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            pip install safety
+            cd src/uploaders
+            npx audit-ci --moderate
+            safety check -r requirements.txt
+            safety check -r requirements.test.txt
+
+  test-reference-data-uploaders:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            cd src/uploaders
+            pip install -r requirements.test.txt
+            echo "Running tests..."
+            python3 -m pytest tests/
+
+  deploy-reference-data-uploaders-to-test:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            cd src/uploaders
+            npm ci
+            npm run deploy:test
+            echo "Finished deploy"
+
+  deploy-reference-data-uploaders-to-preprod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            cd src/uploaders
+            npm ci
+            npm run deploy:preprod
+            echo "Finished deploy"
+
+  deploy-reference-data-uploaders-to-prod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            cd src/uploaders
+            npm ci
+            npm run deploy:prod
+            echo "Finished deploy"
+
+  audit-reference-data-retrievers:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            pip install safety
+            cd src/retrievers
+            npx audit-ci --moderate
+            safety check -r requirements.txt
+
+  deploy-reference-data-retrievers-to-test:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            cd src/retrievers
+            npm ci
+            npm run deploy:test
+            echo "Finished deploy"
+
+  deploy-reference-data-retrievers-to-preprod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            cd src/retrievers
+            npm ci
+            npm run deploy:preprod
+            echo "Finished deploy"
+
+  deploy-reference-data-retrievers-to-prod:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/project/repos/fdbt-reference-data-service
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            cd src/retrievers
+            npm ci
+            npm run deploy:prod
+            echo "Finished deploy"
+
+workflows:
+  version: 2
+
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows:
+          filters:
+            tags:
+              only: /^v.*/
+
+
+  # Workflows defined for each package.
+
+  fdbt-netex-output:
+    when: << pipeline.parameters.fdbt-netex-output >>
+    jobs:
+      - checkout-repo:
+          filters:
+            tags:
+              only: /^v.*/
+
+      - audit:
+          package_name: fdbt-netex-output
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - audit-netex-validator:
+          package_name: fdbt-netex-output
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - deploy-netex-validator-to-test:
+          package_name: fdbt-netex-output
+          requires:
+            - audit-netex-validator
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only:
+                - develop
+
+      - deploy-netex-validator-to-preprod:
+          package_name: fdbt-netex-output
+          requires:
+            - audit-netex-validator
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only:
+                - master
+
+      - hold-netex-validator-prod-deployment:
+          package_name: fdbt-netex-output
+          type: approval
+          requires:
+            - audit-netex-validator
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-netex-validator-to-prod:
+          package_name: fdbt-netex-output
+          requires:
+            - hold-netex-validator-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - build:
+          package_name: fdbt-netex-output
+          requires:
+            - audit
+          filters:
+            tags:
+              only: /^v.*/
+
+      - test:
+          package_name: fdbt-netex-output
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - lint:
+          package_name: fdbt-netex-output
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - deploy-netex-output-resources-to-test:
+          package_name: fdbt-netex-output
+          requires:
+            - test
+            - lint
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only:
+                - develop
+
+      - deploy-netex-output-resources-to-preprod:
+          package_name: fdbt-netex-output
+          requires:
+            - test
+            - lint
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only: master
+
+      - hold-prod-deployment:
+          type: approval
+          requires:
+            - test
+            - lint
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-netex-output-resources-to-prod:
+          package_name: fdbt-netex-output
+          requires:
+            - hold-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+  fdbt-site:
+    when: << pipeline.parameters.fdbt-site >>
+    jobs:
+      - checkout-repo:
+          filters:
+            tags:
+              only: /^v.*/
+
+      - audit:
+          package_name: fdbt-site
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - build:
+          package_name: fdbt-site
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - test:
+          package_name: fdbt-site
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - lint:
+          package_name: fdbt-site
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - aws-ecr/build-and-push-image:
+          requires:
+            - audit
+            - test
+            - lint
+          repo: '${SITE_ECR_REPO}'
+          tag: '${CIRCLE_SHA1},latest'
+          context: tfn-fdbt-core
+          path: ~/project/repos/fdbt-site
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only:
+                - develop
+                - master
+
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          name: deploy-site-to-test
+          family: '${SITE_ECS_FAMILY}'
+          cluster-name: '${SITE_ECS_CLUSTER}'
+          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          context: tfn-fdbt-test
+          verify-revision-is-deployed: true
+          filters:
+            branches:
+              only: develop
+
+      - run-ui-tests:
+          package_name: fdbt-site
+          requires:
+            - deploy-site-to-test
+          context: tfn-fdbt-automation-test
+          filters:
+            branches:
+              only: develop
+
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          family: '${SITE_ECS_FAMILY}'
+          name: deploy-site-to-preprod
+          cluster-name: '${SITE_ECS_CLUSTER}'
+          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          context: tfn-fdbt-preprod
+          verify-revision-is-deployed: true
+          filters:
+            branches:
+              only: master
+
+      - hold-prod-deployment:
+          type: approval
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - aws-ecs/deploy-service-update:
+          requires:
+            - hold-prod-deployment
+          family: '${SITE_ECS_FAMILY}'
+          name: deploy-site-to-prod
+          cluster-name: '${SITE_ECS_CLUSTER}'
+          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          context: tfn-fdbt-prod
+          verify-revision-is-deployed: true
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+  fdbt-reference-data-service:
+    when: << pipeline.parameters.fdbt-reference-data-service >>
+    jobs:
+      - checkout-repo:
+          filters:
+            tags:
+              only: /^v.*/
+
+      - audit-reference-data-retrievers:
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - deploy-reference-data-retrievers-to-test:
+          requires:
+            - audit-reference-data-retrievers
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only: develop
+
+      - deploy-reference-data-retrievers-to-preprod:
+          requires:
+            - audit-reference-data-retrievers
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only: master
+
+      - hold-reference-data-retrievers-prod-deployment:
+          type: approval
+          requires:
+            - audit-reference-data-retrievers
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-reference-data-retrievers-to-prod:
+          requires:
+            - hold-reference-data-retrievers-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - audit-reference-data-uploaders:
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - test-reference-data-uploaders:
+          requires:
+            - audit-reference-data-uploaders
+          filters:
+            tags:
+              only: /^v.*/
+
+      - deploy-reference-data-uploaders-to-test:
+          requires:
+            - test-reference-data-uploaders
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only: develop
+
+      - deploy-reference-data-uploaders-to-preprod:
+          requires:
+            - test-reference-data-uploaders
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only: master
+
+      - hold-reference-data-uploaders-prod-deployment:
+          type: approval
+          requires:
+            - test-reference-data-uploaders
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-reference-data-uploaders-to-prod:
+          requires:
+            - hold-reference-data-uploaders-prod-deployment
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
