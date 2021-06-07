@@ -616,21 +616,34 @@ export const getSearchOperatorsBySearchText = async (searchText: string): Promis
     }
 };
 
-export const insertPassengerType = async (
+export const insertSinglePassengerType = async (
     nocCode: string,
-    passengerType: PassengerType | CompanionInfo[],
+    passengerType: PassengerType,
     name: string,
-    isGroup: boolean,
 ): Promise<void> => {
     const contents = JSON.stringify(passengerType);
 
     const insertQuery = `INSERT INTO passengerType (contents, isGroup, name, nocCode)
                          VALUES (?, ?, ?, ?)`;
 
-    await executeQuery(insertQuery, [contents, isGroup, name, nocCode]);
+    await executeQuery(insertQuery, [contents, false, name, nocCode]);
 };
 
-export const upsertPassengerType = async (
+export const insertGroupPassengerType = async (
+    nocCode: string,
+    passengerType: CompanionInfo[],
+    name: string,
+    maxGroupSize: string,
+): Promise<void> => {
+    const contents = JSON.stringify({ maxGroupSize, passengerType });
+
+    const insertQuery = `INSERT INTO passengerType (contents, isGroup, name, nocCode)
+                         VALUES (?, ?, ?, ?)`;
+
+    await executeQuery(insertQuery, [contents, true, name, nocCode]);
+};
+
+export const upsertSinglePassengerType = async (
     nocCode: string,
     passengerType: PassengerType,
     name: string,
@@ -654,7 +667,7 @@ export const upsertPassengerType = async (
         if (meta.affectedRows > 1) {
             throw Error(`Updated too many rows when updating passenger type ${meta}`);
         } else if (meta.affectedRows === 0) {
-            await insertPassengerType(nocCode, passengerType, name, false);
+            await insertSinglePassengerType(nocCode, passengerType, name);
         }
     } catch (error) {
         throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);

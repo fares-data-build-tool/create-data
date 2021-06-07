@@ -19,7 +19,7 @@ docker-restart:
 # NPM
 
 start-site:
-	npm --prefix ${FDBT_ROOT}/repos/fdbt-site run dev
+	cd ${FDBT_ROOT}/repos/fdbt-site && make run-local
 
 
 # NETEX CONVERTOR
