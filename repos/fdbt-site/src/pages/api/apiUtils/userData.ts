@@ -78,6 +78,7 @@ import { unescapeAndDecodeCookie, getUuidFromSession, getAndValidateNoc } from '
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
+import { isProductInfo } from 'src/pages/productDetails';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -86,7 +87,7 @@ export const isTermTime = (req: NextApiRequestWithSession): boolean => {
 
 const isProductData = (
     productDetailsAttributeInfo: ProductData | ProductInfo | PointToPointProductInfo,
-): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
+): productDetailsAttributeInfo is ProductData => !!(productDetailsAttributeInfo as ProductData)?.products;
 
 export const getProductsAndSalesOfferPackages = (
     salesOfferPackagesInfo: ProductWithSalesOfferPackages[],
@@ -110,6 +111,7 @@ export const getProductsAndSalesOfferPackages = (
                   }`
                 : '',
             productValidity: matchedProduct.productValidity || '',
+            productEndTime: matchedProduct.productEndTime,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
         productSOPList.push(productDetailsItem);
@@ -556,23 +558,29 @@ export const adjustSchemeOperatorJson = async (
     }
 
     if (!multipleProductAttribute) {
-        if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
+        const product = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+        if (!isProductInfo(product)) {
             throw new Error('Could not create geo zone ticket json. Period expiry attribute data problem.');
         }
-
-        const { products } = periodExpiryAttributeInfo;
 
         if (isProductWithSalesOfferPackages(salesOfferPackages)) {
             throw new Error('Could not create geo zone ticket json. Sales offer package info incorrect type.');
         }
 
-        productDetailsList = products.map(product => ({
-            productName: product.productName,
-            productPrice: product.productPrice,
-            productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
-            productValidity: isPeriodProductDetails(product) ? product.productValidity : '',
-            salesOfferPackages,
-        }));
+        if (!isPeriodExpiry(periodExpiryAttributeInfo)) {
+            throw new Error('Could not create ticket json. Period expiry not set.');
+        }
+
+        productDetailsList = [
+            {
+                productName: product.productName,
+                productPrice: product.productPrice,
+                productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
+                productValidity: periodExpiryAttributeInfo.productValidity,
+                productEndTime: periodExpiryAttributeInfo.productEndTime,
+                salesOfferPackages,
+            },
+        ];
     } else {
         if (isSalesOfferPackages(salesOfferPackages)) {
             throw new Error('Could not create geo zone ticket json. Product Sales offer package info incorrect type.');
