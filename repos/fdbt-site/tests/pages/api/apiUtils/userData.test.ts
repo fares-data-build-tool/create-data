@@ -121,7 +121,7 @@ describe('userData', () => {
                     salesOfferPackages: [defaultSalesOfferPackageTwo],
                 },
             ];
-            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute);
+            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, periodExpiryAttributeInfo);
             expect(result).toEqual(expectedProductDetailsArray);
         });
     });

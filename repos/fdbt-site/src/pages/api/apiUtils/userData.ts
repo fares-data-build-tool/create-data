@@ -34,6 +34,7 @@ import {
     PointToPointProductInfo,
     PointToPointProductInfoWithSOP,
     BaseProduct,
+    PeriodExpiry,
 } from '../../../interfaces/index';
 
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
@@ -92,6 +93,7 @@ const isProductData = (
 export const getProductsAndSalesOfferPackages = (
     salesOfferPackagesInfo: ProductWithSalesOfferPackages[],
     multipleProductAttribute: MultipleProductAttribute,
+    periodExpiryAttributeInfo: PeriodExpiry,
 ): ProductDetails[] => {
     const productSOPList: ProductDetails[] = [];
 
@@ -110,8 +112,8 @@ export const getProductsAndSalesOfferPackages = (
                       matchedProduct.productDuration === '1' ? '' : 's'
                   }`
                 : '',
-            productValidity: matchedProduct.productValidity || '',
-            productEndTime: matchedProduct.productEndTime,
+            productValidity: periodExpiryAttributeInfo.productValidity || '',
+            productEndTime: periodExpiryAttributeInfo.productEndTime,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
         productSOPList.push(productDetailsItem);
@@ -209,11 +211,11 @@ export const getBasePeriodTicketAttributes = (
 
     let productDetailsList: ProductDetails[];
 
-    if (!multipleProductAttribute) {
-        if (!periodExpiryAttributeInfo || !isPeriodExpiry(periodExpiryAttributeInfo)) {
-            throw new Error('Could not create geo zone ticket json. Period expiry attribute data problem.');
-        }
+    if (!periodExpiryAttributeInfo || !isPeriodExpiry(periodExpiryAttributeInfo)) {
+        throw new Error('Could not create ticket json. Period expiry attribute data problem.');
+    }
 
+    if (!multipleProductAttribute) {
         const productsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
         if (!productsAttribute || (productsAttribute && !isProductData(productsAttribute))) {
             throw new Error('productsAttribute was not product data');
@@ -239,7 +241,11 @@ export const getBasePeriodTicketAttributes = (
         if (isSalesOfferPackages(salesOfferPackages)) {
             throw new Error('Could not create geo zone ticket json. Product Sales offer package info incorrect type.');
         }
-        productDetailsList = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductAttribute);
+        productDetailsList = getProductsAndSalesOfferPackages(
+            salesOfferPackages,
+            multipleProductAttribute,
+            periodExpiryAttributeInfo,
+        );
     }
 
     return {
@@ -585,7 +591,11 @@ export const adjustSchemeOperatorJson = async (
         if (isSalesOfferPackages(salesOfferPackages)) {
             throw new Error('Could not create geo zone ticket json. Product Sales offer package info incorrect type.');
         }
-        productDetailsList = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductAttribute);
+        productDetailsList = getProductsAndSalesOfferPackages(
+            salesOfferPackages,
+            multipleProductAttribute,
+            periodExpiryAttributeInfo,
+        );
     }
     const nocCode = getAndValidateNoc(req, res);
     const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${matchingJson.uuid}.json`);
