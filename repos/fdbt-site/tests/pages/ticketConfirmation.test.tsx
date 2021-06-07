@@ -209,6 +209,10 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     session: {
                         [SERVICE_LIST_ATTRIBUTE]: undefined,
+                        [PERIOD_EXPIRY_ATTRIBUTE]: {
+                            productValidity: '24hr',
+                            productEndTime: '',
+                        },
                     },
                 });
                 const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length * 3;
@@ -270,6 +274,10 @@ describe('pages', () => {
                         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                             selectedOperators: mockAdditionalOperators,
+                        },
+                        [PERIOD_EXPIRY_ATTRIBUTE]: {
+                            productValidity: '24hr',
+                            productEndTime: '',
                         },
                         [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: mockAdditionalOperatorsServices,
                         [TXC_SOURCE_ATTRIBUTE]: {

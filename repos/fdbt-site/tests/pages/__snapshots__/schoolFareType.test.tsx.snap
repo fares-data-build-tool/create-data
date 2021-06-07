@@ -42,23 +42,24 @@ exports[`pages fareType should render correctly 1`] = `
           errorId="school-fare-type-single"
           errors={Array []}
         >
-          <FareTypeRadios
-            fares={
+          <RadioButtons
+            inputName="fareType"
+            options={
               Array [
                 Object {
-                  "fareType": "single",
                   "hint": "A ticket for a point to point journey",
                   "label": "Single ticket",
+                  "value": "single",
                 },
                 Object {
-                  "fareType": "flatFare",
                   "hint": "A fixed fee ticket for a single journey",
                   "label": "Flat fare ticket",
+                  "value": "flatFare",
                 },
                 Object {
-                  "fareType": "period",
                   "hint": "A ticket valid for a number of days, weeks, months or years",
                   "label": "Period ticket",
+                  "value": "period",
                 },
               ]
             }
@@ -139,23 +140,24 @@ exports[`pages fareType should render error messaging when errors are passed to 
             ]
           }
         >
-          <FareTypeRadios
-            fares={
+          <RadioButtons
+            inputName="fareType"
+            options={
               Array [
                 Object {
-                  "fareType": "single",
                   "hint": "A ticket for a point to point journey",
                   "label": "Single ticket",
+                  "value": "single",
                 },
                 Object {
-                  "fareType": "flatFare",
                   "hint": "A fixed fee ticket for a single journey",
                   "label": "Flat fare ticket",
+                  "value": "flatFare",
                 },
                 Object {
-                  "fareType": "period",
                   "hint": "A ticket valid for a number of days, weeks, months or years",
                   "label": "Period ticket",
+                  "value": "period",
                 },
               ]
             }

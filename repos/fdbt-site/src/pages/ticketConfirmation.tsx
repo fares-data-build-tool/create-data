@@ -19,7 +19,6 @@ import {
     ServiceListAttribute,
     TxcSourceAttribute,
     ExpiryUnit,
-    PeriodExpiry,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -287,8 +286,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
     }
 
-    const addProduct = (product: Product | MultiProduct, periodExpiryAttribute: PeriodExpiry): void => {
-        const { productValidity, productEndTime } = periodExpiryAttribute;
+    const addProduct = (product: Product | MultiProduct): void => {
         const productDurationText = `${
             product.productDurationUnits
                 ? `${product.productDuration} ${product.productDurationUnits}${
@@ -297,7 +295,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
                 : `${product.productDuration}`
         }`;
 
-        if (!product.productDuration || !productValidity) {
+        if (!product.productDuration) {
             throw new Error('User has no product duration and/or validity information.');
         }
         confirmationElements.push({
@@ -315,10 +313,10 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 
     if (isArray(products)) {
         products.forEach(product => {
-            addProduct(product, periodExpiryAttribute);
+            addProduct(product);
         });
     } else if (!isArray(products)) {
-        addProduct(products, periodExpiryAttribute);
+        addProduct(products);
     }
 
     confirmationElements.push({

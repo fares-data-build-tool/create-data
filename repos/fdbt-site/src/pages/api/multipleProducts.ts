@@ -170,8 +170,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 productDurationId,
                 productDurationUnits,
                 productDurationUnitsId,
-                productValidity: '',
-                productValidityId: '',
             };
             multipleProducts.push(product);
         }

@@ -59,7 +59,7 @@ import {
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
-import { Operator, MultipleProductAttribute, ExpiryUnit } from '../../../../src/interfaces';
+import { Operator, MultipleProductAttribute, ExpiryUnit, PeriodExpiry } from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -94,8 +94,6 @@ describe('userData', () => {
                         productDurationId: '',
                         productDurationUnits: 'week',
                         productDurationUnitsId: '',
-                        productValidity: '24hr',
-                        productValidityId: '',
                     },
                     {
                         productName: 'Product Two',
@@ -106,8 +104,6 @@ describe('userData', () => {
                         productDurationId: '',
                         productDurationUnits: 'day',
                         productDurationUnitsId: '',
-                        productValidity: '24hr',
-                        productValidityId: '',
                     },
                 ],
             };
@@ -121,7 +117,8 @@ describe('userData', () => {
                     salesOfferPackages: [defaultSalesOfferPackageTwo],
                 },
             ];
-            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, periodExpiryAttributeInfo);
+            const validity: PeriodExpiry = { productValidity: '24hr', productEndTime: '' };
+            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, validity);
             expect(result).toEqual(expectedProductDetailsArray);
         });
     });

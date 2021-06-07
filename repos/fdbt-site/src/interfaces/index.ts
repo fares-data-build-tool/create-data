@@ -2,7 +2,6 @@ import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { IncomingMessage, ServerResponse } from 'http';
 import { ReactElement } from 'react';
-import { StringArray } from 'aws-sdk/clients/rdsdataservice';
 
 // Session Attributes and Cookies
 
@@ -624,10 +623,6 @@ export interface MultiProduct {
     productDurationId: string;
     productDurationUnits: string;
     productDurationUnitsId: string;
-    productValidity: string;
-    productValidityId: string;
-    productEndTime?: string;
-    productEndTimeId?: string;
 }
 
 export interface MultiProductWithErrors extends MultiProduct {

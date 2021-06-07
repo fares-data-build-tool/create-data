@@ -24,7 +24,6 @@ import {
     MultiOperatorMultipleServicesTicket,
     MultiOperatorInfo,
     Ticket,
-    WithErrors,
     isSchemeOperatorTicket,
     MultipleProductAttribute,
     TicketPeriod,
@@ -79,7 +78,7 @@ import { unescapeAndDecodeCookie, getUuidFromSession, getAndValidateNoc } from '
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
-import { isProductInfo } from 'src/pages/productDetails';
+import { isProductInfo } from '../../../pages/productDetails';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -563,6 +562,10 @@ export const adjustSchemeOperatorJson = async (
         );
     }
 
+    if (!isPeriodExpiry(periodExpiryAttributeInfo)) {
+        throw new Error('Could not create ticket json. Period expiry not set.');
+    }
+
     if (!multipleProductAttribute) {
         const product = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
         if (!isProductInfo(product)) {
@@ -571,10 +574,6 @@ export const adjustSchemeOperatorJson = async (
 
         if (isProductWithSalesOfferPackages(salesOfferPackages)) {
             throw new Error('Could not create geo zone ticket json. Sales offer package info incorrect type.');
-        }
-
-        if (!isPeriodExpiry(periodExpiryAttributeInfo)) {
-            throw new Error('Could not create ticket json. Period expiry not set.');
         }
 
         productDetailsList = [
