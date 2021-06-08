@@ -876,24 +876,22 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'month',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'year',
-                                productValidity: 'endOfCalendarDay',
                             },
                         ],
                     },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
